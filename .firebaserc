@@ -1,12 +1,11 @@
 {
-  "projects": {
-    "default": "sun-oil"
-  },
   "targets": {
     "sun-oil": {
       "hosting": {
-        "sun-oil": [
-          "sun-oil",
+        "production": [
+          "sun-oil"
+        ],
+        "staging": [
           "sun-oil-staging"
         ]
       }

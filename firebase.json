@@ -1,7 +1,7 @@
 {
   "hosting": [
     {
-      "target": "sun-oil",
+      "target": "production",
       "public": "dist/sun-oil",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
@@ -12,7 +12,7 @@
       ]
     },
     {
-      "target": "sun-oil-staging",
+      "target": "staging",
       "public": "dist/sun-oil",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
