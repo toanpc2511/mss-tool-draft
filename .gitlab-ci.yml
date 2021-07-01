@@ -1,0 +1,57 @@
+stages:
+  - build
+  - deploy
+
+build_master:
+  only:
+    - master
+  stage: build
+  environment:
+    name: master
+    url: https://sun-oil.web.app
+  image: node:14
+  cache:
+    key: always
+    paths:
+      - node_modules/
+  before_script:
+    - node -v
+    - npm -v
+    - npm install
+  script:
+    - node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=production
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - dist/
+
+deploy_master:
+  only:
+    - master
+  stage: deploy
+  environment:
+    name: master
+    url: https://sun-oil.web.app
+  image: andreysenov/firebase-tools
+  script:
+    - firebase deploy --only -m "Pipe $CI_PIPELINE_ID Build $CI_BUILD_ID" --token $FIREBASE_TOKEN
+
+build_develop:
+  only:
+    - develop
+  stage: build
+  image: node:14
+  cache:
+    key: always
+    paths:
+      - node_modules/
+  before_script:
+    - node -v
+    - npm -v
+    - npm install
+  script:
+    - node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=staging
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - dist/
