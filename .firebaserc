@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "sun-oil"
+  },
+  "targets": {
+    "sun-oil": {
+      "hosting": {
+        "sun-oil": [
+          "sun-oil",
+          "sun-oil-staging"
+        ]
+      }
+    }
   }
 }
