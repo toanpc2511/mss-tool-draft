@@ -5,4 +5,4 @@ RUN npm i
 COPY . .
 EXPOSE 4200
 VOLUME [ "/usr/src/app" ]
-ENTRYPOINT [ "npm run start" ]
+ENTRYPOINT [ "npm", "start" ]
