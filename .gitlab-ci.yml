@@ -34,7 +34,7 @@ deploy_master:
     url: https://sun-oil.web.app
   image: andreysenov/firebase-tools
   script:
-    - firebase deploy --only -m "Pipe $CI_PIPELINE_ID Build $CI_BUILD_ID" --token $FIREBASE_TOKEN
+    - firebase deploy --only -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --token $FIREBASE_TOKEN
 
 build_develop:
   only:
