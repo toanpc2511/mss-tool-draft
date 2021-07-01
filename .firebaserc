@@ -1,4 +1,7 @@
-{
+{  
+  "projects": {
+    "default": "sun-oil"
+  },
   "targets": {
     "sun-oil": {
       "hosting": {
