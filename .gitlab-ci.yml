@@ -34,7 +34,7 @@ deploy_master:
     url: https://sun-oil.web.app
   image: andreysenov/firebase-tools:9.13.1-node12
   script:
-    - firebase deploy --only hosting:sun-oil -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --token $FIREBASE_TOKEN
+    - firebase deploy --only hosting:production -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --token $FIREBASE_TOKEN
 
 build_develop:
   only:
@@ -65,4 +65,4 @@ deploy_develop:
     url: https://sun-oil-staging.web.app
   image: andreysenov/firebase-tools:9.13.1-node12
   script:
-    - firebase deploy --only hosting:sun-oil-staging -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --token $FIREBASE_TOKEN
+    - firebase deploy --only hosting:staging -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --token $FIREBASE_TOKEN
