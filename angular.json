@@ -37,11 +37,6 @@
             "styles": [
               "src/styles.scss"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/assets/sass"
-              ]
-            },
             "scripts": [
               "node_modules/apexcharts/dist/apexcharts.min.js",
               "node_modules/clipboard/dist/clipboard.js"
