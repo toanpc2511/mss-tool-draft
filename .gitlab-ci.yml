@@ -1,11 +1,11 @@
 stages:
-  - install_dependencies
+  - install
   - build
   - deploy
 
 install_dependencies_master:
   image: node:14
-  stage: install_dependencies
+  stage: install
   cache:
     key:
       files:
@@ -60,7 +60,7 @@ deploy_master:
 
 install_dependencies_develop:
   image: node:14
-  stage: install_dependencies
+  stage: install
   cache:
     key:
       files:
