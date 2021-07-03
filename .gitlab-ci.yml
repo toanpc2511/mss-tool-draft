@@ -1,6 +1,25 @@
 stages:
+  - install_dependencies
   - build
   - deploy
+
+install_dependencies_master:
+  image: node:14
+  stage: install_dependencies
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules
+  script:
+    - yarn install
+    - yarn ngcc --properties es2015 --create-ivy-entry-points
+  only:
+    refs:
+      - master
+    changes:
+      - yarn.lock
 
 build_master:
   only:
@@ -11,9 +30,12 @@ build_master:
     url: https://sun-oil.web.app
   image: node:14
   cache:
-    key: always
+    key:
+      files:
+        - yarn.lock
     paths:
-      - node_modules/
+      - node_modules
+    policy: pull
   before_script:
     - node -v
     - npm -v
@@ -36,15 +58,36 @@ deploy_master:
   script:
     - firebase deploy --only hosting:production -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --token $FIREBASE_TOKEN
 
+install_dependencies_develop:
+  image: node:14
+  stage: install_dependencies
+  cache:
+    key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules
+  script:
+    - yarn install
+    - yarn ngcc --properties es2015 --create-ivy-entry-points
+  only:
+    refs:
+      - develop
+    changes:
+      - yarn.lock
+
 build_develop:
   only:
     - develop
   stage: build
   image: node:14
   cache:
-    key: always
+    key:
+      files:
+        - yarn.lock
     paths:
-      - node_modules/
+      - node_modules
+    policy: pull
   before_script:
     - node -v
     - npm -v
