@@ -1,9 +1,9 @@
 {
-  "name": "metronic-angular-demo1",
+  "name": "sun-oil-fe",
   "version": "7.2.8",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host 0.0.0.0",
     "build-staging": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=staging",
     "build-prod": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=production",
     "test": "ng test",
