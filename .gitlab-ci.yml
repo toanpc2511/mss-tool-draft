@@ -12,6 +12,9 @@ install_dependencies_master:
         - yarn.lock
     paths:
       - node_modules
+  before_script:
+    - node -v
+    - npm -v
   script:
     - yarn install
     - yarn ngcc --properties es2015 --create-ivy-entry-points
@@ -36,10 +39,6 @@ build_master:
     paths:
       - node_modules
     policy: pull
-  before_script:
-    - node -v
-    - npm -v
-    - yarn
   script:
     - yarn build-prod
   artifacts:
@@ -67,6 +66,9 @@ install_dependencies_develop:
         - yarn.lock
     paths:
       - node_modules
+  before_script:
+    - node -v
+    - npm -v
   script:
     - yarn install
     - yarn ngcc --properties es2015 --create-ivy-entry-points
@@ -88,10 +90,6 @@ build_develop:
     paths:
       - node_modules
     policy: pull
-  before_script:
-    - node -v
-    - npm -v
-    - yarn
   script:
     - yarn build-staging
   artifacts:
