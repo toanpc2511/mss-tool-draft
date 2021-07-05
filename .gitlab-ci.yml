@@ -4,6 +4,7 @@ stages:
   - deploy
 
 cache:
+  key: node_modules_sun_oil_fe
   paths:
     - node_modules/
 
