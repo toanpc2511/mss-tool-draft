@@ -17,7 +17,6 @@ install_dependencies_master:
     - npm -v
   script:
     - yarn
-    - yarn ngcc
   only:
     refs:
       - master
@@ -71,7 +70,6 @@ install_dependencies_develop:
     - npm -v
   script:
     - yarn
-    - yarn ngcc
   only:
     refs:
       - develop
