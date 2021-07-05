@@ -3,25 +3,20 @@ stages:
   - build
   - deploy
 
+cache:
+  paths:
+    - node_modules/
+
 install_dependencies_master:
   image: node:14
   stage: install
-  cache:
-    key:
-      files:
-        - yarn.lock
-    paths:
-      - node_modules
   before_script:
     - node -v
     - npm -v
   script:
     - yarn
   only:
-    refs:
-      - master
-    changes:
-      - yarn.lock
+    - master
 
 build_master:
   only:
@@ -31,13 +26,6 @@ build_master:
     name: master
     url: https://sun-oil.web.app
   image: node:14
-  cache:
-    key:
-      files:
-        - yarn.lock
-    paths:
-      - node_modules
-    policy: pull
   script:
     - yarn build-prod
   artifacts:
@@ -59,35 +47,19 @@ deploy_master:
 install_dependencies_develop:
   image: node:14
   stage: install
-  cache:
-    key:
-      files:
-        - yarn.lock
-    paths:
-      - node_modules
   before_script:
     - node -v
     - npm -v
   script:
     - yarn
   only:
-    refs:
-      - develop
-    changes:
-      - yarn.lock
+    - develop
 
 build_develop:
   only:
     - develop
   stage: build
   image: node:14
-  cache:
-    key:
-      files:
-        - yarn.lock
-    paths:
-      - node_modules
-    policy: pull
   script:
     - yarn build-staging
   artifacts:
