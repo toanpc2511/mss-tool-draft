@@ -1,5 +1,4 @@
 stages:
-  - install
   - build
   - deploy
 
@@ -7,17 +6,6 @@ cache:
   key: node_modules_sun_oil_fe
   paths:
     - node_modules/
-
-install_dependencies_master:
-  image: node:14
-  stage: install
-  before_script:
-    - node -v
-    - npm -v
-  script:
-    - yarn
-  only:
-    - master
 
 build_master:
   only:
@@ -27,7 +15,11 @@ build_master:
     name: master
     url: https://sun-oil.web.app
   image: node:14
+  before_script:
+    - node -v
+    - npm -v
   script:
+    - yarn
     - yarn build-prod
   artifacts:
     expire_in: 1 day
@@ -45,23 +37,16 @@ deploy_master:
   script:
     - firebase deploy --only hosting:production -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --token $FIREBASE_TOKEN
 
-install_dependencies_develop:
-  image: node:14
-  stage: install
-  before_script:
-    - node -v
-    - npm -v
-  script:
-    - yarn
-  only:
-    - develop
-
 build_develop:
   only:
     - develop
   stage: build
   image: node:14
+  before_script:
+    - node -v
+    - npm -v
   script:
+    - yarn
     - yarn build-staging
   artifacts:
     expire_in: 1 day
