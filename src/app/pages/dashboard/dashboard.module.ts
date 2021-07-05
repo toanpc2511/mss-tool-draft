@@ -11,10 +11,10 @@ import { DashboardsModule } from '../../_metronic/partials/content/dashboards/da
     RouterModule.forChild([
       {
         path: '',
-        component: DashboardComponent,
-      },
+        component: DashboardComponent
+      }
     ]),
-    DashboardsModule,
-  ],
+    DashboardsModule
+  ]
 })
 export class DashboardModule {}
