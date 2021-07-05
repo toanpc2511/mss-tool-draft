@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private toastr: ToastrService) { }
 
   ngOnInit(): void {
   }
 
+  swal() {
+    Swal.fire('test');
+  }
+
+  snot() {
+    this.toastr.success('ok');
+  }
 }

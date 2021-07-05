@@ -54,8 +54,7 @@ export class TranslationService {
    */
   getSelectedLanguage(): any {
     return (
-      localStorage.getItem(LOCALIZATION_LOCAL_STORAGE_KEY) ||
-      this.translate.getDefaultLang()
+      localStorage.getItem(LOCALIZATION_LOCAL_STORAGE_KEY) || 'vi'
     );
   }
 }

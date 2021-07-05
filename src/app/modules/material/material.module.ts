@@ -77,7 +77,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+// import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -275,7 +275,7 @@ const routes: Routes = [
     MatSidenavModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule,
+    // MatSnackBarModule,
     MatTableModule,
     MatGridListModule,
     MatToolbarModule,

@@ -1,13 +1,12 @@
 export const DefaultLayoutConfig = {
   demo: 'demo1',
-  // Javascript Settings
   js: {
     breakpoints: {
       sm: 576,
       md: 768,
       lg: 992,
       xl: 1200,
-      xxl: 1400,
+      xxl: 1400
     },
     colors: {
       theme: {
@@ -20,7 +19,7 @@ export const DefaultLayoutConfig = {
           warning: '#FFA800',
           danger: '#F64E60',
           light: '#E4E6EF',
-          dark: '#181C32',
+          dark: '#181C32'
         },
         light: {
           white: '#ffffff',
@@ -31,7 +30,7 @@ export const DefaultLayoutConfig = {
           warning: '#FFF4DE',
           danger: '#FFE2E5',
           light: '#F3F6F9',
-          dark: '#D6D6E0',
+          dark: '#D6D6E0'
         },
         inverse: {
           white: '#ffffff',
@@ -42,8 +41,8 @@ export const DefaultLayoutConfig = {
           warning: '#ffffff',
           danger: '#ffffff',
           light: '#464E5F',
-          dark: '#ffffff',
-        },
+          dark: '#ffffff'
+        }
       },
       gray: {
         'gray-100': '#F3F6F9',
@@ -54,211 +53,169 @@ export const DefaultLayoutConfig = {
         'gray-600': '#7E8299',
         'gray-700': '#5E6278',
         'gray-800': '#3F4254',
-        'gray-900': '#181C32',
-      },
+        'gray-900': '#181C32'
+      }
     },
-    fontFamily: 'Poppins',
+    fontFamily: 'Poppins'
   },
-
-  // Base Settins
   self: {
-    layout: 'default', // blank/default page mode
+    layout: 'default'
   },
-
-  // Page loader
   pageLoader: {
-    type: '', // default|spinner-message|spinner-logo
+    type: ''
   },
-
-  // Header
   header: {
     self: {
       display: true,
-      width: 'fluid', // fixed|fluid,
-      theme: 'light', // light|dark
+      width: 'fluid',
+      theme: 'light',
       fixed: {
         desktop: true,
-        mobile: true,
-      },
+        mobile: true
+      }
     },
-
     menu: {
       self: {
         display: true,
-        static: true, // static => true | dynamic => true
-        layout: 'default', // tab/default,
+        static: true,
+        layout: 'default',
         rootArrow: false,
-        iconStyle: 'duotone', // duotone, line, bold, solid
+        iconStyle: 'duotone'
       },
-
       desktop: {
         arrow: true,
         toggle: 'click',
         submenu: {
           theme: 'light',
-          arrow: true,
-        },
+          arrow: true
+        }
       },
-
       mobile: {
         submenu: {
           theme: 'dark',
-          accordion: true,
-        },
-      },
-    },
+          accordion: true
+        }
+      }
+    }
   },
-
-  // Subheader
   subheader: {
     display: true,
     displayDesc: true,
     displayDaterangepicker: true,
-    layoutVersion: 'v1', // [1..6]
+    layoutVersion: 'v1',
     fixed: true,
-    width: 'fluid', // fixed|fluid,
+    width: 'fluid',
     clear: false,
-    style: 'solid', // transparent/solid
+    style: 'solid'
   },
-
-  // Content
   content: {
-    width: 'fixed', // fluid|fixed
+    width: 'fluid'
   },
-
-  // Brand
   brand: {
     self: {
-      theme: 'dark', // light/dark
-    },
+      theme: 'dark'
+    }
   },
-
-  // Aside
   aside: {
     self: {
-      theme: 'dark', // light/dark
+      theme: 'dark',
       display: true,
       fixed: true,
       minimize: {
-        toggle: true, // allow toggle
-        default: false, // default state
-        hoverable: true, // allow hover
-      },
+        toggle: true,
+        default: false,
+        hoverable: true
+      }
     },
-
     footer: {
       self: {
-        display: false,
-      },
+        display: false
+      }
     },
-
     menu: {
-      static: true, // static => true | dynamic => true
-      dropdown: false, // ok
-      scroll: true, // ok
-      iconStyle: 'duotone', // duotone, line, bold, solid
+      static: false,
+      dropdown: false,
+      scroll: true,
+      iconStyle: 'duotone',
       submenu: {
-        accordion: true, //
+        accordion: true,
         dropdown: {
           arrow: true,
-          hoverTimeout: 500, // in milliseconds
-        },
-      },
-    },
+          hoverTimeout: 500
+        }
+      }
+    }
   },
-
-  // Footer
   footer: {
     display: true,
     width: 'fluid',
-    fixed: true,
+    fixed: true
   },
-
-  // Extras
   extras: {
-    // Search
     search: {
       display: true,
-      layout: 'dropdown', // offcanvas, dropdown,
+      layout: 'dropdown',
       offcanvas: {
-        direction: 'right',
-      },
+        direction: 'right'
+      }
     },
-
-    // Notifications
     notifications: {
       display: true,
-      layout: 'dropdown', // offcanvas, dropdown,
+      layout: 'dropdown',
       dropdown: {
-        style: 'dark', // light|dark
+        style: 'dark'
       },
       offcanvas: {
-        direction: 'right',
-      },
+        direction: 'right'
+      }
     },
-
-    // Quick Actionss
     quickActions: {
       display: true,
-      layout: 'dropdown', // offcanvas, dropdown,
+      layout: 'dropdown',
       dropdown: {
-        style: 'dark', // light|dark
+        style: 'dark'
       },
       offcanvas: {
-        direction: 'right',
-      },
+        direction: 'right'
+      }
     },
-
-    // User
     user: {
       display: true,
-      layout: 'offcanvas', // offcanvas, dropdown,
+      layout: 'offcanvas',
       dropdown: {
-        style: 'dark', // light|dark
+        style: 'dark'
       },
       offcanvas: {
-        direction: 'right',
-      },
+        direction: 'right'
+      }
     },
-
-    // Languages
     languages: {
-      display: true,
+      display: true
     },
-
-    // Cart
     cart: {
       display: true,
-      layout: 'dropdown', // offcanvas, dropdown,
+      layout: 'dropdown',
       offcanvas: {
-        direction: 'right',
+        direction: 'right'
       },
       dropdown: {
-        style: 'dark', // light|dark
-      },
+        style: 'dark'
+      }
     },
-
-    // Chat
     chat: {
-      display: true,
+      display: true
     },
-
-    // Quick Panel
     quickPanel: {
       display: true,
       offcanvas: {
-        direction: 'right',
-      },
+        direction: 'right'
+      }
     },
-
-    // Page Toolbar
     toolbar: {
-      display: true,
+      display: true
     },
-
-    // Scrolltop
     scrolltop: {
-      display: true,
-    },
-  },
+      display: true
+    }
+  }
 };

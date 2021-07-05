@@ -16,6 +16,7 @@ import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
+import { ToastrModule } from 'ngx-toastr';
 // #fake-end#
 
 function appInitializer(authService: AuthService) {
@@ -25,7 +26,6 @@ function appInitializer(authService: AuthService) {
     });
   };
 }
-
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,21 +40,27 @@ function appInitializer(authService: AuthService) {
     // #fake-start#
     environment.isMockEnabled
       ? HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {
-        passThruUnknownUrl: true,
-        dataEncapsulation: false,
-      })
+          passThruUnknownUrl: true,
+          dataEncapsulation: false
+        })
       : [],
     // #fake-end#
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,
+    ToastrModule.forRoot({
+      closeButton: true,
+      progressBar: true,
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right'
+    })
   ],
   providers: [
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializer,
       multi: true,
-      deps: [AuthService],
+      deps: [AuthService]
     },
     {
       provide: HIGHLIGHT_OPTIONS,
@@ -65,10 +71,10 @@ function appInitializer(authService: AuthService) {
           typescript: () => import('highlight.js/lib/languages/typescript'),
           scss: () => import('highlight.js/lib/languages/scss'),
           json: () => import('highlight.js/lib/languages/json')
-        },
-      },
-    },
+        }
+      }
+    }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

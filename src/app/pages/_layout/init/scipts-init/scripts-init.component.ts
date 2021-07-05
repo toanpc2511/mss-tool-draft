@@ -9,7 +9,6 @@ import { LayoutService } from '../../../../_metronic/core';
 import KTLayoutBrand from '../../../../../assets/js/layout/base/brand';
 import KTLayoutAside from '../../../../../assets/js/layout/base/aside';
 import KTLayoutAsideMenu from '../../../../../assets/js/layout/base/aside-menu';
-import KTLayoutQuickUser from '../../../../../assets/js/layout/extended/quick-user';
 
 @Component({
   selector: 'app-scripts-init',
