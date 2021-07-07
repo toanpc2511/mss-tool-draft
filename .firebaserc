@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "sun-oil-admin"
+  },
+  "targets": {
+    "sun-oil-admin": {
+      "hosting": {
+        "production": [
+          "sun-oil-admin"
+        ],
+        "staging": [
+          "sun-oil-admin-staging"
+        ]
+      }
+    }
+  }
+}
