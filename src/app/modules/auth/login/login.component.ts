@@ -3,8 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { UserModel } from '../_models/user.model';
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,8 +17,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   //   password: '',
   // };
   defaultAuth: any = {
-    email: 'admin@demo.com',
-    password: 'demo'
+    phone: '',
+    password: ''
   };
   loginForm: FormGroup;
   hasError: boolean;
@@ -55,8 +54,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   initForm() {
     this.loginForm = this.fb.group({
-      username: [
-        this.defaultAuth.email,
+      phone: [
+        this.defaultAuth.phone,
         Validators.compose([
           Validators.required,
           Validators.minLength(3),
@@ -75,11 +74,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit() {
+    this.loginForm.markAllAsTouched();
     this.hasError = false;
     const loginSubscr = this.authService
       .login(this.f.email.value, this.f.password.value)
       .pipe(first())
-      .subscribe((user: UserModel) => {
+      .subscribe((user) => {
         if (user) {
           this.router.navigate([this.returnUrl]);
         } else {

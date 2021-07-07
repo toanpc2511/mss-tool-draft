@@ -19,52 +19,54 @@
     <!-- begin::Alert error-->
     <ng-container *ngIf="hasError">
       <div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
-        <div class="alert-text">The login details are incorrect</div>
+        <div class="alert-text">Thông tin tài khoản không chính xác</div>
       </div>
     </ng-container>
     <!-- end::Alert error-->
 
     <!--begin::Form group-->
     <div class="form-group">
-      <label class="font-size-h6 font-weight-bolder text-dark">Tên đăng nhập</label>
+      <label class="font-size-h6 font-weight-bolder text-dark">Số điện thoại</label>
       <input
         class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
         type="text"
-        name="username"
-        formControlName="username"
+        name="phone"
+        formControlName="phone"
         autocomplete="off"
-        [ngClass]="{ 'is-invalid': loginForm.controls['username'].invalid }"
+        [ngClass]="{
+          'is-invalid': loginForm.controls['phone'].invalid && loginForm.controls['phone'].touched
+        }"
       />
       <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'required',
-          message: 'Tên đăng nhập không được bỏ trống',
-          control: loginForm.controls['username']
+          message: 'Số điện thoại không được bỏ trống',
+          control: loginForm.controls['phone']
         }"
       ></ng-container>
-      <ng-container
+      <!-- <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
-          validation: 'username',
-          message: 'Tên đăng nhập không đúng định dạng',
-          control: loginForm.controls['username']
+          validation: 'phone',
+          message: 'Số điện thoại không đúng định dạng',
+          control: loginForm.controls['phone']
         }"
-      ></ng-container>
+      ></ng-container> -->
       <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'minLength',
-          message: 'Tên đăng nhập không đúng định dạng',
-          control: loginForm.controls['username']
+          message: 'Số điện thoại không đúng định dạng',
+          control: loginForm.controls['phone']
         }"
       ></ng-container>
       <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'maxLength',
-          message: 'Tên đăng nhập không đúng định dạng',
-          control: loginForm.controls['username']
+          message: 'Số điện thoại không đúng định dạng',
+          control: loginForm.controls['phone']
         }"
       ></ng-container>
     </div>
@@ -80,13 +82,16 @@
         name="password"
         autocomplete="off"
         formControlName="password"
-        [ngClass]="{ 'is-invalid': loginForm.controls['password'].invalid }"
+        [ngClass]="{
+          'is-invalid':
+            loginForm.controls['password'].invalid && loginForm.controls['password'].touched
+        }"
       />
       <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'required',
-          message: 'Password is required',
+          message: 'Mật khẩu không được để trống',
           control: loginForm.controls['password']
         }"
       ></ng-container>
@@ -94,7 +99,7 @@
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'minlength',
-          message: 'Password should have at least 3 symbols',
+          message: 'Mật khẩu không chính xác',
           control: loginForm.controls['password']
         }"
       ></ng-container>
@@ -102,7 +107,7 @@
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'maxLength',
-          message: 'Password should have maximum 100 symbols',
+          message: 'Mật khẩu không chính xác',
           control: loginForm.controls['password']
         }"
       ></ng-container>
@@ -115,7 +120,7 @@
         type="submit"
         id="kt_login_signin_submit"
         class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3"
-        [disabled]="loginForm.invalid"
+        [disabled]="loginForm.invalid && loginForm.touched"
       >
         Đăng nhập
       </button>

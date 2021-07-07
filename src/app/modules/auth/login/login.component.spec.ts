@@ -1,14 +1,9 @@
 // tslint:disable:no-string-literal
 // https://codecraft.tv/courses/angular/unit-testing/model-driven-forms/
-import {
-  waitForAsync,
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-} from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../services/auth.service';
 import { LoginComponent } from './login.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Observable, of } from 'rxjs';
@@ -19,26 +14,25 @@ import { TranslateModule } from '@ngx-translate/core';
 
 const fakeAuth = {
   email: 'admin@demo.com',
-  password: 'demo',
+  password: 'demo'
 };
 
 const mockActivatedRoute = {
   snapshot: {
     params: {},
-    queryParams: {},
-  },
+    queryParams: {}
+  }
 };
 
 const fakeRoutes: Routes = [
   { path: 'auth/login', component: LoginComponent },
   { path: 'auth/logout', component: LogoutComponent },
-  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' }
 ];
 
 class FakeAuthService {
   login(email: string, password: string): Observable<UserModel> {
-    const isChecked =
-      email === fakeAuth.email && password === fakeAuth.password;
+    const isChecked = email === fakeAuth.email && password === fakeAuth.password;
     if (!isChecked) {
       return of(undefined);
     }
@@ -57,31 +51,33 @@ describe('LoginComponent', () => {
   let injector;
   let authService: AuthService;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        FormsModule,
-        HttpClientTestingModule,
-        RouterModule.forRoot(fakeRoutes),
-        TranslateModule.forRoot(),
-      ],
-      declarations: [LoginComponent],
-      providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: mockActivatedRoute,
-        },
-        {
-          provide: AuthService,
-          useClass: FakeAuthService,
-        },
-      ],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          ReactiveFormsModule,
+          FormsModule,
+          HttpClientTestingModule,
+          RouterModule.forRoot(fakeRoutes),
+          TranslateModule.forRoot()
+        ],
+        declarations: [LoginComponent],
+        providers: [
+          {
+            provide: ActivatedRoute,
+            useValue: mockActivatedRoute
+          },
+          {
+            provide: AuthService,
+            useClass: FakeAuthService
+          }
+        ]
+      }).compileComponents();
 
-    injector = getTestBed();
-    authService = injector.get(AuthService);
-  }));
+      injector = getTestBed();
+      authService = injector.get(AuthService);
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
