@@ -2,25 +2,24 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { UserModel } from '../_models/user.model';
-import { AuthService } from '../_services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
   // KeenThemes mock, change it to:
-  // defaultAuth = {
-  //   email: '',
-  //   password: '',
-  // };
-  defaultAuth: any = {
-    email: 'admin@demo.com',
-    password: 'demo',
+  defaultAuth = {
+    phoneNumber: '',
+    password: '',
   };
+  // defaultAuth: any = {
+  //   email: 'admin@demo.com',
+  //   password: 'demo'
+  // };
   loginForm: FormGroup;
   hasError: boolean;
   returnUrl: string;
@@ -45,9 +44,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     // get return url from route parameters or default to '/'
-    this.returnUrl =
-        this.route.snapshot.queryParams['returnUrl'.toString()] || '/';
-    }
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'.toString()] || '/';
+  }
 
   // convenience getter for easy access to form fields
   get f() {
@@ -56,34 +54,33 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   initForm() {
     this.loginForm = this.fb.group({
-      email: [
-        this.defaultAuth.email,
+      phoneNumber: [
+        this.defaultAuth.phoneNumber,
         Validators.compose([
           Validators.required,
-          Validators.email,
-          Validators.minLength(3),
-          Validators.maxLength(320), // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
-        ]),
+          Validators.minLength(9),
+          Validators.maxLength(12)
+        ])
       ],
       password: [
         this.defaultAuth.password,
         Validators.compose([
           Validators.required,
           Validators.minLength(3),
-          Validators.maxLength(100),
-        ]),
-      ],
+          Validators.maxLength(100)
+        ])
+      ]
     });
   }
 
   submit() {
     this.hasError = false;
     const loginSubscr = this.authService
-      .login(this.f.email.value, this.f.password.value)
+      .login(this.f.phoneNumber.value, this.f.password.value)
       .pipe(first())
-      .subscribe((user: UserModel) => {
+      .subscribe((user) => {
         if (user) {
-          this.router.navigate([this.  returnUrl]);
+          this.router.navigate([this.returnUrl]);
         } else {
           this.hasError = true;
         }

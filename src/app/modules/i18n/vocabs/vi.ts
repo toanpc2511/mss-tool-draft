@@ -16,8 +16,9 @@ export const locale = {
       },
       AUTH: {
         GENERAL: {
+          WELCOME: 'Hệ thống quản trị Sun Oil',
           OR: 'Hoặc',
-          SUBMIT_BUTTON: 'Đăng nhập',
+          SIGNIN_BUTTON: 'Đăng nhập',
           NO_ACCOUNT: 'Chưa có tài khoản?',
           SIGNUP_BUTTON: 'Đăng ký',
           FORGOT_BUTTON: 'Quên mật khẩu',
@@ -41,19 +42,20 @@ export const locale = {
           SUCCESS: 'Your account has been successfuly registered.'
         },
         INPUT: {
-          EMAIL: 'Email',
+          PHONE_NUMBER: 'Số điện thoại',
           FULLNAME: 'Fullname',
-          PASSWORD: 'Password',
+          PASSWORD: 'Mật khẩu',
           CONFIRM_PASSWORD: 'Confirm Password',
           USERNAME: 'Username'
         },
         VALIDATION: {
-          INVALID: '{{name}} is not valid',
+          INVALID_PHONE_NUMBER: 'Số điện thoại không hợp lệ',
+          INVALID_PASSWORD: 'Mật khẩu không hợp lệ',
           REQUIRED: '{{name}} is required',
           MIN_LENGTH: '{{name}} minimum length is {{min}}',
           AGREEMENT_REQUIRED: 'Accepting terms & conditions are required',
           NOT_FOUND: 'The requested {{name}} is not found',
-          INVALID_LOGIN: 'The login detail is incorrect',
+          INVALID_LOGIN: 'Thông tin đăng nhập không chính xác',
           REQUIRED_FIELD: 'Required field',
           MIN_LENGTH_FIELD: 'Minimum field length:',
           MAX_LENGTH_FIELD: 'Maximum field length:',

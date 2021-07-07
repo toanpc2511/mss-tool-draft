@@ -1,8 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LayoutService } from '../../../../_metronic/core';
-import { AuthService } from '../../../../modules/auth/_services/auth.service';
-import { UserModel } from '../../../../modules/auth/_models/user.model';
 import KTLayoutQuickSearch from '../../../../../assets/js/layout/extended/quick-search';
 import KTLayoutQuickNotifications from '../../../../../assets/js/layout/extended/quick-notifications';
 import KTLayoutQuickActions from '../../../../../assets/js/layout/extended/quick-actions';
@@ -11,6 +9,7 @@ import KTLayoutQuickPanel from '../../../../../assets/js/layout/extended/quick-p
 import KTLayoutQuickUser from '../../../../../assets/js/layout/extended/quick-user';
 import KTLayoutHeaderTopbar from '../../../../../assets/js/layout/base/header-topbar';
 import { KTUtil } from '../../../../../assets/js/components/util';
+import { AuthService, UserModel } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
   selector: 'app-topbar',

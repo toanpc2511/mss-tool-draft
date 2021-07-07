@@ -11,100 +11,100 @@
     <!--begin::Title-->
     <div class="pb-13 pt-lg-0 pt-5">
       <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">
-        Welcome to Sun Oil Admin
+        {{ 'AUTH.GENERAL.WELCOME' | translate }}
       </h3>
-      <span class="text-muted font-weight-bold font-size-h4"
+      <!-- <span class="text-muted font-weight-bold font-size-h4"
         >New Here?
         <a
           routerLink="/auth/registration"
           id="kt_login_signup"
           class="text-primary font-weight-bolder"
-          >{{ "AUTH.GENERAL.SIGNUP_BUTTON" | translate }}</a
+          >{{ 'AUTH.GENERAL.SIGNUP_BUTTON' | translate }}</a
         >
-      </span>
+      </span> -->
     </div>
     <!--end::Title-->
 
     <!-- begin::Alert info-->
-    <ng-container *ngIf="!hasError">
+    <!-- <ng-container *ngIf="!hasError">
       <div class="mb-10 alert alert-custom alert-light-info alert-dismissible">
         <div class="alert-text">
           Use account <strong>{{ defaultAuth.email }}</strong> and password
           <strong>{{ defaultAuth.password }}</strong> to continue.
         </div>
       </div>
-    </ng-container>
+    </ng-container> -->
     <!-- end::Alert info-->
 
     <!-- begin::Alert error-->
     <ng-container *ngIf="hasError">
-      <div
-        class="mb-10 alert alert-custom alert-light-danger alert-dismissible"
-      >
-        <div class="alert-text">The login details are incorrect</div>
+      <div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
+        <div class="alert-text">{{ 'AUTH.VALIDATION.INVALID_LOGIN' | translate }}</div>
       </div>
     </ng-container>
     <!-- end::Alert error-->
 
     <!--begin::Form group-->
     <div class="form-group">
-      <label class="font-size-h6 font-weight-bolder text-dark">Email</label>
+      <label class="font-size-h6 font-weight-bolder text-dark">{{
+        'AUTH.INPUT.PHONE_NUMBER' | translate
+      }}</label>
       <input
         class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-        type="email"
-        name="email"
-        formControlName="email"
+        type="number"
+        name="phone-number"
+        formControlName="phoneNumber"
         autocomplete="off"
-        [ngClass]="{ 'is-invalid': loginForm.controls['email'].invalid }"
+        [ngClass]="{ 'is-invalid': loginForm.controls['phoneNumber'].invalid }"
       />
       <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'required',
-          message: 'Email is required',
-          control: loginForm.controls['email']
+          message: 'AUTH.VALIDATION.INVALID_PHONE_NUMBER' | translate,
+          control: loginForm.controls['phoneNumber']
         }"
-      ></ng-container>      
-      <ng-container
+      ></ng-container>
+      <!-- <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'email',
           message: 'Email is invalid',
           control: loginForm.controls['email']
         }"
-      ></ng-container>
-      <ng-container
+      ></ng-container> -->
+      <!-- <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'minLength',
           message: 'Email should have at least 3 symbols',
           control: loginForm.controls['email']
         }"
-      ></ng-container>
-      <ng-container
+      ></ng-container> -->
+      <!-- <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'maxLength',
           message: 'Email should have maximum 360 symbols',
           control: loginForm.controls['email']
         }"
-      ></ng-container>
+      ></ng-container> -->
     </div>
     <!--end::Form group-->
 
     <!--begin::Form group-->
     <div class="form-group">
       <div class="d-flex justify-content-between mt-n5">
-        <label class="font-size-h6 font-weight-bolder text-dark pt-5"
-          >Password</label
-        >
-        <a
+        <label class="font-size-h6 font-weight-bolder text-dark pt-5">{{
+          'AUTH.INPUT.PASSWORD' | translate
+        }}</label>
+        <!-- <a
           routerLink="/auth/forgot-password"
           class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5"
           id="kt_login_forgot"
         >
           Forgot Password ?
-        </a>
+        </a> -->
       </div>
 
       <input
@@ -119,26 +119,26 @@
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'required',
-          message: 'Password is required',
+          message: 'AUTH.VALIDATION.INVALID_PASSWORD' | translate,
           control: loginForm.controls['password']
         }"
       ></ng-container>
-      <ng-container
+      <!-- <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'minlength',
           message: 'Password should have at least 3 symbols',
           control: loginForm.controls['password']
         }"
-      ></ng-container>
-      <ng-container
+      ></ng-container> -->
+      <!-- <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'maxLength',
           message: 'Password should have maximum 100 symbols',
           control: loginForm.controls['password']
         }"
-      ></ng-container>
+      ></ng-container> -->
     </div>
     <!--end::Form group-->
 
@@ -150,10 +150,10 @@
         class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3"
         [disabled]="loginForm.invalid"
       >
-        Sign In
+        {{ 'AUTH.GENERAL.SIGNIN_BUTTON' | translate }}
       </button>
-
-      <button
+      <a href="#" class="text-primary ml-10 font-weight-bolder font-size-h5">Liên hệ quản trị viên</a>
+      <!-- <button
         type="button"
         class="btn btn-light-primary font-weight-bolder px-8 py-4 my-3 font-size-lg"
       >
@@ -161,7 +161,7 @@
           <img src="./assets/media/svg/social-icons/google.svg" />
         </span>
         Sign in with Google
-      </button>
+      </button> -->
 
       <ng-container *ngIf="isLoading$ | async">
         <span class="spinner spinner-primary ml-5"></span>
@@ -173,15 +173,8 @@
 </div>
 <!--end::Signin-->
 
-<ng-template
-  #formError
-  let-control="control"
-  let-message="message"
-  let-validation="validation"
->
-  <ng-container
-    *ngIf="control.hasError(validation) && (control.dirty || control.touched)"
-  >
+<ng-template #formError let-control="control" let-message="message" let-validation="validation">
+  <ng-container *ngIf="control.hasError(validation) && (control.dirty || control.touched)">
     <div class="fv-plugins-message-container">
       <div class="fv-help-block">
         {{ message }}
