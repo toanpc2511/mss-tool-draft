@@ -10,7 +10,7 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
   // KeenThemes mock, change it to:
   // defaultAuth = {
   //   email: '',
@@ -62,34 +62,22 @@ export class LoginComponent implements OnInit, OnDestroy {
           Validators.maxLength(320)
         ])
       ],
-      password: [
-        this.defaultAuth.password,
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(100)
-        ])
-      ]
+      password: [this.defaultAuth.password, Validators.compose([Validators.required])]
     });
   }
 
   submit() {
     this.loginForm.markAllAsTouched();
-    this.hasError = false;
-    const loginSubscr = this.authService
-      .login(this.f.email.value, this.f.password.value)
-      .pipe(first())
-      .subscribe((user) => {
-        if (user) {
-          this.router.navigate([this.returnUrl]);
-        } else {
-          this.hasError = true;
-        }
-      });
-    this.unsubscribe.push(loginSubscr);
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe.forEach((sb) => sb.unsubscribe());
+    if (this.loginForm.invalid) {
+      return;
+    }
+    const accountInfo = {
+      phone: this.f.phone.value,
+      password: this.f.password.value
+    };
+    this.authService.login(accountInfo).subscribe((res) => {
+      this.authService.setCurrentUser(res.data);
+      this.router.navigateByUrl('/dashboard');
+    });
   }
 }
