@@ -1,5 +1,27 @@
-@import "../../../assets/sass/pages/login/login-1.scss";
+// @import "../../../assets/sass/pages/login/login-1.scss";
 
-:host {
-  height: 100%;
+// :host {
+//   height: 100%;
+// }
+
+#kt_login_wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  .login-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    height: 100%;
+  }
+  .login-aside {
+    background-image: url('../../../assets/media/sun-oil/login/login-background.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 60%;
+    height: 100%;
+  }
 }

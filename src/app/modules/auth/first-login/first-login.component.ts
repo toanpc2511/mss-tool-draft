@@ -1,26 +1,23 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-first-login',
+  templateUrl: './first-login.component.html',
+  styleUrls: ['./first-login.component.scss']
 })
-export class LoginComponent implements OnInit {
-  defaultAuth = {
-    phoneNumber: '',
-    password: ''
-  };
-  loginForm: FormGroup;
+export class FirstLoginComponent implements OnInit {
+  firstLoginForm: FormGroup;
   hasError: boolean = true;
   returnUrl: string;
   isLoading$: Observable<boolean>;
-  isShowPasswordStatus = false;
+  isShowPasswordNew = false;
+  isShowPasswordConfirm = false;
 
   constructor(
     private fb: FormBuilder,
@@ -44,23 +41,13 @@ export class LoginComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   get f() {
-    return this.loginForm.controls;
+    return this.firstLoginForm.controls;
   }
 
   initForm() {
-    this.loginForm = this.fb.group({
-      phoneNumber: [
-        this.defaultAuth.phoneNumber,
-        Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(12)])
-      ],
-      password: [
-        this.defaultAuth.password,
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(100)
-        ])
-      ]
+    this.firstLoginForm = this.fb.group({
+      passwordNew: [null, Validators.compose([Validators.required])],
+      passwordConfirm: [null, Validators.compose([Validators.required])]
     });
   }
 
@@ -78,7 +65,11 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  changeShowPasswordStatus() {
-    this.isShowPasswordStatus = !this.isShowPasswordStatus;
+  changeShowPasswordNewStatus() {
+    this.isShowPasswordNew = !this.isShowPasswordNew;
+  }
+
+  changeShowPasswordConfirmStatus() {
+    this.isShowPasswordConfirm = !this.isShowPasswordConfirm;
   }
 }

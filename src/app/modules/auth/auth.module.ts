@@ -5,26 +5,21 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { LogoutComponent } from './logout/logout.component';
 import { AuthComponent } from './auth.component';
-import {TranslationModule} from '../i18n/translation.module';
+import { TranslationModule } from '../i18n/translation.module';
+import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { FirstLoginComponent } from './first-login/first-login.component';
 
 @NgModule({
-  declarations: [
-    LoginComponent,
-    RegistrationComponent,
-    ForgotPasswordComponent,
-    LogoutComponent,
-    AuthComponent,
-  ],
+  declarations: [LoginComponent, FirstLoginComponent, RegistrationComponent, AuthComponent],
   imports: [
     CommonModule,
     TranslationModule,
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
-  ]
+    HttpClientModule
+  ],
+  providers: [DestroyService]
 })
 export class AuthModule {}

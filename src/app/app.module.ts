@@ -9,7 +9,6 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthService } from './modules/auth/_services/auth.service';
 import { environment } from 'src/environments/environment';
 // Highlight JS
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
@@ -17,12 +16,17 @@ import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/sp
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
 import { ToastrModule } from 'ngx-toastr';
+import { AuthService } from './modules/auth/services/auth.service';
+import { DestroyService } from './shared/services/destroy.service';
 // #fake-end#
 
 function appInitializer(authService: AuthService) {
   return () => {
     return new Promise((resolve) => {
-      authService.getUserByToken().subscribe().add(resolve);
+      authService.currentUser$.subscribe((currentUser) => {
+        resolve(currentUser);
+      });
+      resolve(null);
     });
   };
 }
@@ -73,7 +77,8 @@ function appInitializer(authService: AuthService) {
           json: () => import('highlight.js/lib/languages/json')
         }
       }
-    }
+    },
+    DestroyService
   ],
   bootstrap: [AppComponent]
 })
