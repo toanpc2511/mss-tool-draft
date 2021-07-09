@@ -9,7 +9,7 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthService } from './modules/auth/_services/auth.service';
+import { AuthService } from './modules/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
 // Highlight JS
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
@@ -22,7 +22,10 @@ import { ToastrModule } from 'ngx-toastr';
 function appInitializer(authService: AuthService) {
   return () => {
     return new Promise((resolve) => {
-      authService.getUserByToken().subscribe().add(resolve);
+      authService.currentUser$.subscribe((currentUser) => {
+        resolve(currentUser);
+      });
+      resolve(null);
     });
   };
 }
