@@ -1,7 +1,7 @@
 <div class="login-wrapper">
   <form
     class="form"
-    [formGroup]="loginForm"
+    [formGroup]="firstLoginForm"
     novalidate="novalidate"
     id="kt_login_signin_form"
     (ngSubmit)="submit()"
@@ -18,53 +18,26 @@
       </div>
     </ng-container>
     <div class="form-group">
-      <label class="font-size-h6 font-weight-bolder text-dark">Số điện thoại</label>
-      <div class="position-relative">
-        <input
-          placeholder="Nhập số điện thoại"
-          class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-          type="number"
-          name="phone-number"
-          formControlName="phoneNumber"
-          autocomplete="off"
-        />
-        <i
-          class="flaticon2-user icon-lg-xl"
-          [class.text-danger]="
-            loginForm.controls['phoneNumber'].invalid &&
-            (loginForm.controls['phoneNumber'].dirty || loginForm.controls['phoneNumber'].touched)
-          "
-        ></i>
-      </div>
-      <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'required',
-          message: 'Số điện thoại không hợp lệ',
-          control: loginForm.controls['phoneNumber']
-        }"
-      ></ng-container>
-    </div>
-    <div class="form-group">
       <div class="d-flex justify-content-between mt-n5">
-        <label class="font-size-h6 font-weight-bolder text-dark pt-5">Mật khẩu</label>
+        <label class="font-size-h6 font-weight-bolder text-dark pt-5">Mật khẩu mới</label>
       </div>
       <div class="position-relative">
         <input
-          placeholder="Nhập mật khẩu"
+          placeholder="Nhập mật khẩu mới"
           class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-          [type]="isShowPasswordStatus ? 'text' : 'password'"
+          [type]="isShowPasswordNew ? 'text' : 'password'"
           name="password"
           autocomplete="off"
-          formControlName="password"
+          formControlName="passwordNew"
         />
         <i
-          (click)="changeShowPasswordStatus()"
+          (click)="changeShowPasswordNewStatus()"
           class="flaticon-eye icon-lg-xl"
-          [class.text-body]="isShowPasswordStatus"
+          [class.text-body]="isShowPasswordNew"
           [class.text-danger]="
-            loginForm.controls['password'].invalid &&
-            (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)
+            firstLoginForm.controls['passwordNew'].invalid &&
+            (firstLoginForm.controls['passwordNew'].dirty ||
+              firstLoginForm.controls['passwordNew'].touched)
           "
         ></i>
       </div>
@@ -73,7 +46,40 @@
         [ngTemplateOutletContext]="{
           validation: 'required',
           message: 'Mật khẩu không hợp lệ',
-          control: loginForm.controls['password']
+          control: firstLoginForm.controls['passwordNew']
+        }"
+      ></ng-container>
+    </div>
+    <div class="form-group">
+      <div class="d-flex justify-content-between mt-n5">
+        <label class="font-size-h6 font-weight-bolder text-dark pt-5">Nhập lại mật khẩu</label>
+      </div>
+      <div class="position-relative">
+        <input
+          placeholder="Nhập lại mật khẩu mới"
+          class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
+          [type]="isShowPasswordConfirm ? 'text' : 'password'"
+          name="password"
+          autocomplete="off"
+          formControlName="passwordConfirm"
+        />
+        <i
+          (click)="changeShowPasswordConfirmStatus()"
+          class="flaticon-eye icon-lg-xl"
+          [class.text-body]="isShowPasswordConfirm"
+          [class.text-danger]="
+            firstLoginForm.controls['passwordConfirm'].invalid &&
+            (firstLoginForm.controls['passwordConfirm'].dirty ||
+              firstLoginForm.controls['passwordConfirm'].touched)
+          "
+        ></i>
+      </div>
+      <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'required',
+          message: 'Xác nhận mật khẩu không hợp lệ',
+          control: firstLoginForm.controls['passwordConfirm']
         }"
       ></ng-container>
     </div>

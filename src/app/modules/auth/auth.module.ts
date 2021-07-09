@@ -8,9 +8,10 @@ import { RegistrationComponent } from './registration/registration.component';
 import { AuthComponent } from './auth.component';
 import { TranslationModule } from '../i18n/translation.module';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { FirstLoginComponent } from './first-login/first-login.component';
 
 @NgModule({
-  declarations: [LoginComponent, RegistrationComponent, AuthComponent],
+  declarations: [LoginComponent, FirstLoginComponent, RegistrationComponent, AuthComponent],
   imports: [
     CommonModule,
     TranslationModule,

@@ -15,31 +15,10 @@ export const locale = {
         DASHBOARD: 'Bảng điều khiển',
       },
       AUTH: {
-        GENERAL: {
-          WELCOME: 'Hệ thống quản trị Sun Oil',
-          OR: 'Hoặc',
-          SIGNIN_BUTTON: 'Đăng nhập',
-          NO_ACCOUNT: 'Chưa có tài khoản?',
-          SIGNUP_BUTTON: 'Đăng ký',
-          FORGOT_BUTTON: 'Quên mật khẩu',
-          BACK_BUTTON: 'Quay lại',
-          PRIVACY: 'Điều khoản',
-          LEGAL: 'Legal',
-          CONTACT: 'Liên hệ',
-        },
         LOGIN: {
-          TITLE: 'Đăng nhập hệ thống',
+          TITLE: 'Đăng nhập',
           BUTTON: 'Đăng nhập',
-        },
-        FORGOT: {
-          TITLE: 'Forgotten Password?',
-          DESC: 'Enter your email to reset your password',
-          SUCCESS: 'Your account has been successfully reset.'
-        },
-        REGISTER: {
-          TITLE: 'Sign Up',
-          DESC: 'Enter your details to create your account',
-          SUCCESS: 'Your account has been successfuly registered.'
+          
         },
         INPUT: {
           PHONE_NUMBER: 'Số điện thoại',
