@@ -58,7 +58,7 @@ deploy_develop:
     - develop
   stage: deploy
   environment:
-    name: master
+    name: develop
     url: https://sun-oil-admin-staging.web.app
   image: andreysenov/firebase-tools:9.13.1-node12
   script:
