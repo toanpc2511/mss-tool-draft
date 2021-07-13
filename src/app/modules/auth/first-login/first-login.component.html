@@ -14,7 +14,7 @@
     </div>
     <ng-container *ngIf="hasError">
       <div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
-        <div class="alert-text font-weight-bold">Tên đăng nhập hoặc mật khẩu không đúng</div>
+        <div class="alert-text font-weight-bold">Thay đổi mật khẩu thất bại</div>
       </div>
     </ng-container>
     <div class="form-group">
@@ -29,11 +29,15 @@
           name="password"
           autocomplete="off"
           formControlName="passwordNew"
+          (input)="onInputPasswordNew($event)"
+          minlength="8"
+          maxlength="32"
         />
         <i
           (click)="changeShowPasswordNewStatus()"
-          class="flaticon-eye icon-lg-xl"
-          [class.text-body]="isShowPasswordNew"
+          class="icon-lg-xl fa"
+          [class.fa-eye]="!isShowPasswordNew"
+          [class.fa-eye-slash]="isShowPasswordNew"
           [class.text-danger]="
             firstLoginForm.controls['passwordNew'].invalid &&
             (firstLoginForm.controls['passwordNew'].dirty ||
@@ -45,7 +49,15 @@
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'required',
-          message: 'Mật khẩu không hợp lệ',
+          message: 'Mật khẩu không được để trống',
+          control: firstLoginForm.controls['passwordNew']
+        }"
+      ></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'minlength',
+          message: 'Mật khẩu không được ngắn hơn 8 ký tự',
           control: firstLoginForm.controls['passwordNew']
         }"
       ></ng-container>
@@ -62,11 +74,14 @@
           name="password"
           autocomplete="off"
           formControlName="passwordConfirm"
+          (input)="onInputPasswordConfirm($event)"
+          maxlength="32"
         />
         <i
           (click)="changeShowPasswordConfirmStatus()"
-          class="flaticon-eye icon-lg-xl"
-          [class.text-body]="isShowPasswordConfirm"
+          class="icon-lg-xl fa"
+          [class.fa-eye]="!isShowPasswordConfirm"
+          [class.fa-eye-slash]="isShowPasswordConfirm"
           [class.text-danger]="
             firstLoginForm.controls['passwordConfirm'].invalid &&
             (firstLoginForm.controls['passwordConfirm'].dirty ||
@@ -78,7 +93,23 @@
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'required',
-          message: 'Xác nhận mật khẩu không hợp lệ',
+          message: 'Xác nhận mật khẩu không được để trống',
+          control: firstLoginForm.controls['passwordConfirm']
+        }"
+      ></ng-container>
+      <!-- <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'minlength',
+          message: 'Mật khẩu không được ngắn hơn 8 ký tự',
+          control: firstLoginForm.controls['passwordConfirm']
+        }"
+      ></ng-container> -->
+      <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'passwordConfirmNotMatch',
+          message: 'Xác nhận mật khẩu không đúng',
           control: firstLoginForm.controls['passwordConfirm']
         }"
       ></ng-container>
@@ -89,7 +120,7 @@
         id="kt_login_signin_submit"
         class="btn btn-dark font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3"
       >
-        Đăng nhập
+        Xác nhận
       </button>
 
       <ng-container *ngIf="isLoading$ | async">

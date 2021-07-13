@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { DataResponse } from '../models/data-response.model';
@@ -8,6 +8,7 @@ import { DataResponse } from '../models/data-response.model';
 @Injectable({ providedIn: 'root' })
 export class HttpService {
   apiUrl = environment.apiUrl;
+
   constructor(private httpClient: HttpClient) {}
 
   get<T>(

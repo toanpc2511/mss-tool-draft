@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -29,18 +30,17 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private destroy$: DestroyService,
-    private http: HttpClient
+    private toastr: ToastrService
   ) {
     this.isLoading$ = this.authService.isLoading$;
     // redirect to home if already logged in
-    if (this.authService.currentUserValue) {
+    if (this.authService.getCurrentUserValue()) {
       this.router.navigate(['/']);
     }
   }
 
   ngOnInit(): void {
     this.initForm();
-    // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'.toString()] || '/';
   }
 
@@ -52,15 +52,25 @@ export class LoginComponent implements OnInit {
   }
 
   submit() {
+    this.loginForm.markAllAsTouched();
+    if (!this.loginForm.controls.username.value || !this.loginForm.controls.password.value) {
+      return;
+    }
     this.hasError = false;
     this.authService
       .login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
-      .subscribe((user) => {
-        console.log(user);
-
-        if (user) {
-          this.router.navigate([this.returnUrl]);
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res.data) {
+          this.toastr.success('Đăng nhập thành công');
+          this.authService.setCurrentUserValue(res.data);
+          if (res.data.changePassword) {
+            this.router.navigate([this.returnUrl]);
+          } else {
+            this.router.navigate(['/auth/first-login']);
+          }
         } else {
+          this.toastr.error('Đăng nhập thất bại');
           this.hasError = true;
         }
       });
@@ -68,5 +78,15 @@ export class LoginComponent implements OnInit {
 
   changeShowPasswordStatus() {
     this.isShowPasswordStatus = !this.isShowPasswordStatus;
+  }
+
+  onInputUsername($event: Event) {
+    const element = $event.target as HTMLInputElement;
+    element.value = element.value.replace(/ /g, '');
+  }
+
+  onInputPassword($event: Event) {
+    const element = $event.target as HTMLInputElement;
+    element.value = element.value.replace(/ /g, '');
   }
 }

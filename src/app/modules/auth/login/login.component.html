@@ -14,7 +14,9 @@
     </div>
     <ng-container *ngIf="hasError">
       <div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
-        <div class="alert-text font-weight-bold">Tên đăng nhập hoặc mật khẩu không đúng</div>
+        <div class="alert-text font-weight-bold">
+          Tên đăng nhập hoặc mật khẩu không đúng. Vui lòng thao tác lại
+        </div>
       </div>
     </ng-container>
     <div class="form-group">
@@ -27,14 +29,15 @@
           name="username"
           formControlName="username"
           autocomplete="off"
+          (input)="onInputUsername($event)"
         />
-        <i
-          class="flaticon2-user icon-lg-xl"
+        <!-- <i
+          class="fa fa-user icon-lg-xl"
           [class.text-danger]="
             loginForm.controls['username'].invalid &&
             (loginForm.controls['username'].dirty || loginForm.controls['username'].touched)
           "
-        ></i>
+        ></i> -->
       </div>
       <ng-container
         [ngTemplateOutlet]="formError"
@@ -60,11 +63,14 @@
           name="password"
           autocomplete="off"
           formControlName="password"
+          (input)="onInputPassword($event)"
+          maxlength="32"
         />
         <i
           (click)="changeShowPasswordStatus()"
-          class="flaticon-eye icon-lg-xl"
-          [class.text-body]="isShowPasswordStatus"
+          class="icon-lg-xl fa"
+          [class.fa-eye]="!isShowPasswordStatus"
+          [class.fa-eye-slash]="isShowPasswordStatus"
           [class.text-danger]="
             loginForm.controls['password'].invalid &&
             (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)

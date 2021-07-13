@@ -6,7 +6,7 @@ import { storageUtils } from 'src/app/shared/helpers/storage';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { HttpClient } from '@angular/common/http';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
-import { map } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { HttpService } from 'src/app/shared/services/http.service';
 export enum UserStatus {
   ACTIVE = 'ACTIVE',
@@ -15,12 +15,16 @@ export enum UserStatus {
   LOCK = 'LOCK'
 }
 export interface UserModel {
-  accountId: string;
-  createdAt: Date;
-  role: string;
-  status: UserStatus;
-  updatedAt: Date;
-  username: string;
+  accountAuth: {
+    accountId: string;
+    createdAt: Date;
+    role: string;
+    status: UserStatus;
+    updatedAt: Date;
+    username: string;
+  };
+  changePassword: boolean;
+  token: string;
 }
 
 @Injectable({
@@ -28,18 +32,10 @@ export interface UserModel {
 })
 export class AuthService {
   apiUrl = environment.apiUrl;
+  private currentUserSubject: BehaviorSubject<UserModel>;
   currentUser$: Observable<UserModel>;
+  private isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
-  currentUserSubject: BehaviorSubject<UserModel>;
-  isLoadingSubject: BehaviorSubject<boolean>;
-
-  get currentUserValue(): UserModel {
-    return this.currentUserSubject.value;
-  }
-
-  set currentUserValue(user: UserModel) {
-    this.currentUserSubject.next(user);
-  }
 
   constructor(private http: HttpService, private router: Router, private destroy$: DestroyService) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -48,18 +44,50 @@ export class AuthService {
     this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 
+  getLoggedUser(): Observable<UserModel> {
+    const user = storageUtils.get('currentUser') as UserModel;
+    if (!user?.token) {
+      this.logout();
+    }
+    this.setCurrentUserValue(user);
+    return of(user);
+  }
+
+  setIsLoadingValue(isLoading: boolean) {
+    this.isLoadingSubject.next(isLoading);
+  }
+
+  getIsLoadingValue() {
+    return this.isLoadingSubject.value;
+  }
+
+  getCurrentUserValue(): UserModel {
+    return this.currentUserSubject.value;
+  }
+
+  setCurrentUserValue(user: UserModel) {
+    storageUtils.set('currentUser', user);
+    this.currentUserSubject.next(user);
+  }
+
   login(username: string, password: string) {
-    return this.http.post<DataResponse<UserModel>>('accounts/login', {
-      userName: username,
-      password
-    });
+    this.setIsLoadingValue(true);
+    return this.http
+      .post<UserModel>('accounts/login', {
+        username,
+        password
+      })
+      .pipe(finalize(() => this.setIsLoadingValue(false)));
   }
 
   changePasswordFirstLogin(accountId: string, password: string) {
-    return this.http.post<DataResponse<any>>('accounts/passwords/first', {
-      id: accountId,
-      password
-    });
+    this.setIsLoadingValue(true);
+    return this.http
+      .post<UserModel>('accounts/passwords/first', {
+        id: accountId,
+        password
+      })
+      .pipe(finalize(() => this.setIsLoadingValue(false)));
   }
 
   logout() {

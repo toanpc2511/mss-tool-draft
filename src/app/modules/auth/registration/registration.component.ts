@@ -21,7 +21,7 @@ export class RegistrationComponent {
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.isLoading$ = this.authService.isLoading$;
     // redirect to home if already logged in
-    if (this.authService.currentUserValue) {
+    if (this.authService.getCurrentUserValue()) {
       this.router.navigate(['/']);
     }
   }
