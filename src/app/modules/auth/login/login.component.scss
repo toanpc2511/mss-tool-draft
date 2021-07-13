@@ -19,6 +19,9 @@
 
 .login-wrapper {
   form {
+    input {
+      padding-right: 50px !important;
+    }
     i {
       position: absolute;
       top: 25%;

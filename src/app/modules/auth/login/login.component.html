@@ -18,21 +18,21 @@
       </div>
     </ng-container>
     <div class="form-group">
-      <label class="font-size-h6 font-weight-bolder text-dark">Số điện thoại</label>
+      <label class="font-size-h6 font-weight-bolder text-dark">Tên đăng nhập</label>
       <div class="position-relative">
         <input
-          placeholder="Nhập số điện thoại"
+          placeholder="Nhập tên đăng nhập"
           class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-          type="number"
-          name="phone-number"
-          formControlName="phoneNumber"
+          type="text"
+          name="username"
+          formControlName="username"
           autocomplete="off"
         />
         <i
           class="flaticon2-user icon-lg-xl"
           [class.text-danger]="
-            loginForm.controls['phoneNumber'].invalid &&
-            (loginForm.controls['phoneNumber'].dirty || loginForm.controls['phoneNumber'].touched)
+            loginForm.controls['username'].invalid &&
+            (loginForm.controls['username'].dirty || loginForm.controls['username'].touched)
           "
         ></i>
       </div>
@@ -40,14 +40,17 @@
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'required',
-          message: 'Số điện thoại không hợp lệ',
-          control: loginForm.controls['phoneNumber']
+          message: 'Tên đăng nhập không hợp lệ',
+          control: loginForm.controls['username']
         }"
       ></ng-container>
     </div>
     <div class="form-group">
       <div class="d-flex justify-content-between mt-n5">
         <label class="font-size-h6 font-weight-bolder text-dark pt-5">Mật khẩu</label>
+        <label class="font-size-h6 font-weight-bolder text-primary pt-5 cursor-pointer"
+          >Quên mật khẩu</label
+        >
       </div>
       <div class="position-relative">
         <input

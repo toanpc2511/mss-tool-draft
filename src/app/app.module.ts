@@ -1,7 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,6 +18,8 @@ import { FakeAPIService } from './_fake/fake-api.service';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthService } from './modules/auth/services/auth.service';
 import { DestroyService } from './shared/services/destroy.service';
+import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 // #fake-end#
 
 function appInitializer(authService: AuthService) {
@@ -77,6 +79,16 @@ function appInitializer(authService: AuthService) {
           json: () => import('highlight.js/lib/languages/json')
         }
       }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
     },
     DestroyService
   ],
