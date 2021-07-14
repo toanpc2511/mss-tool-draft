@@ -20,9 +20,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 400) {
-          this.toastr.error('Bad request!');
+          console.error('Bad request!');
         }
-        
         if (err.status >= 500) {
           this.toastr.error('Hệ thống đang bận! Vui lòng thử lại sau');
         }

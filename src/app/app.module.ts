@@ -29,7 +29,7 @@ function appInitializer(authService: AuthService, router: Router) {
     return new Promise((resolve) => {
       authService.getLoggedUser().subscribe(
         (currentUser) => {
-          if (!currentUser?.changePassword) {
+          if (currentUser?.changePassword) {
             router.navigate(['/auth/first-login']);
           }
           resolve(true);

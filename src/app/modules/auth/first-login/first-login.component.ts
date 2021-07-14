@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
@@ -29,6 +29,9 @@ export class FirstLoginComponent implements OnInit {
     const currentUser = this.authService.getCurrentUserValue();
     if (!currentUser?.accountAuth?.accountId) {
       this.authService.logout();
+    }
+    if (!currentUser?.changePassword) {
+      this.router.navigate(['/']);
     }
   }
 
@@ -58,7 +61,7 @@ export class FirstLoginComponent implements OnInit {
         this.firstLoginForm.controls.passwordNew.value
       )
       .subscribe((res) => {
-        if (res.data.changePassword) {
+        if (!res.data?.changePassword) {
           this.toastr.success('Đổi mật khẩu thành công');
           this.router.navigate(['/']);
         } else {
