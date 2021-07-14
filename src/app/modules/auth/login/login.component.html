@@ -31,19 +31,12 @@
           autocomplete="off"
           (input)="onInputUsername($event)"
         />
-        <!-- <i
-          class="fa fa-user icon-lg-xl"
-          [class.text-danger]="
-            loginForm.controls['username'].invalid &&
-            (loginForm.controls['username'].dirty || loginForm.controls['username'].touched)
-          "
-        ></i> -->
       </div>
       <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'required',
-          message: 'Tên đăng nhập không hợp lệ',
+          message: 'Tên đăng nhập không được để trống',
           control: loginForm.controls['username']
         }"
       ></ng-container>
@@ -81,7 +74,7 @@
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'required',
-          message: 'Mật khẩu không hợp lệ',
+          message: 'Mật khẩu không được để trống',
           control: loginForm.controls['password']
         }"
       ></ng-container>
