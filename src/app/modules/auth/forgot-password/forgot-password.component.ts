@@ -1,19 +1,18 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
-import { first, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit {
   defaultAuth = {
     username: '',
     password: ''
@@ -74,9 +73,6 @@ export class LoginComponent implements OnInit {
         (error) => {
           this.toastr.error('Đăng nhập thất bại');
           this.hasError = true;
-          setTimeout(() => {
-            this.hasError = false;
-          }, 2500);
         }
       );
   }
@@ -93,9 +89,5 @@ export class LoginComponent implements OnInit {
   onInputPassword($event: Event) {
     const element = $event.target as HTMLInputElement;
     element.value = element.value.replace(/ /g, '');
-  }
-
-  gotoForgotPassword() {
-    this.router.navigate(['/auth/forgot-password']);
   }
 }

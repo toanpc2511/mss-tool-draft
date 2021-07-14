@@ -7,9 +7,9 @@ import { LoginComponent } from './login/login.component';
 import { AuthComponent } from './auth.component';
 import { TranslationModule } from '../i18n/translation.module';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 @NgModule({
-  declarations: [LoginComponent, AuthComponent],
+  declarations: [LoginComponent, AuthComponent, ForgotPasswordComponent],
   imports: [
     CommonModule,
     TranslationModule,

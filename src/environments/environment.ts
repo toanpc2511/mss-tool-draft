@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   appVersion: 'v726demo1',
   USERDATA_KEY: 'authf649fc9a5f55',
-  isMockEnabled: true,
-  apiUrl: 'http://192.168.30.130:1010'
+  isMockEnabled: false,
+  apiUrl: 'http://sunoil-driver.firecloud.live'
 };
 
 /*

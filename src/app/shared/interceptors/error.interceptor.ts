@@ -10,30 +10,29 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private translateService: TranslateService) {}
+  constructor(private router: Router, private toastr: ToastrService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 400) {
-          alert('Bad request');
+          console.error('Bad request', err.error);
         }
-
-        if (err.status === 500) {
-          alert('');
+        if (err.status >= 500) {
+          this.toastr.error('Hệ thống đang bận! Vui lòng thử lại sau');
         }
 
         if (err.status === 404) {
-          Swal.fire( this.translateService.instant('NOT_LOGGED'));
+          Swal.fire('Not found!');
           this.router.navigate(['/']);
         }
 
         if (err.status === 401) {
-          this.router.navigate(['/']);
+          this.router.navigate(['/auth/login']);
         }
 
         const error = err.error.error;

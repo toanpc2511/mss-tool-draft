@@ -18,7 +18,7 @@ export class UserOffcanvasComponent implements OnInit {
     this.extrasUserOffcanvasDirection = `offcanvas-${this.layout.getProp(
       'extras.user.offcanvas.direction'
     )}`;
-    this.user$ = this.auth.currentUserSubject.asObservable();
+    this.user$ = this.auth.currentUser$;
   }
 
   logout() {

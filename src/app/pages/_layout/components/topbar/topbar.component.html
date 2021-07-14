@@ -185,7 +185,7 @@
 
 <ng-container *ngIf="extrasUserDisplay">
   <ng-container *ngIf="extrasUserLayout === 'offcanvas'">
-    <ng-container *ngIf="user$ | async as _user">
+    <ng-container *ngIf="user$ | async as user">
       <!--begin::User-->
       <div class="topbar-item">
         <div
@@ -204,10 +204,12 @@
             >Hi,</span
           >
           <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{
-            ''
+            user.driverAuth.profile.name
           }}</span>
           <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
-            <span class="symbol-label font-size-h5 font-weight-bold">{{ '' }}</span>
+            <span class="symbol-label font-size-h5 font-weight-bold">{{
+              user.driverAuth.profile.name | firstLetter
+            }}</span>
           </span>
         </div>
       </div>
@@ -217,7 +219,7 @@
 
   <ng-container *ngIf="extrasUserLayout === 'dropdown'">
     <!--begin::User-->
-    <ng-container *ngIf="user$ | async as _user">
+    <ng-container *ngIf="user$ | async as user">
       <div class="dropdown" ngbDropdown placement="bottom-right">
         <div class="topbar-item" data-toggle="dropdown" data-offset="0px,0px" ngbDropdownToggle>
           <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2">
@@ -225,10 +227,12 @@
               >Hi,</span
             >
             <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{
-              ''
+              user.driverAuth.profile.name
             }}</span>
             <span class="symbol symbol-35 symbol-light-success">
-              <span class="symbol-label font-size-h5 font-weight-bold">{{ '' }}</span>
+              <span class="symbol-label font-size-h5 font-weight-bold">{{
+                user.driverAuth.profile.name | firstLetter
+              }}</span>
             </span>
           </div>
         </div>
