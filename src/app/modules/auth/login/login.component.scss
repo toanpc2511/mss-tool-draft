@@ -39,4 +39,14 @@
       max-height: 100vh;
     }
   }
+
+  .eye-icon {
+    top: 22.5px;
+    right: 20px;
+    cursor: pointer;
+
+    i {
+      font-size: 20px;
+    }
+  }
 }

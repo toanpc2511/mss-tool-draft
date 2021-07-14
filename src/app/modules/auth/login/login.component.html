@@ -51,11 +51,8 @@
             formControlName="phone"
             placeholder="Nhập số điện thoại"
             autocomplete="off"
-            [ngClass]="{
-              'is-invalid':
-                loginForm.controls['phone'].invalid && loginForm.controls['phone'].touched
-            }"
           />
+
           <ng-container
             [ngTemplateOutlet]="formError"
             [ngTemplateOutletContext]="{
@@ -92,21 +89,20 @@
               class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5"
               id="kt_login_forgot"
             >
-              Quên mật khẩu ?
+              Quên mật khẩu
             </a>
           </div>
-          <input
-            class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-            type="password"
-            name="password"
-            autocomplete="off"
-            placeholder="Nhập mật khẩu"
-            formControlName="password"
-            [ngClass]="{
-              'is-invalid':
-                loginForm.controls['password'].invalid && loginForm.controls['password'].touched
-            }"
-          />
+          <div class="position-relative">
+            <input
+              class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
+              type="password"
+              name="password"
+              autocomplete="off"
+              placeholder="Nhập mật khẩu"
+              formControlName="password"
+            />
+            <span class="navi-icon position-absolute eye-icon"><i class="fa fa-eye"></i></span>
+          </div>
           <ng-container
             [ngTemplateOutlet]="formError"
             [ngTemplateOutletContext]="{
