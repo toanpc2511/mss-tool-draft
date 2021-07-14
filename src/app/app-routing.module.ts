@@ -8,11 +8,6 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule)
   },
   {
-    path: 'quan-ly-tram-xang',
-    loadChildren: () =>
-      import('./pages/gas-station/gas-station.module').then((m) => m.GasStationModule)
-  },
-  {
     path: 'error',
     loadChildren: () => import('./modules/errors/errors.module').then((m) => m.ErrorsModule)
   },

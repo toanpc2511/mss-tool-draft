@@ -11,8 +11,8 @@ export const DynamicAsideMenuConfig = {
     },
     {
       title: 'Quản lý trạm xăng',
-      root: true,
       icon: 'fa-gas-pump',
+      root: true,
       page: '/tram-xang',
       bullet: 'dot',
       svg: './assets/media/svg/icons/Design/Layers.svg',
@@ -20,7 +20,7 @@ export const DynamicAsideMenuConfig = {
         {
           title: 'Danh sách trạm',
           bullet: 'dot',
-          page: '/danh-sach-tram'
+          page: 'tram-xang/danh-sach'
         }
       ]
     }

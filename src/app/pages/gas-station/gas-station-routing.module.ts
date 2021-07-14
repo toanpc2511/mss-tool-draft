@@ -1,10 +1,15 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ListStationComponent } from './list-station/list-station.component';
 
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'danh-sach',
+    pathMatch: 'full'
+  },
+  {
+    path: 'danh-sach',
     component: ListStationComponent
   }
 ];
