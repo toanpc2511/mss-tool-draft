@@ -14,40 +14,46 @@
     </div>
     <ng-container *ngIf="hasError">
       <div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
-        <div class="alert-text font-weight-bold">Tên đăng nhập hoặc mật khẩu không đúng</div>
+        <div class="alert-text font-weight-bold">
+          Tên đăng nhập hoặc mật khẩu không đúng. Vui lòng thao tác lại
+        </div>
       </div>
     </ng-container>
     <div class="form-group">
-      <label class="font-size-h6 font-weight-bolder text-dark">Số điện thoại</label>
+      <label class="font-size-h6 font-weight-bolder text-dark">Tên đăng nhập</label>
       <div class="position-relative">
         <input
-          placeholder="Nhập số điện thoại"
+          placeholder="Nhập tên đăng nhập"
           class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-          type="number"
-          name="phone-number"
-          formControlName="phoneNumber"
+          type="text"
+          name="username"
+          formControlName="username"
           autocomplete="off"
+          (input)="onInputUsername($event)"
         />
-        <i
-          class="flaticon2-user icon-lg-xl"
+        <!-- <i
+          class="fa fa-user icon-lg-xl"
           [class.text-danger]="
-            loginForm.controls['phoneNumber'].invalid &&
-            (loginForm.controls['phoneNumber'].dirty || loginForm.controls['phoneNumber'].touched)
+            loginForm.controls['username'].invalid &&
+            (loginForm.controls['username'].dirty || loginForm.controls['username'].touched)
           "
-        ></i>
+        ></i> -->
       </div>
       <ng-container
         [ngTemplateOutlet]="formError"
         [ngTemplateOutletContext]="{
           validation: 'required',
-          message: 'Số điện thoại không hợp lệ',
-          control: loginForm.controls['phoneNumber']
+          message: 'Tên đăng nhập không hợp lệ',
+          control: loginForm.controls['username']
         }"
       ></ng-container>
     </div>
     <div class="form-group">
       <div class="d-flex justify-content-between mt-n5">
         <label class="font-size-h6 font-weight-bolder text-dark pt-5">Mật khẩu</label>
+        <label class="font-size-h6 font-weight-bolder text-primary pt-5 cursor-pointer"
+          >Quên mật khẩu</label
+        >
       </div>
       <div class="position-relative">
         <input
@@ -57,11 +63,14 @@
           name="password"
           autocomplete="off"
           formControlName="password"
+          (input)="onInputPassword($event)"
+          maxlength="32"
         />
         <i
           (click)="changeShowPasswordStatus()"
-          class="flaticon-eye icon-lg-xl"
-          [class.text-body]="isShowPasswordStatus"
+          class="icon-lg-xl fa"
+          [class.fa-eye]="!isShowPasswordStatus"
+          [class.fa-eye-slash]="isShowPasswordStatus"
           [class.text-danger]="
             loginForm.controls['password'].invalid &&
             (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)

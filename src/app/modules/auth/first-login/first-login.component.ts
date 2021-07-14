@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-first-login',
@@ -13,8 +13,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 })
 export class FirstLoginComponent implements OnInit {
   firstLoginForm: FormGroup;
-  hasError: boolean = true;
-  returnUrl: string;
+  hasError: boolean = false;
   isLoading$: Observable<boolean>;
   isShowPasswordNew = false;
   isShowPasswordConfirm = false;
@@ -22,26 +21,19 @@ export class FirstLoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private route: ActivatedRoute,
     private router: Router,
-    private destroy$: DestroyService
+    private destroy$: DestroyService,
+    private toastr: ToastrService
   ) {
     this.isLoading$ = this.authService.isLoading$;
-    // redirect to home if already logged in
-    if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
+    const currentUser = this.authService.getCurrentUserValue();
+    if (!currentUser?.accountAuth?.accountId) {
+      this.authService.logout();
     }
   }
 
   ngOnInit(): void {
     this.initForm();
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'.toString()] || '/';
-  }
-
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.firstLoginForm.controls;
   }
 
   initForm() {
@@ -52,14 +44,25 @@ export class FirstLoginComponent implements OnInit {
   }
 
   submit() {
+    this.firstLoginForm.markAllAsTouched();
+    if (
+      !this.firstLoginForm.controls.passwordNew.value ||
+      !this.firstLoginForm.controls.passwordConfirm.value
+    ) {
+      return;
+    }
     this.hasError = false;
     this.authService
-      .login(this.f.phoneNumber.value, this.f.password.value)
-      .pipe(first())
-      .subscribe((user) => {
-        if (user) {
-          this.router.navigate([this.returnUrl]);
+      .changePasswordFirstLogin(
+        this.authService.getCurrentUserValue().accountAuth.accountId,
+        this.firstLoginForm.controls.passwordNew.value
+      )
+      .subscribe((res) => {
+        if (res.data.changePassword) {
+          this.toastr.success('Đổi mật khẩu thành công');
+          this.router.navigate(['/']);
         } else {
+          this.toastr.error('Đổi mật khẩu thất bại');
           this.hasError = true;
         }
       });
@@ -71,5 +74,27 @@ export class FirstLoginComponent implements OnInit {
 
   changeShowPasswordConfirmStatus() {
     this.isShowPasswordConfirm = !this.isShowPasswordConfirm;
+  }
+
+  onInputPasswordNew($event: Event) {
+    const element = $event.target as HTMLInputElement;
+    element.value = element.value.replace(/ /g, '');
+    if (element.value !== this.firstLoginForm.controls.passwordConfirm.value) {
+      this.firstLoginForm.controls.passwordConfirm.setErrors({ passwordConfirmNotMatch: true });
+    } else {
+      this.firstLoginForm.controls.passwordConfirm.setErrors({ passwordConfirmNotMatch: null });
+      this.firstLoginForm.controls.passwordConfirm.updateValueAndValidity();
+    }
+  }
+
+  onInputPasswordConfirm($event: Event) {
+    const element = $event.target as HTMLInputElement;
+    element.value = element.value.replace(/ /g, '');
+    if (element.value !== this.firstLoginForm.controls.passwordNew.value) {
+      this.firstLoginForm.controls.passwordConfirm.setErrors({ passwordConfirmNotMatch: true });
+    } else {
+      this.firstLoginForm.controls.passwordConfirm.setErrors({ passwordConfirmNotMatch: null });
+      this.firstLoginForm.controls.passwordConfirm.updateValueAndValidity();
+    }
   }
 }

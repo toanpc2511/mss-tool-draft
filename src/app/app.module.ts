@@ -1,7 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,15 +18,24 @@ import { FakeAPIService } from './_fake/fake-api.service';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthService } from './modules/auth/services/auth.service';
 import { DestroyService } from './shared/services/destroy.service';
+import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 // #fake-end#
 
-function appInitializer(authService: AuthService) {
+function appInitializer(authService: AuthService, router: Router) {
   return () => {
     return new Promise((resolve) => {
-      authService.currentUser$.subscribe((currentUser) => {
-        resolve(currentUser);
-      });
-      resolve(null);
+      authService.getLoggedUser().subscribe(
+        (currentUser) => {
+          if (!currentUser?.changePassword) {
+            router.navigate(['/auth/first-login']);
+          }
+          resolve(true);
+        },
+        finalize(() => resolve(false))
+      );
     });
   };
 }
@@ -64,7 +73,7 @@ function appInitializer(authService: AuthService) {
       provide: APP_INITIALIZER,
       useFactory: appInitializer,
       multi: true,
-      deps: [AuthService]
+      deps: [AuthService, Router]
     },
     {
       provide: HIGHLIGHT_OPTIONS,
@@ -77,6 +86,16 @@ function appInitializer(authService: AuthService) {
           json: () => import('highlight.js/lib/languages/json')
         }
       }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
     },
     DestroyService
   ],
