@@ -80,7 +80,7 @@ export class AuthService {
     this.setIsLoadingValue(true);
     return this.http
       .post<UserModel>('accounts/login', {
-        username,
+        phone: username,
         password
       })
       .pipe(finalize(() => this.setIsLoadingValue(false)));
