@@ -1,12 +1,11 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
-import { first, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -30,10 +29,10 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private destroy$: DestroyService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) {
     this.isLoading$ = this.authService.isLoading$;
-    // redirect to home if already logged in
     if (this.authService.getCurrentUserValue()) {
       this.router.navigate(['/']);
     }
@@ -69,6 +68,10 @@ export class LoginComponent implements OnInit {
           } else {
             this.toastr.error('Đăng nhập thất bại');
             this.hasError = true;
+            setTimeout(() => {
+              this.hasError = false;
+              this.cdr.detectChanges();
+            }, 2500);
           }
         },
         (error) => {
@@ -76,6 +79,7 @@ export class LoginComponent implements OnInit {
           this.hasError = true;
           setTimeout(() => {
             this.hasError = false;
+            this.cdr.detectChanges();
           }, 2500);
         }
       );
