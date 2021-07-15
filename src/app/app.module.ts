@@ -23,7 +23,6 @@ import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 // #fake-end#
-
 function appInitializer(authService: AuthService, router: Router) {
   return () => {
     return new Promise((resolve) => {
