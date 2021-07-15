@@ -52,9 +52,11 @@ export class AuthService {
     const user = storageUtils.get('currentUser') as UserModel;
     if (!user?.token) {
       this.logout();
+    } else {
+      this.setCurrentUserValue(user);
+      return of(user);
     }
-    this.setCurrentUserValue(user);
-    return of(user);
+    return of(null);
   }
 
   setIsLoadingValue(isLoading: boolean) {
