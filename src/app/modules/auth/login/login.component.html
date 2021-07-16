@@ -41,7 +41,9 @@
     <div class="form-group">
       <div class="d-flex justify-content-between mt-n5">
         <label class="font-size-h6 font-weight-bolder text-dark pt-5">Mật khẩu</label>
-        <label class="font-size-h6 font-weight-bolder text-primary pt-5 cursor-pointer"
+        <label
+          class="font-size-h6 font-weight-bolder text-primary pt-5 cursor-pointer"
+          [routerLink]="['/auth/forgot-password']"
           >Quên mật khẩu</label
         >
       </div>
@@ -61,11 +63,7 @@
           class="icon-lg-xl fa"
           [class.fa-eye]="!isShowPasswordStatus"
           [class.fa-eye-slash]="isShowPasswordStatus"
-          [class.text-danger]="
-            loginForm.controls['password'].invalid &&
-            (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)
-          "
-        ></i> 
+        ></i>
       </div>
       <app-validate
         [control]="loginForm.controls['password']"
