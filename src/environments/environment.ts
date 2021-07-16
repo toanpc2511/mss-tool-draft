@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  appVersion: 'v726demo1',
+  appVersion: '1.0.0',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: false,
-  apiUrl: 'http://sunoil-management.firecloud.live'
+  apiUrl: 'https://sunoil-management.firecloud.live/management'
 };
 
 /*

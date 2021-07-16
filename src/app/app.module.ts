@@ -24,7 +24,6 @@ import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { GasStationModule } from './pages/gas-station/gas-station.module';
 // #fake-end#
-
 function appInitializer(authService: AuthService, router: Router) {
   return () => {
     return new Promise((resolve) => {
