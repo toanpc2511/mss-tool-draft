@@ -29,7 +29,7 @@
             Trạng thái
             <app-sort-icon column="Status"></app-sort-icon>
           </th>
-          <th>Tác động</th>
+          <th class="text-right">Tác động</th>
         </thead>
         <tbody>
           <tr *ngFor="let product of dataSource">
@@ -47,7 +47,7 @@
               </span>
             </td>
 
-            <td>
+            <td class="text-right">
               <a title="Edit product" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
