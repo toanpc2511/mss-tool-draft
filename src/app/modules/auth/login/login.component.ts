@@ -62,11 +62,9 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (res) => {
           if (res.data) {
-            this.toastr.success('Đăng nhập thành công');
             this.authService.setCurrentUserValue(res.data);
             this.router.navigate([this.returnUrl]);
           } else {
-            this.toastr.error('Đăng nhập thất bại');
             this.hasError = true;
             setTimeout(() => {
               this.hasError = false;
@@ -75,7 +73,6 @@ export class LoginComponent implements OnInit {
           }
         },
         (error) => {
-          this.toastr.error('Đăng nhập thất bại');
           this.hasError = true;
           setTimeout(() => {
             this.hasError = false;
@@ -91,12 +88,12 @@ export class LoginComponent implements OnInit {
 
   onInputUsername($event: Event) {
     const element = $event.target as HTMLInputElement;
-    element.value = element.value.replace(/ /g, '');
+    this.loginForm.controls.username.patchValue(element.value.replace(/ /g, ''));
   }
 
   onInputPassword($event: Event) {
     const element = $event.target as HTMLInputElement;
-    element.value = element.value.replace(/ /g, '');
+    this.loginForm.controls.password.patchValue(element.value.replace(/ /g, ''));
   }
 
   gotoForgotPassword() {

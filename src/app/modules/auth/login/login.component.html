@@ -66,10 +66,6 @@
           class="icon-lg-xl fa"
           [class.fa-eye]="!isShowPasswordStatus"
           [class.fa-eye-slash]="isShowPasswordStatus"
-          [class.text-danger]="
-            loginForm.controls['password'].invalid &&
-            (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)
-          "
         ></i>
       </div>
       <ng-container
