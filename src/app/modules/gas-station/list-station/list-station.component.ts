@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CreateStationModalComponent } from '../create-station-modal/create-station-modal.component';
 
 export interface PeriodicElement {
   code: string;
@@ -54,8 +53,4 @@ export class ListStationComponent {
   dataSource: PeriodicElement[] = ELEMENT_DATA;
 
   constructor(private modalService: NgbModal) {}
-
-  createStation() {
-    const modalRef = this.modalService.open(CreateStationModalComponent, { size: 'xl' });
-  }
 }

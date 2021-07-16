@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CreateStationComponent } from './create-station/create-station.component';
 import { ListStationComponent } from './list-station/list-station.component';
 
 const routes: Routes = [
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'danh-sach',
     component: ListStationComponent
+  },
+  {
+    path: 'them-tram-xang',
+    component: CreateStationComponent
   }
 ];
 
