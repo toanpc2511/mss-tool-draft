@@ -2,6 +2,12 @@ table thead th {
   text-transform: none;
 }
 
+table {
+  .location {
+    max-width: 350px;
+  }
+}
+
 .custom-toolbar {
   width: 35%;
 

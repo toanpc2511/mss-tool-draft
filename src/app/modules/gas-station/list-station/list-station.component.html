@@ -40,13 +40,25 @@
             Trạng thái
             <app-sort-icon column="status"></app-sort-icon>
           </th>
-          <th class="text-right">Tác động</th>
+          <th class="text-center">Tác động</th>
         </thead>
         <tbody>
           <tr *ngFor="let station of dataSource">
-            <td>{{ station.code }}</td>
+            <td>
+              <span class="cursor-pointer" placement="top" [ngbTooltip]="station.code">{{
+                station.code
+              }}</span>
+            </td>
             <td>{{ station.name }}</td>
-            <td>{{ station.location }}</td>
+            <td class="location">
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="station.location"
+              >
+                {{ station.location }}
+              </p>
+            </td>
             <td>
               <span
                 class="label label-lg label-inline"
@@ -58,7 +70,7 @@
               </span>
             </td>
 
-            <td class="text-right">
+            <td class="text-center">
               <a title="Edit product" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"

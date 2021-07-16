@@ -65,7 +65,7 @@ function appInitializer(authService: AuthService, router: Router) {
       progressBar: true,
       timeOut: 3000,
       positionClass: 'toast-bottom-right'
-    })
+    }),
   ],
   providers: [
     {
