@@ -38,11 +38,6 @@
           class="icon-lg-xl fa"
           [class.fa-eye]="!isShowPasswordNew"
           [class.fa-eye-slash]="isShowPasswordNew"
-          [class.text-danger]="
-            firstLoginForm.controls['passwordNew'].invalid &&
-            (firstLoginForm.controls['passwordNew'].dirty ||
-              firstLoginForm.controls['passwordNew'].touched)
-          "
         ></i>
       </div>
       <ng-container
@@ -82,11 +77,6 @@
           class="icon-lg-xl fa"
           [class.fa-eye]="!isShowPasswordConfirm"
           [class.fa-eye-slash]="isShowPasswordConfirm"
-          [class.text-danger]="
-            firstLoginForm.controls['passwordConfirm'].invalid &&
-            (firstLoginForm.controls['passwordConfirm'].dirty ||
-              firstLoginForm.controls['passwordConfirm'].touched)
-          "
         ></i>
       </div>
       <ng-container

@@ -1,0 +1,36 @@
+table thead th {
+  text-transform: none;
+}
+
+table {
+  .location {
+    max-width: 350px;
+  }
+}
+
+.custom-toolbar {
+  width: 35%;
+
+  justify-content: space-between;
+
+  .search-form {
+    display: flex;
+    align-items: center;
+    width: 65%;
+
+    &__icon {
+      cursor: pointer;
+    }
+
+    input {
+      margin-left: 10px;
+      border: 0;
+      outline: 0;
+      width: 100%;
+    }
+  }
+
+  button {
+    width: 125px;
+  }
+}
