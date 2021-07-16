@@ -63,6 +63,7 @@ export class FirstLoginComponent implements OnInit {
       .subscribe((res) => {
         if (!res.data?.changePassword) {
           this.toastr.success('Đổi mật khẩu thành công');
+          this.authService.setCurrentUserValue(res.data);
           this.router.navigate(['/']);
         } else {
           this.toastr.error('Đổi mật khẩu thất bại');
