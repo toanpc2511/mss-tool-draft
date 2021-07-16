@@ -71,12 +71,10 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/auth/first-login']);
             }
           } else {
-            this.toastr.error('Đăng nhập thất bại');
             this.hasError = true;
           }
         },
         (error) => {
-          this.toastr.error('Đăng nhập thất bại');
           this.hasError = true;
         }
       );
