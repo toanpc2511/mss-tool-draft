@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthComponent } from './auth.component';
 import { FirstLoginComponent } from './first-login/first-login.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 
@@ -24,8 +25,8 @@ const routes: Routes = [
         component: FirstLoginComponent
       },
       {
-        path: 'registration',
-        component: RegistrationComponent
+        path: 'forgot-password',
+        component: ForgotPasswordComponent
       },
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: '**', redirectTo: 'login', pathMatch: 'full' }

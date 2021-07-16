@@ -63,6 +63,31 @@
 //   @import "./assets/sass/themes/layout/aside/light.scss";
 // }
 
+p {
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #eeeeee;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
 // hide bootstrap dropdown arrow globally
 .dropdown-toggle::after {
   display: none !important;
