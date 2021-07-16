@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { GasStationService } from '../gas-station.service';
 
 export interface PeriodicElement {
   code: string;
@@ -49,8 +49,18 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['list-station.component.scss'],
   templateUrl: 'list-station.component.html'
 })
-export class ListStationComponent {
+export class ListStationComponent implements OnInit {
   dataSource: PeriodicElement[] = ELEMENT_DATA;
 
-  constructor(private modalService: NgbModal) {}
+  constructor(private gasStationService: GasStationService) {}
+
+  ngOnInit() {
+    // this.getGasStation();
+  }
+
+  getGasStation() {
+    this.gasStationService.getGasStation().subscribe((res) => {
+      console.log(res);
+    });
+  }
 }
