@@ -51,7 +51,7 @@ const routes: Routes = [
       {
         path: 'tram-xang',
         loadChildren: () =>
-          import('../pages/gas-station/gas-station.module').then((m) => m.GasStationModule)
+          import('../modules/gas-station/gas-station.module').then((m) => m.GasStationModule)
       },
       {
         path: '',

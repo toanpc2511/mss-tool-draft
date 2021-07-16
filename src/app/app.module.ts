@@ -22,7 +22,6 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { GasStationModule } from './pages/gas-station/gas-station.module';
 // #fake-end#
 function appInitializer(authService: AuthService, router: Router) {
   return () => {
@@ -66,8 +65,7 @@ function appInitializer(authService: AuthService, router: Router) {
       progressBar: true,
       timeOut: 3000,
       positionClass: 'toast-bottom-right'
-    }),
-    GasStationModule
+    })
   ],
   providers: [
     {
