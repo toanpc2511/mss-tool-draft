@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FilterService } from 'src/app/shared/services/filter.service';
+import { SortService } from 'src/app/shared/services/sort.service';
+import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
 
 export interface PeriodicElement {
   code: string;
@@ -47,10 +50,44 @@ const ELEMENT_DATA: PeriodicElement[] = [
 @Component({
   selector: 'app-list-station',
   styleUrls: ['list-station.component.scss'],
-  templateUrl: 'list-station.component.html'
+  templateUrl: 'list-station.component.html',
+  providers: [SortService, FilterService]
 })
 export class ListStationComponent {
   dataSource: PeriodicElement[] = ELEMENT_DATA;
+  dataSourceTemp: PeriodicElement[] = ELEMENT_DATA;
+  sorting: SortState;
+  filterField: FilterField<{
+    code: string;
+    name: string;
+    location: string;
+    status: string;
+  }>;
 
-  constructor(private modalService: NgbModal) {}
+  constructor(
+    private sortService: SortService<PeriodicElement>,
+    private filterService: FilterService<PeriodicElement>
+  ) {
+    this.sorting = sortService.sorting;
+    this.filterField = new FilterField({
+      code: 'ST05',
+      name: null,
+      location: null,
+      status: null
+    });
+  }
+
+  sort(column: string) {
+    this.dataSource = this.sortService.sort(this.dataSource, column);
+  }
+
+  filter($event: Event) {
+    const inputElement = $event.target as HTMLInputElement;
+    if (inputElement.value.trim()) {
+      this.filterField.setFilterFieldValue(inputElement.value);
+    } else {
+      this.filterField.setFilterFieldValue(null);
+    }
+    this.dataSource = this.filterService.filter(this.dataSourceTemp, this.filterField.field);
+  }
 }
