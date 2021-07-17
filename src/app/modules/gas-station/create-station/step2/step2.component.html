@@ -14,7 +14,12 @@
           <thead>
             <th>
               Mã bồn
-              <app-sort-icon column="code"></app-sort-icon>
+              <app-sort-icon
+                column="code"
+                [activeColumn]="sorting.column"
+                [activeDirection]="sorting.direction"
+                (sort)="sort($event)"
+              ></app-sort-icon>
             </th>
             <th>
               Tên bồn
@@ -49,10 +54,14 @@
           <tbody>
             <tr *ngFor="let product of dataSource">
               <td class="text-ellipsis">
-                <span class="cursor-pointer" placement="top" ngbTooltip="Tooltip on top">{{ product.code }}</span>
+                <span class="cursor-pointer" placement="top" ngbTooltip="Tooltip on top">{{
+                  product.code
+                }}</span>
               </td>
               <td class="text-ellipsis">
-                <span class="cursor-pointer" placement="top" ngbTooltip="Tooltip on top">{{ product.code }}</span>
+                <span class="cursor-pointer" placement="top" ngbTooltip="Tooltip on top">{{
+                  product.code
+                }}</span>
               </td>
               <td class="text-ellipsis">{{ product.location }}</td>
               <td class="text-ellipsis">{{ product.location }}</td>

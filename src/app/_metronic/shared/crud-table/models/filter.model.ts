@@ -1,8 +1,12 @@
-import { FormGroup } from '@angular/forms';
+export class FilterField<T> {
+  field: T;
+  constructor(field: T) {
+    this.field = field;
+  }
 
-export interface IFilterView {
-  filterGroup: FormGroup;
-  ngOnInit(): void;
-  filterForm(): void;
-  filter(): void;
+  setFilterFieldValue(fieldValue: any) {
+    for (const key in this.field) {
+      this.field[key] = fieldValue;
+    }
+  }
 }

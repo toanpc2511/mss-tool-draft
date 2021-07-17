@@ -11,6 +11,7 @@ import { Step3Component } from './create-station/step3/step3.component';
 import { Step4Component } from './create-station/step4/step4.component';
 import { CreateStationComponent } from './create-station/create-station.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { SortService } from 'src/app/shared/services/sort.service';
 
 @NgModule({
   declarations: [

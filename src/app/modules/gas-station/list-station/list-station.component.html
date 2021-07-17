@@ -12,7 +12,7 @@
           name="searchText"
           placeholder="Search..."
           value=""
-          formControlName="searchTerm"
+          (input)="filter($event)"
         />
       </div>
       <button type="button" class="btn btn-primary" [routerLink]="['/tram-xang/them-tram-xang']">
@@ -26,19 +26,39 @@
         <thead>
           <th>
             Mã trạm
-            <app-sort-icon column="code"></app-sort-icon>
+            <app-sort-icon
+              column="code"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
           </th>
           <th>
             Tên trạm
-            <app-sort-icon column="name"></app-sort-icon>
+            <app-sort-icon
+              column="name"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
           </th>
           <th>
             Địa chỉ
-            <app-sort-icon column="location"></app-sort-icon>
+            <app-sort-icon
+              column="location"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
           </th>
           <th>
             Trạng thái
-            <app-sort-icon column="status"></app-sort-icon>
+            <app-sort-icon
+              column="status"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
           </th>
           <th class="text-center">Tác động</th>
         </thead>
