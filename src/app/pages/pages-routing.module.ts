@@ -16,11 +16,6 @@ const routes: Routes = [
         loadChildren: () => import('./builder/builder.module').then((m) => m.BuilderModule)
       },
       {
-        path: 'ecommerce',
-        loadChildren: () =>
-          import('../modules/e-commerce/e-commerce.module').then((m) => m.ECommerceModule)
-      },
-      {
         path: 'user-management',
         loadChildren: () =>
           import('../modules/user-management/user-management.module').then(
