@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
@@ -14,6 +14,7 @@ import { GasStationRoutingModule } from './gas-station-routing.module';
 import { GasStationComponent } from './gas-station.component';
 import { CanActiveStepPipe } from './gas-station.pipe';
 import { ListStationComponent } from './list-station/list-station.component';
+import { PumpPoleModalComponent } from './create-station/step3/pump-pole-modal/pump-pole-modal.component';
 
 @NgModule({
   declarations: [
@@ -24,11 +25,14 @@ import { ListStationComponent } from './list-station/list-station.component';
     Step2Component,
     Step3Component,
     Step4Component,
-    CanActiveStepPipe
+    CanActiveStepPipe,
+    PumpPoleModalComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
+    NgbModalModule,
     GasStationRoutingModule,
     CRUDTableModule,
     InlineSVGModule,

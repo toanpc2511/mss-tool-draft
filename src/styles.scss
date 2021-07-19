@@ -151,6 +151,26 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
+.modal-content {
+  .modal-header {
+    position: relative;
+    .close-icon {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      right: 20px;
+      cursor: pointer;
+      background-image: url('./assets/media/sun-oil/close-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
 // .form-control.ng-invalid.ng-touched,
 // .form-control.ng-invalid.ng-dirty {
 //   border: 1px solid #ee2d41;

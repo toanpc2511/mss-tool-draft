@@ -1,11 +1,13 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { orderBy, sortBy } from 'lodash';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
+import { PumpPoleModalComponent } from './pump-pole-modal/pump-pole-modal.component';
 export interface PeriodicElement {
   code: string;
   name: string;
@@ -68,7 +70,8 @@ export class Step3Component implements OnInit {
     private filterService: FilterService<PeriodicElement>,
     private sortService: SortService<PeriodicElement>,
     private destroy$: DestroyService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private modalService: NgbModal
   ) {
     this.stepSubmitted = new EventEmitter();
     this.dataSource = this.dataSourceTemp = ELEMENT_DATA;
@@ -103,6 +106,12 @@ export class Step3Component implements OnInit {
   //Sort
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
+  }
+
+  create(id?) {
+    const modalRef = this.modalService.open(PumpPoleModalComponent, {backdrop: 'static', size: 'xl' });
+    modalRef.componentInstance.data = { test: 'ok' };
+    modalRef.result.then();
   }
 
   submit() {
