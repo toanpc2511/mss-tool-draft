@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
@@ -16,6 +17,13 @@ export interface ListGasTankResponse {
   status: string;
   product_name: string;
 }
+
+export interface ListStatus {
+  ACTIVE: 'ACTIVE';
+  INACTIVE: 'INACTIVE';
+  DELETED: 'DELETED';
+}
+
 export const DATA_FAKE = [
   {
     code: 'SBBKA2',
@@ -25,7 +33,7 @@ export const DATA_FAKE = [
     height: '20',
     length: '20',
     capacity: '20000',
-    status: 'ACTIVE',
+    status: LIST_STATUS.ACTIVE,
     product_name: 'RON 94'
   },
   {
@@ -35,7 +43,7 @@ export const DATA_FAKE = [
     height: '10',
     length: '10',
     capacity: '10000',
-    status: 'ACTIVE',
+    status: LIST_STATUS.INACTIVE,
     product_name: 'RON 95'
   }
 ];
@@ -47,6 +55,8 @@ export const DATA_FAKE = [
   providers: [SortService, FilterService, DestroyService]
 })
 export class Step2Component implements OnInit {
+  listStatus = LIST_STATUS;
+
   @Output() stepSubmitted = new EventEmitter();
   dataSource: ListGasTankResponse[] = DATA_FAKE;
   dataSourceTemp: ListGasTankResponse[] = DATA_FAKE;

@@ -121,11 +121,13 @@
             <td>
               <span
                 class="label label-lg label-inline"
-                [class.label-light-success]="item.status"
-                [class.label-light-danger]="!item.status"
+                [class.label-light-success]="item.status === listStatus.ACTIVE"
+                [class.label-light-danger]="item.status === listStatus.INACTIVE"
               >
-                <ng-container *ngIf="item.status">Hoạt động</ng-container>
-                <ng-container *ngIf="!item.status">Không hoạt động</ng-container>
+                <ng-container *ngIf="item.status === listStatus.ACTIVE">Hoạt động</ng-container>
+                <ng-container *ngIf="item.status !== listStatus.ACTIVE">
+                  Không hoạt động
+                </ng-container>
               </span>
             </td>
 
