@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { DataPush } from '../models/data-push.model';
 import { DataResponse } from '../models/data-response.model';
 
 @Injectable({ providedIn: 'root' })
@@ -54,7 +55,8 @@ export class HttpService {
       withCredentials?: boolean;
     }
   ): Observable<DataResponse<T>> {
-    return this.httpClient.post(`${this.apiUrl}/${endPoint}`, body, options).pipe(
+    const bodyOrigin = new DataPush(body);
+    return this.httpClient.post(`${this.apiUrl}/${endPoint}`, bodyOrigin, options).pipe(
       switchMap((response) => {
         const res = new DataResponse<T>(response);
         return of(res);
@@ -80,7 +82,8 @@ export class HttpService {
       withCredentials?: boolean;
     }
   ): Observable<DataResponse<T>> {
-    return this.httpClient.put(`${this.apiUrl}/${endPoint}`, body, options).pipe(
+    const bodyOrigin = new DataPush(body);
+    return this.httpClient.put(`${this.apiUrl}/${endPoint}`, bodyOrigin, options).pipe(
       switchMap((response) => {
         const res = new DataResponse<T>(response);
         return of(res);

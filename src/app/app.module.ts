@@ -52,8 +52,9 @@ function appInitializer(authService: AuthService, router: Router) {
       closeButton: true,
       progressBar: true,
       timeOut: 3000,
+      maxOpened: 4,
       positionClass: 'toast-bottom-right'
-    }),
+    })
   ],
   providers: [
     {
