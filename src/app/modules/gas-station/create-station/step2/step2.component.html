@@ -1,13 +1,19 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Danh sách trạm</h3>
+      <h3 class="card-label">Danh sách bồn</h3>
     </div>
 
-    <div class="card-toolbar custom-toolbar">
-      <div class="search-form form-control">
-        <span class="search-form__icon"><i class="flaticon-search"></i></span>
-        <input type="text" name="searchText" placeholder="Search..." value="" />
+    <div class="card-toolbar row">
+      <div class="search-form">
+        <i class="flaticon-search"></i>
+        <input
+          type="text"
+          name="searchText"
+          placeholder="Search..."
+          class="form-control"
+          [formControl]="searchFormControl"
+        />
       </div>
       <button type="button" class="btn btn-primary" [routerLink]="['/tram-xang/them-tram-xang']">
         Thêm mới
@@ -19,7 +25,7 @@
       <table class="table table-head-custom table-vertical-center overflow-hidden">
         <thead>
           <th>
-            Mã trạm
+            Mã bồn
             <app-sort-icon
               column="code"
               [activeColumn]="sorting.column"
@@ -28,7 +34,7 @@
             ></app-sort-icon>
           </th>
           <th>
-            Tên trạm
+            Tên bồn
             <app-sort-icon
               column="name"
               [activeColumn]="sorting.column"
@@ -37,9 +43,45 @@
             ></app-sort-icon>
           </th>
           <th>
-            Địa chỉ
+            Chiều cao
             <app-sort-icon
-              column="location"
+              column="height"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Chiều dài
+            <app-sort-icon
+              column="width"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Dung tích
+            <app-sort-icon
+              column="width"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Loại nhiên liệu
+            <app-sort-icon
+              column="fuelType"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Mô tả
+            <app-sort-icon
+              column="description"
               [activeColumn]="sorting.column"
               [activeDirection]="sorting.direction"
               (sort)="sort($event)"
@@ -54,6 +96,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
+
           <th class="text-center">Tác động</th>
         </thead>
         <tbody>
@@ -70,7 +113,7 @@
                 placement="top"
                 [ngbTooltip]="station.location"
               >
-                {{ station.location }}
+                fdfdf
               </p>
             </td>
             <td>
@@ -106,9 +149,5 @@
         </tbody>
       </table>
     </div>
-  </div>
-  <div class="w-100 d-flex justify-content-center">
-    <button class="btn btn-outline-secondary font-weight-bold m-2">Quay lại</button>
-    <button class="btn btn-primary font-weight-bold m-2" (click)="submit()">Lưu và tiếp tục</button>
   </div>
 </div>

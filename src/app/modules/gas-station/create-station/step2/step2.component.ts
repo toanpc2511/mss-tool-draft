@@ -1,6 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
-import { SortState } from 'src/app/_metronic/shared/crud-table';
+import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
 import { PeriodicElement } from '../../list-station/list-station.component';
 
 const ELEMENT_DATA: PeriodicElement[] = [
@@ -40,25 +44,55 @@ const ELEMENT_DATA: PeriodicElement[] = [
   selector: 'app-step2',
   templateUrl: './step2.component.html',
   styleUrls: ['./step2.component.scss'],
-  providers: [SortService]
+  providers: [SortService, FilterService, DestroyService]
 })
 export class Step2Component implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
   dataSource: PeriodicElement[] = ELEMENT_DATA;
+  dataSourceTemp: PeriodicElement[] = ELEMENT_DATA;
   sorting: SortState;
-  constructor(private sortService: SortService<PeriodicElement>) {
+  searchFormControl: FormControl;
+  filterField: FilterField<{
+    code: string;
+    name: string;
+    location: string;
+    status: string;
+  }>;
+  constructor(
+    private sortService: SortService<PeriodicElement>,
+    private filterService: FilterService<PeriodicElement>,
+    private destroy$: DestroyService,
+    private cdr: ChangeDetectorRef
+  ) {
     this.sorting = sortService.sorting;
+    this.filterField = new FilterField({
+      code: null,
+      name: null,
+      location: null,
+      status: null
+    });
+    this.searchFormControl = new FormControl();
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    // Filter
+    this.searchFormControl.valueChanges
+      .pipe(debounceTime(500), takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value.trim()) {
+          this.filterField.setFilterFieldValue(value);
+        } else {
+          this.filterField.setFilterFieldValue(null);
+        }
+        // Set data after filter and apply current sorting
+        this.dataSource = this.sortService.sort(
+          this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+        );
+        this.cdr.detectChanges();
+      });
+  }
+
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
-  }
-
-  submit() {
-    this.stepSubmitted.next({
-      currentStep: 2,
-      step2: null
-    });
   }
 }

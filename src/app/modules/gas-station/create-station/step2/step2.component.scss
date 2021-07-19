@@ -1,0 +1,32 @@
+table thead th {
+  text-transform: none;
+}
+
+table {
+  .location {
+    max-width: 350px;
+  }
+}
+
+.card-toolbar {
+  gap: 10px;
+  .search-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    i {
+      position: absolute;
+      left: 10px;
+      top: 7px;
+    }
+
+    input {
+      padding-left: 30px;
+    }
+  }
+
+  button {
+    width: 125px;
+  }
+}
