@@ -8,6 +8,9 @@ export class TValidators extends Validators {
       if (!value.trim()) {
         return { required: true };
       }
-      return { pattern: !regex.test(value) } || null;
+      if (!regex.test(value)) {
+        return { pattern: !regex.test(value) };
+      }
+      return null;
     };
 }

@@ -51,15 +51,7 @@ export class Step3Component implements OnInit {
   }
 
   ngOnInit(): void {
-    // Get data
-    this.gasStationService
-      .getPumpPolesByGasStation(1)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res.data) {
-          this.dataSource = this.dataSourceTemp = res.data;
-        }
-      });
+    this.getData();
 
     // Filter
     this.searchFormControl.valueChanges
@@ -78,6 +70,18 @@ export class Step3Component implements OnInit {
       });
   }
 
+  // Get data
+  getData() {
+    this.gasStationService
+      .getPumpPolesByGasStation(1)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res.data) {
+          this.dataSource = this.dataSourceTemp = res.data;
+        }
+      });
+  }
+
   // Sort
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
@@ -85,13 +89,26 @@ export class Step3Component implements OnInit {
 
   create() {
     if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
-      // return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+      return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(PumpPoleModalComponent, {
       backdrop: 'static',
       size: 'xl'
     });
-    modalRef.result.then((res) => {});
+    modalRef.result.then((result) => {
+      if (result) {
+        this.gasStationService
+          .getPumpPolesByGasStation(1)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((res) => {
+            if (res.data) {
+              this.dataSource = this.dataSourceTemp = res.data;
+              this.searchFormControl.patchValue(null);
+              this.sort(null);
+            }
+          });
+      }
+    });
   }
 
   update() {}

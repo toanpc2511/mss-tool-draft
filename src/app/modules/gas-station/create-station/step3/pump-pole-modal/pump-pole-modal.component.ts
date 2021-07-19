@@ -44,7 +44,8 @@ export class PumpPoleModalComponent implements OnInit {
     }
     const pumpPoleData: IPumpPoleCreate = {
       code: this.pumpPoleForm.controls.code.value,
-      gasStationId: this.gasStationService.gasStationId,
+      // gasStationId: this.gasStationService.gasStationId,
+      gasStationId: 1,
       description: this.pumpPoleForm.controls.description.value,
       name: this.pumpPoleForm.controls.name.value,
       status: this.pumpPoleForm.controls.status.value
@@ -53,7 +54,7 @@ export class PumpPoleModalComponent implements OnInit {
       .createPumpPole(pumpPoleData)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        console.log(res);
+        this.modal.close(res);
       });
   }
 }

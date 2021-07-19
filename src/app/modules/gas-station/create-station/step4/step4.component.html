@@ -1,7 +1,7 @@
 <div class="card card-custom">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Danh sách vòi bơm</h3>
+      <h3 class="card-label">Danh sách vòi</h3>
     </div>
 
     <div class="card-toolbar row">
@@ -23,7 +23,7 @@
       <table class="table table-head-custom table-vertical-center overflow-hidden">
         <thead>
           <th>
-            Mã cột
+            Mã vòi
             <app-sort-icon
               column="code"
               [activeColumn]="sorting.column"
@@ -32,9 +32,27 @@
             ></app-sort-icon>
           </th>
           <th>
-            Tên cột
+            Tên vòi
             <app-sort-icon
               column="name"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Tên bể
+            <app-sort-icon
+              column="pump"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Tên cột
+            <app-sort-icon
+              column="pumpPoleName"
               [activeColumn]="sorting.column"
               [activeDirection]="sorting.direction"
               (sort)="sort($event)"
@@ -68,6 +86,24 @@
               }}</span>
             </td>
             <td>{{ station.name }}</td>
+            <td class="location">
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="station.description"
+              >
+                {{ station.description }}
+              </p>
+            </td>
+            <td class="location">
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="station.description"
+              >
+                {{ station.description }}
+              </p>
+            </td>
             <td class="location">
               <p
                 class="cursor-pointer text-ellipsis"
@@ -112,7 +148,9 @@
     </div>
   </div>
   <div class="w-100 d-flex justify-content-center pb-10">
-    <button class="btn btn-outline-secondary font-weight-bold m-2" (click)="back()">Quay lại</button>
+    <button class="btn btn-outline-secondary font-weight-bold m-2" (click)="back()">
+      Quay lại
+    </button>
     <button class="btn btn-primary font-weight-bold m-2" (click)="submit()">Lưu và tiếp tục</button>
   </div>
 </div>
