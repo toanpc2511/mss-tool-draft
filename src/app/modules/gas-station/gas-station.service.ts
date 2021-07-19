@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { environment } from 'src/environments/environment';
 
 export interface IStepData<T> {
   isValid: boolean;
@@ -44,10 +45,7 @@ export class GasStationService {
   // Global
   gasStationId: number;
   gasStationStatus: boolean;
-
-  // List gas station
-
-  // Create gas station
+  apiUrl = environment.apiUrl;
   stepDataSubject: BehaviorSubject<StepData>;
   stepData$: Observable<StepData>;
 
@@ -71,7 +69,9 @@ export class GasStationService {
   }
 
   // List gas station
-
+  getListStation() {
+    return this.http.get(`${this.apiUrl}/gas-stations`);
+  }
   // Create gas station
   setStepData(stepData) {
     this.stepDataSubject.next(stepData);

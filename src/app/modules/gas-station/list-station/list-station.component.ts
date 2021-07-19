@@ -6,6 +6,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
+import { GasStationService } from '../gas-station.service';
 
 export interface PeriodicElement {
   code: string;
@@ -73,7 +74,8 @@ export class ListStationComponent implements OnInit {
     private filterService: FilterService<PeriodicElement>,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private gasStationService: GasStationService
   ) {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
@@ -101,6 +103,12 @@ export class ListStationComponent implements OnInit {
         );
         this.cdr.detectChanges();
       });
+
+    this.getListStation();
+  }
+
+  getListStation() {
+    this.gasStationService.getListStation().subscribe(console.log);
   }
 
   sort(column: string) {
