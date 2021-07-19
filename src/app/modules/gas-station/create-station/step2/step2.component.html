@@ -120,7 +120,7 @@
               <span
                 class="label label-lg label-inline"
                 [class.label-light-success]="item.status === listStatus.ACTIVE"
-                [class.label-light-danger]="item.status === listStatus.INACTIVE"
+                [class.label-light-danger]="item.status === listStatus.DEACTIVE"
               >
                 <ng-container *ngIf="item.status === listStatus.ACTIVE">Hoạt động</ng-container>
                 <ng-container *ngIf="item.status !== listStatus.ACTIVE">

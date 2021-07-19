@@ -22,7 +22,7 @@ export interface ListGasTankResponse {
 
 export interface ListStatus {
   ACTIVE: 'ACTIVE';
-  INACTIVE: 'INACTIVE';
+  DEACTIVE: 'DEACTIVE';
   DELETED: 'DELETED';
 }
 
@@ -45,10 +45,22 @@ export const DATA_FAKE = [
     height: '10',
     length: '10',
     capacity: '10000',
-    status: LIST_STATUS.INACTIVE,
+    status: LIST_STATUS.DEACTIVE,
     product_name: 'RON 95'
   }
 ];
+
+export interface IStep2CreateModel {
+  capacity: string;
+  code: string;
+  description: string;
+  gas_station_id: number;
+  height: string;
+  length: string;
+  name: string;
+  product_id: number;
+  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+}
 
 @Component({
   selector: 'app-step2',

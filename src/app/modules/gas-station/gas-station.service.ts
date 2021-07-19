@@ -84,6 +84,7 @@ export class GasStationService {
   // Step 1
 
   // Step 2
+  createGasBin() {}
 
   // Step 3
   getPumpPolesByGasStation(gasStationId) {
