@@ -40,22 +40,16 @@
           [class.fa-eye-slash]="isShowPasswordNew"
         ></i>
       </div>
-      <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'required',
-          message: 'Mật khẩu không được để trống',
-          control: firstLoginForm.controls['passwordNew']
-        }"
-      ></ng-container>
-      <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'minlength',
-          message: 'Mật khẩu không được ngắn hơn 8 ký tự',
-          control: firstLoginForm.controls['passwordNew']
-        }"
-      ></ng-container>
+      <app-validate
+        [control]="firstLoginForm.controls['passwordNew']"
+        [error]="'required'"
+        [message]="'Mật khẩu không được để trống'"
+      ></app-validate>
+      <app-validate
+        [control]="firstLoginForm.controls['passwordNew']"
+        [error]="'minlength'"
+        [message]="'Mật khẩu không được ngắn hơn 8 ký tự'"
+      ></app-validate>
     </div>
     <div class="form-group">
       <div class="d-flex justify-content-between mt-n5">
@@ -79,30 +73,16 @@
           [class.fa-eye-slash]="isShowPasswordConfirm"
         ></i>
       </div>
-      <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'required',
-          message: 'Xác nhận mật khẩu không được để trống',
-          control: firstLoginForm.controls['passwordConfirm']
-        }"
-      ></ng-container>
-      <!-- <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'minlength',
-          message: 'Mật khẩu không được ngắn hơn 8 ký tự',
-          control: firstLoginForm.controls['passwordConfirm']
-        }"
-      ></ng-container> -->
-      <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'passwordConfirmNotMatch',
-          message: 'Xác nhận mật khẩu không đúng',
-          control: firstLoginForm.controls['passwordConfirm']
-        }"
-      ></ng-container>
+      <app-validate
+        [control]="firstLoginForm.controls['passwordConfirm']"
+        [error]="'required'"
+        [message]="'Xác nhận mật khẩu không được để trống'"
+      ></app-validate>
+      <app-validate
+        [control]="firstLoginForm.controls['passwordConfirm']"
+        [error]="'passwordConfirmNotMatch'"
+        [message]="'Xác nhận mật khẩu không đúng'"
+      ></app-validate>
     </div>
     <div class="pb-lg-0 pb-5 text-center">
       <button

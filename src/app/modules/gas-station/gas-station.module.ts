@@ -12,6 +12,7 @@ import { Step3Component } from './create-station/step3/step3.component';
 import { Step4Component } from './create-station/step4/step4.component';
 import { GasStationRoutingModule } from './gas-station-routing.module';
 import { GasStationComponent } from './gas-station.component';
+import { CanActiveStepPipe } from './gas-station.pipe';
 import { ListStationComponent } from './list-station/list-station.component';
 
 @NgModule({
@@ -22,10 +23,12 @@ import { ListStationComponent } from './list-station/list-station.component';
     Step1Component,
     Step2Component,
     Step3Component,
-    Step4Component
+    Step4Component,
+    CanActiveStepPipe
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     GasStationRoutingModule,
     CRUDTableModule,
     InlineSVGModule,

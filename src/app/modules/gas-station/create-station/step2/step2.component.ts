@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { SortState } from 'src/app/_metronic/shared/crud-table';
 import { PeriodicElement } from '../../list-station/list-station.component';
@@ -43,6 +43,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   providers: [SortService]
 })
 export class Step2Component implements OnInit {
+  @Output() stepSubmitted = new EventEmitter();
   dataSource: PeriodicElement[] = ELEMENT_DATA;
   sorting: SortState;
   constructor(private sortService: SortService<PeriodicElement>) {
@@ -52,5 +53,12 @@ export class Step2Component implements OnInit {
   ngOnInit(): void {}
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
+  }
+
+  submit() {
+    this.stepSubmitted.next({
+      currentStep: 2,
+      step2: null
+    });
   }
 }

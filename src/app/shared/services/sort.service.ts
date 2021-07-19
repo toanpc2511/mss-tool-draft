@@ -9,17 +9,20 @@ export class SortService<T> {
     this.sorting = new SortState();
   }
 
-  sort(dataSource: Array<T>, column: string): Array<T> {
-    const isActiveColumn = this.sorting.column === column;
-    if (!isActiveColumn) {
-      this.sorting.column = column;
-      this.sorting.direction = 'asc';
-    } else {
-      if (this.sorting.direction === 'asc') {
-        this.sorting.direction = 'desc';
-      } else if (this.sorting.direction === 'desc') {
-        this.sorting.column = '';
+  sort(dataSource: Array<T>, column?: string): Array<T> {
+    if (column) {
+      const isActiveColumn = this.sorting.column === column;
+      if (!isActiveColumn) {
+        this.sorting.column = column;
+        this.sorting.direction = 'asc';
+      } else {
+        if (this.sorting.direction === 'asc') {
+          this.sorting.direction = 'desc';
+        } else if (this.sorting.direction === 'desc') {
+          this.sorting.column = '';
+        }
       }
+      return this.sortData(dataSource);
     }
     return this.sortData(dataSource);
   }

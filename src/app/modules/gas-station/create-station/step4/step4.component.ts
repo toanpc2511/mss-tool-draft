@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-step4',
@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./step4.component.scss']
 })
 export class Step4Component implements OnInit {
+  @Output() stepSubmitted = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  submit() {
+    this.stepSubmitted.next({
+      currentStep: 4,
+      step3: null
+    });
   }
-
 }

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GasStationService } from '../../gas-station.service';
 
 @Component({
   selector: 'app-step1',
@@ -7,9 +8,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./step1.component.scss']
 })
 export class Step1Component implements OnInit {
-  stationForm: FormGroup;
+  @Output() stepSubmitted = new EventEmitter();
+  constructor(private gasStationService: GasStationService, private fb: FormBuilder) {}
 
-  constructor(private fb: FormBuilder) {}
+  stationForm: FormGroup;
 
   ngOnInit(): void {
     this.stationForm = this.initForm();
@@ -32,13 +34,10 @@ export class Step1Component implements OnInit {
       return;
     }
 
-    console.log(this.stationForm.value);
-  }
-
-  controlHasError(validation, controlName): boolean {
-    console.log('ádfasdf');
-
-    const control = this.stationForm.controls[controlName];
-    return control.hasError(validation) && (control.dirty || control.touched);
+    // Đưa vào subscribe
+    this.stepSubmitted.next({
+      currentStep: 1,
+      step1: null
+    });
   }
 }
