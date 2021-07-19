@@ -1,11 +1,13 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
+import { CreateGasBinComponent } from './create-gas-bin/create-gas-bin.component';
 
 export interface ListGasTankResponse {
   code: string;
@@ -72,7 +74,8 @@ export class Step2Component implements OnInit {
     private sortService: SortService<ListGasTankResponse>,
     private filterService: FilterService<ListGasTankResponse>,
     private destroy$: DestroyService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private modalService: NgbModal
   ) {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
@@ -104,5 +107,9 @@ export class Step2Component implements OnInit {
 
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
+  }
+
+  openCreateModal() {
+    this.modalService.open(CreateGasBinComponent, { size: 'xl' });
   }
 }
