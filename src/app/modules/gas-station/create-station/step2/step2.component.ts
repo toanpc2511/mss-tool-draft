@@ -1,38 +1,52 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
+import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
-import { SortState } from 'src/app/_metronic/shared/crud-table';
-import { PeriodicElement } from '../../list-station/list-station.component';
+import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
+import { CreateGasBinComponent } from './create-gas-bin/create-gas-bin.component';
 
-const ELEMENT_DATA: PeriodicElement[] = [
+export interface ListGasTankResponse {
+  code: string;
+  name: string;
+  description: string;
+  height: string;
+  length: string;
+  capacity: string;
+  status: string;
+  product_name: string;
+}
+
+export interface ListStatus {
+  ACTIVE: 'ACTIVE';
+  INACTIVE: 'INACTIVE';
+  DELETED: 'DELETED';
+}
+
+export const DATA_FAKE = [
   {
-    code: 'ST01',
-    name: 'Sun Oil 01',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
+    code: 'SBBKA2',
+    name: 'Bồn BKA2',
+    description:
+      'Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
+    height: '20',
+    length: '20',
+    capacity: '20000',
+    status: LIST_STATUS.ACTIVE,
+    product_name: 'RON 94'
   },
   {
-    code: 'ST02',
-    name: 'Sun Oil 02',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  },
-  {
-    code: 'ST03',
-    name: 'Sun Oil 03',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: false
-  },
-  {
-    code: 'ST04',
-    name: 'Sun Oil 04',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  },
-  {
-    code: 'ST05',
-    name: 'Sun Oil 05',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
+    code: 'SBBKA1',
+    name: 'Bồn BKA1',
+    description: 'To',
+    height: '10',
+    length: '10',
+    capacity: '10000',
+    status: LIST_STATUS.INACTIVE,
+    product_name: 'RON 95'
   }
 ];
 
@@ -40,25 +54,62 @@ const ELEMENT_DATA: PeriodicElement[] = [
   selector: 'app-step2',
   templateUrl: './step2.component.html',
   styleUrls: ['./step2.component.scss'],
-  providers: [SortService]
+  providers: [SortService, FilterService, DestroyService]
 })
 export class Step2Component implements OnInit {
+  listStatus = LIST_STATUS;
+
   @Output() stepSubmitted = new EventEmitter();
-  dataSource: PeriodicElement[] = ELEMENT_DATA;
+  dataSource: ListGasTankResponse[] = DATA_FAKE;
+  dataSourceTemp: ListGasTankResponse[] = DATA_FAKE;
   sorting: SortState;
-  constructor(private sortService: SortService<PeriodicElement>) {
+  searchFormControl: FormControl;
+  filterField: FilterField<{
+    code: string;
+    name: string;
+    location: string;
+    status: string;
+  }>;
+  constructor(
+    private sortService: SortService<ListGasTankResponse>,
+    private filterService: FilterService<ListGasTankResponse>,
+    private destroy$: DestroyService,
+    private cdr: ChangeDetectorRef,
+    private modalService: NgbModal
+  ) {
     this.sorting = sortService.sorting;
+    this.filterField = new FilterField({
+      code: null,
+      name: null,
+      location: null,
+      status: null
+    });
+    this.searchFormControl = new FormControl();
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    // Filter
+    this.searchFormControl.valueChanges
+      .pipe(debounceTime(500), takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value.trim()) {
+          this.filterField.setFilterFieldValue(value);
+        } else {
+          this.filterField.setFilterFieldValue(null);
+        }
+        // Set data after filter and apply current sorting
+        this.dataSource = this.sortService.sort(
+          this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+        );
+        this.cdr.detectChanges();
+      });
+  }
+
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
   }
 
-  submit() {
-    this.stepSubmitted.next({
-      currentStep: 2,
-      step2: null
-    });
+  openCreateModal() {
+    this.modalService.open(CreateGasBinComponent, { size: 'xl' });
   }
 }

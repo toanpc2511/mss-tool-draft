@@ -11,9 +11,10 @@
             type="text"
             class="form-control form-control-lg form-control-solid mb-2"
             name="firstName"
-            placeholder="Nhập tên trạm"
+            placeholder="Nhập mã trạm"
             autocomplete="off"
             formControlName="code"
+            maxlength="100"
           />
           <app-validate
             [control]="stationForm.controls['code']"
@@ -40,6 +41,7 @@
             placeholder="Nhập tên trạm"
             autocomplete="off"
             formControlName="name"
+            maxlength="100"
           />
           <app-validate
             [control]="stationForm.controls['name']"
@@ -60,6 +62,7 @@
             placeholder="Nhập địa chỉ"
             autocomplete="off"
             formControlName="location"
+            maxlength="100"
           />
         </div>
       </div>
