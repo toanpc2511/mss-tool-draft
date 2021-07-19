@@ -1,9 +1,10 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CanActiveStepPipe } from '../gas-station.pipe';
 import { GasStationService, StepData } from '../gas-station.service';
+
 
 @Component({
   selector: 'app-create-station',
