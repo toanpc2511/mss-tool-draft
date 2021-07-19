@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { DataPush } from '../models/data-push.model';
@@ -56,7 +56,7 @@ export class HttpService {
     }
   ): Observable<DataResponse<T>> {
     const bodyOrigin = new DataPush(body);
-    return this.httpClient.post(`${this.apiUrl}/${endPoint}`, bodyOrigin, options).pipe(
+    return this.httpClient.post(`${this.apiUrl}/${endPoint}`, bodyOrigin.data, options).pipe(
       switchMap((response) => {
         const res = new DataResponse<T>(response);
         return of(res);

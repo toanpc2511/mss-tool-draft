@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
+import { DirectivesModule } from 'src/app/shared/directives/directives.module';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { CreateStationComponent } from './create-station/create-station.component';
 import { Step1Component } from './create-station/step1/step1.component';
@@ -40,7 +41,7 @@ import { ListStationComponent } from './list-station/list-station.component';
     InlineSVGModule,
     NgbTooltipModule,
     ReactiveFormsModule,
-    SharedComponentsModule
+    SharedComponentsModule,
   ]
 })
 export class GasStationModule {}

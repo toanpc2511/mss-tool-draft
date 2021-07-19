@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { orderBy, sortBy } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -51,14 +50,14 @@ export class Step3Component implements OnInit {
 
   ngOnInit(): void {
     // Get data
-    // this.gasStationService
-    //   .getPumpPolesByGasStation(1)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((res) => {
-    //     if (res.data) {
-    //       this.dataSource = this.dataSourceTemp = res.data;
-    //     }
-    //   });
+    this.gasStationService
+      .getPumpPolesByGasStation(1)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res.data) {
+          this.dataSource = this.dataSourceTemp = res.data;
+        }
+      });
 
     // Filter
     this.searchFormControl.valueChanges
@@ -84,7 +83,7 @@ export class Step3Component implements OnInit {
 
   create() {
     if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
-      return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+      // return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(PumpPoleModalComponent, {
       backdrop: 'static',
