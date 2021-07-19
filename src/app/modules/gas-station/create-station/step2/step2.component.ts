@@ -5,38 +5,38 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-import { PeriodicElement } from '../../list-station/list-station.component';
 
-const ELEMENT_DATA: PeriodicElement[] = [
+export interface ListGasTankResponse {
+  code: string;
+  name: string;
+  description: string;
+  height: string;
+  length: string;
+  capacity: string;
+  status: string;
+  product_name: string;
+}
+export const DATA_FAKE = [
   {
-    code: 'ST01',
-    name: 'Sun Oil 01',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
+    code: 'SBBKA2',
+    name: 'Bồn BKA2',
+    description:
+      'Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
+    height: '20',
+    length: '20',
+    capacity: '20000',
+    status: 'ACTIVE',
+    product_name: 'RON 94'
   },
   {
-    code: 'ST02',
-    name: 'Sun Oil 02',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  },
-  {
-    code: 'ST03',
-    name: 'Sun Oil 03',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: false
-  },
-  {
-    code: 'ST04',
-    name: 'Sun Oil 04',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  },
-  {
-    code: 'ST05',
-    name: 'Sun Oil 05',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
+    code: 'SBBKA1',
+    name: 'Bồn BKA1',
+    description: 'To',
+    height: '10',
+    length: '10',
+    capacity: '10000',
+    status: 'ACTIVE',
+    product_name: 'RON 95'
   }
 ];
 
@@ -48,8 +48,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class Step2Component implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
-  dataSource: PeriodicElement[] = ELEMENT_DATA;
-  dataSourceTemp: PeriodicElement[] = ELEMENT_DATA;
+  dataSource: ListGasTankResponse[] = DATA_FAKE;
+  dataSourceTemp: ListGasTankResponse[] = DATA_FAKE;
   sorting: SortState;
   searchFormControl: FormControl;
   filterField: FilterField<{
@@ -59,8 +59,8 @@ export class Step2Component implements OnInit {
     status: string;
   }>;
   constructor(
-    private sortService: SortService<PeriodicElement>,
-    private filterService: FilterService<PeriodicElement>,
+    private sortService: SortService<ListGasTankResponse>,
+    private filterService: FilterService<ListGasTankResponse>,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef
   ) {

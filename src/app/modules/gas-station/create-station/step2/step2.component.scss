@@ -3,8 +3,9 @@ table thead th {
 }
 
 table {
-  .location {
-    max-width: 350px;
+  min-width: 1024px;
+  .description {
+    max-width: 100px;
   }
 }
 

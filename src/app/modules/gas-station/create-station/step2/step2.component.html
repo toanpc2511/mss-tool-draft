@@ -100,30 +100,32 @@
           <th class="text-center">Tác động</th>
         </thead>
         <tbody>
-          <tr *ngFor="let station of dataSource">
+          <tr *ngFor="let item of dataSource">
             <td>
-              <span class="cursor-pointer" placement="top" [ngbTooltip]="station.code">{{
-                station.code
-              }}</span>
+              <span class="cursor-pointer" placement="top">{{ item.code }}</span>
             </td>
-            <td>{{ station.name }}</td>
-            <td class="location">
+            <td>{{ item.name }}</td>
+            <td>{{ item.height }}</td>
+            <td>{{ item.length }}</td>
+            <td>{{ item.capacity }}</td>
+            <td>{{ item.product_name }}</td>
+            <td class="description">
               <p
                 class="cursor-pointer text-ellipsis"
                 placement="top"
-                [ngbTooltip]="station.location"
+                [ngbTooltip]="item.description"
               >
-                fdfdf
+                {{ item.description }}
               </p>
             </td>
             <td>
               <span
                 class="label label-lg label-inline"
-                [class.label-light-success]="station.status"
-                [class.label-light-danger]="!station.status"
+                [class.label-light-success]="item.status"
+                [class.label-light-danger]="!item.status"
               >
-                <ng-container *ngIf="station.status">Hoạt động</ng-container>
-                <ng-container *ngIf="!station.status">Không hoạt động</ng-container>
+                <ng-container *ngIf="item.status">Hoạt động</ng-container>
+                <ng-container *ngIf="!item.status">Không hoạt động</ng-container>
               </span>
             </td>
 
