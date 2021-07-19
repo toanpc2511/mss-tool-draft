@@ -11,10 +11,15 @@ import Swal from 'sweetalert2';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private toastr: ToastrService) {}
+  constructor(
+    private router: Router,
+    private toastr: ToastrService,
+    private authService: AuthService
+  ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
@@ -32,7 +37,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
 
         if (err.status === 401) {
-          this.router.navigate(['/auth/login']);
+          this.authService.logout();
         }
 
         const error = err.error.error;

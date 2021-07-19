@@ -73,7 +73,7 @@ export class AuthService {
   login(username: string, password: string) {
     this.setIsLoadingValue(true);
     return this.http
-      .post<UserModel>('accounts/login', {
+      .post<any>('accounts/login', {
         username,
         password
       })
