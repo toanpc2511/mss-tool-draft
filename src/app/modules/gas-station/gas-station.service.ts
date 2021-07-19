@@ -14,6 +14,22 @@ export interface IStep2Data {}
 export interface IStep3Data {}
 
 export interface IStep4Data {}
+
+export interface IPumpPole {
+  code: string;
+  description: string;
+  id: number;
+  name: string;
+  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+}
+
+export interface IPumpPoleCreate {
+  code: string;
+  description: string;
+  gasStationId: number;
+  name: string;
+  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+}
 export class StepData {
   currentStep: number;
   step1: IStepData<IStep1Data>;
@@ -25,6 +41,10 @@ export class StepData {
   providedIn: 'root'
 })
 export class GasStationService {
+  // Global
+  gasStationId: number;
+  gasStationStatus: boolean;
+
   // List gas station
 
   // Create gas station
@@ -66,6 +86,13 @@ export class GasStationService {
   // Step 2
 
   // Step 3
+  getPumpPolesByGasStation(gasStationId) {
+    return this.http.get<Array<IPumpPole>>(`pump-poles/${gasStationId}`);
+  }
+
+  createPumpPole(pumpPole: IPumpPoleCreate) {
+    return this.http.post<any>(`pump-poles`, pumpPole);
+  }
 
   // Step 4
 }

@@ -171,6 +171,17 @@ input[type='number'] {
   }
 }
 
+.form-label.required::after {
+  content: ' (*)';
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0px;
+  text-align: right;
+  color: #f64e60;
+}
+
 // .form-control.ng-invalid.ng-touched,
 // .form-control.ng-invalid.ng-dirty {
 //   border: 1px solid #ee2d41;

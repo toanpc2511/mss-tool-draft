@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
@@ -71,7 +72,8 @@ export class ListStationComponent implements OnInit {
     private sortService: SortService<PeriodicElement>,
     private filterService: FilterService<PeriodicElement>,
     private destroy$: DestroyService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
@@ -103,5 +105,9 @@ export class ListStationComponent implements OnInit {
 
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
+  }
+
+  goToCreateGasStation() {
+    this.router.navigate(['/tram-xang/them-tram-xang']);
   }
 }
