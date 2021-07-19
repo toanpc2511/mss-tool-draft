@@ -7,12 +7,12 @@ import { TValidators } from 'src/app/shared/validators';
 import { GasStationService, IPumpPole, IPumpPoleCreate } from '../../../gas-station.service';
 
 @Component({
-  selector: 'app-pump-pole-modal',
-  templateUrl: './pump-pole-modal.component.html',
-  styleUrls: ['./pump-pole-modal.component.scss'],
+  selector: 'app-pump-hose-modal',
+  templateUrl: './pump-hose-modal.component.html',
+  styleUrls: ['./pump-hose-modal.component.scss'],
   providers: [DestroyService]
 })
-export class PumpPoleModalComponent implements OnInit {
+export class PumpHoseModalComponent implements OnInit {
   @Input() data: IPumpPole;
   pumpPoleForm: FormGroup;
   constructor(

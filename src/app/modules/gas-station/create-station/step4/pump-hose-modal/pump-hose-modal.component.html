@@ -1,0 +1,101 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        <ng-container *ngIf="data">Sửa</ng-container>
+        <ng-container *ngIf="!data">Thêm</ng-container>
+        cột
+      </div>
+      <div class="close-icon" (click)="modal.dismiss()"></div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+      <!-- <ng-container *ngIf="isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container> -->
+  
+      <form action="#" class="form form-label-right" [formGroup]="pumpPoleForm">
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class="form-label required">Mã cột</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="Nhập mã cột"
+              autocomplete="off"
+              formControlName="code"
+              maxlength="100"
+            />
+            <app-validate
+              [control]="pumpPoleForm.controls['code']"
+              [error]="'required'"
+              [message]="'Mã cột không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="pumpPoleForm.controls['code']"
+              [error]="'pattern'"
+              [message]="'Mã cột không đúng định dạng'"
+            ></app-validate>
+          </div>
+          <div class="col-lg-6">
+            <label class="form-label required">Tên cột</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="Nhập tên cột"
+              autocomplete="off"
+              formControlName="name"
+              maxlength="100"
+            />
+            <app-validate
+              [control]="pumpPoleForm.controls['name']"
+              [error]="'required'"
+              [message]="'Tên cột không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class="form-label">Mô tả</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="Nhập mô tả"
+              autocomplete="off"
+              formControlName="description"
+              maxlength="200"
+            />
+            <app-validate
+              [control]="pumpPoleForm.controls['description']"
+              [error]="'required'"
+              [message]="'Mô tả không được để trống'"
+            ></app-validate>
+          </div>
+          <div class="col-lg-6">
+            <label class="form-label required">Trạng thái</label>
+            <select
+              class="form-control form-control-lg form-control-solid"
+              name="type"
+              formControlName="status"
+              [value]="'ACTIVE'"
+            >
+              <option value="ACTIVE">Hoạt động</option>
+              <option value="DEACTIVE">Không hoạt động</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-elevate mr-2"
+        (click)="modal.dismiss()"
+      >
+        Hủy
+      </button>
+  
+      <button type="submit" class="btn btn-primary btn-elevate" (click)="submit()">Lưu</button>
+    </div>
+  </div>
+  

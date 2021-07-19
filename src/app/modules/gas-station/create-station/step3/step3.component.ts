@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -34,7 +35,8 @@ export class Step3Component implements OnInit {
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
     private gasStationService: GasStationService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {
     this.stepSubmitted = new EventEmitter();
     this.dataSource = this.dataSourceTemp = [];
@@ -92,18 +94,19 @@ export class Step3Component implements OnInit {
     modalRef.result.then((res) => {});
   }
 
-  update() {
+  update() {}
 
-  }
-
-  delete() {
-    
-  }
+  delete() {}
 
   submit() {
     this.stepSubmitted.next({
       currentStep: 3,
       step3: null
     });
+  }
+
+  back() {
+    const currentStepData = this.gasStationService.getStepDataValue();
+    this.gasStationService.setStepData({ ...currentStepData, currentStep: 2 });
   }
 }
