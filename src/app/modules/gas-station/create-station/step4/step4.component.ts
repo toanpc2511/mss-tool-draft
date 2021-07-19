@@ -102,4 +102,9 @@ export class Step4Component implements OnInit {
       step4: null
     });
   }
+
+  back() {
+    const currentStepData = this.gasStationService.getStepDataValue();
+    this.gasStationService.setStepData({ ...currentStepData, currentStep: 3 });
+  }
 }

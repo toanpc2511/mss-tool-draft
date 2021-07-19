@@ -7,6 +7,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
+import { GasStationService } from '../../gas-station.service';
 import { CreateGasBinComponent } from './create-gas-bin/create-gas-bin.component';
 
 export interface ListGasTankResponse {
@@ -75,7 +76,8 @@ export class Step2Component implements OnInit {
     private filterService: FilterService<ListGasTankResponse>,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private gasStationService: GasStationService
   ) {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
@@ -111,5 +113,18 @@ export class Step2Component implements OnInit {
 
   openCreateModal() {
     this.modalService.open(CreateGasBinComponent, { size: 'xl' });
+  }
+
+  onSubmit() {
+    // Đưa vào subscribe
+    this.stepSubmitted.next({
+      currentStep: 2,
+      step2: null
+    });
+  }
+
+  back() {
+    const currentStepData = this.gasStationService.getStepDataValue();
+    this.gasStationService.setStepData({ ...currentStepData, currentStep: 1 });
   }
 }
