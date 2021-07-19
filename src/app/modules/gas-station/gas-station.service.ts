@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpService } from 'src/app/shared/services/http.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class GasStationService {
 
   // Step 4
 
-  constructor() {}
+  constructor(private http: HttpService) {}
 
   // List gas station
 
