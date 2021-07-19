@@ -11,7 +11,8 @@ import { Step3Component } from './create-station/step3/step3.component';
 import { Step4Component } from './create-station/step4/step4.component';
 import { CreateStationComponent } from './create-station/create-station.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { SortService } from 'src/app/shared/services/sort.service';
+import { CanActiveStepPipe } from './gas-station.pipe';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,10 +22,12 @@ import { SortService } from 'src/app/shared/services/sort.service';
     Step1Component,
     Step2Component,
     Step3Component,
-    Step4Component
+    Step4Component,
+    CanActiveStepPipe
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     GasStationRoutingModule,
     CRUDTableModule,
     InlineSVGModule,

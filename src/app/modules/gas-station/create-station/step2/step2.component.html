@@ -1,113 +1,114 @@
-<div class="pb-5">
-  <h4 class="mb-10 font-weight-bold text-dark">Danh sách bồn</h4>
-  <div class="card card-custom gutter-b">
-    <div class="card-header">
-      <div class="card-toolbar">
-        <button type="button" class="btn btn-primary" [routerLink]="['/tram-xang/them-tram-xang']">
-          Thêm mới
-        </button>
-      </div>
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách trạm</h3>
     </div>
-    <div class="card-body">
-      <div class="table-responsive angular-bootstrap-table">
-        <table class="table table-head-custom table-vertical-center overflow-hidden">
-          <thead>
-            <th>
-              Mã bồn
-              <app-sort-icon
-                column="code"
-                [activeColumn]="sorting.column"
-                [activeDirection]="sorting.direction"
-                (sort)="sort($event)"
-              ></app-sort-icon>
-            </th>
-            <th>
-              Tên bồn
-              <app-sort-icon column="name"></app-sort-icon>
-            </th>
-            <th>
-              Chiều cao
-              <app-sort-icon column="location"></app-sort-icon>
-            </th>
-            <th>
-              Chiều dài
-              <app-sort-icon column="Status"></app-sort-icon>
-            </th>
-            <th>
-              Dung tích
-              <app-sort-icon column="Status"></app-sort-icon>
-            </th>
-            <th>
-              Loại nhiên liệu
-              <app-sort-icon column="Status"></app-sort-icon>
-            </th>
-            <th>
-              Mô tả
-              <app-sort-icon column="Status"></app-sort-icon>
-            </th>
-            <th>
-              Trạng thái
-              <app-sort-icon column="Status"></app-sort-icon>
-            </th>
-            <th class="text-center">Tác động</th>
-          </thead>
-          <tbody>
-            <tr *ngFor="let product of dataSource">
-              <td class="text-ellipsis">
-                <span class="cursor-pointer" placement="top" ngbTooltip="Tooltip on top">{{
-                  product.code
-                }}</span>
-              </td>
-              <td class="text-ellipsis">
-                <span class="cursor-pointer" placement="top" ngbTooltip="Tooltip on top">{{
-                  product.code
-                }}</span>
-              </td>
-              <td class="text-ellipsis">{{ product.location }}</td>
-              <td class="text-ellipsis">{{ product.location }}</td>
-              <td class="text-ellipsis">{{ product.location }}</td>
-              <td class="text-ellipsis">{{ product.location }}</td>
-              <td class="text-ellipsis">{{ product.location }}</td>
-              <td>
-                <span
-                  class="label label-lg label-inline"
-                  [class.label-light-success]="product.status"
-                  [class.label-light-danger]="!product.status"
-                >
-                  <ng-container *ngIf="product.status">Hoạt động</ng-container>
-                  <ng-container *ngIf="!product.status">Không hoạt động</ng-container>
-                </span>
-              </td>
 
-              <td class="text-center">
-                <a
-                  title="Edit product"
-                  class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-                >
-                  <span
-                    [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
-                    cacheSVG="true"
-                    class="svg-icon svg-icon-md svg-icon-primary"
-                  >
-                  </span>
-                </a>
-                <a title="Delete product" class="btn btn-icon btn-light btn-hover-danger btn-sm">
-                  <span
-                    [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
-                    cacheSVG="true"
-                    class="svg-icon svg-icon-md svg-icon-danger"
-                  >
-                  </span>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="card-toolbar custom-toolbar">
+      <div class="search-form form-control">
+        <span class="search-form__icon"><i class="flaticon-search"></i></span>
+        <input type="text" name="searchText" placeholder="Search..." value="" />
       </div>
+      <button type="button" class="btn btn-primary" [routerLink]="['/tram-xang/them-tram-xang']">
+        Thêm mới
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden">
+        <thead>
+          <th>
+            Mã trạm
+            <app-sort-icon
+              column="code"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Tên trạm
+            <app-sort-icon
+              column="name"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Địa chỉ
+            <app-sort-icon
+              column="location"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Trạng thái
+            <app-sort-icon
+              column="status"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th class="text-center">Tác động</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let station of dataSource">
+            <td>
+              <span class="cursor-pointer" placement="top" [ngbTooltip]="station.code">{{
+                station.code
+              }}</span>
+            </td>
+            <td>{{ station.name }}</td>
+            <td class="location">
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="station.location"
+              >
+                {{ station.location }}
+              </p>
+            </td>
+            <td>
+              <span
+                class="label label-lg label-inline"
+                [class.label-light-success]="station.status"
+                [class.label-light-danger]="!station.status"
+              >
+                <ng-container *ngIf="station.status">Hoạt động</ng-container>
+                <ng-container *ngIf="!station.status">Không hoạt động</ng-container>
+              </span>
+            </td>
+
+            <td class="text-center">
+              <a title="Edit product" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                >
+                </span>
+              </a>
+              <a title="Delete product" class="btn btn-icon btn-light btn-hover-danger btn-sm">
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-danger"
+                >
+                </span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <div class="w-100 d-flex justify-content-center">
     <button class="btn btn-outline-secondary font-weight-bold m-2">Quay lại</button>
-    <button class="btn btn-primary font-weight-bold m-2">Lưu và tiếp tục</button>
+    <button class="btn btn-primary font-weight-bold m-2" (click)="submit()">Lưu và tiếp tục</button>
   </div>
 </div>

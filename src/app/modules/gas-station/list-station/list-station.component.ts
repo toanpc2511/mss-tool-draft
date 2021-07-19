@@ -70,7 +70,7 @@ export class ListStationComponent {
   ) {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
-      code: 'ST05',
+      code: null,
       name: null,
       location: null,
       status: null

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { GasStationService, IStep1Data, StepData } from '../../gas-station.service';
 
 @Component({
   selector: 'app-step1',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./step1.component.scss']
 })
 export class Step1Component implements OnInit {
+  @Output() stepSubmitted = new EventEmitter();
+  constructor(private gasStationService: GasStationService) {}
 
-  constructor() { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
+  submit() {
+    this.stepSubmitted.next({
+      currentStep: 1,
+      step1: null
+    });
   }
-
 }
