@@ -25,11 +25,17 @@
             autocomplete="off"
             formControlName="code"
             maxlength="100"
+            (input)="inputCode($event)"
           />
           <app-validate
             [control]="pumpPoleForm.controls['code']"
             [error]="'required'"
             [message]="'Mã cột không được để trống'"
+          ></app-validate>
+          <app-validate
+            [control]="pumpPoleForm.controls['code']"
+            [error]="'pattern'"
+            [message]="'Mã cột không đúng định dạng'"
           ></app-validate>
         </div>
         <div class="col-lg-6">
@@ -82,7 +88,11 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary btn-elevate mr-2" (click)="modal.dismiss()">
+    <button
+      type="button"
+      class="btn btn-outline-secondary btn-elevate mr-2"
+      (click)="modal.dismiss()"
+    >
       Hủy
     </button>
 

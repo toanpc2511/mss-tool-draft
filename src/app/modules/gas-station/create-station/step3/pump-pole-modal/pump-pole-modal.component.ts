@@ -23,7 +23,7 @@ export class PumpPoleModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.pumpPoleForm = this.fb.group({
-      code: ['SC', Validators.compose([Validators.required])],
+      code: ['SC', Validators.compose([Validators.required, Validators.pattern(/^[A-Za-z0-9]*$/)])],
       description: [null],
       name: [null, Validators.compose([Validators.required])],
       status: 'ACTIVE'
@@ -48,5 +48,21 @@ export class PumpPoleModalComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
       });
+  }
+
+  inputCode($event: Event) {
+    // Validate space
+    const element = $event.target as HTMLInputElement;
+
+    if (!element.value.trim()) {
+      this.pumpPoleForm.controls.code.setErrors({ required: true });
+    } else {
+      this.pumpPoleForm.controls.code.setErrors({ required: null });
+      if (!RegExp(/^[A-Za-z0-9]*$/).test(element.value)) {
+        this.pumpPoleForm.controls.code.setErrors({ pattern: true });
+      } else {
+        this.pumpPoleForm.controls.code.setErrors({ pattern: null });
+      }
+    }
   }
 }
