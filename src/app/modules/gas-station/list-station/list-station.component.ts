@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
@@ -51,12 +53,13 @@ const ELEMENT_DATA: PeriodicElement[] = [
   selector: 'app-list-station',
   styleUrls: ['list-station.component.scss'],
   templateUrl: 'list-station.component.html',
-  providers: [SortService, FilterService]
+  providers: [SortService, FilterService, DestroyService]
 })
-export class ListStationComponent {
+export class ListStationComponent implements OnInit {
   dataSource: PeriodicElement[] = ELEMENT_DATA;
   dataSourceTemp: PeriodicElement[] = ELEMENT_DATA;
   sorting: SortState;
+  searchFormControl: FormControl;
   filterField: FilterField<{
     code: string;
     name: string;
@@ -66,7 +69,9 @@ export class ListStationComponent {
 
   constructor(
     private sortService: SortService<PeriodicElement>,
-    private filterService: FilterService<PeriodicElement>
+    private filterService: FilterService<PeriodicElement>,
+    private destroy$: DestroyService,
+    private cdr: ChangeDetectorRef
   ) {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
@@ -75,19 +80,28 @@ export class ListStationComponent {
       location: null,
       status: null
     });
+    this.searchFormControl = new FormControl();
+  }
+
+  ngOnInit() {
+    // Filter
+    this.searchFormControl.valueChanges
+      .pipe(debounceTime(500), takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value.trim()) {
+          this.filterField.setFilterFieldValue(value);
+        } else {
+          this.filterField.setFilterFieldValue(null);
+        }
+        // Set data after filter and apply current sorting
+        this.dataSource = this.sortService.sort(
+          this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+        );
+        this.cdr.detectChanges();
+      });
   }
 
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
-  }
-
-  filter($event: Event) {
-    const inputElement = $event.target as HTMLInputElement;
-    if (inputElement.value.trim()) {
-      this.filterField.setFilterFieldValue(inputElement.value);
-    } else {
-      this.filterField.setFilterFieldValue(null);
-    }
-    this.dataSource = this.filterService.filter(this.dataSourceTemp, this.filterField.field);
   }
 }
