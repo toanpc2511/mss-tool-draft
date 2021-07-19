@@ -1,18 +1,33 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { DataResponse } from 'src/app/shared/models/data-response.model';
-import { environment } from 'src/environments/environment';
+import { HttpService } from 'src/app/shared/services/http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GasStationService {
-  apiUrl = environment.apiUrl;
+  // List gas station
 
-  constructor(private http: HttpClient) {}
+  // Create gas station
 
-  getGasStation(): Observable<DataResponse<any>> {
-    return this.http.get<DataResponse<any>>(`${this.apiUrl}/gas-stations`);
-  }
+  // Step 1
+
+  // Step 2
+
+  // Step 3
+
+  // Step 4
+
+  constructor(private http: HttpService) {}
+
+  // List gas station
+
+  // Create gas station
+
+  // Step 1
+
+  // Step 2
+
+  // Step 3
+
+  // Step 4
 }
