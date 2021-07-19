@@ -12,7 +12,7 @@
           name="searchText"
           placeholder="Search..."
           value=""
-          (input)="filter($event)"
+          [formControl]="searchFormControl"
         />
       </div>
       <button type="button" class="btn btn-primary" [routerLink]="['/tram-xang/them-tram-xang']">
