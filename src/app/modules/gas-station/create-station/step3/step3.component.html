@@ -4,18 +4,22 @@
       <h3 class="card-label">Danh sách cột</h3>
     </div>
 
-    <div class="card-toolbar custom-toolbar">
-      <div class="search-form form-control">
-        <span class="search-form__icon"><i class="flaticon-search"></i></span>
+    <div class="card-toolbar row">
+      <div class="search-form">
+        <i class="flaticon-search"></i>
         <input
           type="text"
           name="searchText"
           placeholder="Search..."
-          value=""
+          class="form-control"
           [formControl]="searchFormControl"
         />
       </div>
-      <button type="button" class="btn btn-primary" [routerLink]="['/tram-xang/them-tram-xang']">
+      <button
+        type="button"
+        class="btn btn-primary"
+        [routerLink]="['/tram-xang/them-tram-xang']"
+      >
         Thêm mới
       </button>
     </div>
