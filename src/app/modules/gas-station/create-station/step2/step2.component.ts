@@ -7,6 +7,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
+import { GasStationService } from '../../gas-station.service';
 import { CreateGasBinComponent } from './create-gas-bin/create-gas-bin.component';
 
 export interface ListGasTankResponse {
@@ -75,7 +76,8 @@ export class Step2Component implements OnInit {
     private filterService: FilterService<ListGasTankResponse>,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private gasStationService: GasStationService
   ) {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
@@ -103,6 +105,8 @@ export class Step2Component implements OnInit {
         );
         this.cdr.detectChanges();
       });
+
+    this.gasStationService.getListGasBin('2').subscribe(console.log);
   }
 
   sort(column: string) {

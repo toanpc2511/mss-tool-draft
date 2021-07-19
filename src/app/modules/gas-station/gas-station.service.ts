@@ -1,6 +1,8 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { environment } from 'src/environments/environment';
 
 export interface IStepData<T> {
   isValid: boolean;
@@ -84,6 +86,9 @@ export class GasStationService {
   // Step 1
 
   // Step 2
+  getListGasBin(gasStationId: string) {
+    return this.http.get(`gas-fields/${gasStationId}`);
+  }
 
   // Step 3
   getPumpPolesByGasStation(gasStationId) {
