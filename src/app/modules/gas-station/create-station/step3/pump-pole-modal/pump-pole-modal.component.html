@@ -1,134 +1,101 @@
 <div class="modal-content">
   <div class="modal-header">
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
-      <ng-container *ngIf="true">
-        <ng-container>Edit</ng-container>
-        <ng-container>Create</ng-container>
-        Pump hole
-      </ng-container>
+      <ng-container *ngIf="data">Sửa</ng-container>
+      <ng-container *ngIf="!data">Thêm</ng-container>
+      cột
     </div>
     <div class="close-icon" (click)="modal.dismiss()"></div>
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
-    <ng-container *ngIf="isLoading$ | async">
+    <!-- <ng-container *ngIf="isLoading$ | async">
       <div class="overlay-layer bg-transparent">
         <div class="spinner spinner-lg spinner-success"></div>
       </div>
-    </ng-container>
+    </ng-container> -->
 
-    <form action="#" class="form form-label-right">
+    <form action="#" class="form form-label-right" [formGroup]="pumpPoleForm">
       <div class="form-group row">
-        <div class="col-lg-4">
-          <label class="form-label">Enter First name</label>
+        <div class="col-lg-6">
+          <label class="form-label required">Mã cột</label>
           <input
             type="text"
             class="form-control form-control-lg form-control-solid"
-            name="firstName"
-            placeholder="First Name"
+            placeholder="Nhập mã cột"
             autocomplete="off"
+            formControlName="code"
+            maxlength="100"
+            (input)="inputCode($event)"
           />
-          <div class="valid-feedback">First name was entered correct</div>
-          <div class="invalid-feedback">First name is required</div>
-          <div class="invalid-feedback">First name should have at least 3 symbols</div>
-          <div class="invalid-feedback">First name should have maximum 100 symbols</div>
+          <app-validate
+            [control]="pumpPoleForm.controls['code']"
+            [error]="'required'"
+            [message]="'Mã cột không được để trống'"
+          ></app-validate>
+          <app-validate
+            [control]="pumpPoleForm.controls['code']"
+            [error]="'pattern'"
+            [message]="'Mã cột không đúng định dạng'"
+          ></app-validate>
         </div>
-        <div class="col-lg-4">
-          <label class="form-label">Enter Last name</label>
-          <input
-            type="text"
-            class="form-control form-control-lg form-control-solid is-invalid"
-            name="lastName"
-            placeholder="Last Name"
-            autocomplete="off"
-          />
-        </div>
-        <div class="col-lg-4">
-          <label class="form-label">Enter Login</label>
+        <div class="col-lg-6">
+          <label class="form-label required">Tên cột</label>
           <input
             type="text"
             class="form-control form-control-lg form-control-solid"
-            name="userName"
-            placeholder="Login"
+            placeholder="Nhập tên cột"
             autocomplete="off"
+            formControlName="name"
+            maxlength="100"
           />
-          <div class="valid-feedback">Login was entered correct</div>
-          <div class="invalid-feedback">Login is required</div>
+          <app-validate
+            [control]="pumpPoleForm.controls['name']"
+            [error]="'required'"
+            [message]="'Tên cột không được để trống'"
+          ></app-validate>
         </div>
       </div>
       <div class="form-group row">
-        <div class="col-lg-4">
-          <label class="form-label">Enter Email</label>
-          <input
-            type="email"
-            class="form-control form-control-lg form-control-solid"
-            name="email"
-            placeholder="Email"
-            autocomplete="off"
-          />
-          <div class="valid-feedback">Email was entered correct</div>
-          <div class="invalid-feedback">Email is required</div>
-          <div class="invalid-feedback">Email format is incorrect</div>
-        </div>
-        <div class="col-lg-4">
-          <label>Date of Birth</label>
-          <div class="input-group input-group-solid">
-            <input
-              type="text"
-              name="dob"
-              class="form-control form-control-lg form-control-solid"
-              autocomplete="off"
-              placeholder="dd/mm/yyyy"
-              ngbDatepicker
-              readonly="true"
-            />
-            <div class="input-group-append">
-              <span class="input-group-text">
-                <i class="text-dark-50 flaticon-calendar"></i>
-              </span>
-            </div>
-          </div>
-          <div class="valid-feedback">Date of Birth was entered correct</div>
-          <div class="invalid-feedback">
-            Please enter <b>Date of Birth</b> in 'mm/dd/yyyy' format
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <label class="form-label">Enter IP Address</label>
+        <div class="col-lg-6">
+          <label class="form-label">Mô tả</label>
           <input
             type="text"
             class="form-control form-control-lg form-control-solid"
-            name="ipAddress"
-            placeholder="255.255.255.0"
+            placeholder="Nhập mô tả"
             autocomplete="off"
+            formControlName="description"
+            maxlength="200"
           />
-          <div class="valid-feedback">Login was entered correct</div>
+          <app-validate
+            [control]="pumpPoleForm.controls['description']"
+            [error]="'required'"
+            [message]="'Mô tả không được để trống'"
+          ></app-validate>
         </div>
-      </div>
-      <div class="form-group row">
-        <div class="col-lg-4">
-          <label>Select Gender</label>
-          <select class="form-control form-control-lg form-control-solid" name="gender">
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
+        <div class="col-lg-6">
+          <label class="form-label required">Trạng thái</label>
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="type"
+            formControlName="status"
+            [value]="'ACTIVE'"
+          >
+            <option value="ACTIVE">Hoạt động</option>
+            <option value="DEACTIVE">Không hoạt động</option>
           </select>
-          <div class="feedback">Please select <b>Gender</b></div>
-        </div>
-        <div class="col-lg-4">
-          <label>Select Type</label>
-          <select class="form-control form-control-lg form-control-solid" name="type">
-            <option value="1">Business</option>
-            <option value="2">Individual</option>
-          </select>
-          <div class="feedback">Please select <b>Type</b></div>
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">
-      Cancel
+    <button
+      type="button"
+      class="btn btn-outline-secondary btn-elevate mr-2"
+      (click)="modal.dismiss()"
+    >
+      Hủy
     </button>
 
-    <button type="submit" class="btn btn-primary btn-elevate">Save</button>
+    <button type="submit" class="btn btn-primary btn-elevate" (click)="submit()">Lưu</button>
   </div>
 </div>

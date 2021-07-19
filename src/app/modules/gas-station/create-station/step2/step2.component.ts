@@ -112,4 +112,12 @@ export class Step2Component implements OnInit {
   openCreateModal() {
     this.modalService.open(CreateGasBinComponent, { size: 'xl' });
   }
+
+  onSubmit() {
+    // Đưa vào subscribe
+    this.stepSubmitted.next({
+      currentStep: 2,
+      step2: null
+    });
+  }
 }

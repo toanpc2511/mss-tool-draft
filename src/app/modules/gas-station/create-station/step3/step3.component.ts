@@ -1,52 +1,14 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { orderBy, sortBy } from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
+import { GasStationService, IPumpPole } from '../../gas-station.service';
 import { PumpPoleModalComponent } from './pump-pole-modal/pump-pole-modal.component';
-export interface PeriodicElement {
-  code: string;
-  name: string;
-  description: string;
-  status: boolean;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    code: 'ST05',
-    name: 'Sun Oil 01',
-    description: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  },
-  {
-    code: 'ST002',
-    name: 'Sun Oil 02',
-    description: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  },
-  {
-    code: 'ST004',
-    name: 'Sun Oil 04',
-    description: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: false
-  },
-  {
-    code: 'ST03',
-    name: 'Sun Oil 03',
-    description: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  },
-  {
-    code: 'ST01',
-    name: 'Sun Oil 01',
-    description: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  }
-];
 @Component({
   selector: 'app-step3',
   templateUrl: './step3.component.html',
@@ -55,9 +17,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class Step3Component implements OnInit {
   @Output() stepSubmitted: EventEmitter<any>;
-  periodicElement: PeriodicElement;
-  dataSource: PeriodicElement[];
-  dataSourceTemp: PeriodicElement[];
+  dataSource: Array<IPumpPole>;
+  dataSourceTemp: Array<IPumpPole>;
   sorting: SortState;
   searchFormControl: FormControl;
   filterField: FilterField<{
@@ -67,14 +28,16 @@ export class Step3Component implements OnInit {
     status: string;
   }>;
   constructor(
-    private filterService: FilterService<PeriodicElement>,
-    private sortService: SortService<PeriodicElement>,
+    private filterService: FilterService<IPumpPole>,
+    private sortService: SortService<IPumpPole>,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private gasStationService: GasStationService,
+    private toastr: ToastrService
   ) {
     this.stepSubmitted = new EventEmitter();
-    this.dataSource = this.dataSourceTemp = ELEMENT_DATA;
+    this.dataSource = this.dataSourceTemp = [];
     this.sorting = sortService.sorting;
     this.searchFormControl = new FormControl();
     this.filterField = new FilterField({
@@ -86,6 +49,16 @@ export class Step3Component implements OnInit {
   }
 
   ngOnInit(): void {
+    // Get data
+    this.gasStationService
+      .getPumpPolesByGasStation(1)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res.data) {
+          this.dataSource = this.dataSourceTemp = res.data;
+        }
+      });
+
     // Filter
     this.searchFormControl.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))
@@ -103,15 +76,28 @@ export class Step3Component implements OnInit {
       });
   }
 
-  //Sort
+  // Sort
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
   }
 
-  create(id?) {
-    const modalRef = this.modalService.open(PumpPoleModalComponent, {backdrop: 'static', size: 'xl' });
-    modalRef.componentInstance.data = { test: 'ok' };
-    modalRef.result.then();
+  create() {
+    if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
+      // return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+    }
+    const modalRef = this.modalService.open(PumpPoleModalComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+    modalRef.result.then((res) => {});
+  }
+
+  update() {
+
+  }
+
+  delete() {
+    
   }
 
   submit() {
