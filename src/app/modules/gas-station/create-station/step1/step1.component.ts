@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { GasStationService } from '../../gas-station.service';
 
 @Component({
@@ -9,7 +10,11 @@ import { GasStationService } from '../../gas-station.service';
 })
 export class Step1Component implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
-  constructor(private gasStationService: GasStationService, private fb: FormBuilder) {}
+  constructor(
+    private gasStationService: GasStationService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   stationForm: FormGroup;
 
@@ -39,5 +44,9 @@ export class Step1Component implements OnInit {
       currentStep: 1,
       step1: null
     });
+  }
+
+  backToList() {
+    this.router.navigate(['/tram-xang']);
   }
 }

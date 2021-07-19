@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -34,7 +35,8 @@ export class Step3Component implements OnInit {
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
     private gasStationService: GasStationService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {
     this.stepSubmitted = new EventEmitter();
     this.dataSource = this.dataSourceTemp = [];
@@ -49,15 +51,7 @@ export class Step3Component implements OnInit {
   }
 
   ngOnInit(): void {
-    // Get data
-    this.gasStationService
-      .getPumpPolesByGasStation(1)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res.data) {
-          this.dataSource = this.dataSourceTemp = res.data;
-        }
-      });
+    this.getData();
 
     // Filter
     this.searchFormControl.valueChanges
@@ -76,6 +70,18 @@ export class Step3Component implements OnInit {
       });
   }
 
+  // Get data
+  getData() {
+    this.gasStationService
+      .getPumpPolesByGasStation(1)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res.data) {
+          this.dataSource = this.dataSourceTemp = res.data;
+        }
+      });
+  }
+
   // Sort
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
@@ -83,27 +89,41 @@ export class Step3Component implements OnInit {
 
   create() {
     if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
-      // return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+      return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(PumpPoleModalComponent, {
       backdrop: 'static',
       size: 'xl'
     });
-    modalRef.result.then((res) => {});
+    modalRef.result.then((result) => {
+      if (result) {
+        this.gasStationService
+          .getPumpPolesByGasStation(1)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((res) => {
+            if (res.data) {
+              this.dataSource = this.dataSourceTemp = res.data;
+              this.searchFormControl.patchValue(null);
+              this.sort(null);
+            }
+          });
+      }
+    });
   }
 
-  update() {
+  update() {}
 
-  }
-
-  delete() {
-    
-  }
+  delete() {}
 
   submit() {
     this.stepSubmitted.next({
       currentStep: 3,
       step3: null
     });
+  }
+
+  back() {
+    const currentStepData = this.gasStationService.getStepDataValue();
+    this.gasStationService.setStepData({ ...currentStepData, currentStep: 2 });
   }
 }

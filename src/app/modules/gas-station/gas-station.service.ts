@@ -59,7 +59,7 @@ export class GasStationService {
 
   constructor(private http: HttpService) {
     this.stepDataSubject = new BehaviorSubject<StepData>({
-      currentStep: 3,
+      currentStep: 4,
       step1: { isValid: false, data: null },
       step2: { isValid: false, data: null },
       step3: { isValid: false, data: null },
