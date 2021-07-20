@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { CanActiveStepPipe } from '../gas-station.pipe';
 import { GasStationService, StepData } from '../gas-station.service';
 
-
 @Component({
   selector: 'app-create-station',
   templateUrl: './create-station.component.html',
@@ -27,7 +26,9 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngAfterViewInit(): void {}
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.gasStationService.resetCreateData();
+  }
 
   gotoStep(step: number) {
     const currentStepData = this.gasStationService.getStepDataValue();
@@ -78,6 +79,21 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
     }
     const nextStep = $event.currentStep + 1;
     const currentStepData = this.gasStationService.getStepDataValue();
+    switch ($event.currentStep) {
+      case 1:
+        currentStepData.step1.data = $event.step1.data;
+        currentStepData.step1.isValid = $event.step1.isValid;
+        break;
+      case 2:
+        currentStepData.step2.isValid = $event.step2.isValid;
+        break;
+      case 3:
+        currentStepData.step3.isValid = $event.step3.isValid;
+        break;
+      case 4:
+        currentStepData.step4.isValid = $event.step4.isValid;
+        break;
+    }
     this.gasStationService.setStepData({ ...currentStepData, currentStep: nextStep });
   }
 }

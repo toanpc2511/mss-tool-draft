@@ -33,7 +33,7 @@ export class Step4Component implements OnInit {
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
-    private gasStationService: GasStationService,
+    private gasStationService: GasStationService
   ) {
     this.stepSubmitted = new EventEmitter();
     this.dataSource = this.dataSourceTemp = [];
@@ -98,7 +98,9 @@ export class Step4Component implements OnInit {
   submit() {
     this.stepSubmitted.next({
       currentStep: 4,
-      step4: null
+      step4: {
+        isValid: true
+      }
     });
   }
 
