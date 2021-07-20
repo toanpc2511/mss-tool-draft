@@ -7,7 +7,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-import { GasStationService, IPumpPole } from '../../gas-station.service';
+import { GasStationService, IPumpHose, IPumpPole } from '../../gas-station.service';
 import { PumpHoseModalComponent } from './pump-hose-modal/pump-hose-modal.component';
 @Component({
   selector: 'app-step4',
@@ -17,8 +17,8 @@ import { PumpHoseModalComponent } from './pump-hose-modal/pump-hose-modal.compon
 })
 export class Step4Component implements OnInit {
   @Output() stepSubmitted: EventEmitter<any>;
-  dataSource: Array<IPumpPole>;
-  dataSourceTemp: Array<IPumpPole>;
+  dataSource: Array<IPumpHose>;
+  dataSourceTemp: Array<IPumpHose>;
   sorting: SortState;
   searchFormControl: FormControl;
   filterField: FilterField<{
@@ -28,13 +28,12 @@ export class Step4Component implements OnInit {
     status: string;
   }>;
   constructor(
-    private filterService: FilterService<IPumpPole>,
-    private sortService: SortService<IPumpPole>,
+    private filterService: FilterService<IPumpHose>,
+    private sortService: SortService<IPumpHose>,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
     private gasStationService: GasStationService,
-    private toastr: ToastrService
   ) {
     this.stepSubmitted = new EventEmitter();
     this.dataSource = this.dataSourceTemp = [];
@@ -51,7 +50,7 @@ export class Step4Component implements OnInit {
   ngOnInit(): void {
     // Get data
     this.gasStationService
-      .getPumpPolesByGasStation(1)
+      .getPumpHosesByGasStation(1)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res.data) {

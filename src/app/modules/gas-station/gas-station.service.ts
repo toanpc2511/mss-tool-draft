@@ -23,11 +23,29 @@ export interface IPumpPole {
   status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
 }
 
-export interface IPumpPoleCreate {
+export interface IPumpPoleInput {
   code: string;
   description: string;
   gasStationId: number;
   name: string;
+  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+}
+
+export interface IPumpHose {
+  code: string;
+  description: string;
+  gasFieldName: string;
+  name: string;
+  pumpPoleName: string;
+  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+}
+
+export interface IPumpHoseInput {
+  code: string;
+  description: string;
+  gasFieldId: number;
+  name: string;
+  pumpPoleId: 0;
   status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
 }
 export class StepData {
@@ -61,7 +79,7 @@ export class GasStationService {
 
   constructor(private http: HttpService) {
     this.stepDataSubject = new BehaviorSubject<StepData>({
-      currentStep: 4,
+      currentStep: 1,
       step1: { isValid: false, data: null },
       step2: { isValid: false, data: null },
       step3: { isValid: false, data: null },
@@ -90,9 +108,16 @@ export class GasStationService {
     return this.http.get<Array<IPumpPole>>(`pump-poles/${gasStationId}`);
   }
 
-  createPumpPole(pumpPole: IPumpPoleCreate) {
+  createPumpPole(pumpPole: IPumpPoleInput) {
     return this.http.post<any>(`pump-poles`, pumpPole);
   }
 
   // Step 4
+  getPumpHosesByGasStation(gasStationId) {
+    return this.http.get<Array<IPumpHose>>(`pump-hoses/${gasStationId}`);
+  }
+
+  createPumpHose(pumpHose: IPumpHoseInput) {
+    return this.http.post<any>(`pump-hoses`, pumpHose);
+  }
 }

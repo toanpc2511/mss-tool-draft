@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
-import { GasStationService, IPumpPole, IPumpPoleCreate } from '../../../gas-station.service';
+import { GasStationService, IPumpPole, IPumpPoleInput } from '../../../gas-station.service';
 
 @Component({
   selector: 'app-pump-pole-modal',
@@ -19,6 +20,7 @@ export class PumpPoleModalComponent implements OnInit {
     private fb: FormBuilder,
     public modal: NgbActiveModal,
     private gasStationService: GasStationService,
+    private toastr: ToastrService,
     private destroy$: DestroyService
   ) {}
 
@@ -42,10 +44,9 @@ export class PumpPoleModalComponent implements OnInit {
     if (this.pumpPoleForm.invalid) {
       return;
     }
-    const pumpPoleData: IPumpPoleCreate = {
+    const pumpPoleData: IPumpPoleInput = {
       code: this.pumpPoleForm.controls.code.value,
-      // gasStationId: this.gasStationService.gasStationId,
-      gasStationId: 1,
+      gasStationId: this.gasStationService.gasStationId,
       description: this.pumpPoleForm.controls.description.value,
       name: this.pumpPoleForm.controls.name.value,
       status: this.pumpPoleForm.controls.status.value
@@ -54,7 +55,9 @@ export class PumpPoleModalComponent implements OnInit {
       .createPumpPole(pumpPoleData)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
+        console.log(res);
         this.modal.close(res);
+        this.toastr.success('Thành công');
       });
   }
 }

@@ -11,7 +11,6 @@ import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 export class CreateGasBinComponent implements OnInit {
   @Input() data: any;
   gasBinForm: FormGroup;
-  isLoading$;
   listStatus = LIST_STATUS;
   constructor(private fb: FormBuilder, public modal: NgbActiveModal) {}
 
