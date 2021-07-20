@@ -7,14 +7,23 @@ export interface IStepData<T> {
   isValid: boolean;
   data: T;
 }
-
+// gas station
 export interface GasStationResponse {
   id: number;
   name: string;
   address: string;
-  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
   code: string;
 }
+
+export interface CreateStation {
+  stationCode: string;
+  name: string;
+  address: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+}
+
+// end gas station
 
 export interface IStep1Data {}
 
@@ -88,6 +97,10 @@ export class GasStationService {
   // Step 1
   getListStation() {
     return this.http.get<GasStationResponse[]>('gas-stations');
+  }
+
+  createStation(body: CreateStation) {
+    return this.http.post<GasStationResponse>('gas-stations', body);
   }
   // Step 2
 

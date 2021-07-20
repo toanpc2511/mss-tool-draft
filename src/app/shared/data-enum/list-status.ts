@@ -1,5 +1,5 @@
 export const LIST_STATUS = {
   ACTIVE: 'ACTIVE',
-  DEACTIVE: 'DEACTIVE',
+  INACTIVE: 'INACTIVE',
   DELETE: 'DELETE'
 };
