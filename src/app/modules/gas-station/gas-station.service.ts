@@ -9,6 +9,14 @@ export interface IStepData<T> {
   data: T;
 }
 
+export interface GasStationResponse {
+  id: number;
+  name: string;
+  address: string;
+  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+  code: string;
+}
+
 export interface IStep1Data {}
 
 export interface IStep2Data {}
@@ -46,10 +54,7 @@ export class GasStationService {
   // Global
   gasStationId: number;
   gasStationStatus: boolean;
-
-  // List gas station
-
-  // Create gas station
+  apiUrl = environment.apiUrl;
   stepDataSubject: BehaviorSubject<StepData>;
   stepData$: Observable<StepData>;
 
@@ -63,7 +68,7 @@ export class GasStationService {
 
   constructor(private http: HttpService) {
     this.stepDataSubject = new BehaviorSubject<StepData>({
-      currentStep: 3,
+      currentStep: 4,
       step1: { isValid: false, data: null },
       step2: { isValid: false, data: null },
       step3: { isValid: false, data: null },
@@ -71,8 +76,6 @@ export class GasStationService {
     });
     this.stepData$ = this.stepDataSubject.asObservable();
   }
-
-  // List gas station
 
   // Create gas station
   setStepData(stepData) {
@@ -84,7 +87,9 @@ export class GasStationService {
   }
 
   // Step 1
-
+  getListStation() {
+    return this.http.get<GasStationResponse[]>('gas-stations');
+  }
   // Step 2
   getListGasBin(gasStationId: string) {
     return this.http.get(`gas-fields/${gasStationId}`);

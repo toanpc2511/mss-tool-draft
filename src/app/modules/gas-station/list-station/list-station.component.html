@@ -65,28 +65,30 @@
         <tbody>
           <tr *ngFor="let station of dataSource">
             <td>
-              <span class="cursor-pointer" placement="top" [ngbTooltip]="station.code">{{
-                station.code
-              }}</span>
+              <span class="cursor-pointer" placement="top" [ngbTooltip]="station.code">
+                {{ station.code }}
+              </span>
             </td>
             <td>{{ station.name }}</td>
             <td class="location">
               <p
                 class="cursor-pointer text-ellipsis"
                 placement="top"
-                [ngbTooltip]="station.location"
+                [ngbTooltip]="station.address"
               >
-                {{ station.location }}
+                {{ station.address }}
               </p>
             </td>
             <td>
               <span
                 class="label label-lg label-inline"
-                [class.label-light-success]="station.status"
-                [class.label-light-danger]="!station.status"
+                [class.label-light-success]="station.status === listStatus.ACTIVE"
+                [class.label-light-danger]="station.status !== listStatus.ACTIVE"
               >
-                <ng-container *ngIf="station.status">Hoạt động</ng-container>
-                <ng-container *ngIf="!station.status">Không hoạt động</ng-container>
+                <ng-container *ngIf="station.status === listStatus.ACTIVE">Hoạt động</ng-container>
+                <ng-container *ngIf="station.status !== listStatus.ACTIVE">
+                  Không hoạt động
+                </ng-container>
               </span>
             </td>
 

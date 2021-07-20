@@ -1,4 +1,4 @@
-<div class="card card-custom gutter-b">
+<div class="card card-custom">
   <div class="card-header">
     <div class="card-title">
       <h3 class="card-label">Danh sách bồn</h3>
@@ -120,7 +120,7 @@
               <span
                 class="label label-lg label-inline"
                 [class.label-light-success]="item.status === listStatus.ACTIVE"
-                [class.label-light-danger]="item.status === listStatus.INACTIVE"
+                [class.label-light-danger]="item.status !== listStatus.ACTIVE"
               >
                 <ng-container *ngIf="item.status === listStatus.ACTIVE">Hoạt động</ng-container>
                 <ng-container *ngIf="item.status !== listStatus.ACTIVE">
@@ -153,7 +153,9 @@
     </div>
   </div>
   <div class="w-100 d-flex justify-content-center">
-    <button class="btn btn-outline-secondary font-weight-bold m-2">Quay lại</button>
+    <button class="btn btn-outline-secondary font-weight-bold m-2" (click)="back()">
+      Quay lại
+    </button>
     <button class="btn btn-primary font-weight-bold m-2" (click)="onSubmit()">
       Lưu và tiếp tục
     </button>
