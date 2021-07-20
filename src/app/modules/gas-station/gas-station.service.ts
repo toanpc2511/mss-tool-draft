@@ -63,7 +63,7 @@ export interface IPumpPole {
   description: string;
   id: number;
   name: string;
-  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
 export interface IPumpPoleInput {
@@ -71,7 +71,7 @@ export interface IPumpPoleInput {
   description: string;
   gasStationId: number;
   name: string;
-  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
 export interface IPumpHose {
@@ -80,7 +80,7 @@ export interface IPumpHose {
   gasFieldName: string;
   name: string;
   pumpPoleName: string;
-  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
 export interface IPumpHoseInput {
@@ -89,7 +89,7 @@ export interface IPumpHoseInput {
   gasFieldId: number;
   name: string;
   pumpPoleId: 0;
-  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 export class StepData {
   currentStep: number;
@@ -104,7 +104,7 @@ export class StepData {
 export class GasStationService {
   // Global
   gasStationId: number;
-  gasStationStatus: boolean;
+  gasStationStatus: 'ACTIVE' | 'INACTIVE' | 'DELETE';
   apiUrl = environment.apiUrl;
   stepDataSubject: BehaviorSubject<StepData>;
   stepData$: Observable<StepData>;
@@ -147,7 +147,7 @@ export class GasStationService {
   }
 
   // Step 2
-  getListGasBin(gasStationId: string) {
+  getListGasBin(gasStationId: number) {
     return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
   }
 
