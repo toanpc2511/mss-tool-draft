@@ -21,6 +21,18 @@ table {
       width: 100px;
     }
   }
+
+  tr {
+    &:hover {
+      background-color: #f3f6f9;
+
+      td {
+        .btn.btn-light {
+          background-color: #ffffff;
+        }
+      }
+    }
+  }
 }
 
 .card-toolbar {

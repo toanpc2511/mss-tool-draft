@@ -64,12 +64,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let station of dataSource">
-            <td>
+            <td class="code">
               <span class="cursor-pointer" placement="top" [ngbTooltip]="station.code">
                 {{ station.code }}
               </span>
             </td>
-            <td>{{ station.name }}</td>
+            <td class="name">{{ station.name }}</td>
             <td class="location">
               <p
                 class="cursor-pointer text-ellipsis"
@@ -79,7 +79,7 @@
                 {{ station.address }}
               </p>
             </td>
-            <td>
+            <td class="status">
               <span
                 class="label label-lg label-inline"
                 [class.label-light-success]="station.status === listStatus.ACTIVE"
@@ -92,20 +92,22 @@
               </span>
             </td>
 
-            <td class="text-center">
-              <a title="Edit product" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+            <td class="text-center action">
+              <a title="Sửa trạm" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]=""
                 >
                 </span>
               </a>
-              <a title="Delete product" class="btn btn-icon btn-light btn-hover-danger btn-sm">
+              <a title="Xóa trạm" class="btn btn-icon btn-light btn-hover-danger btn-sm">
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-danger"
+                  [ngbTooltip]=""
                 >
                 </span>
               </a>
