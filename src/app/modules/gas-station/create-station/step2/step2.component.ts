@@ -10,12 +10,6 @@ import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
 import { GasBinResponse, GasStationService } from '../../gas-station.service';
 import { CreateGasBinComponent } from './create-gas-bin/create-gas-bin.component';
 
-export interface ListStatus {
-  ACTIVE: 'ACTIVE';
-  INACTIVE: 'INACTIVE';
-  DELETED: 'DELETED';
-}
-
 @Component({
   selector: 'app-step2',
   templateUrl: './step2.component.html',
@@ -23,8 +17,6 @@ export interface ListStatus {
   providers: [SortService, FilterService, DestroyService]
 })
 export class Step2Component implements OnInit {
-  listStatus = LIST_STATUS;
-
   @Output() stepSubmitted = new EventEmitter();
   dataSource: GasBinResponse[] = [];
   dataSourceTemp: GasBinResponse[] = [];
@@ -32,6 +24,8 @@ export class Step2Component implements OnInit {
   searchFormControl: FormControl;
   filterField: FilterField<GasBinResponse>;
   stationId: string;
+  listStatus = LIST_STATUS;
+
   constructor(
     private sortService: SortService<GasBinResponse>,
     private filterService: FilterService<GasBinResponse>,
