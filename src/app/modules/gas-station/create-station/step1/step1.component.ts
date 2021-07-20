@@ -42,12 +42,13 @@ export class Step1Component implements OnInit {
     }
 
     this.gasStationService.createStation(this.stationForm.value).subscribe((res) => {
-      console.log(res);
       // Đưa vào subscribe
       this.stepSubmitted.next({
         currentStep: 1,
         step1: null
       });
+      this.gasStationService.gasStationId = res.data.id;
+      this.gasStationService.gasStationStatus = res.data.status;
     });
   }
 

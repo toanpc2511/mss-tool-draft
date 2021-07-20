@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -23,7 +24,7 @@ export class Step2Component implements OnInit {
   sorting: SortState;
   searchFormControl: FormControl;
   filterField: FilterField<GasBinResponse>;
-  stationId: string;
+  stationId: number;
   listStatus = LIST_STATUS;
 
   constructor(
@@ -32,7 +33,8 @@ export class Step2Component implements OnInit {
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
-    private gasStationService: GasStationService
+    private gasStationService: GasStationService,
+    private toastr: ToastrService
   ) {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
@@ -66,9 +68,10 @@ export class Step2Component implements OnInit {
       });
 
     // fake station id
-    this.stationId = '2';
+    this.stationId = this.gasStationService.gasStationId;
     this.gasStationService.getListGasBin(this.stationId).subscribe((res) => {
       this.dataSource = this.dataSourceTemp = res.data;
+      this.cdr.detectChanges();
     });
   }
 
@@ -77,6 +80,9 @@ export class Step2Component implements OnInit {
   }
 
   openCreateModal() {
+    if (this.gasStationService.gasStationStatus !== 'ACTIVE') {
+      return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+    }
     this.modalService.open(CreateGasBinComponent, { size: 'xl' });
   }
 
