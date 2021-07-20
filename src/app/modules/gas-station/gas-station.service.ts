@@ -8,6 +8,14 @@ export interface IStepData<T> {
   data: T;
 }
 
+export interface GasStationResponse {
+  id: number;
+  name: string;
+  address: string;
+  status: 'ACTIVE' | 'DEACTIVE' | 'DELETE';
+  code: string;
+}
+
 export interface IStep1Data {}
 
 export interface IStep2Data {}
@@ -68,10 +76,6 @@ export class GasStationService {
     this.stepData$ = this.stepDataSubject.asObservable();
   }
 
-  // List gas station
-  getListStation() {
-    return this.http.get(`${this.apiUrl}/gas-stations`);
-  }
   // Create gas station
   setStepData(stepData) {
     this.stepDataSubject.next(stepData);
@@ -82,7 +86,9 @@ export class GasStationService {
   }
 
   // Step 1
-
+  getListStation() {
+    return this.http.get<GasStationResponse[]>('gas-stations');
+  }
   // Step 2
 
   // Step 3
