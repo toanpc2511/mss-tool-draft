@@ -28,27 +28,27 @@ export interface ListStatus {
 }
 
 export const DATA_FAKE = [
-  {
-    code: 'SBBKA2',
-    name: 'Bồn BKA2',
-    description:
-      'Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-    height: '20',
-    length: '20',
-    capacity: '20000',
-    status: LIST_STATUS.ACTIVE,
-    product_name: 'RON 94'
-  },
-  {
-    code: 'SBBKA1',
-    name: 'Bồn BKA1',
-    description: 'To',
-    height: '10',
-    length: '10',
-    capacity: '10000',
-    status: LIST_STATUS.INACTIVE,
-    product_name: 'RON 95'
-  }
+  //   {
+  //     code: 'SBBKA2',
+  //     name: 'Bồn BKA2',
+  //     description:
+  //       'Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
+  //     height: '20',
+  //     length: '20',
+  //     capacity: '20000',
+  //     status: LIST_STATUS.ACTIVE,
+  //     product_name: 'RON 94'
+  //   },
+  //   {
+  //     code: 'SBBKA1',
+  //     name: 'Bồn BKA1',
+  //     description: 'To',
+  //     height: '10',
+  //     length: '10',
+  //     capacity: '10000',
+  //     status: LIST_STATUS.INACTIVE,
+  //     product_name: 'RON 95'
+  //   }
 ];
 
 @Component({
