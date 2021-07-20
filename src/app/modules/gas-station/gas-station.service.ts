@@ -17,6 +17,19 @@ export interface GasStationResponse {
   code: string;
 }
 
+// gas bin
+export interface GasBinResponse {
+  code: string;
+  name: string;
+  description: string;
+  height: string;
+  length: string;
+  capacity: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+  productName: string;
+}
+// end gas bin
+
 export interface IStep1Data {}
 
 export interface IStep2Data {}
@@ -92,7 +105,7 @@ export class GasStationService {
   }
   // Step 2
   getListGasBin(gasStationId: string) {
-    return this.http.get(`gas-fields/${gasStationId}`);
+    return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
   }
 
   // Step 3
