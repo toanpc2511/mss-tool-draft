@@ -12,6 +12,7 @@ import { CreateGasBinComponent } from './create-station/step2/create-gas-bin/cre
 import { Step2Component } from './create-station/step2/step2.component';
 import { PumpPoleModalComponent } from './create-station/step3/pump-pole-modal/pump-pole-modal.component';
 import { Step3Component } from './create-station/step3/step3.component';
+import { PumpHoseModalComponent } from './create-station/step4/pump-hose-modal/pump-hose-modal.component';
 import { Step4Component } from './create-station/step4/step4.component';
 import { GasStationRoutingModule } from './gas-station-routing.module';
 import { GasStationComponent } from './gas-station.component';
@@ -29,7 +30,8 @@ import { ListStationComponent } from './list-station/list-station.component';
     Step4Component,
     CanActiveStepPipe,
     PumpPoleModalComponent,
-    CreateGasBinComponent
+    CreateGasBinComponent,
+    PumpHoseModalComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,7 @@ import { ListStationComponent } from './list-station/list-station.component';
     InlineSVGModule,
     NgbTooltipModule,
     ReactiveFormsModule,
-    SharedComponentsModule,
+    SharedComponentsModule
   ]
 })
 export class GasStationModule {}

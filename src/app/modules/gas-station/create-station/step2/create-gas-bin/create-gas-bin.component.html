@@ -27,6 +27,11 @@
             [error]="'required'"
             [message]="'Mã bồn không được để trống'"
           ></app-validate>
+          <app-validate
+            [control]="gasBinForm.controls['code']"
+            [error]="'pattern'"
+            [message]="'Mã bồn sai định dạng'"
+          ></app-validate>
         </div>
 
         <div class="col-lg-4">

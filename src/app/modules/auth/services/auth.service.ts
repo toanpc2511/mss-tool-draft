@@ -92,6 +92,7 @@ export class AuthService {
 
   logout() {
     storageUtils.clear();
+    this.setCurrentUserValue(null);
     this.router.navigate(['/auth/login'], {
       queryParams: {}
     });

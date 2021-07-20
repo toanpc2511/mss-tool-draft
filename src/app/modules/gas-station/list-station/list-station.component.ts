@@ -2,50 +2,12 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-
-export interface PeriodicElement {
-  code: string;
-  name: string;
-  location: string;
-  status: boolean;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    code: 'ST01',
-    name: 'Sun Oil 01',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  },
-  {
-    code: 'ST02',
-    name: 'Sun Oil 02',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  },
-  {
-    code: 'ST03',
-    name: 'Sun Oil 03',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: false
-  },
-  {
-    code: 'ST04',
-    name: 'Sun Oil 04',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  },
-  {
-    code: 'ST05',
-    name: 'Sun Oil 05',
-    location: 'Tầng 20 Charmvit Tower, 117 Trần Duy Hưng, Trung Hòa, Cầu Giấy, Hà Nội',
-    status: true
-  }
-];
+import { GasStationResponse, GasStationService } from '../gas-station.service';
 
 /**
  * @title Table with sorting
@@ -57,35 +19,38 @@ const ELEMENT_DATA: PeriodicElement[] = [
   providers: [SortService, FilterService, DestroyService]
 })
 export class ListStationComponent implements OnInit {
-  dataSource: PeriodicElement[] = ELEMENT_DATA;
-  dataSourceTemp: PeriodicElement[] = ELEMENT_DATA;
+  dataSource: GasStationResponse[] = [];
+  dataSourceTemp: GasStationResponse[] = [];
   sorting: SortState;
   searchFormControl: FormControl;
-  filterField: FilterField<{
-    code: string;
-    name: string;
-    location: string;
-    status: string;
-  }>;
+  filterField: FilterField<GasStationResponse>;
+  listStatus = LIST_STATUS;
 
   constructor(
-    private sortService: SortService<PeriodicElement>,
-    private filterService: FilterService<PeriodicElement>,
+    private sortService: SortService<GasStationResponse>,
+    private filterService: FilterService<GasStationResponse>,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private gasStationService: GasStationService
   ) {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
+      id: null,
       code: null,
       name: null,
-      location: null,
+      address: null,
       status: null
     });
     this.searchFormControl = new FormControl();
   }
 
   ngOnInit() {
+    this.gasStationService.getListStation().subscribe((res) => {
+      this.dataSource = res.data;
+      this.dataSourceTemp = res.data;
+    });
+
     // Filter
     this.searchFormControl.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))

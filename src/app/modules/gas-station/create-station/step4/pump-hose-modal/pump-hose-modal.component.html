@@ -9,19 +9,19 @@
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
     <!-- <ng-container *ngIf="isLoading$ | async">
-      <div class="overlay-layer bg-transparent">
-        <div class="spinner spinner-lg spinner-success"></div>
-      </div>
-    </ng-container> -->
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container> -->
 
     <form action="#" class="form form-label-right" [formGroup]="pumpPoleForm">
       <div class="form-group row">
         <div class="col-lg-6">
-          <label class="form-label required">Mã cột</label>
+          <label class="form-label required">Mã vòi</label>
           <input
             type="text"
             class="form-control form-control-lg form-control-solid"
-            placeholder="Nhập mã cột"
+            placeholder="Nhập mã vòi"
             autocomplete="off"
             formControlName="code"
             maxlength="100"
@@ -29,20 +29,20 @@
           <app-validate
             [control]="pumpPoleForm.controls['code']"
             [error]="'required'"
-            [message]="'Mã cột không được để trống'"
+            [message]="'Mã vòi không được để trống'"
           ></app-validate>
           <app-validate
             [control]="pumpPoleForm.controls['code']"
             [error]="'pattern'"
-            [message]="'Mã cột không đúng định dạng'"
+            [message]="'Mã vòi không đúng định dạng'"
           ></app-validate>
         </div>
         <div class="col-lg-6">
-          <label class="form-label required">Tên cột</label>
+          <label class="form-label required">Tên vòi</label>
           <input
             type="text"
             class="form-control form-control-lg form-control-solid"
-            placeholder="Nhập tên cột"
+            placeholder="Nhập tên vòi"
             autocomplete="off"
             formControlName="name"
             maxlength="100"
@@ -50,8 +50,34 @@
           <app-validate
             [control]="pumpPoleForm.controls['name']"
             [error]="'required'"
-            [message]="'Tên cột không được để trống'"
+            [message]="'Tên vòi không được để trống'"
           ></app-validate>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label class="form-label required">Tên bồn</label>
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="type"
+            formControlName="status"
+            [value]="'1'"
+          >
+            <option value="1">Bồn 1</option>
+            <option value="2">Bồn 2</option>
+          </select>
+        </div>
+        <div class="col-lg-6">
+          <label class="form-label required">Tên cột</label>
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="type"
+            formControlName="status"
+            [value]="'1'"
+          >
+            <option value="1">Cột 1</option>
+            <option value="2">Cột 2</option>
+          </select>
         </div>
       </div>
       <div class="form-group row">

@@ -7,12 +7,12 @@ import { TValidators } from 'src/app/shared/validators';
 import { GasStationService, IPumpPole, IPumpPoleCreate } from '../../../gas-station.service';
 
 @Component({
-  selector: 'app-pump-pole-modal',
-  templateUrl: './pump-pole-modal.component.html',
-  styleUrls: ['./pump-pole-modal.component.scss'],
+  selector: 'app-pump-hose-modal',
+  templateUrl: './pump-hose-modal.component.html',
+  styleUrls: ['./pump-hose-modal.component.scss'],
   providers: [DestroyService]
 })
-export class PumpPoleModalComponent implements OnInit {
+export class PumpHoseModalComponent implements OnInit {
   @Input() data: IPumpPole;
   pumpPoleForm: FormGroup;
   constructor(
@@ -44,8 +44,7 @@ export class PumpPoleModalComponent implements OnInit {
     }
     const pumpPoleData: IPumpPoleCreate = {
       code: this.pumpPoleForm.controls.code.value,
-      // gasStationId: this.gasStationService.gasStationId,
-      gasStationId: 1,
+      gasStationId: this.gasStationService.gasStationId,
       description: this.pumpPoleForm.controls.description.value,
       name: this.pumpPoleForm.controls.name.value,
       status: this.pumpPoleForm.controls.status.value
@@ -54,7 +53,7 @@ export class PumpPoleModalComponent implements OnInit {
       .createPumpPole(pumpPoleData)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.modal.close(res);
+        console.log(res);
       });
   }
 }
