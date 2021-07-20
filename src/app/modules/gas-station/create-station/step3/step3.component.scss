@@ -4,8 +4,22 @@ table thead th {
 
 table {
   min-width: 1024px;
-  .location {
-    max-width: 350px;
+  td {
+    &.code {
+      width: 100px;
+    }
+    &.name {
+      width: 200px;
+    }
+    &.description {
+      width: 400px;
+    }
+    &.status {
+      width: 100px;
+    }
+    &.task {
+      width: 100px;
+    }
   }
 }
 

@@ -2,19 +2,12 @@
   <div class="modal-header">
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
       <ng-container *ngIf="data">Sửa</ng-container>
-      <ng-container *ngIf="!data">Thêm</ng-container>
-      cột
+      <ng-container *ngIf="!data">Thêm mới</ng-container>
     </div>
     <div class="close-icon" (click)="modal.dismiss()"></div>
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
-    <!-- <ng-container *ngIf="isLoading$ | async">
-        <div class="overlay-layer bg-transparent">
-          <div class="spinner spinner-lg spinner-success"></div>
-        </div>
-      </ng-container> -->
-
-    <form action="#" class="form form-label-right" [formGroup]="pumpPoleForm">
+    <form action="#" class="form form-label-right" [formGroup]="pumpHoseForm">
       <div class="form-group row">
         <div class="col-lg-6">
           <label class="form-label required">Mã vòi</label>
@@ -27,12 +20,12 @@
             maxlength="100"
           />
           <app-validate
-            [control]="pumpPoleForm.controls['code']"
+            [control]="pumpHoseForm.controls['code']"
             [error]="'required'"
             [message]="'Mã vòi không được để trống'"
           ></app-validate>
           <app-validate
-            [control]="pumpPoleForm.controls['code']"
+            [control]="pumpHoseForm.controls['code']"
             [error]="'pattern'"
             [message]="'Mã vòi không đúng định dạng'"
           ></app-validate>
@@ -48,7 +41,7 @@
             maxlength="100"
           />
           <app-validate
-            [control]="pumpPoleForm.controls['name']"
+            [control]="pumpHoseForm.controls['name']"
             [error]="'required'"
             [message]="'Tên vòi không được để trống'"
           ></app-validate>
@@ -60,24 +53,36 @@
           <select
             class="form-control form-control-lg form-control-solid"
             name="type"
-            formControlName="status"
+            formControlName="gasFieldId"
             [value]="'1'"
           >
+            <option>Chọn tên bồn</option>
             <option value="1">Bồn 1</option>
             <option value="2">Bồn 2</option>
           </select>
+          <app-validate
+            [control]="pumpHoseForm.controls['gasFieldId']"
+            [error]="'required'"
+            [message]="'Tên bồn không được để trống'"
+          ></app-validate>
         </div>
         <div class="col-lg-6">
           <label class="form-label required">Tên cột</label>
           <select
             class="form-control form-control-lg form-control-solid"
             name="type"
-            formControlName="status"
+            formControlName="pumpPoleId"
             [value]="'1'"
           >
+            <option>Chọn tên cột</option>
             <option value="1">Cột 1</option>
             <option value="2">Cột 2</option>
           </select>
+          <app-validate
+            [control]="pumpHoseForm.controls['pumpPoleId']"
+            [error]="'required'"
+            [message]="'Tên cột không được để trống'"
+          ></app-validate>
         </div>
       </div>
       <div class="form-group row">

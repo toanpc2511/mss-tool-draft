@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -25,7 +24,7 @@ export class Step3Component implements OnInit {
   filterField: FilterField<{
     code: string;
     name: string;
-    location: string;
+    description: string;
     status: string;
   }>;
   constructor(
@@ -35,8 +34,7 @@ export class Step3Component implements OnInit {
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
     private gasStationService: GasStationService,
-    private toastr: ToastrService,
-    private router: Router
+    private toastr: ToastrService
   ) {
     this.stepSubmitted = new EventEmitter();
     this.dataSource = this.dataSourceTemp = [];
@@ -45,7 +43,7 @@ export class Step3Component implements OnInit {
     this.filterField = new FilterField({
       code: null,
       name: null,
-      location: null,
+      description: null,
       status: null
     });
   }

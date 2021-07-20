@@ -61,34 +61,34 @@
           <th class="text-center">Tác động</th>
         </thead>
         <tbody>
-          <tr *ngFor="let station of dataSource">
-            <td>
-              <span class="cursor-pointer" placement="top" [ngbTooltip]="station.code">{{
-                station.code
+          <tr *ngFor="let pumpPole of dataSource">
+            <td class="code">
+              <span class="cursor-pointer" placement="top" [ngbTooltip]="pumpPole.code">{{
+                pumpPole.code
               }}</span>
             </td>
-            <td>{{ station.name }}</td>
-            <td class="location">
+            <td class="name">{{ pumpPole.name }}</td>
+            <td class="description">
               <p
                 class="cursor-pointer text-ellipsis"
                 placement="top"
-                [ngbTooltip]="station.description"
+                [ngbTooltip]="pumpPole.description"
               >
-                {{ station.description }}
+                {{ pumpPole.description }}
               </p>
             </td>
-            <td>
+            <td class="status">
               <span
                 class="label label-lg label-inline"
-                [class.label-light-success]="station.status"
-                [class.label-light-danger]="!station.status"
+                [class.label-light-success]="pumpPole.status"
+                [class.label-light-danger]="!pumpPole.status"
               >
-                <ng-container *ngIf="station.status">Hoạt động</ng-container>
-                <ng-container *ngIf="!station.status">Không hoạt động</ng-container>
+                <ng-container *ngIf="pumpPole.status">Hoạt động</ng-container>
+                <ng-container *ngIf="!pumpPole.status">Không hoạt động</ng-container>
               </span>
             </td>
 
-            <td class="text-center">
+            <td class="text-center task">
               <a title="Edit product" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -112,7 +112,9 @@
     </div>
   </div>
   <div class="w-100 d-flex justify-content-center pb-10">
-    <button class="btn btn-outline-secondary font-weight-bold m-2" (click)="back()">Quay lại</button>
-    <button class="btn btn-primary font-weight-bold m-2" (click)="submit()">Lưu và tiếp tục</button>
+    <button class="btn btn-outline-secondary font-weight-bold m-2" (click)="back()">
+      Quay lại
+    </button>
+    <button class="btn btn-primary font-weight-bold m-2" (click)="submit()">Xác nhận</button>
   </div>
 </div>

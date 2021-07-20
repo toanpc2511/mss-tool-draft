@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
         // to display back the body content
         setTimeout(() => {
           document.body.classList.add('page-loaded');
-        }, 500);
+        }, 200);
       }
     });
     this.unsubscribe.push(routerSubscription);

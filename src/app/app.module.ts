@@ -18,6 +18,8 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 
 function appInitializer(authService: AuthService, router: Router) {
   return () => {
@@ -54,7 +56,8 @@ function appInitializer(authService: AuthService, router: Router) {
       timeOut: 3000,
       maxOpened: 4,
       positionClass: 'toast-bottom-right'
-    })
+    }),
+    NgxSpinnerModule
   ],
   providers: [
     {
@@ -83,6 +86,11 @@ function appInitializer(authService: AuthService, router: Router) {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
       multi: true
     },
     DestroyService
