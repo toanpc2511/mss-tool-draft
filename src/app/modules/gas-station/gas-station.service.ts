@@ -19,14 +19,26 @@ export interface GasStationResponse {
 
 // gas bin
 export interface GasBinResponse {
+  capacity: string;
   code: string;
-  name: string;
   description: string;
   height: string;
   length: string;
-  capacity: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+  name: string;
   productName: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+}
+
+export interface CreateGasBin {
+  capacity: string;
+  code: string;
+  description: string;
+  gasStationId: string;
+  height: string;
+  length: string;
+  name: string;
+  productId: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 // end gas bin
 
@@ -103,10 +115,13 @@ export class GasStationService {
   getListStation() {
     return this.http.get<GasStationResponse[]>('gas-stations');
   }
+
   // Step 2
   getListGasBin(gasStationId: string) {
     return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
   }
+
+  createGasBin() {}
 
   // Step 3
   getPumpPolesByGasStation(gasStationId) {
