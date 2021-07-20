@@ -55,7 +55,7 @@ export class Step2Component implements OnInit {
     this.searchFormControl.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))
       .subscribe((value) => {
-        if (value.trim()) {
+        if (value?.trim()) {
           this.filterField.setFilterFieldValue(value);
         } else {
           this.filterField.setFilterFieldValue(null);

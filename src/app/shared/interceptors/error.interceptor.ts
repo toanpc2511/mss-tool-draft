@@ -15,6 +15,9 @@ import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 const ERROR_MESSAGE: Map<string, string> = new Map();
 ERROR_MESSAGE.set('SUN-OIL-4241', 'Tên cột đã tồn tại');
+ERROR_MESSAGE.set('SUN-OIL-4248', 'Tên trạm xăng đã tồn tại');
+ERROR_MESSAGE.set('SUN-OIL-4249', 'Mã trạm xăng đã tồn tại');
+ERROR_MESSAGE.set('SUN-OIL-4013', 'Mã trạm xăng không hợp lệ');
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
@@ -26,12 +29,15 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (err.status === 400) {
-          const message = ERROR_MESSAGE.get(err.error.meta?.code) || 'Unknown error';
-          this.toastr.error(message);
-        }
         if (err.status >= 500) {
           this.toastr.error('Hệ thống đang bận! Vui lòng thử lại sau');
+        }
+
+        if (err.status === 400) {
+          const message = ERROR_MESSAGE.get(err.error.meta?.code);
+          if (message) {
+            this.toastr.error(message);
+          }
         }
 
         if (err.status === 404) {

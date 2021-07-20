@@ -55,7 +55,7 @@ export class Step3Component implements OnInit {
     this.searchFormControl.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))
       .subscribe((value) => {
-        if (value.trim()) {
+        if (value?.trim()) {
           this.filterField.setFilterFieldValue(value);
         } else {
           this.filterField.setFilterFieldValue(null);
@@ -71,11 +71,16 @@ export class Step3Component implements OnInit {
   // Get data
   getData() {
     this.gasStationService
-      .getPumpPolesByGasStation(1)
+      .getPumpPolesByGasStation(this.gasStationService.gasStationId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res.data) {
           this.dataSource = this.dataSourceTemp = res.data;
+          // Set data after filter and apply current sorting
+          this.dataSource = this.sortService.sort(
+            this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+          );
+          this.cdr.detectChanges();
         }
       });
   }

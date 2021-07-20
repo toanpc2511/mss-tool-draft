@@ -81,7 +81,7 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
     const currentStepData = this.gasStationService.getStepDataValue();
     switch ($event.currentStep) {
       case 1:
-        currentStepData.step1.data = $event.step1.data;
+        currentStepData.step1.data = $event.step1?.data || currentStepData.step1.data;
         currentStepData.step1.isValid = $event.step1.isValid;
         break;
       case 2:

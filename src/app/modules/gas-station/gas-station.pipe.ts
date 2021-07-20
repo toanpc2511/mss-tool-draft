@@ -16,7 +16,7 @@ export class CanActiveStepPipe implements PipeTransform {
       case 4:
         return (
           (stepData.step1.isValid && stepData.step2.isValid && stepData.step3.isValid) ||
-          stepData.currentStep >= 3
+          stepData.currentStep >= 4
         );
     }
   }
