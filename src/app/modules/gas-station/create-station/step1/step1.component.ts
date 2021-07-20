@@ -13,6 +13,7 @@ export class Step1Component implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
   stationForm: FormGroup;
   listStatus = LIST_STATUS;
+  isUpdate = false;
   constructor(
     private gasStationService: GasStationService,
     private fb: FormBuilder,
@@ -27,6 +28,7 @@ export class Step1Component implements OnInit {
   initForm(data?) {
     const CODE_PATTERN = '^[A-Za-z0-9]*$';
     if (data) {
+      this.isUpdate = true;
       return this.fb.group({
         stationCode: [
           data.stationCode || 'ST',
@@ -53,20 +55,28 @@ export class Step1Component implements OnInit {
       return;
     }
 
-    this.gasStationService.createStation(this.stationForm.value).subscribe((res) => {
-      if (res.data) {
-        console.log('next to step 2');
+    if (!this.isUpdate) {
+      this.gasStationService.createStation(this.stationForm.value).subscribe((res) => {
+        if (res.data) {
+          console.log('next to step 2');
 
-        // Đưa vào subscribe
-        this.stepSubmitted.next({
-          currentStep: 1,
-          step1: { data: res.data, isValid: true }
-        });
-        this.gasStationService.gasStationId = res.data.id;
-        this.gasStationService.gasStationStatus = res.data.status;
-      } else {
-      }
-    });
+          // Đưa vào subscribe
+          this.stepSubmitted.next({
+            currentStep: 1,
+            step1: { data: res.data, isValid: true }
+          });
+          this.gasStationService.gasStationId = res.data.id;
+          this.gasStationService.gasStationStatus = res.data.status;
+        } else {
+        }
+      });
+    } else {
+      // Đưa vào subscribe
+      this.stepSubmitted.next({
+        currentStep: 1,
+        step1: { data: null, isValid: true }
+      });
+    }
   }
 
   backToList() {

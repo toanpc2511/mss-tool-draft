@@ -48,21 +48,12 @@ export class Step4Component implements OnInit {
   }
 
   ngOnInit(): void {
-    // Get data
-    this.gasStationService
-      .getPumpHosesByGasStation(1)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res.data) {
-          this.dataSource = this.dataSourceTemp = res.data;
-        }
-      });
-
+    this.getData();
     // Filter
     this.searchFormControl.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))
       .subscribe((value) => {
-        if (value.trim()) {
+        if (value?.trim()) {
           this.filterField.setFilterFieldValue(value);
         } else {
           this.filterField.setFilterFieldValue(null);
@@ -72,6 +63,23 @@ export class Step4Component implements OnInit {
           this.filterService.filter(this.dataSourceTemp, this.filterField.field)
         );
         this.cdr.detectChanges();
+      });
+  }
+
+  getData() {
+    // Get data
+    this.gasStationService
+      .getPumpHosesByGasStation(this.gasStationService.gasStationId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res.data) {
+          this.dataSource = this.dataSourceTemp = res.data;
+          // Set data after filter and apply current sorting
+          this.dataSource = this.sortService.sort(
+            this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+          );
+          this.cdr.detectChanges();
+        }
       });
   }
 
