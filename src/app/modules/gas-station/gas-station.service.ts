@@ -1,11 +1,54 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { environment } from 'src/environments/environment';
 
 export interface IStepData<T> {
   isValid: boolean;
   data: T;
 }
+// gas station
+export interface GasStationResponse {
+  id: number;
+  name: string;
+  address: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+  code: string;
+}
+
+export interface CreateStation {
+  stationCode: string;
+  name: string;
+  address: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+}
+// end gas station
+
+// gas bin
+export interface GasBinResponse {
+  capacity: string;
+  code: string;
+  description: string;
+  height: string;
+  length: string;
+  name: string;
+  productName: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+}
+
+export interface CreateGasBin {
+  capacity: string;
+  code: string;
+  description: string;
+  gasStationId: string;
+  height: string;
+  length: string;
+  name: string;
+  productId: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+}
+// end gas bin
 
 export interface IStep1Data {}
 
@@ -62,10 +105,7 @@ export class GasStationService {
   // Global
   gasStationId: number;
   gasStationStatus: boolean;
-
-  // List gas station
-
-  // Create gas station
+  apiUrl = environment.apiUrl;
   stepDataSubject: BehaviorSubject<StepData>;
   stepData$: Observable<StepData>;
 
@@ -88,8 +128,6 @@ export class GasStationService {
     this.stepData$ = this.stepDataSubject.asObservable();
   }
 
-  // List gas station
-
   // Create gas station
   setStepData(stepData) {
     this.stepDataSubject.next(stepData);
@@ -100,8 +138,20 @@ export class GasStationService {
   }
 
   // Step 1
+  getListStation() {
+    return this.http.get<GasStationResponse[]>('gas-stations');
+  }
+
+  createStation(body: CreateStation) {
+    return this.http.post<GasStationResponse>('gas-stations', body);
+  }
 
   // Step 2
+  getListGasBin(gasStationId: string) {
+    return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
+  }
+
+  createGasBin() {}
 
   // Step 3
   getPumpPolesByGasStation(gasStationId) {

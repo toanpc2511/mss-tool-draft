@@ -12,6 +12,7 @@ export class CreateGasBinComponent implements OnInit {
   @Input() data: any;
   gasBinForm: FormGroup;
   listStatus = LIST_STATUS;
+
   constructor(private fb: FormBuilder, public modal: NgbActiveModal) {}
 
   ngOnInit(): void {

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { GasStationService } from '../../gas-station.service';
 
 @Component({
@@ -10,13 +11,14 @@ import { GasStationService } from '../../gas-station.service';
 })
 export class Step1Component implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
+  stationForm: FormGroup;
+  listStatus = LIST_STATUS;
+
   constructor(
     private gasStationService: GasStationService,
     private fb: FormBuilder,
     private router: Router
   ) {}
-
-  stationForm: FormGroup;
 
   ngOnInit(): void {
     this.stationForm = this.initForm();
@@ -25,10 +27,10 @@ export class Step1Component implements OnInit {
   initForm() {
     const CODE_PATTERN = '^[A-Za-z0-9]*$';
     return this.fb.group({
-      code: ['ST', [Validators.required, Validators.pattern(CODE_PATTERN)]],
+      stationCode: ['ST', [Validators.required, Validators.pattern(CODE_PATTERN)]],
       name: [null, [Validators.required]],
-      location: [null, []],
-      status: [true, []]
+      address: [null, []],
+      status: [this.listStatus.ACTIVE, []]
     });
   }
 
@@ -39,10 +41,13 @@ export class Step1Component implements OnInit {
       return;
     }
 
-    // Đưa vào subscribe
-    this.stepSubmitted.next({
-      currentStep: 1,
-      step1: null
+    this.gasStationService.createStation(this.stationForm.value).subscribe((res) => {
+      console.log(res);
+      // Đưa vào subscribe
+      this.stepSubmitted.next({
+        currentStep: 1,
+        step1: null
+      });
     });
   }
 

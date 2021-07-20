@@ -21,6 +21,11 @@
             [error]="'required'"
             [message]="'Mã bồn không được để trống'"
           ></app-validate>
+          <app-validate
+            [control]="gasBinForm.controls['code']"
+            [error]="'pattern'"
+            [message]="'Mã bồn sai định dạng'"
+          ></app-validate>
         </div>
 
         <div class="col-lg-4">
@@ -86,7 +91,7 @@
             autocomplete="off"
           />
           <app-validate
-            [control]="gasBinForm.controls['height']"
+            [control]="gasBinForm.controls['length']"
             [error]="'required'"
             [message]="'Chiều dài không được để trống'"
           ></app-validate>

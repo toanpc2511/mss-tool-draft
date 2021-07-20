@@ -106,7 +106,7 @@
             <td>{{ item.height }}</td>
             <td>{{ item.length }}</td>
             <td>{{ item.capacity }}</td>
-            <td>{{ item.product_name }}</td>
+            <td>{{ item.productName }}</td>
             <td class="description">
               <p
                 class="cursor-pointer text-ellipsis"
@@ -120,7 +120,7 @@
               <span
                 class="label label-lg label-inline"
                 [class.label-light-success]="item.status === listStatus.ACTIVE"
-                [class.label-light-danger]="item.status === listStatus.INACTIVE"
+                [class.label-light-danger]="item.status !== listStatus.ACTIVE"
               >
                 <ng-container *ngIf="item.status === listStatus.ACTIVE">Hoạt động</ng-container>
                 <ng-container *ngIf="item.status !== listStatus.ACTIVE">

@@ -7,49 +7,8 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-import { GasStationService } from '../../gas-station.service';
+import { GasBinResponse, GasStationService } from '../../gas-station.service';
 import { CreateGasBinComponent } from './create-gas-bin/create-gas-bin.component';
-
-export interface ListGasTankResponse {
-  code: string;
-  name: string;
-  description: string;
-  height: string;
-  length: string;
-  capacity: string;
-  status: string;
-  product_name: string;
-}
-
-export interface ListStatus {
-  ACTIVE: 'ACTIVE';
-  INACTIVE: 'INACTIVE';
-  DELETED: 'DELETED';
-}
-
-export const DATA_FAKE = [
-  {
-    code: 'SBBKA2',
-    name: 'Bồn BKA2',
-    description:
-      'Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
-    height: '20',
-    length: '20',
-    capacity: '20000',
-    status: LIST_STATUS.ACTIVE,
-    product_name: 'RON 94'
-  },
-  {
-    code: 'SBBKA1',
-    name: 'Bồn BKA1',
-    description: 'To',
-    height: '10',
-    length: '10',
-    capacity: '10000',
-    status: LIST_STATUS.INACTIVE,
-    product_name: 'RON 95'
-  }
-];
 
 @Component({
   selector: 'app-step2',
@@ -58,22 +17,18 @@ export const DATA_FAKE = [
   providers: [SortService, FilterService, DestroyService]
 })
 export class Step2Component implements OnInit {
-  listStatus = LIST_STATUS;
-
   @Output() stepSubmitted = new EventEmitter();
-  dataSource: ListGasTankResponse[] = DATA_FAKE;
-  dataSourceTemp: ListGasTankResponse[] = DATA_FAKE;
+  dataSource: GasBinResponse[] = [];
+  dataSourceTemp: GasBinResponse[] = [];
   sorting: SortState;
   searchFormControl: FormControl;
-  filterField: FilterField<{
-    code: string;
-    name: string;
-    location: string;
-    status: string;
-  }>;
+  filterField: FilterField<GasBinResponse>;
+  stationId: string;
+  listStatus = LIST_STATUS;
+
   constructor(
-    private sortService: SortService<ListGasTankResponse>,
-    private filterService: FilterService<ListGasTankResponse>,
+    private sortService: SortService<GasBinResponse>,
+    private filterService: FilterService<GasBinResponse>,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
@@ -83,8 +38,12 @@ export class Step2Component implements OnInit {
     this.filterField = new FilterField({
       code: null,
       name: null,
-      location: null,
-      status: null
+      description: null,
+      height: null,
+      length: null,
+      capacity: null,
+      status: null,
+      productName: null
     });
     this.searchFormControl = new FormControl();
   }
@@ -105,6 +64,12 @@ export class Step2Component implements OnInit {
         );
         this.cdr.detectChanges();
       });
+
+    // fake station id
+    this.stationId = '2';
+    this.gasStationService.getListGasBin(this.stationId).subscribe((res) => {
+      this.dataSource = this.dataSourceTemp = res.data;
+    });
   }
 
   sort(column: string) {
