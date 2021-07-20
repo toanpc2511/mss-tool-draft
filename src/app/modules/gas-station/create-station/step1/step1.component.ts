@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
@@ -17,7 +17,8 @@ export class Step1Component implements OnInit {
   constructor(
     private gasStationService: GasStationService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -56,20 +57,29 @@ export class Step1Component implements OnInit {
     }
 
     if (!this.isUpdate) {
-      this.gasStationService.createStation(this.stationForm.value).subscribe((res) => {
-        if (res.data) {
-          console.log('next to step 2');
-
-          // Đưa vào subscribe
-          this.stepSubmitted.next({
-            currentStep: 1,
-            step1: { data: res.data, isValid: true }
-          });
-          this.gasStationService.gasStationId = res.data.id;
-          this.gasStationService.gasStationStatus = res.data.status;
-        } else {
+      this.gasStationService.createStation(this.stationForm.value).subscribe(
+        (res) => {
+          if (res.data) {
+            // Đưa vào subscribe
+            this.stepSubmitted.next({
+              currentStep: 1,
+              step1: { data: res.data, isValid: true }
+            });
+            this.gasStationService.gasStationId = res.data.id;
+            this.gasStationService.gasStationStatus = res.data.status;
+          } else {
+          }
+        },
+        (err) => {
+          if (err.meta.code === 'SUN-OIL-4249') {
+            this.stationForm.get('stationCode').setErrors({ codeExisted: true });
+          }
+          if (err.meta.code === 'SUN-OIL-4248') {
+            this.stationForm.get('name').setErrors({ nameExisted: true });
+          }
+          this.cdr.detectChanges();
         }
-      });
+      );
     } else {
       // Đưa vào subscribe
       this.stepSubmitted.next({

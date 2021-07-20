@@ -49,6 +49,17 @@ export interface GasBinResponse {
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
+export interface ProductsResponse {
+  name: string;
+  price: number;
+  unit: string;
+  id: number;
+  entry_price: number;
+  date_price_listing: string;
+  type: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+}
+
 export interface CreateGasBin {
   capacity: string;
   code: string;
@@ -145,6 +156,10 @@ export class GasStationService {
   // Step 2
   getListGasBin(gasStationId: number) {
     return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
+  }
+
+  getListProduct() {
+    return this.http.get<ProductsResponse[]>('products');
   }
 
   createGasBin() {}

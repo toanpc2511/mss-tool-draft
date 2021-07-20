@@ -116,8 +116,9 @@
             class="form-control form-control-lg form-control-solid"
             formControlName="productName"
           >
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
+            <ng-container *ngFor="let item of listProduct">
+              <option [value]="item.id">{{ item.name }}</option>
+            </ng-container>
           </select>
           <app-validate
             [control]="gasBinForm.controls['height']"
