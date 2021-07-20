@@ -13,19 +13,25 @@
             name="firstName"
             placeholder="Nhập mã trạm"
             autocomplete="off"
-            formControlName="code"
+            formControlName="stationCode"
             maxlength="100"
           />
           <app-validate
-            [control]="stationForm.controls['code']"
+            [control]="stationForm.controls['stationCode']"
             [error]="'required'"
             [message]="'Mã trạm không được để trống'"
           ></app-validate>
 
           <app-validate
-            [control]="stationForm.controls['code']"
+            [control]="stationForm.controls['stationCode']"
             [error]="'pattern'"
             [message]="'Mã trạm sai định dạng'"
+          ></app-validate>
+
+          <app-validate
+            [control]="stationForm.controls['stationCode']"
+            [error]="'codeExisted'"
+            [message]="'Mã trạm đã tồn tại'"
           ></app-validate>
         </div>
       </div>
@@ -48,6 +54,12 @@
             [error]="'required'"
             [message]="'Tên trạm không được để trống'"
           ></app-validate>
+
+          <app-validate
+            [control]="stationForm.controls['name']"
+            [error]="'nameExisted'"
+            [message]="'Tên trạm đã tồn tại'"
+          ></app-validate>
         </div>
       </div>
 
@@ -61,7 +73,7 @@
             name="firstName"
             placeholder="Nhập địa chỉ"
             autocomplete="off"
-            formControlName="location"
+            formControlName="address"
             maxlength="100"
           />
         </div>
@@ -77,8 +89,8 @@
             name="gender"
             formControlName="status"
           >
-            <option value="true">Hoạt động</option>
-            <option value="false">Không hoạt động</option>
+            <option [value]="listStatus.ACTIVE">Hoạt động</option>
+            <option [value]="listStatus.INACTIVE">Không hoạt động</option>
           </select>
         </div>
       </div>
