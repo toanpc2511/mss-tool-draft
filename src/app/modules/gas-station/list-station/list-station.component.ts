@@ -19,8 +19,8 @@ import { GasStationResponse, GasStationService } from '../gas-station.service';
   providers: [SortService, FilterService, DestroyService]
 })
 export class ListStationComponent implements OnInit {
-  dataSource: GasStationResponse[] = [];
-  dataSourceTemp: GasStationResponse[] = [];
+  dataSource: Array<GasStationResponse>;
+  dataSourceTemp: Array<GasStationResponse>;
   sorting: SortState;
   searchFormControl: FormControl;
   filterField: FilterField<GasStationResponse>;
@@ -34,6 +34,7 @@ export class ListStationComponent implements OnInit {
     private router: Router,
     private gasStationService: GasStationService
   ) {
+    this.dataSource = this.dataSourceTemp = [];
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
       id: null,
@@ -47,8 +48,8 @@ export class ListStationComponent implements OnInit {
 
   ngOnInit() {
     this.gasStationService.getListStation().subscribe((res) => {
-      this.dataSource = res.data;
-      this.dataSourceTemp = res.data;
+      this.dataSource = this.dataSourceTemp = res.data;
+      this.cdr.detectChanges();
     });
 
     // Filter
