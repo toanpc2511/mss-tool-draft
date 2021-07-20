@@ -6,7 +6,7 @@ table {
   min-width: 1024px;
   td {
     &.code {
-      width: 100px;
+      width: 150px;
     }
     &.name {
       width: 200px;
@@ -18,13 +18,13 @@ table {
       width: 200px;
     }
     &.description {
-      width: 400px;
+      max-width: 500px;
     }
     &.status {
-      width: 100px;
+      width: 150px;
     }
     &.task {
-      width: 100px;
+      width: 150px;
     }
   }
 }

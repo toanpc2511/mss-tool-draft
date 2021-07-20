@@ -13,7 +13,6 @@ export class Step1Component implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
   stationForm: FormGroup;
   listStatus = LIST_STATUS;
-
   constructor(
     private gasStationService: GasStationService,
     private fb: FormBuilder,
@@ -21,17 +20,30 @@ export class Step1Component implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.stationForm = this.initForm();
+    const step1Data = this.gasStationService.getStepDataValue().step1;
+    this.stationForm = this.initForm(step1Data?.data);
   }
 
-  initForm() {
+  initForm(data?) {
     const CODE_PATTERN = '^[A-Za-z0-9]*$';
-    return this.fb.group({
-      stationCode: ['ST', [Validators.required, Validators.pattern(CODE_PATTERN)]],
-      name: [null, [Validators.required]],
-      address: [null, []],
-      status: [this.listStatus.ACTIVE, []]
-    });
+    if (data) {
+      return this.fb.group({
+        stationCode: [
+          data.stationCode || 'ST',
+          [Validators.required, Validators.pattern(CODE_PATTERN)]
+        ],
+        name: [data.name || null, [Validators.required]],
+        address: [data.address || null],
+        status: [data.status || this.listStatus.ACTIVE]
+      });
+    } else {
+      return this.fb.group({
+        stationCode: ['ST', [Validators.required, Validators.pattern(CODE_PATTERN)]],
+        name: [null, [Validators.required]],
+        address: [null],
+        status: [this.listStatus.ACTIVE]
+      });
+    }
   }
 
   onSubmit() {
@@ -42,13 +54,18 @@ export class Step1Component implements OnInit {
     }
 
     this.gasStationService.createStation(this.stationForm.value).subscribe((res) => {
-      // Đưa vào subscribe
-      this.stepSubmitted.next({
-        currentStep: 1,
-        step1: null
-      });
-      this.gasStationService.gasStationId = res.data.id;
-      this.gasStationService.gasStationStatus = res.data.status;
+      if (res.data) {
+        console.log('next to step 2');
+
+        // Đưa vào subscribe
+        this.stepSubmitted.next({
+          currentStep: 1,
+          step1: { data: res.data, isValid: true }
+        });
+        this.gasStationService.gasStationId = res.data.id;
+        this.gasStationService.gasStationStatus = res.data.status;
+      } else {
+      }
     });
   }
 

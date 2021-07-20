@@ -8,7 +8,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-import { GasBinResponse, GasStationService } from '../../gas-station.service';
+import { GasBinResponse, GasStationService, StepData } from '../../gas-station.service';
 import { CreateGasBinComponent } from './create-gas-bin/create-gas-bin.component';
 
 @Component({
@@ -90,7 +90,9 @@ export class Step2Component implements OnInit {
     // Đưa vào subscribe
     this.stepSubmitted.next({
       currentStep: 2,
-      step2: null
+      step2: {
+        isValid: true
+      }
     });
   }
 

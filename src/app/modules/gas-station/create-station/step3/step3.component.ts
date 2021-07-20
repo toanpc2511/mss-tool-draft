@@ -86,7 +86,10 @@ export class Step3Component implements OnInit {
   }
 
   create() {
-    if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
+    if (
+      !this.gasStationService.gasStationId ||
+      this.gasStationService.gasStationStatus !== 'ACTIVE'
+    ) {
       return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(PumpPoleModalComponent, {
@@ -96,13 +99,14 @@ export class Step3Component implements OnInit {
     modalRef.result.then((result) => {
       if (result) {
         this.gasStationService
-          .getPumpPolesByGasStation(1)
+          .getPumpPolesByGasStation(this.gasStationService.gasStationId)
           .pipe(takeUntil(this.destroy$))
           .subscribe((res) => {
             if (res.data) {
               this.dataSource = this.dataSourceTemp = res.data;
               this.searchFormControl.patchValue(null);
               this.sort(null);
+              this.cdr.detectChanges();
             }
           });
       }
@@ -116,7 +120,9 @@ export class Step3Component implements OnInit {
   submit() {
     this.stepSubmitted.next({
       currentStep: 3,
-      step3: null
+      step3: {
+        isValid: true
+      }
     });
   }
 

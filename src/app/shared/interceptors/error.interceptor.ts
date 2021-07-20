@@ -13,6 +13,8 @@ import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
+const ERROR_MESSAGE: Map<string, string> = new Map();
+ERROR_MESSAGE.set('SUN-OIL-4241', 'Tên cột đã tồn tại');
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
@@ -25,7 +27,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 400) {
-          console.error('Bad request!');
+          const message = ERROR_MESSAGE.get(err.error.meta?.code) || 'Unknown error';
+          this.toastr.error(message);
         }
         if (err.status >= 500) {
           this.toastr.error('Hệ thống đang bận! Vui lòng thử lại sau');

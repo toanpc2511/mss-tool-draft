@@ -5,7 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
-import { GasStationService, IPumpPole, IPumpHoseInput } from '../../../gas-station.service';
+import {
+  GasStationService,
+  IPumpPole,
+  IPumpHoseInput,
+  GasBinResponse
+} from '../../../gas-station.service';
 
 @Component({
   selector: 'app-pump-hose-modal',
@@ -16,23 +21,34 @@ import { GasStationService, IPumpPole, IPumpHoseInput } from '../../../gas-stati
 export class PumpHoseModalComponent implements OnInit {
   @Input() data: IPumpPole;
   pumpHoseForm: FormGroup;
-  gasFields = [];
-  pumpPoles = [];
+  gasFields: Array<GasBinResponse>;
+  pumpPoles: Array<IPumpPole>;
   constructor(
     private fb: FormBuilder,
     public modal: NgbActiveModal,
     private gasStationService: GasStationService,
     private toastr: ToastrService,
     private destroy$: DestroyService
-  ) {}
+  ) {
+    this.pumpPoles = [];
+    this.gasFields = [];
+  }
 
   ngOnInit(): void {
     this.gasStationService
-      .getPumpPolesByGasStation(1)
+      .getPumpPolesByGasStation(this.gasStationService.gasStationId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res.data) {
           this.pumpPoles = res.data;
+        }
+      });
+    this.gasStationService
+      .getListGasBin(this.gasStationService.gasStationId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res.data) {
+          this.gasFields = res.data;
         }
       });
     this.pumpHoseForm = this.fb.group({
