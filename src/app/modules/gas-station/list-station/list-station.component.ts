@@ -47,10 +47,7 @@ export class ListStationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.gasStationService.getListStation().subscribe((res) => {
-      this.dataSource = this.dataSourceTemp = res.data;
-      this.cdr.detectChanges();
-    });
+    this.getListStation();
 
     // Filter
     this.searchFormControl.valueChanges
@@ -75,5 +72,16 @@ export class ListStationComponent implements OnInit {
 
   goToCreateGasStation() {
     this.router.navigate(['/tram-xang/them-tram-xang']);
+  }
+
+  getListStation() {
+    this.gasStationService.getListStation().subscribe((res) => {
+      this.dataSource = this.dataSourceTemp = res.data;
+      this.cdr.detectChanges();
+    });
+  }
+
+  deleteStation(stationId: string) {
+    this.gasStationService.deleteStation(stationId).subscribe(() => this.getListStation());
   }
 }

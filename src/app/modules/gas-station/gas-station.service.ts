@@ -119,6 +119,7 @@ export class GasStationService {
   // Step 1
 
   // Step 2
+  afterCreatedBinSubject = new BehaviorSubject(null);
 
   // Step 3
 
@@ -153,6 +154,10 @@ export class GasStationService {
     return this.http.post<GasStationResponse>('gas-stations', body);
   }
 
+  deleteStation(stationId: string) {
+    return this.http.delete(`gas-station/${stationId}`);
+  }
+
   // Step 2
   getListGasBin(gasStationId: number) {
     return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
@@ -162,7 +167,9 @@ export class GasStationService {
     return this.http.get<ProductsResponse[]>('products');
   }
 
-  createGasBin() {}
+  createGasBin(body: CreateGasBin) {
+    return this.http.post('gas-fields', body);
+  }
 
   // Step 3
   getPumpPolesByGasStation(gasStationId) {

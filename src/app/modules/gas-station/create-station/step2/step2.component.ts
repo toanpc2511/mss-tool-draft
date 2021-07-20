@@ -69,9 +69,11 @@ export class Step2Component implements OnInit {
 
     this.stationId = this.gasStationService.gasStationId;
 
-    this.gasStationService.getListGasBin(this.stationId).subscribe((res) => {
-      this.dataSource = this.dataSourceTemp = res.data;
-      this.cdr.detectChanges();
+    this.gasStationService.afterCreatedBinSubject.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.gasStationService.getListGasBin(this.stationId).subscribe((res) => {
+        this.dataSource = this.dataSourceTemp = res.data;
+        this.cdr.detectChanges();
+      });
     });
   }
 
