@@ -124,12 +124,10 @@ export class GasStationService {
     return this.http.get<GasStationResponse[]>('gas-stations');
   }
 
-<<<<<<< HEAD
   createStation(body: CreateStation) {
     return this.http.post<GasStationResponse>('gas-stations', body);
   }
-=======
->>>>>>> 4a971138b3d34d22ea9463471c24037cef5ee67b
+
   // Step 2
   getListGasBin(gasStationId: string) {
     return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
