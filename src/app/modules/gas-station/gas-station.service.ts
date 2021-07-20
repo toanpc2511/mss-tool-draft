@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpService } from 'src/app/shared/services/http.service';
@@ -22,8 +23,32 @@ export interface CreateStation {
   address: string;
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
-
 // end gas station
+
+// gas bin
+export interface GasBinResponse {
+  capacity: string;
+  code: string;
+  description: string;
+  height: string;
+  length: string;
+  name: string;
+  productName: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+}
+
+export interface CreateGasBin {
+  capacity: string;
+  code: string;
+  description: string;
+  gasStationId: string;
+  height: string;
+  length: string;
+  name: string;
+  productId: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+}
+// end gas bin
 
 export interface IStep1Data {}
 
@@ -99,10 +124,18 @@ export class GasStationService {
     return this.http.get<GasStationResponse[]>('gas-stations');
   }
 
+<<<<<<< HEAD
   createStation(body: CreateStation) {
     return this.http.post<GasStationResponse>('gas-stations', body);
   }
+=======
+>>>>>>> 4a971138b3d34d22ea9463471c24037cef5ee67b
   // Step 2
+  getListGasBin(gasStationId: string) {
+    return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
+  }
+
+  createGasBin() {}
 
   // Step 3
   getPumpPolesByGasStation(gasStationId) {
