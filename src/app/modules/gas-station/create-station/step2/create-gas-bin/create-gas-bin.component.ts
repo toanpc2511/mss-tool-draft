@@ -13,6 +13,7 @@ export class CreateGasBinComponent implements OnInit {
   gasBinForm: FormGroup;
   isLoading$;
   listStatus = LIST_STATUS;
+
   constructor(private fb: FormBuilder, public modal: NgbActiveModal) {}
 
   ngOnInit(): void {
