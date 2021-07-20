@@ -8,7 +8,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-import { GasBinResponse, GasStationService, StepData } from '../../gas-station.service';
+import { GasBinResponse, GasStationService } from '../../gas-station.service';
 import { CreateGasBinComponent } from './create-gas-bin/create-gas-bin.component';
 
 @Component({
@@ -67,11 +67,13 @@ export class Step2Component implements OnInit {
         this.cdr.detectChanges();
       });
 
-    // fake station id
     this.stationId = this.gasStationService.gasStationId;
-    this.gasStationService.getListGasBin(this.stationId).subscribe((res) => {
-      this.dataSource = this.dataSourceTemp = res.data;
-      this.cdr.detectChanges();
+
+    this.gasStationService.afterCreatedBinSubject.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.gasStationService.getListGasBin(this.stationId).subscribe((res) => {
+        this.dataSource = this.dataSourceTemp = res.data;
+        this.cdr.detectChanges();
+      });
     });
   }
 

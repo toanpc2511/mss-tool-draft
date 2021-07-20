@@ -49,6 +49,17 @@ export interface GasBinResponse {
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
+export interface ProductsResponse {
+  name: string;
+  price: number;
+  unit: string;
+  id: number;
+  entry_price: number;
+  date_price_listing: string;
+  type: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+}
+
 export interface CreateGasBin {
   capacity: string;
   code: string;
@@ -108,6 +119,7 @@ export class GasStationService {
   // Step 1
 
   // Step 2
+  afterCreatedBinSubject = new BehaviorSubject(null);
 
   // Step 3
 
@@ -142,12 +154,22 @@ export class GasStationService {
     return this.http.post<GasStationResponse>('gas-stations', body);
   }
 
+  deleteStation(stationId: string) {
+    return this.http.delete(`gas-station/${stationId}`);
+  }
+
   // Step 2
   getListGasBin(gasStationId: number) {
     return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
   }
 
-  createGasBin() {}
+  getListProduct() {
+    return this.http.get<ProductsResponse[]>('products');
+  }
+
+  createGasBin(body: CreateGasBin) {
+    return this.http.post('gas-fields', body);
+  }
 
   // Step 3
   getPumpPolesByGasStation(gasStationId) {

@@ -114,10 +114,12 @@
           <label>Tên nhiên liệu</label>
           <select
             class="form-control form-control-lg form-control-solid"
-            formControlName="productName"
+            formControlName="productId"
           >
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
+            <option selected disabled>Chọn nhiên liệu</option>
+            <ng-container *ngFor="let item of listProduct">
+              <option [value]="item.id">{{ item.name }}</option>
+            </ng-container>
           </select>
           <app-validate
             [control]="gasBinForm.controls['height']"

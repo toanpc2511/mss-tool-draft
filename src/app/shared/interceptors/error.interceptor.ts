@@ -20,6 +20,8 @@ ERROR_MESSAGE.set('SUN-OIL-4249', 'Mã trạm xăng đã tồn tại');
 ERROR_MESSAGE.set('SUN-OIL-4013', 'Mã trạm xăng không hợp lệ');
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
+  listErrorForDisplay = ['SUN-OIL-4248', 'SUN-OIL-4249'];
+
   constructor(
     private router: Router,
     private toastr: ToastrService,
@@ -35,6 +37,12 @@ export class ErrorInterceptor implements HttpInterceptor {
 
         if (err.status === 400) {
           const message = ERROR_MESSAGE.get(err.error.meta?.code);
+
+          const checkErr = this.listErrorForDisplay.includes(err.error.meta?.code);
+          if (checkErr) {
+            return throwError(err.error);
+          }
+
           if (message) {
             this.toastr.error(message);
           }
