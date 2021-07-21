@@ -59,8 +59,8 @@ export interface ProductsResponse {
   price: number;
   unit: string;
   id: number;
-  entry_price: number;
-  date_price_listing: string;
+  entryPrice: number;
+  datePriceListing: string;
   type: string;
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
