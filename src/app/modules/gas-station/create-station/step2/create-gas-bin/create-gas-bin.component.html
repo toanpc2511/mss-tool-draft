@@ -126,13 +126,13 @@
             class="form-control form-control-lg form-control-solid"
             formControlName="productId"
           >
-            <option [value]="null" selected disabled>Chọn nhiên liệu</option>
+            <option [value]="null" disabled>Chọn nhiên liệu</option>
             <ng-container *ngFor="let item of listProduct">
               <option [value]="item.id">{{ item.name }}</option>
             </ng-container>
           </select>
           <app-validate
-            [control]="gasBinForm.controls['height']"
+            [control]="gasBinForm.controls['productId']"
             [error]="'required'"
             [message]="'Tên nhiên liệu không được để trống'"
           ></app-validate>
