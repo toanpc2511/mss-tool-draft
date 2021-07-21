@@ -71,13 +71,17 @@ export class Step2Component implements OnInit {
     this.getListGasBin(this.stationId);
   }
 
+  initDatasource(dataSource: Array<GasBinResponse>) {
+    return dataSource.map((data) => ({ ...data, productName: data.product.name }));
+  }
+
   getListGasBin(stationId: number) {
     this.gasStationService
       .getListGasBin(stationId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res.data) {
-          this.dataSource = this.dataSourceTemp = res.data;
+          this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
           this.cdr.detectChanges();
         }
       });
