@@ -20,7 +20,7 @@ ERROR_MESSAGE.set('SUN-OIL-4249', 'Mã trạm xăng đã tồn tại');
 ERROR_MESSAGE.set('SUN-OIL-4013', 'Mã trạm xăng không hợp lệ');
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  listErrorForDisplay = ['SUN-OIL-4248', 'SUN-OIL-4249'];
+  listErrorForDisplay = ['SUN-OIL-4248', 'SUN-OIL-4249', 'SUN-OIL-4244', 'SUN-OIL-4245'];
 
   constructor(
     private router: Router,
