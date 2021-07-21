@@ -41,7 +41,7 @@ export class PumpHoseModalComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res.data) {
-          this.pumpPoles = res.data;
+          this.pumpPoles = res.data.filter((pumpPole) => pumpPole.status === 'ACTIVE');
         }
       });
     this.gasStationService
@@ -49,7 +49,7 @@ export class PumpHoseModalComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res.data) {
-          this.gasFields = res.data;
+          this.gasFields = res.data.filter((gasField) => gasField.status === 'ACTIVE');
         }
       });
     if (!this.data) {
