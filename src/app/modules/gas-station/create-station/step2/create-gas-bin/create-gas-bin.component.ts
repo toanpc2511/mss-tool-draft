@@ -26,7 +26,9 @@ export class CreateGasBinComponent implements OnInit {
   ngOnInit(): void {
     this.gasBinForm = this.initForm();
 
-    this.gasStationService.getListProduct().subscribe((res) => (this.listProduct = res.data));
+    this.gasStationService
+      .getListProduct()
+      .subscribe((res) => (this.listProduct = res.data.filter((data) => data.status === 'ACTIVE')));
   }
 
   initForm() {
