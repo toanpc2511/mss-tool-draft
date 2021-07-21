@@ -89,7 +89,7 @@
             </td>
 
             <td class="text-center task">
-              <a title="Edit product" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+              <a (click)="update(pumpPole)" title="Edit product" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
                   cacheSVG="true"
@@ -97,7 +97,7 @@
                 >
                 </span>
               </a>
-              <a title="Delete product" class="btn btn-icon btn-light btn-hover-danger btn-sm">
+              <a (click)="delete()" title="Delete product" class="btn btn-icon btn-light btn-hover-danger btn-sm">
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"

@@ -12,16 +12,9 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
-
-const ERROR_MESSAGE: Map<string, string> = new Map();
-ERROR_MESSAGE.set('SUN-OIL-4241', 'Tên cột đã tồn tại');
-ERROR_MESSAGE.set('SUN-OIL-4248', 'Tên trạm xăng đã tồn tại');
-ERROR_MESSAGE.set('SUN-OIL-4249', 'Mã trạm xăng đã tồn tại');
-ERROR_MESSAGE.set('SUN-OIL-4013', 'Mã trạm xăng không hợp lệ');
+import { IError } from '../models/error.model';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  listErrorForDisplay = ['SUN-OIL-4248', 'SUN-OIL-4249', 'SUN-OIL-4244', 'SUN-OIL-4245'];
-
   constructor(
     private router: Router,
     private toastr: ToastrService,
@@ -36,16 +29,8 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
 
         if (err.status === 400) {
-          const message = ERROR_MESSAGE.get(err.error.meta?.code);
-
-          const checkErr = this.listErrorForDisplay.includes(err.error.meta?.code);
-          if (checkErr) {
-            return throwError(err.error);
-          }
-
-          if (message) {
-            this.toastr.error(message);
-          }
+          const errors: IError = err.error.meta;
+          return throwError(errors);
         }
 
         if (err.status === 404) {

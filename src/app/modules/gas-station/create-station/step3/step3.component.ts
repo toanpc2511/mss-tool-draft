@@ -118,9 +118,62 @@ export class Step3Component implements OnInit {
     });
   }
 
-  update() {}
+  update(data) {
+    if (
+      !this.gasStationService.gasStationId ||
+      this.gasStationService.gasStationStatus !== 'ACTIVE'
+    ) {
+      return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+    }
+    const modalRef = this.modalService.open(PumpPoleModalComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+    modalRef.componentInstance.data = data;
+    modalRef.result.then((result) => {
+      if (result) {
+        this.gasStationService
+          .getPumpPolesByGasStation(this.gasStationService.gasStationId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((res) => {
+            if (res.data) {
+              this.dataSource = this.dataSourceTemp = res.data;
+              this.searchFormControl.patchValue(null);
+              this.sort(null);
+              this.cdr.detectChanges();
+            }
+          });
+      }
+    });
+  }
 
-  delete() {}
+  delete() {
+    if (
+      !this.gasStationService.gasStationId ||
+      this.gasStationService.gasStationStatus !== 'ACTIVE'
+    ) {
+      return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+    }
+    const modalRef = this.modalService.open(PumpPoleModalComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+    modalRef.result.then((result) => {
+      if (result) {
+        this.gasStationService
+          .getPumpPolesByGasStation(this.gasStationService.gasStationId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((res) => {
+            if (res.data) {
+              this.dataSource = this.dataSourceTemp = res.data;
+              this.searchFormControl.patchValue(null);
+              this.sort(null);
+              this.cdr.detectChanges();
+            }
+          });
+      }
+    });
+  }
 
   submit() {
     this.stepSubmitted.next({

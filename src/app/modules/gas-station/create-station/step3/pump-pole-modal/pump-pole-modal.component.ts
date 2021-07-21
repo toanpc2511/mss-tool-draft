@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
+import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
 import { GasStationService, IPumpPole, IPumpPoleInput } from '../../../gas-station.service';
@@ -16,6 +17,7 @@ import { GasStationService, IPumpPole, IPumpPoleInput } from '../../../gas-stati
 export class PumpPoleModalComponent implements OnInit {
   @Input() data: IPumpPole;
   pumpPoleForm: FormGroup;
+  isUpdate = false;
   constructor(
     private fb: FormBuilder,
     public modal: NgbActiveModal,
@@ -25,17 +27,47 @@ export class PumpPoleModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.pumpPoleForm = this.fb.group({
-      code: [
-        'SC',
-        Validators.compose([
-          Validators.required,
-          TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)
-        ])
-      ],
-      description: [null],
-      name: [null, Validators.compose([Validators.required])],
-      status: 'ACTIVE'
+    if (!this.data) {
+      this.pumpPoleForm = this.fb.group({
+        code: [
+          'SC',
+          Validators.compose([
+            Validators.required,
+            TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)
+          ])
+        ],
+        description: [null],
+        name: [null, Validators.compose([Validators.required])],
+        status: 'ACTIVE'
+      });
+    } else {
+      this.isUpdate = true;
+      this.pumpPoleForm = this.fb.group({
+        code: [
+          this.data.code,
+          Validators.compose([
+            Validators.required,
+            TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)
+          ])
+        ],
+        description: [this.data.description],
+        name: [this.data.name, Validators.compose([Validators.required])],
+        status: [this.data.status]
+      });
+    }
+
+    const codeControl = this.pumpPoleForm.get('code');
+    codeControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      if (codeControl.hasError('existed')) {
+        codeControl.setErrors({ existed: null });
+      }
+    });
+
+    const nameControl = this.pumpPoleForm.get('name');
+    nameControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      if (nameControl.hasError('existed')) {
+        nameControl.setErrors({ existed: null });
+      }
     });
   }
 
@@ -54,10 +86,25 @@ export class PumpPoleModalComponent implements OnInit {
     this.gasStationService
       .createPumpPole(pumpPoleData)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        console.log(res);
-        this.modal.close(res);
-        this.toastr.success('Thành công');
-      });
+      .subscribe(
+        (res) => {
+          this.modal.close(res);
+          this.toastr.success('Thành công');
+        },
+        (err: IError) => {
+          this.checkError(err);
+        }
+      );
+  }
+
+  checkError(error) {
+    switch (error.code) {
+      case 'SUN-OIL-4240':
+        this.pumpPoleForm.get('code').setErrors({ existed: true });
+        break;
+      case 'SUN-OIL-4241':
+        this.pumpPoleForm.get('name').setErrors({ existed: true });
+        break;
+    }
   }
 }

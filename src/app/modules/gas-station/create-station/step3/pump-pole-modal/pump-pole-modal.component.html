@@ -5,7 +5,7 @@
       <ng-container *ngIf="!data">Thêm</ng-container>
       cột
     </div>
-    <div class="close-icon" (click)="modal.dismiss()"></div>
+    <div class="close-icon" (click)="modal.close()"></div>
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
     <form action="#" class="form form-label-right" [formGroup]="pumpPoleForm">
@@ -30,6 +30,11 @@
             [error]="'pattern'"
             [message]="'Mã cột không đúng định dạng'"
           ></app-validate>
+          <app-validate
+            [control]="pumpPoleForm.controls['code']"
+            [error]="'existed'"
+            [message]="'Mã cột đã tồn tại'"
+          ></app-validate>
         </div>
         <div class="col-lg-6">
           <label class="form-label required">Tên cột</label>
@@ -45,6 +50,11 @@
             [control]="pumpPoleForm.controls['name']"
             [error]="'required'"
             [message]="'Tên cột không được để trống'"
+          ></app-validate>
+          <app-validate
+            [control]="pumpPoleForm.controls['name']"
+            [error]="'existed'"
+            [message]="'Tên cột đã tồn tại'"
           ></app-validate>
         </div>
       </div>
@@ -78,12 +88,14 @@
   <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-outline-secondary btn-elevate mr-2"
-      (click)="modal.dismiss()"
+      class="btn btn-outline-secondary btn-create-station-dialog mr-2"
+      (click)="modal.close()"
     >
       Hủy
     </button>
 
-    <button type="submit" class="btn btn-primary btn-elevate" (click)="submit()">Lưu</button>
+    <button type="submit" class="btn btn-primary btn-create-station-dialog" (click)="submit()">
+      Lưu
+    </button>
   </div>
 </div>

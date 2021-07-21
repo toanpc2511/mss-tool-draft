@@ -39,6 +39,7 @@ export interface CreateStation {
 
 // gas bin
 export interface GasBinResponse {
+  id?: number;
   capacity: string;
   code: string;
   description: string;
@@ -46,6 +47,10 @@ export interface GasBinResponse {
   length: string;
   name: string;
   productName: string;
+  product?: {
+    id: number;
+    name: string;
+  };
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
@@ -92,8 +97,16 @@ export interface IPumpHose {
   code: string;
   description: string;
   gasFieldName: string;
+  gasField?: {
+    id: number;
+    name: string;
+  };
   name: string;
   pumpPoleName: string;
+  pumpPole?: {
+    id: number;
+    name: string;
+  };
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
@@ -191,7 +204,7 @@ export class GasStationService {
   resetCreateData() {
     this.gasStationId = null;
     this.gasStationStatus = null;
-    this.stepDataSubject = new BehaviorSubject<StepData>({
+    this.stepDataSubject.next({
       currentStep: 1,
       step1: { isValid: false, data: null },
       step2: { isValid: false },

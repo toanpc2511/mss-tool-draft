@@ -6,6 +6,8 @@ import { storageUtils } from 'src/app/shared/helpers/storage';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
+import jwt_decode from 'jwt-decode';
+
 export enum UserStatus {
   ACTIVE = 'ACTIVE',
   DELETE = 'DELETE',
@@ -47,6 +49,8 @@ export class AuthService {
     if (!user?.token) {
       this.logout();
     } else {
+      const tokenDecode = jwt_decode(user.token);
+      console.log(tokenDecode);
       this.setCurrentUserValue(user);
       return of(user);
     }

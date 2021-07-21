@@ -96,12 +96,73 @@ export class Step4Component implements OnInit {
       backdrop: 'static',
       size: 'xl'
     });
-    modalRef.result.then((res) => {});
+    modalRef.result.then((result) => {
+      if (result) {
+        this.gasStationService
+          .getPumpHosesByGasStation(this.gasStationService.gasStationId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((res) => {
+            if (res.data) {
+              this.dataSource = this.dataSourceTemp = res.data;
+              this.searchFormControl.patchValue(null);
+              this.sort(null);
+              this.cdr.detectChanges();
+            }
+          });
+      }
+    });
   }
 
-  update() {}
+  update(data) {
+    if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
+      // return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+    }
+    const modalRef = this.modalService.open(PumpHoseModalComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+    modalRef.componentInstance.data = data;
+    modalRef.result.then((result) => {
+      if (result) {
+        this.gasStationService
+          .getPumpHosesByGasStation(this.gasStationService.gasStationId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((res) => {
+            if (res.data) {
+              this.dataSource = this.dataSourceTemp = res.data;
+              this.searchFormControl.patchValue(null);
+              this.sort(null);
+              this.cdr.detectChanges();
+            }
+          });
+      }
+    });
+  }
 
-  delete() {}
+  delete() {
+    if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
+      // return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+    }
+    const modalRef = this.modalService.open(PumpHoseModalComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+    modalRef.result.then((result) => {
+      if (result) {
+        this.gasStationService
+          .getPumpHosesByGasStation(this.gasStationService.gasStationId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((res) => {
+            if (res.data) {
+              this.dataSource = this.dataSourceTemp = res.data;
+              this.searchFormControl.patchValue(null);
+              this.sort(null);
+              this.cdr.detectChanges();
+            }
+          });
+      }
+    });
+  }
 
   submit() {
     this.stepSubmitted.next({

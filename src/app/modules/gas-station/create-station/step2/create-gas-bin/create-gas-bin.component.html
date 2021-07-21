@@ -148,10 +148,16 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">
+    <button
+      type="button"
+      class="btn btn-outline-secondary btn-create-station-dialog mr-2"
+      (click)="modal.dismiss()"
+    >
       Hủy
     </button>
 
-    <button type="button" (click)="onSubmit()" class="btn btn-primary btn-elevate">Lưu</button>
+    <button type="button" (click)="onSubmit()" class="btn btn-primary btn-create-station-dialog">
+      Lưu
+    </button>
   </div>
 </div>

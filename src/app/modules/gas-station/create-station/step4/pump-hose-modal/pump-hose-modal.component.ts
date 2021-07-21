@@ -3,13 +3,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
+import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
 import {
   GasStationService,
   IPumpPole,
   IPumpHoseInput,
-  GasBinResponse
+  GasBinResponse,
+  IPumpHose
 } from '../../../gas-station.service';
 
 @Component({
@@ -19,7 +21,7 @@ import {
   providers: [DestroyService]
 })
 export class PumpHoseModalComponent implements OnInit {
-  @Input() data: IPumpPole;
+  @Input() data: IPumpHose;
   pumpHoseForm: FormGroup;
   gasFields: Array<GasBinResponse>;
   pumpPoles: Array<IPumpPole>;
@@ -51,20 +53,37 @@ export class PumpHoseModalComponent implements OnInit {
           this.gasFields = res.data;
         }
       });
-    this.pumpHoseForm = this.fb.group({
-      code: [
-        'SV',
-        Validators.compose([
-          Validators.required,
-          TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)
-        ])
-      ],
-      name: [null, Validators.compose([Validators.required])],
-      gasFieldId: [null, Validators.compose([Validators.required])],
-      pumpPoleId: [null, Validators.compose([Validators.required])],
-      description: [null],
-      status: 'ACTIVE'
-    });
+    if (!this.data) {
+      this.pumpHoseForm = this.fb.group({
+        code: [
+          'SV',
+          Validators.compose([
+            Validators.required,
+            TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)
+          ])
+        ],
+        name: [null, Validators.compose([Validators.required])],
+        gasFieldId: [null, Validators.compose([Validators.required])],
+        pumpPoleId: [null, Validators.compose([Validators.required])],
+        description: [null],
+        status: 'ACTIVE'
+      });
+    } else {
+      this.pumpHoseForm = this.fb.group({
+        code: [
+          this.data.code,
+          Validators.compose([
+            Validators.required,
+            TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)
+          ])
+        ],
+        name: [this.data.name, Validators.compose([Validators.required])],
+        gasFieldId: [this.data.gasField.id, Validators.compose([Validators.required])],
+        pumpPoleId: [this.data.pumpPole.id, Validators.compose([Validators.required])],
+        description: [this.data.description],
+        status: this.data.status
+      });
+    }
   }
 
   submit() {
@@ -83,9 +102,25 @@ export class PumpHoseModalComponent implements OnInit {
     this.gasStationService
       .createPumpHose(pumpHoseData)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        console.log(res);
-        this.toastr.success('Thành công');
-      });
+      .subscribe(
+        (res) => {
+          console.log(res);
+          this.toastr.success('Thành công');
+        },
+        (err: IError) => {
+          this.checkError(err);
+        }
+      );
+  }
+
+  checkError(error) {
+    switch (error.code) {
+      case 'SUN-OIL-4240':
+        this.pumpHoseForm.get('code').setErrors({ existed: true });
+        break;
+      case 'SUN-OIL-4241':
+        this.pumpHoseForm.get('name').setErrors({ existed: true });
+        break;
+    }
   }
 }
