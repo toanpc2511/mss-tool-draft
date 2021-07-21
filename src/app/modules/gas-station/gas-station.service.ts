@@ -132,7 +132,6 @@ export class GasStationService {
   // Step 1
 
   // Step 2
-  afterCreatedBinSubject = new BehaviorSubject(null);
 
   // Step 3
 

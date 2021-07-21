@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { finalize, switchMap } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { GasStationService, ProductsResponse } from '../../../gas-station.service';
 
@@ -19,7 +18,8 @@ export class CreateGasBinComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public modal: NgbActiveModal,
-    private gasStationService: GasStationService
+    private gasStationService: GasStationService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -50,9 +50,19 @@ export class CreateGasBinComponent implements OnInit {
       return;
     }
 
-    this.gasStationService.createGasBin(this.gasBinForm.value).subscribe((res) => {
-      this.modal.close();
-      this.gasStationService.afterCreatedBinSubject.next('created');
-    });
+    this.gasStationService.createGasBin(this.gasBinForm.value).subscribe(
+      (res) => {
+        this.modal.close(res);
+      },
+      (err) => {
+        if (err.meta.code === 'SUN-OIL-4244') {
+          this.gasBinForm.get('code').setErrors({ codeExisted: true });
+        }
+        if (err.meta.code === 'SUN-OIL-4245') {
+          this.gasBinForm.get('name').setErrors({ nameExisted: true });
+        }
+        this.cdr.detectChanges();
+      }
+    );
   }
 }
