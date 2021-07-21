@@ -1,0 +1,12 @@
+<div class="confirm-container">
+  <h3 class="title">{{ data.title }}</h3>
+
+  <p class="sub-title">{{ data.message }}</p>
+
+  <div class="action-btn">
+    <button class="btn" [class]="data.button.class" (click)="modal.close(true)">
+      {{ data.button.title }}
+    </button>
+    <button class="btn btn-secondary" (click)="modal.close(false)">Hủy</button>
+  </div>
+</div>
