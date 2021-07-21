@@ -54,11 +54,11 @@
             class="form-control form-control-lg form-control-solid"
             name="type"
             formControlName="gasFieldId"
-            [value]="'1'"
           >
             <option>Chọn tên bồn</option>
-            <option value="1">Bồn 1</option>
-            <option value="2">Bồn 2</option>
+            <option *ngFor="let gasField of gasFields" [value]="gasField.code">
+              {{ gasField.name }}
+            </option>
           </select>
           <app-validate
             [control]="pumpHoseForm.controls['gasFieldId']"
@@ -72,11 +72,11 @@
             class="form-control form-control-lg form-control-solid"
             name="type"
             formControlName="pumpPoleId"
-            [value]="'1'"
           >
             <option>Chọn tên cột</option>
-            <option value="1">Cột 1</option>
-            <option value="2">Cột 2</option>
+            <option *ngFor="let pumpPole of pumpPoles" [value]="pumpPole.code">
+              {{ pumpPole.name }}
+            </option>
           </select>
           <app-validate
             [control]="pumpHoseForm.controls['pumpPoleId']"

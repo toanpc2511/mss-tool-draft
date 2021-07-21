@@ -55,7 +55,7 @@ export class Step3Component implements OnInit {
     this.searchFormControl.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))
       .subscribe((value) => {
-        if (value.trim()) {
+        if (value?.trim()) {
           this.filterField.setFilterFieldValue(value);
         } else {
           this.filterField.setFilterFieldValue(null);
@@ -71,11 +71,16 @@ export class Step3Component implements OnInit {
   // Get data
   getData() {
     this.gasStationService
-      .getPumpPolesByGasStation(1)
+      .getPumpPolesByGasStation(this.gasStationService.gasStationId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res.data) {
           this.dataSource = this.dataSourceTemp = res.data;
+          // Set data after filter and apply current sorting
+          this.dataSource = this.sortService.sort(
+            this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+          );
+          this.cdr.detectChanges();
         }
       });
   }
@@ -86,7 +91,10 @@ export class Step3Component implements OnInit {
   }
 
   create() {
-    if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
+    if (
+      !this.gasStationService.gasStationId ||
+      this.gasStationService.gasStationStatus !== 'ACTIVE'
+    ) {
       return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(PumpPoleModalComponent, {
@@ -96,13 +104,14 @@ export class Step3Component implements OnInit {
     modalRef.result.then((result) => {
       if (result) {
         this.gasStationService
-          .getPumpPolesByGasStation(1)
+          .getPumpPolesByGasStation(this.gasStationService.gasStationId)
           .pipe(takeUntil(this.destroy$))
           .subscribe((res) => {
             if (res.data) {
               this.dataSource = this.dataSourceTemp = res.data;
               this.searchFormControl.patchValue(null);
               this.sort(null);
+              this.cdr.detectChanges();
             }
           });
       }
@@ -116,7 +125,9 @@ export class Step3Component implements OnInit {
   submit() {
     this.stepSubmitted.next({
       currentStep: 3,
-      step3: null
+      step3: {
+        isValid: true
+      }
     });
   }
 

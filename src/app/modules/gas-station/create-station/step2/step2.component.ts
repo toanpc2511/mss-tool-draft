@@ -55,7 +55,7 @@ export class Step2Component implements OnInit {
     this.searchFormControl.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))
       .subscribe((value) => {
-        if (value.trim()) {
+        if (value?.trim()) {
           this.filterField.setFilterFieldValue(value);
         } else {
           this.filterField.setFilterFieldValue(null);
@@ -67,12 +67,20 @@ export class Step2Component implements OnInit {
         this.cdr.detectChanges();
       });
 
-    // fake station id
     this.stationId = this.gasStationService.gasStationId;
-    this.gasStationService.getListGasBin(this.stationId).subscribe((res) => {
-      this.dataSource = this.dataSourceTemp = res.data;
-      this.cdr.detectChanges();
-    });
+    this.getListGasBin(this.stationId);
+  }
+
+  getListGasBin(stationId: number) {
+    this.gasStationService
+      .getListGasBin(stationId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res.data) {
+          this.dataSource = this.dataSourceTemp = res.data;
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   sort(column: string) {
@@ -83,14 +91,22 @@ export class Step2Component implements OnInit {
     if (this.gasStationService.gasStationStatus !== 'ACTIVE') {
       return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
     }
-    this.modalService.open(CreateGasBinComponent, { size: 'xl' });
+    const modalRef = this.modalService.open(CreateGasBinComponent, { size: 'xl' });
+
+    modalRef.result.then((result) => {
+      if (result) {
+        this.getListGasBin(this.stationId);
+      }
+    });
   }
 
   onSubmit() {
     // Đưa vào subscribe
     this.stepSubmitted.next({
       currentStep: 2,
-      step2: null
+      step2: {
+        isValid: true
+      }
     });
   }
 

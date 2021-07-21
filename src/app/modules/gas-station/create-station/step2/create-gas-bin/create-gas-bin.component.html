@@ -26,6 +26,11 @@
             [error]="'pattern'"
             [message]="'Mã bồn sai định dạng'"
           ></app-validate>
+          <app-validate
+            [control]="gasBinForm.controls['code']"
+            [error]="'codeExisted'"
+            [message]="'Mã bồn đã tồn tại'"
+          ></app-validate>
         </div>
 
         <div class="col-lg-4">
@@ -42,6 +47,11 @@
             [control]="gasBinForm.controls['name']"
             [error]="'required'"
             [message]="'Tên bồn không được để trống'"
+          ></app-validate>
+          <app-validate
+            [control]="gasBinForm.controls['name']"
+            [error]="'nameExisted'"
+            [message]="'Tên bồn đã tồn tại'"
           ></app-validate>
         </div>
 
@@ -114,10 +124,12 @@
           <label>Tên nhiên liệu</label>
           <select
             class="form-control form-control-lg form-control-solid"
-            formControlName="productName"
+            formControlName="productId"
           >
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
+            <option [value]="null" selected disabled>Chọn nhiên liệu</option>
+            <ng-container *ngFor="let item of listProduct">
+              <option [value]="item.id">{{ item.name }}</option>
+            </ng-container>
           </select>
           <app-validate
             [control]="gasBinForm.controls['height']"

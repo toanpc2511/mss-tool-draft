@@ -102,7 +102,11 @@
                 >
                 </span>
               </a>
-              <a title="Xóa trạm" class="btn btn-icon btn-light btn-hover-danger btn-sm">
+              <a
+                title="Xóa trạm"
+                (click)="deleteStation(station.id)"
+                class="btn btn-icon btn-light btn-hover-danger btn-sm"
+              >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"

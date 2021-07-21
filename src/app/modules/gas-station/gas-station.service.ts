@@ -4,9 +4,21 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
 
-export interface IStepData<T> {
-  isValid: boolean;
-  data: T;
+export class StepData {
+  currentStep: number;
+  step1: {
+    isValid: boolean;
+    data: CreateStation;
+  };
+  step2: {
+    isValid: boolean;
+  };
+  step3: {
+    isValid: boolean;
+  };
+  step4: {
+    isValid: boolean;
+  };
 }
 // gas station
 export interface GasStationResponse {
@@ -37,6 +49,17 @@ export interface GasBinResponse {
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
+export interface ProductsResponse {
+  name: string;
+  price: number;
+  unit: string;
+  id: number;
+  entry_price: number;
+  date_price_listing: string;
+  type: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+}
+
 export interface CreateGasBin {
   capacity: string;
   code: string;
@@ -49,15 +72,6 @@ export interface CreateGasBin {
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 // end gas bin
-
-export interface IStep1Data {}
-
-export interface IStep2Data {}
-
-export interface IStep3Data {}
-
-export interface IStep4Data {}
-
 export interface IPumpPole {
   code: string;
   description: string;
@@ -91,13 +105,6 @@ export interface IPumpHoseInput {
   pumpPoleId: 0;
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
-export class StepData {
-  currentStep: number;
-  step1: IStepData<IStep1Data>;
-  step2: IStepData<IStep2Data>;
-  step3: IStepData<IStep3Data>;
-  step4: IStepData<IStep4Data>;
-}
 @Injectable({
   providedIn: 'root'
 })
@@ -121,9 +128,9 @@ export class GasStationService {
     this.stepDataSubject = new BehaviorSubject<StepData>({
       currentStep: 1,
       step1: { isValid: false, data: null },
-      step2: { isValid: false, data: null },
-      step3: { isValid: false, data: null },
-      step4: { isValid: false, data: null }
+      step2: { isValid: false },
+      step3: { isValid: false },
+      step4: { isValid: false }
     });
     this.stepData$ = this.stepDataSubject.asObservable();
   }
@@ -146,12 +153,22 @@ export class GasStationService {
     return this.http.post<GasStationResponse>('gas-stations', body);
   }
 
+  deleteStation(stationId: string) {
+    return this.http.delete(`gas-station/${stationId}`);
+  }
+
   // Step 2
   getListGasBin(gasStationId: number) {
     return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
   }
 
-  createGasBin() {}
+  getListProduct() {
+    return this.http.get<ProductsResponse[]>('products');
+  }
+
+  createGasBin(body: CreateGasBin) {
+    return this.http.post('gas-fields', body);
+  }
 
   // Step 3
   getPumpPolesByGasStation(gasStationId) {
@@ -169,5 +186,17 @@ export class GasStationService {
 
   createPumpHose(pumpHose: IPumpHoseInput) {
     return this.http.post<any>(`pump-hoses`, pumpHose);
+  }
+
+  resetCreateData() {
+    this.gasStationId = null;
+    this.gasStationStatus = null;
+    this.stepDataSubject = new BehaviorSubject<StepData>({
+      currentStep: 1,
+      step1: { isValid: false, data: null },
+      step2: { isValid: false },
+      step3: { isValid: false },
+      step4: { isValid: false }
+    });
   }
 }
