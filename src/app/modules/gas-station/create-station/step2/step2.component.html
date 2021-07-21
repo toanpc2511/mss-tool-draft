@@ -116,7 +116,7 @@
                 {{ item.description }}
               </p>
             </td>
-            <td>
+            <td class="status">
               <span
                 class="label label-lg label-inline"
                 [class.label-light-success]="item.status === listStatus.ACTIVE"
@@ -156,8 +156,6 @@
     <button class="btn btn-outline-secondary font-weight-bold m-2" (click)="back()">
       Quay lại
     </button>
-    <button class="btn btn-primary font-weight-bold m-2" (click)="onSubmit()">
-      Tiếp tục
-    </button>
+    <button class="btn btn-primary font-weight-bold m-2" (click)="onSubmit()">Tiếp tục</button>
   </div>
 </div>

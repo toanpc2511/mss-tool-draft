@@ -19,6 +19,12 @@ table {
       }
     }
   }
+
+  td {
+    &.status {
+      width: 140px;
+    }
+  }
 }
 
 .card-toolbar {
