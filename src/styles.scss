@@ -186,6 +186,22 @@ button.btn-create-station-dialog {
   width: 80px;
 }
 
+table {
+  p.text-ellipsis {
+    max-width: inherit;
+  }
+  tr {
+    &:hover {
+      background-color: #f3f6f9;
+      td {
+        .btn.btn-light {
+          background-color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
 // .form-control.ng-invalid.ng-touched,
 // .form-control.ng-invalid.ng-dirty {
 //   border: 1px solid #ee2d41;

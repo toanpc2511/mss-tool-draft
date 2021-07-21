@@ -7,24 +7,31 @@ table {
   td {
     &.code {
       width: 150px;
+      max-width: 150px;
     }
     &.name {
       width: 200px;
+      max-width: 200px;
     }
     &.gas-field {
       width: 200px;
+      max-width: 200px;
     }
     &.pump-pole {
       width: 200px;
+      max-width: 200px;
     }
     &.description {
-      max-width: 500px;
+      width: 350px;
+      max-width: 350px;
     }
     &.status {
-      width: 150px;
+      width: 200px;
+      max-width: 200px;
     }
     &.task {
-      width: 150px;
+      width: 200px;
+      max-width: 200px;
     }
   }
 }

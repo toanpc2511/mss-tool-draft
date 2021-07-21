@@ -81,12 +81,12 @@ export class PumpPoleModalComponent implements OnInit {
       );
   }
 
-  checkError(error) {
+  checkError(error: IError) {
     switch (error.code) {
-      case 'SUN-OIL-4240':
+      case 'SUN-OIL-4013':
         this.pumpPoleForm.get('code').setErrors({ existed: true });
         break;
-      case 'SUN-OIL-4241':
+      case 'SUN-OIL-4013':
         this.pumpPoleForm.get('name').setErrors({ existed: true });
         break;
     }

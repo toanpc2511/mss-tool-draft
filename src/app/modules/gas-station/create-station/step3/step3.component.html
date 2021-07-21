@@ -63,11 +63,15 @@
         <tbody>
           <tr *ngFor="let pumpPole of dataSource">
             <td class="code">
-              <span class="cursor-pointer" placement="top" [ngbTooltip]="pumpPole.code">{{
-                pumpPole.code
-              }}</span>
+              <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="pumpPole.code">
+                {{ pumpPole.code }}
+              </p>
             </td>
-            <td class="name">{{ pumpPole.name }}</td>
+            <td class="name">
+              <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="pumpPole.name">
+                {{ pumpPole.name }}
+              </p>
+            </td>
             <td class="description">
               <p
                 class="cursor-pointer text-ellipsis"
