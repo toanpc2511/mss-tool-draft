@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
+import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
@@ -123,7 +125,7 @@ export class Step3Component implements OnInit {
       !this.gasStationService.gasStationId ||
       this.gasStationService.gasStationStatus !== 'ACTIVE'
     ) {
-      return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+      return this.toastr.error('Không thể sửa vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(PumpPoleModalComponent, {
       backdrop: 'static',
@@ -147,30 +149,26 @@ export class Step3Component implements OnInit {
     });
   }
 
-  delete() {
+  delete(pumpPole: IPumpPole) {
     if (
       !this.gasStationService.gasStationId ||
       this.gasStationService.gasStationStatus !== 'ACTIVE'
     ) {
-      return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+      return this.toastr.error('Không thể xóa vì trạm xăng không hoạt động');
     }
-    const modalRef = this.modalService.open(PumpPoleModalComponent, {
-      backdrop: 'static',
-      size: 'xl'
-    });
+    const modalRef = this.modalService.open(ConfirmDeleteComponent);
+    const data: IConfirmModalData = {
+      title: 'Xác nhận',
+      message: `Bạn có chắc chắn muốn xóa thông tin cột ${pumpPole.name}`,
+      button: {
+        class: 'btn-primary',
+        title: 'Xác nhận'
+      }
+    };
+    modalRef.componentInstance.data = data;
     modalRef.result.then((result) => {
       if (result) {
-        this.gasStationService
-          .getPumpPolesByGasStation(this.gasStationService.gasStationId)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((res) => {
-            if (res.data) {
-              this.dataSource = this.dataSourceTemp = res.data;
-              this.searchFormControl.patchValue(null);
-              this.sort(null);
-              this.cdr.detectChanges();
-            }
-          });
+        // Call api delete
       }
     });
   }

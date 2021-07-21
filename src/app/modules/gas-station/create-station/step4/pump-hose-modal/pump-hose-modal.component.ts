@@ -29,7 +29,6 @@ export class PumpHoseModalComponent implements OnInit {
     private fb: FormBuilder,
     public modal: NgbActiveModal,
     private gasStationService: GasStationService,
-    private toastr: ToastrService,
     private destroy$: DestroyService
   ) {
     this.pumpPoles = [];
@@ -104,8 +103,9 @@ export class PumpHoseModalComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          console.log(res);
-          this.toastr.success('Thành công');
+          if (res.data) {
+            this.modal.close(res.data);
+          }
         },
         (err: IError) => {
           this.checkError(err);

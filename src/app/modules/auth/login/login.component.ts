@@ -63,7 +63,6 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (res) => {
           if (res.data) {
-            // this.toastr.success('Đăng nhập thành công');
             this.authService.setCurrentUserValue(res.data);
             if (!res.data.changePassword) {
               this.router.navigate([this.returnUrl]);

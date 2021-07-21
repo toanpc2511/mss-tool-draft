@@ -22,7 +22,6 @@ export class PumpPoleModalComponent implements OnInit {
     private fb: FormBuilder,
     public modal: NgbActiveModal,
     private gasStationService: GasStationService,
-    private toastr: ToastrService,
     private destroy$: DestroyService
   ) {}
 
@@ -55,20 +54,6 @@ export class PumpPoleModalComponent implements OnInit {
         status: [this.data.status]
       });
     }
-
-    const codeControl = this.pumpPoleForm.get('code');
-    codeControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      if (codeControl.hasError('existed')) {
-        codeControl.setErrors({ existed: null });
-      }
-    });
-
-    const nameControl = this.pumpPoleForm.get('name');
-    nameControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      if (nameControl.hasError('existed')) {
-        nameControl.setErrors({ existed: null });
-      }
-    });
   }
 
   submit() {
@@ -89,7 +74,6 @@ export class PumpPoleModalComponent implements OnInit {
       .subscribe(
         (res) => {
           this.modal.close(res);
-          this.toastr.success('Thành công');
         },
         (err: IError) => {
           this.checkError(err);
