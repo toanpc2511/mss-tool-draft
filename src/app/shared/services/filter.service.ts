@@ -21,7 +21,10 @@ export class FilterService<T> {
     return filter(dataSource, (data) => {
       let isMatched = false;
       for (const key in filterField) {
-        if (typeof data[key] === 'string' && data[key].includes(filterField[key])) {
+        if (
+          typeof data[key] === 'string' &&
+          (data[key] as string).toLowerCase().includes((filterField[key] as string).toLowerCase())
+        ) {
           isMatched = true;
           break;
         } else if (data[key] === filterField[key]) {

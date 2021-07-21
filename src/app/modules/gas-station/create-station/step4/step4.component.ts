@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
+import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
@@ -33,7 +35,8 @@ export class Step4Component implements OnInit {
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
     private modalService: NgbModal,
-    private gasStationService: GasStationService
+    private gasStationService: GasStationService,
+    private toastr: ToastrService
   ) {
     this.stepSubmitted = new EventEmitter();
     this.dataSource = this.dataSourceTemp = [];
@@ -90,7 +93,7 @@ export class Step4Component implements OnInit {
 
   create() {
     if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
-      // return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+      return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(PumpHoseModalComponent, {
       backdrop: 'static',
@@ -115,7 +118,7 @@ export class Step4Component implements OnInit {
 
   update(data) {
     if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
-      // return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+      return this.toastr.error('Không thể sửa vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(PumpHoseModalComponent, {
       backdrop: 'static',
@@ -139,27 +142,26 @@ export class Step4Component implements OnInit {
     });
   }
 
-  delete() {
-    if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
-      // return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
+  delete(pumpHose: IPumpHose) {
+    if (
+      !this.gasStationService.gasStationId ||
+      this.gasStationService.gasStationStatus !== 'ACTIVE'
+    ) {
+      return this.toastr.error('Không xóa thêm vì trạm xăng không hoạt động');
     }
-    const modalRef = this.modalService.open(PumpHoseModalComponent, {
-      backdrop: 'static',
-      size: 'xl'
-    });
+    const modalRef = this.modalService.open(ConfirmDeleteComponent);
+    const data: IConfirmModalData = {
+      title: 'Xác nhận',
+      message: `Bạn có chắc chắn muốn xóa thông tin vòi ${pumpHose.name}`,
+      button: {
+        class: 'btn-primary',
+        title: 'Xác nhận'
+      }
+    };
+    modalRef.componentInstance.data = data;
     modalRef.result.then((result) => {
       if (result) {
-        this.gasStationService
-          .getPumpHosesByGasStation(this.gasStationService.gasStationId)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((res) => {
-            if (res.data) {
-              this.dataSource = this.dataSourceTemp = res.data;
-              this.searchFormControl.patchValue(null);
-              this.sort(null);
-              this.cdr.detectChanges();
-            }
-          });
+        // Call api delete
       }
     });
   }
