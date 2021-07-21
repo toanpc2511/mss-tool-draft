@@ -4,7 +4,7 @@
       <ng-container *ngIf="data">Sửa</ng-container>
       <ng-container *ngIf="!data">Thêm mới</ng-container>
     </div>
-    <div class="close-icon" (click)="modal.dismiss()"></div>
+    <div class="close-icon" (click)="modal.close()"></div>
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
     <form action="#" class="form form-label-right" [formGroup]="pumpHoseForm">
@@ -29,6 +29,11 @@
             [error]="'pattern'"
             [message]="'Mã vòi không đúng định dạng'"
           ></app-validate>
+          <app-validate
+            [control]="pumpHoseForm.controls['code']"
+            [error]="'existed'"
+            [message]="'Mã vòi đã tồn tại'"
+          ></app-validate>
         </div>
         <div class="col-lg-6">
           <label class="form-label required">Tên vòi</label>
@@ -45,6 +50,11 @@
             [error]="'required'"
             [message]="'Tên vòi không được để trống'"
           ></app-validate>
+          <app-validate
+            [control]="pumpHoseForm.controls['name']"
+            [error]="'existed'"
+            [message]="'Tên vòi đã tồn tại'"
+          ></app-validate>
         </div>
       </div>
       <div class="form-group row">
@@ -55,8 +65,8 @@
             name="type"
             formControlName="gasFieldId"
           >
-            <option>Chọn tên bồn</option>
-            <option *ngFor="let gasField of gasFields" [value]="gasField.code">
+            <option [value]="null">Chọn tên bồn</option>
+            <option *ngFor="let gasField of gasFields" [value]="gasField.id">
               {{ gasField.name }}
             </option>
           </select>
@@ -73,8 +83,8 @@
             name="type"
             formControlName="pumpPoleId"
           >
-            <option>Chọn tên cột</option>
-            <option *ngFor="let pumpPole of pumpPoles" [value]="pumpPole.code">
+            <option [value]="null">Chọn tên cột</option>
+            <option *ngFor="let pumpPole of pumpPoles" [value]="pumpPole.id">
               {{ pumpPole.name }}
             </option>
           </select>
@@ -115,12 +125,14 @@
   <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-outline-secondary btn-elevate mr-2"
-      (click)="modal.dismiss()"
+      class="btn btn-outline-secondary btn-create-station-dialog mr-2"
+      (click)="modal.close()"
     >
       Hủy
     </button>
 
-    <button type="submit" class="btn btn-primary btn-elevate" (click)="submit()">Lưu</button>
+    <button type="submit" class="btn btn-primary btn-create-station-dialog" (click)="submit()">
+      Lưu
+    </button>
   </div>
 </div>
