@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
+import { IError } from 'src/app/shared/models/error.model';
 import { GasStationService, ProductsResponse } from '../../../gas-station.service';
 
 @Component({
@@ -54,11 +55,11 @@ export class CreateGasBinComponent implements OnInit {
       (res) => {
         this.modal.close(res);
       },
-      (err) => {
-        if (err.meta.code === 'SUN-OIL-4244') {
+      (err: IError) => {
+        if (err.code === 'SUN-OIL-4244') {
           this.gasBinForm.get('code').setErrors({ codeExisted: true });
         }
-        if (err.meta.code === 'SUN-OIL-4245') {
+        if (err.code === 'SUN-OIL-4245') {
           this.gasBinForm.get('name').setErrors({ nameExisted: true });
         }
         this.cdr.detectChanges();

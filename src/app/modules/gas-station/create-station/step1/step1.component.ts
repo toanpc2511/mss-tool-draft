@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@ang
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
+import { IError } from 'src/app/shared/models/error.model';
 import { GasStationService } from '../../gas-station.service';
 
 @Component({
@@ -70,11 +71,11 @@ export class Step1Component implements OnInit {
           } else {
           }
         },
-        (err) => {
-          if (err.meta.code === 'SUN-OIL-4249') {
+        (err: IError) => {
+          if (err.code === 'SUN-OIL-4249') {
             this.stationForm.get('stationCode').setErrors({ codeExisted: true });
           }
-          if (err.meta.code === 'SUN-OIL-4248') {
+          if (err.code === 'SUN-OIL-4248') {
             this.stationForm.get('name').setErrors({ nameExisted: true });
           }
           this.cdr.detectChanges();
