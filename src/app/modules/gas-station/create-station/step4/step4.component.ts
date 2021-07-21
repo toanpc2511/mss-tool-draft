@@ -69,6 +69,16 @@ export class Step4Component implements OnInit {
       });
   }
 
+  initDatasource(dataSource: Array<IPumpHose>) {
+    console.log(dataSource);
+
+    return dataSource.map((data) => ({
+      ...data,
+      gasFieldName: data.gasField.name,
+      pumpPoleName: data.pumpPole.name
+    }));
+  }
+
   getData() {
     // Get data
     this.gasStationService
@@ -76,7 +86,7 @@ export class Step4Component implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res.data) {
-          this.dataSource = this.dataSourceTemp = res.data;
+          this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
           // Set data after filter and apply current sorting
           this.dataSource = this.sortService.sort(
             this.filterService.filter(this.dataSourceTemp, this.filterField.field)
@@ -106,7 +116,7 @@ export class Step4Component implements OnInit {
           .pipe(takeUntil(this.destroy$))
           .subscribe((res) => {
             if (res.data) {
-              this.dataSource = this.dataSourceTemp = res.data;
+              this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
               this.searchFormControl.patchValue(null);
               this.sort(null);
               this.cdr.detectChanges();
