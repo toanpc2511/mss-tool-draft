@@ -1,0 +1,23 @@
+.confirm-container {
+  padding: 30px 30px;
+  text-align: center;
+
+  .title,
+  .sub-title {
+    margin-bottom: 30px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .action-btn {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+
+    button {
+      min-width: 135px;
+    }
+  }
+}
