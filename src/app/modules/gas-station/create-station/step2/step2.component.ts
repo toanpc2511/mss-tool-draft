@@ -68,13 +68,19 @@ export class Step2Component implements OnInit {
       });
 
     this.stationId = this.gasStationService.gasStationId;
+    this.getListGasBin(this.stationId);
+  }
 
-    this.gasStationService.afterCreatedBinSubject.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.gasStationService.getListGasBin(this.stationId).subscribe((res) => {
-        this.dataSource = this.dataSourceTemp = res.data;
-        this.cdr.detectChanges();
+  getListGasBin(stationId: number) {
+    this.gasStationService
+      .getListGasBin(stationId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res.data) {
+          this.dataSource = this.dataSourceTemp = res.data;
+          this.cdr.detectChanges();
+        }
       });
-    });
   }
 
   sort(column: string) {
@@ -85,7 +91,13 @@ export class Step2Component implements OnInit {
     if (this.gasStationService.gasStationStatus !== 'ACTIVE') {
       return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
     }
-    this.modalService.open(CreateGasBinComponent, { size: 'xl' });
+    const modalRef = this.modalService.open(CreateGasBinComponent, { size: 'xl' });
+
+    modalRef.result.then((result) => {
+      if (result) {
+        this.getListGasBin(this.stationId);
+      }
+    });
   }
 
   onSubmit() {

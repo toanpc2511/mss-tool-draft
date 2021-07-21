@@ -51,8 +51,7 @@ export class CreateGasBinComponent implements OnInit {
     }
 
     this.gasStationService.createGasBin(this.gasBinForm.value).subscribe((res) => {
-      this.modal.close();
-      this.gasStationService.afterCreatedBinSubject.next('created');
+      this.modal.close(res);
     });
   }
 }
