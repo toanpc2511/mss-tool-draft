@@ -26,7 +26,9 @@ export class Step4Component implements OnInit {
   filterField: FilterField<{
     code: string;
     name: string;
-    location: string;
+    description: string;
+    gasFieldName: string;
+    pumpPoleName: string;
     status: string;
   }>;
   constructor(
@@ -45,7 +47,9 @@ export class Step4Component implements OnInit {
     this.filterField = new FilterField({
       code: null,
       name: null,
-      location: null,
+      description: null,
+      gasFieldName: null,
+      pumpPoleName: null,
       status: null
     });
   }
