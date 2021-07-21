@@ -5,23 +5,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { ClipboardModule } from 'ngx-clipboard';
-// Highlight JS
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
-import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/services/auth.service';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
-import { DestroyService } from './shared/services/destroy.service';
-// #fake-start#
-import { FakeAPIService } from './_fake/fake-api.service';
+import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
-// #fake-end#
 
 function appInitializer(authService: AuthService, router: Router) {
   return () => {
@@ -41,14 +36,6 @@ function appInitializer(authService: AuthService, router: Router) {
     HttpClientModule,
     HighlightModule,
     ClipboardModule,
-    // #fake-start#
-    environment.isMockEnabled
-      ? HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {
-          passThruUnknownUrl: true,
-          dataEncapsulation: false
-        })
-      : [],
-    // #fake-end#
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,
@@ -56,8 +43,10 @@ function appInitializer(authService: AuthService, router: Router) {
       closeButton: true,
       progressBar: true,
       timeOut: 3000,
+      maxOpened: 4,
       positionClass: 'toast-bottom-right'
-    })
+    }),
+    NgxSpinnerModule
   ],
   providers: [
     {
@@ -88,7 +77,11 @@ function appInitializer(authService: AuthService, router: Router) {
       useClass: AuthInterceptor,
       multi: true
     },
-    DestroyService
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

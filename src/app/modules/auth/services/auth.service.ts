@@ -6,6 +6,7 @@ import { storageUtils } from 'src/app/shared/helpers/storage';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { finalize } from 'rxjs/operators';
 import { HttpService } from 'src/app/shared/services/http.service';
+import jwt_decode from 'jwt-decode';
 
 export enum UserStatus {
   ACTIVE = 'ACTIVE',
@@ -41,7 +42,7 @@ export class AuthService {
   private isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
 
-  constructor(private http: HttpService, private router: Router, private destroy$: DestroyService) {
+  constructor(private http: HttpService, private router: Router) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this.currentUserSubject = new BehaviorSubject<UserModel>(null);
     this.currentUser$ = this.currentUserSubject.asObservable();
@@ -53,6 +54,8 @@ export class AuthService {
     if (!user?.token) {
       this.logout();
     } else {
+      const tokenDecode = jwt_decode(user.token);
+      console.log(tokenDecode);
       this.setCurrentUserValue(user);
       return of(user);
     }
@@ -88,6 +91,7 @@ export class AuthService {
 
   logout() {
     storageUtils.clear();
+    this.setCurrentUserValue(null);
     this.router.navigate(['/auth/login'], {
       queryParams: {}
     });

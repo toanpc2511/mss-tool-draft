@@ -8,6 +8,7 @@ import { AuthComponent } from './auth.component';
 import { TranslationModule } from '../i18n/translation.module';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
 @NgModule({
   declarations: [LoginComponent, AuthComponent, ForgotPasswordComponent],
   imports: [
@@ -16,7 +17,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedComponentsModule
   ],
   providers: [DestroyService]
 })
