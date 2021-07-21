@@ -4,13 +4,44 @@ table thead th {
 
 table {
   min-width: 1024px;
+
+  td {
+    &.code {
+      width: 100px;
+    }
+    &.name {
+      width: 200px;
+    }
+    &.location {
+      width: 400px;
+    }
+    &.status {
+      width: 100px;
+    }
+    &.action {
+      width: 100px;
+    }
+  }
+
   .location {
     max-width: 350px;
+  }
+
+  tr {
+    &:hover {
+      background-color: #f3f6f9;
+
+      td {
+        .btn.btn-light {
+          background-color: #ffffff;
+        }
+      }
+    }
   }
 }
 
 .card-toolbar {
-  gap: 10px;
+  gap: 50px;
   .search-form {
     position: relative;
     display: flex;
@@ -28,6 +59,6 @@ table {
   }
 
   button {
-    width: 125px;
+    width: 110px;
   }
 }
