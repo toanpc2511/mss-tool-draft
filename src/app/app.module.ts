@@ -1,25 +1,23 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { ClipboardModule } from 'ngx-clipboard';
+import { Router } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { InlineSVGModule } from 'ng-inline-svg';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ClipboardModule } from 'ngx-clipboard';
+import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrModule } from 'ngx-toastr';
+import { finalize } from 'rxjs/operators';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
-import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
-import { ToastrModule } from 'ngx-toastr';
 import { AuthService } from './modules/auth/services/auth.service';
-import { DestroyService } from './shared/services/destroy.service';
-import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
-import { Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
+import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
 
 function appInitializer(authService: AuthService, router: Router) {
   return () => {
@@ -92,8 +90,7 @@ function appInitializer(authService: AuthService, router: Router) {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,
       multi: true
-    },
-    DestroyService
+    }
   ],
   bootstrap: [AppComponent]
 })
