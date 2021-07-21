@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { filter } from 'lodash';
+import { cleanAccents } from '../helpers/functions';
 
 @Injectable()
 export class FilterService<T> {
@@ -23,7 +24,9 @@ export class FilterService<T> {
       for (const key in filterField) {
         if (
           typeof data[key] === 'string' &&
-          (data[key] as string).toLowerCase().includes((filterField[key] as string).toLowerCase())
+          cleanAccents(data[key] as string)
+            .toLowerCase()
+            .includes(cleanAccents(filterField[key] as string).toLowerCase())
         ) {
           isMatched = true;
           break;
