@@ -6,32 +6,30 @@ table {
   min-width: 1024px;
   td {
     &.code {
-      width: 150px;
+      min-width: 150px;
       max-width: 150px;
     }
     &.name {
-      width: 200px;
+      min-width: 200px;
       max-width: 200px;
     }
     &.gas-field {
-      width: 200px;
+      min-width: 200px;
       max-width: 200px;
     }
     &.pump-pole {
-      width: 200px;
+      min-width: 200px;
       max-width: 200px;
     }
     &.description {
-      width: 350px;
+      min-width: 350px;
       max-width: 350px;
     }
     &.status {
-      width: 200px;
-      max-width: 200px;
+      min-width: 140px;
     }
     &.task {
-      width: 200px;
-      max-width: 200px;
+      min-width: 120px;
     }
   }
 }

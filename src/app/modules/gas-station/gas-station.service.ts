@@ -191,7 +191,7 @@ export class GasStationService {
     const params = new HttpParams({
       fromString: `gas-station-id=${gasStationId}`
     });
-    return this.http.get<Array<IPumpPole>>(`pump-poles`, { params });
+    return this.http.get<Array<IPumpPole>>(`pump-poles/gas-stations`, { params });
   }
 
   createPumpPole(pumpPole: IPumpPoleInput) {
