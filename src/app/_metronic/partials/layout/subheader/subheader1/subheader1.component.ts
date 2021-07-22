@@ -6,7 +6,8 @@ import { BreadcrumbItemModel } from '../_models/breadcrumb-item.model';
 
 @Component({
   selector: 'app-subheader1',
-  templateUrl: './subheader1.component.html',
+  styles: ['.subheader { box-shadow: none !important;}'],
+  templateUrl: './subheader1.component.html'
 })
 export class Subheader1Component implements OnInit {
   subheaderCSSClasses = '';
@@ -33,14 +34,10 @@ export class Subheader1Component implements OnInit {
     this.breadcrumbs$ = this.subheader.breadCrumbsSubject.asObservable();
     this.description$ = this.subheader.descriptionSubject.asObservable();
     this.subheaderCSSClasses = this.layout.getStringCSSClasses('subheader');
-    this.subheaderContainerCSSClasses = this.layout.getStringCSSClasses(
-      'subheader_container'
-    );
+    this.subheaderContainerCSSClasses = this.layout.getStringCSSClasses('subheader_container');
     this.subheaderMobileToggle = this.layout.getProp('subheader.mobileToggle');
     this.subheaderDisplayDesc = this.layout.getProp('subheader.displayDesc');
-    this.subheaderDisplayDaterangepicker = this.layout.getProp(
-      'subheader.displayDaterangepicker'
-    );
+    this.subheaderDisplayDaterangepicker = this.layout.getProp('subheader.displayDaterangepicker');
     this.breadcrumbs$.subscribe((res) => {
       this.breadcrumbs = res;
       this.cdr.detectChanges();

@@ -62,3 +62,20 @@ table {
     width: 110px;
   }
 }
+
+.card.card-custom {
+  box-shadow: none !important;
+
+  .card-body,
+  .card-header {
+    border: 0;
+  }
+
+  .card-body {
+    padding-top: 1rem;
+  }
+
+  .card-header {
+    margin-top: 2rem;
+  }
+}
