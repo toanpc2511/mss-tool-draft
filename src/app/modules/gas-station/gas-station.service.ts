@@ -172,7 +172,10 @@ export class GasStationService {
 
   // Step 2
   getListGasBin(gasStationId: number) {
-    return this.http.get<GasBinResponse[]>(`gas-fields/${gasStationId}`);
+    const params = new HttpParams({
+      fromString: `gas-station-id=${gasStationId}`
+    });
+    return this.http.get<GasBinResponse[]>(`gas-fields`, { params });
   }
 
   getListProduct() {
@@ -184,8 +187,11 @@ export class GasStationService {
   }
 
   // Step 3
-  getPumpPolesByGasStation(gasStationId) {
-    return this.http.get<Array<IPumpPole>>(`pump-poles/${gasStationId}`);
+  getPumpPolesByGasStation(gasStationId: string | number) {
+    const params = new HttpParams({
+      fromString: `gas-station-id=${gasStationId}`
+    });
+    return this.http.get<Array<IPumpPole>>(`pump-poles/gas-stations`, { params });
   }
 
   createPumpPole(pumpPole: IPumpPoleInput) {
@@ -194,7 +200,10 @@ export class GasStationService {
 
   // Step 4
   getPumpHosesByGasStation(gasStationId) {
-    return this.http.get<Array<IPumpHose>>(`pump-hoses/${gasStationId}`);
+    const params = new HttpParams({
+      fromString: `gas-station-id=${gasStationId}`
+    });
+    return this.http.get<Array<IPumpHose>>(`pump-hoses`, { params });
   }
 
   createPumpHose(pumpHose: IPumpHoseInput) {
