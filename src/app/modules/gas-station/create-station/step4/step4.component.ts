@@ -61,7 +61,7 @@ export class Step4Component implements OnInit {
       .pipe(debounceTime(500), takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value?.trim()) {
-          this.filterField.setFilterFieldValue(value);
+          this.filterField.setFilterFieldValue(value.trim());
         } else {
           this.filterField.setFilterFieldValue(null);
         }
