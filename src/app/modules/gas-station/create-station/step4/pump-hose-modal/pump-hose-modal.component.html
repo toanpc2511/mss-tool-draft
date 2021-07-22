@@ -18,6 +18,7 @@
             autocomplete="off"
             formControlName="code"
             maxlength="100"
+            (keydown.space)="$event.preventDefault()"
           />
           <app-validate
             [control]="pumpHoseForm.controls['code']"
