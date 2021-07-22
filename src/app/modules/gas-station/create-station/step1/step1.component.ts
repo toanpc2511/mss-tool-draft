@@ -36,8 +36,8 @@ export class Step1Component implements OnInit {
           data.stationCode || 'ST',
           [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
         ],
-        name: [data.name || null, [Validators.required]],
-        address: [data.address || null],
+        name: [data.name || '', [Validators.required]],
+        address: [data.address || ''],
         status: [data.status || this.listStatus.ACTIVE]
       });
     } else {
@@ -46,8 +46,8 @@ export class Step1Component implements OnInit {
           'ST',
           [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
         ],
-        name: [null, [Validators.required]],
-        address: [null],
+        name: ['', [Validators.required]],
+        address: [''],
         status: [this.listStatus.ACTIVE]
       });
     }
