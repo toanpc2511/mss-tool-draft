@@ -39,7 +39,7 @@ export class CreateGasBinComponent implements OnInit {
       capacity: [null, [Validators.required]],
       height: [null, [Validators.required]],
       length: [null, [Validators.required]],
-      description: [null],
+      description: [''],
       productId: [null, [Validators.required]],
       status: [this.listStatus.ACTIVE],
       gasStationId: [this.gasStationService.gasStationId]
@@ -58,10 +58,10 @@ export class CreateGasBinComponent implements OnInit {
         this.modal.close(res);
       },
       (err: IError) => {
-        if (err.code === 'SUN-OIL-4244') {
+        if (err.code === 'SUN-OIL-4511') {
           this.gasBinForm.get('code').setErrors({ codeExisted: true });
         }
-        if (err.code === 'SUN-OIL-4245') {
+        if (err.code === 'SUN-OIL-4512') {
           this.gasBinForm.get('name').setErrors({ nameExisted: true });
         }
         this.cdr.detectChanges();

@@ -83,10 +83,10 @@ export class PumpPoleModalComponent implements OnInit {
 
   checkError(error: IError) {
     switch (error.code) {
-      case 'SUN-OIL-4013':
+      case 'SUN-OIL-4508':
         this.pumpPoleForm.get('code').setErrors({ existed: true });
         break;
-      case 'SUN-OIL-4013':
+      case 'SUN-OIL-4509':
         this.pumpPoleForm.get('name').setErrors({ existed: true });
         break;
     }

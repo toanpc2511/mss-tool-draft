@@ -115,10 +115,10 @@ export class PumpHoseModalComponent implements OnInit {
 
   checkError(error) {
     switch (error.code) {
-      case 'SUN-OIL-4240':
+      case 'SUN-OIL-4502':
         this.pumpHoseForm.get('code').setErrors({ existed: true });
         break;
-      case 'SUN-OIL-4241':
+      case 'SUN-OIL-4503':
         this.pumpHoseForm.get('name').setErrors({ existed: true });
         break;
     }

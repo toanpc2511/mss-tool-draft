@@ -36,8 +36,8 @@ export class Step1Component implements OnInit {
           data.stationCode || 'ST',
           [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
         ],
-        name: [data.name || null, [Validators.required]],
-        address: [data.address || null],
+        name: [data.name || '', [Validators.required]],
+        address: [data.address || ''],
         status: [data.status || this.listStatus.ACTIVE]
       });
     } else {
@@ -46,8 +46,8 @@ export class Step1Component implements OnInit {
           'ST',
           [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
         ],
-        name: [null, [Validators.required]],
-        address: [null],
+        name: ['', [Validators.required]],
+        address: [''],
         status: [this.listStatus.ACTIVE]
       });
     }
@@ -75,10 +75,10 @@ export class Step1Component implements OnInit {
           }
         },
         (err: IError) => {
-          if (err.code === 'SUN-OIL-4249') {
+          if (err.code === 'SUN-OIL-4517') {
             this.stationForm.get('stationCode').setErrors({ codeExisted: true });
           }
-          if (err.code === 'SUN-OIL-4248') {
+          if (err.code === 'SUN-OIL-4516') {
             this.stationForm.get('name').setErrors({ nameExisted: true });
           }
           this.cdr.detectChanges();
