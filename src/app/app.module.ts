@@ -53,7 +53,8 @@ function appInitializer(authService: AuthService, router: Router) {
       progressBar: true,
       timeOut: 3000,
       maxOpened: 4,
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true
     }),
     NgxSpinnerModule
   ],
