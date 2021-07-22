@@ -95,7 +95,10 @@ export class Step2Component implements OnInit {
     if (this.gasStationService.gasStationStatus !== 'ACTIVE') {
       return this.toastr.error('Không thể thêm vì trạm xăng không hoạt động');
     }
-    const modalRef = this.modalService.open(CreateGasBinComponent, { size: 'xl' });
+    const modalRef = this.modalService.open(CreateGasBinComponent, {
+      size: 'xl',
+      backdrop: 'static'
+    });
 
     modalRef.result.then((result) => {
       if (result) {

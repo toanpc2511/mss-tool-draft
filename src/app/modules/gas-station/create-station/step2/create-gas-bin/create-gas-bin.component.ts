@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IError } from 'src/app/shared/models/error.model';
+import { TValidators } from 'src/app/shared/validators';
 import { GasStationService, ProductsResponse } from '../../../gas-station.service';
 
 @Component({
@@ -32,9 +33,8 @@ export class CreateGasBinComponent implements OnInit {
   }
 
   initForm() {
-    const CODE_REGEX = '^[A-Za-z0-9]*$';
     return this.fb.group({
-      code: ['SB', [Validators.required, Validators.pattern(CODE_REGEX)]],
+      code: ['SB', [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]],
       name: [null, [Validators.required]],
       capacity: [null, [Validators.required]],
       height: [null, [Validators.required]],
