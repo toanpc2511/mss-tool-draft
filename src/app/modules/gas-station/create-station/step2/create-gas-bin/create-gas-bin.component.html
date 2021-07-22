@@ -43,6 +43,7 @@
             placeholder="Nhập tên bồn"
             maxlength="100"
             autocomplete="off"
+            trim="blur"
           />
           <app-validate
             [control]="gasBinForm.controls['name']"
@@ -65,6 +66,7 @@
             placeholder="Nhập dung tích"
             maxlength="100"
             autocomplete="off"
+            trim="blur"
           />
           <app-validate
             [control]="gasBinForm.controls['capacity']"
@@ -83,6 +85,7 @@
             placeholder="Nhập chiều cao"
             maxlength="100"
             autocomplete="off"
+            trim="blur"
           />
           <app-validate
             [control]="gasBinForm.controls['height']"
@@ -100,6 +103,7 @@
             placeholder="Nhập chiều dài"
             maxlength="100"
             autocomplete="off"
+            trim="blur"
           />
           <app-validate
             [control]="gasBinForm.controls['length']"
@@ -117,6 +121,7 @@
             placeholder="Nhập mô tả"
             maxlength="200"
             autocomplete="off"
+            trim="blur"
           />
         </div>
       </div>
