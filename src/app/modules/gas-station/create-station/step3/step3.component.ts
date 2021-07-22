@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
+import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
@@ -29,6 +30,8 @@ export class Step3Component implements OnInit {
     description: string;
     status: string;
   }>;
+  listStatus = LIST_STATUS;
+
   constructor(
     private filterService: FilterService<IPumpPole>,
     private sortService: SortService<IPumpPole>,
