@@ -67,7 +67,7 @@ export class Step1Component implements OnInit {
             // Đưa vào subscribe
             this.stepSubmitted.next({
               currentStep: 1,
-              step1: { data: res.data, isValid: true }
+              step1: { data: this.stationForm.value, isValid: true }
             });
             this.gasStationService.gasStationId = res.data.id;
             this.gasStationService.gasStationStatus = res.data.status;
