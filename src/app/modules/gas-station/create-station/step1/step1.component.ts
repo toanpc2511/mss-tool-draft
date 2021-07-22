@@ -75,10 +75,10 @@ export class Step1Component implements OnInit {
           }
         },
         (err: IError) => {
-          if (err.code === 'SUN-OIL-4517') {
+          if (err.code === 'SUN-OIL-4249') {
             this.stationForm.get('stationCode').setErrors({ codeExisted: true });
           }
-          if (err.code === 'SUN-OIL-4516') {
+          if (err.code === 'SUN-OIL-4248') {
             this.stationForm.get('name').setErrors({ nameExisted: true });
           }
           this.cdr.detectChanges();
