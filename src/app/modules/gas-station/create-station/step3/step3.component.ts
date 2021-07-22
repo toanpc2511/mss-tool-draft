@@ -174,6 +174,10 @@ export class Step3Component implements OnInit {
   }
 
   submit() {
+    if (this.dataSource.length <= 0) {
+      return this.toastr.error('Vui lòng thêm cột trước khi thực hiện bước tiếp theo');
+    }
+
     this.stepSubmitted.next({
       currentStep: 3,
       step3: {

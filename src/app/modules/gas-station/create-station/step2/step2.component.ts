@@ -108,6 +108,10 @@ export class Step2Component implements OnInit {
   }
 
   onSubmit() {
+    if (this.dataSource.length <= 0) {
+      return this.toastr.error('Vui lòng thêm bồn trước khi thực hiện bước tiếp theo');
+    }
+
     // Đưa vào subscribe
     this.stepSubmitted.next({
       currentStep: 2,
