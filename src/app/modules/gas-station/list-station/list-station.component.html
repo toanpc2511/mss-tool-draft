@@ -65,11 +65,15 @@
         <tbody>
           <tr *ngFor="let station of dataSource">
             <td class="code">
-              <span class="cursor-pointer" placement="top" [ngbTooltip]="station.code">
+              <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="station.code">
                 {{ station.code }}
-              </span>
+              </p>
             </td>
-            <td class="name">{{ station.name }}</td>
+            <td class="name">
+              <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="station.name">
+                {{ station.name }}
+              </p>
+            </td>
             <td class="location">
               <p
                 class="cursor-pointer text-ellipsis"

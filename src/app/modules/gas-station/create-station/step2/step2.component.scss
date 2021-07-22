@@ -4,9 +4,6 @@ table thead th {
 
 table {
   min-width: 1024px;
-  .description {
-    max-width: 100px;
-  }
 
   tr {
     &:hover {
@@ -21,8 +18,17 @@ table {
   }
 
   td {
+    &.code,
+    &.name,
+    &.description {
+      max-width: 120px;
+    }
     &.status {
-      width: 140px;
+      min-width: 140px;
+    }
+
+    &.action {
+      min-width: 120px;
     }
   }
 }

@@ -99,10 +99,16 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of dataSource">
-            <td>
-              <span class="cursor-pointer" placement="top">{{ item.code }}</span>
+            <td class="code">
+              <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
+                {{ item.code }}
+              </p>
             </td>
-            <td>{{ item.name }}</td>
+            <td class="name">
+              <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
+                {{ item.name }}
+              </p>
+            </td>
             <td>{{ item.height }}</td>
             <td>{{ item.length }}</td>
             <td>{{ item.capacity }}</td>
@@ -129,7 +135,7 @@
               </span>
             </td>
 
-            <td class="text-center">
+            <td class="text-center action">
               <a title="Edit product" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"

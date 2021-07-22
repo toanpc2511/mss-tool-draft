@@ -7,19 +7,19 @@ table {
 
   td {
     &.code {
-      width: 100px;
+      max-width: 120px;
     }
     &.name {
-      width: 200px;
+      max-width: 200px;
     }
     &.location {
-      width: 400px;
+      max-width: 300px;
     }
     &.status {
-      width: 140px;
+      min-width: 140px;
     }
     &.action {
-      width: 100px;
+      min-width: 140px;
     }
   }
 
