@@ -39,7 +39,7 @@ export class CreateGasBinComponent implements OnInit {
       capacity: [null, [Validators.required]],
       height: [null, [Validators.required]],
       length: [null, [Validators.required]],
-      description: [null, [Validators.required]],
+      description: [null],
       productId: [null, [Validators.required]],
       status: [this.listStatus.ACTIVE],
       gasStationId: [this.gasStationService.gasStationId]
