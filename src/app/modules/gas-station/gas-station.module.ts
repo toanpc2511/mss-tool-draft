@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
+import { InputTrimModule } from 'ng2-trim-directive';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
 import { DirectivesModule } from 'src/app/shared/directives/directives.module';
 import { PipesModule } from 'src/app/shared/pipes/pipes.module';
@@ -45,7 +46,8 @@ import { ListStationComponent } from './list-station/list-station.component';
     NgbTooltipModule,
     ReactiveFormsModule,
     SharedComponentsModule,
-    PipesModule
+    PipesModule,
+    InputTrimModule
   ]
 })
 export class GasStationModule {}

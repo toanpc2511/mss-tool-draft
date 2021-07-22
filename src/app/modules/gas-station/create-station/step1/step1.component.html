@@ -49,6 +49,7 @@
             autocomplete="off"
             formControlName="name"
             maxlength="100"
+            trim="blur"
           />
           <app-validate
             [control]="stationForm.controls['name']"
@@ -76,6 +77,7 @@
             autocomplete="off"
             formControlName="address"
             maxlength="100"
+            trim="blur"
           />
         </div>
       </div>

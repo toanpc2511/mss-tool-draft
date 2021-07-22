@@ -45,6 +45,7 @@
             autocomplete="off"
             formControlName="name"
             maxlength="100"
+            trim="blur"
           />
           <app-validate
             [control]="pumpHoseForm.controls['name']"
@@ -106,6 +107,7 @@
             autocomplete="off"
             formControlName="description"
             maxlength="200"
+            trim="blur"
           />
         </div>
         <div class="col-lg-6">
