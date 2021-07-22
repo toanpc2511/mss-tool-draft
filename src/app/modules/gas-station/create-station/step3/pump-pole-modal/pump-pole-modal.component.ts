@@ -35,7 +35,7 @@ export class PumpPoleModalComponent implements OnInit {
             TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)
           ])
         ],
-        description: [null],
+        description: [''],
         name: [null, Validators.compose([Validators.required])],
         status: 'ACTIVE'
       });

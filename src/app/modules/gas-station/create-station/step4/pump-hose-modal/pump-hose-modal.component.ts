@@ -64,7 +64,7 @@ export class PumpHoseModalComponent implements OnInit {
         name: [null, Validators.compose([Validators.required])],
         gasFieldId: [null, Validators.compose([Validators.required])],
         pumpPoleId: [null, Validators.compose([Validators.required])],
-        description: [null],
+        description: [''],
         status: 'ACTIVE'
       });
     } else {
