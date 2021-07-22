@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IError } from 'src/app/shared/models/error.model';
+import { TValidators } from 'src/app/shared/validators';
 import { GasStationService } from '../../gas-station.service';
 
 @Component({
@@ -28,13 +29,12 @@ export class Step1Component implements OnInit {
   }
 
   initForm(data?) {
-    const CODE_PATTERN = '^[A-Za-z0-9]*$';
     if (data) {
       this.isUpdate = true;
       return this.fb.group({
         stationCode: [
           data.stationCode || 'ST',
-          [Validators.required, Validators.pattern(CODE_PATTERN)]
+          [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
         ],
         name: [data.name || null, [Validators.required]],
         address: [data.address || null],
@@ -42,7 +42,10 @@ export class Step1Component implements OnInit {
       });
     } else {
       return this.fb.group({
-        stationCode: ['ST', [Validators.required, Validators.pattern(CODE_PATTERN)]],
+        stationCode: [
+          'ST',
+          [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
+        ],
         name: [null, [Validators.required]],
         address: [null],
         status: [this.listStatus.ACTIVE]

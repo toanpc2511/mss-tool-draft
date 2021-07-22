@@ -15,6 +15,7 @@
             placeholder="Nhập mã bồn"
             autocomplete="off"
             maxlength="100"
+            (keydown.space)="$event.preventDefault()"
           />
           <app-validate
             [control]="gasBinForm.controls['code']"

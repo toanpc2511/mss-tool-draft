@@ -15,6 +15,7 @@
             autocomplete="off"
             formControlName="stationCode"
             maxlength="100"
+            (keydown.space)="$event.preventDefault()"
           />
           <app-validate
             [control]="stationForm.controls['stationCode']"
