@@ -166,7 +166,7 @@ export class GasStationService {
     return this.http.post<GasStationResponse>('gas-stations', body);
   }
 
-  deleteStation(stationId: string) {
+  deleteStation(stationId: string | number) {
     return this.http.delete(`gas-stations/${stationId}`);
   }
 
@@ -184,6 +184,10 @@ export class GasStationService {
 
   createGasBin(body: CreateGasBin) {
     return this.http.post('gas-fields', body);
+  }
+
+  deleteGasBin(id: string | number) {
+    return this.http.delete(`gas-fields/${id}`);
   }
 
   // Step 3

@@ -3,7 +3,9 @@ import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
+import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
@@ -124,5 +126,23 @@ export class Step2Component implements OnInit {
   back() {
     const currentStepData = this.gasStationService.getStepDataValue();
     this.gasStationService.setStepData({ ...currentStepData, currentStep: 1 });
+  }
+
+  deleteGasBin(item: GasBinResponse) {
+    const modalRef = this.modalService.open(ConfirmDeleteComponent);
+    const data: IConfirmModalData = {
+      title: 'Xác nhận',
+      message: `Bạn có chắc chắn muốn xoá bồn ${item.name} ?`,
+      button: { class: 'btn-primary', title: 'Xác nhận' }
+    };
+    modalRef.componentInstance.data = data;
+
+    modalRef.result.then((result) => {
+      if (result) {
+        this.gasStationService
+          .deleteGasBin(item.id)
+          .subscribe(() => this.getListGasBin(this.stationId));
+      }
+    });
   }
 }
