@@ -75,7 +75,7 @@ export class ListStationComponent implements OnInit {
   }
 
   goToCreateGasStation() {
-    this.router.navigate(['/tram-xang/them-tram-xang']);
+    this.router.navigate(['/tram-xang/danh-sach/them-tram']);
   }
 
   getListStation() {

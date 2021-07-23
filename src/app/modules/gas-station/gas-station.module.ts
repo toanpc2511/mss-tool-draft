@@ -19,6 +19,7 @@ import { Step4Component } from './create-station/step4/step4.component';
 import { GasStationRoutingModule } from './gas-station-routing.module';
 import { GasStationComponent } from './gas-station.component';
 import { CanActiveStepPipe } from './gas-station.pipe';
+import { ListLayoutComponent } from './list-layout/list-layout.component';
 import { ListStationComponent } from './list-station/list-station.component';
 
 @NgModule({
@@ -33,7 +34,8 @@ import { ListStationComponent } from './list-station/list-station.component';
     CanActiveStepPipe,
     PumpPoleModalComponent,
     CreateGasBinComponent,
-    PumpHoseModalComponent
+    PumpHoseModalComponent,
+    ListLayoutComponent
   ],
   imports: [
     CommonModule,
