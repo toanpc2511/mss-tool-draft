@@ -167,7 +167,7 @@ export class GasStationService {
   }
 
   deleteStation(stationId: string) {
-    return this.http.delete(`gas-station/${stationId}`);
+    return this.http.delete(`gas-stations/${stationId}`);
   }
 
   // Step 2
