@@ -6,7 +6,9 @@ import { BreadcrumbItemModel } from '../_models/breadcrumb-item.model';
 
 @Component({
   selector: 'app-subheader1',
-  styles: ['.subheader { box-shadow: none !important;}'],
+  styles: [
+    '.subheader { box-shadow: none !important;} .not-active {cursor: pointer; color: #000!important}'
+  ],
   templateUrl: './subheader1.component.html'
 })
 export class Subheader1Component implements OnInit {
@@ -39,7 +41,13 @@ export class Subheader1Component implements OnInit {
     this.subheaderDisplayDesc = this.layout.getProp('subheader.displayDesc');
     this.subheaderDisplayDaterangepicker = this.layout.getProp('subheader.displayDaterangepicker');
     this.breadcrumbs$.subscribe((res) => {
-      this.breadcrumbs = res;
+      this.breadcrumbs = res.map((bc, index) => {
+        if (index !== 0) {
+          return bc;
+        }
+        bc.notActive = true;
+        return bc;
+      });
       this.cdr.detectChanges();
     });
   }

@@ -9,9 +9,7 @@
   <ng-container *ngIf="asideSelfMinimizeToggle">
     <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
       <span
-        [inlineSVG]="
-          './assets/media/svg/icons/Navigation/Angle-double-left.svg'
-        "
+        [inlineSVG]="'./assets/media/svg/icons/Navigation/Angle-double-left.svg'"
         cacheSVG="true"
         class="svg-icon svg-icon-xl"
       ></span>
@@ -70,20 +68,10 @@
 <ng-template #menu1LevelTemplate let-item="item">
   <!-- begin::if don't have submenu -->
   <ng-container *ngIf="!item.submenu">
-    <li
-      class="menu-item"
-      aria-haspopup="true"
-      routerLinkActive="menu-item-active"
-    >
+    <li class="menu-item" aria-haspopup="true" routerLinkActive="menu-item-active">
       <a class="menu-link" [routerLink]="item.page" routerLinkActive="active">
-        <span
-          [inlineSVG]="item.svg"
-          cacheSVG="true"
-          class="svg-icon menu-icon"
-        ></span>
-        <span class="menu-text" [translate]="item.translate">{{
-          item.title
-        }}</span>
+        <span [inlineSVG]="item.svg" cacheSVG="true" class="svg-icon menu-icon"></span>
+        <span class="menu-text" [translate]="item.translate">{{ item.title }}</span>
       </a>
     </li>
   </ng-container>
@@ -104,14 +92,8 @@
         routerLinkActive="active"
         [ngClass]="{ 'active ': isMenuItemActive(item.page) }"
       >
-        <span
-          [inlineSVG]="item.svg"
-          cacheSVG="true"
-          class="svg-icon menu-icon"
-        ></span>
-        <span class="menu-text" [translate]="item.translate">{{
-          item.title
-        }}</span>
+        <span [inlineSVG]="item.svg" cacheSVG="true" class="svg-icon menu-icon"></span>
+        <span class="menu-text" [translate]="item.translate">{{ item.title }}</span>
         <i class="menu-arrow"></i>
       </a>
       <div class="menu-submenu">
@@ -119,9 +101,7 @@
         <ul class="menu-subnav">
           <li class="menu-item menu-item-parent" aria-haspopup="true">
             <span class="menu-link">
-              <span class="menu-text" [translate]="item.translate">{{
-                item.title
-              }}</span>
+              <span class="menu-text" [translate]="item.translate">{{ item.title }}</span>
             </span>
           </li>
           <ng-container
@@ -151,9 +131,7 @@
         <i class="menu-bullet menu-bullet-dot">
           <span></span>
         </i>
-        <span class="menu-text" [translate]="item.translate">{{
-          item.title
-        }}</span>
+        <span class="menu-text" [translate]="item.translate">{{ item.title }}</span>
       </a>
     </li>
   </ng-container>
@@ -170,19 +148,17 @@
     >
       <a
         class="menu-link menu-toggle"
-        [attr.href]="item.page"
         [ngClass]="{ 'active ': isMenuItemActive(item.page) }"
+        [routerLink]="item.page"
         routerLinkActive="active"
       >
         <i class="menu-bullet menu-bullet-dot">
           <span></span>
         </i>
-        <span class="menu-text" [translate]="item.translate">{{
-          item.title
-        }}</span>
-        <i class="menu-arrow"></i>
+        <span class="menu-text" [translate]="item.translate">{{ item.title }}</span>
+        <i *ngIf="!item.notChild" class="menu-arrow"></i>
       </a>
-      <div class="menu-submenu">
+      <div class="menu-submenu" *ngIf="!item.notChild">
         <i class="menu-arrow"></i>
         <ul class="menu-subnav">
           <!-- submenu-->
@@ -201,18 +177,12 @@
 
 <!-- begin::3 Level -->
 <ng-template #menu3LevelTemplate let-item="item">
-  <li
-    class="menu-item"
-    aria-haspopup="true"
-    routerLinkActive="menu-item-active"
-  >
+  <li class="menu-item" aria-haspopup="true" routerLinkActive="menu-item-active">
     <a class="menu-link" [routerLink]="item.page" routerLinkActive="active">
       <i class="menu-bullet menu-bullet-dot">
         <span></span>
       </i>
-      <span class="menu-text" [translate]="item.translate">{{
-        item.title
-      }}</span>
+      <span class="menu-text" [translate]="item.translate">{{ item.title }}</span>
     </a>
   </li>
 </ng-template>

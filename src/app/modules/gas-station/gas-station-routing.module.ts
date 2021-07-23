@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import * as path from 'path';
 import { CreateStationComponent } from './create-station/create-station.component';
 import { ListLayoutComponent } from './list-layout/list-layout.component';
 import { ListStationComponent } from './list-station/list-station.component';

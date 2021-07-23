@@ -2,6 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import { CanActiveStepPipe } from '../gas-station.pipe';
 import { GasStationService, StepData } from '../gas-station.service';
 
@@ -17,14 +18,35 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
     private gasStationService: GasStationService,
     private router: Router,
     private canActive: CanActiveStepPipe,
-    private asyncPipe: AsyncPipe
+    private asyncPipe: AsyncPipe,
+    private subheader: SubheaderService
   ) {
     this.stepData$ = gasStationService.stepData$;
   }
 
   ngOnInit() {}
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.subheader.setBreadcrumbs([
+        {
+          title: 'Quản lý trạm xăng',
+          linkText: 'Quản lý trạm xăng',
+          linkPath: '/tram-xang/danh-sach'
+        },
+        {
+          title: 'Danh sách trạm',
+          linkText: 'Danh sách trạm',
+          linkPath: '/tram-xang/danh-sach'
+        },
+        {
+          title: 'Thêm trạm',
+          linkText: 'Thêm trạm',
+          linkPath: '/tram-xang/danh-sach/them-tram'
+        }
+      ]);
+    }, 1);
+  }
 
   ngOnDestroy() {
     this.gasStationService.resetCreateData();

@@ -21,79 +21,81 @@ export const DynamicAsideMenuConfig = {
           title: 'Danh sách trạm',
           bullet: 'dot',
           page: 'tram-xang/danh-sach',
+          notChild: true,
           submenu: [
             {
               title: 'Thêm trạm',
               bullet: 'dot',
-              page: 'tram-xang/danh-sach/them-tram'
+              page: 'tram-xang/danh-sach/them-tram',
+              hidden: true
             }
           ]
         }
       ]
+    },
+    {
+      title: 'Quản lý nhóm sản phẩm',
+      root: true,
+      bullet: 'dot',
+      page: '/nhom-san-pham',
+      icon: '	fa-cubes',
+      svg: './assets/media/svg/icons/Design/Layers.svg'
+    },
+    {
+      title: 'Quản lý QR code',
+      root: true,
+      bullet: 'dot',
+      page: '/nhom-san-pham',
+      icon: '	fa-cubes',
+      svg: './assets/media/svg/icons/Design/Layers.svg'
+    },
+    {
+      title: 'Báo cáo',
+      root: true,
+      bullet: 'dot',
+      page: '/nhom-san-pham',
+      icon: '	fa-cubes',
+      svg: './assets/media/svg/icons/Design/Layers.svg'
+    },
+    {
+      title: 'Quản lý User',
+      root: true,
+      bullet: 'dot',
+      page: '/nhom-san-pham',
+      icon: '	fa-cubes',
+      svg: './assets/media/svg/icons/Design/Layers.svg'
+    },
+    {
+      title: 'Quản lý ca làm việc',
+      root: true,
+      bullet: 'dot',
+      page: '/nhom-san-pham',
+      icon: '	fa-cubes',
+      svg: './assets/media/svg/icons/Design/Layers.svg'
+    },
+    {
+      title: 'Quản lý khách hàng',
+      root: true,
+      bullet: 'dot',
+      page: '/nhom-san-pham',
+      icon: '	fa-cubes',
+      svg: './assets/media/svg/icons/Design/Layers.svg'
+    },
+    {
+      title: 'Quản lý chiết khấu',
+      root: true,
+      bullet: 'dot',
+      page: '/nhom-san-pham',
+      icon: '	fa-cubes',
+      svg: './assets/media/svg/icons/Design/Layers.svg'
+    },
+    {
+      title: 'Quản lý kho',
+      root: true,
+      bullet: 'dot',
+      page: '/nhom-san-pham',
+      icon: '	fa-cubes',
+      svg: './assets/media/svg/icons/Design/Layers.svg'
     }
-    // {
-    //   title: 'Quản lý nhóm sản phẩm',
-    //   root: true,
-    //   bullet: 'dot',
-    //   page: '/nhom-san-pham',
-    //   icon: '	fa-cubes',
-    //   svg: './assets/media/svg/icons/Design/Layers.svg'
-    // },
-    // {
-    //   title: 'Quản lý QR code',
-    //   root: true,
-    //   bullet: 'dot',
-    //   page: '/nhom-san-pham',
-    //   icon: '	fa-cubes',
-    //   svg: './assets/media/svg/icons/Design/Layers.svg'
-    // },
-    // {
-    //   title: 'Báo cáo',
-    //   root: true,
-    //   bullet: 'dot',
-    //   page: '/nhom-san-pham',
-    //   icon: '	fa-cubes',
-    //   svg: './assets/media/svg/icons/Design/Layers.svg'
-    // },
-    // {
-    //   title: 'Quản lý User',
-    //   root: true,
-    //   bullet: 'dot',
-    //   page: '/nhom-san-pham',
-    //   icon: '	fa-cubes',
-    //   svg: './assets/media/svg/icons/Design/Layers.svg'
-    // },
-    // {
-    //   title: 'Quản lý ca làm việc',
-    //   root: true,
-    //   bullet: 'dot',
-    //   page: '/nhom-san-pham',
-    //   icon: '	fa-cubes',
-    //   svg: './assets/media/svg/icons/Design/Layers.svg'
-    // },
-    // {
-    //   title: 'Quản lý khách hàng',
-    //   root: true,
-    //   bullet: 'dot',
-    //   page: '/nhom-san-pham',
-    //   icon: '	fa-cubes',
-    //   svg: './assets/media/svg/icons/Design/Layers.svg'
-    // },
-    // {
-    //   title: 'Quản lý chiết khấu',
-    //   root: true,
-    //   bullet: 'dot',
-    //   page: '/nhom-san-pham',
-    //   icon: '	fa-cubes',
-    //   svg: './assets/media/svg/icons/Design/Layers.svg'
-    // },
-    // {
-    //   title: 'Quản lý kho',
-    //   root: true,
-    //   bullet: 'dot',
-    //   page: '/nhom-san-pham',
-    //   icon: '	fa-cubes',
-    //   svg: './assets/media/svg/icons/Design/Layers.svg'
-    // }
   ]
 };
