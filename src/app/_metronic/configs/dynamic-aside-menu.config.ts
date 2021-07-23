@@ -20,12 +20,14 @@ export const DynamicAsideMenuConfig = {
         {
           title: 'Danh sách trạm',
           bullet: 'dot',
-          page: 'tram-xang/danh-sach'
-        },
-        {
-          title: 'Thêm trạm',
-          bullet: 'dot',
-          page: 'tram-xang/them-tram-xang'
+          page: 'tram-xang/danh-sach',
+          submenu: [
+            {
+              title: 'Thêm trạm',
+              bullet: 'dot',
+              page: 'tram-xang/danh-sach/them-tram'
+            }
+          ]
         }
       ]
     }
