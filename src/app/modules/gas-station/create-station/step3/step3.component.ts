@@ -6,6 +6,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
+import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
@@ -171,9 +172,24 @@ export class Step3Component implements OnInit {
     modalRef.componentInstance.data = data;
     modalRef.result.then((result) => {
       if (result) {
-        // Call api delete
+        this.gasStationService.deletePumpPole(pumpPole.id).subscribe(
+          (res) => {
+            if (res.data) {
+              this.getData();
+            }
+          },
+          (err: IError) => {
+            this.checkError(err);
+          }
+        );
       }
     });
+  }
+
+  checkError(error: IError) {
+    if (error.code === 'SUN-OIL-4208') {
+      this.toastr.error('Mã cột không tồn tại');
+    }
   }
 
   submit() {

@@ -94,6 +94,7 @@ export interface IPumpPoleInput {
 }
 
 export interface IPumpHose {
+  id: number;
   code: string;
   description: string;
   gasFieldName: string;
@@ -198,6 +199,14 @@ export class GasStationService {
     return this.http.post<any>(`pump-poles`, pumpPole);
   }
 
+  updatePumpPole(id: number, pumpPole: IPumpPoleInput) {
+    return this.http.put<any>(`pump-poles/${id}`, pumpPole);
+  }
+
+  deletePumpPole(id: number) {
+    return this.http.delete<any>(`pump-poles/${id}`);
+  }
+
   // Step 4
   getPumpHosesByGasStation(gasStationId) {
     const params = new HttpParams({
@@ -208,6 +217,14 @@ export class GasStationService {
 
   createPumpHose(pumpHose: IPumpHoseInput) {
     return this.http.post<any>(`pump-hoses`, pumpHose);
+  }
+
+  updatePumpHose(id: number, pumpPole: IPumpPoleInput) {
+    return this.http.put<any>(`pump-hoses/${id}`, pumpPole);
+  }
+
+  deletePumpHose(id: number) {
+    return this.http.delete<any>(`pump-hoses/${id}`);
   }
 
   resetCreateData() {
