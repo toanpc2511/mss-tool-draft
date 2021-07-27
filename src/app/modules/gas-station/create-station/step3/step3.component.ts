@@ -161,7 +161,6 @@ export class Step3Component implements OnInit {
       return this.toastr.error('Không thể xóa vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-      size: 'sm',
       backdrop: 'static'
     });
     const data: IConfirmModalData = {
