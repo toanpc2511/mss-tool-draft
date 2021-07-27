@@ -168,12 +168,12 @@ export class Step4Component implements OnInit {
       return this.toastr.error('Không xóa thêm vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-      size: 'xl',
+      size: 'sm',
       backdrop: 'static'
     });
     const data: IConfirmModalData = {
       title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xóa thông tin vòi ${pumpHose.name}`,
+      message: `Bạn có chắc chắn muốn xóa thông tin vòi ${pumpHose.code} - ${pumpHose.name} ?`,
       button: {
         class: 'btn-primary',
         title: 'Xác nhận'

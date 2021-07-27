@@ -134,12 +134,12 @@ export class Step2Component implements OnInit {
 
   deleteGasBin(item: GasBinResponse) {
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-      size: 'xl',
+      size: 'sm',
       backdrop: 'static'
     });
     const data: IConfirmModalData = {
       title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xoá bồn ${item.code} ?`,
+      message: `Bạn có chắc chắn muốn xoá bồn ${item.code} - ${item.name}?`,
       button: { class: 'btn-primary', title: 'Xác nhận' }
     };
     modalRef.componentInstance.data = data;

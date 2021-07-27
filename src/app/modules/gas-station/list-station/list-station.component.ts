@@ -93,12 +93,12 @@ export class ListStationComponent implements OnInit {
 
   deleteStation(item: GasStationResponse) {
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-      size: 'xl',
+      size: 'sm',
       backdrop: 'static'
     });
     const data: IConfirmModalData = {
       title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xoá trạm ${item.code} ?`,
+      message: `Bạn có chắc chắn muốn xoá trạm ${item.code} - ${item.name}?`,
       button: { class: 'btn-primary', title: 'Xác nhận' }
     };
     modalRef.componentInstance.data = data;
