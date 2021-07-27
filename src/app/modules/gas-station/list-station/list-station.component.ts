@@ -85,18 +85,18 @@ export class ListStationComponent implements OnInit {
     });
   }
 
-  deleteStation(stationId: string) {
+  deleteStation(item: GasStationResponse) {
     const modalRef = this.modalService.open(ConfirmDeleteComponent);
     const data: IConfirmModalData = {
       title: 'Xác nhận',
-      message: 'Bạn có chắc chắn muốn xoá  trạm 1 ?',
+      message: `Bạn có chắc chắn muốn xoá trạm ${item.name} ?`,
       button: { class: 'btn-primary', title: 'Xác nhận' }
     };
     modalRef.componentInstance.data = data;
 
     modalRef.result.then((result) => {
       if (result) {
-        this.gasStationService.deleteStation(stationId).subscribe(() => this.getListStation());
+        this.gasStationService.deleteStation(item.id).subscribe(() => this.getListStation());
       }
     });
   }
