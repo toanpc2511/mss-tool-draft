@@ -84,6 +84,10 @@ export class Step2Component implements OnInit {
       .subscribe((res) => {
         if (res.data) {
           this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
+          // Set data after filter and apply current sorting
+          this.dataSource = this.sortService.sort(
+            this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+          );
           this.cdr.detectChanges();
         }
       });
@@ -129,10 +133,13 @@ export class Step2Component implements OnInit {
   }
 
   deleteGasBin(item: GasBinResponse) {
-    const modalRef = this.modalService.open(ConfirmDeleteComponent);
+    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+      size: 'xl',
+      backdrop: 'static'
+    });
     const data: IConfirmModalData = {
       title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xoá bồn ${item.name} ?`,
+      message: `Bạn có chắc chắn muốn xoá bồn ${item.code} ?`,
       button: { class: 'btn-primary', title: 'Xác nhận' }
     };
     modalRef.componentInstance.data = data;
@@ -142,6 +149,35 @@ export class Step2Component implements OnInit {
         this.gasStationService
           .deleteGasBin(item.id)
           .subscribe(() => this.getListGasBin(this.stationId));
+      }
+    });
+  }
+
+  update(data) {
+    if (
+      !this.gasStationService.gasStationId ||
+      this.gasStationService.gasStationStatus !== 'ACTIVE'
+    ) {
+      return this.toastr.error('Không thể sửa vì trạm xăng không hoạt động');
+    }
+    const modalRef = this.modalService.open(CreateGasBinComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+    modalRef.componentInstance.data = data;
+    modalRef.result.then((result) => {
+      if (result) {
+        this.gasStationService
+          .getListGasBin(this.stationId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((res) => {
+            if (res.data) {
+              this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
+              this.searchFormControl.patchValue(null);
+              this.sort(null);
+              this.cdr.detectChanges();
+            }
+          });
       }
     });
   }

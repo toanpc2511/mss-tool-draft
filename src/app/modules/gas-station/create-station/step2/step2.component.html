@@ -136,7 +136,10 @@
             </td>
 
             <td class="text-center action">
-              <a title="Edit product" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+              <a
+                (click)="update(item)"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
                   cacheSVG="true"
@@ -145,7 +148,6 @@
                 </span>
               </a>
               <a
-                title="Delete product"
                 (click)="deleteGasBin(item)"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
               >

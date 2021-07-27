@@ -6,7 +6,7 @@ import { cleanAccents } from '../helpers/functions';
 export class FilterService<T> {
   constructor() {}
 
-  filter(dataSource: Array<T>, filterField: any) {
+  filter(dataSource: Array<T>, filterField: any): Array<T> {
     let isValidFilter = false;
 
     for (const key in filterField) {
@@ -19,10 +19,13 @@ export class FilterService<T> {
     if (!isValidFilter) {
       return dataSource;
     }
+
     return filter(dataSource, (data) => {
       let isMatched = false;
       for (const key in filterField) {
         if (
+          data[key] &&
+          filterField[key] &&
           typeof data[key] === 'string' &&
           cleanAccents(data[key] as string)
             .toLowerCase()

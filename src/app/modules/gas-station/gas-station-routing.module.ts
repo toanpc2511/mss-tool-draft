@@ -21,6 +21,10 @@ const routes: Routes = [
       {
         path: 'them-tram',
         component: CreateStationComponent
+      },
+      {
+        path: 'sua-tram/:id',
+        component: CreateStationComponent
       }
     ]
   }

@@ -127,16 +127,8 @@ export class GasStationService {
   gasStationId: number;
   gasStationStatus: 'ACTIVE' | 'INACTIVE' | 'DELETE';
   apiUrl = environment.apiUrl;
-  stepDataSubject: BehaviorSubject<StepData>;
+  private stepDataSubject: BehaviorSubject<StepData>;
   stepData$: Observable<StepData>;
-
-  // Step 1
-
-  // Step 2
-
-  // Step 3
-
-  // Step 4
 
   constructor(private http: HttpService) {
     this.stepDataSubject = new BehaviorSubject<StepData>({
@@ -150,7 +142,7 @@ export class GasStationService {
   }
 
   // Create gas station
-  setStepData(stepData) {
+  setStepData(stepData: StepData) {
     this.stepDataSubject.next(stepData);
   }
 
@@ -163,8 +155,16 @@ export class GasStationService {
     return this.http.get<GasStationResponse[]>('gas-stations');
   }
 
+  getStationById(stationId: number) {
+    return this.http.get<GasStationResponse>(`gas-stations/${stationId}`);
+  }
+
   createStation(body: CreateStation) {
     return this.http.post<GasStationResponse>('gas-stations', body);
+  }
+
+  updateStation(id: number, body: CreateStation) {
+    return this.http.put<CreateStation>(`gas-stations/${id}`, body);
   }
 
   deleteStation(stationId: string | number) {
@@ -185,6 +185,10 @@ export class GasStationService {
 
   createGasBin(body: CreateGasBin) {
     return this.http.post('gas-fields', body);
+  }
+
+  updateGasBin(id: number, body: CreateGasBin) {
+    return this.http.put<CreateGasBin>(`gas-fields/${id}`, body);
   }
 
   deleteGasBin(id: string | number) {
@@ -223,7 +227,7 @@ export class GasStationService {
     return this.http.post<any>(`pump-hoses`, pumpHose);
   }
 
-  updatePumpHose(id: number, pumpPole: IPumpPoleInput) {
+  updatePumpHose(id: number, pumpPole: IPumpHoseInput) {
     return this.http.put<any>(`pump-hoses/${id}`, pumpPole);
   }
 

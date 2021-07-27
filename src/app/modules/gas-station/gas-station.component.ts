@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-gas-station',
   templateUrl: 'gas-station.component.html'
@@ -7,5 +7,6 @@ import { Component, OnInit } from '@angular/core';
 export class GasStationComponent implements OnInit {
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

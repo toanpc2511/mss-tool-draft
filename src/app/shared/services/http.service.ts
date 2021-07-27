@@ -83,7 +83,7 @@ export class HttpService {
     }
   ): Observable<DataResponse<T>> {
     const bodyOrigin = new DataPush(body);
-    return this.httpClient.put(`${this.apiUrl}/${endPoint}`, bodyOrigin, options).pipe(
+    return this.httpClient.put(`${this.apiUrl}/${endPoint}`, bodyOrigin.data, options).pipe(
       switchMap((response) => {
         const res = new DataResponse<T>(response);
         return of(res);

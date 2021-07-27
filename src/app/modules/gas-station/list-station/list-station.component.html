@@ -97,17 +97,18 @@
             </td>
 
             <td class="text-center action">
-              <a title="Sửa trạm" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+              <a
+                (click)="updateStation(station.id)"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-primary"
-                  [ngbTooltip]=""
                 >
                 </span>
               </a>
               <a
-                title="Xóa trạm"
                 (click)="deleteStation(station)"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
               >
@@ -115,7 +116,6 @@
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-danger"
-                  [ngbTooltip]=""
                 >
                 </span>
               </a>

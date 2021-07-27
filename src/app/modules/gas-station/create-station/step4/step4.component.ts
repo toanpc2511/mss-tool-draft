@@ -150,7 +150,7 @@ export class Step4Component implements OnInit {
           .pipe(takeUntil(this.destroy$))
           .subscribe((res) => {
             if (res.data) {
-              this.dataSource = this.dataSourceTemp = res.data;
+              this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
               this.searchFormControl.patchValue(null);
               this.sort(null);
               this.cdr.detectChanges();
@@ -167,7 +167,10 @@ export class Step4Component implements OnInit {
     ) {
       return this.toastr.error('Không xóa thêm vì trạm xăng không hoạt động');
     }
-    const modalRef = this.modalService.open(ConfirmDeleteComponent);
+    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+      size: 'xl',
+      backdrop: 'static'
+    });
     const data: IConfirmModalData = {
       title: 'Xác nhận',
       message: `Bạn có chắc chắn muốn xóa thông tin vòi ${pumpHose.name}`,
@@ -200,6 +203,9 @@ export class Step4Component implements OnInit {
   }
 
   submit() {
+    if (this.dataSource.length <= 0) {
+      return this.toastr.error('Vui lòng thêm vòi trước khi xác nhận');
+    }
     this.stepSubmitted.next({
       currentStep: 4,
       step4: {

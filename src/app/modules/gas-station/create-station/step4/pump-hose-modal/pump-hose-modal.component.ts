@@ -25,6 +25,7 @@ export class PumpHoseModalComponent implements OnInit {
   pumpHoseForm: FormGroup;
   gasFields: Array<GasBinResponse>;
   pumpPoles: Array<IPumpPole>;
+  isUpdate = false;
   constructor(
     private fb: FormBuilder,
     public modal: NgbActiveModal,
@@ -68,6 +69,7 @@ export class PumpHoseModalComponent implements OnInit {
         status: 'ACTIVE'
       });
     } else {
+      this.isUpdate = true;
       this.pumpHoseForm = this.fb.group({
         code: [
           this.data.code,
@@ -98,27 +100,43 @@ export class PumpHoseModalComponent implements OnInit {
       name: this.pumpHoseForm.controls.name.value,
       status: this.pumpHoseForm.controls.status.value
     };
-    this.gasStationService
-      .createPumpHose(pumpHoseData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (res) => {
-          if (res.data) {
-            this.modal.close(res.data);
+    if (!this.isUpdate) {
+      this.gasStationService
+        .createPumpHose(pumpHoseData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (res) => {
+            if (res.data) {
+              this.modal.close(res.data);
+            }
+          },
+          (err: IError) => {
+            this.checkError(err);
           }
-        },
-        (err: IError) => {
-          this.checkError(err);
-        }
-      );
+        );
+    } else {
+      this.gasStationService
+        .updatePumpHose(this.data.id, pumpHoseData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (res) => {
+            if (res.data) {
+              this.modal.close(res.data);
+            }
+          },
+          (err: IError) => {
+            this.checkError(err);
+          }
+        );
+    }
   }
 
   checkError(error) {
     switch (error.code) {
-      case 'SUN-OIL-4502':
+      case 'SUN-OIL-4102':
         this.pumpHoseForm.get('code').setErrors({ existed: true });
         break;
-      case 'SUN-OIL-4503':
+      case 'SUN-OIL-4103':
         this.pumpHoseForm.get('name').setErrors({ existed: true });
         break;
     }
