@@ -1,0 +1,169 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4" id="example-modal-sizes-title-lg">Thêm bồn</div>
+    <div class="close-icon" (click)="modal.dismiss()"></div>
+  </div>
+  <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+    <form [formGroup]="gasBinForm" class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-4">
+          <label class="form-label required">Mã bồn</label>
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            formControlName="code"
+            placeholder="Nhập mã bồn"
+            autocomplete="off"
+            maxlength="100"
+            (keydown.space)="$event.preventDefault()"
+          />
+          <app-validate
+            [control]="gasBinForm.controls['code']"
+            [error]="'required'"
+            [message]="'Mã bồn không được để trống'"
+          ></app-validate>
+          <app-validate
+            [control]="gasBinForm.controls['code']"
+            [error]="'pattern'"
+            [message]="'Mã bồn sai định dạng'"
+          ></app-validate>
+          <app-validate
+            [control]="gasBinForm.controls['code']"
+            [error]="'codeExisted'"
+            [message]="'Mã bồn đã tồn tại'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-4">
+          <label class="form-label required">Tên bồn</label>
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            formControlName="name"
+            placeholder="Nhập tên bồn"
+            maxlength="100"
+            autocomplete="off"
+            trim="blur"
+          />
+          <app-validate
+            [control]="gasBinForm.controls['name']"
+            [error]="'required'"
+            [message]="'Tên bồn không được để trống'"
+          ></app-validate>
+          <app-validate
+            [control]="gasBinForm.controls['name']"
+            [error]="'nameExisted'"
+            [message]="'Tên bồn đã tồn tại'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-4">
+          <label class="form-label required">Dung tích</label>
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            formControlName="capacity"
+            placeholder="Nhập dung tích"
+            maxlength="100"
+            autocomplete="off"
+            trim="blur"
+          />
+          <app-validate
+            [control]="gasBinForm.controls['capacity']"
+            [error]="'required'"
+            [message]="'Dung tích bồn không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-4">
+          <label class="form-label required">Chiều cao</label>
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            formControlName="height"
+            placeholder="Nhập chiều cao"
+            maxlength="100"
+            autocomplete="off"
+            trim="blur"
+          />
+          <app-validate
+            [control]="gasBinForm.controls['height']"
+            [error]="'required'"
+            [message]="'Chiều cao không được để trống'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-4">
+          <label class="form-label required">Chiều dài</label>
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            formControlName="length"
+            placeholder="Nhập chiều dài"
+            maxlength="100"
+            autocomplete="off"
+            trim="blur"
+          />
+          <app-validate
+            [control]="gasBinForm.controls['length']"
+            [error]="'required'"
+            [message]="'Chiều dài không được để trống'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-4">
+          <label class="form-label">Mô tả </label>
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            formControlName="description"
+            placeholder="Nhập mô tả"
+            maxlength="200"
+            autocomplete="off"
+            trim="blur"
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-4">
+          <label class="form-label required">Tên nhiên liệu</label>
+          <select
+            class="form-control form-control-lg form-control-solid"
+            formControlName="productId"
+          >
+            <option [value]="null" disabled>Chọn nhiên liệu</option>
+            <ng-container *ngFor="let item of listProduct">
+              <option [value]="item.id">{{ item.name }}</option>
+            </ng-container>
+          </select>
+          <app-validate
+            [control]="gasBinForm.controls['productId']"
+            [error]="'required'"
+            [message]="'Tên nhiên liệu không được để trống'"
+          ></app-validate>
+        </div>
+        <div class="col-lg-4">
+          <label>Trạng thái</label>
+          <select class="form-control form-control-lg form-control-solid" formControlName="status">
+            <option [value]="listStatus.ACTIVE">Hoạt động</option>
+            <option [value]="listStatus.INACTIVE">Không hoạt động</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary btn-create-station-dialog mr-2"
+      (click)="modal.dismiss()"
+    >
+      Hủy
+    </button>
+
+    <button type="button" (click)="onSubmit()" class="btn btn-primary btn-create-station-dialog">
+      Lưu
+    </button>
+  </div>
+</div>

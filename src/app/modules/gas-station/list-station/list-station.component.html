@@ -1,0 +1,128 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách trạm</h3>
+    </div>
+
+    <div class="card-toolbar row">
+      <div class="search-form">
+        <i class="flaticon-search"></i>
+        <input
+          type="text"
+          name="searchText"
+          placeholder="Search..."
+          class="form-control"
+          [formControl]="searchFormControl"
+        />
+      </div>
+      <button type="button" class="btn btn-primary" (click)="goToCreateGasStation()">
+        Thêm mới
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden">
+        <thead>
+          <th>
+            Mã trạm
+            <app-sort-icon
+              column="code"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Tên trạm
+            <app-sort-icon
+              column="name"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Địa chỉ
+            <app-sort-icon
+              column="location"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            Trạng thái
+            <app-sort-icon
+              column="status"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th class="text-center">Tác động</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let station of dataSource">
+            <td class="code">
+              <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="station.code">
+                {{ station.code }}
+              </p>
+            </td>
+            <td class="name">
+              <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="station.name">
+                {{ station.name }}
+              </p>
+            </td>
+            <td class="location">
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="station.address"
+              >
+                {{ station.address }}
+              </p>
+            </td>
+            <td class="status">
+              <span
+                class="label label-lg label-inline"
+                [class.label-light-success]="station.status === listStatus.ACTIVE"
+                [class.label-light-danger]="station.status !== listStatus.ACTIVE"
+              >
+                <ng-container *ngIf="station.status === listStatus.ACTIVE">Hoạt động</ng-container>
+                <ng-container *ngIf="station.status !== listStatus.ACTIVE">
+                  Không hoạt động
+                </ng-container>
+              </span>
+            </td>
+
+            <td class="text-center action">
+              <a title="Sửa trạm" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]=""
+                >
+                </span>
+              </a>
+              <a
+                title="Xóa trạm"
+                (click)="deleteStation(station)"
+                class="btn btn-icon btn-light btn-hover-danger btn-sm"
+              >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-danger"
+                  [ngbTooltip]=""
+                >
+                </span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

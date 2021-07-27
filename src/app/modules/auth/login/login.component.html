@@ -31,27 +31,19 @@
           autocomplete="off"
           (input)="onInputUsername($event)"
         />
-        <!-- <i
-          class="fa fa-user icon-lg-xl"
-          [class.text-danger]="
-            loginForm.controls['username'].invalid &&
-            (loginForm.controls['username'].dirty || loginForm.controls['username'].touched)
-          "
-        ></i> -->
       </div>
-      <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'required',
-          message: 'Tên đăng nhập không hợp lệ',
-          control: loginForm.controls['username']
-        }"
-      ></ng-container>
+      <app-validate
+        [control]="loginForm.controls['username']"
+        [error]="'required'"
+        [message]="'Tên đăng nhập không được để trống'"
+      ></app-validate>
     </div>
     <div class="form-group">
       <div class="d-flex justify-content-between mt-n5">
         <label class="font-size-h6 font-weight-bolder text-dark pt-5">Mật khẩu</label>
-        <label class="font-size-h6 font-weight-bolder text-primary pt-5 cursor-pointer"
+        <label
+          class="font-size-h6 font-weight-bolder text-primary pt-5 cursor-pointer"
+          [routerLink]="['/auth/forgot-password']"
           >Quên mật khẩu</label
         >
       </div>
@@ -71,20 +63,13 @@
           class="icon-lg-xl fa"
           [class.fa-eye]="!isShowPasswordStatus"
           [class.fa-eye-slash]="isShowPasswordStatus"
-          [class.text-danger]="
-            loginForm.controls['password'].invalid &&
-            (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)
-          "
         ></i>
       </div>
-      <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'required',
-          message: 'Mật khẩu không hợp lệ',
-          control: loginForm.controls['password']
-        }"
-      ></ng-container>
+      <app-validate
+        [control]="loginForm.controls['password']"
+        [error]="'required'"
+        [message]="'Mật khẩu không được để trống'"
+      ></app-validate>
     </div>
     <div class="pb-lg-0 pb-5 text-center">
       <button
@@ -101,13 +86,3 @@
     </div>
   </form>
 </div>
-
-<ng-template #formError let-control="control" let-message="message" let-validation="validation">
-  <ng-container *ngIf="control.hasError(validation) && (control.dirty || control.touched)">
-    <div class="fv-plugins-message-container">
-      <div class="fv-help-block font-weight-bold">
-        {{ message }}
-      </div>
-    </div>
-  </ng-container>
-</ng-template>

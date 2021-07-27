@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private destroy$: DestroyService,
-    private toastr: ToastrService
+    // private toastr: ToastrService
   ) {
     this.isLoading$ = this.authService.isLoading$;
     // redirect to home if already logged in
@@ -63,7 +63,6 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (res) => {
           if (res.data) {
-            this.toastr.success('Đăng nhập thành công');
             this.authService.setCurrentUserValue(res.data);
             if (!res.data.changePassword) {
               this.router.navigate([this.returnUrl]);
@@ -71,12 +70,10 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/auth/first-login']);
             }
           } else {
-            this.toastr.error('Đăng nhập thất bại');
             this.hasError = true;
           }
         },
         (error) => {
-          this.toastr.error('Đăng nhập thất bại');
           this.hasError = true;
         }
       );

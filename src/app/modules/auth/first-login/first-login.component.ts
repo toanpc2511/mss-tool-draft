@@ -48,10 +48,7 @@ export class FirstLoginComponent implements OnInit {
 
   submit() {
     this.firstLoginForm.markAllAsTouched();
-    if (
-      !this.firstLoginForm.controls.passwordNew.value ||
-      !this.firstLoginForm.controls.passwordConfirm.value
-    ) {
+    if (this.firstLoginForm.invalid) {
       return;
     }
     this.hasError = false;
@@ -63,6 +60,7 @@ export class FirstLoginComponent implements OnInit {
       .subscribe((res) => {
         if (!res.data?.changePassword) {
           this.toastr.success('Đổi mật khẩu thành công');
+          this.authService.setCurrentUserValue(res.data);
           this.router.navigate(['/']);
         } else {
           this.toastr.error('Đổi mật khẩu thất bại');
@@ -81,8 +79,11 @@ export class FirstLoginComponent implements OnInit {
 
   onInputPasswordNew($event: Event) {
     const element = $event.target as HTMLInputElement;
-    element.value = element.value.replace(/ /g, '');
-    if (element.value !== this.firstLoginForm.controls.passwordConfirm.value) {
+    this.firstLoginForm.controls.passwordNew.patchValue(element.value.replace(/ /g, ''));
+    if (
+      element.value !== this.firstLoginForm.controls.passwordConfirm.value &&
+      !this.firstLoginForm.controls.passwordConfirm.hasError('required')
+    ) {
       this.firstLoginForm.controls.passwordConfirm.setErrors({ passwordConfirmNotMatch: true });
     } else {
       this.firstLoginForm.controls.passwordConfirm.setErrors({ passwordConfirmNotMatch: null });
@@ -92,8 +93,11 @@ export class FirstLoginComponent implements OnInit {
 
   onInputPasswordConfirm($event: Event) {
     const element = $event.target as HTMLInputElement;
-    element.value = element.value.replace(/ /g, '');
-    if (element.value !== this.firstLoginForm.controls.passwordNew.value) {
+    this.firstLoginForm.controls.passwordConfirm.patchValue(element.value.replace(/ /g, ''));
+    if (
+      element.value !== this.firstLoginForm.controls.passwordNew.value &&
+      !this.firstLoginForm.controls.passwordConfirm.hasError('required')
+    ) {
       this.firstLoginForm.controls.passwordConfirm.setErrors({ passwordConfirmNotMatch: true });
     } else {
       this.firstLoginForm.controls.passwordConfirm.setErrors({ passwordConfirmNotMatch: null });

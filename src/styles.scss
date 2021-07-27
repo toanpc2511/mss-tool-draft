@@ -62,6 +62,34 @@
 // .aside-light {
 //   @import "./assets/sass/themes/layout/aside/light.scss";
 // }
+// body {
+//   background: #fff;
+// }
+
+p {
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #eeeeee;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
 
 // hide bootstrap dropdown arrow globally
 .dropdown-toggle::after {
@@ -126,7 +154,73 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.form-control.ng-invalid.ng-touched,
-.form-control.ng-invalid.ng-dirty {
-  border: 1px solid #ee2d41;
+.modal-content {
+  .modal-header {
+    position: relative;
+    .close-icon {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      right: 20px;
+      cursor: pointer;
+      background-image: url('./assets/media/sun-oil/close-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
 }
+
+.form-label.required::after {
+  content: ' (*)';
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0px;
+  text-align: right;
+  color: #f64e60;
+}
+
+button.btn-create-station-dialog {
+  width: 80px;
+}
+
+table {
+  p.text-ellipsis {
+    width: fit-content;
+    max-width: inherit;
+  }
+  tr {
+    &:hover {
+      background-color: #f3f6f9;
+      td {
+        .btn.btn-light {
+          background-color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+// Overide kt theme
+.gutter-b {
+  margin-bottom: 0 !important;
+}
+
+.footer-fixed .content {
+  padding-bottom: 0 !important;
+}
+
+// hide shadow
+// .card.custom-card {
+//   box-shadow: none;
+// }
+
+// .form-control.ng-invalid.ng-touched,
+// .form-control.ng-invalid.ng-dirty {
+//   border: 1px solid #ee2d41;
+// }

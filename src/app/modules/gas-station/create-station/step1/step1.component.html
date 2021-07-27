@@ -1,0 +1,114 @@
+<div class="pb-5">
+  <h4 class="px-8 px-lg-15 mb-10 font-weight-bold text-dark">Thông tin trạm</h4>
+
+  <div class="px-8 py-8 px-lg-15 py-lg-3">
+    <form class="form-group" [formGroup]="stationForm">
+      <!-- station code -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2 required">Mã trạm </label>
+        <div class="col-lg-10">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid mb-2"
+            name="firstName"
+            placeholder="Nhập mã trạm"
+            autocomplete="off"
+            formControlName="stationCode"
+            maxlength="100"
+            (keydown.space)="$event.preventDefault()"
+          />
+          <app-validate
+            [control]="stationForm.controls['stationCode']"
+            [error]="'required'"
+            [message]="'Mã trạm không được để trống'"
+          ></app-validate>
+
+          <app-validate
+            [control]="stationForm.controls['stationCode']"
+            [error]="'pattern'"
+            [message]="'Mã trạm sai định dạng'"
+          ></app-validate>
+
+          <app-validate
+            [control]="stationForm.controls['stationCode']"
+            [error]="'codeExisted'"
+            [message]="'Mã trạm đã tồn tại'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <!-- station name -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2 required">Tên trạm</label>
+        <div class="col-lg-10">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid mb-2"
+            name="firstName"
+            placeholder="Nhập tên trạm"
+            autocomplete="off"
+            formControlName="name"
+            maxlength="100"
+            trim="blur"
+          />
+          <app-validate
+            [control]="stationForm.controls['name']"
+            [error]="'required'"
+            [message]="'Tên trạm không được để trống'"
+          ></app-validate>
+
+          <app-validate
+            [control]="stationForm.controls['name']"
+            [error]="'nameExisted'"
+            [message]="'Tên trạm đã tồn tại'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <!-- station location -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2">Địa chỉ </label>
+        <div class="col-lg-10">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            name="firstName"
+            placeholder="Nhập địa chỉ"
+            autocomplete="off"
+            formControlName="address"
+            maxlength="100"
+            trim="blur"
+          />
+        </div>
+      </div>
+
+      <!-- station status -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2">Trạng thái </label>
+
+        <div class="col-lg-4">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="gender"
+            formControlName="status"
+          >
+            <option [value]="listStatus.ACTIVE">Hoạt động</option>
+            <option [value]="listStatus.INACTIVE">Không hoạt động</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="w-100 d-flex justify-content-center pb-10">
+    <button
+      type="button"
+      class="btn btn-outline-secondary font-weight-bold m-2"
+      (click)="backToList()"
+    >
+      Hủy
+    </button>
+    <button class="btn btn-primary font-weight-bold m-2" type="button" (click)="onSubmit()">
+      Lưu và tiếp tục
+    </button>
+  </div>
+</div>

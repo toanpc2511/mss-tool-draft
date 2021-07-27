@@ -9,16 +9,21 @@ import { AuthComponent } from './auth.component';
 import { TranslationModule } from '../i18n/translation.module';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FirstLoginComponent } from './first-login/first-login.component';
+import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
+import { DirectivesModule } from 'src/app/shared/directives/directives.module';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
-  declarations: [LoginComponent, FirstLoginComponent, RegistrationComponent, AuthComponent],
+  declarations: [LoginComponent, FirstLoginComponent, RegistrationComponent, AuthComponent, ForgotPasswordComponent],
   imports: [
     CommonModule,
     TranslationModule,
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedComponentsModule,
+    DirectivesModule
   ],
   providers: [DestroyService]
 })
