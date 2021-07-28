@@ -137,6 +137,7 @@
 
             <td class="text-center action">
               <a
+                [ngbTooltip]="'Sửa'"
                 (click)="update(item)"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               >
@@ -150,6 +151,7 @@
               <a
                 (click)="deleteGasBin(item)"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                [ngbTooltip]="'Xóa'"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
