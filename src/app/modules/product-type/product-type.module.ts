@@ -4,9 +4,21 @@ import { ListProductTypeComponent } from './list-product-type/list-product-type.
 import { ProductTypeModalComponent } from './product-type-modal/product-type-modal.component';
 import { ProductTypeRoutingModule } from './product-type-routing.module';
 import { ProductTypeComponent } from './product-type.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { InlineSVGModule } from 'ng-inline-svg';
+import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 
 @NgModule({
   declarations: [ProductTypeComponent, ListProductTypeComponent, ProductTypeModalComponent],
-  imports: [CommonModule, ProductTypeRoutingModule]
+  imports: [
+    CommonModule,
+    ProductTypeRoutingModule,
+    NgbTooltipModule,
+    InlineSVGModule,
+    CRUDTableModule,
+    FormsModule,
+    ReactiveFormsModule
+  ]
 })
 export class ProductTypeModule {}
