@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -6,12 +5,7 @@ import { pluck, switchMap, takeUntil } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import { CanActiveStepPipe } from '../gas-station.pipe';
-import {
-  CreateStation,
-  GasStationResponse,
-  GasStationService,
-  StepData
-} from '../gas-station.service';
+import { CreateStation, GasStationService, StepData } from '../gas-station.service';
 
 @Component({
   selector: 'app-create-station',
@@ -146,6 +140,7 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
     switch ($event.currentStep) {
       case 1:
         currentStepData.step1.data = $event.step1?.data || currentStepData.step1.data;
+        this.gasStationUpdateData = currentStepData.step1.data;
         currentStepData.step1.isValid = $event.step1.isValid;
         break;
       case 2:
