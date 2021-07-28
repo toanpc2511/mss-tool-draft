@@ -36,9 +36,6 @@ export class Step1Component implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    if (!this.stationForm) {
-      this.stationForm = this.initForm();
-    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -48,8 +45,6 @@ export class Step1Component implements OnInit, OnChanges {
     if (this.step1Data) {
       this.isUpdate = true;
       this.stationForm.patchValue(this.step1Data);
-    } else if (this.gasStationService.getStepDataValue().step1.data) {
-      this.stationForm.patchValue(this.gasStationService.getStepDataValue().step1.data);
     }
   }
 
