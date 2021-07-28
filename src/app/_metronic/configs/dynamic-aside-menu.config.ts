@@ -3,19 +3,17 @@ export const DynamicAsideMenuConfig = {
     {
       title: 'Dashboard',
       root: true,
-      icon: 'fa-gas-pump',
-      svg: './assets/media/svg/icons/Design/Layers.svg',
+      icon: 'fas fa-layer-group',
       page: '/dashboard',
       translate: 'MENU.DASHBOARD',
       bullet: 'dot'
     },
     {
       title: 'Quản lý trạm xăng',
-      icon: 'fa-gas-pump',
+      icon: 'fa fa-gas-pump',
       root: true,
       page: '/tram-xang',
       bullet: 'dot',
-      svg: './assets/media/svg/icons/Design/Layers.svg',
       submenu: [
         {
           title: 'Danh sách trạm',
@@ -38,64 +36,56 @@ export const DynamicAsideMenuConfig = {
       root: true,
       bullet: 'dot',
       page: '/nhom-san-pham',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      icon: 'fas fa-cubes'
     },
     {
       title: 'Quản lý QR code',
       root: true,
       bullet: 'dot',
       page: '/qrcode',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      icon: 'fas fa-qrcode'
     },
     {
       title: 'Báo cáo',
       root: true,
       bullet: 'dot',
       page: '/bao-cao',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      icon: 'fas fa-file-alt'
     },
     {
       title: 'Quản lý User',
       root: true,
       bullet: 'dot',
       page: '/nguoi-dung',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      icon: 'fas fa-user'
     },
     {
       title: 'Quản lý ca làm việc',
       root: true,
       bullet: 'dot',
       page: '/ca-lam-viec',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      icon: 'fas fa-calendar-check'
     },
     {
       title: 'Quản lý khách hàng',
       root: true,
       bullet: 'dot',
       page: '/khach-hang',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      icon: 'fas fa-users'
     },
     {
       title: 'Quản lý chiết khấu',
       root: true,
       bullet: 'dot',
       page: '/chiet-khau',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      icon: 'fas fa-hand-holding-usd'
     },
     {
       title: 'Quản lý kho',
       root: true,
       bullet: 'dot',
       page: '/kho',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      icon: 'fas fa-warehouse'
     }
   ]
 };
