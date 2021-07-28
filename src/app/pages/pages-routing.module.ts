@@ -49,6 +49,11 @@ const routes: Routes = [
           import('../modules/gas-station/gas-station.module').then((m) => m.GasStationModule)
       },
       {
+        path: 'nhom-san-pham',
+        loadChildren: () =>
+          import('../modules/product-type/product-type.module').then((m) => m.ProductTypeModule)
+      },
+      {
         path: '',
         redirectTo: '/dashboard',
         pathMatch: 'full'

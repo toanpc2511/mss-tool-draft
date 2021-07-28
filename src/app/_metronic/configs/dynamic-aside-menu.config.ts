@@ -45,7 +45,7 @@ export const DynamicAsideMenuConfig = {
       title: 'Quản lý QR code',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
+      page: '/qrcode',
       icon: '	fa-cubes',
       svg: './assets/media/svg/icons/Design/Layers.svg'
     },
@@ -53,7 +53,7 @@ export const DynamicAsideMenuConfig = {
       title: 'Báo cáo',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
+      page: '/bao-cao',
       icon: '	fa-cubes',
       svg: './assets/media/svg/icons/Design/Layers.svg'
     },
@@ -61,7 +61,7 @@ export const DynamicAsideMenuConfig = {
       title: 'Quản lý User',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
+      page: '/nguoi-dung',
       icon: '	fa-cubes',
       svg: './assets/media/svg/icons/Design/Layers.svg'
     },
@@ -69,7 +69,7 @@ export const DynamicAsideMenuConfig = {
       title: 'Quản lý ca làm việc',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
+      page: '/ca-lam-viec',
       icon: '	fa-cubes',
       svg: './assets/media/svg/icons/Design/Layers.svg'
     },
@@ -77,7 +77,7 @@ export const DynamicAsideMenuConfig = {
       title: 'Quản lý khách hàng',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
+      page: '/khach-hang',
       icon: '	fa-cubes',
       svg: './assets/media/svg/icons/Design/Layers.svg'
     },
@@ -85,7 +85,7 @@ export const DynamicAsideMenuConfig = {
       title: 'Quản lý chiết khấu',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
+      page: '/chiet-khau',
       icon: '	fa-cubes',
       svg: './assets/media/svg/icons/Design/Layers.svg'
     },
@@ -93,7 +93,7 @@ export const DynamicAsideMenuConfig = {
       title: 'Quản lý kho',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
+      page: '/kho',
       icon: '	fa-cubes',
       svg: './assets/media/svg/icons/Design/Layers.svg'
     }
