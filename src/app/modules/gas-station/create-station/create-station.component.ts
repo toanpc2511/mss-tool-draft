@@ -1,5 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
@@ -29,7 +30,8 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
     private subheader: SubheaderService,
     private activeRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private destroy$: DestroyService
+    private destroy$: DestroyService,
+    private toastr: ToastrService
   ) {
     this.stepData$ = gasStationService.stepData$;
   }
@@ -152,18 +154,24 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
         const canActiveStep2 = this.canActive.transform(currentStepData, 2);
         if (canActiveStep2) {
           this.gasStationService.setStepData({ ...currentStepData, currentStep: 2 });
+        } else {
+          this.toastr.error('Vui lòng thêm trạm trước khi thực hiện bước tiếp theo');
         }
         break;
       case 3:
         const canActiveStep3 = this.canActive.transform(currentStepData, 3);
         if (canActiveStep3) {
           this.gasStationService.setStepData({ ...currentStepData, currentStep: 3 });
+        } else {
+          this.toastr.error('Vui lòng thêm bồn trước khi thực hiện bước tiếp theo');
         }
         break;
       case 4:
         const canActiveStep4 = this.canActive.transform(currentStepData, 4);
         if (canActiveStep4) {
           this.gasStationService.setStepData({ ...currentStepData, currentStep: 4 });
+        } else {
+          this.toastr.error('Vui lòng thêm cột trước khi thực hiện bước tiếp theo');
         }
         break;
     }
