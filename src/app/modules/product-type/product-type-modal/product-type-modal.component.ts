@@ -24,9 +24,7 @@ export class ProductTypeModalComponent implements OnInit {
     private fb: FormBuilder,
     private productTypeService: ProductTypeService,
     private destroy$: DestroyService
-  ) {
- 
-   }
+  ) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -39,34 +37,43 @@ export class ProductTypeModalComponent implements OnInit {
 
   buildForm(): void {
     this.productForm = this.fb.group({
-      code: [this.data.product['code'] || '', [Validators.required, Validators.pattern('[a-zA-Z]+')]],
-      name: [this.data.product['name'] || '', Validators.required],
-      description: [this.data.product['description'] || ''],
-      status: [this.data.product['status'] ||this.listStatus.ACTIVE, Validators.required]
-    })
+      code: [this.data.product?.code || '', [Validators.required, Validators.pattern('[a-zA-Z]+')]],
+      name: [this.data.product?.code || '', Validators.required],
+      description: [this.data.product?.description || ''],
+      status: [this.data.product?.status || this.listStatus.ACTIVE, Validators.required]
+    });
   }
 
   onSubmit(): void {
-    fromEvent(this.btnSave.nativeElement, 'click').pipe(debounceTime(200), takeUntil(this.destroy$)).subscribe( _ => {
-      this.productForm.markAllAsTouched();
-      if (this.productForm.invalid) {
-        return;
-      }
-      if (this.data.product === 'create') {
-        this.productTypeService.createProductType(this.productForm.getRawValue()).subscribe( _ => {
-          this.modal.close();
-        }, (error : IError) => {
-          this.checkError(error);
-        });
-      } else {
-        this.productTypeService.updateProductType(this.data.product['id'], this.productForm.getRawValue()).subscribe( _ => {
-          this.modal.close(true);
-        }, (error: IError) => {
-          this.checkError(error);
-        });
-      }
-    })
-    
+    fromEvent(this.btnSave.nativeElement, 'click')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((_) => {
+        this.productForm.markAllAsTouched();
+        if (this.productForm.invalid) {
+          return;
+        }
+        if (!this.data.product) {
+          this.productTypeService.createProductType(this.productForm.getRawValue()).subscribe(
+            () => {
+              this.modal.close(true);
+            },
+            (error: IError) => {
+              this.checkError(error);
+            }
+          );
+        } else {
+          this.productTypeService
+            .updateProductType(this.data.product.id, this.productForm.getRawValue())
+            .subscribe(
+              () => {
+                this.modal.close(true);
+              },
+              (error: IError) => {
+                this.checkError(error);
+              }
+            );
+        }
+      });
   }
   checkError(err: IError) {
     if (err.code === 'SUN-OIL-4154') {
@@ -75,14 +82,16 @@ export class ProductTypeModalComponent implements OnInit {
     if (err.code === 'SUN-OIL-4153') {
       this.productForm.get('name').setErrors({ nameExisted: true });
     }
+    if (err.code === 'SUN-OIL-4088') {
+      this.productForm.get('name').setErrors({ nameExisted: true });
+    }
+    if (err.code === 'SUN-OIL-4089') {
+      this.productForm.get('code').setErrors({ codeExisted: true });
+    }
   }
-
 }
 
-
-export  interface IDataTransfer {
-  title: string,
-  product: string | ProductTypeResponse
+export interface IDataTransfer {
+  title: string;
+  product?: ProductTypeResponse;
 }
-
-

@@ -1,8 +1,7 @@
-<div class="modal-header">
-    <h4 class="modal-title" id="modal-title">{{data.title}}</h4>
-    <button type="button" class="close" aria-label="Close button" aria-describedby="modal-title" (click)="onClose()">
-      X
-    </button>
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+    <div class="close-icon" (click)="modal.close()"></div>
   </div>
   <div class="modal-body">
     <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
@@ -30,12 +29,12 @@
               [message]="'Mã nhóm sản phẩm đã tồn tại'"
             ></app-validate>
             <app-validate
-            [control]="productForm.controls['code']"
-            [error]="'pattern'"
-            [message]="'Mã nhóm sản phẩm sai định dạng'"
-          ></app-validate>
+              [control]="productForm.controls['code']"
+              [error]="'pattern'"
+              [message]="'Mã nhóm sản phẩm sai định dạng'"
+            ></app-validate>
           </div>
-  
+
           <div class="col-lg-6">
             <label class="form-label required">Tên nhóm sản phẩm</label>
             <input
@@ -74,21 +73,27 @@
           </div>
           <div class="col-lg-6">
             <label class="form-label required">Trạng thái</label>
-            <select class="form-control form-control-lg form-control-solid" formControlName="status">
+            <select
+              class="form-control form-control-lg form-control-solid"
+              formControlName="status"
+            >
               <option [value]="listStatus.ACTIVE">Hoạt động</option>
               <option [value]="listStatus.INACTIVE">Không hoạt động</option>
             </select>
             <app-validate
-            [control]="productForm.controls['status']"
-            [error]="'required'"
-            [message]="'Vui lòng chọn trạng thái'"
-          ></app-validate>
+              [control]="productForm.controls['status']"
+              [error]="'required'"
+              [message]="'Vui lòng chọn trạng thái'"
+            ></app-validate>
           </div>
         </div>
       </form>
     </div>
   </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="onClose()">Hủy</button>
-    <button type="button" ngbAutofocus class="btn btn-primary save" #btnSave>Lưu</button>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
+  </div>
 </div>
