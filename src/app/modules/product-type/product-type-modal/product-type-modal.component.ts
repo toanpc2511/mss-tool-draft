@@ -39,10 +39,10 @@ export class ProductTypeModalComponent implements OnInit {
   buildForm(): void {
     this.productForm = this.fb.group({
       code: [
-        this.data.product?.code || '',
+        this.data.product?.code || 'SNSP',
         [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
       ],
-      name: [this.data.product?.code || '', Validators.required],
+      name: [this.data.product?.name || '', Validators.required],
       description: [this.data.product?.description || ''],
       status: [this.data.product?.status || this.listStatus.ACTIVE, Validators.required]
     });
