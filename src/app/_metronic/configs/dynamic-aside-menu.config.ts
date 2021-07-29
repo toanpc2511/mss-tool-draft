@@ -32,7 +32,7 @@ export const DynamicAsideMenuConfig = {
       ]
     },
     {
-      title: 'Quản lý nhóm sản phẩm',
+      title: 'Nhóm sản phẩm',
       root: true,
       bullet: 'dot',
       page: '/nhom-san-pham',
