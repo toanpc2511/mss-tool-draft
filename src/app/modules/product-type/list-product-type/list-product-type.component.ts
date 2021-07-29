@@ -95,7 +95,8 @@ export class ListProductTypeComponent implements OnInit {
     this.dataSource = this.sortService.sort(this.dataSource, column);
   }
 
-  deleteProductType(item: ProductTypeResponse): void {
+  deleteProductType($event: Event, item: ProductTypeResponse): void {
+    $event.stopPropagation();
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
       backdrop: 'static'
     });
@@ -116,11 +117,15 @@ export class ListProductTypeComponent implements OnInit {
           },
           (err: IError) => {
             this.checkError(err);
-          });
+          }
+        );
       }
     });
   }
-  createModal(data?: IDataTransfer): void {
+  createModal($event?: Event, data?: IDataTransfer): void {
+    if ($event) {
+      $event.stopPropagation();
+    }
     const modalRef = this.modalService.open(ProductTypeModalComponent, {
       backdrop: 'static',
       size: 'xl'
@@ -143,5 +148,4 @@ export class ListProductTypeComponent implements OnInit {
       this.toastr.error('Nhóm sản phẩm không thể chỉnh sửa');
     }
   }
-
 }

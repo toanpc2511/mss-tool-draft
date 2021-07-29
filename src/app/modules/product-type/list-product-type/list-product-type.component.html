@@ -63,12 +63,7 @@
         <tbody>
           <tr *ngFor="let item of dataSource" (click)="viewListProduct()">
             <td class="code">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.code"
-                (click)="viewListProduct()"
-              >
+              <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
                 {{ item.code }}
               </p>
             </td>
@@ -105,7 +100,7 @@
             <td class="text-center action">
               <a
                 *ngIf="item.type !== 'OIL'"
-                (click)="createModal(item)"
+                (click)="createModal($event, item)"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               >
                 <span
@@ -117,7 +112,7 @@
               </a>
               <a
                 *ngIf="item.type !== 'OIL'"
-                (click)="deleteProductType(item)"
+                (click)="deleteProductType($event, item)"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
               >
                 <span
