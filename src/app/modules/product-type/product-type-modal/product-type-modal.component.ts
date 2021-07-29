@@ -54,15 +54,13 @@ export class ProductTypeModalComponent implements OnInit {
       }
       if (this.data.product === 'create') {
         this.productTypeService.createProductType(this.productForm.getRawValue()).subscribe( _ => {
-          callBackEmitter.callBack.emit();
           this.modal.close();
         }, (error : IError) => {
           this.checkError(error);
         });
       } else {
         this.productTypeService.updateProductType(this.data.product['id'], this.productForm.getRawValue()).subscribe( _ => {
-          callBackEmitter.callBack.emit();
-          this.modal.close();
+          this.modal.close(true);
         }, (error: IError) => {
           this.checkError(error);
         });
@@ -71,10 +69,10 @@ export class ProductTypeModalComponent implements OnInit {
     
   }
   checkError(err: IError) {
-    if (err.code === 'SUN-OIL-4095') {
+    if (err.code === 'SUN-OIL-4154') {
       this.productForm.get('code').setErrors({ codeExisted: true });
     }
-    if (err.code === 'SUN-OIL-4094') {
+    if (err.code === 'SUN-OIL-4153') {
       this.productForm.get('name').setErrors({ nameExisted: true });
     }
   }
@@ -87,7 +85,4 @@ export  interface IDataTransfer {
   product: string | ProductTypeResponse
 }
 
-export class callBackEmitter {
-  static callBack = new EventEmitter();
-}
 
