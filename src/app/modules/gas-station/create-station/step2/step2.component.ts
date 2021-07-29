@@ -82,14 +82,19 @@ export class Step2Component implements OnInit {
       .getListGasBin(stationId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        if (res.data) {
-          this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
-          // Set data after filter and apply current sorting
-          this.dataSource = this.sortService.sort(
-            this.filterService.filter(this.dataSourceTemp, this.filterField.field)
-          );
-          this.cdr.detectChanges();
+        this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
+        // Set data after filter and apply current sorting
+        this.dataSource = this.sortService.sort(
+          this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+        );
+        if (res?.data?.length > 0) {
+          const currentStepData = this.gasStationService.getStepDataValue();
+          this.gasStationService.setStepData({ ...currentStepData, step2: { isValid: true } });
+        } else {
+          const currentStepData = this.gasStationService.getStepDataValue();
+          this.gasStationService.setStepData({ ...currentStepData, step2: { isValid: false } });
         }
+        this.cdr.detectChanges();
       });
   }
 

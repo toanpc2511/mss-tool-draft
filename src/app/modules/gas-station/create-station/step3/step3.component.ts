@@ -80,14 +80,19 @@ export class Step3Component implements OnInit {
       .getPumpPolesByGasStation(this.gasStationService.gasStationId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        if (res.data) {
-          this.dataSource = this.dataSourceTemp = res.data;
-          // Set data after filter and apply current sorting
-          this.dataSource = this.sortService.sort(
-            this.filterService.filter(this.dataSourceTemp, this.filterField.field)
-          );
-          this.cdr.detectChanges();
+        this.dataSource = this.dataSourceTemp = res.data;
+        // Set data after filter and apply current sorting
+        this.dataSource = this.sortService.sort(
+          this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+        );
+        if (res?.data?.length > 0) {
+          const currentStepData = this.gasStationService.getStepDataValue();
+          this.gasStationService.setStepData({ ...currentStepData, step3: { isValid: true } });
+        } else {
+          const currentStepData = this.gasStationService.getStepDataValue();
+          this.gasStationService.setStepData({ ...currentStepData, step3: { isValid: false } });
         }
+        this.cdr.detectChanges();
       });
   }
 
@@ -117,6 +122,8 @@ export class Step3Component implements OnInit {
               this.dataSource = this.dataSourceTemp = res.data;
               this.searchFormControl.patchValue(null);
               this.sort(null);
+              const currentStepData = this.gasStationService.getStepDataValue();
+              this.gasStationService.setStepData({ ...currentStepData, step3: { isValid: true } });
               this.cdr.detectChanges();
             }
           });

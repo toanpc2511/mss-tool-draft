@@ -93,14 +93,19 @@ export class Step4Component implements OnInit {
       .getPumpHosesByGasStation(this.gasStationService.gasStationId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        if (res.data) {
+        if (res?.data?.length > 0) {
           this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
           // Set data after filter and apply current sorting
           this.dataSource = this.sortService.sort(
             this.filterService.filter(this.dataSourceTemp, this.filterField.field)
           );
-          this.cdr.detectChanges();
+          const currentStepData = this.gasStationService.getStepDataValue();
+          this.gasStationService.setStepData({ ...currentStepData, step4: { isValid: true } });
+        } else {
+          const currentStepData = this.gasStationService.getStepDataValue();
+          this.gasStationService.setStepData({ ...currentStepData, step4: { isValid: false } });
         }
+        this.cdr.detectChanges();
       });
   }
 

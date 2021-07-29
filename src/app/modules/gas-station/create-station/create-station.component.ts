@@ -1,11 +1,17 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { pluck, switchMap, takeUntil } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
+import { map, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import { CanActiveStepPipe } from '../gas-station.pipe';
-import { CreateStation, GasStationService, StepData } from '../gas-station.service';
+import {
+  CreateStation,
+  GasStationResponse,
+  GasStationService,
+  StepData
+} from '../gas-station.service';
 
 @Component({
   selector: 'app-create-station',
@@ -39,14 +45,47 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
           }
           return of(null);
         }),
+        switchMap((res: DataResponse<GasStationResponse>) => {
+          if (res?.data) {
+            this.gasStationUpdateData = { ...res.data, stationCode: res.data.code };
+            this.gasStationService.gasStationStatus = res.data.status;
+            const step2$ = this.gasStationService.getListGasBin(
+              this.gasStationService.gasStationId
+            );
+            const step3$ = this.gasStationService.getPumpPolesByGasStation(
+              this.gasStationService.gasStationId
+            );
+            const step4$ = this.gasStationService.getPumpHosesByGasStation(
+              this.gasStationService.gasStationId
+            );
+            return forkJoin([of(res.data), step2$, step3$, step4$]);
+          }
+          return of(null);
+        }),
         takeUntil(this.destroy$)
       )
+      .pipe(map(([step1, step2, step3, step4]) => ({ step1, step2, step3, step4 })))
       .subscribe((res) => {
-        if (res?.data) {
-          this.gasStationUpdateData = { ...res.data, stationCode: res.data.code };
-          this.gasStationService.gasStationStatus = res.data.status;
-          this.cdr.detectChanges();
+        if (res) {
+          this.gasStationService.setStepData({
+            currentStep: 1,
+            step1: {
+              isValid: !!res.step1,
+              data: { ...res.step1, stationCode: res.step1.code }
+            },
+            step2: {
+              isValid: res.step2.data.length > 0
+            },
+            step3: {
+              isValid: res.step3.data.length > 0
+            },
+            step4: {
+              isValid: res.step4.data.length > 0
+            }
+          });
         }
+
+        this.cdr.detectChanges();
       });
   }
 
