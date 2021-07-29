@@ -9,6 +9,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
+import { IDataTransfer, ProductTypeModalComponent } from '../product-type-modal/product-type-modal.component';
 import { ProductTypeResponse, ProductTypeService } from '../product-type.service';
 
 @Component({
@@ -80,17 +81,9 @@ export class ListProductTypeComponent implements OnInit {
     });
   }
 
-  
+
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
-  }
-
-  createProductType(): void {
-    alert("Xin chào!")
-  }
-
-  updateProductType(prodTypeId: number): void {
-    alert("Xin chào!")
   }
 
   deleteProductType(item: ProductTypeResponse): void {
@@ -106,12 +99,29 @@ export class ListProductTypeComponent implements OnInit {
 
     modalRef.result.then((result) => {
       if (result) {
-        
         this.productTypeService.deleteStation(item.id).subscribe(() => {
           this.getListProductType();
         });
       }
     });
+  }
+  createModal(data?: IDataTransfer ): void {
+  
+    const modalRef = this.modalService.open(ProductTypeModalComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+  
+    modalRef.componentInstance.data = {
+      title: data ? 'Sửa nhóm sản phẩm' : 'Thêm nhóm sản phẩm',
+      product: data ? data : 'create'
+    };
+
+    modalRef.result.then(result => {
+      if (result) {
+        this.getListProductType();
+      }
+    })
   }
 
 }

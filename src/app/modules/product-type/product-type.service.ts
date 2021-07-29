@@ -31,4 +31,11 @@ export class ProductTypeService {
     return this.http.delete(`categories/${prodTypeId}`);
   }
 
+  createProductType(data: ProductTypeResponse) {
+    return this.http.post(`categories`, data);
+  }
+
+  updateProductType(id: number, data: ProductTypeResponse) {
+    return this.http.put(`categories/${id}`,data);
+  }
 }

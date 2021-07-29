@@ -15,7 +15,7 @@
           [formControl]="searchFormControl"
         />
       </div>
-      <button type="button" class="btn btn-primary" (click)="createProductType()">Thêm mới</button>
+      <button type="button" class="btn btn-primary" (click)="createModal()">Thêm mới</button>
     </div>
   </div>
   <div class="card-body">
@@ -99,7 +99,7 @@
 
             <td class="text-center action">
               <a
-                *ngIf="item.type !== 'OIL'"
+                *ngIf="item.type !== 'OIL'" (click)="createModal(item)"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               >
                 <span
@@ -128,3 +128,7 @@
     </div>
   </div>
 </div>
+
+<!--<p>list-product-type works!</p>-->
+<!--<button (click)="createModal()">Create</button>-->
+<!--<button (click)="createModal({productType :'duy', productName :'duytd', description: 'data test', status: 'ACTIVE'})">Edit</button>-->
