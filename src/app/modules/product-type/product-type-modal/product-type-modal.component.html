@@ -1,1 +1,99 @@
-<p>product-type-modal works!</p>
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+    <div class="close-icon" (click)="modal.close()"></div>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
+      <form [formGroup]="productForm" class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class="form-label required">Mã nhóm sản phẩm</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="code"
+              placeholder="Nhập mã nhóm sản phẩm"
+              autocomplete="off"
+              maxlength="99"
+              (keydown.space)="$event.preventDefault()"
+            />
+            <app-validate
+              [control]="productForm.controls['code']"
+              [error]="'required'"
+              [message]="'Mã nhóm sản phẩm không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="productForm.controls['code']"
+              [error]="'codeExisted'"
+              [message]="'Mã nhóm sản phẩm đã tồn tại'"
+            ></app-validate>
+            <app-validate
+              [control]="productForm.controls['code']"
+              [error]="'pattern'"
+              [message]="'Mã nhóm sản phẩm sai định dạng'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-6">
+            <label class="form-label required">Tên nhóm sản phẩm</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="name"
+              placeholder="Nhập tên nhóm sản phẩm"
+              maxlength="99"
+              autocomplete="off"
+              trim="blur"
+            />
+            <app-validate
+              [control]="productForm.controls['name']"
+              [error]="'required'"
+              [message]="'Tên nhóm sản phẩm không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="productForm.controls['name']"
+              [error]="'nameExisted'"
+              [message]="'Tên nhóm sản phẩm đã tồn tại'"
+            ></app-validate>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class="form-label">Mô tả</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="description"
+              placeholder="Nhập miêu tả"
+              maxlength="199"
+              autocomplete="off"
+              trim="blur"
+            />
+          </div>
+          <div class="col-lg-6">
+            <label class="form-label required">Trạng thái</label>
+            <select
+              class="form-control form-control-lg form-control-solid"
+              formControlName="status"
+            >
+              <option [value]="listStatus.ACTIVE">Hoạt động</option>
+              <option [value]="listStatus.INACTIVE">Không hoạt động</option>
+            </select>
+            <app-validate
+              [control]="productForm.controls['status']"
+              [error]="'required'"
+              [message]="'Vui lòng chọn trạng thái'"
+            ></app-validate>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
+  </div>
+</div>

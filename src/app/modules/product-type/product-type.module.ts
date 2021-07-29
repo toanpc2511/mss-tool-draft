@@ -8,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
+import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
+
 
 @NgModule({
   declarations: [ProductTypeComponent, ListProductTypeComponent, ProductTypeModalComponent],
@@ -18,7 +20,9 @@ import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
     InlineSVGModule,
     CRUDTableModule,
     FormsModule,
+    SharedComponentsModule,
     ReactiveFormsModule
   ]
+
 })
 export class ProductTypeModule {}
