@@ -6,6 +6,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { TValidators } from 'src/app/shared/validators';
 import { ProductTypeResponse, ProductTypeService } from '../product-type.service';
 
 @Component({
@@ -37,7 +38,10 @@ export class ProductTypeModalComponent implements OnInit {
 
   buildForm(): void {
     this.productForm = this.fb.group({
-      code: [this.data.product?.code || '', [Validators.required, Validators.pattern('[a-zA-Z]+')]],
+      code: [
+        this.data.product?.code || '',
+        [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
+      ],
       name: [this.data.product?.code || '', Validators.required],
       description: [this.data.product?.description || ''],
       status: [this.data.product?.status || this.listStatus.ACTIVE, Validators.required]
