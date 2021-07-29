@@ -63,8 +63,8 @@
         <tbody>
           <tr *ngFor="let item of dataSource">
             <td class="code">
-              <p class="cursor-pointer" placement="top" [ngbTooltip]="item.code">
-                <a href="javascript:void(0)" class="text-ellipsis">{{ item.code }}</a>
+              <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code" (click)="viewListProduct()">
+                {{ item.code }}
               </p>
             </td>
 

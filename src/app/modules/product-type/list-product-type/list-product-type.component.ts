@@ -5,11 +5,13 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
+import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
 import { ProductTypeResponse, ProductTypeService } from '../product-type.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-product-type',
@@ -36,7 +38,8 @@ export class ListProductTypeComponent implements OnInit {
     private filterService: FilterService<ProductTypeResponse>,
     private cdr: ChangeDetectorRef,
     private destroy$: DestroyService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastr: ToastrService
   ) {
     this.dataSource = this.dataSourceTemp = [];
     this.sorting = sortService.sorting;
@@ -80,7 +83,10 @@ export class ListProductTypeComponent implements OnInit {
     });
   }
 
-  
+  viewListProduct(): void {
+    alert("Danh sách sản phẩm");
+  }
+
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSource, column);
   }
@@ -106,12 +112,23 @@ export class ListProductTypeComponent implements OnInit {
 
     modalRef.result.then((result) => {
       if (result) {
-        
-        this.productTypeService.deleteStation(item.id).subscribe(() => {
-          this.getListProductType();
-        });
+        this.productTypeService.deleteStation(item.id).subscribe(
+          (res) => {
+            if (res.data) {
+              this.getListProductType();
+            }
+          },
+          (err: IError) => {
+            this.checkError(err);
+          });
       }
     });
+  }
+
+  checkError(error: IError) {
+    if (error.code === 'SUN-OIL-4124') {
+      this.toastr.error('Nhóm sản phẩm không thể chỉnh sửa');
+    }
   }
 
 }
