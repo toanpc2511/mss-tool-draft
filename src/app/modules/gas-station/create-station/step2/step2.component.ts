@@ -99,7 +99,7 @@ export class Step2Component implements OnInit {
   }
 
   sort(column: string) {
-    this.dataSource = this.sortService.sort(this.dataSource, column);
+    this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
   }
 
   openCreateModal() {

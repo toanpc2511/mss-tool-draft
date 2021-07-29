@@ -98,7 +98,7 @@ export class Step3Component implements OnInit {
 
   // Sort
   sort(column: string) {
-    this.dataSource = this.sortService.sort(this.dataSource, column);
+    this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
   }
 
   create() {

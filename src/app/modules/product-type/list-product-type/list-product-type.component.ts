@@ -92,7 +92,7 @@ export class ListProductTypeComponent implements OnInit {
   }
 
   sort(column: string) {
-    this.dataSource = this.sortService.sort(this.dataSource, column);
+    this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
   }
 
   deleteProductType($event: Event, item: ProductTypeResponse): void {
