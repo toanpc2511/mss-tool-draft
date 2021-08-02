@@ -140,7 +140,10 @@ export class Step4Component implements OnInit {
   }
 
   update(data) {
-    if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
+    if (
+      !this.gasStationService.gasStationId ||
+      this.gasStationService.gasStationStatus !== 'ACTIVE'
+    ) {
       return this.toastr.error('Không thể sửa vì trạm xăng không hoạt động');
     }
     const modalRef = this.modalService.open(PumpHoseModalComponent, {
