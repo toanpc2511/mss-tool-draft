@@ -16,6 +16,7 @@ import {
 } from '../product-type-modal/product-type-modal.component';
 import { ProductTypeResponse, ProductTypeService } from '../product-type.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-product-type',
@@ -43,7 +44,8 @@ export class ListProductTypeComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private destroy$: DestroyService,
     private modalService: NgbModal,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router,
   ) {
     this.dataSource = this.dataSourceTemp = [];
     this.sorting = sortService.sorting;
@@ -87,8 +89,24 @@ export class ListProductTypeComponent implements OnInit {
     });
   }
 
-  viewListProduct(): void {
-    alert('Danh sách sản phẩm');
+  viewListProduct($event: Event): void {
+    this.router.navigate(['/danh-sach-san-pham/danh-sach']);
+    // $event.stopPropagation();
+    // const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+    //   backdrop: 'static'
+    // });
+    // const data: IConfirmModalData = {
+    //   title: 'Xác nhận',
+    //   message: `Bạn có chắc chắn muốn điều hướng sang danh sách sản phẩm ?`,
+    //   button: { class: 'btn-primary', title: 'Xác nhận' }
+    // };
+    // modalRef.componentInstance.data = data;
+    //
+    // modalRef.result.then((result) => {
+    //   if (result) {
+    //     this.router.navigate(['/danh-sach-san-pham/danh-sach']);
+    //   }
+    // });
   }
 
   sort(column: string) {
