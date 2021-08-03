@@ -1,0 +1,110 @@
+table thead th {
+  text-transform: none;
+}
+.table th,
+.table td {
+  padding: 0.5rem;
+}
+
+table {
+  min-width: 1024px;
+
+  th, td {
+    &.code {
+      max-width: 80px;
+    }
+    &.name {
+      min-width: 100px;
+    }
+    &.import-price {
+      max-width: 100px;
+    }
+    &.price-zone-1 {
+      max-width: 100px;
+    }
+    &.price-zone-2 {
+      max-width: 100px;
+    }
+    &.unit {
+      max-width: 100px;
+    }
+    &.vat {
+      max-width: 100px;
+    }
+    &.status {
+      max-width: 150px;
+    }
+    &.action {
+      width: 150px;
+    }
+  }
+  .name {
+    max-width: 150px;
+  }
+
+  tr {
+    &:hover {
+      background-color: #f3f6f9;
+
+      td {
+        .btn.btn-light {
+          background-color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+.card-toolbar {
+  gap: 50px;
+  .prod-type {
+    .prod-type-title {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 21px;
+      color: #000;
+    }
+    .prod-type-option {
+      display: inline-block;
+      .form-control.form-control-solid {
+        background-color: #fff;
+      }
+    }
+  }
+  .search-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    i {
+      position: absolute;
+      left: 10px;
+      top: 7px;
+    }
+
+    input {
+      padding-left: 30px;
+    }
+  }
+
+  button {
+    width: 110px;
+  }
+}
+
+.card.card-custom {
+  box-shadow: none !important;
+
+  .card-body,
+  .card-header {
+    border: 0;
+  }
+
+  .card-body {
+    padding-top: 1rem;
+  }
+
+  .card-header {
+    margin-top: 2rem;
+  }
+}

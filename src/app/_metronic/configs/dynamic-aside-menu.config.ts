@@ -39,6 +39,13 @@ export const DynamicAsideMenuConfig = {
       icon: 'fas fa-cubes'
     },
     {
+      title: 'Quản lý sản phẩm',
+      root: true,
+      bullet: 'dot',
+      page: '/danh-sach-san-pham',
+      icon: 'fas fa-cube'
+    },
+    {
       title: 'Quản lý QR code',
       root: true,
       bullet: 'dot',
