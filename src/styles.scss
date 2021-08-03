@@ -234,6 +234,9 @@ table {
   gap: 20px;
 }
 
+:disabled {
+  opacity: 0.8!important;
+}
 // hide shadow
 // .card.custom-card {
 //   box-shadow: none;
