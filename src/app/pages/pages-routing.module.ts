@@ -54,6 +54,10 @@ const routes: Routes = [
           import('../modules/product-type/product-type.module').then((m) => m.ProductTypeModule)
       },
       {
+        path: 'tai-khoan',
+        loadChildren: () => import('../modules/user/user.module').then(m => m.ProductTypeModule)
+      },
+      {
         path: '',
         redirectTo: '/dashboard',
         pathMatch: 'full'

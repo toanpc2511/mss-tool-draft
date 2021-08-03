@@ -53,10 +53,10 @@ export const DynamicAsideMenuConfig = {
       icon: 'fas fa-file-alt'
     },
     {
-      title: 'Quản lý User',
+      title: 'Quản lý tài khoản',
       root: true,
       bullet: 'dot',
-      page: '/nguoi-dung',
+      page: '/tai-khoan',
       icon: 'fas fa-user'
     },
     {
