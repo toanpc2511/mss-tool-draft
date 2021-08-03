@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 
-export interface ProductResponse {
+export interface IProduct {
   id: number;
   code: string;
   name: string;
@@ -25,18 +25,18 @@ export class ProductService {
   }
 
   getListProduct() {
-    return this.http.get<ProductResponse[]>('');
+    return this.http.get<IProduct[]>('');
   }
 
   deleteProduct(prodId: string | number) {
     return this.http.delete(`/${prodId}`);
   }
 
-  createProduct(data: ProductResponse) {
+  createProduct(data: IProduct) {
     return this.http.post(``, data);
   }
 
-  updateProduct(id: number, data: ProductResponse) {
+  updateProduct(id: number, data: IProduct) {
     return this.http.put(``, data);
   }
 }

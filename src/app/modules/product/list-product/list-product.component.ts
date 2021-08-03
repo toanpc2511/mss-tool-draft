@@ -6,7 +6,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-import { ProductResponse, ProductService } from '../product.service';
+import { IProduct, ProductService } from '../product.service';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 import { IError } from '../../../shared/models/error.model';
@@ -22,8 +22,8 @@ import { ToastrService } from 'ngx-toastr';
 export class ListProductComponent implements OnInit {
   searchFormControl: FormControl;
   listStatus = LIST_STATUS;
-  dataSource: Array<ProductResponse>;
-  dataSourceTemp: Array<ProductResponse>;
+  dataSource: Array<IProduct>;
+  dataSourceTemp: Array<IProduct>;
   sorting: SortState;
 
   filterField: FilterField<{
@@ -39,8 +39,8 @@ export class ListProductComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private sortService: SortService<ProductResponse>,
-    private filterService: FilterService<ProductResponse>,
+    private sortService: SortService<IProduct>,
+    private filterService: FilterService<IProduct>,
     private cdr: ChangeDetectorRef,
     private destroy$: DestroyService,
     private modalService: NgbModal,
@@ -135,7 +135,7 @@ export class ListProductComponent implements OnInit {
     this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
   }
 
-  deleteProduct($event: Event, item: ProductResponse): void {
+  deleteProduct($event: Event, item: IProduct): void {
     $event.stopPropagation();
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
       backdrop: 'static'
