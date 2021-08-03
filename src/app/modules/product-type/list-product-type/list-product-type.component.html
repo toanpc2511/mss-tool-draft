@@ -61,7 +61,7 @@
           <th class="text-center">Tác động</th>
         </thead>
         <tbody>
-          <tr *ngFor="let item of dataSource" (click)="viewListProduct()">
+          <tr *ngFor="let item of dataSource" (click)="viewListProduct($event)">
             <td class="code">
               <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
                 {{ item.code }}

@@ -54,6 +54,11 @@ const routes: Routes = [
           import('../modules/product-type/product-type.module').then((m) => m.ProductTypeModule)
       },
       {
+        path: 'danh-sach-san-pham',
+        loadChildren: () =>
+          import('../modules/product/product.module').then((m) => m.ProductModule)
+      },
+      {
         path: '',
         redirectTo: '/dashboard',
         pathMatch: 'full'
