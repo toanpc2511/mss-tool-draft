@@ -49,7 +49,13 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
         }),
         switchMap((res: DataResponse<GasStationResponse>) => {
           if (res?.data) {
-            this.gasStationUpdateData = { ...res.data, stationCode: res.data.code };
+            this.gasStationUpdateData = {
+              ...res.data,
+              stationCode: res.data.code,
+              provinceId: res.data.province.provinceId,
+              districtId: res.data.district.districtId,
+              wardId: res.data.ward.wardId
+            };
             this.gasStationService.gasStationStatus = res.data.status;
             const step2$ = this.gasStationService.getListGasBin(
               this.gasStationService.gasStationId
