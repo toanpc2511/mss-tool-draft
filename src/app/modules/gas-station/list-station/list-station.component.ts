@@ -29,7 +29,7 @@ export class ListStationComponent implements OnInit {
   filterField: FilterField<{
     code: null;
     name: null;
-    address: null;
+    fullAddress: null;
   }>;
   listStatus = LIST_STATUS;
 
@@ -47,7 +47,7 @@ export class ListStationComponent implements OnInit {
     this.filterField = new FilterField({
       code: null,
       name: null,
-      address: null
+      fullAddress: null
     });
     this.searchFormControl = new FormControl();
   }

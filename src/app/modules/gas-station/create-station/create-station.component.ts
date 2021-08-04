@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Observable, of } from 'rxjs';
-import { map, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
@@ -40,21 +40,16 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
     this.activeRoute.params
       .pipe(
         pluck('id'),
+        filter((gasStationId: number) => !!gasStationId),
         switchMap((gasStationId: number) => {
-          if (gasStationId) {
-            this.gasStationService.gasStationId = gasStationId;
-            return this.gasStationService.getStationById(gasStationId);
-          }
-          return of(null);
+          this.gasStationService.gasStationId = gasStationId;
+          return this.gasStationService.getStationById(gasStationId);
         }),
         switchMap((res: DataResponse<GasStationResponse>) => {
           if (res?.data) {
             this.gasStationUpdateData = {
               ...res.data,
-              stationCode: res.data.code,
-              provinceId: res.data.province.provinceId,
-              districtId: res.data.district.districtId,
-              wardId: res.data.ward.wardId
+              stationCode: res.data.code
             };
             this.gasStationService.gasStationStatus = res.data.status;
             const step2$ = this.gasStationService.getListGasBin(
@@ -70,9 +65,14 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
           }
           return of(null);
         }),
+        map((data) => {
+          if (data) {
+            return { step1: data[0], step2: data[1], step3: data[2], step4: data[3] };
+          }
+          return null;
+        }),
         takeUntil(this.destroy$)
       )
-      .pipe(map(([step1, step2, step3, step4]) => ({ step1, step2, step3, step4 })))
       .subscribe((res) => {
         if (res) {
           this.gasStationService.setStepData({
@@ -92,7 +92,6 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
             }
           });
         }
-
         this.cdr.detectChanges();
       });
   }

@@ -15,7 +15,7 @@
           [formControl]="searchFormControl"
         />
       </div>
-      <button type="button" class="btn btn-primary">Thêm mới</button>
+      <button type="button" class="btn btn-primary" (click)="openUserModal()">Thêm mới</button>
     </div>
   </div>
   <div class="card-body">
@@ -92,7 +92,10 @@
             </td>
 
             <td class="text-center action">
-              <a class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+              <a
+                (click)="openUserModal(item.accountId)"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
                   cacheSVG="true"

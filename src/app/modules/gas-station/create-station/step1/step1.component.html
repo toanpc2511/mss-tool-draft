@@ -74,7 +74,7 @@
             formControlName="provinceId"
           >
             <option disabled [value]="null">Chọn tỉnh/thành phố</option>
-            <option *ngFor="let province of provinces" [value]="province.provinceId">
+            <option *ngFor="let province of provinces" [value]="province.id">
               {{ province.name }}
             </option>
           </select>
@@ -95,7 +95,7 @@
             formControlName="districtId"
           >
             <option disabled [value]="null">Chọn quận/huyện</option>
-            <option *ngFor="let district of districts" [value]="district.districtId">
+            <option *ngFor="let district of districts" [value]="district.id">
               {{ district.name }}
             </option>
           </select>
@@ -116,7 +116,7 @@
             formControlName="wardId"
           >
             <option disabled [value]="null">Chọn xã/phường</option>
-            <option *ngFor="let ward of wards" [value]="ward.wardId">
+            <option *ngFor="let ward of wards" [value]="ward.id">
               {{ ward.name }}
             </option>
           </select>
@@ -169,7 +169,7 @@
             class="form-control form-control-lg form-control-solid"
             autocomplete="off"
             placeholder="Vùng"
-            formControlName="area"
+            formControlName="areaDisplay"
             disabled
           />
         </div>

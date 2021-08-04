@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { takeUntil } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -13,9 +14,10 @@ import { IUser, UserService } from '../user.service';
   providers: [DestroyService, FormBuilder]
 })
 export class UserModalComponent implements OnInit {
-  @Input() data: IUser;
+  @Input() accountId: number;
   listStatus = LIST_STATUS;
-  productForm: FormGroup;
+  userForm: FormGroup;
+  isUpdate = false;
   constructor(
     public modal: NgbActiveModal,
     private fb: FormBuilder,
@@ -25,28 +27,31 @@ export class UserModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
-    this.onSubmit();
+    if (this.accountId) {
+      this.isUpdate = true;
+      this.userService
+        .getUserById(this.accountId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res) => {
+          this.userForm.patchValue(res.data);
+        });
+    }
   }
 
   onClose(): void {
     this.modal.close();
   }
 
-  buildForm(): void {}
+  buildForm(data?: IUser): void {
+    this.userForm = this.fb.group({
+      username: [null, [Validators.required]],
+      password: [null, [Validators.required]]
+    });
+  }
 
   onSubmit(): void {}
   checkError(err: IError) {
-    if (err.code === 'SUN-OIL-4154') {
-      this.productForm.get('code').setErrors({ codeExisted: true });
-    }
-    if (err.code === 'SUN-OIL-4153') {
-      this.productForm.get('name').setErrors({ nameExisted: true });
-    }
-    if (err.code === 'SUN-OIL-4088') {
-      this.productForm.get('name').setErrors({ nameExisted: true });
-    }
-    if (err.code === 'SUN-OIL-4089') {
-      this.productForm.get('code').setErrors({ codeExisted: true });
+    if (err.code === '') {
     }
   }
 }

@@ -1,91 +1,68 @@
 <div class="modal-content">
   <div class="modal-header">
     <h4 class="modal-title" id="modal-title">
-      {{ data ? 'Sửa tài khoản' : 'Thêm mới tài khoản' }}
+      {{ isUpdate ? 'Sửa tài khoản' : 'Thêm mới tài khoản' }}
     </h4>
     <div class="close-icon" (click)="modal.close()"></div>
   </div>
   <div class="modal-body">
     <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
-      <form [formGroup]="productForm" class="form form-label-right">
+      <form [formGroup]="userForm" class="form form-label-right" *ngIf="!isUpdate">
         <div class="form-group row">
           <div class="col-lg-6">
-            <label class="form-label required">Mã tài khoản</label>
+            <label class="form-label required">Tên đăng nhập</label>
             <input
               type="text"
               class="form-control form-control-lg form-control-solid"
-              formControlName="code"
-              placeholder="Nhập mã nhóm sản phẩm"
+              formControlName="username"
+              placeholder="Nhập tên đăng nhập"
               autocomplete="off"
-              maxlength="99"
+              maxlength="100"
               (keydown.space)="$event.preventDefault()"
             />
             <app-validate
-              [control]="productForm.controls['code']"
+              [control]="userForm.controls['username']"
               [error]="'required'"
-              [message]="'Mã nhóm sản phẩm không được để trống'"
-            ></app-validate>
-            <app-validate
-              [control]="productForm.controls['code']"
-              [error]="'codeExisted'"
-              [message]="'Mã nhóm sản phẩm đã tồn tại'"
-            ></app-validate>
-            <app-validate
-              [control]="productForm.controls['code']"
-              [error]="'pattern'"
-              [message]="'Mã nhóm sản phẩm sai định dạng'"
+              [message]="'Tên đăng nhập không được để trống'"
             ></app-validate>
           </div>
 
           <div class="col-lg-6">
-            <label class="form-label required">Tên nhóm sản phẩm</label>
+            <label class="form-label required">Mật khẩu</label>
             <input
               type="text"
               class="form-control form-control-lg form-control-solid"
-              formControlName="name"
-              placeholder="Nhập tên nhóm sản phẩm"
-              maxlength="99"
+              formControlName="password"
+              placeholder="Nhập mật khẩu"
+              maxlength="100"
               autocomplete="off"
               trim="blur"
             />
             <app-validate
-              [control]="productForm.controls['name']"
+              [control]="userForm.controls['password']"
               [error]="'required'"
-              [message]="'Tên nhóm sản phẩm không được để trống'"
-            ></app-validate>
-            <app-validate
-              [control]="productForm.controls['name']"
-              [error]="'nameExisted'"
-              [message]="'Tên nhóm sản phẩm đã tồn tại'"
+              [message]="'Mật khẩu không được để trống'"
             ></app-validate>
           </div>
         </div>
+      </form>
+      <form [formGroup]="userForm" class="form form-label-right" *ngIf="isUpdate">
         <div class="form-group row">
           <div class="col-lg-6">
-            <label class="form-label">Mô tả</label>
+            <label class="form-label required">Tên đăng nhập</label>
             <input
               type="text"
               class="form-control form-control-lg form-control-solid"
-              formControlName="description"
-              placeholder="Nhập mô tả"
-              maxlength="199"
+              formControlName="username"
+              placeholder="Nhập tên đăng nhập"
               autocomplete="off"
-              trim="blur"
+              maxlength="100"
+              (keydown.space)="$event.preventDefault()"
             />
-          </div>
-          <div class="col-lg-6">
-            <label class="form-label">Trạng thái</label>
-            <select
-              class="form-control form-control-lg form-control-solid"
-              formControlName="status"
-            >
-              <option [value]="listStatus.ACTIVE">Hoạt động</option>
-              <option [value]="listStatus.INACTIVE">Không hoạt động</option>
-            </select>
             <app-validate
-              [control]="productForm.controls['status']"
+              [control]="userForm.controls['username']"
               [error]="'required'"
-              [message]="'Vui lòng chọn trạng thái'"
+              [message]="'Tên đăng nhập không được để trống'"
             ></app-validate>
           </div>
         </div>

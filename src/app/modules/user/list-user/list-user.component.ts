@@ -9,6 +9,7 @@ import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interfac
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { IPaginatorState, PaginatorState } from 'src/app/_metronic/shared/crud-table';
+import { UserModalComponent } from '../user-modal/user-modal.component';
 import { ISortData, IUser, UserService } from '../user.service';
 
 @Component({
@@ -92,6 +93,7 @@ export class ListUserComponent implements OnInit {
   }
 
   deleteUser(user: IUser): void {
+    console.log(user);
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
       backdrop: 'static'
     });
@@ -120,9 +122,23 @@ export class ListUserComponent implements OnInit {
     });
   }
 
+  openUserModal(accountId?: number) {
+    const modalRef = this.modalService.open(UserModalComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+    // Sử dụng api get user by id để lấy data fill vào form sửa
+    if (accountId) {
+      modalRef.componentInstance.accountId = accountId;
+    }
+    modalRef.result.then((result) => {
+      console.log('closed modal');
+      this.cdr.detectChanges();
+    });
+  }
+
   checkError(error: IError) {
-    if (error.code === 'SUN-OIL-4124') {
-      this.toastr.error('Nhóm sản phẩm không thể chỉnh sửa');
+    if (error.code === '') {
     }
   }
 

@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { combineLatest, concat, merge, Observable } from 'rxjs';
-import { combineAll, concatMap, map, startWith, takeUntil, tap } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import { concatMap, map, startWith, takeUntil, tap } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -48,11 +48,16 @@ export class Step1Component implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    if (!this.stationForm) {
+      this.stationForm = this.initForm();
+    }
+
     this.gasStationService
       .getAllProvinces()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.provinces = res;
+        this.provinces = res.data;
+        this.cdr.detectChanges();
       });
     this.stationForm
       .get('provinceId')
@@ -60,15 +65,25 @@ export class Step1Component implements OnInit, OnChanges {
         concatMap((provinceId: number) => {
           this.districts = [];
           this.wards = [];
-          this.stationForm.get('districtId').reset();
-          this.stationForm.get('wardId').reset();
-          const areaName = this.provinces.find((p) => p.provinceId === Number(provinceId))?.area
-            .name;
-          this.stationForm.get('area').patchValue(areaName);
+          if (this.stationForm.get('districtId').value) {
+            this.stationForm.get('districtId').reset();
+          }
+          if (this.stationForm.get('wardId').value) {
+            this.stationForm.get('wardId').reset();
+          }
+          const area = this.provinces.find((p) => p.id === Number(provinceId))?.areaType;
+          if (area === 'AREA_1') {
+            this.stationForm.get('areaDisplay').patchValue('Vùng 1');
+            this.stationForm.get('areaType').patchValue('AREA_1');
+          } else {
+            this.stationForm.get('areaDisplay').patchValue('Vùng 2');
+            this.stationForm.get('areaType').patchValue('AREA_2');
+          }
           return this.gasStationService.getDistrictsByProvince(provinceId);
         }),
-        tap((districts) => {
-          this.districts = districts;
+        tap((res) => {
+          this.districts = res.data;
+          this.cdr.detectChanges();
         }),
         takeUntil(this.destroy$)
       )
@@ -78,11 +93,17 @@ export class Step1Component implements OnInit, OnChanges {
       .valueChanges.pipe(
         concatMap((districtId: number) => {
           this.wards = [];
-          this.stationForm.get('wardId').reset();
-          return this.gasStationService.getWardsByDistrict(districtId);
+          if (this.stationForm.get('wardId').value) {
+            this.stationForm.get('wardId').reset();
+          }
+          if (districtId) {
+            return this.gasStationService.getWardsByDistrict(districtId);
+          }
+          return of(null);
         }),
-        tap((wards) => {
-          this.wards = wards;
+        tap((res) => {
+          this.wards = res?.data || [];
+          this.cdr.detectChanges();
         }),
         takeUntil(this.destroy$)
       )
@@ -109,13 +130,9 @@ export class Step1Component implements OnInit, OnChanges {
           address
         })),
         tap((data) => {
-          const provinceName = this.provinces.find(
-            (p) => p.provinceId === Number(data.proviceId)
-          )?.name;
-          const districtName = this.districts.find(
-            (p) => p.districtId === Number(data.districtId)
-          )?.name;
-          const wardName = this.wards.find((p) => p.wardId === Number(data.wardId))?.name;
+          const provinceName = this.provinces.find((p) => p.id === Number(data.proviceId))?.name;
+          const districtName = this.districts.find((d) => d.id === Number(data.districtId))?.name;
+          const wardName = this.wards.find((w) => w.id === Number(data.wardId))?.name;
           const fullAddress = [data.address, wardName, districtName, provinceName]
             .filter((l) => !!l)
             .join(', ');
@@ -148,7 +165,8 @@ export class Step1Component implements OnInit, OnChanges {
       wardId: [null, [Validators.required]],
       address: [''],
       fullAddress: [null],
-      area: [null],
+      areaType: [null],
+      areaDisplay: [null],
       status: [this.listStatus.ACTIVE]
     });
   }
@@ -159,9 +177,11 @@ export class Step1Component implements OnInit, OnChanges {
     if (this.stationForm.invalid) {
       return;
     }
+    const value = { ...this.stationForm.value };
+    delete value.areaDisplay;
 
     if (!this.isUpdate) {
-      this.gasStationService.createStation(this.stationForm.value).subscribe(
+      this.gasStationService.createStation(value).subscribe(
         (res) => {
           if (res.data) {
             this.stepSubmitted.next({
@@ -177,22 +197,20 @@ export class Step1Component implements OnInit, OnChanges {
         }
       );
     } else {
-      this.gasStationService
-        .updateStation(this.gasStationService.gasStationId, this.stationForm.value)
-        .subscribe(
-          (res) => {
-            if (res.data) {
-              this.stepSubmitted.next({
-                currentStep: 1,
-                step1: { data: this.stationForm.value, isValid: true }
-              });
-              this.gasStationService.gasStationStatus = res.data.status;
-            }
-          },
-          (err: IError) => {
-            this.checkError(err);
+      this.gasStationService.updateStation(this.gasStationService.gasStationId, value).subscribe(
+        (res) => {
+          if (res.data) {
+            this.stepSubmitted.next({
+              currentStep: 1,
+              step1: { data: this.stationForm.value, isValid: true }
+            });
+            this.gasStationService.gasStationStatus = res.data.status;
           }
-        );
+        },
+        (err: IError) => {
+          this.checkError(err);
+        }
+      );
     }
   }
 

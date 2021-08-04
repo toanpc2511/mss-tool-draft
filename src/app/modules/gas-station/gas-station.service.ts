@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
@@ -25,12 +25,12 @@ export interface GasStationResponse {
   id: number;
   code: string;
   name: string;
-  province: IProvince;
-  district: IDistrict;
-  ward: IWard;
+  provinceId: number;
+  districtId: number;
+  wardId: number;
   address: string;
   fullAddress: string;
-  areaId: number;
+  areaType: 'AREA_1' | 'AREA_2';
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
@@ -42,7 +42,7 @@ export interface CreateStation {
   wardId: number;
   address: string;
   fullAddress: string;
-  areaId: number;
+  areaType: 'AREA_1' | 'AREA_2';
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 // end gas station
@@ -131,24 +131,25 @@ export interface IPumpHoseInput {
 }
 
 export interface IProvince {
-  provinceId: number;
+  code: string;
+  id: number;
   name: string;
-  area: {
-    id: number;
-    name: string;
-  };
+  areaType: 'AREA_1' | 'AREA_2';
 }
 
 export interface IDistrict {
-  districtId: number;
+  id: number;
   name: string;
+  prefix: string;
   provinceId: number;
 }
 
 export interface IWard {
-  wardId: number;
-  name: string;
   districtId: number;
+  id: number;
+  name: string;
+  prefix: string;
+  provinceId: 0;
 }
 @Injectable({
   providedIn: 'root'
@@ -183,36 +184,17 @@ export class GasStationService {
 
   // Step 1
   getAllProvinces() {
-    // return this.http.get<Array<IProvince>>('provinces');
-    return of<Array<IProvince>>([
-      { name: 'Hà Nội', provinceId: 1, area: { id: 1, name: 'Vùng 1' } },
-      { name: 'Hải phòng', provinceId: 2, area: { id: 1, name: 'Vùng 2' } }
-    ]);
+    return this.http.get<Array<IProvince>>('provinces');
   }
 
   getDistrictsByProvince(provinceId: number) {
-    // return this.http.get<Array<IDistrict>>('districts');
-    const districts: IDistrict[] = [
-      { name: 'Mê Linh', provinceId: 1, districtId: 1 },
-      { name: 'Đông Anh', provinceId: 1, districtId: 2 },
-      { name: 'Yên Lãng', provinceId: 2, districtId: 3 },
-      { name: 'Tiên Lãng', provinceId: 2, districtId: 4 }
-    ];
-
-    return of<Array<IDistrict>>(districts.filter((d) => d.provinceId === Number(provinceId)));
+    const params = new HttpParams().set('province-id', provinceId.toString());
+    return this.http.get<Array<IDistrict>>(`districts`, { params });
   }
 
   getWardsByDistrict(districtId: number) {
-    // return this.http.get<Array<IWard>>('wards');
-    const wards: IWard[] = [
-      { name: 'Tam Đồng', districtId: 1, wardId: 1 },
-      { name: 'Nam Cường', districtId: 1, wardId: 2 },
-      { name: 'Hải Hậu', districtId: 2, wardId: 3 },
-      { name: 'Bình Minh', districtId: 2, wardId: 4 },
-      { name: 'Sơn Đông', districtId: 3, wardId: 5 },
-      { name: 'Sơn Nam', districtId: 4, wardId: 6 }
-    ];
-    return of<Array<IWard>>(wards.filter((w) => w.districtId === Number(districtId)));
+    const params = new HttpParams().set('district-id', districtId.toString());
+    return this.http.get<Array<IWard>>(`wards`, { params });
   }
 
   getListStation() {
