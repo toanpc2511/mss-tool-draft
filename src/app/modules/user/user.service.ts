@@ -23,12 +23,17 @@ export class UserService {
   constructor(private http: HttpService) {}
 
   getUsers(page: number, size: number, searchText: string, sortData: ISortData) {
-    const params = new HttpParams();
-    params.append('page', page.toString());
-    params.append('size', size.toString());
-    params.append('field-sort', sortData?.fieldSort || '');
-    params.append('direction-sort', sortData?.directionSort || '');
-    params.append('search-text', searchText || '');
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('field-sort', sortData?.fieldSort || '')
+      .set('direction-sort', sortData?.directionSort || '')
+      .set('search-text', searchText || '');
+    console.log(searchText);
+
+    console.log(params);
+
     return this.http.get<Array<IUser>>('accounts', { params });
   }
 

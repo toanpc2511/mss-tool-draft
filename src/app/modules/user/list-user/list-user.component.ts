@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
@@ -38,6 +38,7 @@ export class ListUserComponent implements OnInit {
     // Filter
     this.searchFormControl.valueChanges
       .pipe(
+        debounceTime(400),
         switchMap(() => {
           return this.userService.getUsers(
             this.page,
@@ -75,6 +76,7 @@ export class ListUserComponent implements OnInit {
     } else {
       this.sortData = { fieldSort: column, directionSort: 'asc' };
     }
+    this.getUsers();
   }
 
   deleteUser(user: IUser): void {
