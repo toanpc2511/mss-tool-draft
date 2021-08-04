@@ -1,0 +1,196 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách sản phẩm nhiên liệu</h3>
+    </div>
+
+    <div class="card-toolbar row">
+      <div class="search-form">
+        <i class="flaticon-search"></i>
+        <input
+          type="text"
+          name="searchText"
+          placeholder="Search..."
+          class="form-control"
+          [formControl]="searchFormControl"
+        />
+      </div>
+      <button type="button" class="btn btn-primary">Thêm mới</button>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden">
+        <thead>
+        <th class='code'>
+          Mã SP
+          <app-sort-icon
+            column="code"
+            [activeColumn]="sorting.column"
+            [activeDirection]="sorting.direction"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th>
+          Tên sản phẩm
+          <app-sort-icon
+            column="name"
+            [activeColumn]="sorting.column"
+            [activeDirection]="sorting.direction"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th>
+          Giá nhập
+          <app-sort-icon
+            column="description"
+            [activeColumn]="sorting.column"
+            [activeDirection]="sorting.direction"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th>
+          Giá bán vùng 1
+          <app-sort-icon
+            column="status"
+            [activeColumn]="sorting.column"
+            [activeDirection]="sorting.direction"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th>
+          Giá bán vùng 2
+          <app-sort-icon
+            column="status"
+            [activeColumn]="sorting.column"
+            [activeDirection]="sorting.direction"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th>
+          Đơn vị
+          <app-sort-icon
+            column="status"
+            [activeColumn]="sorting.column"
+            [activeDirection]="sorting.direction"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th>
+          VAT
+          <app-sort-icon
+            column="status"
+            [activeColumn]="sorting.column"
+            [activeDirection]="sorting.direction"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th class="text-center">Tác động</th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of dataSource">
+          <td class="code">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
+              {{ item.code }}
+            </p>
+          </td>
+
+          <td class="name">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
+              {{ item.name }}
+            </p>
+          </td>
+
+          <td class="import-price">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="'Giá nhập: ' + item.importPrice"
+            >
+              {{ item.importPrice }}
+            </p>
+          </td>
+
+          <td class="price-zone-1">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="'Giá bán vùng 1: ' + item.priceZone1"
+            >
+              {{ item.priceZone1 }}
+            </p>
+          </td>
+
+          <td class="price-zone-2">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="'Giá bán vùng 2: ' + item.priceZone2"
+            >
+              {{ item.priceZone2 }}
+            </p>
+          </td>
+
+          <td class="unit">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.unit"
+            >
+              {{ item.unit }}
+            </p>
+          </td>
+
+          <td class="vat">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.vat + ' %'"
+            >
+              {{ item.vat }} %
+            </p>
+          </td>
+
+          <td class="text-center action">
+            <a
+              class="btn btn-icon btn-light btn-hover-primary btn-sm"
+            >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Settings-1.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Cài đặt giá'"
+                >
+                </span>
+            </a>
+            <a
+              class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+            >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Sửa'"
+                >
+                </span>
+            </a>
+            <a
+              (click)="deleteProduct($event, item)"
+              class="btn btn-icon btn-light btn-hover-primary btn-sm"
+            >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Xóa'"
+                >
+                </span>
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

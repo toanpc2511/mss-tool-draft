@@ -49,17 +49,13 @@ const routes: Routes = [
           import('../modules/gas-station/gas-station.module').then((m) => m.GasStationModule)
       },
       {
-        path: 'nhom-san-pham',
+        path: 'san-pham',
         loadChildren: () =>
-          import('../modules/product-type/product-type.module').then((m) => m.ProductTypeModule)
+          import('../modules/product/product.module').then((m) => m.ProductModule)
       },
       {
         path: 'tai-khoan',
         loadChildren: () => import('../modules/user/user.module').then((m) => m.ProductTypeModule)
-      },
-      {
-        path: 'danh-sach-san-pham',
-        loadChildren: () => import('../modules/product/product.module').then((m) => m.ProductModule)
       },
       {
         path: '',

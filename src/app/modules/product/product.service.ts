@@ -13,6 +13,15 @@ export interface IProduct {
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
+export interface IProductType {
+  id: number;
+  name: string;
+  description: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+  code: string;
+  type: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +32,24 @@ export class ProductService {
   ) {
 
   }
+  // Nhóm sản phẩm
+  getListProductType() {
+    return this.http.get<IProductType[]>('categories');
+  }
 
+  deleteStation(prodTypeId: string | number) {
+    return this.http.delete(`categories/${prodTypeId}`);
+  }
+
+  createProductType(data: IProductType) {
+    return this.http.post(`categories`, data);
+  }
+
+  updateProductType(id: number, data: IProductType) {
+    return this.http.put(`categories/${id}`, data);
+  }
+
+  // Danh sách sản phẩm
   getListProduct() {
     return this.http.get<IProduct[]>('');
   }
