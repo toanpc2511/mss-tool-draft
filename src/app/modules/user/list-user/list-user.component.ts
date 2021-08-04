@@ -8,6 +8,7 @@ import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { IPaginatorState, PaginatorState } from 'src/app/_metronic/shared/crud-table';
 import { ISortData, IUser, UserService } from '../user.service';
 
 @Component({
@@ -21,8 +22,7 @@ export class ListUserComponent implements OnInit {
   sortData: ISortData;
   status = LIST_STATUS;
   dataSource: Array<IUser> = [];
-  page = 1;
-  size = 15;
+  paginatorState = new PaginatorState();
 
   constructor(
     private userService: UserService,
@@ -30,7 +30,12 @@ export class ListUserComponent implements OnInit {
     private destroy$: DestroyService,
     private modalService: NgbModal,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.paginatorState.page = 1;
+    this.paginatorState.pageSize = 15;
+    this.paginatorState.pageSizes = [5, 10, 15, 20];
+    this.paginatorState.total = 0;
+  }
 
   ngOnInit() {
     this.getUsers();
@@ -41,14 +46,15 @@ export class ListUserComponent implements OnInit {
         debounceTime(400),
         switchMap(() => {
           return this.userService.getUsers(
-            this.page,
-            this.size,
+            this.paginatorState.page,
+            this.paginatorState.pageSize,
             this.searchFormControl.value,
             this.sortData
           );
         }),
         tap((res) => {
           this.dataSource = res.data;
+          this.paginatorState.recalculatePaginator(res.meta.total);
           this.cdr.detectChanges();
         }),
         takeUntil(this.destroy$)
@@ -59,9 +65,15 @@ export class ListUserComponent implements OnInit {
   // Get list product type
   getUsers() {
     this.userService
-      .getUsers(this.page, this.size, this.searchFormControl.value, this.sortData)
+      .getUsers(
+        this.paginatorState.page,
+        this.paginatorState.pageSize,
+        this.searchFormControl.value,
+        this.sortData
+      )
       .subscribe((res) => {
         this.dataSource = res.data;
+        this.paginatorState.recalculatePaginator(res.meta.total);
         this.cdr.detectChanges();
       });
   }
@@ -112,5 +124,10 @@ export class ListUserComponent implements OnInit {
     if (error.code === 'SUN-OIL-4124') {
       this.toastr.error('Nhóm sản phẩm không thể chỉnh sửa');
     }
+  }
+
+  pagingChange($event: IPaginatorState) {
+    this.paginatorState = $event as PaginatorState;
+    this.getUsers();
   }
 }
