@@ -10,25 +10,23 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-import {
-  IDataTransfer,
-  ProductTypeModalComponent
-} from '../product-type-modal/product-type-modal.component';
-import { ProductTypeResponse, ProductTypeService } from '../product-type.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { IProductType, ProductService } from '../product.service';
+import { IDataTransfer, ProductModalComponent } from '../product-modal/product-modal.component';
 
 @Component({
-  selector: 'app-list-product-type',
-  templateUrl: './list-product-type.component.html',
-  styleUrls: ['./list-product-type.component.scss'],
+  selector: 'app-product-type',
+  templateUrl: './product-type.component.html',
+  styleUrls: ['./product-type.component.scss'],
   providers: [SortService, FilterService, DestroyService]
 })
-export class ListProductTypeComponent implements OnInit {
+
+export class ProductTypeComponent implements OnInit {
   searchFormControl: FormControl;
   listStatus = LIST_STATUS;
-  dataSource: Array<ProductTypeResponse>;
-  dataSourceTemp: Array<ProductTypeResponse>;
+  dataSource: Array<IProductType>;
+  dataSourceTemp: Array<IProductType>;
   sorting: SortState;
 
   filterField: FilterField<{
@@ -38,9 +36,9 @@ export class ListProductTypeComponent implements OnInit {
   }>;
 
   constructor(
-    private productTypeService: ProductTypeService,
-    private sortService: SortService<ProductTypeResponse>,
-    private filterService: FilterService<ProductTypeResponse>,
+    private productService: ProductService,
+    private sortService: SortService<IProductType>,
+    private filterService: FilterService<IProductType>,
     private cdr: ChangeDetectorRef,
     private destroy$: DestroyService,
     private modalService: NgbModal,
@@ -79,7 +77,7 @@ export class ListProductTypeComponent implements OnInit {
 
   // Get list product type
   getListProductType() {
-    this.productTypeService.getListProductType().subscribe((res) => {
+    this.productService.getListProductType().subscribe((res) => {
       this.dataSource = this.dataSourceTemp = res.data;
       // Set data after filter and apply current sorting
       this.dataSource = this.sortService.sort(
@@ -89,31 +87,11 @@ export class ListProductTypeComponent implements OnInit {
     });
   }
 
-  viewListProduct($event: Event): void {
-    this.router.navigate(['/danh-sach-san-pham/danh-sach']);
-    // $event.stopPropagation();
-    // const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-    //   backdrop: 'static'
-    // });
-    // const data: IConfirmModalData = {
-    //   title: 'Xác nhận',
-    //   message: `Bạn có chắc chắn muốn điều hướng sang danh sách sản phẩm ?`,
-    //   button: { class: 'btn-primary', title: 'Xác nhận' }
-    // };
-    // modalRef.componentInstance.data = data;
-    //
-    // modalRef.result.then((result) => {
-    //   if (result) {
-    //     this.router.navigate(['/danh-sach-san-pham/danh-sach']);
-    //   }
-    // });
-  }
-
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
   }
 
-  deleteProductType($event: Event, item: ProductTypeResponse): void {
+  deleteProductType($event: Event, item: IProductType): void {
     $event.stopPropagation();
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
       backdrop: 'static'
@@ -127,7 +105,7 @@ export class ListProductTypeComponent implements OnInit {
 
     modalRef.result.then((result) => {
       if (result) {
-        this.productTypeService.deleteStation(item.id).subscribe(
+        this.productService.deleteStation(item.id).subscribe(
           (res) => {
             if (res.data) {
               this.getListProductType();
@@ -144,7 +122,7 @@ export class ListProductTypeComponent implements OnInit {
     if ($event) {
       $event.stopPropagation();
     }
-    const modalRef = this.modalService.open(ProductTypeModalComponent, {
+    const modalRef = this.modalService.open(ProductModalComponent, {
       backdrop: 'static',
       size: 'xl'
     });

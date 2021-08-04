@@ -1,16 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ListProductComponent } from './list-product/list-product.component';
+import { ProductComponent } from './product.component';
+import { ProductTypeComponent } from './product-type/product-type.component';
+import { ListProductFuelComponent } from './list-product-fuel/list-product-fuel.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'danh-sach',
+    redirectTo: 'san-pham',
     pathMatch: 'full'
   },
   {
-    path: 'danh-sach',
-    component: ListProductComponent
+    path: 'nhom-san-pham',
+    component: ProductTypeComponent,
+  },
+  {
+    path: 'san-pham-nhien-lieu',
+    component: ListProductFuelComponent,
+  },
+  {
+    path: 'san-pham-khac',
+    component: ProductComponent,
   }
 ];
 
