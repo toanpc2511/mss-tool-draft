@@ -108,7 +108,6 @@ export class ListUserComponent implements OnInit {
 
     modalRef.result.then((result) => {
       if (result) {
-        
         this.userService.deleteUser(user.accountId).subscribe(
           (res) => {
             if (res.data) {
@@ -123,7 +122,7 @@ export class ListUserComponent implements OnInit {
     });
   }
 
-  openUserModal(accountId: number) {
+  openUserModal(accountId?: number) {
     const modalRef = this.modalService.open(UserModalComponent, {
       backdrop: 'static',
       size: 'xl'
