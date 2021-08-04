@@ -37,6 +37,10 @@ export class UserService {
     return this.http.get<Array<IUser>>('accounts', { params });
   }
 
+  getUserById(accountId) {
+    return this.http.get<IUser>(`accounts/${accountId}`);
+  }
+
   createUser(user: IUser) {
     return this.http.post(`accounts`, user);
   }
