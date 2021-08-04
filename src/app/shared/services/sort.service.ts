@@ -30,9 +30,11 @@ export class SortService<T> {
   private sortData(dataSource: Array<T>) {
     if (this.sorting.column) {
       if (this.sorting.direction === 'desc') {
-        return orderBy(dataSource, (data) => data[this.sorting.column].toLowerCase(), 'desc');
+        return orderBy(dataSource, (data) =>
+          typeof (data[this.sorting.column]) !== 'number' ? data[this.sorting.column].toLowerCase() : data[this.sorting.column], 'desc');
       }
-      return orderBy(dataSource, (data) => data[this.sorting.column].toLowerCase(), 'asc');
+      return orderBy(dataSource, (data) =>
+        typeof (data[this.sorting.column]) !== 'number' ? data[this.sorting.column].toLowerCase() : data[this.sorting.column], 'asc');
     }
     return dataSource;
   }

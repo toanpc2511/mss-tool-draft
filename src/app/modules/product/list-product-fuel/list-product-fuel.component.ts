@@ -12,6 +12,7 @@ import { IConfirmModalData } from '../../../shared/models/confirm-delete.interfa
 import { IError } from '../../../shared/models/error.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { IDataTransfer, ListProductFuelModalComponent } from '../list-product-fuel-modal/list-product-fuel-modal.component';
 
 @Component({
   selector: 'app-list-product-fuel',
@@ -26,11 +27,11 @@ export class ListProductFuelComponent implements OnInit {
   dataSource: Array<IProduct>;
   dataSourceTemp: Array<IProduct>;
   sorting: SortState;
+  categoryId = 1;
 
   filterField: FilterField<{
     code: null;
     name: null;
-    description: null;
   }>;
 
   productTypes: any = [
@@ -52,58 +53,11 @@ export class ListProductFuelComponent implements OnInit {
     this.filterField = new FilterField({
       code: null,
       name: null,
-      description: null
     });
     this.searchFormControl = new FormControl();
   }
 
   ngOnInit(): void {
-    this.dataSource = this.dataSourceTemp = [
-      {
-        id: 1,
-        code: '1',
-        name: 'sản phẩm 1',
-        importPrice: 16000,
-        priceZone1:  16000,
-        priceZone2:  16000,
-        unit: 'Chiếc',
-        vat: 20,
-        status: 'ACTIVE'
-      },
-      {
-        id: 2,
-        code: '2',
-        name: 'sản phẩm 2ản phẩm 2ản phẩm 2ản phẩm 2ản phẩm 2ản phẩm 2ản phẩm 2',
-        importPrice: 16000,
-        priceZone1:  16000,
-        priceZone2:  16000,
-        unit: 'cái',
-        vat: 10,
-        status: 'INACTIVE'
-      },
-      {
-        id: 3,
-        code: '3',
-        name: 'sản phẩm 3',
-        importPrice: 16000,
-        priceZone1:  16000,
-        priceZone2:  16000,
-        unit: 'Chiếc',
-        vat: 30,
-        status: 'ACTIVE'
-      },
-      {
-        id: 4,
-        code: '4',
-        name: 'sản phẩm 4',
-        importPrice: 16000,
-        priceZone1:  16000,
-        priceZone2:  16000,
-        unit: 'Hộp',
-        vat: 50,
-        status: 'INACTIVE'
-      },
-    ];
     this.getListProduct();
 
     this.searchFormControl.valueChanges
@@ -122,14 +76,14 @@ export class ListProductFuelComponent implements OnInit {
       });
   }
   getListProduct(): void {
-    // this.productService.getListProduct().subscribe((res) => {
-    // this.dataSource = this.dataSourceTemp = res.data;
-    // this.dataSource = this.sortService.sort(
-    //   this.filterService.filter(this.dataSourceTemp, this.filterField.field)
-    // );
-    //   console.log('list product: ', res.data);
-    //   this.cdr.detectChanges();
-    // });
+    this.productService.getListProduct(this.categoryId).subscribe((res) => {
+    this.dataSource = this.dataSourceTemp = res.data;
+    this.dataSource = this.sortService.sort(
+      this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+    );
+    console.log('list product: ', res.data);
+    this.cdr.detectChanges();
+    });
   }
 
   sort(column: string) {
@@ -153,6 +107,7 @@ export class ListProductFuelComponent implements OnInit {
         this.productService.deleteProduct(item.id).subscribe(
           (res) => {
             if (res.data) {
+              this.getListProduct();
             }
           },
           (err: IError) => {
@@ -163,9 +118,33 @@ export class ListProductFuelComponent implements OnInit {
     });
   }
 
+  createModal($event?: Event, data?: IDataTransfer): void {
+    if ($event) {
+      $event.stopPropagation();
+    }
+    const modalRef = this.modalService.open(ListProductFuelModalComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+
+    modalRef.componentInstance.data = {
+      title: data ? 'Sửa sản phẩm' : 'Thêm sản phẩm',
+      product: data
+    };
+
+    modalRef.result.then((result) => {
+      if (result) {
+        this.getListProduct();
+      }
+    });
+  }
+
   checkError(error: IError) {
-    if (error.code === 'SUN-OIL-') {
-      this.toastr.error('');
+    if (error.code === 'SUN-OIL-4123') {
+      this.toastr.error('Category not found');
+    }
+    if (error.code === 'SUN-OIL-4258') {
+      this.toastr.error('chưa update SRS');
     }
   }
 }
