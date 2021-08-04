@@ -68,13 +68,13 @@ export class ListUserComponent implements OnInit {
 
   sort(column: string) {
     if (this.sortData && this.sortData.fieldSort === column) {
-      if (this.sortData.directionSort === 'asc') {
-        this.sortData = { fieldSort: column, directionSort: 'desc' };
+      if (this.sortData.directionSort === 'ASC') {
+        this.sortData = { fieldSort: column, directionSort: 'DESC' };
       } else {
         this.sortData = null;
       }
     } else {
-      this.sortData = { fieldSort: column, directionSort: 'asc' };
+      this.sortData = { fieldSort: column, directionSort: 'ASC' };
     }
     this.getUsers();
   }
