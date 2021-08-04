@@ -8,14 +8,12 @@ import { PageSizes, PaginatorState } from '../../models/paginator.model';
 })
 export class PaginatorComponent implements OnInit {
   @Input() paginator: PaginatorState;
-  @Input() isLoading;
+  @Input() isLoading = false;
   @Output() paginate: EventEmitter<PaginatorState> = new EventEmitter();
   pageSizes: number[] = PageSizes;
   constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 
   pageChange(num: number) {
     this.paginator.page = num;
