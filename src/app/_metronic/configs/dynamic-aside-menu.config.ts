@@ -32,18 +32,31 @@ export const DynamicAsideMenuConfig = {
       ]
     },
     {
-      title: 'Quản lý nhóm sản phẩm',
-      root: true,
-      bullet: 'dot',
-      page: '/nhom-san-pham',
-      icon: 'fas fa-cubes'
-    },
-    {
       title: 'Quản lý sản phẩm',
+      icon: 'fas fa-cubes',
       root: true,
+      page: '/san-pham',
       bullet: 'dot',
-      page: '/danh-sach-san-pham',
-      icon: 'fas fa-cube'
+      submenu: [
+        {
+          title: 'Quản lý nhóm sản phẩm',
+          bullet: 'dot',
+          page: 'san-pham/nhom-san-pham',
+          notChild: true
+        },
+        {
+          title: 'Sản phẩm nhiên liệu',
+          bullet: 'dot',
+          page: 'san-pham/san-pham-nhien-lieu',
+          notChild: true
+        },
+        {
+          title: 'Sản phẩm khác',
+          bullet: 'dot',
+          page: 'san-pham/san-pham-khac',
+          notChild: true
+        }
+      ]
     },
     {
       title: 'Quản lý QR code',

@@ -10,9 +10,11 @@ import { ProductRoutingModule } from './product-routing.module';
 import { ListProductComponent } from './list-product/list-product.component';
 import { ProductComponent } from './product.component';
 import { ProductModalComponent } from './product-modal/product-modal.component';
+import { ProductTypeComponent } from './product-type/product-type.component';
+import { ListProductFuelComponent } from './list-product-fuel/list-product-fuel.component';
 
 @NgModule({
-  declarations: [ProductComponent, ListProductComponent, ProductModalComponent],
+  declarations: [ProductComponent, ListProductComponent, ProductModalComponent, ProductTypeComponent, ListProductFuelComponent],
   imports: [
     CommonModule,
     ProductRoutingModule,
