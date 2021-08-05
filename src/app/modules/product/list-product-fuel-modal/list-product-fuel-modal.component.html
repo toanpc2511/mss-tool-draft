@@ -85,7 +85,7 @@
           <div class="col-lg-4">
             <label class="form-label required">Giá nhập</label>
             <input
-              type="text"
+              type="number"
               class="form-control form-control-lg form-control-solid"
               formControlName="entryPrice"
               placeholder="Nhập giá nhập"
@@ -104,9 +104,9 @@
           <div class="col-lg-4">
             <label class="form-label">VAT (%)</label>
             <input
-              type="text"
+              type="number"
               class="form-control form-control-lg form-control-solid"
-              formControlName="vat"
+              formControlName="valueAddedTax"
               placeholder="Nhập VAT"
               maxlength="99"
               autocomplete="off"
@@ -134,16 +134,16 @@
           <div class="col-lg-4">
             <label class="form-label required">Giá bán cho vùng 1</label>
             <input
-              type="text"
+              type="number"
               class="form-control form-control-lg form-control-solid"
-              formControlName="priceAreaOne"
+              formControlName="priceArea1"
               placeholder="Nhập giá bán cho vùng 1"
               maxlength="99"
               autocomplete="off"
               trim="blur"
             />
             <app-validate
-              [control]="productForm.controls['priceAreaOne']"
+              [control]="productForm.controls['priceArea1']"
               [error]="'required'"
               [message]="'Giá bán vùng 1 không được để trống'"
             ></app-validate>
@@ -153,16 +153,16 @@
           <div class="col-lg-4">
             <label class="form-label required">Giá bán cho vùng 2</label>
             <input
-              type="text"
+              type="number"
               class="form-control form-control-lg form-control-solid"
-              formControlName="priceAreaTwo"
+              formControlName="priceArea2"
               placeholder="Nhập giá bán cho vùng 2"
               maxlength="99"
               autocomplete="off"
               trim="blur"
             />
             <app-validate
-              [control]="productForm.controls['priceAreaTwo']"
+              [control]="productForm.controls['priceArea2']"
               [error]="'required'"
               [message]="'Giá bán vùng 2 không được để trống'"
             ></app-validate>

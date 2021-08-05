@@ -27,7 +27,7 @@ export class ListProductFuelComponent implements OnInit {
   dataSource: Array<IProduct>;
   dataSourceTemp: Array<IProduct>;
   sorting: SortState;
-  categoryId = 1;
+  categoryId = 0;
 
   filterField: FilterField<{
     code: null;
@@ -143,8 +143,8 @@ export class ListProductFuelComponent implements OnInit {
     if (error.code === 'SUN-OIL-4123') {
       this.toastr.error('Category not found');
     }
-    if (error.code === 'SUN-OIL-4258') {
-      this.toastr.error('chưa update SRS');
+    if (error.code === 'SUN-OIL-4162') {
+      this.toastr.error('Gas field is activating');
     }
   }
 }

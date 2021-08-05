@@ -13,7 +13,8 @@ export interface IProduct {
   description: string;
   qrCode: string;
   unit: string;
-  tax: number;
+  valueAddedTax: number;
+  vat: number;
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
@@ -63,10 +64,10 @@ export class ProductService {
   }
 
   createProduct(data: IProduct) {
-    return this.http.post(``, data);
+    return this.http.post(`products/oils`, data);
   }
 
   updateProduct(id: number, data: IProduct) {
-    return this.http.put(``, data);
+    return this.http.put(`products/oils/${id}`, data);
   }
 }
