@@ -12,9 +12,17 @@ import { ProductModalComponent } from './product-modal/product-modal.component';
 import { ProductTypeComponent } from './product-type/product-type.component';
 import { ListProductFuelComponent } from './list-product-fuel/list-product-fuel.component';
 import { ListProductFuelModalComponent } from './list-product-fuel-modal/list-product-fuel-modal.component';
+import { DecimalMaskDirective } from '../../shared/directives/decimal-mask.directive';
 
 @NgModule({
-  declarations: [ProductComponent, ProductModalComponent, ProductTypeComponent, ListProductFuelComponent, ListProductFuelModalComponent],
+  declarations: [
+    ProductComponent,
+    ProductModalComponent,
+    ProductTypeComponent,
+    ListProductFuelComponent,
+    ListProductFuelModalComponent,
+    DecimalMaskDirective
+  ],
   imports: [
     CommonModule,
     ProductRoutingModule,

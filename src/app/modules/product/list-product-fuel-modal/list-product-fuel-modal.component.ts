@@ -32,7 +32,6 @@ export class ListProductFuelModalComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.onSubmit();
-    console.log('Data : ', this.data);
   }
 
   onClose(): void {
@@ -51,7 +50,7 @@ export class ListProductFuelModalComponent implements OnInit {
         this.data.product?.entryPrice || '',
         [Validators.required]
       ],
-      valueAddedTax: [this.data.product?.valueAddedTax || ''],
+      valueAddedTax: [this.data.product?.vat || ''],
       description: [this.data.product?.description || ''],
       priceArea1: [
         this.data.product?.priceAreaOne || '',
@@ -74,14 +73,14 @@ export class ListProductFuelModalComponent implements OnInit {
           return;
         }
         console.log('form: ', this.productForm.getRawValue());
-        const val = {...this.productForm.getRawValue()};
-        val.entryPrice = Number(val.entryPrice);
-        val.priceArea1 = Number(val.priceArea1);
-        val.priceArea2 = Number(val.priceArea2);
-        val.valueAddedTax = Number(val.valueAddedTax);
-        val.price = Number(val.price);
+        const valueForm = {...this.productForm.getRawValue()};
+        valueForm.entryPrice = Number(valueForm.entryPrice.split(',').join(''));
+        valueForm.priceArea1 = Number(valueForm.priceArea1.split(',').join(''));
+        valueForm.priceArea2 = Number(valueForm.priceArea2.split(',').join(''));
+        valueForm.valueAddedTax = Number(valueForm.valueAddedTax);
+        valueForm.price = Number(valueForm.price);
         if (!this.data.product) {
-          this.productService.createProduct(val).subscribe(
+          this.productService.createProduct(valueForm).subscribe(
             () => {
               this.modal.close(true);
             },
@@ -91,7 +90,7 @@ export class ListProductFuelModalComponent implements OnInit {
           );
         } else {
           this.productService
-            .updateProduct(this.data.product.id, this.productForm.getRawValue())
+            .updateProduct(this.data.product.id, valueForm)
             .subscribe(
               () => {
                 this.modal.close(true);
@@ -104,13 +103,10 @@ export class ListProductFuelModalComponent implements OnInit {
       });
   }
   checkError(err: IError) {
-    if (err.code === 'SUN-OIL-4710') {
+    if (err.code === 'SUN-OIL-4711') {
       this.productForm.get('code').setErrors({ codeExisted: true });
     }
-    if (err.code === 'SUN-OIL-4153') {
-      this.productForm.get('name').setErrors({ nameExisted: true });
-    }
-    if (err.code === 'SUN-OIL-4088') {
+    if (err.code === 'SUN-OIL-4710') {
       this.productForm.get('name').setErrors({ nameExisted: true });
     }
     if (err.code === 'SUN-OIL-4790') {

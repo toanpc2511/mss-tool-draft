@@ -59,7 +59,7 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th class=''>
+        <th class='text-right'>
           Giá bán vùng 2
           <app-sort-icon
             column="priceAreaTwo"
@@ -104,7 +104,7 @@
 
           <td class="entryPrice text-right">
             <p
-              class="cursor-pointer text-ellipsis"
+              class="cursor-pointer text-ellipsis price"
               placement="top"
               [ngbTooltip]="'Giá nhập: ' + item.entryPrice.toLocaleString('en-US')"
             >
@@ -114,7 +114,7 @@
 
           <td class="priceAreaOne text-right">
             <p
-              class="cursor-pointer text-ellipsis"
+              class="cursor-pointer text-ellipsis price"
               placement="top"
               [ngbTooltip]="'Giá bán vùng 1: ' + item.priceAreaOne.toLocaleString('en-US')"
             >
@@ -122,9 +122,9 @@
             </p>
           </td>
 
-          <td class="priceAreaTwo ">
+          <td class="priceAreaTwo text-right">
             <p
-              class="cursor-pointer text-ellipsis"
+              class="cursor-pointer text-ellipsis price"
               placement="top"
               [ngbTooltip]="'Giá bán vùng 2: ' + item.priceAreaTwo.toLocaleString('en-US')"
             >

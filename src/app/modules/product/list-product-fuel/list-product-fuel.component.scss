@@ -3,43 +3,44 @@ table thead th {
 }
 .table th,
 .table td {
-  padding: 0.5rem;
+  padding: 0.3rem;
 }
 
 table {
   min-width: 1024px;
 
+  .price {
+    padding-right: 24px;
+  }
+
   th, td {
     &.code {
-      max-width: 100px;
+      max-width: 120px;
     }
     &.name {
-      min-width: 100px;
+      min-width: 150px;
     }
     &.entryPrice {
-      max-width: 100px;
+      max-width: 150px;
     }
     &.priceAreaOne {
-      max-width: 100px;
+      max-width: 150px;
     }
     &.priceAreaTwo {
-      max-width: 100px;
+      max-width: 150px;
     }
     &.unit {
       max-width: 100px;
     }
     &.vat {
-      max-width: 100px;
-    }
-    &.status {
-      max-width: 150px;
+      width: 60px;
     }
     &.action {
       width: 150px;
     }
   }
   .name {
-    max-width: 150px;
+    max-width: 200px;
   }
 
   tr {

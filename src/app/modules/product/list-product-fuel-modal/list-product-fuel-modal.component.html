@@ -85,11 +85,12 @@
           <div class="col-lg-4">
             <label class="form-label required">Giá nhập</label>
             <input
-              type="number"
+              type="text"
+              decimal-mask
               class="form-control form-control-lg form-control-solid"
               formControlName="entryPrice"
               placeholder="Nhập giá nhập"
-              maxlength="99"
+              maxlength="17"
               autocomplete="off"
               trim="blur"
             />
@@ -104,11 +105,12 @@
           <div class="col-lg-4">
             <label class="form-label">VAT (%)</label>
             <input
-              type="number"
+              type="text"
+              decimal-mask
               class="form-control form-control-lg form-control-solid"
               formControlName="valueAddedTax"
               placeholder="Nhập VAT"
-              maxlength="99"
+              maxlength="3"
               autocomplete="off"
               trim="blur"
             />
@@ -134,11 +136,12 @@
           <div class="col-lg-4">
             <label class="form-label required">Giá bán cho vùng 1</label>
             <input
-              type="number"
+              type="text"
+              decimal-mask
               class="form-control form-control-lg form-control-solid"
               formControlName="priceArea1"
               placeholder="Nhập giá bán cho vùng 1"
-              maxlength="99"
+              maxlength="17"
               autocomplete="off"
               trim="blur"
             />
@@ -153,11 +156,12 @@
           <div class="col-lg-4">
             <label class="form-label required">Giá bán cho vùng 2</label>
             <input
-              type="number"
+              type="text"
+              decimal-mask
               class="form-control form-control-lg form-control-solid"
               formControlName="priceArea2"
               placeholder="Nhập giá bán cho vùng 2"
-              maxlength="99"
+              maxlength="17"
               autocomplete="off"
               trim="blur"
             />
