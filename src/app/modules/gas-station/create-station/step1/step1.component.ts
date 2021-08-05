@@ -11,12 +11,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { combineLatest, Observable, of } from 'rxjs';
-import {
-  concatMap,
-  debounceTime, startWith,
-  takeUntil,
-  tap
-} from 'rxjs/operators';
+import { concatMap, debounceTime, startWith, takeUntil, tap } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -65,6 +60,7 @@ export class Step1Component implements OnInit, OnChanges {
         this.provinces = res.data;
         this.cdr.detectChanges();
       });
+
     this.stationForm
       .get('provinceId')
       .valueChanges.pipe(
@@ -164,7 +160,9 @@ export class Step1Component implements OnInit, OnChanges {
     }
     if (this.step1Data) {
       this.isUpdate = true;
-      this.stationForm.patchValue(this.step1Data);
+      setTimeout(() => {
+        this.stationForm.patchValue(this.step1Data);
+      });
     }
   }
 
