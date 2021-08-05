@@ -5,11 +5,15 @@ export interface IProduct {
   id: number;
   code: string;
   name: string;
-  importPrice: number;
-  priceZone1: number;
-  priceZone2: number;
+  price: number;
+  entryPrice: number;
+  priceAreaOne: number;
+  priceAreaTwo: number;
+  categoryId: number;
+  description: string;
+  qrCode: string;
   unit: string;
-  vat: number;
+  tax: number;
   status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
@@ -37,7 +41,7 @@ export class ProductService {
     return this.http.get<IProductType[]>('categories');
   }
 
-  deleteStation(prodTypeId: string | number) {
+  deleteProductType(prodTypeId: string | number) {
     return this.http.delete(`categories/${prodTypeId}`);
   }
 
@@ -50,12 +54,12 @@ export class ProductService {
   }
 
   // Danh sách sản phẩm
-  getListProduct() {
-    return this.http.get<IProduct[]>('');
+  getListProduct(categoryId: number) {
+    return this.http.get<IProduct[]>(`products/category/${categoryId}`);
   }
 
   deleteProduct(prodId: string | number) {
-    return this.http.delete(`/${prodId}`);
+    return this.http.delete(`products/${prodId}`);
   }
 
   createProduct(data: IProduct) {
