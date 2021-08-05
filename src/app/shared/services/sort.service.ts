@@ -29,10 +29,18 @@ export class SortService<T> {
 
   private sortData(dataSource: Array<T>) {
     if (this.sorting.column) {
-      if (this.sorting.direction === 'desc') {
-        return orderBy(dataSource, (data) => data[this.sorting.column].toLowerCase(), 'desc');
+      switch (typeof this.sorting.column) {
+        case 'string':
+          if (this.sorting.direction === 'desc') {
+            return orderBy(dataSource, (data) => data[this.sorting.column].toLowerCase(), 'desc');
+          }
+          return orderBy(dataSource, (data) => data[this.sorting.column].toLowerCase(), 'asc');
+        case 'number':
+          if (this.sorting.direction === 'desc') {
+            return orderBy(dataSource, (data) => data[this.sorting.column], 'desc');
+          }
+          return orderBy(dataSource, (data) => data[this.sorting.column], 'asc');
       }
-      return orderBy(dataSource, (data) => data[this.sorting.column].toLowerCase(), 'asc');
     }
     return dataSource;
   }
