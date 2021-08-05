@@ -226,7 +226,7 @@ export class GasStationService {
   }
 
   getListProduct() {
-    return this.http.get<ProductsResponse[]>('products');
+    return this.http.get<ProductsResponse[]>('products/category/0');
   }
 
   createGasBin(body: CreateGasBin) {
