@@ -59,7 +59,7 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th class='text-right'>
+        <th class=''>
           Giá bán vùng 2
           <app-sort-icon
             column="priceAreaTwo"
@@ -80,7 +80,7 @@
         <th>
           VAT
           <app-sort-icon
-            column="vat"
+            column="valueAddedTax"
             [activeColumn]="sorting.column"
             [activeDirection]="sorting.direction"
             (sort)="sort($event)"
@@ -122,7 +122,7 @@
             </p>
           </td>
 
-          <td class="priceAreaTwo text-right">
+          <td class="priceAreaTwo ">
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
@@ -142,13 +142,13 @@
             </p>
           </td>
 
-          <td class="vat">
+          <td class="valueAddedTax">
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.tax + ' %'"
+              [ngbTooltip]="item.vat + ' %'"
             >
-              {{ item.tax }} %
+              {{ item.vat }} %
             </p>
           </td>
 
@@ -178,12 +178,12 @@
             </a>
             <a
               (click)="deleteProduct($event, item)"
-              class="btn btn-icon btn-light btn-hover-primary btn-sm"
+              class="btn btn-icon btn-light btn-hover-danger btn-sm"
             >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"
-                  class="svg-icon svg-icon-md svg-icon-primary"
+                  class="svg-icon svg-icon-md svg-icon-danger"
                   [ngbTooltip]="'Xóa'"
                 >
                 </span>
