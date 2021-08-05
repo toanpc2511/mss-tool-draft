@@ -105,7 +105,7 @@ export class ProductTypeComponent implements OnInit {
 
     modalRef.result.then((result) => {
       if (result) {
-        this.productService.deleteStation(item.id).subscribe(
+        this.productService.deleteProductType(item.id).subscribe(
           (res) => {
             if (res.data) {
               this.getListProductType();

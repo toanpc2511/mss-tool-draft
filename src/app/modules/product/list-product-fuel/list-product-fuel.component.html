@@ -15,7 +15,7 @@
           [formControl]="searchFormControl"
         />
       </div>
-      <button type="button" class="btn btn-primary">Thêm mới</button>
+      <button type="button" class="btn btn-primary" (click)="createModal()">Thêm mới</button>
     </div>
   </div>
 
@@ -24,7 +24,7 @@
       <table class="table table-head-custom table-vertical-center overflow-hidden">
         <thead>
         <th class='code'>
-          Mã SP
+          Mã sản phẩm
           <app-sort-icon
             column="code"
             [activeColumn]="sorting.column"
@@ -41,28 +41,28 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th>
+        <th class='text-right'>
           Giá nhập
           <app-sort-icon
-            column="description"
+            column="entryPrice"
             [activeColumn]="sorting.column"
             [activeDirection]="sorting.direction"
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th>
+        <th class='text-right'>
           Giá bán vùng 1
           <app-sort-icon
-            column="status"
+            column="priceAreaOne"
             [activeColumn]="sorting.column"
             [activeDirection]="sorting.direction"
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th>
+        <th class='text-right'>
           Giá bán vùng 2
           <app-sort-icon
-            column="status"
+            column="priceAreaTwo"
             [activeColumn]="sorting.column"
             [activeDirection]="sorting.direction"
             (sort)="sort($event)"
@@ -71,7 +71,7 @@
         <th>
           Đơn vị
           <app-sort-icon
-            column="status"
+            column="unit"
             [activeColumn]="sorting.column"
             [activeDirection]="sorting.direction"
             (sort)="sort($event)"
@@ -80,7 +80,7 @@
         <th>
           VAT
           <app-sort-icon
-            column="status"
+            column="vat"
             [activeColumn]="sorting.column"
             [activeDirection]="sorting.direction"
             (sort)="sort($event)"
@@ -102,33 +102,33 @@
             </p>
           </td>
 
-          <td class="import-price">
+          <td class="entryPrice text-right">
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="'Giá nhập: ' + item.importPrice"
+              [ngbTooltip]="'Giá nhập: ' + item.entryPrice.toLocaleString('en-US')"
             >
-              {{ item.importPrice }}
+              {{ item.entryPrice.toLocaleString('en-US') }}
             </p>
           </td>
 
-          <td class="price-zone-1">
+          <td class="priceAreaOne text-right">
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="'Giá bán vùng 1: ' + item.priceZone1"
+              [ngbTooltip]="'Giá bán vùng 1: ' + item.priceAreaOne.toLocaleString('en-US')"
             >
-              {{ item.priceZone1 }}
+              {{ item.priceAreaOne.toLocaleString('en-US') }}
             </p>
           </td>
 
-          <td class="price-zone-2">
+          <td class="priceAreaTwo text-right">
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="'Giá bán vùng 2: ' + item.priceZone2"
+              [ngbTooltip]="'Giá bán vùng 2: ' + item.priceAreaTwo.toLocaleString('en-US')"
             >
-              {{ item.priceZone2 }}
+              {{ item.priceAreaTwo.toLocaleString('en-US')}}
             </p>
           </td>
 
@@ -146,9 +146,9 @@
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.vat + ' %'"
+              [ngbTooltip]="item.tax + ' %'"
             >
-              {{ item.vat }} %
+              {{ item.tax }} %
             </p>
           </td>
 
@@ -165,6 +165,7 @@
                 </span>
             </a>
             <a
+              (click)="createModal($event, item)"
               class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
             >
                 <span

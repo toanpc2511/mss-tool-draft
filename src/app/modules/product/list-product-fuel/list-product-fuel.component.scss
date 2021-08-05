@@ -11,18 +11,18 @@ table {
 
   th, td {
     &.code {
-      max-width: 80px;
+      max-width: 100px;
     }
     &.name {
       min-width: 100px;
     }
-    &.import-price {
+    &.entryPrice {
       max-width: 100px;
     }
-    &.price-zone-1 {
+    &.priceAreaOne {
       max-width: 100px;
     }
-    &.price-zone-2 {
+    &.priceAreaTwo {
       max-width: 100px;
     }
     &.unit {
