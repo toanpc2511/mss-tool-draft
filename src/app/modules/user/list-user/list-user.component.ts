@@ -99,9 +99,7 @@ export class ListUserComponent implements OnInit {
     });
     const data: IConfirmModalData = {
       title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xoá thông tin tài khoản ${
-        user?.code ? user?.code + ' - ' : ''
-      }${user?.name || ''} ?`,
+      message: `Bạn có chắc chắn muốn xoá thông tin ${user.username}`,
       button: { class: 'btn-primary', title: 'Xác nhận' }
     };
     modalRef.componentInstance.data = data;

@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { combineLatest, Observable, of } from 'rxjs';
-import { concatMap, map, startWith, takeUntil, tap } from 'rxjs/operators';
+import { combineLatest, Observable, of, timer } from 'rxjs';
+import { concatMap, filter, map, skip, startWith, takeUntil, tap } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -121,14 +121,17 @@ export class Step1Component implements OnInit, OnChanges {
     const address$ = this.stationForm
       .get('address')
       .valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<string>;
+
     combineLatest([pronvice$, district$, ward$, address$])
       .pipe(
-        map(([proviceId, districtId, wardId, address]) => ({
-          proviceId,
-          districtId,
-          wardId,
-          address
-        })),
+        concatMap(([proviceId, districtId, wardId, address]) =>
+          of({
+            proviceId,
+            districtId,
+            wardId,
+            address
+          })
+        ),
         tap((data) => {
           const provinceName = this.provinces.find((p) => p.id === Number(data.proviceId))?.name;
           const districtName = this.districts.find((d) => d.id === Number(data.districtId))?.name;
@@ -186,7 +189,7 @@ export class Step1Component implements OnInit, OnChanges {
           if (res.data) {
             this.stepSubmitted.next({
               currentStep: 1,
-              step1: { data: this.stationForm.value, isValid: true }
+              step1: { data: this.stationForm.value as CreateStation, isValid: true }
             });
             this.gasStationService.gasStationId = res.data.id;
             this.gasStationService.gasStationStatus = res.data.status;
@@ -202,7 +205,7 @@ export class Step1Component implements OnInit, OnChanges {
           if (res.data) {
             this.stepSubmitted.next({
               currentStep: 1,
-              step1: { data: this.stationForm.value, isValid: true }
+              step1: { data: this.stationForm.value as CreateStation, isValid: true }
             });
             this.gasStationService.gasStationStatus = res.data.status;
           }
