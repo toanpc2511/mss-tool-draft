@@ -39,6 +39,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
 
         if (err.status === 401) {
+          this.toastr.error('Tài khoản của bạn đã bị xoá. Không thể thực hiện được');
           this.authService.logout();
         }
 

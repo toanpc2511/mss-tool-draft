@@ -10,8 +10,13 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { combineLatest, Observable, of, timer } from 'rxjs';
-import { concatMap, filter, map, skip, startWith, takeUntil, tap } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import {
+  concatMap,
+  debounceTime, startWith,
+  takeUntil,
+  tap
+} from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -39,6 +44,7 @@ export class Step1Component implements OnInit, OnChanges {
   stationForm: FormGroup;
   listStatus = LIST_STATUS;
   isUpdate = false;
+  isFirstLoad = true;
   constructor(
     private gasStationService: GasStationService,
     private fb: FormBuilder,
@@ -124,6 +130,7 @@ export class Step1Component implements OnInit, OnChanges {
 
     combineLatest([pronvice$, district$, ward$, address$])
       .pipe(
+        debounceTime(300),
         concatMap(([proviceId, districtId, wardId, address]) =>
           of({
             proviceId,
@@ -133,12 +140,17 @@ export class Step1Component implements OnInit, OnChanges {
           })
         ),
         tap((data) => {
+          if (this.isUpdate && this.isFirstLoad) {
+            this.isFirstLoad = false;
+            return;
+          }
           const provinceName = this.provinces.find((p) => p.id === Number(data.proviceId))?.name;
           const districtName = this.districts.find((d) => d.id === Number(data.districtId))?.name;
           const wardName = this.wards.find((w) => w.id === Number(data.wardId))?.name;
           const fullAddress = [data.address, wardName, districtName, provinceName]
             .filter((l) => !!l)
             .join(', ');
+
           this.stationForm.get('fullAddress').patchValue(fullAddress);
         }),
         takeUntil(this.destroy$)
