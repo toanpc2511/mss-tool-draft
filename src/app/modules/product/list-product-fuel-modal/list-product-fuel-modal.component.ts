@@ -32,6 +32,7 @@ export class ListProductFuelModalComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.onSubmit();
+    console.log(this.data);
   }
 
   onClose(): void {
@@ -47,17 +48,17 @@ export class ListProductFuelModalComponent implements OnInit {
       name: [this.data.product?.name || '', Validators.required],
       unit: [this.data.product?.unit || '', Validators.required],
       entryPrice: [
-        this.formatMoney(this.data.product?.entryPrice || ''),
+        this.formatMoney(this.data.product?.entryPrice  > 0 ? this.data.product?.entryPrice : 0) || '',
         [Validators.required]
       ],
-      valueAddedTax: [this.data.product?.vat || ''],
+      valueAddedTax: [this.formatMoney(this.data.product?.vat  > 0 ? this.data.product?.vat : 0) || ''],
       description: [this.data.product?.description || ''],
       priceArea1: [
-        this.formatMoney(this.data.product?.priceAreaOne || ''),
+        this.formatMoney(this.data.product?.priceAreaOne  > 0 ? this.data.product?.priceAreaOne : 0) || '',
         [Validators.required]
       ],
       priceArea2: [
-        this.formatMoney(this.data.product?.priceAreaTwo || ''),
+        this.formatMoney(this.data.product?.priceAreaTwo  > 0 ? this.data.product?.priceAreaTwo : 0) || '',
         [Validators.required]
       ],
       price: 0
@@ -72,7 +73,6 @@ export class ListProductFuelModalComponent implements OnInit {
         if (this.productForm.invalid) {
           return;
         }
-        console.log('form: ', this.productForm.getRawValue());
         const valueForm = {...this.productForm.getRawValue()};
         valueForm.entryPrice = Number(valueForm.entryPrice.split(',').join(''));
         valueForm.priceArea1 = Number(valueForm.priceArea1.split(',').join(''));
