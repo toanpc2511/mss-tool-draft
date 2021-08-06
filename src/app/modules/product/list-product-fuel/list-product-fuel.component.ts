@@ -143,7 +143,7 @@ export class ListProductFuelComponent implements OnInit {
       this.toastr.error('Category not found');
     }
     if (error.code === 'SUN-OIL-4162') {
-      this.toastr.error('Gas field is activating');
+      this.toastr.error('Không thể xóa vì bồn đang chứa nhiên liệu này ');
     }
   }
 }
