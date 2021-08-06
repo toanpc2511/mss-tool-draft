@@ -32,6 +32,12 @@ export class ListProductFuelComponent implements OnInit {
   filterField: FilterField<{
     code: null;
     name: null;
+    entryPrice: null;
+    priceAreaOne: null;
+    priceAreaTwo: null;
+    unit: null;
+    valueAddedTax: null;
+    vat: null;
   }>;
 
   productTypes: any = [
@@ -53,6 +59,12 @@ export class ListProductFuelComponent implements OnInit {
     this.filterField = new FilterField({
       code: null,
       name: null,
+      entryPrice: null,
+      priceAreaOne: null,
+      priceAreaTwo: null,
+      unit: null,
+      valueAddedTax: null,
+      vat: null
     });
     this.searchFormControl = new FormControl();
   }

@@ -47,17 +47,17 @@ export class ListProductFuelModalComponent implements OnInit {
       name: [this.data.product?.name || '', Validators.required],
       unit: [this.data.product?.unit || '', Validators.required],
       entryPrice: [
-        this.formatMoney(this.data.product?.entryPrice) || '',
+        this.formatMoney(this.data.product?.entryPrice || ''),
         [Validators.required]
       ],
       valueAddedTax: [this.data.product?.vat || ''],
       description: [this.data.product?.description || ''],
       priceArea1: [
-        this.formatMoney(this.data.product?.priceAreaOne) || '',
+        this.formatMoney(this.data.product?.priceAreaOne || ''),
         [Validators.required]
       ],
       priceArea2: [
-        this.formatMoney(this.data.product?.priceAreaTwo) || '',
+        this.formatMoney(this.data.product?.priceAreaTwo || ''),
         [Validators.required]
       ],
       price: 0
@@ -116,7 +116,9 @@ export class ListProductFuelModalComponent implements OnInit {
   }
 
   formatMoney(n) {
-    return  (Math.round(n * 100) / 100).toLocaleString().split('.').join(',');
+    if (n !== '') {
+      return  (Math.round(n * 100) / 100).toLocaleString().split('.').join(',');
+    }
   }
 }
 
