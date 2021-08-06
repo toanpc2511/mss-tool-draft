@@ -12,7 +12,10 @@ import { IConfirmModalData } from '../../../shared/models/confirm-delete.interfa
 import { IError } from '../../../shared/models/error.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { IDataTransfer, ListProductFuelModalComponent } from '../list-product-fuel-modal/list-product-fuel-modal.component';
+import {
+  IDataTransfer,
+  ListProductFuelModalComponent
+} from '../list-product-fuel-modal/list-product-fuel-modal.component';
 
 @Component({
   selector: 'app-list-product-fuel',
@@ -20,7 +23,6 @@ import { IDataTransfer, ListProductFuelModalComponent } from '../list-product-fu
   styleUrls: ['./list-product-fuel.component.scss'],
   providers: [SortService, FilterService, DestroyService]
 })
-
 export class ListProductFuelComponent implements OnInit {
   searchFormControl: FormControl;
   listStatus = LIST_STATUS;
@@ -41,8 +43,8 @@ export class ListProductFuelComponent implements OnInit {
   }>;
 
   productTypes: any = [
-    {id: 1, type: 'Nhiên liệu'},
-    {id: 2, type: 'Khác'},
+    { id: 1, type: 'Nhiên liệu' },
+    { id: 2, type: 'Khác' }
   ];
 
   constructor(
@@ -80,6 +82,7 @@ export class ListProductFuelComponent implements OnInit {
         } else {
           this.filterField.setFilterFieldValue(null);
         }
+
         // Set data after filter and apply current sorting
         this.dataSource = this.sortService.sort(
           this.filterService.filter(this.dataSourceTemp, this.filterField.field)

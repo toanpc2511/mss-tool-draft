@@ -54,6 +54,50 @@
   @import './assets/sass/themes/layout/brand/light.scss';
 }
 
+// ng-select
+@import './app/shared/components/ng-select/themes/default.theme.scss';
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.ng-select {
+  .ng-value {
+    background: #cff9df !important;
+    span {
+      color: #6993ff !important;
+    }
+  }
+
+  .ng-select-container {
+    padding-right: 0!important;
+    border: none !important;
+    background: #f3f6f9 !important;
+    height: fit-content;
+    padding: 0.51rem 1rem;
+    font-size: 1.08rem;
+    line-height: 1.5;
+    border-radius: 0.42rem;
+    background-color: #f3f6f9;
+    border-color: #f3f6f9;
+    color: #3f4254;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease,
+      box-shadow 0.15s ease;
+    .ng-value-container {
+      font-size: 1.1rem;
+      padding-left: 0 !important;
+    }
+  }
+
+  ng-dropdown-panel {
+    border-radius: 5px;
+    .ng-dropdown-panel-items {
+      border-radius: 5px;
+    }
+  }
+}
+
 // Aside themes
 // .aside-dark {
 //   @import "./assets/sass/themes/layout/aside/dark.scss";
@@ -235,7 +279,7 @@ table {
 }
 
 :disabled {
-  opacity: 0.8!important;
+  opacity: 0.8 !important;
 }
 
 app-paginator {
