@@ -81,7 +81,6 @@ export class ListProductFuelComponent implements OnInit {
     this.dataSource = this.sortService.sort(
       this.filterService.filter(this.dataSourceTemp, this.filterField.field)
     );
-    console.log('list product: ', res.data);
     this.cdr.detectChanges();
     });
   }
