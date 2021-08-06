@@ -47,17 +47,17 @@ export class ListProductFuelModalComponent implements OnInit {
       name: [this.data.product?.name || '', Validators.required],
       unit: [this.data.product?.unit || '', Validators.required],
       entryPrice: [
-        this.data.product?.entryPrice || '',
+        this.formatMoney(this.data.product?.entryPrice) || '',
         [Validators.required]
       ],
       valueAddedTax: [this.data.product?.vat || ''],
       description: [this.data.product?.description || ''],
       priceArea1: [
-        this.data.product?.priceAreaOne || '',
+        this.formatMoney(this.data.product?.priceAreaOne) || '',
         [Validators.required]
       ],
       priceArea2: [
-        this.data.product?.priceAreaTwo || '',
+        this.formatMoney(this.data.product?.priceAreaTwo) || '',
         [Validators.required]
       ],
       price: 0
@@ -102,6 +102,7 @@ export class ListProductFuelModalComponent implements OnInit {
         }
       });
   }
+
   checkError(err: IError) {
     if (err.code === 'SUN-OIL-4711') {
       this.productForm.get('code').setErrors({ codeExisted: true });
@@ -112,6 +113,10 @@ export class ListProductFuelModalComponent implements OnInit {
     if (err.code === 'SUN-OIL-4790') {
       this.toastr.error('Nhập thuế không nằm trong khoảng 0-100');
     }
+  }
+
+  formatMoney(n) {
+    return  (Math.round(n * 100) / 100).toLocaleString().split('.').join(',');
   }
 }
 
