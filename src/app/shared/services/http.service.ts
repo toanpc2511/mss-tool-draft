@@ -12,6 +12,31 @@ export class HttpService {
 
   constructor(private httpClient: HttpClient) {}
 
+  customGet<T>(
+    url: string,
+    options?: {
+      headers?:
+        | HttpHeaders
+        | {
+            [header: string]: string | string[];
+          };
+      params?:
+        | HttpParams
+        | {
+            [param: string]: string | string[];
+          };
+      reportProgress?: boolean;
+      withCredentials?: boolean;
+    }
+  ): Observable<DataResponse<T>> {
+    return this.httpClient.get(url, options).pipe(
+      switchMap((response) => {
+        const res = new DataResponse<T>(response);
+        return of(res);
+      })
+    );
+  }
+
   get<T>(
     endPoint: string,
     options?: {

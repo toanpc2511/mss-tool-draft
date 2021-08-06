@@ -26,7 +26,7 @@ export class FilterService<T> {
         if (
           data[key] &&
           filterField[key] &&
-          typeof data[key] === 'string' &&
+          (typeof data[key] === 'string' || typeof data[key] === 'number') &&
           cleanAccents(data[key] as string)
             .toLowerCase()
             .includes(cleanAccents(filterField[key] as string).toLowerCase())

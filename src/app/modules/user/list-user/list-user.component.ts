@@ -32,10 +32,15 @@ export class ListUserComponent implements OnInit {
     private modalService: NgbModal,
     private toastr: ToastrService
   ) {
+    this.init();
+  }
+
+  init() {
     this.paginatorState.page = 1;
     this.paginatorState.pageSize = 15;
     this.paginatorState.pageSizes = [5, 10, 15, 20];
     this.paginatorState.total = 0;
+    this.sortData = null;
   }
 
   ngOnInit() {
@@ -109,6 +114,7 @@ export class ListUserComponent implements OnInit {
         this.userService.deleteUser(user.accountId).subscribe(
           (res) => {
             if (res.data) {
+              this.init();
               this.getUsers();
             }
           },
@@ -130,8 +136,11 @@ export class ListUserComponent implements OnInit {
       modalRef.componentInstance.accountId = accountId;
     }
     modalRef.result.then((result) => {
-      console.log('closed modal');
-      this.cdr.detectChanges();
+      if (result) {
+        this.init();
+        this.getUsers();
+        this.cdr.detectChanges();
+      }
     });
   }
 
