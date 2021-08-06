@@ -115,7 +115,17 @@ export class UserModalComponent implements OnInit {
   }
   checkError(err: IError) {
     if (!this.isUpdate) {
-      if (err.code === 'SUNOIL-4179') {
+      if (err.code === 'SUN-OIL-4179') {
+        this.userFormCreate.get('username').setErrors({ existed: true });
+      }
+      if (err.code === 'SUN-OIL-4183') {
+        this.userFormCreate.get('code').setErrors({ existed: true });
+      }
+    } else {
+      if (err.code === 'SUN-OIL-4179') {
+        this.userFormUpdate.get('username').setErrors({ existed: true });
+      }
+      if (err.code === 'SUN-OIL-4183') {
         this.userFormUpdate.get('code').setErrors({ existed: true });
       }
     }
