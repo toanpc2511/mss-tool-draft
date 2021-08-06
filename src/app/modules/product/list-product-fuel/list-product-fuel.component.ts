@@ -29,11 +29,17 @@ export class ListProductFuelComponent implements OnInit {
   dataSource: Array<IProduct>;
   dataSourceTemp: Array<IProduct>;
   sorting: SortState;
-  categoryId = 1;
+  categoryId = 0;
 
   filterField: FilterField<{
-    code: string;
-    name: string;
+    code: null;
+    name: null;
+    entryPrice: null;
+    priceAreaOne: null;
+    priceAreaTwo: null;
+    unit: null;
+    valueAddedTax: null;
+    vat: null;
   }>;
 
   productTypes: any = [
@@ -54,7 +60,13 @@ export class ListProductFuelComponent implements OnInit {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
       code: null,
-      name: null
+      name: null,
+      entryPrice: null,
+      priceAreaOne: null,
+      priceAreaTwo: null,
+      unit: null,
+      valueAddedTax: null,
+      vat: null
     });
     this.searchFormControl = new FormControl();
   }
@@ -80,12 +92,11 @@ export class ListProductFuelComponent implements OnInit {
   }
   getListProduct(): void {
     this.productService.getListProduct(this.categoryId).subscribe((res) => {
-      this.dataSource = this.dataSourceTemp = res.data;
-      this.dataSource = this.sortService.sort(
-        this.filterService.filter(this.dataSourceTemp, this.filterField.field)
-      );
-      console.log('list product: ', res.data);
-      this.cdr.detectChanges();
+    this.dataSource = this.dataSourceTemp = res.data;
+    this.dataSource = this.sortService.sort(
+      this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+    );
+    this.cdr.detectChanges();
     });
   }
 
@@ -146,8 +157,8 @@ export class ListProductFuelComponent implements OnInit {
     if (error.code === 'SUN-OIL-4123') {
       this.toastr.error('Category not found');
     }
-    if (error.code === 'SUN-OIL-4258') {
-      this.toastr.error('chưa update SRS');
+    if (error.code === 'SUN-OIL-4162') {
+      this.toastr.error('Không thể xóa vì bồn đang chứa nhiên liệu này ');
     }
   }
 }
