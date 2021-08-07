@@ -1,21 +1,21 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-import { IProduct, ProductService } from '../product.service';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 import { IError } from '../../../shared/models/error.model';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import {
   IDataTransfer,
   ListProductFuelModalComponent
 } from '../list-product-fuel-modal/list-product-fuel-modal.component';
+import { IProduct, ProductService } from '../product.service';
 
 @Component({
   selector: 'app-list-product-fuel',
