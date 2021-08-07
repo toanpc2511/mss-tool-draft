@@ -52,7 +52,7 @@ export class ListProductFuelModalComponent implements OnInit {
           this.formatMoney(dataProrduct.entryPrice  > 0 ? dataProrduct.entryPrice : 0),
           [Validators.required]
         ],
-        valueAddedTax: [this.formatMoney(dataProrduct.vat  > 0 ? dataProrduct.vat : 0)],
+        valueAddedTax: [typeof dataProrduct.vat !== 'object' ? this.formatMoney(dataProrduct.vat  > 0 ? dataProrduct.vat : 0) : ''],
         description: [dataProrduct.description],
         priceArea1: [
           this.formatMoney(dataProrduct.priceAreaOne  > 0 ? dataProrduct.priceAreaOne : 0),
@@ -64,6 +64,7 @@ export class ListProductFuelModalComponent implements OnInit {
         ],
         price: 0
       });
+      // this.formatMoney(dataProrduct.vat  > 0 ? dataProrduct.vat : 0)
     } else {
       this.productForm = this.fb.group({
         code: [
@@ -94,7 +95,7 @@ export class ListProductFuelModalComponent implements OnInit {
         valueForm.entryPrice = Number(valueForm.entryPrice.split(',').join(''));
         valueForm.priceArea1 = Number(valueForm.priceArea1.split(',').join(''));
         valueForm.priceArea2 = Number(valueForm.priceArea2.split(',').join(''));
-        valueForm.valueAddedTax = Number(valueForm.valueAddedTax);
+        valueForm.valueAddedTax = valueForm.valueAddedTax !== '' ?  Number(valueForm.valueAddedTax) : '';
         valueForm.price = Number(valueForm.price);
         if (!this.data.product) {
           this.productService.createProduct(valueForm).subscribe(
