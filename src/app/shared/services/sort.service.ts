@@ -33,7 +33,7 @@ export class SortService<T> {
         return orderBy(
           dataSource,
           (data) =>
-            typeof data[this.sorting.column] !== 'number'
+            typeof data[this.sorting.column] !== 'number' && typeof data[this.sorting.column] !== 'object'
               ? data[this.sorting.column].toLowerCase()
               : data[this.sorting.column],
           'desc'
@@ -42,7 +42,7 @@ export class SortService<T> {
       return orderBy(
         dataSource,
         (data) =>
-          typeof data[this.sorting.column] !== 'number'
+          typeof data[this.sorting.column] !== 'number' && typeof data[this.sorting.column] !== 'object'
             ? data[this.sorting.column].toLowerCase()
             : data[this.sorting.column],
         'asc'
