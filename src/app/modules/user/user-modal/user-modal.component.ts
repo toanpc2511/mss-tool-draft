@@ -63,7 +63,7 @@ export class UserModalComponent implements OnInit {
       name: [null, [Validators.required]],
       username: [null, [Validators.required]],
       password: [null, [Validators.required]],
-      roleIds: [null],
+      roleIds: [[]],
       status: [this.listStatus.ACTIVE]
     });
   }
@@ -73,7 +73,7 @@ export class UserModalComponent implements OnInit {
       code: ['SNV', [Validators.required, TValidators.patternNotWhiteSpace(/^(SNV[A-Za-z0-9]*)$/)]],
       name: [null, [Validators.required]],
       username: [null, [Validators.required]],
-      roleIds: [null],
+      roleIds: [[]],
       status: [null]
     });
   }
