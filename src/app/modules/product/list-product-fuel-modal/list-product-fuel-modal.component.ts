@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
@@ -8,7 +9,6 @@ import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
 import { IProduct, ProductService } from '../product.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-product-fuel-modal',
@@ -32,7 +32,6 @@ export class ListProductFuelModalComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.onSubmit();
-    console.log(this.data);
   }
 
   onClose(): void {
@@ -40,29 +39,47 @@ export class ListProductFuelModalComponent implements OnInit {
   }
 
   buildForm(): void {
-    this.productForm = this.fb.group({
-      code: [
-        this.data.product?.code || 'SNL',
-        [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
-      ],
-      name: [this.data.product?.name || '', Validators.required],
-      unit: [this.data.product?.unit || '', Validators.required],
-      entryPrice: [
-        this.formatMoney(this.data.product?.entryPrice  > 0 ? this.data.product?.entryPrice : 0) || '',
-        [Validators.required]
-      ],
-      valueAddedTax: [this.formatMoney(this.data.product?.vat  > 0 ? this.data.product?.vat : 0) || ''],
-      description: [this.data.product?.description || ''],
-      priceArea1: [
-        this.formatMoney(this.data.product?.priceAreaOne  > 0 ? this.data.product?.priceAreaOne : 0) || '',
-        [Validators.required]
-      ],
-      priceArea2: [
-        this.formatMoney(this.data.product?.priceAreaTwo  > 0 ? this.data.product?.priceAreaTwo : 0) || '',
-        [Validators.required]
-      ],
-      price: 0
-    });
+    const dataProrduct = this.data.product;
+    if (dataProrduct) {
+      this.productForm = this.fb.group({
+        code: [
+          dataProrduct.code,
+          [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
+        ],
+        name: [dataProrduct.name, Validators.required],
+        unit: [dataProrduct.unit, Validators.required],
+        entryPrice: [
+          this.formatMoney(dataProrduct.entryPrice  > 0 ? dataProrduct.entryPrice : 0),
+          [Validators.required]
+        ],
+        valueAddedTax: [this.formatMoney(dataProrduct.vat  > 0 ? dataProrduct.vat : 0)],
+        description: [dataProrduct.description],
+        priceArea1: [
+          this.formatMoney(dataProrduct.priceAreaOne  > 0 ? dataProrduct.priceAreaOne : 0),
+          [Validators.required]
+        ],
+        priceArea2: [
+          this.formatMoney(dataProrduct.priceAreaTwo  > 0 ? dataProrduct.priceAreaTwo : 0),
+          [Validators.required]
+        ],
+        price: 0
+      });
+    } else {
+      this.productForm = this.fb.group({
+        code: [
+          'SNL',
+          [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
+        ],
+        name: ['', [Validators.required]],
+        unit: ['', [Validators.required]],
+        entryPrice: ['', [Validators.required]],
+        valueAddedTax: [''],
+        description: [''],
+        priceArea1: ['', [Validators.required]],
+        priceArea2: ['', [Validators.required]],
+        price: 0
+      });
+    }
   }
 
   onSubmit(): void {
@@ -116,7 +133,7 @@ export class ListProductFuelModalComponent implements OnInit {
   }
 
   formatMoney(n) {
-    if (n !== '') {
+    if (n !== '' && n >= 0) {
       return  (Math.round(n * 100) / 100).toLocaleString().split('.').join(',');
     }
   }

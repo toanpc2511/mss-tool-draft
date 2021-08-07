@@ -33,7 +33,7 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th>
+        <th class='name'>
           Tên sản phẩm
           <app-sort-icon
             column="name"
@@ -79,7 +79,7 @@
           ></app-sort-icon>
         </th>
         <th>
-          VAT
+          VAT(%)
           <app-sort-icon
             column="vat"
             [activeColumn]="sorting.column"
@@ -143,13 +143,13 @@
             </p>
           </td>
 
-          <td class="vat">
+          <td class="vat text-right">
             <p
-              class="cursor-pointer text-ellipsis"
+              class="cursor-pointer text-ellipsis price"
               placement="top"
               [ngbTooltip]="item.vat + ' %'"
             >
-              {{ item.vat }} %
+              {{ item.vat }}
             </p>
           </td>
 
