@@ -7,13 +7,13 @@ import { InputTrimModule } from 'ng2-trim-directive';
 import { NgSelectModule } from 'src/app/shared/components/ng-select/public-api';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
-import { ListUserComponent } from './list-user/list-user.component';
-import { UserModalComponent } from './user-modal/user-modal.component';
-import { ProductTypeRoutingModule } from './user-routing.module';
-import { ProductTypeComponent } from './user.component';
+import { ListPermissionComponent } from './list-permission/list-permission.component';
+import { PermissionModalComponent } from './permission-modal/permission-modal.component';
+import { ProductTypeRoutingModule } from './permission-routing.module';
+import { PermissionComponent } from './permission.component';
 
 @NgModule({
-  declarations: [ProductTypeComponent, ListUserComponent, UserModalComponent],
+  declarations: [PermissionComponent, ListPermissionComponent, PermissionModalComponent],
   imports: [
     CommonModule,
     ProductTypeRoutingModule,
@@ -27,4 +27,4 @@ import { ProductTypeComponent } from './user.component';
     InputTrimModule
   ]
 })
-export class UserModule {}
+export class PermissionModule {}

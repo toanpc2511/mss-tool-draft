@@ -68,7 +68,6 @@ export class ListUserComponent implements OnInit {
       .subscribe();
   }
 
-  // Get list product type
   getUsers() {
     this.userService
       .getUsers(
@@ -139,7 +138,6 @@ export class ListUserComponent implements OnInit {
       if (result) {
         this.init();
         this.getUsers();
-        this.cdr.detectChanges();
       }
     });
   }

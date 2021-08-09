@@ -50,12 +50,16 @@ const routes: Routes = [
       },
       {
         path: 'san-pham',
-        loadChildren: () =>
-          import('../modules/product/product.module').then((m) => m.ProductModule)
+        loadChildren: () => import('../modules/product/product.module').then((m) => m.ProductModule)
       },
       {
         path: 'tai-khoan',
-        loadChildren: () => import('../modules/user/user.module').then((m) => m.ProductTypeModule)
+        loadChildren: () => import('../modules/user/user.module').then((m) => m.UserModule)
+      },
+      {
+        path: 'phan-quyen',
+        loadChildren: () =>
+          import('../modules/authorize/permission.module').then((m) => m.PermissionModule)
       },
       {
         path: '',

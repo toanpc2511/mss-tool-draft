@@ -80,6 +80,13 @@ export const DynamicAsideMenuConfig = {
       icon: 'fas fa-user'
     },
     {
+      title: 'Quản lý phân quyền',
+      root: true,
+      bullet: 'dot',
+      page: '/phan-quyen',
+      icon: 'fas fa-lock'
+    },
+    {
       title: 'Quản lý ca làm việc',
       root: true,
       bullet: 'dot',

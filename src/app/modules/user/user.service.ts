@@ -54,10 +54,6 @@ export class UserService {
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
       .set('search-text', searchText || '');
-    console.log(searchText);
-
-    console.log(params);
-
     return this.http.get<Array<IUser>>('accounts', { params });
   }
 
