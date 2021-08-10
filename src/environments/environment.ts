@@ -3,12 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  appVersion: '1.0.0',
-  USERDATA_KEY: 'authf649fc9a5f55',
-  isMockEnabled: false,
-  apiUrl: 'https://sunoil-management.firecloud.live/management',
-  apiUrl1: 'https://sunoil-management.firecloud.live'
+	production: false,
+	appVersion: '1.0.0',
+	USERDATA_KEY: 'authf649fc9a5f55',
+	isMockEnabled: false,
+	apiUrl: 'https://sunoil-management.firecloud.live/management',
+	apiUrl1: 'https://sunoil-management.firecloud.live'
 };
 
 /*

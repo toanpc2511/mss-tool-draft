@@ -1,16 +1,10 @@
 import {
-  Component,
-  OnInit,
-  ElementRef,
-  Input,
-  OnDestroy,
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, Component,
+  OnInit
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl,
+  FormBuilder, FormControl, FormGroup,
+  Validators
 } from '@angular/forms';
 
 const simpleFormField = {
@@ -553,9 +547,9 @@ export class FormfieldComponent implements OnInit {
     });
 
     this.options2 = fb.group({
-      // tslint:disable-next-line:object-literal-key-quotes
+      // eslint-disable-next-line quote-props
       color: 'primary',
-      // tslint:disable-next-line:object-literal-key-quotes
+      // eslint-disable-next-line quote-props
       fontSize: [16, Validators.min(10)],
     });
   }

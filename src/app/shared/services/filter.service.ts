@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Injectable } from '@angular/core';
 import { filter } from 'lodash';
 import { cleanAccents } from '../helpers/functions';

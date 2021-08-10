@@ -1,17 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
 import {
-  GasStationService,
-  IPumpPole,
-  IPumpHoseInput,
-  GasBinResponse,
-  IPumpHose
+  GasBinResponse, GasStationService, IPumpHose, IPumpHoseInput, IPumpPole
 } from '../../../gas-station.service';
 
 @Component({

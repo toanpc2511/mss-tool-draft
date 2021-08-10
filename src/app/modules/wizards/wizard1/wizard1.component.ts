@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import KTWizard from '../../../../assets/js/components/wizard';
 import { KTUtil } from '../../../../assets/js/components/util';
 @Component({
@@ -6,7 +7,7 @@ import { KTUtil } from '../../../../assets/js/components/util';
   templateUrl: './wizard1.component.html',
   styleUrls: ['./wizard1.component.scss']
 })
-export class Wizard1Component implements OnInit, AfterViewInit, OnDestroy {
+export class Wizard1Component implements AfterViewInit, OnDestroy {
   @ViewChild('wizard', { static: true }) el: ElementRef;
   model: any = {
     address1: 'Address Line 1',
@@ -28,15 +29,12 @@ export class Wizard1Component implements OnInit, AfterViewInit, OnDestroy {
     locpostcode: '3072',
     loccity: 'Preston',
     locstate: 'VIC',
-    loccountry: 'AU',
+    loccountry: 'AU'
   };
   submitted = false;
   wizard: any;
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  constructor() {}
 
   ngAfterViewInit() {
     // Initialize form wizard
@@ -48,7 +46,6 @@ export class Wizard1Component implements OnInit, AfterViewInit, OnDestroy {
     this.wizard.on('beforeNext', (wizardObj) => {
       // https://angular.io/guide/forms
       // https://angular.io/guide/form-validation
-
       // validate the form and use below function to stop the wizard's step
       // wizardObj.stop();
     });

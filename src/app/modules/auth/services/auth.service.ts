@@ -4,7 +4,6 @@ import jwt_decode from 'jwt-decode';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { storageUtils } from 'src/app/shared/helpers/storage';
-import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
 

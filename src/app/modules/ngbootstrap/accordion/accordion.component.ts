@@ -309,7 +309,7 @@ export class AccordionComponent implements OnInit {
   examplePreventPanelToggle: any;
   exampleGlobalConfigurationOfAccordions: any;
 
-  constructor(config: NgbAccordionConfig) {
+  constructor() {
     // customize default values of accordions used by this component tree
     // config.closeOthers = true;
     //  config.type = 'info';

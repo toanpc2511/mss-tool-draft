@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable no-case-declarations */
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Observable, of } from 'rxjs';
-import { filter, map, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, pluck, switchMap, takeUntil } from 'rxjs/operators';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';

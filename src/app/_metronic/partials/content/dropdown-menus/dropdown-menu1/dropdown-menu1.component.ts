@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-dropdown-menu1',
-  templateUrl: './dropdown-menu1.component.html',
+  templateUrl: './dropdown-menu1.component.html'
 })
-export class DropdownMenu1Component implements OnInit {
+export class DropdownMenu1Component {
   constructor() {}
-
-  ngOnInit(): void {}
 }

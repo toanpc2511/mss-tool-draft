@@ -1,5 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 const basicPagination = {
   beforeCodeTitle: 'Basic pagination',
@@ -49,7 +48,7 @@ export class NgbdPaginationBasic {
 	`,
   viewCode: ``,
   isCodeVisible: false,
-  isExampleExpanded: true,
+  isExampleExpanded: true
 };
 
 const advancedPagination = {
@@ -100,7 +99,7 @@ export class NgbdPaginationAdvanced {
 }
 		`,
   viewCode: ``,
-  isCodeVisible: false,
+  isCodeVisible: false
 };
 
 const paginationSize = {
@@ -125,7 +124,7 @@ export class NgbdPaginationSize {
 }
 		`,
   viewCode: ``,
-  isCodeVisible: false,
+  isCodeVisible: false
 };
 
 const paginationAlignment = {
@@ -152,7 +151,7 @@ export class NgbdPaginationJustify {
 }
 `,
   viewCode: ``,
-  isCodeVisible: false,
+  isCodeVisible: false
 };
 
 const disabledPagination = {
@@ -189,7 +188,7 @@ export class NgbdPaginationDisabled {
     }
 }`,
   viewCode: ``,
-  isCodeVisible: false,
+  isCodeVisible: false
 };
 
 const globalConfiguration = {
@@ -223,15 +222,15 @@ export class NgbdPaginationConfig {
 }
 		`,
   viewCode: ``,
-  isCodeVisible: false,
+  isCodeVisible: false
 };
 
 @Component({
   selector: 'app-ng-pagination',
   templateUrl: './pagination.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent {
   exampleBasicPagination = basicPagination;
   exampleAdvancedPagination = advancedPagination;
   examplePaginationSize = paginationSize;
@@ -251,11 +250,9 @@ export class PaginationComponent implements OnInit {
     this.isDisabled = !this.isDisabled;
   }
 
-  constructor(config: NgbPaginationConfig) {
+  constructor() {
     // customize default values of paginations used by this component tree
     // config.size = 'sm';
     // config.boundaryLinks = true;
   }
-
-  ngOnInit() {}
 }

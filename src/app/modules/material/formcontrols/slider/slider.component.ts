@@ -202,7 +202,7 @@ export class SliderComponent implements OnInit {
   value = 0;
   vertical = false;
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   private _tickInterval = 1;
   myValue = 50;
 

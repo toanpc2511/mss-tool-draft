@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/unbound-method */
 import { newId } from './id';
 import { NgSelectComponent } from './ng-select.component';
 import { NgOption } from './ng-select.types';
@@ -52,7 +54,7 @@ export class ItemsList {
     get lastSelectedItem() {
         let i = this.selectedItems.length - 1;
         for (; i >= 0; i--) {
-            let item = this.selectedItems[i];
+            const item = this.selectedItems[i];
             if (!item.disabled) {
                 return item;
             }
@@ -217,7 +219,7 @@ export class ItemsList {
         if (key.indexOf('.') === -1) {
             return option[key];
         } else {
-            let keys: string[] = key.split('.');
+            const keys: string[] = key.split('.');
             let value = option;
             for (let i = 0, len = keys.length; i < len; ++i) {
                 if (value == null) {
@@ -341,13 +343,13 @@ export class ItemsList {
 
         const isFnKey = isFunction(this._ngSelect.groupBy);
         const keyFn = (item: NgOption) => {
-            let key = isFnKey ? (<Function>prop)(item.value) : item.value[<string>prop];
+            const key = isFnKey ? (<Function>prop)(item.value) : item.value[<string>prop];
             return isDefined(key) ? key : undefined;
         };
 
         // Group items by key.
         for (const item of items) {
-            let key = keyFn(item);
+            const key = keyFn(item);
             const group = groups.get(key);
             if (group) {
                 group.push(item);

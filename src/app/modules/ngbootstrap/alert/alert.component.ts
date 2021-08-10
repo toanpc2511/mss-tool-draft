@@ -1,42 +1,43 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import {
-  Component,
-  OnInit,
-  Input,
-  ChangeDetectionStrategy,
+	ChangeDetectionStrategy,
+	Component,
+	Input,
+	OnInit
 } from '@angular/core';
+import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 
 const basicAlert = {
-  beforeCodeTitle: 'Basic Alert',
-  htmlCode: `
+	beforeCodeTitle: 'Basic Alert',
+	htmlCode: `
 <p>
   <ngb-alert [dismissible]="false" [type]="'success'">
     <strong>Well done! </strong> You successfully read this important alert message.
   </ngb-alert>
 </p>`,
-  tsCode: `
+	tsCode: `
 import { Component } from '@angular/core';\n
 @Component({
     selector: 'ngbd-alert-basic',
     templateUrl: './alert-basic.html'
 })
 export class NgbdAlertBasic {}`,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const closeableAlert = {
-  beforeCodeTitle: 'Closeable Alert ',
-  htmlCode: `
+	beforeCodeTitle: 'Closeable Alert ',
+	htmlCode: `
 <p *ngFor="let alert of alerts">
     <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{ alert.message }}</ngb-alert>
 </p>
 <p>
     <button type="button" class="btn btn-primary" (click)="reset()">Reset</button>
 </p>`,
-  tsCode: `
+	tsCode: `
 import { Input, Component } from '@angular/core';\n
 @Component({
     selector: 'ngbd-alert-closeable',
@@ -94,13 +95,13 @@ export interface IAlert {
     type: string;
     message: string;
 }`,
-  viewCode: ``,
-  isCodeVisible: false,
+	viewCode: ``,
+	isCodeVisible: false
 };
 
 const selfClosingAlert = {
-  beforeCodeTitle: 'Self-Closing Alert',
-  htmlCode: `
+	beforeCodeTitle: 'Self-Closing Alert',
+	htmlCode: `
 <div class="example-preview">
   <h3>Self closing</h3>
   <span>
@@ -124,7 +125,7 @@ const selfClosingAlert = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component, OnInit} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operator/debounceTime';\n
@@ -142,17 +143,17 @@ export class NgbdAlertSelfclosing implements OnInit {
           debounceTime(5000)
         ).subscribe(() => this.successMessage = null);\n
         public changeSuccessMessage() {
-            this._success.next(\`$\{new Date()\} - Message successfully changed.\`);
+            this._success.next(\`$\{new Date()} - Message successfully changed.\`);
         }
     }
 }`,
-  viewCode: ``,
-  isCodeVisible: false,
+	viewCode: ``,
+	isCodeVisible: false
 };
 
 const customAlert = {
-  beforeCodeTitle: 'Custom Alert',
-  htmlCode: `
+	beforeCodeTitle: 'Custom Alert',
+	htmlCode: `
 <div class="example-preview">
   <span>
     Show a custom alert that can be styled via CSS or SCSS.
@@ -163,7 +164,7 @@ const customAlert = {
   </div>
 </div>
 	`,
-  tsCode: `
+	tsCode: `
 import { Component } from '@angular/core';\n
 @Component({
     selector: 'ngbd-alert-custom',
@@ -177,19 +178,19 @@ import { Component } from '@angular/core';\n
     \`]
 })
 export class NgbdAlertCustom {}`,
-  viewCode: ``,
-  isCodeVisible: false,
+	viewCode: ``,
+	isCodeVisible: false
 };
 
 const globalConfigurationOfAlerts = {
-  beforeCodeTitle: 'Global configuration of alerts',
-  htmlCode: `
+	beforeCodeTitle: 'Global configuration of alerts',
+	htmlCode: `
 <p>
   <ngb-alert>
     This alert's type is success and it's not dismissible because the config has been customized
   </ngb-alert>
 </p>`,
-  tsCode: `
+	tsCode: `
 import {Component, Input} from '@angular/core';
 import {NgbAlertConfig} from '@ng-bootstrap/ng-bootstrap';\n
 @Component({
@@ -206,110 +207,116 @@ export class NgbdAlertConfig {
         alertConfig.dismissible = false;
     }
 }`,
-  viewCode: ``,
-  isCodeVisible: false,
+	viewCode: ``,
+	isCodeVisible: false
 };
 
 @Component({
-  selector: 'app-ng-alert',
-  templateUrl: './alert.component.html',
-  styles: [
-    `
-      :host >>> .alert-custom {
-        color: #99004d;
-        background-color: #f169b4;
-        border-color: #800040;
-      }
-    `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+	selector: 'app-ng-alert',
+	templateUrl: './alert.component.html',
+	styles: [
+		`
+			:host >>> .alert-custom {
+				color: #99004d;
+				background-color: #f169b4;
+				border-color: #800040;
+			}
+		`
+	],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AlertComponent implements OnInit {
-  @Input() alerts: Array<IAlert> = [];
-  // tslint:disable-next-line:variable-name
-  private _success = new Subject<string>();
-  staticAlertClosed = false;
-  successMessage: string;
-  private backup: Array<IAlert>;
+	@Input() alerts: Array<IAlert> = [];
+	// eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
+	private _success = new Subject<string>();
+	staticAlertClosed = false;
+	successMessage: string;
+	private backup: Array<IAlert>;
 
-  exampleBasicAlert: any;
-  exampleCloseableAlert: any;
-  exampleSelfClosingAlert: any;
-  exampleCustomAlert: any;
-  exampleGlobalConfigurationOfAlerts: any;
+	exampleBasicAlert: any;
+	exampleCloseableAlert: any;
+	exampleSelfClosingAlert: any;
+	exampleCustomAlert: any;
+	exampleGlobalConfigurationOfAlerts: any;
 
-  constructor(alertConfig: NgbAlertConfig) {
-    // customize default values of alerts used by this component tree
-    // alertConfig.type = 'success';
-    // alertConfig.dismissible = false;
+	constructor(alertConfig: NgbAlertConfig) {
+		console.log(alertConfig);
 
-    this.alerts.push(
-      {
-        id: 1,
-        type: 'success',
-        message: 'This is an success alert',
-      },
-      {
-        id: 2,
-        type: 'info',
-        message: 'This is an info alert',
-      },
-      {
-        id: 3,
-        type: 'warning',
-        message: 'This is a warning alert',
-      },
-      {
-        id: 4,
-        type: 'danger',
-        message: 'This is a danger alert',
-      },
-      {
-        id: 5,
-        type: 'brand',
-        message: 'This is a brand  alert',
-      },
-      {
-        id: 6,
-        type: 'primary',
-        message: 'This is a primary alert',
-      }
-    );
+		// customize default values of alerts used by this component tree
+		// alertConfig.type = 'success';
+		// alertConfig.dismissible = false;
 
-    this.backup = this.alerts.map((alert: IAlert) => Object.assign({}, alert));
-  }
+		this.alerts.push(
+			{
+				id: 1,
+				type: 'success',
+				message: 'This is an success alert'
+			},
+			{
+				id: 2,
+				type: 'info',
+				message: 'This is an info alert'
+			},
+			{
+				id: 3,
+				type: 'warning',
+				message: 'This is a warning alert'
+			},
+			{
+				id: 4,
+				type: 'danger',
+				message: 'This is a danger alert'
+			},
+			{
+				id: 5,
+				type: 'brand',
+				message: 'This is a brand  alert'
+			},
+			{
+				id: 6,
+				type: 'primary',
+				message: 'This is a primary alert'
+			}
+		);
 
-  ngOnInit() {
-    this.exampleBasicAlert = basicAlert;
-    this.exampleCloseableAlert = closeableAlert;
-    this.exampleSelfClosingAlert = selfClosingAlert;
-    this.exampleCustomAlert = customAlert;
-    this.exampleGlobalConfigurationOfAlerts = globalConfigurationOfAlerts;
+		this.backup = this.alerts.map((alert: IAlert) =>
+			Object.assign({}, alert)
+		);
+	}
 
-    setTimeout(() => (this.staticAlertClosed = true), 20000);
+	ngOnInit() {
+		this.exampleBasicAlert = basicAlert;
+		this.exampleCloseableAlert = closeableAlert;
+		this.exampleSelfClosingAlert = selfClosingAlert;
+		this.exampleCustomAlert = customAlert;
+		this.exampleGlobalConfigurationOfAlerts = globalConfigurationOfAlerts;
 
-    this._success.subscribe((message) => (this.successMessage = message));
-    this._success
-      .pipe(debounceTime(5000))
-      .subscribe(() => (this.successMessage = null));
-  }
+		setTimeout(() => (this.staticAlertClosed = true), 20000);
 
-  closeAlert(alert: IAlert) {
-    const index: number = this.alerts.indexOf(alert);
-    this.alerts.splice(index, 1);
-  }
+		this._success.subscribe((message) => (this.successMessage = message));
+		this._success
+			.pipe(debounceTime(5000))
+			.subscribe(() => (this.successMessage = null));
+	}
 
-  reset() {
-    this.alerts = this.backup.map((alert: IAlert) => Object.assign({}, alert));
-  }
+	closeAlert(alert: IAlert) {
+		const index: number = this.alerts.indexOf(alert);
+		this.alerts.splice(index, 1);
+	}
 
-  changeSuccessMessage() {
-    this._success.next(`${new Date()} - Message successfully changed.`);
-  }
+	reset() {
+		this.alerts = this.backup.map((alert: IAlert) =>
+			Object.assign({}, alert)
+		);
+	}
+
+	changeSuccessMessage() {
+		this._success.next(`${new Date()} - Message successfully changed.`);
+	}
 }
 
 export interface IAlert {
-  id: number;
-  type: string;
-  message: string;
+	id: number;
+	type: string;
+	message: string;
 }

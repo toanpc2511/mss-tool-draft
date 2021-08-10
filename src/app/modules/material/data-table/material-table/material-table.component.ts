@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  AfterViewInit,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -99,7 +93,7 @@ const ELEMENT_DATA: Element[] = [
 }`,
   viewCode: ``,
   isCodeVisible: false,
-  isExampleExpanded: true,
+  isExampleExpanded: true
 };
 
 const pagination = {
@@ -199,7 +193,7 @@ const ELEMENT_DATA: Element[] = [
   max-height: 500px;
 }`,
   viewCode: ``,
-  isCodeVisible: false,
+  isCodeVisible: false
 };
 
 const sorting = {
@@ -297,7 +291,7 @@ const ELEMENT_DATA: Element[] = [
   color: black;
 }`,
   viewCode: ``,
-  isCodeVisible: false,
+  isCodeVisible: false
 };
 
 const filtering = {
@@ -402,7 +396,7 @@ const ELEMENT_DATA: Element[] = [
   max-height: 500px;
 }`,
   viewCode: ``,
-  isCodeVisible: false,
+  isCodeVisible: false
 };
 
 const selection = {
@@ -509,7 +503,7 @@ const ELEMENT_DATA: Element[] = [
   {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
 ];`,
   viewCode: ``,
-  isCodeVisible: false,
+  isCodeVisible: false
 };
 
 const main = {
@@ -629,7 +623,7 @@ export interface UserData {
 }`,
   viewCode: ``,
   isCodeVisible: false,
-  isExampleExpanded: true,
+  isExampleExpanded: true
 };
 
 const hTTP = {
@@ -801,7 +795,7 @@ export class ExampleHttpDao {
 }`,
   viewCode: ``,
   isCodeVisible: false,
-  isExampleExpanded: true,
+  isExampleExpanded: true
 };
 
 const ELEMENT_DATA: PeriodicElement[] = [
@@ -814,7 +808,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
   { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
   { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' }
 ];
 
 const ELEMENT_DATA2: PeriodicElement[] = [
@@ -837,7 +831,7 @@ const ELEMENT_DATA2: PeriodicElement[] = [
   { position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl' },
   { position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar' },
   { position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K' },
-  { position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca' },
+  { position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca' }
 ];
 
 export interface PeriodicElement {
@@ -863,11 +857,7 @@ export interface GithubIssue {
 export class ExampleHttpDao {
   constructor(private http: HttpClient) {}
 
-  getRepoIssues(
-    sort: string,
-    order: string,
-    page: number
-  ): Observable<GithubApi> {
+  getRepoIssues(sort: string, order: string, page: number): Observable<GithubApi> {
     const href = 'https://api.github.com/search/issues';
     const requestUrl = `${href}?q=repo:angular/material2&sort=${sort}&order=${order}&page=${
       page + 1
@@ -900,7 +890,7 @@ const COLORS: string[] = [
   'blue',
   'navy',
   'black',
-  'gray',
+  'gray'
 ];
 const NAMES: string[] = [
   'Maia',
@@ -921,7 +911,7 @@ const NAMES: string[] = [
   'Arthur',
   'Mia',
   'Thomas',
-  'Elizabeth',
+  'Elizabeth'
 ];
 
 /** Builds and returns a new User. */
@@ -936,7 +926,7 @@ function createNewUser(id: number): UserData {
     id: id.toString(),
     name,
     progress: Math.round(Math.random() * 100).toString(),
-    color: COLORS[Math.round(Math.random() * (COLORS.length - 1))],
+    color: COLORS[Math.round(Math.random() * (COLORS.length - 1))]
   };
 }
 
@@ -1021,10 +1011,10 @@ function createNewUser(id: number): UserData {
       .mat-column-created {
         max-width: 124px;
       }
-    `,
-  ],
+    `
+  ]
 })
-export class MaterialTableComponent implements OnInit, AfterViewInit {
+export class MaterialTableComponent implements OnInit {
   exampleBasic;
   examplePagination;
   exampleSorting;
@@ -1037,13 +1027,7 @@ export class MaterialTableComponent implements OnInit, AfterViewInit {
   displayedColumns2: string[] = ['position', 'name', 'weight', 'symbol'];
   displayedColumns3: string[] = ['position', 'name', 'weight', 'symbol'];
   displayedColumns4: string[] = ['position', 'name', 'weight', 'symbol'];
-  displayedColumns5: string[] = [
-    'select',
-    'position',
-    'name',
-    'weight',
-    'symbol',
-  ];
+  displayedColumns5: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
   displayedColumns6: string[] = ['created', 'state', 'number', 'title'];
   displayedColumns7: string[] = ['id', 'name', 'progress', 'color'];
 
@@ -1068,8 +1052,6 @@ export class MaterialTableComponent implements OnInit, AfterViewInit {
   @ViewChild('sort3', { static: true }) sort3: MatSort;
   @ViewChild('sort6', { static: true }) sort6: MatSort;
   @ViewChild('sort7', { static: true }) sort7: MatSort;
-
-  ngAfterViewInit() {}
 
   constructor(private http: HttpClient) {
     const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
@@ -1102,8 +1084,8 @@ export class MaterialTableComponent implements OnInit, AfterViewInit {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          // tslint:disable-next-line:no-non-null-assertion
-          return this.exampleDatabase!.getRepoIssues(
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          return this.exampleDatabase.getRepoIssues(
             this.sort6.active,
             this.sort6.direction,
             this.paginator6.pageIndex

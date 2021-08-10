@@ -86,7 +86,7 @@ export class ListProductFuelModalComponent implements OnInit {
   onSubmit(): void {
     fromEvent(this.btnSave.nativeElement, 'click')
       .pipe(takeUntil(this.destroy$))
-      .subscribe((_) => {
+      .subscribe(() => {
         this.productForm.markAllAsTouched();
         if (this.productForm.invalid) {
           return;

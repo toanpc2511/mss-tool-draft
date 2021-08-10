@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  MatBottomSheetRef,
-  MatBottomSheet,
-} from '@angular/material/bottom-sheet';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { BottomSheetExampleComponent } from './bottom-sheet-example/bottom-sheet-example.component';
 
 const basic = {
-  beforeCodeTitle: 'Bottom Sheet Overview',
-  htmlCode: `
+	beforeCodeTitle: 'Bottom Sheet Overview',
+	htmlCode: `
 import {Component} from '@angular/core';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';\n
 /**
@@ -37,25 +34,25 @@ export class BottomSheetOverviewExampleSheet {
     event.preventDefault();
   }
 }`,
-  cssCode: ``,
-  viewCode: ``,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	cssCode: ``,
+	viewCode: ``,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 @Component({
-  selector: 'app-material-bottom-sheet',
-  templateUrl: './bottom-sheet.component.html',
+	selector: 'app-material-bottom-sheet',
+	templateUrl: './bottom-sheet.component.html'
 })
 export class BottomSheetComponent implements OnInit {
-  exampleBasic;
-  constructor(private bottomSheet: MatBottomSheet) {}
+	exampleBasic;
+	constructor(private bottomSheet: MatBottomSheet) {}
 
-  openBottomSheet(): void {
-    this.bottomSheet.open(BottomSheetExampleComponent);
-  }
+	openBottomSheet(): void {
+		this.bottomSheet.open(BottomSheetExampleComponent);
+	}
 
-  ngOnInit() {
-    this.exampleBasic = basic;
-  }
+	ngOnInit() {
+		this.exampleBasic = basic;
+	}
 }

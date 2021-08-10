@@ -11,7 +11,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-import { GasStationService, IPumpHose, IPumpPole } from '../../gas-station.service';
+import { GasStationService, IPumpHose } from '../../gas-station.service';
 import { PumpHoseModalComponent } from './pump-hose-modal/pump-hose-modal.component';
 @Component({
   selector: 'app-step4',

@@ -1,23 +1,24 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /**
  * Convert string to Date
  *
  * @param dateInStr: string (format => 'MM/dd/yyyy')
  */
-export function getDateFromString(dateInStr: string = ''): Date {
-  if (dateInStr && dateInStr.length > 0) {
-    const dateParts = dateInStr.trim().split('/');
-    const year = toInteger(dateParts[2]);
-    const month =  toInteger(dateParts[0]);
-    const day = toInteger(dateParts[1]);
-    // tslint:disable-next-line:prefer-const
-    let result = new Date();
-    result.setDate(day);
-    result.setMonth(month - 1);
-    result.setFullYear(year);
-    return result;
-  }
+export function getDateFromString(dateInStr = ''): Date {
+	if (dateInStr && dateInStr.length > 0) {
+		const dateParts = dateInStr.trim().split('/');
+		const year = toInteger(dateParts[2]);
+		const month = toInteger(dateParts[0]);
+		const day = toInteger(dateParts[1]);
+		// eslint-disable-next-line prefer-const
+		let result = new Date();
+		result.setDate(day);
+		result.setMonth(month - 1);
+		result.setFullYear(year);
+		return result;
+	}
 
-  return new Date();
+	return new Date();
 }
 
 /**
@@ -26,5 +27,5 @@ export function getDateFromString(dateInStr: string = ''): Date {
  * @param value: any
  */
 export function toInteger(value: any): number {
-  return parseInt(`${value}`, 10);
+	return parseInt(`${value}`, 10);
 }
