@@ -1,53 +1,48 @@
 import {
-  Component,
-  OnInit,
-  Injectable,
-  ChangeDetectionStrategy,
+	ChangeDetectionStrategy,
+	Component,
+	Injectable,
+	OnInit
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import {
-  NgbDateStruct,
-  NgbCalendar,
-  NgbDateAdapter,
-  NgbDatepickerConfig,
-} from '@ng-bootstrap/ng-bootstrap';
-import {
-  NgbDatepickerI18n,
-  NgbCalendarIslamicCivil,
-  NgbCalendarIslamicUmalqura,
+	NgbCalendar,
+	NgbDateAdapter,
+	NgbDatepickerConfig,
+	NgbDatepickerI18n,
+	NgbDateStruct
 } from '@ng-bootstrap/ng-bootstrap';
 
 const now = new Date();
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
-  one &&
-  two &&
-  two.year === one.year &&
-  two.month === one.month &&
-  two.day === one.day;
+	one &&
+	two &&
+	two.year === one.year &&
+	two.month === one.month &&
+	two.day === one.day;
 const before = (one: NgbDateStruct, two: NgbDateStruct) =>
-  !one || !two
-    ? false
-    : one.year === two.year
-    ? one.month === two.month
-      ? one.day === two.day
-        ? false
-        : one.day < two.day
-      : one.month < two.month
-    : one.year < two.year;
+	!one || !two
+		? false
+		: one.year === two.year
+		? one.month === two.month
+			? one.day === two.day
+				? false
+				: one.day < two.day
+			: one.month < two.month
+		: one.year < two.year;
 const after = (one: NgbDateStruct, two: NgbDateStruct) =>
-  !one || !two
-    ? false
-    : one.year === two.year
-    ? one.month === two.month
-      ? one.day === two.day
-        ? false
-        : one.day > two.day
-      : one.month > two.month
-    : one.year > two.year;
+	!one || !two
+		? false
+		: one.year === two.year
+		? one.month === two.month
+			? one.day === two.day
+				? false
+				: one.day > two.day
+			: one.month > two.month
+		: one.year > two.year;
 
 const basicDatepicker = {
-  beforeCodeTitle: 'Basic datepicker',
-  htmlCode: `
+	beforeCodeTitle: 'Basic datepicker',
+	htmlCode: `
 <div class="example-preview">
   <h3>Simple datepicker</h3>
   <div>
@@ -67,7 +62,7 @@ const basicDatepicker = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';\n
 const now = new Date();\n
@@ -83,13 +78,13 @@ export class NgbdDatepickerBasic {\n
   }
 }
 `,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const datepickerInAPopup = {
-  beforeCodeTitle: 'Datepicker in a popup',
-  htmlCode: `
+	beforeCodeTitle: 'Datepicker in a popup',
+	htmlCode: `
 <div class="example-preview">
   <div>
     <pre>Model: {{ model | json }}</pre>
@@ -110,7 +105,7 @@ const datepickerInAPopup = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import { Component } from '@angular/core';
 
 @Component({
@@ -121,13 +116,13 @@ export class NgbdCollapseBasic {
   public isCollapsed = false;
 }
 `,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const multipleMonths = {
-  beforeCodeTitle: 'Multiple months',
-  htmlCode: `
+	beforeCodeTitle: 'Multiple months',
+	htmlCode: `
 <div class="example-preview">
   <div>
     <ngb-datepicker [displayMonths]="displayMonths" [navigation]="navigation" [showWeekNumbers]="showWeekNumbers"></ngb-datepicker>
@@ -171,7 +166,7 @@ const multipleMonths = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component} from '@angular/core';\n
 @Component({
   selector: 'ngbd-datepicker-multiple',
@@ -189,13 +184,13 @@ export class NgbdDatepickerMultiple {
   showWeekNumbers = false;
 }
 `,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const rangeSelection = {
-  beforeCodeTitle: 'Range selection',
-  htmlCode: `
+	beforeCodeTitle: 'Range selection',
+	htmlCode: `
 <div class="example-preview">
   <h3>Example of the range selection</h3>
   <div>
@@ -217,7 +212,7 @@ const rangeSelection = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component} from '@angular/core';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';\n
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
@@ -275,13 +270,13 @@ export class NgbdDatepickerRange {
   isTo = date => equals(date, this.toDate);
 }
 `,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const disabledDatepicker = {
-  beforeCodeTitle: 'Disabled datepicker',
-  htmlCode: `
+	beforeCodeTitle: 'Disabled datepicker',
+	htmlCode: `
 <div class="example-preview">
   <div>
     <ngb-datepicker [(ngModel)]="model" [disabled]="disabled"></ngb-datepicker>
@@ -296,7 +291,7 @@ const disabledDatepicker = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';\n
 const now = new Date();\n
@@ -309,13 +304,13 @@ export class NgbdDatepickerDisabled {
   disabled = true;
 }
 `,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const customDateAdapter = {
-  beforeCodeTitle: 'Custom date adapter',
-  htmlCode: `
+	beforeCodeTitle: 'Custom date adapter',
+	htmlCode: `
 
 <div class="example-preview">
   <span>
@@ -360,7 +355,7 @@ const customDateAdapter = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component, Injectable} from '@angular/core';
 import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';\n
 /**
@@ -390,13 +385,13 @@ export class NgbdDatepickerAdapter {
   }
 }
 `,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const iternationalizationOfDatepickers = {
-  beforeCodeTitle: 'Internationalization of datepicker',
-  htmlCode: `
+	beforeCodeTitle: 'Internationalization of datepicker',
+	htmlCode: `
 <div class="example-preview">
   <span>
     Datepicker in French
@@ -406,7 +401,7 @@ const iternationalizationOfDatepickers = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component, Injectable} from '@angular/core';
 import {NgbDatepickerI18n} from '@ng-bootstrap/ng-bootstrap';\n
 const I18N_VALUES = {
@@ -447,13 +442,13 @@ export class NgbdDatepickerI18n {
   model;
 }
 `,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const customDayView = {
-  beforeCodeTitle: 'Custom day view',
-  htmlCode: `
+	beforeCodeTitle: 'Custom day view',
+	htmlCode: `
 <div class="example-preview">
   <span>
     This datepicker uses a custom template to display days. All week-ends are displayed with an orange background.
@@ -482,7 +477,7 @@ const customDayView = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component, Input} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 @Component({
@@ -520,13 +515,13 @@ export class NgbdDatepickerCustomday {
   }
 }
 `,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const alternativeCalendars = {
-  beforeCodeTitle: 'Alternative calendars',
-  htmlCode: `
+	beforeCodeTitle: 'Alternative calendars',
+	htmlCode: `
 <div class="container">
   <div class="row">
     <div class="col">
@@ -538,7 +533,7 @@ const alternativeCalendars = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import { Component } from '@angular/core';\n
 @Component({
     selector: 'ngbd-collapse-basic',
@@ -548,13 +543,13 @@ export class NgbdCollapseBasic {
     public isCollapsed = false;
 }
 `,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const globalConfigurationOfDatepickers = {
-  beforeCodeTitle: 'Global configuration of datepickers',
-  htmlCode: `
+	beforeCodeTitle: 'Global configuration of datepickers',
+	htmlCode: `
 <div class="example-preview">
   <span>
     This datepicker uses customized default values.
@@ -564,7 +559,7 @@ const globalConfigurationOfDatepickers = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component} from '@angular/core';
 import {NgbDatepickerConfig, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';\n
 @Component({
@@ -588,8 +583,8 @@ export class NgbdDatepickerConfig {
   }
 }
 `,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 /**
@@ -597,219 +592,227 @@ export class NgbdDatepickerConfig {
  */
 @Injectable()
 export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
-  fromModel(date: Date): NgbDateStruct {
-    return date && date.getFullYear
-      ? {
-          year: date.getFullYear(),
-          month: date.getMonth() + 1,
-          day: date.getDate(),
-        }
-      : null;
-  }
+	fromModel(date: Date): NgbDateStruct {
+		return date && date.getFullYear
+			? {
+					year: date.getFullYear(),
+					month: date.getMonth() + 1,
+					day: date.getDate()
+			  }
+			: null;
+	}
 
-  toModel(date: NgbDateStruct): Date {
-    return date ? new Date(date.year, date.month - 1, date.day) : null;
-  }
+	toModel(date: NgbDateStruct): Date {
+		return date ? new Date(date.year, date.month - 1, date.day) : null;
+	}
 }
 
 const I18N_VALUES = {
-  fr: {
-    weekdays: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'],
-    months: [
-      'Jan',
-      'Fév',
-      'Mar',
-      'Avr',
-      'Mai',
-      'Juin',
-      'Juil',
-      'Aou',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Déc',
-    ],
-  },
-  // other languages you would support
+	fr: {
+		weekdays: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'],
+		months: [
+			'Jan',
+			'Fév',
+			'Mar',
+			'Avr',
+			'Mai',
+			'Juin',
+			'Juil',
+			'Aou',
+			'Sep',
+			'Oct',
+			'Nov',
+			'Déc'
+		]
+	}
+	// other languages you would support
 };
 
 // Define a service holding the language. You probably already have one if your app is i18ned. Or you could also
 // use the Angular LOCALE_ID value
 @Injectable()
 export class I18n {
-  language = 'fr';
+	language = 'fr';
 }
 
 // Define custom service providing the months and weekdays translations
 @Injectable()
 export class CustomDatepickerI18n extends NgbDatepickerI18n {
-  getDayAriaLabel(date: NgbDateStruct): string {
-    throw new Error('Method not implemented.'); // TODO: implement this
-  }
-  // tslint:disable-next-line:variable-name
-  constructor(private _i18n: I18n) {
-    super();
-  }
+	getDayAriaLabel(date: NgbDateStruct): string {
+		console.log(date);
+		throw new Error('Method not implemented.'); // TODO: implement this
+	}
+	// eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
+	constructor(private _i18n: I18n) {
+		super();
+	}
 
-  getWeekdayShortName(weekday: number): string {
-    return I18N_VALUES[this._i18n.language].weekdays[weekday - 1];
-  }
-  getMonthShortName(month: number): string {
-    return I18N_VALUES[this._i18n.language].months[month - 1];
-  }
-  getMonthFullName(month: number): string {
-    return this.getMonthShortName(month);
-  }
+	getWeekdayShortName(weekday: number): string {
+		return I18N_VALUES[this._i18n.language].weekdays[weekday - 1];
+	}
+	getMonthShortName(month: number): string {
+		return I18N_VALUES[this._i18n.language].months[month - 1];
+	}
+	getMonthFullName(month: number): string {
+		return this.getMonthShortName(month);
+	}
 }
 
 @Component({
-  selector: 'app-ng-datepicker',
-  templateUrl: './datepicker.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [
-    `
-      select.custom-select {
-        margin-right: 0.5rem;
-        width: auto;
-      }
-      .custom-day {
-        text-align: center;
-        padding: 0.185rem 0.25rem;
-        display: inline-block;
-        height: 2rem;
-        width: 2rem;
-      }
-      .custom-day.focused {
-        background-color: #e6e6e6;
-      }
-      .custom-day.range,
-      .custom-day:hover {
-        background-color: rgb(2, 117, 216);
-        color: white;
-      }
-      .custom-day.faded {
-        background-color: rgba(2, 117, 216, 0.5);
-      }
-      .weekend {
-        background-color: #f0ad4e;
-        border-radius: 1rem;
-        color: white;
-      }
-      .hidden {
-        display: none;
-      }
-    `,
-  ],
+	selector: 'app-ng-datepicker',
+	templateUrl: './datepicker.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	styles: [
+		`
+			select.custom-select {
+				margin-right: 0.5rem;
+				width: auto;
+			}
+			.custom-day {
+				text-align: center;
+				padding: 0.185rem 0.25rem;
+				display: inline-block;
+				height: 2rem;
+				width: 2rem;
+			}
+			.custom-day.focused {
+				background-color: #e6e6e6;
+			}
+			.custom-day.range,
+			.custom-day:hover {
+				background-color: rgb(2, 117, 216);
+				color: white;
+			}
+			.custom-day.faded {
+				background-color: rgba(2, 117, 216, 0.5);
+			}
+			.weekend {
+				background-color: #f0ad4e;
+				border-radius: 1rem;
+				color: white;
+			}
+			.hidden {
+				display: none;
+			}
+		`
+	]
 
-  // NOTE: For this example we are only providing current component, but probably
-  // NOTE: you will want to provide your main App Module
-  // providers: [{ provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }, I18n,
-  // { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }, NgbDatepickerConfig]
+	// NOTE: For this example we are only providing current component, but probably
+	// NOTE: you will want to provide your main App Module
+	// providers: [{ provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }, I18n,
+	// { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }, NgbDatepickerConfig]
 })
 export class DatepickerComponent implements OnInit {
-  exampleBasicDatepicker: any;
-  exampleDatepickerInAPopup: any;
-  exampleMultipleMonths: any;
-  exampleRangeSelection: any;
-  exampleDisabledDatepicker: any;
-  exampleCustomDateAdapter: any;
-  exampleInternationalizationOfDatepickers: any;
-  exampleCustomDayView: any;
-  exampleAlternativeCalendar: any;
-  exampleGlobalConfigurationOfDatepickers: any;
+	exampleBasicDatepicker: any;
+	exampleDatepickerInAPopup: any;
+	exampleMultipleMonths: any;
+	exampleRangeSelection: any;
+	exampleDisabledDatepicker: any;
+	exampleCustomDateAdapter: any;
+	exampleInternationalizationOfDatepickers: any;
+	exampleCustomDayView: any;
+	exampleAlternativeCalendar: any;
+	exampleGlobalConfigurationOfDatepickers: any;
 
-  model: NgbDateStruct;
-  date: { year: number; month: number };
-  secondModel;
-  fourthModel;
-  fifthModel: NgbDateStruct;
-  displayMonths = 2;
-  navigation = 'select';
-  showWeekNumbers = false;
-  thirdModel: NgbDateStruct = {
-    year: now.getFullYear(),
-    month: now.getMonth() + 1,
-    day: now.getDate(),
-  };
-  disabled = true;
-  hoveredDate: NgbDateStruct;
+	model: NgbDateStruct;
+	date: { year: number; month: number };
+	secondModel;
+	fourthModel;
+	fifthModel: NgbDateStruct;
+	displayMonths = 2;
+	navigation = 'select';
+	showWeekNumbers = false;
+	thirdModel: NgbDateStruct = {
+		year: now.getFullYear(),
+		month: now.getMonth() + 1,
+		day: now.getDate()
+	};
+	disabled = true;
+	hoveredDate: NgbDateStruct;
 
-  fromDate: NgbDateStruct;
-  toDate: NgbDateStruct;
-  model1: Date;
-  model2: Date;
-  sixModel;
+	fromDate: NgbDateStruct;
+	toDate: NgbDateStruct;
+	model1: Date;
+	model2: Date;
+	sixModel;
 
-  ngOnInit() {
-    this.exampleBasicDatepicker = basicDatepicker;
-    this.exampleDatepickerInAPopup = datepickerInAPopup;
-    this.exampleMultipleMonths = multipleMonths;
-    this.exampleRangeSelection = rangeSelection;
-    this.exampleDisabledDatepicker = disabledDatepicker;
-    this.exampleCustomDateAdapter = customDateAdapter;
-    this.exampleInternationalizationOfDatepickers = iternationalizationOfDatepickers;
-    this.exampleCustomDayView = customDayView;
-    this.exampleAlternativeCalendar = alternativeCalendars;
-    this.exampleGlobalConfigurationOfDatepickers = globalConfigurationOfDatepickers;
-  }
+	ngOnInit() {
+		this.exampleBasicDatepicker = basicDatepicker;
+		this.exampleDatepickerInAPopup = datepickerInAPopup;
+		this.exampleMultipleMonths = multipleMonths;
+		this.exampleRangeSelection = rangeSelection;
+		this.exampleDisabledDatepicker = disabledDatepicker;
+		this.exampleCustomDateAdapter = customDateAdapter;
+		this.exampleInternationalizationOfDatepickers =
+			iternationalizationOfDatepickers;
+		this.exampleCustomDayView = customDayView;
+		this.exampleAlternativeCalendar = alternativeCalendars;
+		this.exampleGlobalConfigurationOfDatepickers =
+			globalConfigurationOfDatepickers;
+	}
 
-  selectToday() {
-    this.model = {
-      year: now.getFullYear(),
-      month: now.getMonth() + 1,
-      day: now.getDate(),
-    };
-  }
+	selectToday() {
+		this.model = {
+			year: now.getFullYear(),
+			month: now.getMonth() + 1,
+			day: now.getDate()
+		};
+	}
 
-  get today() {
-    return new Date();
-  }
+	get today() {
+		return new Date();
+	}
 
-  isWeekend(date: NgbDateStruct) {
-    const d = new Date(date.year, date.month - 1, date.day);
-    return d.getDay() === 0 || d.getDay() === 6;
-  }
+	isWeekend(date: NgbDateStruct) {
+		const d = new Date(date.year, date.month - 1, date.day);
+		return d.getDay() === 0 || d.getDay() === 6;
+	}
 
-  isDisabled(date: NgbDateStruct, current: { month: number }) {
-    return date.month !== current.month;
-  }
+	isDisabled(date: NgbDateStruct, current: { month: number }) {
+		return date.month !== current.month;
+	}
 
-  constructor(calendar: NgbCalendar, config: NgbDatepickerConfig) {
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+	constructor(calendar: NgbCalendar, config: NgbDatepickerConfig) {
+		this.fromDate = calendar.getToday();
+		this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
 
-    // customize default values of datepickers used by this component tree
-    config.minDate = { year: 1900, month: 1, day: 1 };
-    config.maxDate = { year: 2099, month: 12, day: 31 };
+		// customize default values of datepickers used by this component tree
+		config.minDate = { year: 1900, month: 1, day: 1 };
+		config.maxDate = { year: 2099, month: 12, day: 31 };
 
-    // days that don't belong to current month are not visible
-    config.outsideDays = 'hidden';
-    // weekends are disabled
-    config.markDisabled = (date: NgbDateStruct) => {
-      const d = new Date(date.year, date.month - 1, date.day);
-      return d.getDay() === 0 || d.getDay() === 6;
-    };
-  }
+		// days that don't belong to current month are not visible
+		config.outsideDays = 'hidden';
+		// weekends are disabled
+		config.markDisabled = (date: NgbDateStruct) => {
+			const d = new Date(date.year, date.month - 1, date.day);
+			return d.getDay() === 0 || d.getDay() === 6;
+		};
+	}
 
-  onDateChange(date: NgbDateStruct) {
-    if (!this.fromDate && !this.toDate) {
-      this.fromDate = date;
-    } else if (this.fromDate && !this.toDate && after(date, this.fromDate)) {
-      this.toDate = date;
-    } else {
-      this.toDate = null;
-      this.fromDate = date;
-    }
-  }
+	onDateChange(date: NgbDateStruct) {
+		if (!this.fromDate && !this.toDate) {
+			this.fromDate = date;
+		} else if (
+			this.fromDate &&
+			!this.toDate &&
+			after(date, this.fromDate)
+		) {
+			this.toDate = date;
+		} else {
+			this.toDate = null;
+			this.fromDate = date;
+		}
+	}
 
-  isHovered = (date) =>
-    this.fromDate &&
-    !this.toDate &&
-    this.hoveredDate &&
-    after(date, this.fromDate) &&
-    // tslint:disable-next-line:semicolon
-    before(date, this.hoveredDate);
-  isInside = (date) => after(date, this.fromDate) && before(date, this.toDate);
-  isFrom = (date) => equals(date, this.fromDate);
-  isTo = (date) => equals(date, this.toDate);
+	isHovered = (date) =>
+		this.fromDate &&
+		!this.toDate &&
+		this.hoveredDate &&
+		after(date, this.fromDate) &&
+		// eslint-disable-next-line @typescript-eslint/semi, @typescript-eslint/member-delimiter-style
+		before(date, this.hoveredDate);
+	isInside = (date) =>
+		after(date, this.fromDate) && before(date, this.toDate);
+	isFrom = (date) => equals(date, this.fromDate);
+	isTo = (date) => equals(date, this.toDate);
 }

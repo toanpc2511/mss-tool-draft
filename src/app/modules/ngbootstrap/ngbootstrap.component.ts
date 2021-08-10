@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-ngbootstrap',
-  templateUrl: './ngbootstrap.component.html',
+  templateUrl: './ngbootstrap.component.html'
 })
-export class NgbootstrapComponent implements OnInit {
+export class NgbootstrapComponent {
   constructor() {}
-
-  ngOnInit() {}
 }

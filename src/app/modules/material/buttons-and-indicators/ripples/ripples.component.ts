@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 
 const basic = {

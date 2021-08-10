@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -6,11 +6,9 @@ import { FormControl } from '@angular/forms';
   templateUrl: './validate.component.html',
   styleUrls: ['./validate.component.scss']
 })
-export class ValidateComponent implements OnInit {
+export class ValidateComponent {
   @Input() control: FormControl;
   @Input() error: string;
   @Input() message: string;
   constructor() {}
-
-  ngOnInit(): void {}
 }

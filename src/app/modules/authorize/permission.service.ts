@@ -4,41 +4,43 @@ import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
 
 export interface IRole {
-  id: number;
-  name: string;
-  description: string;
+	id: number;
+	name: string;
+	description: string;
 }
 
 export interface IRoleDetail {
-  id: number;
-  name: string;
-  perrmission: Array<any>;
+	id: number;
+	name: string;
+	perrmission: Array<any>;
 }
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class PermissionService {
-  constructor(private http: HttpService) {}
+	constructor(private http: HttpService) {}
 
-  getRoles() {
-    return this.http.get<Array<IRole>>(`roles`);
-  }
+	getRoles() {
+		return this.http.customGet<Array<IRole>>(
+			`${environment.apiUrl1}/permissions/roles`
+		);
+	}
 
-  getRolesById(roleId: number) {
-    const params = new HttpParams().set('role-id', roleId.toString());
-    return this.http.get<IRoleDetail>('roles', { params });
-  }
+	getRolesById(roleId: number) {
+		const params = new HttpParams().set('role-id', roleId.toString());
+		return this.http.get<IRoleDetail>('roles', { params });
+	}
 
-  createRole(role: IRole) {
-    return this.http.post(`role`, role);
-  }
+	createRole(role: IRole) {
+		return this.http.post(`role`, role);
+	}
 
-  updateUser(id: number, role: IRole) {
-    return this.http.put(`roles/${id}`, role);
-  }
+	updateUser(id: number, role: IRole) {
+		return this.http.put(`roles/${id}`, role);
+	}
 
-  deleteUser(id: number) {
-    return this.http.delete(`roles/${id}`);
-  }
+	deleteUser(id: number) {
+		return this.http.delete(`roles/${id}`);
+	}
 }

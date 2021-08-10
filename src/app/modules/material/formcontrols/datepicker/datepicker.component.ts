@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable no-useless-escape */
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -540,7 +542,7 @@ export class DatepickerComponent implements OnInit {
     const day = d.day();
     // Prevent Saturday and Sunday from being selected.
     return day !== 0 && day !== 6;
-    // tslint:disable-next-line:semicolon
+    // eslint-disable-next-line @typescript-eslint/semi, @typescript-eslint/member-delimiter-style
   };
 
   addEvent(type: string, event: MatDatepickerInputEvent<Date>) {

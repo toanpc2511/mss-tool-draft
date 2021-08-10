@@ -15,114 +15,111 @@ import { PermissionModalComponent } from '../permission-modal/permission-modal.c
 import { PermissionService } from '../permission.service';
 
 @Component({
-  selector: 'app-list-permission',
-  templateUrl: './list-permission.component.html',
-  styleUrls: ['./list-permission.component.scss'],
-  providers: [SortService, FilterService, DestroyService]
+	selector: 'app-list-permission',
+	templateUrl: './list-permission.component.html',
+	styleUrls: ['./list-permission.component.scss'],
+	providers: [SortService, FilterService, DestroyService]
 })
 export class ListPermissionComponent implements OnInit {
-  searchFormControl: FormControl = new FormControl();
-  dataSource: Array<IRole> = [];
-  dataSourceTemp: Array<IRole> = [];
-  sorting: SortState;
-  filterField = new FilterField({ name: null });
+	searchFormControl: FormControl = new FormControl();
+	dataSource: Array<IRole> = [];
+	dataSourceTemp: Array<IRole> = [];
+	sorting: SortState;
+	filterField = new FilterField({ name: null });
 
-  constructor(
-    private permissionService: PermissionService,
-    private sortService: SortService<IRole>,
-    private filterService: FilterService<IRole>,
-    private cdr: ChangeDetectorRef,
-    private destroy$: DestroyService,
-    private modalService: NgbModal,
-    private toastr: ToastrService
-  ) {
-    this.sorting = sortService.sorting;
-  }
+	constructor(
+		private permissionService: PermissionService,
+		private sortService: SortService<IRole>,
+		private filterService: FilterService<IRole>,
+		private cdr: ChangeDetectorRef,
+		private destroy$: DestroyService,
+		private modalService: NgbModal,
+		private toastr: ToastrService
+	) {
+		this.sorting = sortService.sorting;
+	}
 
-  ngOnInit() {
-    this.getPermissions();
+	ngOnInit() {
+		this.getRoles();
 
-    this.searchFormControl.valueChanges
-      .pipe(debounceTime(500), takeUntil(this.destroy$))
-      .subscribe((value) => {
-        if (value.trim()) {
-          this.filterField.setFilterFieldValue(value.trim());
-        } else {
-          this.filterField.setFilterFieldValue(null);
-        }
+		this.searchFormControl.valueChanges
+			.pipe(debounceTime(500), takeUntil(this.destroy$))
+			.subscribe((value) => {
+				if (value.trim()) {
+					this.filterField.setFilterFieldValue(value.trim());
+				} else {
+					this.filterField.setFilterFieldValue(null);
+				}
 
-        // Set data after filter and apply current sorting
-        this.dataSource = this.sortService.sort(
-          this.filterService.filter(this.dataSourceTemp, this.filterField.field)
-        );
-        this.cdr.detectChanges();
-      });
-  }
+				// Set data after filter and apply current sorting
+				this.dataSource = this.sortService.sort(
+					this.filterService.filter(
+						this.dataSourceTemp,
+						this.filterField.field
+					)
+				);
+				this.cdr.detectChanges();
+			});
+	}
 
-  getPermissions() {
-    this.dataSource = this.dataSourceTemp = [
-      {
-        id: 1,
-        name: 'Quyền 1',
-        description: 'abcd'
-      },
-      {
-        id: 1,
-        name: 'Quyền 2',
-        description: 'efgh'
-      },
-      {
-        id: 1,
-        name: 'Quyền 3',
-        description: 'mno'
-      },
-      {
-        id: 1,
-        name: 'Quyền 4',
-        description: 'xyz'
-      }
-    ];
-    this.cdr.detectChanges();
-  }
+	getRoles() {
+		this.permissionService
+			.getRoles()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((res) => {
+				this.dataSource = this.dataSourceTemp = res.data;
+				// Set data after filter and apply current sorting
+				this.dataSource = this.sortService.sort(
+					this.filterService.filter(
+						this.dataSourceTemp,
+						this.filterField.field
+					)
+				);
+				this.cdr.detectChanges();
+			});
+	}
 
-  sort(column: string) {
-    this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
-  }
+	sort(column: string) {
+		this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
+	}
 
-  deletePermission(permission: any): void {
-    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-      backdrop: 'static'
-    });
-    const data: IConfirmModalData = {
-      title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xoá thông tin quyền ${permission.name}?`,
-      button: { class: 'btn-primary', title: 'Xác nhận' }
-    };
-    modalRef.componentInstance.data = data;
+	deletePermission(role: IRole): void {
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+			backdrop: 'static'
+		});
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn xoá thông tin quyền ${role.name}?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
 
-    modalRef.result.then((result) => {
-      if (result) {
-      }
-    });
-  }
+		modalRef.result.then((result) => {
+			if (result) {
+        this.getRoles();
+			}
+		});
+	}
 
-  openPermissionModal(accountId?: number) {
-    const modalRef = this.modalService.open(PermissionModalComponent, {
-      backdrop: 'static',
-      size: 'xl'
-    });
-    // Sử dụng api get user by id để lấy data fill vào form sửa
-    if (accountId) {
-      modalRef.componentInstance.accountId = accountId;
-    }
-    modalRef.result.then((result) => {
-      if (result) {
-      }
-    });
-  }
+	openRoleModal(roleId?: number) {
+		const modalRef = this.modalService.open(PermissionModalComponent, {
+			backdrop: 'static',
+			size: 'xl'
+		});
+		// Sử dụng api get user by id để lấy data fill vào form sửa
+		if (roleId) {
+			modalRef.componentInstance.roleId = roleId;
+		}
+		modalRef.result.then((result) => {
+			if (result) {
+				this.getRoles();
+			}
+		});
+	}
 
-  checkError(error: IError) {
-    if (error.code === '') {
-    }
-  }
+	checkError(error: IError) {
+		if (error.code === '') {
+      console.log(error);
+		}
+	}
 }

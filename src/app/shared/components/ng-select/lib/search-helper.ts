@@ -1,3 +1,4 @@
+/* eslint-disable no-control-regex */
 const diacritics = {
     '\u24B6': 'A',
     '\uFF21': 'A',

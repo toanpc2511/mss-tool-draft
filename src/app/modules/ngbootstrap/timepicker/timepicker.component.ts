@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormsModule, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
 const timepicker = {
-  beforeCodeTitle: 'Timepicker',
-  htmlCode: `
+	beforeCodeTitle: 'Timepicker',
+	htmlCode: `
 <div class="example-preview">
   <div>
     <ngb-timepicker [(ngModel)]="time"></ngb-timepicker>
@@ -18,7 +18,7 @@ const timepicker = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component} from '@angular/core';\n
 @Component({
     selector: 'ngbd-timepicker-basic',
@@ -28,14 +28,14 @@ export class NgbdTimepickerBasic {
     time = {hour: 13, minute: 30};
 }
 `,
-  viewCode: ``,
-  isCodeVisible: false,
-  isExampleExpanded: true,
+	viewCode: ``,
+	isCodeVisible: false,
+	isExampleExpanded: true
 };
 
 const meridian = {
-  beforeCodeTitle: 'Meridian',
-  htmlCode: `
+	beforeCodeTitle: 'Meridian',
+	htmlCode: `
 <div class="example-preview">
   <div>
     <ngb-timepicker [(ngModel)]="time" [meridian]="meridian"></ngb-timepicker>
@@ -51,7 +51,7 @@ const meridian = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 
 import {Component} from '@angular/core';\n
 @Component({
@@ -66,13 +66,13 @@ export class NgbdTimepickerMeridian {
     }
 }
 `,
-  viewCode: ``,
-  isCodeVisible: false,
+	viewCode: ``,
+	isCodeVisible: false
 };
 
 const seconds = {
-  beforeCodeTitle: 'Seconds',
-  htmlCode: `
+	beforeCodeTitle: 'Seconds',
+	htmlCode: `
 <div class="example-preview">
   <div>
     <ngb-timepicker [(ngModel)]="time" [seconds]="seconds"></ngb-timepicker>
@@ -88,7 +88,7 @@ const seconds = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import { Component } from '@angular/core';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';\n
 @Component({
@@ -103,13 +103,13 @@ export class NgbdTimepickerSeconds {
     }
 }
  `,
-  viewCode: ``,
-  isCodeVisible: false,
+	viewCode: ``,
+	isCodeVisible: false
 };
 
 const spinners = {
-  beforeCodeTitle: 'Spinners',
-  htmlCode: `
+	beforeCodeTitle: 'Spinners',
+	htmlCode: `
 <div class="example-preview">
   <div>
     <ngb-timepicker [(ngModel)]="time" [spinners]="spinners"></ngb-timepicker>
@@ -124,7 +124,7 @@ const spinners = {
   </div>
 </div>
 `,
-  tsCode: `
+	tsCode: `
 import {Component} from '@angular/core';
 
 @Component({
@@ -141,13 +141,13 @@ export class NgbdTimepickerSpinners {
 }
 
 	`,
-  viewCode: ``,
-  isCodeVisible: false,
+	viewCode: ``,
+	isCodeVisible: false
 };
 
 const customSteps = {
-  beforeCodeTitle: 'Custom steps',
-  htmlCode: `
+	beforeCodeTitle: 'Custom steps',
+	htmlCode: `
 <div class="example-preview">
   <div>
 	<ngb-timepicker [(ngModel)]="time" [seconds]="true" [hourStep]="hourStep" [minuteStep]="minuteStep"
@@ -175,7 +175,7 @@ const customSteps = {
   </div>
 </div>
 		`,
-  tsCode: `
+	tsCode: `
 import {Component} from '@angular/core';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';\n
 @Component({
@@ -189,13 +189,13 @@ export class NgbdTimepickerSteps {
     secondStep = 30;
 }
 `,
-  viewCode: ``,
-  isCodeVisible: false,
+	viewCode: ``,
+	isCodeVisible: false
 };
 
 const customValidation = {
-  beforeCodeTitle: 'Custom validation',
-  htmlCode: `
+	beforeCodeTitle: 'Custom validation',
+	htmlCode: `
 <div class="example-preview">
   <span>
 	Illustrates custom validation, you have to select time between 12:00 and 13:59
@@ -218,7 +218,7 @@ const customValidation = {
   </div>
 </div>
 		`,
-  tsCode: `
+	tsCode: `
 import {Component} from '@angular/core';
 import {FormControl} from '@angular/forms';\n
 @Component({
@@ -242,13 +242,13 @@ export class NgbdTimepickerValidation {
     });
 }
 `,
-  viewCode: ``,
-  isCodeVisible: false,
+	viewCode: ``,
+	isCodeVisible: false
 };
 
 const globalConfigurationOfTimepickers = {
-  beforeCodeTitle: 'Global configuration of timepickers',
-  htmlCode: `
+	beforeCodeTitle: 'Global configuration of timepickers',
+	htmlCode: `
 <div class="example-preview">
   <span>
 	This timepicker uses customized default values.
@@ -258,7 +258,7 @@ const globalConfigurationOfTimepickers = {
   </div>
 </div>
 		`,
-  tsCode: `
+	tsCode: `
 import {Component} from '@angular/core';
 import {NgbTimepickerConfig} from '@ng-bootstrap/ng-bootstrap';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';\n
@@ -276,82 +276,83 @@ export class NgbdTimepickerConfig {
     }
 }
 `,
-  viewCode: ``,
-  isCodeVisible: false,
+	viewCode: ``,
+	isCodeVisible: false
 };
 
 @Component({
-  selector: 'app-ng-timepicker',
-  templateUrl: './timepicker.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NgbTimepickerConfig], // add NgbTimepickerConfig to the component providers
+	selector: 'app-ng-timepicker',
+	templateUrl: './timepicker.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [NgbTimepickerConfig] // add NgbTimepickerConfig to the component providers
 })
 export class TimepickerComponent implements OnInit {
-  ctrl;
-  exampleTimepicker;
-  exampleMeridian;
-  exampleSeconds;
-  exampleSpinners;
-  exampleCustomSteps;
-  exampleCustomValidation;
-  exampleGlobalConfigurationOfTimepickers;
-  time = { hour: 13, minute: 30 };
-  time2 = { hour: 13, minute: 30 };
-  meridian = true;
-  time3: NgbTimeStruct = { hour: 13, minute: 30, second: 30 };
-  seconds = true;
-  time4: NgbTimeStruct = { hour: 13, minute: 30, second: 0 };
-  hourStep = 1;
-  minuteStep = 15;
-  secondStep = 30;
-  time5;
-  time6: NgbTimeStruct = { hour: 13, minute: 30, second: 0 };
-  time7 = { hour: 13, minute: 30 };
-  spinners = true;
+	ctrl;
+	exampleTimepicker;
+	exampleMeridian;
+	exampleSeconds;
+	exampleSpinners;
+	exampleCustomSteps;
+	exampleCustomValidation;
+	exampleGlobalConfigurationOfTimepickers;
+	time = { hour: 13, minute: 30 };
+	time2 = { hour: 13, minute: 30 };
+	meridian = true;
+	time3: NgbTimeStruct = { hour: 13, minute: 30, second: 30 };
+	seconds = true;
+	time4: NgbTimeStruct = { hour: 13, minute: 30, second: 0 };
+	hourStep = 1;
+	minuteStep = 15;
+	secondStep = 30;
+	time5;
+	time6: NgbTimeStruct = { hour: 13, minute: 30, second: 0 };
+	time7 = { hour: 13, minute: 30 };
+	spinners = true;
 
-  toggleSpinners() {
-    this.spinners = !this.spinners;
-  }
+	toggleSpinners() {
+		this.spinners = !this.spinners;
+	}
 
-  constructor(config: NgbTimepickerConfig) {
-    // customize default values of ratings used by this component tree
-    // config.seconds = true;
-    // config.spinners = false;
-  }
+	constructor() {
+		// customize default values of ratings used by this component tree
+		// config.seconds = true;
+		// config.spinners = false;
+	}
 
-  toggleSeconds() {
-    this.seconds = !this.seconds;
-  }
+	toggleSeconds() {
+		this.seconds = !this.seconds;
+	}
 
-  toggleMeridian() {
-    this.meridian = !this.meridian;
-  }
+	toggleMeridian() {
+		this.meridian = !this.meridian;
+	}
 
-  ngOnInit() {
-    this.exampleTimepicker = timepicker;
-    this.exampleMeridian = meridian;
-    this.exampleSeconds = seconds;
-    this.exampleSpinners = spinners;
-    this.exampleCustomSteps = customSteps;
-    this.exampleCustomValidation = customValidation;
-    this.exampleGlobalConfigurationOfTimepickers = globalConfigurationOfTimepickers;
+	ngOnInit() {
+		this.exampleTimepicker = timepicker;
+		this.exampleMeridian = meridian;
+		this.exampleSeconds = seconds;
+		this.exampleSpinners = spinners;
+		this.exampleCustomSteps = customSteps;
+		this.exampleCustomValidation = customValidation;
+		this.exampleGlobalConfigurationOfTimepickers =
+			globalConfigurationOfTimepickers;
 
-    this.ctrl = new FormControl('', (control: FormControl) => {
-      const value = control.value;
+		this.ctrl = new FormControl('', (control: FormControl) => {
+			const value = control.value;
 
-      if (!value) {
-        return null;
-      }
+			if (!value) {
+				return null;
+			}
 
-      if (value.hour < 12) {
-        return { tooEarly: true };
-      }
+			if (value.hour < 12) {
+				return { tooEarly: true };
+			}
 
-      if (value.hour > 13) {
-        return { tooLate: true };
-      }
+			if (value.hour > 13) {
+				return { tooLate: true };
+			}
 
-      return null;
-    });
-  }
+			return null;
+		});
+	}
 }

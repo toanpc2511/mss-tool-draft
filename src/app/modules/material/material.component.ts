@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-material',
-  templateUrl: './material.component.html',
+	selector: 'app-material',
+	templateUrl: './material.component.html'
 })
 export class MaterialComponent {}

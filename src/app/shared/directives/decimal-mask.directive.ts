@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { ElementRef, HostListener, Directive } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[decimal-mask]'
 })
 export class DecimalMaskDirective {

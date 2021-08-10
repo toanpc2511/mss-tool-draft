@@ -154,6 +154,7 @@ export class Step1Component implements OnInit, OnChanges {
       .subscribe();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: SimpleChanges) {
     if (!this.stationForm) {
       this.stationForm = this.initForm();
