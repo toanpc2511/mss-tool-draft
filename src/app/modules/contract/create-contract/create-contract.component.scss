@@ -1,0 +1,32 @@
+.card-header {
+  padding: 0 2.25rem !important;
+  border-bottom: none;
+  .title {
+    text-transform: uppercase;
+    color: #4674EB;
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+.card-body {
+  padding: 0 3.25rem !important;
+
+  .input-phone {
+    padding-right: 30px;
+  }
+}
+
+.info-customer,
+.info-contract,
+.list-product{
+  padding: 25px 0 15px;
+}
+
+.list-product {
+  .table {
+    th {
+      color: #1E1E1E !important;
+    }
+  }
+}

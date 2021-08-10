@@ -1,0 +1,338 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class='info-customer'>
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Thông tin khách hàng</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="infoForm" class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label required">Số điện thoại</label>
+            <div class="input-group">
+              <input type="text" class="form-control input-phone"
+                     placeholder="Nhập số điện thoại"
+                     formControlName='phone'
+                     (blur)="getInfoUser()"
+                     autocomplete="off"
+                     trim="blur"
+                     (keydown.space)="$event.preventDefault()"
+                     (keydown.enter)="getInfoUser()"
+              >
+              <button type="button" class="btn bg-transparent" (click)='deleteNumberPhone()' style="margin-left: -40px; z-index: 1;">
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+            <app-validate style='display: block'
+                          [control]="infoForm.controls['phone']"
+                          [error]="'required'"
+                          [message]="'Số diện thoại không được để trống'"
+            ></app-validate>
+            <app-validate style='display: block'
+                          [control]="infoForm.controls['phone']"
+                          [error]="'required'"
+                          [message]="'Số diện thoại không tồn tại trên hệ thống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label required">Tên khách hàng</label>
+            <input disabled
+                   type="text"
+                   formControlName='customer'
+                   class="form-control"
+                   placeholder="Nhập tên khách hàng"
+                   maxlength="99"
+                   autocomplete="off"
+            />
+            <app-validate style='display: block'
+                          [control]="infoForm.controls['customer']"
+                          [error]="'required'"
+                          [message]="'Tên khách hàng không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label required">Tên doanh nghiệp</label>
+            <input disabled
+                   type="text"
+                   formControlName='enterprise'
+                   class="form-control"
+                   placeholder="Nhập tên doanh nghiệp"
+                   maxlength="99"
+                   autocomplete="off"
+            />
+            <app-validate style='display: block'
+                          [control]="infoForm.controls['enterprise']"
+                          [error]="'required'"
+                          [message]="'Tên doanh nghiệp không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label">Ngày sinh</label>
+            <input disabled
+                   formControlName='brithday'
+                   type="date"
+                   class="form-control"
+            />
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label required">CMND/CCCD</label>
+            <input disabled
+                   type="text"
+                   formControlName='idno'
+                   class="form-control"
+                   placeholder="Nhập CMND/CCCD"
+                   maxlength="99"
+                   autocomplete="off"
+            />
+            <app-validate style='display: block'
+                          [control]="infoForm.controls['idno']"
+                          [error]="'required'"
+                          [message]="'CMND/CCCD không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label">Email</label>
+            <input disabled
+                   type="text"
+                   formControlName='email'
+                   class="form-control"
+                   placeholder="Nhập email"
+                   maxlength="99"
+                   autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-8">
+            <label class="form-label required">Địa chỉ</label>
+            <input disabled
+                   type="text"
+                   formControlName='address'
+                   class="form-control"
+                   placeholder="Nhập địa chỉ"
+                   maxlength="99"
+                   autocomplete="off"
+            />
+            <app-validate style='display: block'
+                          [control]="infoForm.controls['address']"
+                          [error]="'required'"
+                          [message]="'Địa chỉ không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class='info-contract'>
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Thông tin hợp đồng</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-4">
+          <label class="form-label required">Loại hợp đồng</label>
+          <select
+            class="form-control form-control-solid"
+            name="type"
+            [value]="'1'"
+          >
+            <option value="1">Trả trước</option>
+            <option value="2">Dự trù sản lượng</option>
+          </select>
+        </div>
+
+        <div class="col-lg-4">
+          <label class="form-label required">Tên hợp đồng</label>
+          <input
+            type="text"
+            class="form-control form-control-solid"
+            placeholder="Nhập tên hợp đồng"
+            maxlength="99"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="col-lg-4">
+          <label class="form-label">Ngày hết hạn</label>
+          <input type="date" class="form-control form-control-solid" name='expirationDate'/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-4">
+          <label class="form-label">HT giao nhận</label>
+          <select
+            class="form-control form-control-solid"
+            name="type"
+          >
+            <option selected value='null'>-- Chọn HT giao nhận --</option>
+            <option value="1">Trả trước</option>
+            <option value="2">Dự trù sản lượng</option>
+          </select>
+        </div>
+
+        <div class="col-lg-4">
+          <label class="form-label required">HT thanh toán</label>
+          <select
+            class="form-control form-control-solid"
+            name="type"
+          >
+            <option disabled selected value='null'>-- Chọn HT thanh toán --</option>
+            <option value="1">Trả trước</option>
+            <option value="2">Dự trù sản lượng</option>
+          </select>
+        </div>
+
+        <div class="col-lg-4">
+          <label class="form-label required">Địa chỉ ký hợp đồng</label>
+          <select
+            class="form-control form-control-solid"
+            name="type"
+          >
+            <option disabled [value]="null">Chọn tỉnh/thành phố</option>
+            <option *ngFor="let province of dataAddress" [value]="province.id">
+              {{ province.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-8">
+          <label class="form-label">Địa chỉ chi tiết</label>
+          <input
+            type="text"
+            class="form-control form-control-solid"
+            placeholder="Nhập địa chỉ chi tiết"
+            maxlength="99"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='list-product'>
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">danh sách hàng hóa</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <table class="table" id='tbProduct'>
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">STT</th>
+            <th scope="col" class='required'>Loại sản phẩm</th>
+            <th scope="col" class='required'>Tên sản phẩm</th>
+            <th scope="col">Đơn vị</th>
+            <th scope="col" class='required'>Số lượng</th>
+            <th scope="col">Đơn giá hiện tại (VND)</th>
+            <th scope="col">Đơn giá triết khấu (VND)</th>
+            <th scope="col">Thành tiền</th>
+            <th scope="col">Xóa</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td id="col0">1</td>
+            <td id="col1">
+              <select
+                class="form-control form-control-sm"
+                name="type"
+              >
+                <option disabled [value]="null">Chọn tỉnh/thành phố</option>
+                <option *ngFor="let province of dataAddress" [value]="province.id">
+                  {{ province.name }}
+                </option>
+              </select>
+            </td>
+            <td id="col2">
+              <select
+                class="form-control form-control-sm"
+                name="type"
+              >
+                <option disabled [value]="null">Chọn tỉnh/thành phố</option>
+                <option *ngFor="let province of dataAddress" [value]="province.id">
+                  {{ province.name }}
+                </option>
+              </select>
+            </td>
+            <td id="col3">Chiếc</td>
+            <td id="col4">
+              <input class="form-control form-control-sm" type="number" style='width: 70px'>
+            </td>
+            <td id="col5">10000000000</td>
+            <td id="col6">01011110101010</td>
+            <td id="col7">011110000000</td>
+            <td id="col8">
+              <a
+                (click)="deleteProduct()"
+                class="btn btn-icon btn-light btn-hover-danger btn-sm"
+              >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-danger"
+                  [ngbTooltip]="'Xóa'"
+                >
+                </span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td>
+              <a
+                (click)="addRow()"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm"
+              >
+              <span
+                [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'"
+                cacheSVG="true"
+                class="svg-icon svg-icon-md svg-icon-primary"
+                [ngbTooltip]="'Xóa'"
+              >
+              </span>
+              </a>
+
+            </td>
+            <td colspan='4'></td>
+            <td colspan='2'>Tổng tiền thanh toán</td>
+            <td>{{ totalPrice.toLocaleString('en-US')}}</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--<div class="input-group">-->
+<!--  <input type="text" class="form-control" placeholder="Search..." (blur)="getInfoUser()">-->
+<!--  <button type="button" class="btn bg-transparent" (click)='deleteNumberPhone()' style="margin-left: -40px; z-index: 100;">-->
+<!--    <i class="fa fa-times"></i>-->
+<!--  </button>-->
+<!--</div>-->

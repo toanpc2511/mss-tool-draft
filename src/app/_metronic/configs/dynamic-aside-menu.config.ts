@@ -59,6 +59,13 @@ export const DynamicAsideMenuConfig = {
       ]
     },
     {
+      title: 'Quản lý hợp đồng',
+      icon: 'fas fa-file-contract',
+      root: true,
+      page: '/hop-dong',
+      bullet: 'dot',
+    },
+    {
       title: 'Quản lý QR code',
       root: true,
       bullet: 'dot',
