@@ -193,7 +193,7 @@ export class CarouselComponent implements OnInit {
   showNavigationIndicators = false;
   thirdImages: Array<string>;
 
-  // tslint:disable-next-line:variable-name
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match
   constructor(private _http: HttpClient, config: NgbCarouselConfig) {
     // customize default values of carousels used by this component tree
     config.interval = 10000;

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SubheaderService } from '../_services/subheader.service';
 import { KTUtil } from '../../../../../../assets/js/components/util';
@@ -8,9 +8,9 @@ import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-subheader-wrapper',
-  templateUrl: './subheader-wrapper.component.html',
+  templateUrl: './subheader-wrapper.component.html'
 })
-export class SubheaderWrapperComponent implements OnInit, AfterViewInit {
+export class SubheaderWrapperComponent implements AfterViewInit {
   subheaderVersion$: Observable<string>;
   constructor(private subheader: SubheaderService, private router: Router) {
     this.subheader.setDefaultSubheader();
@@ -28,8 +28,6 @@ export class SubheaderWrapperComponent implements OnInit, AfterViewInit {
       .pipe(filter((event) => event instanceof ResolveEnd))
       .subscribe(initSubheader);
   }
-
-  ngOnInit(): void {}
 
   ngAfterViewInit() {
     KTUtil.ready(() => {

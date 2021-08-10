@@ -62,6 +62,33 @@ export class HttpService {
     );
   }
 
+  customPost<T>(
+    url: string,
+    body: any,
+    options?: {
+      headers?:
+        | HttpHeaders
+        | {
+            [header: string]: string | string[];
+          };
+      params?:
+        | HttpParams
+        | {
+            [param: string]: string | string[];
+          };
+      reportProgress?: boolean;
+      withCredentials?: boolean;
+    }
+  ): Observable<DataResponse<T>> {
+    const bodyOrigin = new DataPush(body);
+    return this.httpClient.post(url, bodyOrigin.data, options).pipe(
+      switchMap((response) => {
+        const res = new DataResponse<T>(response);
+        return of(res);
+      })
+    );
+  }
+
   post<T>(
     endPoint: string,
     body: any,
@@ -89,6 +116,33 @@ export class HttpService {
     );
   }
 
+  customPut<T>(
+    url: string,
+    body: any,
+    options?: {
+      headers?:
+        | HttpHeaders
+        | {
+            [header: string]: string | string[];
+          };
+      params?:
+        | HttpParams
+        | {
+            [param: string]: string | string[];
+          };
+      reportProgress?: boolean;
+      withCredentials?: boolean;
+    }
+  ): Observable<DataResponse<T>> {
+    const bodyOrigin = new DataPush(body);
+    return this.httpClient.put(url, bodyOrigin.data, options).pipe(
+      switchMap((response) => {
+        const res = new DataResponse<T>(response);
+        return of(res);
+      })
+    );
+  }
+
   put<T>(
     endPoint: string,
     body: any,
@@ -109,6 +163,31 @@ export class HttpService {
   ): Observable<DataResponse<T>> {
     const bodyOrigin = new DataPush(body);
     return this.httpClient.put(`${this.apiUrl}/${endPoint}`, bodyOrigin.data, options).pipe(
+      switchMap((response) => {
+        const res = new DataResponse<T>(response);
+        return of(res);
+      })
+    );
+  }
+
+  customDelete<T>(
+    url,
+    options?: {
+      headers?:
+        | HttpHeaders
+        | {
+            [header: string]: string | string[];
+          };
+      params?:
+        | HttpParams
+        | {
+            [param: string]: string | string[];
+          };
+      reportProgress?: boolean;
+      withCredentials?: boolean;
+    }
+  ): Observable<DataResponse<T>> {
+    return this.httpClient.delete(url, options).pipe(
       switchMap((response) => {
         const res = new DataResponse<T>(response);
         return of(res);

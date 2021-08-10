@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @angular-eslint/no-output-native */
+/* eslint-disable @angular-eslint/component-selector */
 import { DOCUMENT } from '@angular/common';
 import {
     ChangeDetectionStrategy,

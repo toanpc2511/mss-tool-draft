@@ -1,0 +1,41 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">
+      {{ isUpdate ? 'Sửa nhóm quyền' : 'Thêm mới nhóm quyền' }}
+    </h4>
+    <div class="close-icon" (click)="modal.close()"></div>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
+      <form [formGroup]="permissionForm" class="form form-label-right" *ngIf="!isUpdate">
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label required">Tên nhóm quyền</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="name"
+              placeholder="Nhập tên nhóm quyền"
+              autocomplete="off"
+              maxlength="99"
+              trim="blur"
+            />
+            <app-validate
+              [control]="permissionForm.controls['name']"
+              [error]="'required'"
+              [message]="'Tên không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-primary btn-dialog" (click)="onSubmit()">
+      Lưu
+    </button>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { takeUntil } from 'rxjs/operators';
 import { NgSelectConfig } from 'src/app/shared/components/ng-select/public-api';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
@@ -88,11 +89,7 @@ export class UserModalComponent implements OnInit {
         .createUser(this.userFormCreate.value)
         .pipe(takeUntil(this.destroy$))
         .subscribe(
-          (res) => {
-            if (res.data) {
-              this.modal.close(true);
-            }
-          },
+          (res) => this.closeModal(res),
           (err: IError) => this.checkError(err)
         );
     } else {
@@ -104,15 +101,18 @@ export class UserModalComponent implements OnInit {
         .updateUser(this.accountId, this.userFormUpdate.value)
         .pipe(takeUntil(this.destroy$))
         .subscribe(
-          (res) => {
-            if (res.data) {
-              this.modal.close(true);
-            }
-          },
+          (res) => this.closeModal(res),
           (err: IError) => this.checkError(err)
         );
     }
   }
+
+  closeModal(res: DataResponse<any>) {
+    if (res.data) {
+      this.modal.close(true);
+    }
+  }
+
   checkError(err: IError) {
     if (!this.isUpdate) {
       if (err.code === 'SUN-OIL-4179') {

@@ -1,16 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-notice',
-  templateUrl: './notice.component.html',
+  templateUrl: './notice.component.html'
 })
-export class NoticeComponent implements OnInit {
+export class NoticeComponent {
   // Public properties
   @Input() classes: string;
   @Input() icon: string;
   @Input() svg: string;
 
   constructor() {}
-
-  ngOnInit(): void {}
 }

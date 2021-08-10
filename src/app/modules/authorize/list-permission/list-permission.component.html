@@ -1,0 +1,105 @@
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Danh sách nhóm quyền</h3>
+		</div>
+
+		<div class="card-toolbar row">
+			<div class="search-form">
+				<i class="flaticon-search"></i>
+				<input
+					type="text"
+					name="searchText"
+					placeholder="Search..."
+					class="form-control"
+					[formControl]="searchFormControl"
+				/>
+			</div>
+			<button
+				type="button"
+				class="btn btn-primary"
+				(click)="openRoleModal()"
+			>
+				Thêm mới
+			</button>
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table
+				class="
+					table table-head-custom table-vertical-center
+					overflow-hidden
+				"
+			>
+				<thead>
+					<th>
+						Tên nhóm quyền
+						<app-sort-icon
+							column="name"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th class="text-center">Tác động</th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of dataSource">
+						<td class="name">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.name"
+							>
+								{{ item.name }}
+							</p>
+						</td>
+
+						<td class="text-center action">
+							<a
+								(click)="openRoleModal(item.id)"
+								class="
+									btn
+									btn-icon
+									btn-light
+									btn-hover-primary
+									btn-sm
+									mx-3
+								"
+							>
+								<span
+									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+									cacheSVG="true"
+									class="
+										svg-icon svg-icon-md svg-icon-primary
+									"
+									[ngbTooltip]="'Sửa'"
+								>
+								</span>
+							</a>
+							<a
+								(click)="deletePermission(item)"
+								class="
+									btn
+									btn-icon
+									btn-light
+									btn-hover-danger
+									btn-sm
+								"
+							>
+								<span
+									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-danger"
+									[ngbTooltip]="'Xóa'"
+								>
+								</span>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

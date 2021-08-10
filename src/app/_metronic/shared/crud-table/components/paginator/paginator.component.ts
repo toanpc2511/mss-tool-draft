@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PageSizes, PaginatorState } from '../../models/paginator.model';
 
 @Component({
@@ -6,14 +6,12 @@ import { PageSizes, PaginatorState } from '../../models/paginator.model';
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss']
 })
-export class PaginatorComponent implements OnInit {
+export class PaginatorComponent {
   @Input() paginator: PaginatorState;
   @Input() isLoading = false;
   @Output() paginate: EventEmitter<PaginatorState> = new EventEmitter();
   pageSizes: number[] = PageSizes;
   constructor() {}
-
-  ngOnInit(): void {}
 
   pageChange(num: number) {
     this.paginator.page = num;

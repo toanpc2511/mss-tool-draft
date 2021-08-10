@@ -69,7 +69,7 @@ export class DefaultSelectionModel implements SelectionModel {
                 continue;
             }
             child.selected = selected;
-        };
+        }
     }
 
     private _removeChildren(parent: NgOption) {

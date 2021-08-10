@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { NgModule } from '@angular/core';
 import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
-import { NoticeComponent } from './notice/notice.component';
-import { CodePreviewComponent } from './code-preview/code-preview.component';
+import { HighlightModule } from 'ngx-highlightjs';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { CoreModule } from '../../../core';
+import { CodePreviewComponent } from './code-preview/code-preview.component';
+import { NoticeComponent } from './notice/notice.component';
 
 @NgModule({
   declarations: [NoticeComponent, CodePreviewComponent],

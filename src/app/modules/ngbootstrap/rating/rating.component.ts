@@ -313,7 +313,7 @@ export class RatingComponent implements OnInit {
     }
   }
 
-  constructor(config: NgbRatingConfig) {
+  constructor() {
     // customize default values of ratings used by this component tree
     // config.max = 5;
     // config.readonly = true;

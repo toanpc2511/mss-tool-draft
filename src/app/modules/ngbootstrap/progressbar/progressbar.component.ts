@@ -248,7 +248,7 @@ export class ProgressbarComponent implements OnInit {
   exampleGlobalConfigurationOfProgressBars;
   height = '20px';
 
-  constructor(config: NgbProgressbarConfig) {
+  constructor() {
     // customize default values of progress bars used by this component tree
     // config.max = 1000;
     // config.striped = true;

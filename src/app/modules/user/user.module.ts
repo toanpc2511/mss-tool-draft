@@ -27,4 +27,4 @@ import { ProductTypeComponent } from './user.component';
     InputTrimModule
   ]
 })
-export class ProductTypeModule {}
+export class UserModule {}
