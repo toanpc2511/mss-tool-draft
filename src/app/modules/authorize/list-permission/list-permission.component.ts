@@ -83,7 +83,7 @@ export class ListPermissionComponent implements OnInit {
 		this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
 	}
 
-	deletePermission(role: IRole): void {
+	deleteRole(role: IRole): void {
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
 			backdrop: 'static'
 		});
@@ -96,7 +96,15 @@ export class ListPermissionComponent implements OnInit {
 
 		modalRef.result.then((result) => {
 			if (result) {
-        this.getRoles();
+				this.permissionService
+					.deleteRole(role.id)
+					.pipe(takeUntil(this.destroy$))
+					.subscribe(
+						() => {
+							this.getRoles();
+						},
+						(err: IError) => this.checkError(err)
+					);
 			}
 		});
 	}
@@ -118,8 +126,10 @@ export class ListPermissionComponent implements OnInit {
 	}
 
 	checkError(error: IError) {
-		if (error.code === '') {
-      console.log(error);
+		if (error.code === 'SUN-OIL-4193') {
+			this.toastr.error(
+				'Không thể xóa vì có người dùng đang được gắn nhóm quyền này'
+			);
 		}
 	}
 }
