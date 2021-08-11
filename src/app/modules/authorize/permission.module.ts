@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgbAccordionModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { InputTrimModule } from 'ng2-trim-directive';
 import { NgSelectModule } from 'src/app/shared/components/ng-select/public-api';
@@ -24,7 +25,8 @@ import { PermissionComponent } from './permission.component';
     FormsModule,
     SharedComponentsModule,
     ReactiveFormsModule,
-    InputTrimModule
+    InputTrimModule,
+    NgbAccordionModule
   ]
 })
 export class PermissionModule {}
