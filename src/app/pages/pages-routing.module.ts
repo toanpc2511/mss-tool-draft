@@ -53,6 +53,11 @@ const routes: Routes = [
         loadChildren: () => import('../modules/product/product.module').then((m) => m.ProductModule)
       },
       {
+        path: 'hop-dong',
+        loadChildren: () =>
+          import('../modules/contract/contract.module').then((m) => m.ContractModule)
+      },
+      {
         path: 'tai-khoan',
         loadChildren: () => import('../modules/user/user.module').then((m) => m.UserModule)
       },
