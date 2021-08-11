@@ -54,7 +54,7 @@ export class PermissionModalComponent implements OnInit {
         );
     } else {
       this.permissionService
-        .updateUser(this.roleId, this.permissionForm.value)
+        .updateRole(this.roleId, this.permissionForm.value)
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (res) => this.closeModal(res),

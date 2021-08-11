@@ -33,14 +33,14 @@ export class PermissionService {
 	}
 
 	createRole(role: IRole) {
-		return this.http.post(`role`, role);
+		return this.http.post(`${environment.apiUrl1}/permissions/role`, role);
 	}
 
-	updateUser(id: number, role: IRole) {
-		return this.http.put(`roles/${id}`, role);
+	updateRole(id: number, role: IRole) {
+		return this.http.put(`${environment.apiUrl1}/permissions/roles/${id}`, role);
 	}
 
-	deleteUser(id: number) {
-		return this.http.delete(`roles/${id}`);
+	deleteRole(id: number) {
+		return this.http.customDelete(`${environment.apiUrl1}/permissions/roles/${id}`);
 	}
 }
