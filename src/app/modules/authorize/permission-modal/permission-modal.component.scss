@@ -1,12 +1,10 @@
-input[type='checkbox'] {
-	font-size: 1.2rem;
-	width: 1.2rem;
-	height: 1.2rem;
-}
-
 .permission-list {
 	gap: 20px;
 	flex-wrap: wrap;
+	div {
+		margin: 13px;
+		margin-bottom: unset;
+	}
 }
 
 label {

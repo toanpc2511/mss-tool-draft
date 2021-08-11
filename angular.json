@@ -24,7 +24,11 @@
               "object-path",
               "apexcharts",
               "clipboard.js",
-              "highlight.js"
+              "highlight.js",
+              "lodash",
+              "snakecase-keys",
+              "camelize",
+              "ng2-trim-directive"
             ],
             "index": "src/index.html",
             "main": "src/main.ts",

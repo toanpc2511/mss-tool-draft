@@ -112,7 +112,9 @@
 
 .accordion {
 	.card {
+		border: 1px solid #ebedf3!important;
 		margin: 0.5rem !important;
+		border-radius: unset;
 	}
 
 	.btn-link,
