@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
@@ -16,7 +15,7 @@ export enum EMethod {
 	DELETE = 'DELETE'
 }
 export interface IFeature {
-	id: string;
+	id: number;
 	name: string;
 	method: EMethod;
 }
@@ -33,7 +32,7 @@ export interface IModule {
 }
 
 export class FeatureData implements IFeature {
-	id: string;
+	id: number;
 	name: string;
 	method: EMethod;
 	checked: boolean;
@@ -75,7 +74,7 @@ export class ModuleData implements IModule {
 
 export interface IModuleInput {
 	name: string;
-	groupFeature: Map<string, Array<number>>;
+	groupFeature: any;
 }
 
 @Injectable({
@@ -97,11 +96,11 @@ export class PermissionService {
 		return this.http.customGet<Array<IModule>>(`${environment.apiUrl1}/permissions/modules`);
 	}
 
-	createRole(role: IRole) {
+	createRole(role: IModuleInput) {
 		return this.http.customPost<IRole>(`${environment.apiUrl1}/permissions/roles`, role);
 	}
 
-	updateRole(id: number, role: IRole) {
+	updateRole(id: number, role: IModuleInput) {
 		return this.http.customPut<IRole>(`${environment.apiUrl1}/permissions/roles/${id}`, role);
 	}
 

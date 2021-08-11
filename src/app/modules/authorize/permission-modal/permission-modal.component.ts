@@ -6,8 +6,9 @@ import {
 	ViewChild,
 	ViewChildren
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbAccordion, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
@@ -17,6 +18,7 @@ import {
 	FeatureData,
 	GroupData,
 	IModule,
+	IModuleInput,
 	ModuleData,
 	PermissionService
 } from '../permission.service';
@@ -50,6 +52,7 @@ export class PermissionModalComponent implements OnInit {
 		private fb: FormBuilder,
 		private permissionService: PermissionService,
 		private cdr: ChangeDetectorRef,
+		private toastr: ToastrService,
 		private destroy$: DestroyService
 	) {}
 
@@ -60,7 +63,6 @@ export class PermissionModalComponent implements OnInit {
 			.subscribe((res) => {
 				this.modules = res.data || [];
 				this.modulesData = this.modules.map((m) => new ModuleData(m));
-				console.log(this.modulesData);
 			});
 		this.buildForm();
 		if (this.roleId) {
@@ -79,9 +81,15 @@ export class PermissionModalComponent implements OnInit {
 		if (this.permissionForm.invalid) {
 			return;
 		}
+		const isHasOnePermission = this.modulesData.some((m) => m.checked);
+		if (!isHasOnePermission) {
+			this.toastr.error('Không thể thêm nhóm quyền này vì chưa có chức năng nào được chọn');
+			return;
+		}
+
 		if (!this.isUpdate) {
 			this.permissionService
-				.createRole(this.permissionForm.value)
+				.createRole(this.convertPermissionData(this.modulesData))
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
 					(res) => this.closeModal(res),
@@ -89,13 +97,35 @@ export class PermissionModalComponent implements OnInit {
 				);
 		} else {
 			this.permissionService
-				.updateRole(this.roleId, this.permissionForm.value)
+				.updateRole(this.roleId, this.convertPermissionData(this.modulesData))
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
 					(res) => this.closeModal(res),
 					(err: IError) => this.checkError(err)
 				);
 		}
+	}
+
+	convertPermissionData(data: Array<ModuleData>): IModuleInput {
+		const permissionData = new Map<string, Array<number>>();
+		for (const module of data) {
+			for (const group of module.groups) {
+				let featureIds = [];
+				for (const feature of group.features) {
+					if (feature.checked) {
+						featureIds = [...featureIds, feature.id];
+					}
+				}
+				permissionData.set(group.id, featureIds);
+			}
+		}
+
+		const dataInput: IModuleInput = {
+			name: this.permissionForm.get('name').value,
+			groupFeature: Object.fromEntries(permissionData)
+		};
+
+		return dataInput;
 	}
 
 	closeModal(res: DataResponse<any>) {
@@ -119,14 +149,12 @@ export class PermissionModalComponent implements OnInit {
 		moduleId: number,
 		type: 'MODULE' | 'GROUP' | 'FEATURE',
 		groupId?: string,
-		featureId?: string
+		featureId?: number
 	) {
 		const checked = ($event.target as HTMLInputElement).checked;
 		const moduleData = this.modulesData.find((m) => m.id === moduleId);
 		const groupData = moduleData.groups.find((g) => g.id === groupId);
 		const featureData = groupData?.features.find((f) => f.id === featureId);
-		console.log(groupId);
-
 		switch (type) {
 			case 'MODULE':
 				this.setPermissionModule(checked, moduleData);
@@ -138,7 +166,6 @@ export class PermissionModalComponent implements OnInit {
 				this.setPermissionFeature(checked, featureData);
 				break;
 		}
-		console.log(this.modulesData);
 	}
 
 	setPermissionModule(checked: boolean, moduleData: ModuleData) {
@@ -147,7 +174,7 @@ export class PermissionModalComponent implements OnInit {
 			moduleData.groups = moduleData.groups.map((g) => {
 				g.checked = true;
 				g.features = g.features.map((f) => {
-					if (f.method === EMethod.GET) {
+					if (f.method !== EMethod.DELETE) {
 						f.checked = true;
 					}
 					return f;
@@ -173,7 +200,7 @@ export class PermissionModalComponent implements OnInit {
 		if (checked) {
 			groupData.checked = true;
 			groupData.features = groupData.features.map((f) => {
-				if (f.method === EMethod.GET) {
+				if (f.method !== EMethod.DELETE) {
 					f.checked = true;
 				}
 				return f;

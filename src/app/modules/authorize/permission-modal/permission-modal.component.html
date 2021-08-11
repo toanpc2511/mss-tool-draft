@@ -35,13 +35,15 @@
 							<ng-template ngbPanelTitle>
 								<div class="d-flex justify-content-between">
 									<div class="d-flex align-items-center">
-										<input
-											type="checkbox"
-											class="mr-2"
-											[checked]="module.checked"
-											(click)="$event.stopPropagation()"
-											(change)="permissionChange($event, module.id, 'MODULE')"
-										/>
+										<label class="checkbox checkbox-lg mr-2">
+											<input
+												type="checkbox"
+												[checked]="module.checked"
+												(click)="$event.stopPropagation()"
+												(change)="permissionChange($event, module.id, 'MODULE')"
+											/>
+											<span (click)="$event.stopPropagation()"></span>
+										</label>
 										<label class="m-0">{{module.name}}</label>
 									</div>
 									<div
@@ -58,13 +60,15 @@
 										<ng-template ngbPanelTitle>
 											<div class="d-flex justify-content-between">
 												<div class="d-flex align-items-center">
-													<input
-														type="checkbox"
-														class="mr-2"
-														[checked]="group.checked"
-														(click)="$event.stopPropagation()"
-														(change)="permissionChange($event, module.id, 'GROUP', group.id)"
-													/>
+													<label class="checkbox checkbox-lg mr-2">
+														<input
+															type="checkbox"
+															[checked]="group.checked"
+															(click)="$event.stopPropagation()"
+															(change)="permissionChange($event, module.id, 'GROUP', group.id)"
+														/>
+														<span (click)="$event.stopPropagation()"></span>
+													</label>
 													<label class="m-0">{{group.name}}</label>
 												</div>
 												<div
@@ -78,13 +82,15 @@
 													*ngFor="let feature of group.features"
 													class="d-flex align-items-center"
 												>
-													<input
-														type="checkbox"
-														class="mr-2"
-														[checked]="feature.checked"
-														[disabled]="feature.method === eMethod.GET"
-														(change)="permissionChange($event, module.id, 'FEATURE' , group.id, feature.id)"
-													/>
+													<label class="checkbox checkbox-lg mr-2">
+														<input
+															type="checkbox"
+															[checked]="feature.checked"
+															[disabled]="feature.method === eMethod.GET"
+															(change)="permissionChange($event, module.id, 'FEATURE' , group.id, feature.id)"
+														/>
+														<span (click)="$event.stopPropagation()"></span>
+													</label>
 													<label
 														[style.opacity]="feature.method === eMethod.GET ? '0.7' : '1'"
 														class="m-0"
