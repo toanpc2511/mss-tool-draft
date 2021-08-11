@@ -87,11 +87,6 @@ export class ListContractComponent implements OnInit {
         this.checkError(err);
       }
     );
-      // .subscribe((res) => {
-      //   this.dataSource = res.data;
-      //   this.paginatorState.recalculatePaginator(res.meta.total);
-      //   this.cdr.detectChanges();
-      // });
   }
 
   createContract() {
@@ -138,6 +133,14 @@ export class ListContractComponent implements OnInit {
   pagingChange($event: IPaginatorState) {
     this.paginatorState = $event as PaginatorState;
     this.getListContract();
+  }
+
+  updateContract(code:string):void {
+    console.log('Mã hợp đồng', code);
+  }
+
+  deleteContract(item: IContract): void {
+    console.log('Hợp đồng', item);
   }
 
 }

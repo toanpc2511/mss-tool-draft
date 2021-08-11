@@ -43,7 +43,7 @@
         <th>
           Loại hợp đồng
           <app-sort-icon
-            column="contractType"
+            column="contract_type"
             [activeColumn]="sortData?.fieldSort"
             [activeDirection]="sortData?.directionSort"
             (sort)="sort($event)"
@@ -52,7 +52,7 @@
         <th>
           Ngày tạo
           <app-sort-icon
-            column="effectStartDate"
+            column="effect_start_date"
             [activeColumn]="sortData?.fieldSort"
             [activeDirection]="sortData?.directionSort"
             (sort)="sort($event)"
@@ -61,24 +61,18 @@
         <th>
           Ngày hết hạn
           <app-sort-icon
-            column="effectEndDate"
+            column="effect_end_date"
             [activeColumn]="sortData?.fieldSort"
             [activeDirection]="sortData?.directionSort"
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th>
-          Trạng thái
-          <app-sort-icon
-            column="status"
-            [activeColumn]="sortData?.fieldSort"
-            [activeDirection]="sortData?.directionSort"
-            (sort)="sort($event)"
-          ></app-sort-icon>
-        </th>
+        <th>Trạng thái</th>
+        <th class='text-center'>Tác động</th>
         </thead>
         <tbody>
-        <tr *ngFor="let item of dataSource" (click)='viewDetalContract()'>
+<!--        <tr *ngFor="let item of dataSource" (click)='viewDetalContract()'>-->
+        <tr *ngFor="let item of dataSource" >
           <td class="code">
             <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
               {{ item.code }}
@@ -113,11 +107,39 @@
                 [class.label-light-success]="item.status === status.ACCEPTED"
                 [class.label-light-danger]="item.status === status.REJECT"
                 [class.label-light-warning]="item.status === status.WAITING_ACCEPT"
+                [class.label-light-primary]="item.status === status.DRAFT"
               >
                 <ng-container *ngIf="item.status === status.ACCEPTED">Đã duyệt</ng-container>
                 <ng-container *ngIf="item.status === status.REJECT">Đã từ chối</ng-container>
                 <ng-container *ngIf="item.status === status.WAITING_ACCEPT">Chờ phê duyệt</ng-container>
+                <ng-container *ngIf="item.status === status.DRAFT">Lưu nháp</ng-container>
               </span>
+          </td>
+          <td class="text-center action" *ngIf='item.status == "DRAFT"'>
+            <a
+              (click)="updateContract(item.code)"
+              class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              [ngbTooltip]="'Sửa'"
+            >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                >
+                </span>
+            </a>
+            <a
+              (click)="deleteContract(item)"
+              class="btn btn-icon btn-light btn-hover-danger btn-sm"
+              [ngbTooltip]="'Xóa'"
+            >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-danger"
+                >
+                </span>
+            </a>
           </td>
         </tr>
         </tbody>

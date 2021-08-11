@@ -10,6 +10,7 @@ import { ContractRoutingModule } from './contract-routing.module';
 import { ListContractComponent } from './list-contract/list-contract.component';
 import { CreateContractComponent } from './create-contract/create-contract.component';
 import { DetailsContractComponent } from './details-contract/details-contract.component';
+import { DirectivesModule } from '../../shared/directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { DetailsContractComponent } from './details-contract/details-contract.co
     FormsModule,
     SharedComponentsModule,
     ReactiveFormsModule,
-    InputTrimModule
+    InputTrimModule,
+    DirectivesModule
   ]
 })
 export class ContractModule {}

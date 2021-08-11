@@ -23,10 +23,25 @@
   padding: 25px 0 15px;
 }
 
+.info-contract {
+  .icon-add {
+    padding-top: 30px;
+  }
+}
+
 .list-product {
   .table {
     th {
       color: #1E1E1E !important;
+    }
+
+    td {
+      &.col1 {
+        width: 150px;
+      }
+      &.col2 {
+        width: 250px;
+      }
     }
   }
 }

@@ -37,6 +37,13 @@ export interface IAddress {
   distric_id: number;
 }
 
+export interface IProperties {
+  id: number;
+  name: string;
+  type: string;
+  status: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -62,6 +69,11 @@ export class ContractService {
 
   getAddress() {
     return this.http.get<IAddress[]>('gas-stations/address');
+  }
+
+  getProperties(type: string) {
+    const params = new HttpParams().set('type',type)
+    return this.http.get<IProperties[]>('properties', {params});
   }
 
 }

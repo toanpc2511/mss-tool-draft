@@ -39,11 +39,10 @@
 
           <div class="col-lg-4">
             <label class="form-label required">Tên khách hàng</label>
-            <input disabled
+            <input [attr.disabled]='true'
                    type="text"
                    formControlName='customer'
                    class="form-control"
-                   placeholder="Nhập tên khách hàng"
                    maxlength="99"
                    autocomplete="off"
             />
@@ -56,11 +55,10 @@
 
           <div class="col-lg-4">
             <label class="form-label required">Tên doanh nghiệp</label>
-            <input disabled
+            <input [attr.disabled]='true'
                    type="text"
                    formControlName='enterprise'
                    class="form-control"
-                   placeholder="Nhập tên doanh nghiệp"
                    maxlength="99"
                    autocomplete="off"
             />
@@ -75,7 +73,7 @@
         <div class="form-group row">
           <div class="col-lg-4">
             <label class="form-label">Ngày sinh</label>
-            <input disabled
+            <input [attr.disabled]='true'
                    formControlName='brithday'
                    type="date"
                    class="form-control"
@@ -84,11 +82,10 @@
 
           <div class="col-lg-4">
             <label class="form-label required">CMND/CCCD</label>
-            <input disabled
+            <input [attr.disabled]='true'
                    type="text"
                    formControlName='idno'
                    class="form-control"
-                   placeholder="Nhập CMND/CCCD"
                    maxlength="99"
                    autocomplete="off"
             />
@@ -101,11 +98,10 @@
 
           <div class="col-lg-4">
             <label class="form-label">Email</label>
-            <input disabled
+            <input [attr.disabled]='true'
                    type="text"
                    formControlName='email'
                    class="form-control"
-                   placeholder="Nhập email"
                    maxlength="99"
                    autocomplete="off"
             />
@@ -115,11 +111,10 @@
         <div class="form-group row">
           <div class="col-lg-8">
             <label class="form-label required">Địa chỉ</label>
-            <input disabled
+            <input [attr.disabled]='true'
                    type="text"
                    formControlName='address'
                    class="form-control"
-                   placeholder="Nhập địa chỉ"
                    maxlength="99"
                    autocomplete="off"
             />
@@ -142,91 +137,159 @@
     </div>
 
     <div class="card-body">
-      <div class="form-group row">
-        <div class="col-lg-4">
-          <label class="form-label required">Loại hợp đồng</label>
-          <select
-            class="form-control form-control-solid"
-            name="type"
-            [value]="'1'"
-          >
-            <option value="1">Trả trước</option>
-            <option value="2">Dự trù sản lượng</option>
-          </select>
+
+      <form [formGroup]="contractForm" class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label required">Loại hợp đồng</label>
+            <select
+              class="form-control"
+              name="contractMethod"
+              formControlName='contractMethod'
+              [(ngModel)]='method'
+              [value]="'tra-truoc'"
+            >
+              <option *ngFor='let item of contractTypes' [ngValue]='item.value'>{{item.label}}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label required">Tên hợp đồng</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nhập tên hợp đồng"
+              maxlength="99"
+              autocomplete="off"
+              formControlName='contractName'
+            />
+            <app-validate
+              [control]="contractForm.controls['contractName']"
+              [error]="'required'"
+              [message]="'Tên hợp không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label">Ngày hết hạn</label>
+            <input type="date" class="form-control" name='expirationDate' formControlName='expirationDate'/>
+          </div>
+        </div>
+<!--        <p>sdsdsdsdsd {{contractForm.value | json}}</p>-->
+
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label">HT giao nhận</label>
+            <select
+              class="form-control"
+              name="TRANSPORT_METHOD"
+              formControlName='transportMethod'
+            >
+              <option disabled [value]="null">Chọn HT giao nhận</option>
+              <option *ngFor="let item of TRANSPORT_METHOD" [value]="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label required">HT thanh toán</label>
+            <select
+              class="form-control"
+              name="PAYMENT_METHOD_CONTRACT"
+              formControlName='paymentMethod'
+            >
+              <option disabled [value]="null">Chọn HT thanh toán</option>
+              <option *ngFor="let item of PAYMENT_METHOD_CONTRACT" [value]="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+            <app-validate
+              [control]="contractForm.controls['paymentMethod']"
+              [error]="'required'"
+              [message]="'HT thanh toán không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4" *ngIf='method == "tra-truoc"'>
+            <label class="form-label required">Địa chỉ ký hợp đồng</label>
+            <select
+              class="form-control"
+              name="type"
+              formControlName='contractAddress'
+            >
+              <option disabled [value]="null">Chọn địa chỉ ký hợp đồng</option>
+              <option *ngFor="let province of dataAddress" [value]="province.id">
+                {{ province.name }}
+              </option>
+            </select>
+            <app-validate
+              [control]="contractForm.controls['contractAddress']"
+              [error]="'required'"
+              [message]="'Địa chỉ ký hợp đồng không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4" *ngIf='method == "du-tru"'>
+            <label class="form-label required">Hạn mức</label>
+            <input
+              type="text"
+              decimal-mask
+              class="form-control"
+              placeholder="Nhập hạn mức"
+              maxlength="99"
+              autocomplete="off"
+              formControlName='limit'
+            />
+          </div>
         </div>
 
-        <div class="col-lg-4">
-          <label class="form-label required">Tên hợp đồng</label>
-          <input
-            type="text"
-            class="form-control form-control-solid"
-            placeholder="Nhập tên hợp đồng"
-            maxlength="99"
-            autocomplete="off"
-          />
+        <div class='form-group row' *ngIf='method == "tra-truoc"'>
+          <div class="col-lg-8">
+            <label class="form-label">Địa chỉ chi tiết</label>
+            <input
+              type="text"
+              [attr.disabled]='true'
+              class="form-control"
+              maxlength="99"
+              autocomplete="off"
+              formControlName='fullAddress'
+            />
+          </div>
         </div>
 
-        <div class="col-lg-4">
-          <label class="form-label">Ngày hết hạn</label>
-          <input type="date" class="form-control form-control-solid" name='expirationDate'/>
-        </div>
-      </div>
+        <div class="form-group row" formArrayName='expectedDate' *ngIf='method !== "tra-truoc"'>
+          <div class="col-lg-4" *ngFor="let alias of expectedDate.controls; let i = index">
+            <div *ngIf='method == "du-tru"'>
+              <label class="form-label">Ngày dự kiến TT lần {{i+1}}</label>
+              <input
+                type="date"
+                class="form-control"
+                name='expectedDate'
+              />
+            </div>
+          </div>
 
-      <div class="form-group row">
-        <div class="col-lg-4">
-          <label class="form-label">HT giao nhận</label>
-          <select
-            class="form-control form-control-solid"
-            name="type"
-          >
-            <option selected value='null'>-- Chọn HT giao nhận --</option>
-            <option value="1">Trả trước</option>
-            <option value="2">Dự trù sản lượng</option>
-          </select>
+          <div class="col-lg-4 icon-add" *ngIf='method == "du-tru" && totalInputDate < 5'>
+            <a
+              (click)="addExpectedDate()"
+              class="btn btn-icon btn-light btn-hover-primary btn-sm"
+            >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Thêm'"
+                >
+                </span>
+            </a>
+          </div>
         </div>
-
-        <div class="col-lg-4">
-          <label class="form-label required">HT thanh toán</label>
-          <select
-            class="form-control form-control-solid"
-            name="type"
-          >
-            <option disabled selected value='null'>-- Chọn HT thanh toán --</option>
-            <option value="1">Trả trước</option>
-            <option value="2">Dự trù sản lượng</option>
-          </select>
-        </div>
-
-        <div class="col-lg-4">
-          <label class="form-label required">Địa chỉ ký hợp đồng</label>
-          <select
-            class="form-control form-control-solid"
-            name="type"
-          >
-            <option disabled [value]="null">Chọn tỉnh/thành phố</option>
-            <option *ngFor="let province of dataAddress" [value]="province.id">
-              {{ province.name }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <div class="col-lg-8">
-          <label class="form-label">Địa chỉ chi tiết</label>
-          <input
-            type="text"
-            class="form-control form-control-solid"
-            placeholder="Nhập địa chỉ chi tiết"
-            maxlength="99"
-            autocomplete="off"
-          />
-        </div>
-      </div>
+      </form>
     </div>
   </div>
 
-  <div class='list-product'>
+  <div class='list-product' *ngIf='method == "tra-truoc"'>
     <div class="card-header">
       <div class="card-title">
         <h3 class="title">danh sách hàng hóa</h3>
@@ -237,51 +300,65 @@
       <table class="table" id='tbProduct'>
         <thead class="thead-light">
           <tr>
-            <th scope="col">STT</th>
-            <th scope="col" class='required'>Loại sản phẩm</th>
-            <th scope="col" class='required'>Tên sản phẩm</th>
-            <th scope="col">Đơn vị</th>
-            <th scope="col" class='required'>Số lượng</th>
-            <th scope="col">Đơn giá hiện tại (VND)</th>
-            <th scope="col">Đơn giá triết khấu (VND)</th>
-            <th scope="col">Thành tiền</th>
-            <th scope="col">Xóa</th>
+            <th scope="col">
+              <label class="form-label">STT</label>
+            </th>
+            <th scope="col">
+              <label class="form-label required">Loại sản phẩm</label>
+            </th>
+            <th scope="col">
+              <label class="form-label required">Tên sản phẩm</label>
+            </th>
+            <th scope="col">
+              <label class="form-label">Đơn vị</label>
+            </th>
+            <th scope="col">
+              <label class="form-label required">Số lượng</label>
+            </th>
+            <th scope="col">
+              <label class="form-label">Đơn giá hiện tại (VND)</label>
+            </th>
+            <th scope="col">
+              <label class="form-label">Đơn giá triết khấu (VND)</label>
+            </th>
+            <th scope="col">
+              <label class="form-label">Thành tiền</label>
+            </th>
+            <th scope="col">
+              <label class="form-label">Xóa</label>
+            </th>
           </tr>
         </thead>
 
         <tbody>
           <tr>
-            <td id="col0">1</td>
-            <td id="col1">
+            <td class="col0">1</td>
+            <td class="col1">
               <select
                 class="form-control form-control-sm"
-                name="type"
+                name="productType"
+                [value]='0'
               >
-                <option disabled [value]="null">Chọn tỉnh/thành phố</option>
-                <option *ngFor="let province of dataAddress" [value]="province.id">
-                  {{ province.name }}
-                </option>
+                <option *ngFor='let item of listProductType' [ngValue]='item.id'>{{item.name}}</option>
               </select>
             </td>
-            <td id="col2">
+            <td class="col2">
               <select
-                class="form-control form-control-sm"
-                name="type"
+                class="form-control  form-control-sm"
+                name="productName"
+                [value]='0'
               >
-                <option disabled [value]="null">Chọn tỉnh/thành phố</option>
-                <option *ngFor="let province of dataAddress" [value]="province.id">
-                  {{ province.name }}
-                </option>
+                <option *ngFor='let item of listProductType' [ngValue]='item.id'>{{item.name}}</option>
               </select>
             </td>
-            <td id="col3">Chiếc</td>
-            <td id="col4">
+            <td class="col3">Chiếc</td>
+            <td class="col4">
               <input class="form-control form-control-sm" type="number" style='width: 70px'>
             </td>
-            <td id="col5">10000000000</td>
-            <td id="col6">01011110101010</td>
-            <td id="col7">011110000000</td>
-            <td id="col8">
+            <td class="col5"></td>
+            <td class="col6"></td>
+            <td class="col7"></td>
+            <td class="col8">
               <a
                 (click)="deleteProduct()"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
@@ -309,7 +386,7 @@
                 [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'"
                 cacheSVG="true"
                 class="svg-icon svg-icon-md svg-icon-primary"
-                [ngbTooltip]="'Xóa'"
+                [ngbTooltip]="'Thêm'"
               >
               </span>
               </a>
@@ -326,13 +403,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-<!--<div class="input-group">-->
-<!--  <input type="text" class="form-control" placeholder="Search..." (blur)="getInfoUser()">-->
-<!--  <button type="button" class="btn bg-transparent" (click)='deleteNumberPhone()' style="margin-left: -40px; z-index: 100;">-->
-<!--    <i class="fa fa-times"></i>-->
-<!--  </button>-->
-<!--</div>-->
