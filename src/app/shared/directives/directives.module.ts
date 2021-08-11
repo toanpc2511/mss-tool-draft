@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DecimalMaskDirective } from './decimal-mask.directive';
 @NgModule({
-  declarations: [],
+  declarations: [DecimalMaskDirective],
   imports: [CommonModule],
-  exports: []
+  exports: [DecimalMaskDirective]
 })
 export class DirectivesModule {}

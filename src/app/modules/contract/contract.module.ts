@@ -6,25 +6,20 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { InputTrimModule } from 'ng2-trim-directive';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
-import { ListProductFuelModalComponent } from './list-product-fuel-modal/list-product-fuel-modal.component';
-import { ListProductFuelComponent } from './list-product-fuel/list-product-fuel.component';
-import { ProductModalComponent } from './product-modal/product-modal.component';
-import { ProductRoutingModule } from './product-routing.module';
-import { ProductTypeComponent } from './product-type/product-type.component';
-import { ProductComponent } from './product.component';
+import { ContractRoutingModule } from './contract-routing.module';
+import { ListContractComponent } from './list-contract/list-contract.component';
+import { CreateContractComponent } from './create-contract/create-contract.component';
+import { DetailsContractComponent } from './details-contract/details-contract.component';
 import { DirectivesModule } from '../../shared/directives/directives.module';
 
 @NgModule({
   declarations: [
-    ProductComponent,
-    ProductModalComponent,
-    ProductTypeComponent,
-    ListProductFuelComponent,
-    ListProductFuelModalComponent
-  ],
+  ListContractComponent,
+  CreateContractComponent,
+  DetailsContractComponent],
   imports: [
     CommonModule,
-    ProductRoutingModule,
+    ContractRoutingModule,
     NgbTooltipModule,
     InlineSVGModule,
     CRUDTableModule,
@@ -35,4 +30,4 @@ import { DirectivesModule } from '../../shared/directives/directives.module';
     DirectivesModule
   ]
 })
-export class ProductModule {}
+export class ContractModule {}
