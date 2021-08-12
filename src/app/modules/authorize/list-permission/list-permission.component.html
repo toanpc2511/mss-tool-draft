@@ -15,23 +15,12 @@
 					[formControl]="searchFormControl"
 				/>
 			</div>
-			<button
-				type="button"
-				class="btn btn-primary"
-				(click)="openRoleModal()"
-			>
-				Thêm mới
-			</button>
+			<button type="button" class="btn btn-primary" (click)="openRoleRoute()">Thêm mới</button>
 		</div>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive angular-bootstrap-table">
-			<table
-				class="
-					table table-head-custom table-vertical-center
-					overflow-hidden
-				"
-			>
+			<table class="table table-head-custom table-vertical-center overflow-hidden">
 				<thead>
 					<th>
 						Tên nhóm quyền
@@ -47,47 +36,25 @@
 				<tbody>
 					<tr *ngFor="let item of dataSource">
 						<td class="name">
-							<p
-								class="cursor-pointer text-ellipsis"
-								placement="top"
-								[ngbTooltip]="item.name"
-							>
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
 								{{ item.name }}
 							</p>
 						</td>
 
 						<td class="text-center action">
 							<a
-								(click)="openRoleModal(item.id)"
-								class="
-									btn
-									btn-icon
-									btn-light
-									btn-hover-primary
-									btn-sm
-									mx-3
-								"
+								(click)="openRoleRoute(item.id)"
+								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
 									cacheSVG="true"
-									class="
-										svg-icon svg-icon-md svg-icon-primary
-									"
+									class="svg-icon svg-icon-md svg-icon-primary"
 									[ngbTooltip]="'Sửa'"
 								>
 								</span>
 							</a>
-							<a
-								(click)="deleteRole(item)"
-								class="
-									btn
-									btn-icon
-									btn-light
-									btn-hover-danger
-									btn-sm
-								"
-							>
+							<a (click)="deleteRole(item)" class="btn btn-icon btn-light btn-hover-danger btn-sm">
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
 									cacheSVG="true"

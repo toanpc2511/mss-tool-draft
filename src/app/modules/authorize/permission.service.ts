@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
@@ -87,10 +88,10 @@ export class PermissionService {
 		return this.http.customGet<Array<IRole>>(`${environment.apiUrl1}/permissions/roles`);
 	}
 
-	// getRolesById(roleId: number) {
-	// 	const params = new HttpParams().set('role-id', roleId.toString());
-	// 	return this.http.get<IRoleDetail>('roles', { params });
-	// }
+	getRoleById(roleId: number) {
+		const params = new HttpParams().set('role-id', roleId.toString());
+		return this.http.get<any>('roles', { params });
+	}
 
 	getModules() {
 		return this.http.customGet<Array<IModule>>(`${environment.apiUrl1}/permissions/modules`);
