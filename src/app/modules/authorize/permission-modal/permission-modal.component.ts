@@ -1,18 +1,20 @@
 import {
+	AfterViewInit,
 	ChangeDetectorRef,
 	Component,
-	Input,
 	OnInit,
 	ViewChild,
 	ViewChildren
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbAccordion, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { takeUntil } from 'rxjs/operators';
-import { DataResponse } from 'src/app/shared/models/data-response.model';
+import { of } from 'rxjs';
+import { pluck, switchMap, takeUntil } from 'rxjs/operators';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
+import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import {
 	EMethod,
 	FeatureData,
@@ -29,7 +31,7 @@ import {
 	styleUrls: ['./permission-modal.component.scss'],
 	providers: [DestroyService, FormBuilder]
 })
-export class PermissionModalComponent implements OnInit {
+export class PermissionModalComponent implements OnInit, AfterViewInit {
 	moduleAccordion: NgbAccordion;
 	groupAccordions: Array<NgbAccordion>;
 
@@ -40,34 +42,74 @@ export class PermissionModalComponent implements OnInit {
 	@ViewChildren('groupAccordion') set group(elements: Array<NgbAccordion>) {
 		this.groupAccordions = elements;
 	}
-
-	@Input() roleId: number;
+	roleId: number;
 	modules: Array<IModule> = [];
 	modulesData: Array<ModuleData> = [];
 	eMethod = EMethod;
 	permissionForm: FormGroup;
 	isUpdate = false;
 	constructor(
-		public modal: NgbActiveModal,
 		private fb: FormBuilder,
 		private permissionService: PermissionService,
 		private cdr: ChangeDetectorRef,
 		private toastr: ToastrService,
+		private router: Router,
+		private subheader: SubheaderService,
+		private activeRoute: ActivatedRoute,
 		private destroy$: DestroyService
 	) {}
 
 	ngOnInit(): void {
-		this.permissionService
-			.getModules()
-			.pipe(takeUntil(this.destroy$))
+		this.buildForm();
+		this.activeRoute.params
+			.pipe(
+				pluck('id'),
+				takeUntil(this.destroy$),
+				switchMap((roleId) => {
+					if (roleId) {
+						this.roleId = roleId;
+						this.isUpdate = true;
+						return this.permissionService.getRoleById(roleId);
+					}
+					return of(null);
+				}),
+				switchMap((res) => {
+					if (res?.data) {
+						this.permissionForm.get('name').patchValue(res.data.name);
+					}
+					return this.permissionService.getModules();
+				})
+			)
 			.subscribe((res) => {
 				this.modules = res.data || [];
 				this.modulesData = this.modules.map((m) => new ModuleData(m));
+				this.cdr.detectChanges();
 			});
-		this.buildForm();
-		if (this.roleId) {
-			this.isUpdate = true;
+	}
+
+	ngAfterViewInit(): void {
+		let subBreadcump = {
+			title: 'Thêm nhóm quyền',
+			linkText: 'Thêm nhóm quyền',
+			linkPath: '/phan-quyen/them-nhom-quyen'
+		};
+		if (this.isUpdate) {
+			subBreadcump = {
+				title: 'Sửa nhóm quyền',
+				linkText: 'Sửa nhóm quyền',
+				linkPath: '/phan-quyen/sua-nhom-quyen'
+			};
 		}
+		setTimeout(() => {
+			this.subheader.setBreadcrumbs([
+				{
+					title: 'Quản lý phân quyền',
+					linkText: 'Quản lý phân quyền',
+					linkPath: '/phan-quyen'
+				},
+				subBreadcump
+			]);
+		}, 1);
 	}
 
 	buildForm(): void {
@@ -92,7 +134,11 @@ export class PermissionModalComponent implements OnInit {
 				.createRole(this.convertPermissionData(this.modulesData))
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
-					(res) => this.closeModal(res),
+					(res) => {
+						if (res.data) {
+							this.router.navigate(['/phan-quyen']);
+						}
+					},
 					(err: IError) => this.checkError(err)
 				);
 		} else {
@@ -100,7 +146,11 @@ export class PermissionModalComponent implements OnInit {
 				.updateRole(this.roleId, this.convertPermissionData(this.modulesData))
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
-					(res) => this.closeModal(res),
+					(res) => {
+						if (res.data) {
+							this.router.navigate(['/nhom-quyen']);
+						}
+					},
 					(err: IError) => this.checkError(err)
 				);
 		}
@@ -128,20 +178,11 @@ export class PermissionModalComponent implements OnInit {
 		return dataInput;
 	}
 
-	closeModal(res: DataResponse<any>) {
-		if (res.data) {
-			this.modal.close(true);
-		}
-	}
-
 	checkError(err: IError) {
 		if (err.code === 'SUN-OIL-4131') {
 			this.permissionForm.get('name').setErrors({ existed: true });
 		}
-	}
-
-	onClose(): void {
-		this.modal.close();
+		this.cdr.detectChanges();
 	}
 
 	permissionChange(
