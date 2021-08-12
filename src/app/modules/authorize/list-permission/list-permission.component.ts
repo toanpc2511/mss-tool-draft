@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -11,7 +12,6 @@ import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
 import { IRole } from '../../user/user.service';
-import { PermissionModalComponent } from '../permission-modal/permission-modal.component';
 import { PermissionService } from '../permission.service';
 
 @Component({
@@ -34,6 +34,7 @@ export class ListPermissionComponent implements OnInit {
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private modalService: NgbModal,
+		private router: Router,
 		private toastr: ToastrService
 	) {
 		this.sorting = sortService.sorting;
@@ -53,10 +54,7 @@ export class ListPermissionComponent implements OnInit {
 
 				// Set data after filter and apply current sorting
 				this.dataSource = this.sortService.sort(
-					this.filterService.filter(
-						this.dataSourceTemp,
-						this.filterField.field
-					)
+					this.filterService.filter(this.dataSourceTemp, this.filterField.field)
 				);
 				this.cdr.detectChanges();
 			});
@@ -70,10 +68,7 @@ export class ListPermissionComponent implements OnInit {
 				this.dataSource = this.dataSourceTemp = res.data;
 				// Set data after filter and apply current sorting
 				this.dataSource = this.sortService.sort(
-					this.filterService.filter(
-						this.dataSourceTemp,
-						this.filterField.field
-					)
+					this.filterService.filter(this.dataSourceTemp, this.filterField.field)
 				);
 				this.cdr.detectChanges();
 			});
@@ -109,27 +104,17 @@ export class ListPermissionComponent implements OnInit {
 		});
 	}
 
-	openRoleModal(roleId?: number) {
-		const modalRef = this.modalService.open(PermissionModalComponent, {
-			backdrop: 'static',
-			size: 'xl'
-		});
-		// Sử dụng api get user by id để lấy data fill vào form sửa
+	openRoleRoute(roleId?: number) {
 		if (roleId) {
-			modalRef.componentInstance.roleId = roleId;
+			this.router.navigate([`/phan-quyen/sua-nhom-quyen/${roleId}`]);
+		} else {
+			this.router.navigate(['/phan-quyen/them-nhom-quyen']);
 		}
-		modalRef.result.then((result) => {
-			if (result) {
-				this.getRoles();
-			}
-		});
 	}
 
 	checkError(error: IError) {
 		if (error.code === 'SUN-OIL-4193') {
-			this.toastr.error(
-				'Không thể xóa vì có người dùng đang được gắn nhóm quyền này'
-			);
+			this.toastr.error('Không thể xóa vì có người dùng đang được gắn nhóm quyền này');
 		}
 	}
 }
