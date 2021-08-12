@@ -88,13 +88,12 @@
 															[disabled]="feature.method === eMethod.GET"
 															(change)="permissionChange($event, module.id, 'FEATURE' , group.id, feature.id)"
 														/>
-														<span (click)="$event.stopPropagation()"></span>
+														<span
+															[style.opacity]="feature.method === eMethod.GET ? '0.6' : '1'"
+															(click)="$event.stopPropagation()"
+														></span>
 													</label>
-													<label
-														[style.opacity]="feature.method === eMethod.GET ? '0.7' : '1'"
-														class="m-0"
-														>{{feature.name}}</label
-													>
+													<label class="m-0">{{feature.name}}</label>
 												</div>
 											</div>
 										</ng-template>
