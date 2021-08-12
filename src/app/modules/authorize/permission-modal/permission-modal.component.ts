@@ -135,7 +135,7 @@ export class PermissionModalComponent implements OnInit {
 	}
 
 	checkError(err: IError) {
-		if (err.code === 'SUN-OIL-4179') {
+		if (err.code === 'SUN-OIL-4131') {
 			this.permissionForm.get('name').setErrors({ existed: true });
 		}
 	}
@@ -161,9 +161,12 @@ export class PermissionModalComponent implements OnInit {
 				break;
 			case 'GROUP':
 				this.setPermissionGroup(checked, groupData);
+				this.checkPermissionModule(moduleData);
 				break;
 			case 'FEATURE':
 				this.setPermissionFeature(checked, featureData);
+				this.checkPermissionGroup(groupData);
+				this.checkPermissionModule(moduleData);
 				break;
 		}
 	}
@@ -191,8 +194,7 @@ export class PermissionModalComponent implements OnInit {
 		}
 	}
 
-	checkPermissionModule(moduleId: number) {
-		const moduleData = this.modulesData.find((m) => m.id === moduleId);
+	checkPermissionModule(moduleData: ModuleData) {
 		moduleData.checked = moduleData.groups.some((g) => g.checked);
 	}
 
@@ -209,7 +211,18 @@ export class PermissionModalComponent implements OnInit {
 			groupData.checked = false;
 			groupData.features = groupData.features.map((f) => ({ ...f, checked: false }));
 		}
-		this.checkPermissionModule(groupData.moduleId);
+	}
+
+	checkPermissionGroup(groupData: GroupData) {
+		groupData.checked = groupData.features.some((f) => f.checked);
+		if (groupData.checked) {
+			for (const feature of groupData.features) {
+				if (feature.method === EMethod.GET) {
+					feature.checked = true;
+					break;
+				}
+			}
+		}
 	}
 
 	setPermissionFeature(checked: boolean, featureData: FeatureData) {
