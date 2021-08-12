@@ -76,4 +76,9 @@ export class ContractService {
     return this.http.get<IProperties[]>('properties', {params});
   }
 
+  getInfoUser(phone: string) {
+    const params = new HttpParams().set('phone-number',phone)
+    return this.http.get('drivers/information', {params});
+  }
+
 }

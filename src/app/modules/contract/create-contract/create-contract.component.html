@@ -12,7 +12,7 @@
           <div class="col-lg-4">
             <label class="form-label required">Số điện thoại</label>
             <div class="input-group">
-              <input type="text" class="form-control input-phone"
+              <input type="number" class="form-control input-phone"
                      placeholder="Nhập số điện thoại"
                      formControlName='phone'
                      (blur)="getInfoUser()"
@@ -32,7 +32,7 @@
             ></app-validate>
             <app-validate style='display: block'
                           [control]="infoForm.controls['phone']"
-                          [error]="'required'"
+                          [error]="'phoneExisted'"
                           [message]="'Số diện thoại không tồn tại trên hệ thống'"
             ></app-validate>
           </div>
@@ -137,7 +137,6 @@
     </div>
 
     <div class="card-body">
-
       <form [formGroup]="contractForm" class="form form-label-right">
         <div class="form-group row">
           <div class="col-lg-4">
@@ -147,9 +146,9 @@
               name="contractMethod"
               formControlName='contractMethod'
               [(ngModel)]='method'
-              [value]="'tra-truoc'"
+              [value]="3"
             >
-              <option *ngFor='let item of contractTypes' [ngValue]='item.value'>{{item.label}}</option>
+              <option *ngFor='let item of TYPE_CONTRACT' [ngValue]='item.id'>{{item.name}}</option>
             </select>
           </div>
 
@@ -175,7 +174,6 @@
             <input type="date" class="form-control" name='expirationDate' formControlName='expirationDate'/>
           </div>
         </div>
-<!--        <p>sdsdsdsdsd {{contractForm.value | json}}</p>-->
 
         <div class="form-group row">
           <div class="col-lg-4">
@@ -211,7 +209,7 @@
             ></app-validate>
           </div>
 
-          <div class="col-lg-4" *ngIf='method == "tra-truoc"'>
+          <div class="col-lg-4" *ngIf='method === 3'>
             <label class="form-label required">Địa chỉ ký hợp đồng</label>
             <select
               class="form-control"
@@ -230,7 +228,7 @@
             ></app-validate>
           </div>
 
-          <div class="col-lg-4" *ngIf='method == "du-tru"'>
+          <div class="col-lg-4" *ngIf='method === 4'>
             <label class="form-label required">Hạn mức</label>
             <input
               type="text"
@@ -244,7 +242,7 @@
           </div>
         </div>
 
-        <div class='form-group row' *ngIf='method == "tra-truoc"'>
+        <div class='form-group row' *ngIf='method === 3'>
           <div class="col-lg-8">
             <label class="form-label">Địa chỉ chi tiết</label>
             <input
@@ -258,19 +256,20 @@
           </div>
         </div>
 
-        <div class="form-group row" formArrayName='expectedDate' *ngIf='method !== "tra-truoc"'>
+        <div class="form-group row" formArrayName='expectedDate' *ngIf='method !== 3'>
           <div class="col-lg-4" *ngFor="let alias of expectedDate.controls; let i = index">
-            <div *ngIf='method == "du-tru"'>
+            <div *ngIf='method === 4'>
               <label class="form-label">Ngày dự kiến TT lần {{i+1}}</label>
               <input
                 type="date"
                 class="form-control"
                 name='expectedDate'
+                [formControlName]='i'
               />
             </div>
           </div>
 
-          <div class="col-lg-4 icon-add" *ngIf='method == "du-tru" && totalInputDate < 5'>
+          <div class="col-lg-4 icon-add" *ngIf='method === 4 && totalInputDate < 5'>
             <a
               (click)="addExpectedDate()"
               class="btn btn-icon btn-light btn-hover-primary btn-sm"
@@ -289,7 +288,7 @@
     </div>
   </div>
 
-  <div class='list-product' *ngIf='method == "tra-truoc"'>
+  <div class='list-product' *ngIf='method === 3'>
     <div class="card-header">
       <div class="card-title">
         <h3 class="title">danh sách hàng hóa</h3>
@@ -297,109 +296,147 @@
     </div>
 
     <div class="card-body">
-      <table class="table" id='tbProduct'>
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">
-              <label class="form-label">STT</label>
-            </th>
-            <th scope="col">
-              <label class="form-label required">Loại sản phẩm</label>
-            </th>
-            <th scope="col">
-              <label class="form-label required">Tên sản phẩm</label>
-            </th>
-            <th scope="col">
-              <label class="form-label">Đơn vị</label>
-            </th>
-            <th scope="col">
-              <label class="form-label required">Số lượng</label>
-            </th>
-            <th scope="col">
-              <label class="form-label">Đơn giá hiện tại (VND)</label>
-            </th>
-            <th scope="col">
-              <label class="form-label">Đơn giá triết khấu (VND)</label>
-            </th>
-            <th scope="col">
-              <label class="form-label">Thành tiền</label>
-            </th>
-            <th scope="col">
-              <label class="form-label">Xóa</label>
-            </th>
-          </tr>
-        </thead>
+      <div class="table-responsive angular-bootstrap-table">
+        <form [formGroup]="productForm" class="form form-label-right">
+          <table class="table table-vertical-center overflow-hidden">
+            <thead class="thead-light">
+            <tr>
+              <th>
+                <label class="form-label">STT</label>
+              </th>
+              <th>
+                <label class="form-label required">Loại sản phẩm</label>
+              </th>
+              <th>
+                <label class="form-label required">Tên sản phẩm</label>
+              </th>
+              <th>
+                <label class="form-label">Đơn vị</label>
+              </th>
+              <th>
+                <label class="form-label required">Số lượng</label>
+              </th>
+              <th>
+                <label class="form-label">Đơn giá hiện tại (VND)</label>
+              </th>
+              <th>
+                <label class="form-label">Đơn giá triết khấu (VND)</label>
+              </th>
+              <th>
+                <label class="form-label">Thành tiền</label>
+              </th>
+              <th>
+                <label class="form-label">Xóa</label>
+              </th>
+            </tr>
+            </thead>
 
-        <tbody>
-          <tr>
-            <td class="col0">1</td>
-            <td class="col1">
-              <select
-                class="form-control form-control-sm"
-                name="productType"
-                [value]='0'
-              >
-                <option *ngFor='let item of listProductType' [ngValue]='item.id'>{{item.name}}</option>
-              </select>
-            </td>
-            <td class="col2">
-              <select
-                class="form-control  form-control-sm"
-                name="productName"
-                [value]='0'
-              >
-                <option *ngFor='let item of listProductType' [ngValue]='item.id'>{{item.name}}</option>
-              </select>
-            </td>
-            <td class="col3">Chiếc</td>
-            <td class="col4">
-              <input class="form-control form-control-sm" type="number" style='width: 70px'>
-            </td>
-            <td class="col5"></td>
-            <td class="col6"></td>
-            <td class="col7"></td>
-            <td class="col8">
-              <a
-                (click)="deleteProduct()"
-                class="btn btn-icon btn-light btn-hover-danger btn-sm"
-              >
+            <tbody>
+            <tr>
+              <td>1</td>
+              <td>
+                <select
+                  class="form-control form-control-sm"
+                  formControlName='productType'
+                  [value]='0'
+                >
+                  <option *ngFor='let prodType of listProductType' [ngValue]='prodType.id'>{{prodType.name}}</option>
+                </select>
+              </td>
+              <td class="col2">
+                <select
+                  class="form-control  form-control-sm"
+                  formControlName='productName'
+                  [value]='0'
+                >
+                  <option *ngFor='let prod of dataProduct' [ngValue]='prod.id'>{{prod.name}}</option>
+                </select>
+              </td>
+              <td class="col3">Lít</td>
+              <td class="col4">
+                <input class="form-control form-control-sm" formControlName='amount' type="number" style='width: 70px'>
+              </td>
+              <td class="col5"></td>
+              <td class="col6"></td>
+              <td class="col7"></td>
+              <td class="col8">
+                <a
+                  (click)="deleteProduct()"
+                  class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                >
+                  <span
+                    [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                    cacheSVG="true"
+                    class="svg-icon svg-icon-md svg-icon-danger"
+                    [ngbTooltip]="'Xóa'"
+                  >
+                  </span>
+                </a>
+              </td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <td>
+                <a
+                  (click)="addRow()"
+                  class="btn btn-icon btn-light btn-hover-primary btn-sm"
+                >
                 <span
-                  [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                  [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'"
                   cacheSVG="true"
-                  class="svg-icon svg-icon-md svg-icon-danger"
-                  [ngbTooltip]="'Xóa'"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Thêm'"
                 >
                 </span>
-              </a>
-            </td>
-          </tr>
-        </tbody>
+                </a>
 
-        <tfoot>
-          <tr>
-            <td>
-              <a
-                (click)="addRow()"
-                class="btn btn-icon btn-light btn-hover-primary btn-sm"
-              >
-              <span
-                [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'"
-                cacheSVG="true"
-                class="svg-icon svg-icon-md svg-icon-primary"
-                [ngbTooltip]="'Thêm'"
-              >
-              </span>
-              </a>
-
-            </td>
-            <td colspan='4'></td>
-            <td colspan='2'>Tổng tiền thanh toán</td>
-            <td>{{ totalPrice.toLocaleString('en-US')}}</td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table>
+              </td>
+              <td colspan='4'></td>
+              <td colspan='2'>Tổng tiền thanh toán</td>
+              <td>{{ totalPrice.toLocaleString('en-US')}}</td>
+              <td></td>
+            </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
 
     </div>
+  </div>
+
+  <div class='upload-file'>
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Thông tin hồ sơ</h3>
+      </div>
+    </div>
+
+    <div class='card-body'>
+      <div class='form-group row'>
+        <div class='col-lg-2'>File đính kèm</div>
+        <div class='col-lg-10 row'>
+          <div class='col-lg-12'>
+            <button type="button" class="btn btn-outline-primary mr-3">Đính kèm file</button>
+            <button type="button" class="btn btn-outline-primary ml-3">Xóa tất cả</button>
+          </div>
+          <div class='col-lg-12'>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-100 d-flex justify-content-center pb-10">
+    <button
+      type="button"
+      class="btn btn-outline-secondary font-weight-bold m-2"
+    >
+      Lưu nháp
+    </button>
+    <button class="btn btn-primary font-weight-bold m-2" type="button">
+      Gửi duyệt
+    </button>
   </div>
 </div>

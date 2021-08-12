@@ -1,5 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { HttpParams } from '@angular/common/http';
+import { IProperties } from '../contract/contract.service';
+import { ProductModel } from './product.model';
+
+export interface IPriceProduct {
+  id: number;
+  productId: number;
+  area: string;
+  price: number;
+  status: string;
+}
 
 export interface IProduct {
   id: number;
@@ -32,6 +43,8 @@ export interface IProductType {
 })
 
 export class ProductService {
+
+  private productList: ProductModel[] = [];
   constructor(
     private http: HttpService
   ) {
@@ -40,6 +53,14 @@ export class ProductService {
   // Nhóm sản phẩm
   getListProductType() {
     return this.http.get<IProductType[]>('categories');
+  }
+
+  getProductList() {
+    return this.productList.slice();
+  }
+
+  addProduct(product: ProductModel) {
+    this.productList.push(product);
   }
 
   deleteProductType(prodTypeId: string | number) {
@@ -69,5 +90,12 @@ export class ProductService {
 
   updateProduct(id: number, data: IProduct) {
     return this.http.put(`products/oils/${id}`, data);
+  }
+
+  getPriceProduct(productId: number, areaProduct: string) {
+    const params = new HttpParams()
+      .set('product-id', productId.toString())
+      .set('area-product', areaProduct)
+    return this.http.get<IPriceProduct[]>('area-products', {params});
   }
 }
