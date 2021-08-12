@@ -115,8 +115,8 @@
                 <ng-container *ngIf="item.status === status.DRAFT">Lưu nháp</ng-container>
               </span>
           </td>
-          <td class="text-center action" *ngIf='item.status == "DRAFT"'>
-            <a
+          <td class="text-center action">
+            <a *ngIf='item.status == "DRAFT"'
               (click)="updateContract(item.code)"
               class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               [ngbTooltip]="'Sửa'"
@@ -128,7 +128,7 @@
                 >
                 </span>
             </a>
-            <a
+            <a *ngIf='item.status == "DRAFT"'
               (click)="deleteContract(item)"
               class="btn btn-icon btn-light btn-hover-danger btn-sm"
               [ngbTooltip]="'Xóa'"
