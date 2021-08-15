@@ -4,9 +4,67 @@ import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
 
 export interface IContract {
+  id: number;
   code: string;
   name: string;
+  attachment: [
+    {
+      url: string;
+      name:  string;
+    }
+  ];
+  customer: {
+    address: string;
+    dateOfBirth: string;
+    districtId: string;
+    email: string;
+    enterpriseName: string;
+    id: string;
+    idCard: string;
+    name: string;
+    phone: null
+    provinceId:string;
+    status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+    wardId: string;
+  }
+  customerId: string;
+  contractAddress: string;
+  fullAddress: string;
+  payMethod: {
+    id: number;
+    name: string;
+    type: string;
+  };
+  product: [
+    {
+      categoryResponse: {
+        code: string;
+        description: string;
+        id: number;
+        name: string;
+        status: string;
+        type: string;
+      };
+      productResponse: {
+        amount: number;
+        discount: number;
+        id: number;
+        name: string;
+        price: number;
+        totalMoney: number;
+        unit: string;
+      }
+    }
+  ];
+  totalPayment: number;
+  transportMethod:  {
+    id: number;
+    name: string;
+    typw:  string;
+  }
   contractType: {
+    id: number;
+    name:  string;
     type: string;
   };
   effectEndDate: string;
@@ -49,6 +107,7 @@ export interface IProperties {
 })
 
 export class ContractService {
+  contractId: number;
   constructor(private http: HttpService) {}
 
   getRoles() {
@@ -81,4 +140,11 @@ export class ContractService {
     return this.http.get('drivers/information', {params});
   }
 
+  getContractById(categoryId: number) {
+    return this.http.get<IContract>(`contracts/${categoryId}`)
+  }
+
+  downloadFile(urlFile: string) {
+    return this.http.get(`/${urlFile}`)
+  }
 }
