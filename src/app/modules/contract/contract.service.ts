@@ -6,6 +6,74 @@ export enum EContractType {
 	PREPAID_CONTRACT = 'PRE_PAY',
 	PLAN_CONTRACT = 'PLAN'
 }
+export interface IContract {
+	id: number;
+	code: string;
+	name: string;
+	attachment: [
+		{
+			url: string;
+			name: string;
+		}
+	];
+	customer: {
+		address: string;
+		dateOfBirth: string;
+		districtId: string;
+		email: string;
+		enterpriseName: string;
+		id: string;
+		idCard: string;
+		name: string;
+		phone: null;
+		provinceId: string;
+		status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+		wardId: string;
+	};
+	customerId: string;
+	contractAddress: string;
+	fullAddress: string;
+	payMethod: {
+		id: number;
+		name: string;
+		type: string;
+	};
+	product: [
+		{
+			categoryResponse: {
+				code: string;
+				description: string;
+				id: number;
+				name: string;
+				status: string;
+				type: string;
+			};
+			productResponse: {
+				amount: number;
+				discount: number;
+				id: number;
+				name: string;
+				price: number;
+				totalMoney: number;
+				unit: string;
+			};
+		}
+	];
+	totalPayment: number;
+	transportMethod: {
+		id: number;
+		name: string;
+		typw: string;
+	};
+	contractType: {
+		id: number;
+		name: string;
+		type: string;
+	};
+	effectEndDate: string;
+	effectStartDate: string;
+	status: 'ACCEPTED' | 'REJECT' | 'WAITING_ACCEPT';
+}
 
 export enum EPaymentMethods {
 	CASH = 'CASH',
@@ -27,17 +95,6 @@ export enum EContractStatus {
 	WAITING_ACCEPT = 'WAITING_ACCEPT',
 	DRAFT = 'DRAFT'
 }
-export interface IContract {
-	code: string;
-	name: string;
-	contractType: {
-		type: string;
-	};
-	effectEndDate: string;
-	effectStartDate: string;
-	status: EContractStatus;
-}
-
 export interface ISortData {
 	fieldSort: string;
 	directionSort: string;
@@ -136,5 +193,13 @@ export class ContractService {
 	getInfoUser(phone: string) {
 		const params = new HttpParams().set('phone-number', phone);
 		return this.http.get<ICustomerInfo>('drivers/information', { params });
+	}
+
+	getContractById(categoryId: number) {
+		return this.http.get<IContract>(`contracts/${categoryId}`);
+	}
+
+	downloadFile(urlFile: string) {
+		return this.http.get(`/${urlFile}`);
 	}
 }
