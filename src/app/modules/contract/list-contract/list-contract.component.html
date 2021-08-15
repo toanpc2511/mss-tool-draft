@@ -104,19 +104,19 @@
           <td class="status">
               <span
                 class="label label-lg label-inline"
-                [class.label-light-success]="item.status === status.ACCEPTED"
-                [class.label-light-danger]="item.status === status.REJECT"
-                [class.label-light-warning]="item.status === status.WAITING_ACCEPT"
-                [class.label-light-primary]="item.status === status.DRAFT"
+                [class.label-light-success]="item.status === contractStatus.ACCEPTED"
+                [class.label-light-danger]="item.status === contractStatus.REJECT"
+                [class.label-light-warning]="item.status === contractStatus.WAITING_ACCEPT"
+                [class.label-light-primary]="item.status === contractStatus.DRAFT"
               >
-                <ng-container *ngIf="item.status === status.ACCEPTED">Đã duyệt</ng-container>
-                <ng-container *ngIf="item.status === status.REJECT">Đã từ chối</ng-container>
-                <ng-container *ngIf="item.status === status.WAITING_ACCEPT">Chờ phê duyệt</ng-container>
-                <ng-container *ngIf="item.status === status.DRAFT">Lưu nháp</ng-container>
+                <ng-container *ngIf="item.status === contractStatus.ACCEPTED">Đã duyệt</ng-container>
+                <ng-container *ngIf="item.status === contractStatus.REJECT">Đã từ chối</ng-container>
+                <ng-container *ngIf="item.status === contractStatus.WAITING_ACCEPT">Chờ phê duyệt</ng-container>
+                <ng-container *ngIf="item.status === contractStatus.DRAFT">Lưu nháp</ng-container>
               </span>
           </td>
           <td class="text-center action">
-            <a *ngIf='item.status == "DRAFT"'
+            <a *ngIf='item.status === contractStatus.DRAFT'
               (click)="updateContract(item.code)"
               class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               [ngbTooltip]="'Sửa'"
@@ -128,7 +128,7 @@
                 >
                 </span>
             </a>
-            <a *ngIf='item.status == "DRAFT"'
+            <a *ngIf='item.status === contractStatus.DRAFT'
               (click)="deleteContract(item)"
               class="btn btn-icon btn-light btn-hover-danger btn-sm"
               [ngbTooltip]="'Xóa'"

@@ -28,7 +28,8 @@
               "lodash",
               "snakecase-keys",
               "camelize",
-              "ng2-trim-directive"
+              "ng2-trim-directive",
+              "angular2-text-mask"
             ],
             "index": "src/index.html",
             "main": "src/main.ts",

@@ -1,101 +1,95 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
-import { HttpParams } from '@angular/common/http';
-import { IProperties } from '../contract/contract.service';
 import { ProductModel } from './product.model';
 
 export interface IPriceProduct {
-  id: number;
-  productId: number;
-  area: string;
-  price: number;
-  status: string;
+	id: number;
+	productId: number;
+	area: string;
+	unit: string;
+	price: number;
+	status: string;
 }
 
 export interface IProduct {
-  id: number;
-  code: string;
-  name: string;
-  price: number;
-  entryPrice: number;
-  priceAreaOne: number;
-  priceAreaTwo: number;
-  categoryId: number;
-  description: string;
-  qrCode: string;
-  unit: string;
-  valueAddedTax: number;
-  vat: number;
-  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	id: number;
+	code: string;
+	name: string;
+	price: number;
+	entryPrice: number;
+	priceAreaOne: number;
+	priceAreaTwo: number;
+	categoryId: number;
+	description: string;
+	qrCode: string;
+	unit: string;
+	valueAddedTax: number;
+	vat: number;
+	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
 export interface IProductType {
-  id: number;
-  name: string;
-  description: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
-  code: string;
-  type: string;
+	id: number;
+	name: string;
+	description: string;
+	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	code: string;
+	type: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
-
 export class ProductService {
+	private productList: ProductModel[] = [];
+	constructor(private http: HttpService) {}
+	// Nhóm sản phẩm
+	getListProductType() {
+		return this.http.get<IProductType[]>('categories');
+	}
 
-  private productList: ProductModel[] = [];
-  constructor(
-    private http: HttpService
-  ) {
+	getProductList() {
+		return this.productList.slice();
+	}
 
-  }
-  // Nhóm sản phẩm
-  getListProductType() {
-    return this.http.get<IProductType[]>('categories');
-  }
+	addProduct(product: ProductModel) {
+		this.productList.push(product);
+	}
 
-  getProductList() {
-    return this.productList.slice();
-  }
+	deleteProductType(prodTypeId: string | number) {
+		return this.http.delete(`categories/${prodTypeId}`);
+	}
 
-  addProduct(product: ProductModel) {
-    this.productList.push(product);
-  }
+	createProductType(data: IProductType) {
+		return this.http.post(`categories`, data);
+	}
 
-  deleteProductType(prodTypeId: string | number) {
-    return this.http.delete(`categories/${prodTypeId}`);
-  }
+	updateProductType(id: number, data: IProductType) {
+		return this.http.put(`categories/${id}`, data);
+	}
 
-  createProductType(data: IProductType) {
-    return this.http.post(`categories`, data);
-  }
+	// Danh sách sản phẩm
+	getListProduct(categoryId: number) {
+		return this.http.get<IProduct[]>(`products/category/${categoryId}`);
+	}
 
-  updateProductType(id: number, data: IProductType) {
-    return this.http.put(`categories/${id}`, data);
-  }
+	deleteProduct(prodId: string | number) {
+		return this.http.delete(`products/${prodId}`);
+	}
 
-  // Danh sách sản phẩm
-  getListProduct(categoryId: number) {
-    return this.http.get<IProduct[]>(`products/category/${categoryId}`);
-  }
+	createProduct(data: IProduct) {
+		return this.http.post(`products/oils`, data);
+	}
 
-  deleteProduct(prodId: string | number) {
-    return this.http.delete(`products/${prodId}`);
-  }
+	updateProduct(id: number, data: IProduct) {
+		return this.http.put(`products/oils/${id}`, data);
+	}
 
-  createProduct(data: IProduct) {
-    return this.http.post(`products/oils`, data);
-  }
-
-  updateProduct(id: number, data: IProduct) {
-    return this.http.put(`products/oils/${id}`, data);
-  }
-
-  getPriceProduct(productId: number, areaProduct: string) {
-    const params = new HttpParams()
-      .set('product-id', productId.toString())
-      .set('area-product', areaProduct)
-    return this.http.get<IPriceProduct[]>('area-products', {params});
-  }
+	getProductInfo(productId: number, areaProduct: string) {
+		const params = new HttpParams()
+			.set('product-id', productId.toString())
+			.set('area-product', areaProduct);
+		return this.http.get<IPriceProduct>('area-products', { params });
+	}
 }

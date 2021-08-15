@@ -1,48 +1,67 @@
 .card-header {
-  padding: 0 2.25rem !important;
-  border-bottom: none;
-  .title {
-    text-transform: uppercase;
-    color: #4674EB;
-    font-weight: 500;
-    font-size: 14px;
-  }
+	padding: 0 2.25rem !important;
+	border-bottom: none;
+	.title {
+		text-transform: uppercase;
+		color: #4674eb;
+		font-weight: 500;
+		font-size: 14px;
+	}
 }
 
 .card-body {
-  padding: 0 3.25rem !important;
+	padding: 0 3.25rem !important;
 
-  .input-phone {
-    padding-right: 30px;
-  }
+	.input-phone {
+		padding-right: 30px;
+	}
 }
 
 .info-customer,
 .info-contract,
-.list-product{
-  padding: 25px 0 15px;
+.list-product {
+	padding: 25px 0 15px;
 }
 
 .info-contract {
-  .icon-add {
-    padding-top: 30px;
-  }
+	.icon-add {
+		padding-top: 30px;
+	}
 }
 
 .list-product {
-  .table {
-    th {
-      color: #1E1E1E !important;
-      text-transform: none;
-    }
+	.table {
+		th {
+			color: #1e1e1e !important;
+			text-transform: none;
+		}
 
-    td {
-      &.col1 {
-        width: 150px;
-      }
-      &.col2 {
-        width: 250px;
-      }
-    }
-  }
+		td {
+			&.col1 {
+				width: 150px;
+			}
+			&.col2 {
+				width: 250px;
+			}
+		}
+	}
+}
+
+.customer-phone {
+	div {
+		position: relative;
+		i {
+			cursor: pointer;
+			position: absolute;
+			right: 15px;
+			top: 32%;
+			&:hover {
+				opacity: 0.8;
+			}
+		}
+	}
+}
+
+.fa.fa-calendar-alt {
+	font-size: 1.3rem;
 }

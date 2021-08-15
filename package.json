@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 4300",
+    "start": "yarn && ng serve --port 4300",
     "build-staging": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=staging",
     "build-prod": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=production",
     "test": "ng test",
@@ -30,7 +30,7 @@
     "@ng-bootstrap/ng-bootstrap": "^9.1.0",
     "@ngx-translate/core": "^13.0.0",
     "@types/lodash": "^4.14.171",
-    "angular-in-memory-web-api": "^0.11.0",
+    "angular2-text-mask": "^9.0.0",
     "apexcharts": "^3.20.0",
     "bootstrap": "^4.6.0",
     "camelize": "^1.0.0",

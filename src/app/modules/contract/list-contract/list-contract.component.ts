@@ -3,12 +3,10 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
-import { ISortData, IContract, ContractService } from '../contract.service';
-import { LIST_STATUS_CONTRACT } from '../../../shared/data-enum/list-status';
+import { ISortData, IContract, ContractService, EContractStatus } from '../contract.service';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '../../user/user.service';
 import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
@@ -20,11 +18,11 @@ import { ToastrService } from 'ngx-toastr';
   providers: [DestroyService]
 })
 export class ListContractComponent implements OnInit {
+  contractStatus = EContractStatus;
   searchFormControl: FormControl = new FormControl();
   sortData: ISortData;
   paginatorState = new PaginatorState();
   dataSource: Array<IContract> = [];
-  status = LIST_STATUS_CONTRACT;
 
   constructor(
     private router: Router,
