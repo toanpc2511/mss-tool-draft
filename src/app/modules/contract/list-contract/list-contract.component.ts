@@ -8,7 +8,6 @@ import { LIST_STATUS_CONTRACT } from '../../../shared/data-enum/list-status';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '../../user/user.service';
 import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
@@ -93,22 +92,23 @@ export class ListContractComponent implements OnInit {
     this.router.navigate(['/hop-dong/danh-sach/them-moi']);
   }
 
-  viewDetalContract(): void {
-    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-      backdrop: 'static'
-    });
-    const data: IConfirmModalData = {
-      title: 'Xác nhận',
-      message: `Bạn có muốn xem chi tiết hợp đồng`,
-      button: { class: 'btn-primary', title: 'Xác nhận' }
-    };
-    modalRef.componentInstance.data = data;
-
-    modalRef.result.then((result) => {
-      if (result) {
-        this.router.navigate(['/hop-dong/danh-sach/chi-tiet']);
-      }
-    });
+  viewDetalContract($event: Event, item: IContract): void {
+    this.router.navigate([`/hop-dong/danh-sach/chi-tiet/${item.id}`]);
+    // const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+    //   backdrop: 'static'
+    // });
+    // const data: IConfirmModalData = {
+    //   title: 'Xác nhận',
+    //   message: `Bạn có muốn xem chi tiết hợp đồng ${item.name}`,
+    //   button: { class: 'btn-primary', title: 'Xác nhận' }
+    // };
+    // modalRef.componentInstance.data = data;
+    //
+    // modalRef.result.then((result) => {
+    //   if (result) {
+    //     this.router.navigate([`/hop-dong/danh-sach/chi-tiet/${item.id}`]);
+    //   }
+    // });
   }
 
   sort(column: string) {

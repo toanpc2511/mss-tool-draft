@@ -71,8 +71,7 @@
         <th class='text-center'>Tác động</th>
         </thead>
         <tbody>
-<!--        <tr *ngFor="let item of dataSource" (click)='viewDetalContract()'>-->
-        <tr *ngFor="let item of dataSource" >
+        <tr *ngFor="let item of dataSource" (click)='viewDetalContract($event, item)'>
           <td class="code">
             <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
               {{ item.code }}
@@ -87,17 +86,17 @@
 
           <td class="contractType">
             <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.contractType.type">
-              {{ item.contractType.type }}
+              {{ item.contractType.name }}
             </p>
           </td>
           <td class="effectStartDate">
             <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.effectStartDate">
-              {{ item.effectStartDate }}
+              {{ item.effectStartDate | date: 'dd/MM/yyyy' }}
             </p>
           </td>
           <td class="effectEndDate">
             <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.effectEndDate">
-              {{ item.effectEndDate }}
+              {{ item.effectEndDate | date: 'dd/MM/yyyy' }}
             </p>
           </td>
 
@@ -116,7 +115,7 @@
               </span>
           </td>
           <td class="text-center action">
-            <a *ngIf='item.status == "DRAFT"'
+            <a *ngIf='item.status === "DRAFT"'
               (click)="updateContract(item.code)"
               class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               [ngbTooltip]="'Sửa'"
@@ -128,7 +127,7 @@
                 >
                 </span>
             </a>
-            <a *ngIf='item.status == "DRAFT"'
+            <a *ngIf='item.status === "DRAFT"'
               (click)="deleteContract(item)"
               class="btn btn-icon btn-light btn-hover-danger btn-sm"
               [ngbTooltip]="'Xóa'"
