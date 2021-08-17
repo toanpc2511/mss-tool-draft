@@ -39,7 +39,11 @@ export class ErrorInterceptor implements HttpInterceptor {
 				}
 
 				if (err.status === 401) {
-					if (errors.code === 'SUN-OIL') {
+					if (
+						errors.code === 'SUN-OIL-4812' ||
+						errors.code === 'SUN-OIL-4823' ||
+						errors.code === 'SUN-OIL-4852'
+					) {
 						this.toastr.error('Tài khoản của bạn đã bị xoá. Không thể thực hiện được');
 					}
 					if (errors.code === 'SUN-OIL') {
