@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { ProductModel } from './product.model';
 
-export interface IPriceProduct {
+export interface IProductInfo {
 	id: number;
 	productId: number;
 	area: string;
 	unit: string;
 	price: number;
+	discount: number;
 	status: string;
 }
 
@@ -90,6 +91,6 @@ export class ProductService {
 		const params = new HttpParams()
 			.set('product-id', productId.toString())
 			.set('area-product', areaProduct);
-		return this.http.get<IPriceProduct>('area-products', { params });
+		return this.http.get<IProductInfo>('area-products', { params });
 	}
 }
