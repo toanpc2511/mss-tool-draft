@@ -104,9 +104,11 @@ export class ListPermissionComponent implements OnInit {
 		});
 	}
 
-	openRoleRoute(roleId?: number) {
-		if (roleId) {
-			this.router.navigate([`/phan-quyen/sua-nhom-quyen/${roleId}`]);
+	openRoleRoute(role?: IRole) {
+		if (role) {
+			this.router.navigate([`/phan-quyen/sua-nhom-quyen`], {
+				queryParams: { id: role.id, roleName: role.name }
+			});
 		} else {
 			this.router.navigate(['/phan-quyen/them-nhom-quyen']);
 		}

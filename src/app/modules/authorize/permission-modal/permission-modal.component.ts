@@ -11,7 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { of } from 'rxjs';
-import { pluck, switchMap, takeUntil } from 'rxjs/operators';
+import { map, pluck, switchMap, takeUntil } from 'rxjs/operators';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
@@ -61,28 +62,38 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 
 	ngOnInit(): void {
 		this.buildForm();
-		this.activeRoute.params
+		this.activeRoute.queryParams
 			.pipe(
-				pluck('id'),
-				takeUntil(this.destroy$),
-				switchMap((roleId) => {
-					if (roleId) {
-						this.roleId = roleId;
+				map((queryParams) => [queryParams.id, queryParams.roleName]),
+				switchMap(([id, roleName]) => {
+					if (id) {
+						this.roleId = id;
 						this.isUpdate = true;
-						return this.permissionService.getRoleById(roleId);
+						this.permissionForm.get('name').patchValue(roleName || null);
+						return this.permissionService.getPermissionByRoleId(id);
 					}
-					return of(null);
+					if (this.activeRoute.routeConfig.path === 'sua-nhom-quyen') {
+						this.router.navigate['/phan-quyen'];
+					}
+					return of(null as DataResponse<ModuleData[]>);
 				}),
 				switchMap((res) => {
-					if (res?.data) {
-						this.permissionForm.get('name').patchValue(res.data.name);
+					if (!this.isUpdate) {
+						return this.permissionService.getModules();
+					} else {
+						if (res?.data) {
+							this.modulesData = res.data;
+						}
 					}
-					return this.permissionService.getModules();
-				})
+					return of(null as DataResponse<any>);
+				}),
+				takeUntil(this.destroy$)
 			)
 			.subscribe((res) => {
-				this.modules = res.data || [];
-				this.modulesData = this.modules.map((m) => new ModuleData(m));
+				if (res?.data) {
+					this.modules = res.data || [];
+					this.modulesData = this.modules.map((m) => new ModuleData(m));
+				}
 				this.cdr.detectChanges();
 			});
 	}
@@ -148,7 +159,7 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 				.subscribe(
 					(res) => {
 						if (res.data) {
-							this.router.navigate(['/nhom-quyen']);
+							this.router.navigate(['/phan-quyen']);
 						}
 					},
 					(err: IError) => this.checkError(err)
@@ -260,7 +271,6 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 			for (const feature of groupData.features) {
 				if (feature.method === EMethod.GET) {
 					feature.checked = true;
-					break;
 				}
 			}
 		}

@@ -88,9 +88,10 @@ export class PermissionService {
 		return this.http.customGet<Array<IRole>>(`${environment.apiUrl1}/permissions/roles`);
 	}
 
-	getRoleById(roleId: number) {
-		const params = new HttpParams().set('role-id', roleId.toString());
-		return this.http.get<any>('roles', { params });
+	getPermissionByRoleId(roleId: number) {
+		return this.http.customGet<Array<ModuleData>>(
+			`${environment.apiUrl1}/permissions/modules/${roleId}`
+		);
 	}
 
 	getModules() {

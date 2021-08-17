@@ -21,20 +21,15 @@ export class ErrorInterceptor implements HttpInterceptor {
 		private authService: AuthService
 	) {}
 
-	intercept(
-		request: HttpRequest<unknown>,
-		next: HttpHandler
-	): Observable<HttpEvent<unknown>> {
+	intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 		return next.handle(request).pipe(
 			catchError((err: HttpErrorResponse) => {
+				const errors: IError = err.error.meta;
 				if (err.status >= 500) {
-					this.toastr.error(
-						'Hệ thống đang bận! Vui lòng thử lại sau'
-					);
+					this.toastr.error('Hệ thống đang bận! Vui lòng thử lại sau');
 				}
 
 				if (err.status === 400) {
-					const errors: IError = err.error.meta;
 					return throwError(errors);
 				}
 
@@ -44,9 +39,14 @@ export class ErrorInterceptor implements HttpInterceptor {
 				}
 
 				if (err.status === 401) {
-					this.toastr.error(
-						'Tài khoản của bạn đã bị xoá. Không thể thực hiện được'
-					);
+					if (errors.code === 'SUN-OIL') {
+						this.toastr.error('Tài khoản của bạn đã bị xoá. Không thể thực hiện được');
+					}
+					if (errors.code === 'SUN-OIL') {
+						this.toastr.error(
+							'Tài khoản của bạn vừa được chỉnh nhóm quyền, vui lòng đăng nhập lại'
+						);
+					}
 					this.authService.logout();
 				}
 
