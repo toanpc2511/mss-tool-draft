@@ -18,12 +18,16 @@ export class TValidators extends Validators {
 			return null;
 		};
 
-	static date =
+	static afterCurrentDate =
 		() =>
 		(control: FormControl): ValidationErrors | null => {
 			const value = control.value;
+			console.log(value);
+			
 			if (value) {
 				const dateValue = moment(value, 'DD/MM/YYYY');
+				const currentDateValue = moment(new Date(), 'DD/MM/YYYY');
+				console.log(moment(currentDateValue).diff(dateValue, 'day'));
 				if (!dateValue.isValid()) {
 					return { invalidDate: true };
 				}

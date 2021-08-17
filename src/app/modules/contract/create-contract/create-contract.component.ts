@@ -1,13 +1,18 @@
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { startWith, takeUntil, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { renameUniqueFileName } from 'src/app/shared/helpers/functions';
+import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
+import { TValidators } from 'src/app/shared/validators';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IError } from '../../../shared/models/error.model';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { IProduct, IProductType, ProductService } from '../../product/product.service';
-import { ContractService, EContractType, IAddress, IProperties } from '../contract.service';
+import { ContractService, EContractType, IAddress, IFile, IProperties } from '../contract.service';
 
 @Component({
 	selector: 'app-create-contract',
@@ -28,10 +33,24 @@ export class CreateContractComponent implements OnInit {
 
 	transportMethods: Array<IProperties>;
 	contractTypes: Array<IProperties>;
-	contractType: EContractType;
+	contractType: EContractType = EContractType.PREPAID_CONTRACT;
 	paymentMethods: Array<IProperties>;
 
 	eContractType = EContractType;
+	currentDate = new Date();
+
+	contractSubscription = new Subscription();
+
+	files: Array<File> = [];
+	filesUploaded: Array<IFile> = [];
+	filesUploadProgress: Array<number> = [];
+
+	minDate: NgbDateStruct = {
+		day: this.currentDate.getDate(),
+		month: this.currentDate.getMonth() + 1,
+		year: this.currentDate.getFullYear()
+	};
+	payPlanDateCount = 1;
 
 	constructor(
 		private contractService: ContractService,
@@ -46,26 +65,6 @@ export class CreateContractComponent implements OnInit {
 	ngOnInit(): void {
 		this.init();
 
-		this.contractForm
-			.get('addressContract')
-			.valueChanges.pipe(
-				startWith(0),
-				tap((addressId) => {
-					const address = this.stationAddress.find((a) => a.id === Number(addressId));
-					this.addressSelected = address;
-					this.contractForm.get('fullAddress').patchValue(address?.fullAddress || null);
-				}),
-				takeUntil(this.destroy$)
-			)
-			.subscribe();
-
-		this.contractForm
-			.get('contractTypeCode')
-			.valueChanges.pipe(startWith(EContractType.PREPAID_CONTRACT), takeUntil(this.destroy$))
-			.subscribe((type: EContractType) => {
-				this.contractType = type;
-			});
-
 		this.productService
 			.getListProductType()
 			.pipe(takeUntil(this.destroy$))
@@ -77,12 +76,115 @@ export class CreateContractComponent implements OnInit {
 
 	init() {
 		this.buildInfoForm();
-		this.buildContractForm();
+		this.buildContractForm(EContractType.PREPAID_CONTRACT);
 		this.buildProductForm();
 		this.getAllStationAddress();
 		this.getTransportMethods();
 		this.getContractTypes();
 		this.getPaymentMethods();
+	}
+
+	confirmResetData(): Promise<boolean> {
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+			backdrop: 'static'
+		});
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn thay đổi? Điều này sẽ xóa các dữ liệu hợp đồng đã thêm`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
+		return new Promise<boolean>((resolve, reject) => {
+			modalRef.result.then(
+				(result) => {
+					if (result) {
+						resolve(true);
+					} else {
+						resolve(false);
+					}
+				},
+				() => reject(false)
+			);
+		});
+	}
+
+	switchType(type: EContractType) {
+		this.contractSubscription.unsubscribe();
+		this.contractSubscription = new Subscription();
+
+		if (type === EContractType.PREPAID_CONTRACT) {
+			const addressSub = this.contractForm
+				.get('addressContract')
+				.valueChanges.pipe(
+					tap((addressId) => {
+						const addressIdOld = this.addressSelected.id;
+						const address = this.stationAddress.find((a) => a.id === Number(addressId));
+						this.confirmResetData().then(
+							(result) => {
+								if (result) {
+									this.buildProductForm();
+									this.addressSelected = address;
+									this.contractForm.get('fullAddress').patchValue(address?.fullAddress || null);
+								} else {
+									this.contractForm
+										.get('addressContract')
+										.patchValue(addressIdOld, { emitEvent: false, onlySelf: true });
+								}
+							},
+							() => {
+								this.contractForm
+									.get('addressContract')
+									.patchValue(addressIdOld, { emitEvent: false, onlySelf: true });
+							}
+						);
+					}),
+					takeUntil(this.destroy$)
+				)
+				.subscribe();
+
+			const contractTypeSub = this.contractForm
+				.get('contractTypeCode')
+				.valueChanges.pipe(takeUntil(this.destroy$))
+				.subscribe((type: EContractType) => {
+					this.checkContractTypeBeforeChange(type);
+				});
+			this.contractSubscription.add(addressSub);
+			this.contractSubscription.add(contractTypeSub);
+		} else {
+			const contractTypeSub = this.contractForm
+				.get('contractTypeCode')
+				.valueChanges.pipe(takeUntil(this.destroy$))
+				.subscribe((type: EContractType) => {
+					this.checkContractTypeBeforeChange(type);
+				});
+			this.contractSubscription.add(contractTypeSub);
+		}
+	}
+
+	checkContractTypeBeforeChange(type: EContractType) {
+		const oldContractType = this.contractType;
+		this.confirmResetData().then(
+			(result) => {
+				if (result) {
+					this.contractType = type;
+					this.buildContractForm(type);
+					if (type === EContractType.PREPAID_CONTRACT) {
+						this.buildProductForm();
+					}
+				} else {
+					this.contractForm
+						.get('contractTypeCode')
+						.patchValue(oldContractType, { emitEvent: false, onlySelf: true });
+				}
+				this.cdr.detectChanges();
+			},
+			() => {
+				this.contractForm
+					.get('contractTypeCode')
+					.patchValue(oldContractType, { emitEvent: false, onlySelf: true });
+				this.cdr.detectChanges();
+			}
+		);
 	}
 
 	buildInfoForm(): void {
@@ -97,16 +199,36 @@ export class CreateContractComponent implements OnInit {
 		});
 	}
 
-	buildContractForm() {
-		this.contractForm = this.fb.group({
-			contractTypeCode: [this.eContractType.PREPAID_CONTRACT, Validators.required],
-			name: [null, Validators.required],
-			effectEndDate: [null],
-			transportMethodCode: [null, Validators.required],
-			payMethodCode: [null, Validators.required],
-			addressContract: [0, Validators.required],
-			fullAddress: [null]
-		});
+	buildContractForm(type: EContractType) {
+		switch (type) {
+			case EContractType.PREPAID_CONTRACT:
+				this.contractForm = this.fb.group({
+					contractTypeCode: [this.eContractType.PREPAID_CONTRACT, Validators.required],
+					name: [null, Validators.required],
+					effectEndDate: [null, TValidators.afterCurrentDate],
+					transportMethodCode: [null, Validators.required],
+					payMethodCode: [null, Validators.required],
+					addressContract: [0, Validators.required],
+					fullAddress: [null]
+				});
+				break;
+			case EContractType.PLAN_CONTRACT:
+				this.contractForm = this.fb.group({
+					contractTypeCode: [this.eContractType.PLAN_CONTRACT, Validators.required],
+					name: [null, Validators.required],
+					effectEndDate: [null, TValidators.afterCurrentDate],
+					transportMethodCode: [null, Validators.required],
+					payMethodCode: [null, Validators.required],
+					limit: [null, Validators.required],
+					payPlanDate1: [null],
+					payPlanDate2: [null],
+					payPlanDate3: [null],
+					payPlanDate4: [null],
+					payPlanDate5: [null]
+				});
+				break;
+		}
+		this.switchType(type);
 	}
 
 	buildProductForm() {
@@ -124,6 +246,7 @@ export class CreateContractComponent implements OnInit {
 			])
 		});
 		this.productFormArray = this.productForm.get('products') as FormArray;
+		this.cdr.detectChanges();
 	}
 
 	productTypeChanged($event: Event, i: number) {
@@ -198,6 +321,7 @@ export class CreateContractComponent implements OnInit {
 	getAllStationAddress() {
 		this.contractService.getAddress().subscribe((res) => {
 			this.stationAddress = res.data;
+			this.addressSelected = this.stationAddress[0];
 		});
 	}
 
@@ -282,9 +406,50 @@ export class CreateContractComponent implements OnInit {
 		}
 	}
 
-	// formatMoney(n) {
-	// 	if (n !== '' && n >= 0) {
-	// 		return (Math.round(n * 100) / 100).toLocaleString().split('.').join(',');
-	// 	}
-	// }
+	addPayPlanDate() {
+		this.payPlanDateCount++;
+	}
+
+	addFiles($event: Event) {
+		const inputElement = $event.target as HTMLInputElement;
+		const files = Array.from(inputElement.files);
+		if (files.length > 0 && files.length <= 5 - (this.files.length + this.filesUploaded.length)) {
+			let filePush: Array<File> = [];
+
+			for (const file of files) {
+				if (file.size <= 2000000) {
+					const newFile = renameUniqueFileName(file, `${file.name}`);
+					filePush = [...filePush, newFile];
+				} else {
+					this.toastr.error('File tải lên có dung lượng lớn hơn 2Mb');
+					filePush = [];
+					break;
+				}
+			}
+			this.files = [...this.files].concat(filePush);
+			for (let i = 0; i < filePush.length; i++) {
+				this.uploadFile(i, filePush[i]);
+			}
+		} else {
+			this.toastr.error('Không được tải lên quá 5 file');
+		}
+		inputElement.value = null;
+	}
+
+	uploadFile(index: number, file: File) {
+		this.filesUploadProgress[index] = 0;
+		const formData = new FormData();
+		formData.set('files', file);
+		this.contractService
+			.uploadFile(formData)
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((event: any) => {
+				if (event.type === HttpEventType.UploadProgress) {
+					this.filesUploadProgress[index] = Math.round((100 * event.loaded) / event.total);
+				} else if (event instanceof HttpResponse) {
+					console.log(event);
+				}
+				this.cdr.detectChanges();
+			});
+	}
 }

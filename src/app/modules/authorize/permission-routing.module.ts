@@ -18,7 +18,7 @@ const routes: Routes = [
 		component: PermissionModalComponent
 	},
 	{
-		path: 'sua-nhom-quyen/:id',
+		path: 'sua-nhom-quyen',
 		component: PermissionModalComponent
 	}
 ];

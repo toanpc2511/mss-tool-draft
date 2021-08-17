@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbDatepickerModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbDatepickerModule,
+	NgbProgressbarModule,
+	NgbTooltipModule
+} from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { InputTrimModule } from 'ng2-trim-directive';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
@@ -29,7 +33,8 @@ import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 		DirectivesModule,
 		NgbDatepickerModule,
 		TextMaskModule,
-		PipesModule
+		PipesModule,
+		NgbProgressbarModule
 	]
 })
 export class ContractModule {}
