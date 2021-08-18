@@ -135,7 +135,7 @@
 
 					<div class="col-lg-7">
 						<label class="form-label font-weight-bold"
-							>{{data?.effectStartDate | date: 'dd/MM/yyyy'}}</label
+							>{{data?.approveDate | date: 'dd/MM/yyyy'}}</label
 						>
 					</div>
 				</div>
@@ -147,7 +147,7 @@
 
 					<div class="col-lg-7">
 						<label class="form-label font-weight-bold"
-							>{{data?.effectStartDate | date: 'dd/MM/yyyy'}}</label
+							>{{data?.effectEndDate | date: 'dd/MM/yyyy'}}</label
 						>
 					</div>
 				</div>
@@ -306,14 +306,20 @@
 		<div class="card-header">
 			<div class="card-title">
 				<h3 class="title-reason">Lý do từ chối:</h3>
-				<p class="title-reason pl-5">Nội dung từ chố</p>
+				<p class="title-reason pl-5">{{data?.rejectReason}}</p>
 			</div>
 		</div>
 	</div>
 
 	<div class="w-100 d-flex justify-content-center pb-10">
-		<button type="button" class="btn btn-outline-primary mr-3" (click)="goToListContract()">
-			Quay lại
-		</button>
+    <button *ngIf='data?.status !== "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="goToListContract()">
+      Quay lại
+    </button>
+    <button *ngIf='data?.status == "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="refuseContract($event, data)">
+      Từ chối
+    </button>
+    <button *ngIf='data?.status == "WAITING_ACCEPT"' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
+      Phê duyệt
+    </button>
 	</div>
 </div>

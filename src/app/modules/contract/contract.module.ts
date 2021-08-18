@@ -17,9 +17,10 @@ import { DetailsContractComponent } from './details-contract/details-contract.co
 import { DirectivesModule } from '../../shared/directives/directives.module';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipesModule } from 'src/app/shared/pipes/pipes.module';
+import { RejectContractModalComponent } from './details-contract/reject-contract-modal/reject-contract-modal.component';
 
 @NgModule({
-	declarations: [ListContractComponent, CreateContractComponent, DetailsContractComponent],
+	declarations: [ListContractComponent, CreateContractComponent, DetailsContractComponent, RejectContractModalComponent],
 	imports: [
 		CommonModule,
 		ContractRoutingModule,
