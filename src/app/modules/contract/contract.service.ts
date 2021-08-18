@@ -75,6 +75,8 @@ export interface IContract {
   createdAt: string;
   rejectReason: string;
   approveDate: string;
+  limitMoney: number;
+  dateOfPayment: string;
 	status: 'ACCEPTED' | 'REJECT' | 'WAITING_ACCEPT';
 }
 
@@ -225,7 +227,7 @@ export class ContractService {
     return this.http.delete(`contracts/${contractId}`);
   }
 
-  acceptContract(id: number, body, params) {
-    return this.http.put(`contracts/${id}`, {body}, {params});
+  acceptContract(id: number, body) {
+    return this.http.put(`contracts/${id}`, body);
   }
 }
