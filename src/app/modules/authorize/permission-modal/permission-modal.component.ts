@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { of } from 'rxjs';
-import { map, pluck, switchMap, takeUntil } from 'rxjs/operators';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';

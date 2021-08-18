@@ -1,5 +1,5 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
@@ -9,6 +9,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { convertDateToServer, renameUniqueFileName } from 'src/app/shared/helpers/functions';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { TValidators } from 'src/app/shared/validators';
+import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IError } from '../../../shared/models/error.model';
 import { DestroyService } from '../../../shared/services/destroy.service';
@@ -33,7 +34,7 @@ import {
 	styleUrls: ['./create-contract.component.scss'],
 	providers: [DestroyService, FormBuilder]
 })
-export class CreateContractComponent implements OnInit {
+export class CreateContractComponent implements OnInit, AfterViewInit {
 	eContractStatus = EContractStatus;
 	infoForm: FormGroup;
 	contractForm: FormGroup;
@@ -65,6 +66,7 @@ export class CreateContractComponent implements OnInit {
 		year: this.currentDate.getFullYear()
 	};
 	payPlanDateCount = 1;
+	isUpdate = false;
 
 	constructor(
 		private contractService: ContractService,
@@ -73,7 +75,8 @@ export class CreateContractComponent implements OnInit {
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private toastr: ToastrService,
-		private modalService: NgbModal
+		private modalService: NgbModal,
+		private subheader: SubheaderService
 	) {}
 
 	ngOnInit(): void {
@@ -86,6 +89,31 @@ export class CreateContractComponent implements OnInit {
 				this.productTypes = res.data;
 				this.cdr.detectChanges();
 			});
+	}
+
+	ngAfterViewInit(): void {
+		let subBreadcump = {
+			title: 'Thêm mới hợp đồng',
+			linkText: 'Thêm mới hợp đồng',
+			linkPath: '/hop-dong/danh-sach/them-moi'
+		};
+		if (this.isUpdate) {
+			subBreadcump = {
+				title: 'Sửa nhóm quyền',
+				linkText: 'Sửa nhóm quyền',
+				linkPath: '/hop-dong/danh-sach/sua-hop-dong'
+			};
+		}
+		setTimeout(() => {
+			this.subheader.setBreadcrumbs([
+				{
+					title: 'Quản lý hợp đồng',
+					linkText: 'Quản lý hợp đồng',
+					linkPath: '/hop-dong'
+				},
+				subBreadcump
+			]);
+		}, 1);
 	}
 
 	init() {

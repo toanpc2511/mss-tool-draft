@@ -140,8 +140,9 @@ export class ListContractComponent implements OnInit {
 		this.getListContract();
 	}
 
-	updateContract(code: string): void {
-		console.log('Mã hợp đồng', code);
+	updateContract($event: Event, code: string): void {
+		$event.stopPropagation();
+		this.router.navigate([`/hop-dong/danh-sach/sua-hop-dong/${code}`]);
 	}
 
 	deleteContract($event: Event, item: IContract): void {

@@ -135,7 +135,7 @@
 						<td class="text-center action">
 							<a
 								*ngIf="item.status === contractStatus.DRAFT"
-								(click)="updateContract(item.code)"
+								(click)="updateContract($event,item.code)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 								[ngbTooltip]="'Sửa'"
 							>
