@@ -2,17 +2,30 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { renameUniqueFileName } from 'src/app/shared/helpers/functions';
+import { convertDateToServer, renameUniqueFileName } from 'src/app/shared/helpers/functions';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { TValidators } from 'src/app/shared/validators';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IError } from '../../../shared/models/error.model';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { IProduct, IProductType, ProductService } from '../../product/product.service';
-import { ContractService, EContractType, IAddress, IFile, IProperties } from '../contract.service';
+import {
+	ContractService,
+	EContractStatus,
+	EContractType,
+	ECreatorType,
+	IAddress,
+	IContractPlanInput,
+	IContractPrepayInput,
+	ICustomerInfo,
+	IFile,
+	IProductInfo,
+	IProperties
+} from '../contract.service';
 
 @Component({
 	selector: 'app-create-contract',
@@ -21,6 +34,7 @@ import { ContractService, EContractType, IAddress, IFile, IProperties } from '..
 	providers: [DestroyService, FormBuilder]
 })
 export class CreateContractComponent implements OnInit {
+	eContractStatus = EContractStatus;
 	infoForm: FormGroup;
 	contractForm: FormGroup;
 	productForm: FormGroup;
@@ -219,7 +233,7 @@ export class CreateContractComponent implements OnInit {
 					effectEndDate: [null, TValidators.afterCurrentDate],
 					transportMethodCode: [null, Validators.required],
 					payMethodCode: [null, Validators.required],
-					limit: [null, Validators.required],
+					limit: [null, [Validators.required, Validators.min(1)]],
 					payPlanDate1: [null],
 					payPlanDate2: [null],
 					payPlanDate3: [null],
@@ -238,7 +252,7 @@ export class CreateContractComponent implements OnInit {
 					categoryProductId: [null, Validators.required],
 					productId: [null, Validators.required],
 					unit: [null],
-					amount: [null, Validators.required],
+					amount: [null, [Validators.required, Validators.min(1)]],
 					price: [null],
 					discount: [null, Validators.required],
 					totalMoney: [null]
@@ -267,6 +281,7 @@ export class CreateContractComponent implements OnInit {
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
 				this.productFormArray.at(i).get('price').patchValue(res.data.price);
+				this.productFormArray.at(i).get('discount').patchValue(res.data.price);
 				this.productFormArray.at(i).get('unit').patchValue(res.data.unit);
 				this.updateTotalProduct(i);
 			});
@@ -276,6 +291,11 @@ export class CreateContractComponent implements OnInit {
 		const valueInput = ($event.target as HTMLSelectElement).value;
 		this.productFormArray.at(i).get('amount').patchValue(valueInput.replace('-', ''));
 		this.updateTotalProduct(i);
+	}
+
+	inputLimit($event) {
+		const valueInput = ($event.target as HTMLSelectElement).value;
+		this.contractForm.get('limit').patchValue(valueInput.replace('-', ''));
 	}
 
 	updateTotalProduct(i: number) {
@@ -304,6 +324,8 @@ export class CreateContractComponent implements OnInit {
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
 					(res) => {
+						console.log(res);
+
 						this.infoForm.patchValue(res.data);
 						this.infoForm.get('phone').patchValue(phoneNumber);
 						this.cdr.detectChanges();
@@ -389,7 +411,7 @@ export class CreateContractComponent implements OnInit {
 				categoryProductId: [null, Validators.required],
 				productId: [null, Validators.required],
 				unit: [null],
-				amount: [null, Validators.required],
+				amount: [null, [Validators.required, Validators.min(1)]],
 				price: [null],
 				discount: [null, Validators.required],
 				totalMoney: [null]
@@ -427,8 +449,9 @@ export class CreateContractComponent implements OnInit {
 				}
 			}
 			this.files = [...this.files].concat(filePush);
+			this.filesUploaded = this.files.map((file) => ({ name: file.name, url: file.name }));
 			for (let i = 0; i < filePush.length; i++) {
-				this.uploadFile(i, filePush[i]);
+				// this.uploadFile(i, filePush[i]);
 			}
 		} else {
 			this.toastr.error('Không được tải lên quá 5 file');
@@ -439,7 +462,7 @@ export class CreateContractComponent implements OnInit {
 	uploadFile(index: number, file: File) {
 		this.filesUploadProgress[index] = 0;
 		const formData = new FormData();
-		formData.set('files', file);
+		formData.append('file', file);
 		this.contractService
 			.uploadFile(formData)
 			.pipe(takeUntil(this.destroy$))
@@ -451,5 +474,82 @@ export class CreateContractComponent implements OnInit {
 				}
 				this.cdr.detectChanges();
 			});
+	}
+
+	removeFile(type: 'ALL' | 'ONE', url?: string) {
+		if (type === 'ALL') {
+			this.filesUploaded = [];
+		} else {
+			this.filesUploaded = [...this.filesUploaded].filter(
+				(f, index) => this.filesUploaded.findIndex((f) => f.url === url) !== index
+			);
+		}
+	}
+
+	save(status: EContractStatus) {
+		this.infoForm.markAllAsTouched();
+		this.contractForm.markAllAsTouched();
+		if (this.infoForm.invalid) {
+			return;
+		}
+		if (this.contractForm.invalid) {
+			return;
+		}
+		const infoData: ICustomerInfo = this.infoForm.value;
+		const contractData = this.contractForm.value;
+
+		if (this.contractType === EContractType.PREPAID_CONTRACT) {
+			this.productForm.markAllAsTouched();
+			if (this.productForm.invalid) {
+				return;
+			}
+
+			const productData: Array<IProductInfo> = (
+				this.productForm.value.products as Array<IProductInfo>
+			).map((p) => ({ ...p, amount: Number(p.amount) }));
+
+			const prepayContractData: IContractPrepayInput = {
+				creatorType: ECreatorType.EMPLOYEE,
+				profileId: infoData.id,
+				contractTypeCode: contractData.contractTypeCode,
+				name: contractData.name,
+				effectEndDate: convertDateToServer(contractData.effectEndDate),
+				transportMethodCode: contractData.transportMethodCode,
+				payMethodCode: contractData.payMethodCode,
+				addressContract: contractData.addressContract,
+				fullAddress: contractData.fullAddress,
+				productInfoRequests: productData,
+				totalPayment: this.getTotal(),
+				attachmentRequests: this.filesUploaded,
+				statusType: status
+			};
+
+			this.contractService
+				.createPrepayContract(prepayContractData)
+				.pipe(takeUntil(this.destroy$))
+				.subscribe((res) => {
+					console.log(res);
+				});
+		} else {
+			const planContractData: IContractPlanInput = {
+				creatorType: ECreatorType.EMPLOYEE,
+				profileId: infoData.id,
+				contractTypeCode: contractData.contractTypeCode,
+				name: contractData.name,
+				effectEndDate: contractData.effectEndDate,
+				transportMethodCode: contractData.transportMethodCode,
+				payMethodCode: contractData.payMethodCode,
+				limit: contractData.limit,
+				dateOfPayment: {
+					paymentTimeOne: convertDateToServer(contractData.payPlanDate1),
+					paymentTimeTwo: convertDateToServer(contractData.payPlanDate2),
+					paymentTimeThree: convertDateToServer(contractData.payPlanDate3),
+					paymentTimeFour: convertDateToServer(contractData.payPlanDate4),
+					paymentTimeFive: convertDateToServer(contractData.payPlanDate5)
+				},
+				attachmentRequests: this.filesUploaded,
+				statusType: status
+			};
+		}
 	}
 }

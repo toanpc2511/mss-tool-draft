@@ -2,6 +2,11 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 
+export enum ECreatorType {
+	EMPLOYEE = 'EMPLOYEE',
+	ENTERPRISE = 'ENTERPRISE'
+}
+
 export enum EContractType {
 	PREPAID_CONTRACT = 'PRE_PAY',
 	PLAN_CONTRACT = 'PLAN'
@@ -84,11 +89,6 @@ export enum ETransportMethods {
 	TEC = 'TEC'
 }
 
-export enum ECreatorType {
-	EMPLOYEE = 'EMPLOYEE',
-	ADMIN = 'ADMIN'
-}
-
 export enum EContractStatus {
 	ACCEPTED = 'ACCEPTED',
 	REJECT = 'REJECT',
@@ -135,37 +135,54 @@ export interface ICustomerInfo {
 	idCard: string;
 }
 
-export interface IContractInput {
-	name: string;
-	dateOfBirth: Date;
-	effectStartDate: Date;
-	effectEndDate: Date;
-	productInfoRequests: Array<{
-		totalMoney: number;
-		discount: number;
-		categoryProductId: number;
-		productName: string;
-		unit: string;
-		productId: number;
-		amount: number;
-	}>;
+export interface IProductInfo {
+	totalMoney: number;
+	discount: number;
+	categoryProductId: number;
+	productName: string;
+	unit: string;
+	productId: number;
+	amount: number;
+}
+export interface IContractPrepayInput {
+	profileId: number;
+
 	creatorType: ECreatorType;
-	customerId: number;
+	name: string;
+	effectEndDate: string;
 	contractTypeCode: EContractType;
 	transportMethodCode: ETransportMethods;
 	payMethodCode: EPaymentMethods;
 	addressContract: string;
 	fullAddress: string;
-	nameCustomer: string;
-	addressCustomer: string;
-	nameEnterPrise: string;
-	profileId: number;
-	phone: string;
-	email: string;
-	idCard: string;
-	url: string;
-	fileName: string;
+
+	productInfoRequests: Array<IProductInfo>;
 	totalPayment: number;
+
+	attachmentRequests: Array<IFile>;
+	statusType: EContractStatus;
+}
+export interface IContractPlanInput {
+	profileId: number;
+
+	creatorType: ECreatorType;
+	name: string;
+	effectEndDate: Date;
+	contractTypeCode: EContractType;
+	transportMethodCode: ETransportMethods;
+	payMethodCode: EPaymentMethods;
+
+	limit: number;
+	dateOfPayment: {
+		paymentTimeOne: string;
+		paymentTimeTwo: string;
+		paymentTimeThree: string;
+		paymentTimeFour: string;
+		paymentTimeFive: string;
+	};
+
+	attachmentRequests: Array<IFile>;
+	statusType: EContractStatus;
 }
 
 @Injectable({
@@ -202,6 +219,22 @@ export class ContractService {
 
 	getContractById(categoryId: number) {
 		return this.http.get<IContract>(`contracts/${categoryId}`);
+	}
+
+	createPrepayContract(contract: IContractPrepayInput) {
+		return this.http.post<any>(`contracts`, contract);
+	}
+
+	createPlanContract(contract: IContractPlanInput) {
+		return this.http.post<any>(`contracts/plans`, contract);
+	}
+
+	updatePrepayContract(contractId: number, contract: IContractPrepayInput) {
+		return this.http.put<any>(`contracts/${contractId}`, contract);
+	}
+
+	updatePlanContract(contractId: number, contract: IContractPlanInput) {
+		return this.http.post<any>(`contracts/plans/${contractId}`, contract);
 	}
 
 	downloadFile(urlFile: string) {
