@@ -516,7 +516,7 @@ export class CreateContractComponent implements OnInit {
 				effectEndDate: convertDateToServer(contractData.effectEndDate),
 				transportMethodCode: contractData.transportMethodCode,
 				payMethodCode: contractData.payMethodCode,
-				addressContract: contractData.addressContract,
+				stationId: contractData.addressContract,
 				fullAddress: contractData.fullAddress,
 				productInfoRequests: productData,
 				totalPayment: this.getTotal(),

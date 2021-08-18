@@ -158,7 +158,7 @@ export interface IContractPrepayInput {
 	contractTypeCode: EContractType;
 	transportMethodCode: ETransportMethods;
 	payMethodCode: EPaymentMethods;
-	addressContract: string;
+	stationId: number;
 	fullAddress: string;
 
 	productInfoRequests: Array<IProductInfo>;
