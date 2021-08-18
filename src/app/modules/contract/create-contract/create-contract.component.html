@@ -231,11 +231,10 @@
 						<div class="input-group">
 							<input
 								class="form-control form-control-lg form-control-solid"
-								type="number"
 								placeholder="Nhập hạn mức"
-								max="20"
+								decimal-mask
+								maxlength="17"
 								formControlName="limit"
-								(input)="inputLimit($event)"
 							/>
 						</div>
 						<app-validate
@@ -511,8 +510,6 @@
 												placeholder="Nhập số lượng"
 												class="form-control form-control-sm"
 												formControlName="amount"
-												type="number"
-												maxlength="6"
 											/>
 											<app-validate
 												[control]="productInfoFromGroup.get('amount')"
@@ -627,7 +624,7 @@
 							<em class="fa fa-times"></em>
 							<span>{{file.name|stringMaxLength: 35}}</span>
 						</div> -->
-						<span class="text-warning mt-3">Dung lượng file tối đa 2Mb và tối đa 5 file</span>
+						<span class="text-warning mt-3">Dung lượng file tối đa 5Mb và tối đa 10 file</span>
 					</div>
 				</div>
 			</div>

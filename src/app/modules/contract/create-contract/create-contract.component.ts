@@ -270,12 +270,27 @@ export class CreateContractComponent implements OnInit {
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
 				this.products[i] = res.data;
-				console.log(this.products);
 			});
 	}
 
 	productChanged($event, i) {
+		const allProduct = this.productFormArray.value as Array<IProductInfo>;
 		const value = ($event.target as HTMLSelectElement).value;
+		const checkExisted = allProduct.some(
+			(p, index) => p.productId && i !== index && Number(p.productId) === Number(value)
+		);
+
+		if (checkExisted) {
+			this.toastr.error('Sản phẩm này đã được thêm');
+			this.productFormArray.at(i).get('productId').patchValue(null);
+			return;
+		}
+		if (!value) {
+			this.productFormArray.at(i).get('price').patchValue(0);
+			this.productFormArray.at(i).get('discount').patchValue(0);
+			this.productFormArray.at(i).get('unit').patchValue(0);
+			this.updateTotalProduct(i);
+		}
 		this.productService
 			.getProductInfo(Number(value), this.addressSelected?.areaType || 'AREA_1')
 			.pipe(takeUntil(this.destroy$))
@@ -289,13 +304,11 @@ export class CreateContractComponent implements OnInit {
 
 	changeAmount($event, i) {
 		const valueInput = ($event.target as HTMLSelectElement).value;
-		this.productFormArray.at(i).get('amount').patchValue(valueInput.replace('-', ''));
+		this.productFormArray
+			.at(i)
+			.get('amount')
+			.patchValue(valueInput.replace(/[^0-9]/g, '').substr(0, 6));
 		this.updateTotalProduct(i);
-	}
-
-	inputLimit($event) {
-		const valueInput = ($event.target as HTMLSelectElement).value;
-		this.contractForm.get('limit').patchValue(valueInput.replace('-', ''));
 	}
 
 	updateTotalProduct(i: number) {
@@ -435,11 +448,11 @@ export class CreateContractComponent implements OnInit {
 	addFiles($event: Event) {
 		const inputElement = $event.target as HTMLInputElement;
 		const files = Array.from(inputElement.files);
-		if (files.length > 0 && files.length <= 5 - (this.files.length + this.filesUploaded.length)) {
+		if (files.length > 0 && files.length <= 10 - (this.files.length + this.filesUploaded.length)) {
 			let filePush: Array<File> = [];
 
 			for (const file of files) {
-				if (file.size <= 2000000) {
+				if (file.size <= 5000000) {
 					const newFile = renameUniqueFileName(file, `${file.name}`);
 					filePush = [...filePush, newFile];
 				} else {
