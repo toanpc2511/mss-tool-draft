@@ -77,6 +77,11 @@ export interface IContract {
 	};
 	effectEndDate: string;
 	effectStartDate: string;
+  createdAt: string;
+  rejectReason: string;
+  approveDate: string;
+  limitMoney: number;
+  dateOfPayment: string;
 	status: 'ACCEPTED' | 'REJECT' | 'WAITING_ACCEPT';
 }
 
@@ -217,8 +222,8 @@ export class ContractService {
 		return this.http.get<ICustomerInfo>('drivers/information', { params });
 	}
 
-	getContractById(categoryId: number) {
-		return this.http.get<IContract>(`contracts/${categoryId}`);
+	getContractById(contractId: number) {
+		return this.http.get<IContract>(`contracts/${contractId}`);
 	}
 
 	createPrepayContract(contract: IContractPrepayInput) {
@@ -250,4 +255,12 @@ export class ContractService {
 			}
 		);
 	}
+
+  deleteContract(contractId: number) {
+    return this.http.delete(`contracts/${contractId}`);
+  }
+
+  acceptContract(id: number, body) {
+    return this.http.put(`contracts/${id}`, body);
+  }
 }

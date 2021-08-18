@@ -52,7 +52,7 @@
 					<th>
 						Ngày tạo
 						<app-sort-icon
-							column="effect_start_date"
+							column="create_at"
 							[activeColumn]="sortData?.fieldSort"
 							[activeDirection]="sortData?.directionSort"
 							(sort)="sort($event)"
@@ -88,25 +88,25 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.contractType.type"
+								[ngbTooltip]="item.contractType.name"
 							>
 								{{ item.contractType.name }}
 							</p>
 						</td>
-						<td class="effectStartDate">
+						<td class="createAt">
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.effectStartDate"
+								[ngbTooltip]="item.createdAt | date: 'dd/MM/yyyy'"
 							>
-								{{ item.effectStartDate | date: 'dd/MM/yyyy' }}
+								{{ item.createdAt | date: 'dd/MM/yyyy' }}
 							</p>
 						</td>
 						<td class="effectEndDate">
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.effectEndDate"
+								[ngbTooltip]="item.effectEndDate | date: 'dd/MM/yyyy'"
 							>
 								{{ item.effectEndDate | date: 'dd/MM/yyyy' }}
 							</p>
@@ -148,7 +148,7 @@
 							</a>
 							<a
 								*ngIf="item.status === contractStatus.DRAFT"
-								(click)="deleteContract(item)"
+								(click)="deleteContract($event, item)"
 								class="btn btn-icon btn-light btn-hover-danger btn-sm"
 								[ngbTooltip]="'Xóa'"
 							>

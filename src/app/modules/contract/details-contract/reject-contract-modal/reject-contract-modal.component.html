@@ -1,0 +1,60 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+    <div class="close-icon" (click)="modal.close()"></div>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default" style="min-height: 100px">
+      <form [formGroup]="rejectForm" class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-12" *ngIf='data.type == "REJECT"'>
+            <label class="form-label required">Lý do từ chối</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nhập lý do từ chối"
+              formControlName='rejectReason'
+              autocomplete="off"
+              maxlength="199"
+            />
+            <app-validate
+              [control]="rejectForm.controls['rejectReason']"
+              [error]="'required'"
+              [message]="'Lý do từ chối không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-12" *ngIf='data.type == "ACCEPTED"'>
+            <p>Sau khi phê duyệt hợp đồng, hệ thống sẽ tự động cộng hạn mức  vào:</p>
+
+            <p class='mess-info'>Tài khoản:
+              <strong>
+                {{dataContract.customer.phone}}
+              </strong>
+            </p>
+
+            <p class='mess-info' *ngIf='dataContract.contractType.code == "PLAN"'>Hạn mức cộng:
+              <strong>
+                {{dataContract.limitMoney.toLocaleString('en-US')}} VNĐ
+              </strong>
+            </p>
+
+            <p class='mess-info' *ngIf='dataContract.contractType.code == "PRE_PAY"'>Hạn mức nhiên liệu cộng:
+              <strong *ngFor='let item of listProduct'>
+                {{item}},
+              </strong>
+            </p>
+            <p>Bạn có chắc chắn muốn phê duyệt hợp đồng không?</p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button type="button" class="btn btn-primary btn-dialog" *ngIf='data.type == "REJECT"' (click)='acceptContract()'>Từ chối</button>
+    <button type="button" class="btn btn-primary btn-dialog" *ngIf='data.type == "ACCEPTED"' (click)='acceptContract()'>Đồng ý</button>
+  </div>
+</div>
