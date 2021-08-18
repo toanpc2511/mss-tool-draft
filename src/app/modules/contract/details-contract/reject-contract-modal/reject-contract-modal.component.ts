@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContractService, IContract } from '../../contract.service';
 import { IError } from '../../../../shared/models/error.model';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-reject-contract-modal',
@@ -23,6 +24,7 @@ export class RejectContractModalComponent implements OnInit {
     private fb: FormBuilder,
     private contractService: ContractService,
     private router: Router,
+    private toastr: ToastrService,
     ) { }
 
   ngOnInit(): void {
@@ -41,16 +43,18 @@ export class RejectContractModalComponent implements OnInit {
     this.modal.close();
   }
 
-  async acceptContract(type: string) {
-    const params = {
-      status: type
-    }
+  async acceptContract() {
     const body = {
       rejectReason: this.rejectForm.controls['rejectReason'].value || ''
     }
-    console.log(params);
-    this.contractService.acceptContract(this.dataContract.id, body, params).subscribe(
+    console.log(body);
+    this.contractService.acceptContract(this.dataContract.id, body).subscribe(
       (res) => {
+        console.log(body);
+        this.rejectForm.markAllAsTouched();
+        if (this.rejectForm.invalid) {
+          return;
+        }
         if (res.data) {
           this.modal.close();
           this.router.navigate(['/hop-dong/danh-sach']);
@@ -73,7 +77,11 @@ export class RejectContractModalComponent implements OnInit {
     }
   }
 
-  checkError(err: IError) {}
+  checkError(err: IError) {
+    if (err.code === 'SUN-OIL-4718') {
+      this.toastr.error('Lý do từ chối hợp đồng không được bỏ trống');
+    }
+  }
 }
 
 export interface IDataTransfer {

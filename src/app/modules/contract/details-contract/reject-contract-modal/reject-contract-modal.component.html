@@ -15,7 +15,7 @@
               placeholder="Nhập lý do từ chối"
               formControlName='rejectReason'
               autocomplete="off"
-              maxlength="255"
+              maxlength="199"
             />
             <app-validate
               [control]="rejectForm.controls['rejectReason']"
@@ -33,13 +33,13 @@
               </strong>
             </p>
 
-            <p class='mess-info' *ngIf='dataContract.contractType.type !== "TYPE_CONTRACT"'>Hạn mức cộng:
+            <p class='mess-info' *ngIf='dataContract.contractType.code == "PLAN"'>Hạn mức cộng:
               <strong>
-                {{dataContract.totalPayment}}
+                {{dataContract.limitMoney.toLocaleString('en-US')}} VNĐ
               </strong>
             </p>
 
-            <p class='mess-info' *ngIf='dataContract.contractType.type == "TYPE_CONTRACT"'>Hạn mức nhiên liệu cộng:
+            <p class='mess-info' *ngIf='dataContract.contractType.code == "PRE_PAY"'>Hạn mức nhiên liệu cộng:
               <strong *ngFor='let item of listProduct'>
                 {{item}},
               </strong>
@@ -54,7 +54,7 @@
     <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
       Hủy
     </button>
-    <button type="button" class="btn btn-primary btn-dialog" *ngIf='data.type == "REJECT"' (click)='acceptContract(data.type)'>Từ chối</button>
-    <button type="button" class="btn btn-primary btn-dialog" *ngIf='data.type == "ACCEPTED"' (click)='acceptContract(data.type)'>Đồng ý</button>
+    <button type="button" class="btn btn-primary btn-dialog" *ngIf='data.type == "REJECT"' (click)='acceptContract()'>Từ chối</button>
+    <button type="button" class="btn btn-primary btn-dialog" *ngIf='data.type == "ACCEPTED"' (click)='acceptContract()'>Đồng ý</button>
   </div>
 </div>
