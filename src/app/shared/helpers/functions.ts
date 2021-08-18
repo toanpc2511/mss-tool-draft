@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 export const makeId = (length) => {
 	let result = '';
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -39,4 +41,8 @@ export const renameUniqueFileName = (originalFile: File, newName: string) => {
 		type: originalFile.type,
 		lastModified: originalFile.lastModified
 	});
+};
+
+export const convertDateToServer = (value: string) => {
+	return value ? moment(value, 'DD/MM/YYYY').toISOString() : null;
 };

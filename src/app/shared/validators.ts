@@ -22,8 +22,7 @@ export class TValidators extends Validators {
 		() =>
 		(control: FormControl): ValidationErrors | null => {
 			const value = control.value;
-			console.log(value);
-			
+
 			if (value) {
 				const dateValue = moment(value, 'DD/MM/YYYY');
 				const currentDateValue = moment(new Date(), 'DD/MM/YYYY');
