@@ -260,7 +260,10 @@ export class ContractService {
 		return this.http.delete(`contracts/${contractId}`);
 	}
 
-	acceptContract(id: number, body) {
-		return this.http.put(`contracts/${id}`, body);
+	acceptContract(id: number) {
+		return this.http.put(`contracts/acceptances/${id}`, {});
 	}
+  rejectContract(id: number, body) {
+    return this.http.put(`contracts/rejections/${id}`, body);
+  }
 }

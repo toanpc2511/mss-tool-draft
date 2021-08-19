@@ -43,12 +43,12 @@ export class RejectContractModalComponent implements OnInit {
     this.modal.close();
   }
 
-  async acceptContract() {
+  async rejectContract() {
     const body = {
-      rejectReason: this.rejectForm.controls['rejectReason'].value || ''
+      reason: this.rejectForm.controls['rejectReason'].value || ''
     }
-    console.log(body);
-    this.contractService.acceptContract(this.dataContract.id, body).subscribe(
+
+    this.contractService.rejectContract(this.dataContract.id, body).subscribe(
       (res) => {
         console.log(body);
         this.rejectForm.markAllAsTouched();
@@ -62,6 +62,17 @@ export class RejectContractModalComponent implements OnInit {
       },
       (err: IError) => {
         this.checkError(err);
+      }
+    );
+  }
+
+  acceptContract() {
+    this.contractService.acceptContract(this.dataContract.id).subscribe(
+      (res) => {
+        if (res.data) {
+          this.modal.close();
+          this.router.navigate(['/hop-dong/danh-sach']);
+        }
       }
     );
   }
@@ -80,6 +91,9 @@ export class RejectContractModalComponent implements OnInit {
   checkError(err: IError) {
     if (err.code === 'SUN-OIL-4718') {
       this.toastr.error('Lý do từ chối hợp đồng không được bỏ trống');
+    }
+    if (err.code === 'SUN-OIL-4720') {
+      this.toastr.error('Không có nhân viên nào tương ứng với tài khoản này');
     }
   }
 }

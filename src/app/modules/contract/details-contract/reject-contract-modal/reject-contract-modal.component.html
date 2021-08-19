@@ -54,7 +54,7 @@
     <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
       Hủy
     </button>
-    <button type="button" class="btn btn-primary btn-dialog" *ngIf='data.type == "REJECT"' (click)='acceptContract()'>Từ chối</button>
+    <button type="button" class="btn btn-primary btn-dialog" *ngIf='data.type == "REJECT"' (click)='rejectContract()'>Từ chối</button>
     <button type="button" class="btn btn-primary btn-dialog" *ngIf='data.type == "ACCEPTED"' (click)='acceptContract()'>Đồng ý</button>
   </div>
 </div>
