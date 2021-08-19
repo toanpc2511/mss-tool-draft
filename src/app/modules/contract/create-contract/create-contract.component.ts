@@ -1,13 +1,23 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { of, Subscription } from 'rxjs';
+import {
+	catchError,
+	concatMap,
+	debounceTime,
+	finalize,
+	switchMap,
+	takeUntil,
+	tap,
+	throttleTime
+} from 'rxjs/operators';
 import { convertDateToServer, renameUniqueFileName } from 'src/app/shared/helpers/functions';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { TValidators } from 'src/app/shared/validators';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
@@ -73,10 +83,11 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		private productService: ProductService,
 		private fb: FormBuilder,
 		private cdr: ChangeDetectorRef,
-		private destroy$: DestroyService,
 		private toastr: ToastrService,
 		private modalService: NgbModal,
-		private subheader: SubheaderService
+		private router: Router,
+		private subheader: SubheaderService,
+		private destroy$: DestroyService
 	) {}
 
 	ngOnInit(): void {
@@ -232,6 +243,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	buildInfoForm(): void {
 		this.infoForm = this.fb.group({
 			phone: [null, [Validators.required]],
+			id: [null],
 			name: [null],
 			enterpriseName: [null],
 			dateOfBirth: [null],
@@ -239,6 +251,33 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			email: [null],
 			address: [null]
 		});
+
+		this.infoForm
+			.get('phone')
+			.valueChanges.pipe(
+				debounceTime(200),
+				concatMap((phoneNumber: string) => {
+					if (phoneNumber) {
+						return this.contractService.getInfoUser(phoneNumber).pipe(
+							catchError((err: IError) => {
+								this.checkError(err);
+								return of(null);
+							})
+						);
+					}
+					this.resetInfoForm();
+					return of(null as DataResponse<any>);
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe((res) => {
+				if (res?.data) {
+					this.infoForm.patchValue(res.data);
+					this.cdr.detectChanges();
+				} else {
+					this.resetInfoForm();
+				}
+			});
 	}
 
 	buildContractForm(type: EContractType) {
@@ -330,15 +369,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			});
 	}
 
-	changeAmount($event, i) {
-		const valueInput = ($event.target as HTMLSelectElement).value;
-		this.productFormArray
-			.at(i)
-			.get('amount')
-			.patchValue(valueInput.replace(/[^0-9]/g, '').substr(0, 6));
-		this.updateTotalProduct(i);
-	}
-
 	updateTotalProduct(i: number) {
 		const price = this.productFormArray.at(i).get('price').value;
 		const value = this.productFormArray.at(i).get('amount').value;
@@ -357,27 +387,15 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		return total;
 	}
 
-	getInfoUser(): void {
-		const phoneNumber = this.infoForm.get('phone').value;
-		if (phoneNumber) {
-			this.contractService
-				.getInfoUser(phoneNumber)
-				.pipe(takeUntil(this.destroy$))
-				.subscribe(
-					(res) => {
-						console.log(res);
-
-						this.infoForm.patchValue(res.data);
-						this.infoForm.get('phone').patchValue(phoneNumber);
-						this.cdr.detectChanges();
-					},
-					(error: IError) => {
-						this.infoForm.reset();
-						this.infoForm.get('phone').patchValue(phoneNumber);
-						this.checkError(error);
-					}
-				);
-		}
+	resetInfoForm() {
+		this.infoForm.get('id').reset();
+		this.infoForm.get('name').reset();
+		this.infoForm.get('enterpriseName').reset();
+		this.infoForm.get('dateOfBirth').reset();
+		this.infoForm.get('idCard').reset();
+		this.infoForm.get('email').reset();
+		this.infoForm.get('address').reset();
+		this.cdr.detectChanges();
 	}
 
 	// Lấy danh sách địa chỉ trạm xăng
@@ -462,11 +480,17 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 
 	checkError(err: IError) {
 		if (err.code === 'SUN-OIL-4811') {
-			this.toastr.error('Số điện thoại không thuộc Việt Nam hoặc sai định dạng');
+			// this.toastr.error('Số điện thoại không thuộc Việt Nam hoặc sai định dạng');
+			this.infoForm.get('phone').setErrors({ invalid: true });
 		}
 		if (err.code === 'SUN-OIL-4821') {
-			this.toastr.error('Không tìm thấy thông tin tài xế với số điện thoại này');
+			// this.toastr.error('Không tìm thấy thông tin tài xế với số điện thoại này');
+			this.infoForm.get('phone').setErrors({ notExisted: true });
 		}
+		if (err.code === 'SUN-OIL-4205') {
+			this.contractForm.get('name').setErrors({ existed: true });
+		}
+		this.cdr.detectChanges();
 	}
 
 	addPayPlanDate() {
@@ -503,7 +527,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	uploadFile(index: number, file: File) {
 		this.filesUploadProgress[index] = 0;
 		const formData = new FormData();
-		formData.append('file', file);
+		formData.append('files', file);
 		this.contractService
 			.uploadFile(formData)
 			.pipe(takeUntil(this.destroy$))
@@ -538,6 +562,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		}
 		const infoData: ICustomerInfo = this.infoForm.value;
 		const contractData = this.contractForm.value;
+		console.log(this.infoForm, this.contractForm, this.productForm);
 
 		if (this.contractType === EContractType.PREPAID_CONTRACT) {
 			this.productForm.markAllAsTouched();
@@ -548,6 +573,8 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			const productData: Array<IProductInfo> = (
 				this.productForm.value.products as Array<IProductInfo>
 			).map((p) => ({ ...p, amount: Number(p.amount) }));
+
+			console.log(infoData);
 
 			const prepayContractData: IContractPrepayInput = {
 				creatorType: ECreatorType.EMPLOYEE,
@@ -568,9 +595,14 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			this.contractService
 				.createPrepayContract(prepayContractData)
 				.pipe(takeUntil(this.destroy$))
-				.subscribe((res) => {
-					console.log(res);
-				});
+				.subscribe(
+					() => {
+						this.router.navigate(['/hop-dong']);
+					},
+					(err: IError) => {
+						this.checkError(err);
+					}
+				);
 		} else {
 			const planContractData: IContractPlanInput = {
 				creatorType: ECreatorType.EMPLOYEE,

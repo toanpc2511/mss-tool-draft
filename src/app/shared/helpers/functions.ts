@@ -44,5 +44,5 @@ export const renameUniqueFileName = (originalFile: File, newName: string) => {
 };
 
 export const convertDateToServer = (value: string) => {
-	return value ? moment(value, 'DD/MM/YYYY').toISOString() : null;
+	return value ? moment(value, 'DD/MM/YYYY').toISOString(false) : null;
 };
