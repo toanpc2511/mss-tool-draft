@@ -8,21 +8,14 @@ import { of, Subscription } from 'rxjs';
 import {
 	catchError,
 	concatMap,
-	debounceTime,
-	finalize,
-	switchMap,
-	takeUntil,
-	tap,
-	throttleTime
+	debounceTime, takeUntil,
+	tap
 } from 'rxjs/operators';
 import {
 	convertDateToServer,
-	convertMoney,
-	formatMoney,
-	renameUniqueFileName
+	convertMoney, renameUniqueFileName
 } from 'src/app/shared/helpers/functions';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
-import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { TValidators } from 'src/app/shared/validators';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
@@ -260,18 +253,20 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.infoForm
 			.get('phone')
 			.valueChanges.pipe(
-				debounceTime(200),
+				debounceTime(400),
 				concatMap((phoneNumber: string) => {
 					if (phoneNumber) {
 						return this.contractService.getInfoUser(phoneNumber).pipe(
 							catchError((err: IError) => {
+								console.log('zô error');
+
 								this.checkError(err);
-								return of(null);
+								this.resetInfoForm();
+								return of(err);
 							})
 						);
 					}
-					this.resetInfoForm();
-					return of(null as DataResponse<any>);
+					return of(null);
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -291,7 +286,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				this.contractForm = this.fb.group({
 					contractTypeCode: [this.eContractType.PREPAID_CONTRACT, Validators.required],
 					name: [null, Validators.required],
-					effectEndDate: [null, TValidators.afterCurrentDate],
+					effectEndDate: [null],
 					transportMethodCode: [null, Validators.required],
 					payMethodCode: [null, Validators.required],
 					addressContract: [0, Validators.required],
@@ -302,10 +297,10 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				this.contractForm = this.fb.group({
 					contractTypeCode: [this.eContractType.PLAN_CONTRACT, Validators.required],
 					name: [null, Validators.required],
-					effectEndDate: [null, TValidators.afterCurrentDate],
-					transportMethodCode: [null, Validators.required],
+					effectEndDate: [null],
+					transportMethodCode: [null],
 					payMethodCode: [null, Validators.required],
-					limit: [null, [Validators.required, Validators.min(1)]],
+					limit: [null, [Validators.required, TValidators.min(1)]],
 					payPlanDate1: [null],
 					payPlanDate2: [null],
 					payPlanDate3: [null],

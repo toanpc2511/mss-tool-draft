@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { FormControl, ValidationErrors, Validators } from '@angular/forms';
-import * as moment from 'moment';
 
 export class TValidators extends Validators {
 	static patternNotWhiteSpace =
@@ -18,17 +17,13 @@ export class TValidators extends Validators {
 			return null;
 		};
 
-	static afterCurrentDate =
-		() =>
+	static min =
+		(min: number) =>
 		(control: FormControl): ValidationErrors | null => {
 			const value = control.value;
-
 			if (value) {
-				const dateValue = moment(value, 'DD/MM/YYYY');
-				const currentDateValue = moment(new Date(), 'DD/MM/YYYY');
-				console.log(moment(currentDateValue).diff(dateValue, 'day'));
-				if (!dateValue.isValid()) {
-					return { invalidDate: true };
+				if (Number(value) <= min) {
+					return { min: true };
 				}
 			}
 			return null;
