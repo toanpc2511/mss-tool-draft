@@ -15,7 +15,12 @@ import {
 	tap,
 	throttleTime
 } from 'rxjs/operators';
-import { convertDateToServer, renameUniqueFileName } from 'src/app/shared/helpers/functions';
+import {
+	convertDateToServer,
+	convertMoney,
+	formatMoney,
+	renameUniqueFileName
+} from 'src/app/shared/helpers/functions';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { TValidators } from 'src/app/shared/validators';
@@ -574,8 +579,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				this.productForm.value.products as Array<IProductInfo>
 			).map((p) => ({ ...p, amount: Number(p.amount) }));
 
-			console.log(infoData);
-
 			const prepayContractData: IContractPrepayInput = {
 				creatorType: ECreatorType.EMPLOYEE,
 				profileId: infoData.id,
@@ -609,10 +612,10 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				profileId: infoData.id,
 				contractTypeCode: contractData.contractTypeCode,
 				name: contractData.name,
-				effectEndDate: contractData.effectEndDate,
+				effectEndDate: convertDateToServer(contractData.effectEndDate),
 				transportMethodCode: contractData.transportMethodCode,
 				payMethodCode: contractData.payMethodCode,
-				limit: contractData.limit,
+				limitMoney: convertMoney(contractData.limit),
 				dateOfPayment: {
 					paymentTimeOne: convertDateToServer(contractData.payPlanDate1),
 					paymentTimeTwo: convertDateToServer(contractData.payPlanDate2),
@@ -623,6 +626,17 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				attachmentRequests: this.filesUploaded,
 				statusType: status
 			};
+			this.contractService
+				.createPlanContract(planContractData)
+				.pipe(takeUntil(this.destroy$))
+				.subscribe(
+					() => {
+						this.router.navigate(['/hop-dong']);
+					},
+					(err: IError) => {
+						this.checkError(err);
+					}
+				);
 		}
 	}
 }

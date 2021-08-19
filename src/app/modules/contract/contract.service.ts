@@ -172,12 +172,12 @@ export interface IContractPlanInput {
 
 	creatorType: ECreatorType;
 	name: string;
-	effectEndDate: Date;
+	effectEndDate: string;
 	contractTypeCode: EContractType;
 	transportMethodCode: ETransportMethods;
 	payMethodCode: EPaymentMethods;
 
-	limit: number;
+	limitMoney: number;
 	dateOfPayment: {
 		paymentTimeOne: string;
 		paymentTimeTwo: string;

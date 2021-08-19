@@ -46,3 +46,16 @@ export const renameUniqueFileName = (originalFile: File, newName: string) => {
 export const convertDateToServer = (value: string) => {
 	return value ? moment(value, 'DD/MM/YYYY').toISOString(false) : null;
 };
+
+export const formatMoney = (n) => {
+	if (n !== '' && n >= 0) {
+		return (Math.round(n * 100) / 100).toLocaleString().split('.').join(',');
+	}
+};
+
+export const convertMoney = (value: string) => {
+	if (value) {
+		return Number(value.replace(/,/g, ''));
+	}
+	return null;
+};
