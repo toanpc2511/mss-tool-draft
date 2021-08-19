@@ -20,9 +20,10 @@ export class TValidators extends Validators {
 	static min =
 		(min: number) =>
 		(control: FormControl): ValidationErrors | null => {
-			const value = control.value;
-			if (value) {
-				if (Number(value) <= min) {
+			const value = control?.value as string;
+			const valueOrigin = value?.replace(/,/g, '') || null;
+			if (valueOrigin) {
+				if (Number(valueOrigin) < min) {
 					return { min: true };
 				}
 			}
