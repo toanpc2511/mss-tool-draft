@@ -77,11 +77,11 @@ export interface IContract {
 	};
 	effectEndDate: string;
 	effectStartDate: string;
-  createdAt: string;
-  rejectReason: string;
-  approveDate: string;
-  limitMoney: number;
-  dateOfPayment: string;
+	createdAt: string;
+	rejectReason: string;
+	approveDate: string;
+	limitMoney: number;
+	dateOfPayment: string;
 	status: 'ACCEPTED' | 'REJECT' | 'WAITING_ACCEPT';
 }
 
@@ -218,7 +218,7 @@ export class ContractService {
 	}
 
 	getInfoUser(phone: string) {
-		const params = new HttpParams().set('phone-number', phone);
+		const params = new HttpParams().set('phone-number', phone).set('callApiType', 'background');
 		return this.http.get<ICustomerInfo>('drivers/information', { params });
 	}
 
@@ -256,11 +256,11 @@ export class ContractService {
 		);
 	}
 
-  deleteContract(contractId: number) {
-    return this.http.delete(`contracts/${contractId}`);
-  }
+	deleteContract(contractId: number) {
+		return this.http.delete(`contracts/${contractId}`);
+	}
 
-  acceptContract(id: number, body) {
-    return this.http.put(`contracts/${id}`, body);
-  }
+	acceptContract(id: number, body) {
+		return this.http.put(`contracts/${id}`, body);
+	}
 }

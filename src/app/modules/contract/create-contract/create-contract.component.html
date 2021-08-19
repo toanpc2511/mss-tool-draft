@@ -13,15 +13,14 @@
 						<label class="form-label required">Số điện thoại</label>
 						<div>
 							<input
-								type="number"
 								class="form-control form-control-lg form-control-solid input-phone"
 								placeholder="Nhập số điện thoại"
 								formControlName="phone"
-								(blur)="getInfoUser()"
 								autocomplete="off"
-								trim="blur"
 								(keydown.space)="$event.preventDefault()"
-								maxlength="20"
+								maxlength="12"
+								numbersOnly
+								[numberformControl]="infoForm.controls['phone']"
 							/>
 							<i class="fa fa-times" (click)="deleteNumberPhone()"></i>
 						</div>
@@ -33,7 +32,12 @@
 						<app-validate
 							[control]="infoForm.controls['phone']"
 							[error]="'notExisted'"
-							[message]="'Số điện thoại không tồn tại trên hệ thống'"
+							[message]="'Không tìm thấy thông tin tài xế với số điện thoại này'"
+						></app-validate>
+						<app-validate
+							[control]="infoForm.controls['phone']"
+							[error]="'invalid'"
+							[message]="'Số điện thoại không thuộc Việt Nam hoặc sai định dạng'"
 						></app-validate>
 					</div>
 
@@ -506,10 +510,13 @@
 										<td class="col3" [textContent]="productInfoFromGroup.get('unit').value"></td>
 										<td class="col4">
 											<input
-												(input)="changeAmount($event, i)"
+												(input)="updateTotalProduct(i)"
 												placeholder="Nhập số lượng"
 												class="form-control form-control-sm"
 												formControlName="amount"
+												maxlength="6"
+												numbersOnly
+												[numberformControl]="productInfoFromGroup.get('amount')"
 											/>
 											<app-validate
 												[control]="productInfoFromGroup.get('amount')"
