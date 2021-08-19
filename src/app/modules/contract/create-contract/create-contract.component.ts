@@ -260,18 +260,20 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.infoForm
 			.get('phone')
 			.valueChanges.pipe(
-				debounceTime(200),
+				debounceTime(400),
 				concatMap((phoneNumber: string) => {
 					if (phoneNumber) {
 						return this.contractService.getInfoUser(phoneNumber).pipe(
 							catchError((err: IError) => {
+								console.log('zô error');
+
 								this.checkError(err);
-								return of(null);
+								this.resetInfoForm();
+								return of(err);
 							})
 						);
 					}
-					this.resetInfoForm();
-					return of(null as DataResponse<any>);
+					return of(null);
 				}),
 				takeUntil(this.destroy$)
 			)
