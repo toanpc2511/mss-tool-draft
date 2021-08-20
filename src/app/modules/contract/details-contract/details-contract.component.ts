@@ -4,8 +4,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ContractService, EContractStatus } from '../contract.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { filter, pluck, switchMap, takeUntil } from 'rxjs/operators';
-import { IError } from '../../../shared/models/error.model';
-import { IDataTransfer, RejectContractModalComponent } from './reject-contract-modal/reject-contract-modal.component';
+import {
+	IDataTransfer,
+	RejectContractModalComponent
+} from './reject-contract-modal/reject-contract-modal.component';
 import { FileService } from 'src/app/shared/services/file.service';
 
 @Component({
@@ -25,7 +27,7 @@ export class DetailsContractComponent implements OnInit {
 		private contractService: ContractService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
-    private fileService: FileService,
+		private fileService: FileService,
 		private activeRoute: ActivatedRoute
 	) {}
 
@@ -53,53 +55,51 @@ export class DetailsContractComponent implements OnInit {
 		await this.router.navigate(['/hop-dong/danh-sach']);
 	}
 
-  async refuseContract($event?: Event, data?: IDataTransfer) {
-    if ($event) {
-      $event.stopPropagation();
-    }
-    const modalRef = this.modalService.open(RejectContractModalComponent, {
-      backdrop: 'static',
-      size: 'lg'
-    });
+	async refuseContract($event?: Event, data?: IDataTransfer) {
+		if ($event) {
+			$event.stopPropagation();
+		}
+		const modalRef = this.modalService.open(RejectContractModalComponent, {
+			backdrop: 'static',
+			size: 'lg'
+		});
 
-    modalRef.componentInstance.data = {
-      title: 'Từ chối hợp đồng',
-      contract: data,
-      type: 'REJECT'
-    };
+		modalRef.componentInstance.data = {
+			title: 'Từ chối hợp đồng',
+			contract: data,
+			type: 'REJECT'
+		};
 
-    modalRef.result.then((result) => {
-      if (result) {
-        this.router.navigate(['/hop-dong/danh-sach']);
-      }
-    });
-  }
+		await modalRef.result.then((result) => {
+			if (result) {
+				this.router.navigate(['/hop-dong/danh-sach']);
+			}
+		});
+	}
 
-  async acceptContract($event?: Event, data?: IDataTransfer) {
-    if ($event) {
-      $event.stopPropagation();
-    }
-    const modalRef = this.modalService.open(RejectContractModalComponent, {
-      backdrop: 'static',
-      size: 'lg'
-    });
+	async acceptContract($event?: Event, data?: IDataTransfer) {
+		if ($event) {
+			$event.stopPropagation();
+		}
+		const modalRef = this.modalService.open(RejectContractModalComponent, {
+			backdrop: 'static',
+			size: 'lg'
+		});
 
-    modalRef.componentInstance.data = {
-      title: 'Xác nhận hợp đồng',
-      contract: data,
-      type: 'ACCEPTED'
-    };
+		modalRef.componentInstance.data = {
+			title: 'Xác nhận hợp đồng',
+			contract: data,
+			type: 'ACCEPTED'
+		};
 
-    modalRef.result.then((result) => {
-      if (result) {
-        this.router.navigate(['/hop-dong/danh-sach']);
-      }
-    });
-  }
+		await modalRef.result.then((result) => {
+			if (result) {
+				this.router.navigate(['/hop-dong/danh-sach']);
+			}
+		});
+	}
 
 	downloadFile(fileUrl: string) {
-    this.fileService.downloadFile(fileUrl);
-  }
-
-  checkError(err: IError) {}
+		return this.fileService.downloadFile(fileUrl);
+	}
 }

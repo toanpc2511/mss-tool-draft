@@ -174,7 +174,7 @@
 					</div>
 				</div>
 
-				<div class="col-lg-4 row" *ngIf='data?.contractType.code == "PRE_PAY"'>
+				<div class="col-lg-4 row" *ngIf='data?.contractType.code === "PRE_PAY"'>
 					<div class="col-lg-5">
 						<label class="form-label">Địa chỉ ký HĐ: </label>
 					</div>
@@ -184,7 +184,7 @@
 					</div>
 				</div>
 
-				<div class="col-lg-4 row" *ngIf='data?.contractType.code == "PRE_PAY"'>
+				<div class="col-lg-4 row" *ngIf='data?.contractType.code === "PRE_PAY"'>
 					<div class="col-lg-5">
 						<label class="form-label">Địa chỉ chi tiết: </label>
 					</div>
@@ -194,7 +194,7 @@
 					</div>
 				</div>
 
-				<div class="col-lg-4 row" *ngIf='data?.contractType.code == "PLAN"'>
+				<div class="col-lg-4 row" *ngIf='data?.contractType.code === "PLAN"'>
 					<div class="col-lg-5">
 						<label class="form-label">Hạn mức: </label>
 					</div>
@@ -204,7 +204,7 @@
 					</div>
 				</div>
 
-        <div class="col-lg-4 row" *ngIf='data?.contractType.code == "PLAN" && data?.dateOfPayment.paymentTimeOne'>
+        <div class="col-lg-4 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeOne'>
           <div class="col-lg-5">
             <label class="form-label">Ngày dự kiến lần 1: </label>
           </div>
@@ -214,7 +214,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code == "PLAN" && data?.dateOfPayment.paymentTimeTwo'>
+        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeTwo'>
           <div class="col-lg-5">
             <label class="form-label">Ngày dự kiến lần 2: </label>
           </div>
@@ -224,7 +224,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code == "PLAN" && data?.dateOfPayment.paymentTimeThree'>
+        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeThree'>
           <div class="col-lg-5">
             <label class="form-label">Ngày dự kiến lần 3: </label>
           </div>
@@ -234,7 +234,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code == "PLAN" && data?.dateOfPayment.paymentTimeFour'>
+        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeFour'>
           <div class="col-lg-5">
             <label class="form-label">Ngày dự kiến lần 4: </label>
           </div>
@@ -244,7 +244,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code == "PLAN" && data?.dateOfPayment.paymentTimeFive'>
+        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeFive'>
           <div class="col-lg-5">
             <label class="form-label">Ngày dự kiến lần 5: </label>
           </div>
@@ -257,7 +257,7 @@
 		</div>
 	</div>
 
-	<div class="list-product" *ngIf='data?.contractType.code == "PRE_PAY"'>
+	<div class="list-product" *ngIf='data?.contractType.code === "PRE_PAY"'>
 		<div class="card-header">
 			<div class="card-title">
 				<h3 class="title">danh sách hàng hóa</h3>
@@ -335,7 +335,7 @@
 				<div class="col-lg-2">File đính kèm</div>
 				<div class="col-lg-10">
 					<div *ngFor="let file of data?.attachment">
-            <a href="{{file.url}}" download>{{file.name}}</a>
+						<p class="url" (click)="downloadFile(file.url)">{{file.name}}</p>
 					</div>
 				</div>
 			</div>
@@ -355,10 +355,10 @@
     <button *ngIf='data?.status !== "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="goToListContract()">
       Quay lại
     </button>
-    <button *ngIf='data?.status == "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="refuseContract($event, data)">
+    <button *ngIf='data?.status === "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="refuseContract($event, data)">
       Từ chối
     </button>
-    <button *ngIf='data?.status == "WAITING_ACCEPT"' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
+    <button *ngIf='data?.status === "WAITING_ACCEPT"' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
       Phê duyệt
     </button>
 	</div>
