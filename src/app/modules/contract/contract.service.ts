@@ -83,6 +83,13 @@ export interface IContract {
 	limitMoney: number;
 	dateOfPayment: string;
 	status: 'ACCEPTED' | 'REJECT' | 'WAITING_ACCEPT';
+  station: {
+    id:  number;
+    code: string;
+    address: string;
+    areaType: string;
+    fullAddress: string;
+  }
 }
 
 export enum EPaymentMethods {
