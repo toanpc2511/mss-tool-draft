@@ -573,6 +573,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	}
 
 	save(status: EContractStatus) {
+		console.log(convertDateToServer(this.contractForm.value.effectEndDate))
 		let hasError = false;
 		this.infoForm.markAllAsTouched();
 		this.contractForm.markAllAsTouched();

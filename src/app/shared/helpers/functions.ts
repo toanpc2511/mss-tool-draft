@@ -44,7 +44,7 @@ export const renameUniqueFileName = (originalFile: File, newName: string) => {
 };
 
 export const convertDateToServer = (value: string) => {
-	return value ? moment(value, 'DD/MM/YYYY').toISOString(false) : null;
+	return value ? moment(value, 'DD/MM/YYYY').add(7, 'hours').toISOString(false) : null;
 };
 
 export const convertDateToDisplay = (value: string) => {
