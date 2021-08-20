@@ -47,6 +47,10 @@ export const convertDateToServer = (value: string) => {
 	return value ? moment(value, 'DD/MM/YYYY').toISOString(false) : null;
 };
 
+export const convertDateToDisplay = (value: string) => {
+	return value ? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY').toString() : null;
+};
+
 export const formatMoney = (n) => {
 	if (n !== '' && n >= 0) {
 		return (Math.round(n * 100) / 100).toLocaleString().split('.').join(',');

@@ -85,28 +85,28 @@ export class PermissionService {
 	constructor(private http: HttpService) {}
 
 	getRoles() {
-		return this.http.customGet<Array<IRole>>(`${environment.apiUrl1}/permissions/roles`);
+		return this.http.customGet<Array<IRole>>(`${environment.apiUrlRoot}/permissions/roles`);
 	}
 
 	getPermissionByRoleId(roleId: number) {
 		return this.http.customGet<Array<ModuleData>>(
-			`${environment.apiUrl1}/permissions/modules/${roleId}`
+			`${environment.apiUrlRoot}/permissions/modules/${roleId}`
 		);
 	}
 
 	getModules() {
-		return this.http.customGet<Array<IModule>>(`${environment.apiUrl1}/permissions/modules`);
+		return this.http.customGet<Array<IModule>>(`${environment.apiUrlRoot}/permissions/modules`);
 	}
 
 	createRole(role: IModuleInput) {
-		return this.http.customPost<IRole>(`${environment.apiUrl1}/permissions/roles`, role);
+		return this.http.customPost<IRole>(`${environment.apiUrlRoot}/permissions/roles`, role);
 	}
 
 	updateRole(id: number, role: IModuleInput) {
-		return this.http.customPut<IRole>(`${environment.apiUrl1}/permissions/roles/${id}`, role);
+		return this.http.customPut<IRole>(`${environment.apiUrlRoot}/permissions/roles/${id}`, role);
 	}
 
 	deleteRole(id: number) {
-		return this.http.customDelete<any>(`${environment.apiUrl1}/permissions/roles/${id}`);
+		return this.http.customDelete<any>(`${environment.apiUrlRoot}/permissions/roles/${id}`);
 	}
 }

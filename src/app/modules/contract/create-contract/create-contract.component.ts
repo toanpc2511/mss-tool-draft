@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -5,17 +6,15 @@ import { Router } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { of, Subscription } from 'rxjs';
+import { catchError, concatMap, debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import {
-	catchError,
-	concatMap,
-	debounceTime, takeUntil,
-	tap
-} from 'rxjs/operators';
-import {
+	convertDateToDisplay,
 	convertDateToServer,
-	convertMoney, renameUniqueFileName
+	convertMoney,
+	renameUniqueFileName
 } from 'src/app/shared/helpers/functions';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
+import { EFileType, FileService, IFile } from 'src/app/shared/services/file.service';
 import { TValidators } from 'src/app/shared/validators';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
@@ -31,7 +30,6 @@ import {
 	IContractPlanInput,
 	IContractPrepayInput,
 	ICustomerInfo,
-	IFile,
 	IProductInfo,
 	IProperties
 } from '../contract.service';
@@ -40,7 +38,7 @@ import {
 	selector: 'app-create-contract',
 	templateUrl: './create-contract.component.html',
 	styleUrls: ['./create-contract.component.scss'],
-	providers: [DestroyService, FormBuilder]
+	providers: [DestroyService, AsyncPipe]
 })
 export class CreateContractComponent implements OnInit, AfterViewInit {
 	eContractStatus = EContractStatus;
@@ -85,6 +83,8 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		private modalService: NgbModal,
 		private router: Router,
 		private subheader: SubheaderService,
+		private fileService: FileService,
+		private asyncPipe: AsyncPipe,
 		private destroy$: DestroyService
 	) {}
 
@@ -238,6 +238,19 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		);
 	}
 
+	async getInfoUser(phoneNumber: string) {
+		return new Promise<ICustomerInfo | IError>((resolve, reject) => {
+			this.contractService.getInfoUser(phoneNumber).subscribe(
+				(res) => {
+					resolve(res.data);
+				},
+				(err: IError) => {
+					reject(err);
+				}
+			);
+		});
+	}
+
 	buildInfoForm(): void {
 		this.infoForm = this.fb.group({
 			phone: [null, [Validators.required]],
@@ -254,26 +267,23 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			.get('phone')
 			.valueChanges.pipe(
 				debounceTime(400),
-				concatMap((phoneNumber: string) => {
+				switchMap(async (phoneNumber: string) => {
 					if (phoneNumber) {
-						return this.contractService.getInfoUser(phoneNumber).pipe(
-							catchError((err: IError) => {
-								console.log('zô error');
-
-								this.checkError(err);
-								this.resetInfoForm();
-								return of(err);
-							})
-						);
+						try {
+							const userInfo = await this.getInfoUser(phoneNumber);
+							return of(userInfo);
+						} catch (err) {
+							this.checkError(err);
+							return of(null);
+						}
 					}
 					return of(null);
 				}),
 				takeUntil(this.destroy$)
 			)
-			.subscribe((res) => {
-				if (res?.data) {
-					this.infoForm.patchValue(res.data);
-					this.cdr.detectChanges();
+			.subscribe((res: any) => {
+				if (res) {
+					this.patchValueInfoForm(res);
 				} else {
 					this.resetInfoForm();
 				}
@@ -387,6 +397,17 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		return total;
 	}
 
+	patchValueInfoForm(infoData: any) {
+		this.infoForm.get('id').patchValue(infoData.id);
+		this.infoForm.get('name').patchValue(infoData.name);
+		this.infoForm.get('enterpriseName').patchValue(infoData.enterpriseName);
+		this.infoForm.get('dateOfBirth').patchValue(convertDateToDisplay(infoData.dateOfBirth));
+		this.infoForm.get('idCard').patchValue(infoData.idCard);
+		this.infoForm.get('email').patchValue(infoData.email);
+		this.infoForm.get('address').patchValue(infoData.address);
+		this.cdr.detectChanges();
+	}
+
 	resetInfoForm() {
 		this.infoForm.get('id').reset();
 		this.infoForm.get('name').reset();
@@ -479,15 +500,17 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	}
 
 	checkError(err: IError) {
-		if (err.code === 'SUN-OIL-4811') {
+		console.log('set error');
+
+		if (err?.code === 'SUN-OIL-4811') {
 			// this.toastr.error('Số điện thoại không thuộc Việt Nam hoặc sai định dạng');
 			this.infoForm.get('phone').setErrors({ invalid: true });
 		}
-		if (err.code === 'SUN-OIL-4821') {
+		if (err?.code === 'SUN-OIL-4821') {
 			// this.toastr.error('Không tìm thấy thông tin tài xế với số điện thoại này');
 			this.infoForm.get('phone').setErrors({ notExisted: true });
 		}
-		if (err.code === 'SUN-OIL-4205') {
+		if (err?.code === 'SUN-OIL-4205') {
 			this.contractForm.get('name').setErrors({ existed: true });
 		}
 		this.cdr.detectChanges();
@@ -516,7 +539,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			this.files = [...this.files].concat(filePush);
 			this.filesUploaded = this.files.map((file) => ({ name: file.name, url: file.name }));
 			for (let i = 0; i < filePush.length; i++) {
-				// this.uploadFile(i, filePush[i]);
+				this.uploadFile(i, filePush[i]);
 			}
 		} else {
 			this.toastr.error('Không được tải lên quá 5 file');
@@ -528,10 +551,12 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.filesUploadProgress[index] = 0;
 		const formData = new FormData();
 		formData.append('files', file);
-		this.contractService
-			.uploadFile(formData)
+		this.fileService
+			.uploadFile(formData, EFileType.OTHER)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((event: any) => {
+				// console.log(event);
+
 				if (event.type === HttpEventType.UploadProgress) {
 					this.filesUploadProgress[index] = Math.round((100 * event.loaded) / event.total);
 				} else if (event instanceof HttpResponse) {
@@ -552,21 +577,26 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	}
 
 	save(status: EContractStatus) {
+		let hasError = false;
 		this.infoForm.markAllAsTouched();
 		this.contractForm.markAllAsTouched();
 		if (this.infoForm.invalid) {
-			return;
+			hasError = true;
 		}
 		if (this.contractForm.invalid) {
-			return;
+			hasError = true;
 		}
+
 		const infoData: ICustomerInfo = this.infoForm.value;
 		const contractData = this.contractForm.value;
-		console.log(this.infoForm, this.contractForm, this.productForm);
 
 		if (this.contractType === EContractType.PREPAID_CONTRACT) {
 			this.productForm.markAllAsTouched();
 			if (this.productForm.invalid) {
+				hasError = true;
+			}
+
+			if (hasError) {
 				return;
 			}
 
@@ -602,6 +632,9 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					}
 				);
 		} else {
+			if (hasError) {
+				return;
+			}
 			const planContractData: IContractPlanInput = {
 				creatorType: ECreatorType.EMPLOYEE,
 				profileId: infoData.id,

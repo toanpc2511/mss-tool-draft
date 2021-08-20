@@ -6,7 +6,9 @@ import * as moment from 'moment';
 export class CustomDatePipe implements PipeTransform {
 	transform(str: string): string {
 		if (str) {
-			return moment(str, 'YYYY/MM/DD').format('DD/MM/YYYY').toString();
+			console.log(moment(str, 'YYYY-MM-DD').format('DD/MM/YYYY'));
+
+			return moment(str, 'YYYY-MM-DD').format('DD/MM/YYYY').toString();
 		}
 		return null;
 	}
