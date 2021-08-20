@@ -271,8 +271,10 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					if (phoneNumber) {
 						try {
 							const userInfo = await this.getInfoUser(phoneNumber);
+							this.patchValueInfoForm(userInfo);
 							return of(userInfo);
 						} catch (err) {
+							this.resetInfoForm();
 							this.checkError(err);
 							return of(null);
 						}
@@ -281,13 +283,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				}),
 				takeUntil(this.destroy$)
 			)
-			.subscribe((res: any) => {
-				if (res) {
-					this.patchValueInfoForm(res);
-				} else {
-					this.resetInfoForm();
-				}
-			});
+			.subscribe();
 	}
 
 	buildContractForm(type: EContractType) {
