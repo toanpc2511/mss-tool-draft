@@ -534,8 +534,9 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			this.filesUploaded = [...this.filesUploaded].concat(
 				filePush.map((file) => ({ name: file.name }))
 			);
-			for (let i = 0; i < filePush.length; i++) {
-				this.uploadFile(i, filePush[i]);
+			const startIndex = this.filesUploaded.length - filePush.length;
+			for (let i = startIndex; i < filePush.length + startIndex; i++) {
+				this.uploadFile(i, filePush[i - startIndex]);
 			}
 		} else {
 			this.toastr.error('Không được tải lên quá 10 file');
@@ -573,7 +574,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	}
 
 	save(status: EContractStatus) {
-		console.log(convertDateToServer(this.contractForm.value.effectEndDate))
+		console.log(convertDateToServer(this.contractForm.value.effectEndDate));
 		let hasError = false;
 		this.infoForm.markAllAsTouched();
 		this.contractForm.markAllAsTouched();
