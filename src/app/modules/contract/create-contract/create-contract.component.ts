@@ -287,7 +287,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					contractTypeCode: [this.eContractType.PREPAID_CONTRACT, Validators.required],
 					name: [null, Validators.required],
 					effectEndDate: [null],
-					transportMethodCode: [null, Validators.required],
+					transportMethodCode: [null],
 					payMethodCode: [null, Validators.required],
 					addressContract: [0, Validators.required],
 					fullAddress: [null]
