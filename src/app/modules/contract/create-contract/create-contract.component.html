@@ -615,7 +615,7 @@
 							<div *ngIf="filesUploadProgress[i] < 100">
 								<ngb-progressbar type="success" [value]="filesUploadProgress[i]"></ngb-progressbar>
 							</div>
-							<em class="fa fa-times" (click)="removeFile('ONE',file.url)"></em>
+							<em class="fa fa-times" (click)="removeFile('ONE',file.id)"></em>
 							<span>{{file.name|stringMaxLength: 35}}</span>
 						</div>
 						<!-- <div

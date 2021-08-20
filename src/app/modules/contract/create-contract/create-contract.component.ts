@@ -62,7 +62,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 
 	contractSubscription = new Subscription();
 
-	files: Array<File> = [];
 	filesUploaded: Array<IFile> = [];
 	filesUploadProgress: Array<number> = [];
 
@@ -519,7 +518,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	addFiles($event: Event) {
 		const inputElement = $event.target as HTMLInputElement;
 		const files = Array.from(inputElement.files);
-		if (files.length > 0 && files.length <= 10 - (this.files.length + this.filesUploaded.length)) {
+		if (files.length > 0 && files.length <= 10 - this.filesUploaded.length) {
 			let filePush: Array<File> = [];
 
 			for (const file of files) {
@@ -532,13 +531,14 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					break;
 				}
 			}
-			this.files = [...this.files].concat(filePush);
-			this.filesUploaded = this.files.map((file) => ({ name: file.name, url: file.name }));
+			this.filesUploaded = [...this.filesUploaded].concat(
+				filePush.map((file) => ({ name: file.name }))
+			);
 			for (let i = 0; i < filePush.length; i++) {
 				this.uploadFile(i, filePush[i]);
 			}
 		} else {
-			this.toastr.error('Không được tải lên quá 5 file');
+			this.toastr.error('Không được tải lên quá 10 file');
 		}
 		inputElement.value = null;
 	}
@@ -551,21 +551,23 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			.uploadFile(formData, EFileType.OTHER)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((event: any) => {
-				if (event.type === HttpEventType.UploadProgress) {
+				if (event?.type === HttpEventType.UploadProgress) {
 					this.filesUploadProgress[index] = Math.round((100 * event.loaded) / event.total);
-				} else if (event instanceof HttpResponse) {
-					console.log(event);
+				}
+				if (event?.data) {
+					this.filesUploaded[index].id = event.data[0].id;
+					this.filesUploaded[index].url = event.data[0].url;
 				}
 				this.cdr.detectChanges();
 			});
 	}
 
-	removeFile(type: 'ALL' | 'ONE', url?: string) {
+	removeFile(type: 'ALL' | 'ONE', id?: number) {
 		if (type === 'ALL') {
 			this.filesUploaded = [];
 		} else {
 			this.filesUploaded = [...this.filesUploaded].filter(
-				(f, index) => this.filesUploaded.findIndex((f) => f.url === url) !== index
+				(f, index) => this.filesUploaded.findIndex((f) => f.id === id) !== index
 			);
 		}
 	}

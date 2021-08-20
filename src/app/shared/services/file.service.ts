@@ -9,8 +9,9 @@ export enum EFileType {
 }
 
 export interface IFile {
+	id?: number;
 	name: string;
-	url: string;
+	url?: string;
 }
 
 export interface IUploadProgress {
