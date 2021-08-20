@@ -68,7 +68,6 @@
 							disabled
 							formControlName="dateOfBirth"
 							class="form-control form-control-lg form-control-solid"
-							[value]="birthDate.value | customDate"
 						/>
 					</div>
 
@@ -609,12 +608,12 @@
 					<div class="col-lg-12 mt-2">
 						<div
 							class="file form-control form-control-lg form-control-solid w-50 mt-2 mb-2"
-							*ngFor="let file of filesUploaded"
+							*ngFor="let file of filesUploaded; let i = index"
 							[ngbTooltip]="file.name"
 							[placement]="'right'"
 						>
-							<div>
-								<ngb-progressbar type="success" [value]="25"></ngb-progressbar>
+							<div *ngIf="filesUploadProgress[i] < 100">
+								<ngb-progressbar type="success" [value]="filesUploadProgress[i]"></ngb-progressbar>
 							</div>
 							<em class="fa fa-times" (click)="removeFile('ONE',file.url)"></em>
 							<span>{{file.name|stringMaxLength: 35}}</span>

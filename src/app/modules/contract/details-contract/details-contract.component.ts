@@ -6,6 +6,7 @@ import { DestroyService } from '../../../shared/services/destroy.service';
 import { filter, pluck, switchMap, takeUntil } from 'rxjs/operators';
 import { IError } from '../../../shared/models/error.model';
 import { IDataTransfer, RejectContractModalComponent } from './reject-contract-modal/reject-contract-modal.component';
+import { FileService } from 'src/app/shared/services/file.service';
 
 @Component({
 	selector: 'app-details-contract',
@@ -24,6 +25,7 @@ export class DetailsContractComponent implements OnInit {
 		private contractService: ContractService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
+    private fileService: FileService,
 		private activeRoute: ActivatedRoute
 	) {}
 
@@ -95,7 +97,9 @@ export class DetailsContractComponent implements OnInit {
     });
   }
 
-	downloadFile(fileUrl: string) {}
+	downloadFile(fileUrl: string) {
+    this.fileService.downloadFile(fileUrl);
+  }
 
   checkError(err: IError) {}
 }

@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IFile } from 'src/app/shared/services/file.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 
 export enum ECreatorType {
@@ -123,11 +124,6 @@ export interface IAddress {
 	provinceId: number;
 }
 
-export interface IFile {
-	name: string;
-	url: string;
-}
-
 export interface IProperties {
 	id: number;
 	name: string;
@@ -247,20 +243,6 @@ export class ContractService {
 
 	updatePlanContract(contractId: number, contract: IContractPlanInput) {
 		return this.http.post<any>(`contracts/plans/${contractId}`, contract);
-	}
-
-	downloadFile(urlFile: string) {
-		return this.http.get(`/${urlFile}`);
-	}
-
-	uploadFile(fileFormData: FormData) {
-		return this.http.postUpload<Array<IFile>>(
-			'http://sunoil-management.firecloud.live:7071/management/files?type=OTHER',
-			fileFormData,
-			{
-				reportProgress: true
-			}
-		);
 	}
 
 	deleteContract(contractId: number) {

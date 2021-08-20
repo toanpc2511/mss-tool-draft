@@ -8,7 +8,7 @@ export const environment = {
 	USERDATA_KEY: 'authf649fc9a5f55',
 	isMockEnabled: false,
 	apiUrl: 'https://sunoil-management.firecloud.live/management',
-	apiUrl1: 'https://sunoil-management.firecloud.live'
+	apiUrlRoot: 'https://sunoil-management.firecloud.live'
 };
 
 /*

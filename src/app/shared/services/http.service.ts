@@ -1,10 +1,12 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { tap } from 'lodash';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { concatMap, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { DataPush } from '../models/data-push.model';
 import { DataResponse } from '../models/data-response.model';
+import { EFileType } from './file.service';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
@@ -116,28 +118,21 @@ export class HttpService {
 		);
 	}
 
-	postUpload<T>(
-		url: string,
-		body: any,
-		options?: {
-			headers?:
-				| HttpHeaders
-				| {
-						[header: string]: string | string[];
-				  };
-			params?:
-				| HttpParams
-				| {
-						[param: string]: string | string[];
-				  };
-			reportProgress?: boolean;
-			withCredentials?: boolean;
-		}
-	): Observable<DataResponse<T>> {
-		return this.httpClient.post(url, body, options).pipe(
-			switchMap((response) => {
-				const res = new DataResponse<T>(response);
-				return of(res);
+	postUpload<T>(url: string, body: any, type: EFileType): Observable<DataResponse<T>> {
+		const params = new HttpParams().set('type', type).set('callApiType', 'background');
+		const request = new HttpRequest('POST', url, body, {
+			reportProgress: true,
+			responseType: 'json',
+			params
+		});
+
+		return this.httpClient.request(request).pipe(
+			concatMap((response: any) => {
+				if(response.type === HttpEventType.Response) {
+					const res = new DataResponse<T>(response.body);
+					return of(res);
+				}
+				return of(response);
 			})
 		);
 	}
