@@ -526,7 +526,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					const newFile = renameUniqueFileName(file, `${file.name}`);
 					filePush = [...filePush, newFile];
 				} else {
-					this.toastr.error('File tải lên có dung lượng lớn hơn 2Mb');
+					this.toastr.error('File tải lên có dung lượng lớn hơn 5Mb');
 					filePush = [];
 					break;
 				}
