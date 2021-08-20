@@ -266,7 +266,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.infoForm
 			.get('phone')
 			.valueChanges.pipe(
-				debounceTime(400),
+				debounceTime(300),
 				switchMap(async (phoneNumber: string) => {
 					if (phoneNumber) {
 						try {
@@ -555,8 +555,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			.uploadFile(formData, EFileType.OTHER)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((event: any) => {
-				// console.log(event);
-
 				if (event.type === HttpEventType.UploadProgress) {
 					this.filesUploadProgress[index] = Math.round((100 * event.loaded) / event.total);
 				} else if (event instanceof HttpResponse) {
