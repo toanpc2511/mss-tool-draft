@@ -5,8 +5,16 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { of, Subscription } from 'rxjs';
-import { catchError, concatMap, debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { of, Subscription, throwError } from 'rxjs';
+import {
+	catchError,
+	concatMap,
+	debounceTime,
+	switchMap,
+	take,
+	takeUntil,
+	tap
+} from 'rxjs/operators';
 import {
 	convertDateToDisplay,
 	convertDateToServer,
@@ -237,19 +245,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		);
 	}
 
-	async getInfoUser(phoneNumber: string) {
-		return new Promise<ICustomerInfo | IError>((resolve, reject) => {
-			this.contractService.getInfoUser(phoneNumber).subscribe(
-				(res) => {
-					resolve(res.data);
-				},
-				(err: IError) => {
-					reject(err);
-				}
-			);
-		});
-	}
-
 	buildInfoForm(): void {
 		this.infoForm = this.fb.group({
 			phone: [null, [Validators.required]],
@@ -266,23 +261,24 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			.get('phone')
 			.valueChanges.pipe(
 				debounceTime(300),
-				switchMap(async (phoneNumber: string) => {
+				concatMap((phoneNumber: string) => {
 					if (phoneNumber) {
-						try {
-							const userInfo = await this.getInfoUser(phoneNumber);
-							this.patchValueInfoForm(userInfo);
-							return of(userInfo);
-						} catch (err) {
-							this.resetInfoForm();
-							this.checkError(err);
-							return of(null);
-						}
+						return this.contractService.getInfoUser(phoneNumber).pipe(
+							catchError((err: IError) => {
+								this.checkError(err);
+								return of(err);
+							})
+						);
 					}
 					return of(null);
 				}),
 				takeUntil(this.destroy$)
 			)
-			.subscribe();
+			.subscribe((res) => {
+				if (res?.data) {
+					this.patchValueInfoForm(res.data);
+				}
+			});
 	}
 
 	buildContractForm(type: EContractType) {
@@ -400,6 +396,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.infoForm.get('idCard').patchValue(infoData.idCard);
 		this.infoForm.get('email').patchValue(infoData.email);
 		this.infoForm.get('address').patchValue(infoData.address);
+		this.infoForm.get('phone').setErrors(null);
 		this.cdr.detectChanges();
 	}
 
@@ -495,8 +492,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	}
 
 	checkError(err: IError) {
-		console.log('set error');
-
 		if (err?.code === 'SUN-OIL-4811') {
 			// this.toastr.error('Số điện thoại không thuộc Việt Nam hoặc sai định dạng');
 			this.infoForm.get('phone').setErrors({ invalid: true });

@@ -51,6 +51,9 @@ export class ErrorInterceptor implements HttpInterceptor {
 							'Tài khoản của bạn vừa được chỉnh nhóm quyền, vui lòng đăng nhập lại'
 						);
 					}
+					if (errors.code === 'SUN-OIL-4008') {
+						this.toastr.error('Bạn cần đăng nhập lại để truy cập nội dung này');
+					}
 					this.authService.logout();
 				}
 
