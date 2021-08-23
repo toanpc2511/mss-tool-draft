@@ -7,7 +7,7 @@
     (ngSubmit)="submit()"
   >
     <div class="pb-13 pt-lg-0 pt-5 login-header">
-      <img width="154px" height="118px" src="assets/media/sun-oil/logo.svg" />
+      <img width="154px" height="118px" src="assets/media/sun-oil/logo.svg" alt=""/>
       <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg text-center">
         Đăng nhập
       </h3>
@@ -33,12 +33,12 @@
           minlength="8"
           maxlength="32"
         />
-        <i
+        <em
           (click)="changeShowPasswordNewStatus()"
           class="icon-lg-xl fa"
           [class.fa-eye]="!isShowPasswordNew"
           [class.fa-eye-slash]="isShowPasswordNew"
-        ></i>
+        ></em>
       </div>
       <app-validate
         [control]="firstLoginForm.controls['passwordNew']"
@@ -66,12 +66,12 @@
           (input)="onInputPasswordConfirm($event)"
           maxlength="32"
         />
-        <i
+        <em
           (click)="changeShowPasswordConfirmStatus()"
           class="icon-lg-xl fa"
           [class.fa-eye]="!isShowPasswordConfirm"
           [class.fa-eye-slash]="isShowPasswordConfirm"
-        ></i>
+        ></em>
       </div>
       <app-validate
         [control]="firstLoginForm.controls['passwordConfirm']"

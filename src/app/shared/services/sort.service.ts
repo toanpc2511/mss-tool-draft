@@ -30,26 +30,21 @@ export class SortService<T> {
 	private sortData(dataSource: Array<T>) {
 		if (this.sorting.column) {
 			if (this.sorting.direction === 'desc') {
-				return orderBy(
-					dataSource,
-					(data) =>
-						typeof data[this.sorting.column] !== 'number' &&
-						typeof data[this.sorting.column] !== 'object'
-							? data[this.sorting.column].toLowerCase()
-							: data[this.sorting.column],
-					'desc'
-				);
+				return this.sortBy(dataSource, 'desc');
 			}
-			return orderBy(
-				dataSource,
-				(data) =>
-					typeof data[this.sorting.column] !== 'number' &&
-					typeof data[this.sorting.column] !== 'object'
-						? data[this.sorting.column].toLowerCase()
-						: data[this.sorting.column],
-				'asc'
-			);
+			return this.sortBy(dataSource, 'asc');
 		}
 		return dataSource;
+	}
+
+	private sortBy(dataSource: Array<T>, desc: 'asc' | 'desc') {
+		return orderBy(
+			dataSource,
+			(data) =>
+				typeof data[this.sorting.column] === 'string'
+					? data[this.sorting.column].toLowerCase()
+					: data[this.sorting.column],
+			desc
+		);
 	}
 }

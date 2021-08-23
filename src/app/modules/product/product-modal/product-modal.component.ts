@@ -12,7 +12,6 @@ import { IProductType, ProductService } from '../product.service';
 @Component({
   selector: 'app-product-modal',
   templateUrl: './product-modal.component.html',
-  styleUrls: ['./product-modal.component.scss'],
   providers: [DestroyService, FormBuilder]
 })
 export class ProductModalComponent implements OnInit {

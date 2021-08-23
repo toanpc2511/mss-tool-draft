@@ -1,18 +1,15 @@
 import { AsyncPipe } from '@angular/common';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpEventType } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { of, Subscription, throwError } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import {
 	catchError,
 	concatMap,
-	debounceTime,
-	switchMap,
-	take,
-	takeUntil,
+	debounceTime, takeUntil,
 	tap
 } from 'rxjs/operators';
 import {
@@ -166,11 +163,11 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		});
 	}
 
-	switchType(type: EContractType) {
+	switchType(enterType: EContractType) {
 		this.contractSubscription.unsubscribe();
 		this.contractSubscription = new Subscription();
 
-		if (type === EContractType.PREPAID_CONTRACT) {
+		if (enterType === EContractType.PREPAID_CONTRACT) {
 			const addressSub = this.contractForm
 				.get('addressContract')
 				.valueChanges.pipe(
@@ -493,11 +490,9 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 
 	checkError(err: IError) {
 		if (err?.code === 'SUN-OIL-4811') {
-			// this.toastr.error('Số điện thoại không thuộc Việt Nam hoặc sai định dạng');
 			this.infoForm.get('phone').setErrors({ invalid: true });
 		}
 		if (err?.code === 'SUN-OIL-4821') {
-			// this.toastr.error('Không tìm thấy thông tin tài xế với số điện thoại này');
 			this.infoForm.get('phone').setErrors({ notExisted: true });
 		}
 		if (err?.code === 'SUN-OIL-4205') {
@@ -563,7 +558,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			this.filesUploaded = [];
 		} else {
 			this.filesUploaded = [...this.filesUploaded].filter(
-				(f, index) => this.filesUploaded.findIndex((f) => f.id === id) !== index
+				(_, index) => this.filesUploaded.findIndex((f) => f.id === id) !== index
 			);
 		}
 	}

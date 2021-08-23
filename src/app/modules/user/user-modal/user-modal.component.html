@@ -202,31 +202,6 @@
           </div>
         </div>
         <div class="form-group row">
-          <!-- <div class="col-lg-4">
-            <label class="form-label required">Mật khẩu</label>
-            <input
-              type="text"
-              class="form-control form-control-lg form-control-solid"
-              formControlName="password"
-              placeholder="Nhập mật khẩu"
-              maxlength="32"
-              autocomplete="off"
-              trim="blur"
-              minlength="8"
-              (keydown.space)="$event.preventDefault()"
-            />
-            <app-validate
-              [control]="userFormCreate.controls['password']"
-              [error]="'required'"
-              [message]="'Mật khẩu không được để trống'"
-            ></app-validate>
-            <app-validate
-              [control]="userFormCreate.controls['password']"
-              [error]="'minlength'"
-              [message]="'Mật khẩu không được ngắn hơn 8 ký tự'"
-            ></app-validate>
-          </div> -->
-
           <div class="col-lg-4">
             <label class="form-label">Nhóm quyền</label>
             <ng-select [multiple]="true" formControlName="roleIds" [closeOnSelect]="false">

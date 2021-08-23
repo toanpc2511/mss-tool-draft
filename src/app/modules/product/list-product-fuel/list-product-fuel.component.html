@@ -6,7 +6,7 @@
 
     <div class="card-toolbar row">
       <div class="search-form">
-        <i class="flaticon-search"></i>
+        <em class="flaticon-search"></em>
         <input
           type="text"
           name="searchText"
@@ -22,9 +22,9 @@
 
   <div class="card-body">
     <div class="table-responsive angular-bootstrap-table">
-      <table class="table table-head-custom table-vertical-center overflow-hidden">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
-        <th class='code'>
+        <th class='code' scope="">
           Mã sản phẩm
           <app-sort-icon
             column="code"
@@ -33,7 +33,7 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th class='name'>
+        <th class='name' scope="">
           Tên sản phẩm
           <app-sort-icon
             column="name"
@@ -42,7 +42,7 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th class='text-right'>
+        <th class='text-right' scope="">
           Giá nhập
           <app-sort-icon
             column="entryPrice"
@@ -51,7 +51,7 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th class='text-right'>
+        <th class='text-right' scope="">
           Giá bán vùng 1
           <app-sort-icon
             column="priceAreaOne"
@@ -60,7 +60,7 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th class='text-right'>
+        <th class='text-right' scope="">
           Giá bán vùng 2
           <app-sort-icon
             column="priceAreaTwo"
@@ -69,7 +69,7 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th>
+        <th scope="">
           Đơn vị
           <app-sort-icon
             column="unit"
@@ -78,7 +78,7 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th class='text-right'>
+        <th class='text-right' scope="">
           VAT(%)
           <app-sort-icon
             column="vat"
@@ -87,7 +87,7 @@
             (sort)="sort($event)"
           ></app-sort-icon>
         </th>
-        <th class="text-center">Tác động</th>
+        <th class="text-center" scope="">Tác động</th>
         </thead>
         <tbody>
         <tr *ngFor="let item of dataSource">

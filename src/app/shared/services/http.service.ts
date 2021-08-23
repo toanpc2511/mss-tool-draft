@@ -1,6 +1,5 @@
 import { HttpClient, HttpEventType, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { concatMap, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';

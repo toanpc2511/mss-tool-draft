@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { EArea, EStatus } from 'src/app/shared/data-enum/enums';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
 
@@ -30,8 +31,8 @@ export interface GasStationResponse {
 	wardId: number;
 	address: string;
 	fullAddress: string;
-	areaType: 'AREA_1' | 'AREA_2';
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	areaType: EArea;
+	status: EStatus;
 }
 
 export interface CreateStation {
@@ -42,12 +43,16 @@ export interface CreateStation {
 	wardId: number;
 	address: string;
 	fullAddress: string;
-	areaType: 'AREA_1' | 'AREA_2';
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	areaType: EArea;
+	status: EStatus;
 }
 // end gas station
 
 // gas bin
+export interface IProduct {
+	id: number;
+	name: string;
+}
 export interface GasBinResponse {
 	id?: number;
 	capacity: string;
@@ -57,11 +62,8 @@ export interface GasBinResponse {
 	length: string;
 	name: string;
 	productName: string;
-	product?: {
-		id: number;
-		name: string;
-	};
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	product?: IProduct;
+	status: EStatus;
 }
 
 export interface ProductsResponse {
@@ -72,7 +74,7 @@ export interface ProductsResponse {
 	entryPrice: number;
 	datePriceListing: string;
 	type: string;
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	status: EStatus;
 }
 
 export interface CreateGasBin {
@@ -84,7 +86,7 @@ export interface CreateGasBin {
 	length: string;
 	name: string;
 	productId: string;
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	status: EStatus;
 }
 // end gas bin
 export interface IPumpPole {
@@ -92,7 +94,7 @@ export interface IPumpPole {
 	description: string;
 	id: number;
 	name: string;
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	status: EStatus;
 }
 
 export interface IPumpPoleInput {
@@ -100,7 +102,7 @@ export interface IPumpPoleInput {
 	description: string;
 	gasStationId: number;
 	name: string;
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	status: EStatus;
 }
 
 export interface IPumpHose {
@@ -118,7 +120,7 @@ export interface IPumpHose {
 		id: number;
 		name: string;
 	};
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	status: EStatus;
 }
 
 export interface IPumpHoseInput {
@@ -126,15 +128,15 @@ export interface IPumpHoseInput {
 	description: string;
 	gasFieldId: number;
 	name: string;
-	pumpPoleId: 0;
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	pumpPoleId: number;
+	status: EStatus;
 }
 
 export interface IProvince {
 	code: string;
 	id: number;
 	name: string;
-	areaType: 'AREA_1' | 'AREA_2';
+	areaType: EArea;
 }
 
 export interface IDistrict {

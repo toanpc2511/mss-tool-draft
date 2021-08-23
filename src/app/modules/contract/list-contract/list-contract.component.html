@@ -6,7 +6,7 @@
 
 		<div class="card-toolbar row">
 			<div class="search-form">
-				<i class="flaticon-search"></i>
+				<em class="flaticon-search"></em>
 				<input
 					type="text"
 					name="searchText"
@@ -20,9 +20,9 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive angular-bootstrap-table">
-			<table class="table table-head-custom table-vertical-center overflow-hidden">
+			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
 				<thead>
-					<th>
+					<th scope="">
 						Mã hợp đồng
 						<app-sort-icon
 							column="code"
@@ -31,7 +31,7 @@
 							(sort)="sort($event)"
 						></app-sort-icon>
 					</th>
-					<th>
+					<th scope="">
 						Tên hợp đồng
 						<app-sort-icon
 							column="name"
@@ -40,7 +40,7 @@
 							(sort)="sort($event)"
 						></app-sort-icon>
 					</th>
-					<th>
+					<th scope="">
 						Loại hợp đồng
 						<app-sort-icon
 							column="contract_type"
@@ -49,7 +49,7 @@
 							(sort)="sort($event)"
 						></app-sort-icon>
 					</th>
-					<th>
+					<th scope="">
 						Ngày tạo
 						<app-sort-icon
 							column="created_at"
@@ -58,7 +58,7 @@
 							(sort)="sort($event)"
 						></app-sort-icon>
 					</th>
-					<th>
+					<th scope="">
 						Ngày hết hạn
 						<app-sort-icon
 							column="effect_end_date"
@@ -67,8 +67,8 @@
 							(sort)="sort($event)"
 						></app-sort-icon>
 					</th>
-					<th>Trạng thái</th>
-					<th class="text-center">Tác động</th>
+					<th scope="">Trạng thái</th>
+					<th class="text-center" scope="">Tác động</th>
 				</thead>
 				<tbody>
 					<tr *ngFor="let item of dataSource" (click)="viewDetalContract($event, item)">
