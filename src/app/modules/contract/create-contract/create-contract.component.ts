@@ -2,20 +2,26 @@ import { AsyncPipe } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { of, Subscription } from 'rxjs';
+import { of, Subject, Subscription } from 'rxjs';
 import {
 	catchError,
 	concatMap,
-	debounceTime, takeUntil,
+	debounceTime,
+	finalize,
+	pluck,
+	switchMap,
+	take,
+	takeUntil,
 	tap
 } from 'rxjs/operators';
 import {
 	convertDateToDisplay,
 	convertDateToServer,
 	convertMoney,
+	ofNull,
 	renameUniqueFileName
 } from 'src/app/shared/helpers/functions';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
@@ -32,6 +38,7 @@ import {
 	EContractType,
 	ECreatorType,
 	IAddress,
+	IContract,
 	IContractPlanInput,
 	IContractPrepayInput,
 	ICustomerInfo,
@@ -77,6 +84,10 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	};
 	payPlanDateCount = 1;
 	isUpdate = false;
+	contractId: number;
+	contractDataUpdate: IContract;
+	isInitDataUpdateSubject = new Subject();
+	isInitDataUpdate$ = this.isInitDataUpdateSubject.asObservable();
 
 	constructor(
 		private contractService: ContractService,
@@ -88,7 +99,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		private router: Router,
 		private subheader: SubheaderService,
 		private fileService: FileService,
-		private asyncPipe: AsyncPipe,
+		private activeRoute: ActivatedRoute,
 		private destroy$: DestroyService
 	) {}
 
@@ -102,9 +113,72 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				this.productTypes = res.data;
 				this.cdr.detectChanges();
 			});
+
+		this.activeRoute.params
+			.pipe(
+				pluck('id'),
+				take(1),
+				switchMap((contractId: number) => {
+					if (contractId) {
+						this.isUpdate = true;
+						this.setBreadcumb();
+						return this.contractService.getContractById(contractId);
+					}
+					return ofNull();
+				}),
+				tap((res) => {
+					if (res?.data) {
+						this.loadDataUpdate(res.data);
+					}
+				}),
+				finalize(() => this.isInitDataUpdateSubject.next(true)),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	loadDataUpdate(data: IContract) {
+		this.contractDataUpdate = data;
+		this.infoForm.patchValue(data.customer, { emitEvent: false, onlySelf: true });
+		if (data.contractType.code === EContractType.PLAN_CONTRACT) {
+			this.buildContractForm(EContractType.PLAN_CONTRACT);
+			this.contractType = EContractType.PLAN_CONTRACT;
+			this.patchValueContract(data);
+			this.patchValuePlanContract(data);
+		} else {
+			this.patchValueContract(data);
+			this.patchValuePrepayContract(data);
+		}
+	}
+
+	patchValueContract(data: IContract) {
+		this.infoForm.get('phone').disable();
+		this.contractForm.get('name').patchValue(data.name);
+		this.contractForm.get('effectEndDate').patchValue(data.effectEndDate);
+		this.contractForm.get('transportMethodCode').patchValue(data.transportMethod.code);
+		this.contractForm.get('payMethodCode').patchValue(data.payMethod.code);
+	}
+
+	patchValuePrepayContract(data: IContract) {
+		this.contractForm.get('addressContract').patchValue(data.contractAddress);
+		this.contractForm.get('fullAddress').patchValue(data.fullAddress);
+	}
+
+	patchValuePlanContract(data: IContract) {
+		this.contractForm.get('contractTypeCode').disable({ emitEvent: false, onlySelf: true });
+		this.contractForm.get('limit').patchValue(data.limitMoney);
+		this.contractForm.get('payPlanDate1').patchValue(data.dateOfPayment[0]);
+		this.contractForm.get('payPlanDate2').patchValue(data.dateOfPayment[1]);
+		this.contractForm.get('payPlanDate3').patchValue(data.dateOfPayment[2]);
+		this.contractForm.get('payPlanDate4').patchValue(data.dateOfPayment[3]);
+		this.contractForm.get('payPlanDate5').patchValue(data.dateOfPayment[4]);
 	}
 
 	ngAfterViewInit(): void {
+		this.setBreadcumb();
+	}
+
+	setBreadcumb() {
 		let subBreadcump = {
 			title: 'Thêm mới hợp đồng',
 			linkText: 'Thêm mới hợp đồng',
@@ -112,9 +186,9 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		};
 		if (this.isUpdate) {
 			subBreadcump = {
-				title: 'Sửa nhóm quyền',
-				linkText: 'Sửa nhóm quyền',
-				linkPath: '/hop-dong/danh-sach/sua-hop-dong'
+				title: 'Sửa hợp đồng',
+				linkText: 'Sửa hợp đồng',
+				linkPath: null
 			};
 		}
 		setTimeout(() => {

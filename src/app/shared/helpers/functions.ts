@@ -1,4 +1,6 @@
 import * as moment from 'moment';
+import { of } from 'rxjs';
+import { DataResponse } from '../models/data-response.model';
 
 export const makeId = (length) => {
 	let result = '';
@@ -62,4 +64,8 @@ export const convertMoney = (value: string) => {
 		return Number(value.replace(/,/g, ''));
 	}
 	return null;
+};
+
+export const ofNull = () => {
+	return of(null as DataResponse<any>);
 };

@@ -108,7 +108,7 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 			subBreadcump = {
 				title: 'Sửa nhóm quyền',
 				linkText: 'Sửa nhóm quyền',
-				linkPath: '/phan-quyen/sua-nhom-quyen'
+				linkPath: null
 			};
 		}
 		setTimeout(() => {

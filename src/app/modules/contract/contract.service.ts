@@ -18,6 +18,7 @@ export interface IContract {
 	name: string;
 	attachment: [
 		{
+			id: number;
 			url: string;
 			name: string;
 		}
@@ -41,6 +42,7 @@ export interface IContract {
 	fullAddress: string;
 	payMethod: {
 		id: number;
+		code: EPaymentMethods;
 		name: string;
 		type: string;
 	};
@@ -69,10 +71,12 @@ export interface IContract {
 	transportMethod: {
 		id: number;
 		name: string;
-		typw: string;
+		code: ETransportMethods;
+		type: string;
 	};
 	contractType: {
 		id: number;
+		code: EContractType;
 		name: string;
 		type: string;
 	};
@@ -84,13 +88,13 @@ export interface IContract {
 	limitMoney: number;
 	dateOfPayment: string;
 	status: 'ACCEPTED' | 'REJECT' | 'WAITING_ACCEPT';
-  station: {
-    id:  number;
-    code: string;
-    address: string;
-    areaType: string;
-    fullAddress: string;
-  }
+	station: {
+		id: number;
+		code: string;
+		address: string;
+		areaType: string;
+		fullAddress: string;
+	};
 }
 
 export enum EPaymentMethods {
@@ -252,7 +256,7 @@ export class ContractService {
 	acceptContract(id: number) {
 		return this.http.put(`contracts/acceptances/${id}`, {});
 	}
-  rejectContract(id: number, body) {
-    return this.http.put(`contracts/rejections/${id}`, body);
-  }
+	rejectContract(id: number, body) {
+		return this.http.put(`contracts/rejections/${id}`, body);
+	}
 }
