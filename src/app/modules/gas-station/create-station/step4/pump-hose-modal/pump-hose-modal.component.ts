@@ -101,9 +101,7 @@ export class PumpHoseModalComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (res) => {
-            if (res.data) {
-              this.modal.close(res.data);
-            }
+            this.checkRes(res);
           },
           (err: IError) => {
             this.checkError(err);
@@ -115,14 +113,18 @@ export class PumpHoseModalComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (res) => {
-            if (res.data) {
-              this.modal.close(res.data);
-            }
+            this.checkRes(res);
           },
           (err: IError) => {
             this.checkError(err);
           }
         );
+    }
+  }
+
+  checkRes(res: any) {
+    if (res.data) {
+      this.modal.close(res.data);
     }
   }
 

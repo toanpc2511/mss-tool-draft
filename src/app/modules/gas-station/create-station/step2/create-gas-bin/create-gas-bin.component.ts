@@ -78,9 +78,7 @@ export class CreateGasBinComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (res) => {
-            if (res.data) {
-              this.modal.close(true);
-            }
+            this.checkRes(res);
           },
           (err: IError) => {
             this.checkError(err);
@@ -92,14 +90,18 @@ export class CreateGasBinComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (res) => {
-            if (res.data) {
-              this.modal.close(true);
-            }
+            this.checkRes(res);
           },
           (err: IError) => {
             this.checkError(err);
           }
         );
+    }
+  }
+
+  checkRes(res: any) {
+    if (res.data) {
+      this.modal.close(true);
     }
   }
 

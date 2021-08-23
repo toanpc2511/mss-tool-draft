@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
@@ -122,21 +122,7 @@ export class Step4Component implements OnInit {
       backdrop: 'static',
       size: 'xl'
     });
-    modalRef.result.then((result) => {
-      if (result) {
-        this.gasStationService
-          .getPumpHosesByGasStation(this.gasStationService.gasStationId)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((res) => {
-            if (res.data) {
-              this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
-              this.searchFormControl.patchValue(null);
-              this.sort(null);
-              this.cdr.detectChanges();
-            }
-          });
-      }
-    });
+    this.closeModalRef(modalRef);
   }
 
   update(data) {
@@ -151,6 +137,10 @@ export class Step4Component implements OnInit {
       size: 'xl'
     });
     modalRef.componentInstance.data = data;
+    this.closeModalRef(modalRef);
+  }
+
+  closeModalRef(modalRef: NgbModalRef) {
     modalRef.result.then((result) => {
       if (result) {
         this.gasStationService

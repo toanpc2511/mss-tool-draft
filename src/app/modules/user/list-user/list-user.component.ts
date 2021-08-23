@@ -62,13 +62,17 @@ export class ListUserComponent implements OnInit {
 					);
 				}),
 				tap((res) => {
-					this.dataSource = res.data;
-					this.paginatorState.recalculatePaginator(res.meta.total);
-					this.cdr.detectChanges();
+					this.checkRes(res);
 				}),
 				takeUntil(this.destroy$)
 			)
 			.subscribe();
+	}
+
+	checkRes(res) {
+		this.dataSource = res.data;
+		this.paginatorState.recalculatePaginator(res.meta.total);
+		this.cdr.detectChanges();
 	}
 
 	getUsers() {
@@ -80,9 +84,7 @@ export class ListUserComponent implements OnInit {
 				this.sortData
 			)
 			.subscribe((res) => {
-				this.dataSource = res.data;
-				this.paginatorState.recalculatePaginator(res.meta.total);
-				this.cdr.detectChanges();
+				this.checkRes(res);
 			});
 	}
 

@@ -55,13 +55,13 @@
 // }
 
 // Brand themes
-.brand-dark {
-	@import './assets/sass/themes/layout/brand/dark.scss';
-}
+// .brand-dark {
+// 	@import './assets/sass/themes/layout/brand/dark.scss';
+// }
 
-.brand-light {
-	@import './assets/sass/themes/layout/brand/light.scss';
-}
+// .brand-light {
+// 	@import './assets/sass/themes/layout/brand/light.scss';
+// }
 
 // ng-select
 @import './app/shared/components/ng-select/themes/default.theme.scss';
@@ -167,8 +167,6 @@ p {
 
 .angular-bootstrap-table {
 	overflow-x: auto;
-}
-.angular-bootstrap-table {
 	th {
 		outline: none;
 
@@ -327,6 +325,25 @@ app-paginator {
 	justify-content: space-between;
 	align-items: center;
 }
+
+.search-form {
+	position: relative;
+	display: flex;
+	align-items: center;
+
+	em {
+		position: absolute;
+		left: 10px;
+		top: 7px;
+		font-size: 1.3rem;
+		opacity: 0.6;
+	}
+
+	input {
+		padding-left: 30px;
+	}
+}
+
 // hide shadow
 // .card.custom-card {
 //   box-shadow: none;

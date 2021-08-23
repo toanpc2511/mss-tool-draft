@@ -111,47 +111,51 @@ export class Step1Component implements OnInit, OnChanges {
       )
       .subscribe();
 
+      this.combineAddress();
+  }
+
+  combineAddress() {
     const pronvice$ = this.stationForm
-      .get('provinceId')
-      .valueChanges.pipe(startWith(0), takeUntil(this.destroy$)) as Observable<number>;
-    const district$ = this.stationForm
-      .get('districtId')
-      .valueChanges.pipe(startWith(0), takeUntil(this.destroy$)) as Observable<number>;
-    const ward$ = this.stationForm
-      .get('wardId')
-      .valueChanges.pipe(startWith(0), takeUntil(this.destroy$)) as Observable<number>;
-    const address$ = this.stationForm
-      .get('address')
-      .valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<string>;
+    .get('provinceId')
+    .valueChanges.pipe(startWith(0), takeUntil(this.destroy$)) as Observable<number>;
+  const district$ = this.stationForm
+    .get('districtId')
+    .valueChanges.pipe(startWith(0), takeUntil(this.destroy$)) as Observable<number>;
+  const ward$ = this.stationForm
+    .get('wardId')
+    .valueChanges.pipe(startWith(0), takeUntil(this.destroy$)) as Observable<number>;
+  const address$ = this.stationForm
+    .get('address')
+    .valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<string>;
 
-    combineLatest([pronvice$, district$, ward$, address$])
-      .pipe(
-        debounceTime(300),
-        concatMap(([proviceId, districtId, wardId, address]) =>
-          of({
-            proviceId,
-            districtId,
-            wardId,
-            address
-          })
-        ),
-        tap((data) => {
-          if (this.isUpdate && this.isFirstLoad) {
-            this.isFirstLoad = false;
-            return;
-          }
-          const provinceName = this.provinces.find((p) => p.id === Number(data.proviceId))?.name;
-          const districtName = this.districts.find((d) => d.id === Number(data.districtId))?.name;
-          const wardName = this.wards.find((w) => w.id === Number(data.wardId))?.name;
-          const fullAddress = [data.address, wardName, districtName, provinceName]
-            .filter((l) => !!l)
-            .join(', ');
+  combineLatest([pronvice$, district$, ward$, address$])
+    .pipe(
+      debounceTime(300),
+      concatMap(([proviceId, districtId, wardId, address]) =>
+        of({
+          proviceId,
+          districtId,
+          wardId,
+          address
+        })
+      ),
+      tap((data) => {
+        if (this.isUpdate && this.isFirstLoad) {
+          this.isFirstLoad = false;
+          return;
+        }
+        const provinceName = this.provinces.find((p) => p.id === Number(data.proviceId))?.name;
+        const districtName = this.districts.find((d) => d.id === Number(data.districtId))?.name;
+        const wardName = this.wards.find((w) => w.id === Number(data.wardId))?.name;
+        const fullAddress = [data.address, wardName, districtName, provinceName]
+          .filter((l) => !!l)
+          .join(', ');
 
-          this.stationForm.get('fullAddress').patchValue(fullAddress);
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
+        this.stationForm.get('fullAddress').patchValue(fullAddress);
+      }),
+      takeUntil(this.destroy$)
+    )
+    .subscribe();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
