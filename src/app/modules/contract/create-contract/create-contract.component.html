@@ -1,4 +1,4 @@
-<div class="card card-custom gutter-b mt-1">
+<div class="card card-custom gutter-b mt-1" *ngIf="isInitDataUpdate$ | async">
 	<div class="info-customer">
 		<div class="card-header">
 			<div class="card-title">
@@ -22,7 +22,7 @@
 								numbersOnly
 								[numberformControl]="infoForm.controls['phone']"
 							/>
-							<em class="fa fa-times" (click)="deleteNumberPhone()"></em>
+							<em *ngIf="!isUpdate" class="fa fa-times" (click)="deleteNumberPhone()"></em>
 						</div>
 						<app-validate
 							[control]="infoForm.controls['phone']"
@@ -107,7 +107,11 @@
 	<div class="info-contract">
 		<div class="card-header">
 			<div class="card-title">
-				<h3 class="title">Thông tin hợp đồng</h3>
+				<h3 class="title">
+					Thông tin hợp đồng<span *ngIf="isUpdate" class="text-success">
+						- {{contractDataUpdate?.code}}</span
+					>
+				</h3>
 			</div>
 		</div>
 

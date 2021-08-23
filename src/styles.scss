@@ -80,11 +80,11 @@
 	}
 
 	.ng-select-container {
-		padding-right: 0 !important;
 		border: none !important;
 		background: #f3f6f9 !important;
 		height: fit-content;
 		padding: 0.51rem 1rem;
+		padding-right: 0;
 		font-size: 1.08rem;
 		line-height: 1.5;
 		border-radius: 0.42rem;
@@ -259,7 +259,7 @@ input[type='number'] {
 
 .form-label.required::after {
 	content: ' (*)';
-	font-family: Roboto;
+	font-family: Roboto, sans-serif;
 	font-size: 14px;
 	font-style: normal;
 	font-weight: 700;

@@ -97,23 +97,8 @@ export class ListContractComponent implements OnInit {
 		this.router.navigate(['/hop-dong/danh-sach/them-moi']);
 	}
 
-	viewDetalContract($event: Event, item: IContract): void {
+	viewDetalContract(item: IContract): void {
 		this.router.navigate([`/hop-dong/danh-sach/chi-tiet/${item.id}`]);
-		// const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-		//   backdrop: 'static'
-		// });
-		// const data: IConfirmModalData = {
-		//   title: 'Xác nhận',
-		//   message: `Bạn có muốn xem chi tiết hợp đồng ${item.name}`,
-		//   button: { class: 'btn-primary', title: 'Xác nhận' }
-		// };
-		// modalRef.componentInstance.data = data;
-		//
-		// modalRef.result.then((result) => {
-		//   if (result) {
-		//     this.router.navigate([`/hop-dong/danh-sach/chi-tiet/${item.id}`]);
-		//   }
-		// });
 	}
 
 	sort(column: string) {
@@ -140,9 +125,9 @@ export class ListContractComponent implements OnInit {
 		this.getListContract();
 	}
 
-	updateContract($event: Event, code: string): void {
+	updateContract($event: Event, id: number): void {
 		$event.stopPropagation();
-		this.router.navigate([`/hop-dong/danh-sach/sua-hop-dong/${code}`]);
+		this.router.navigate([`/hop-dong/danh-sach/sua-hop-dong/${id}`]);
 	}
 
 	deleteContract($event: Event, item: IContract): void {
