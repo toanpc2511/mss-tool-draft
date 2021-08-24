@@ -6,7 +6,7 @@
 
     <div class="card-toolbar row">
       <div class="search-form">
-        <i class="flaticon-search"></i>
+        <em class="flaticon-search"></em>
         <input
           type="text"
           name="searchText"
@@ -20,9 +20,9 @@
   </div>
   <div class="card-body">
     <div class="table-responsive angular-bootstrap-table">
-      <table class="table table-head-custom table-vertical-center overflow-hidden">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
-          <th>
+          <th scope="">
             Mã bồn
             <app-sort-icon
               column="code"
@@ -31,7 +31,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Tên bồn
             <app-sort-icon
               column="name"
@@ -40,7 +40,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Chiều cao
             <app-sort-icon
               column="height"
@@ -49,7 +49,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Chiều dài
             <app-sort-icon
               column="width"
@@ -58,7 +58,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Dung tích
             <app-sort-icon
               column="width"
@@ -67,7 +67,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Loại nhiên liệu
             <app-sort-icon
               column="fuelType"
@@ -76,7 +76,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Mô tả
             <app-sort-icon
               column="description"
@@ -85,7 +85,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Trạng thái
             <app-sort-icon
               column="status"
@@ -95,7 +95,7 @@
             ></app-sort-icon>
           </th>
 
-          <th class="text-center">Tác động</th>
+          <th class="text-center" scope="">Tác động</th>
         </thead>
         <tbody>
           <tr *ngFor="let item of dataSource">
@@ -136,7 +136,11 @@
             </td>
 
             <td class="text-center action">
-              <a title="Edit product" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+              <a
+                [ngbTooltip]="'Sửa'"
+                (click)="update(item)"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
                   cacheSVG="true"
@@ -145,9 +149,9 @@
                 </span>
               </a>
               <a
-                title="Delete product"
                 (click)="deleteGasBin(item)"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                [ngbTooltip]="'Xóa'"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"

@@ -1,0 +1,236 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">
+      {{ isUpdate ? 'Sửa tài khoản' : 'Thêm mới tài khoản' }}
+    </h4>
+    <div class="close-icon" (click)="modal.close()"></div>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
+      <form [formGroup]="userFormCreate" class="form form-label-right" *ngIf="!isUpdate">
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label required">Mã nhân viên</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="code"
+              placeholder="Nhập mã nhân viên"
+              autocomplete="off"
+              maxlength="99"
+              (keydown.space)="$event.preventDefault()"
+            />
+            <app-validate
+              [control]="userFormCreate.controls['code']"
+              [error]="'required'"
+              [message]="'Mã nhân viên không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="userFormCreate.controls['code']"
+              [error]="'pattern'"
+              [message]="'Mã nhân viên sai định dạng'"
+            ></app-validate>
+            <app-validate
+              [control]="userFormCreate.controls['code']"
+              [error]="'existed'"
+              [message]="'Mã nhân viên không được trùng'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label required">Tên nhân viên</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="name"
+              placeholder="Nhập tên nhân viên"
+              maxlength="99"
+              autocomplete="off"
+              trim="blur"
+            />
+            <app-validate
+              [control]="userFormCreate.controls['name']"
+              [error]="'required'"
+              [message]="'Tên nhân viên không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label required">Tên đăng nhập</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="username"
+              placeholder="Nhập tên đăng nhập"
+              maxlength="99"
+              autocomplete="off"
+              trim="blur"
+              (keydown.space)="$event.preventDefault()"
+            />
+            <app-validate
+              [control]="userFormCreate.controls['username']"
+              [error]="'required'"
+              [message]="'Tên đăng nhập không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="userFormCreate.controls['username']"
+              [error]="'existed'"
+              [message]="'Tên đăng nhập không được trùng'"
+            ></app-validate>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label required">Mật khẩu</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="password"
+              placeholder="Nhập mật khẩu"
+              maxlength="32"
+              autocomplete="off"
+              trim="blur"
+              minlength="8"
+              (keydown.space)="$event.preventDefault()"
+            />
+            <app-validate
+              [control]="userFormCreate.controls['password']"
+              [error]="'required'"
+              [message]="'Mật khẩu không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="userFormCreate.controls['password']"
+              [error]="'minlength'"
+              [message]="'Mật khẩu không được ngắn hơn 8 ký tự'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label">Nhóm quyền</label>
+            <ng-select [multiple]="true" formControlName="roleIds" [closeOnSelect]="false">
+              <ng-option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</ng-option>
+            </ng-select>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label">Trạng thái</label>
+            <select
+              class="form-control form-control-lg form-control-solid"
+              name="type"
+              formControlName="status"
+              [value]="'ACTIVE'"
+            >
+              <option value="ACTIVE">Hoạt động</option>
+              <option value="INACTIVE">Không hoạt động</option>
+            </select>
+          </div>
+        </div>
+      </form>
+      <form [formGroup]="userFormUpdate" class="form form-label-right" *ngIf="isUpdate">
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label required">Mã nhân viên</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="code"
+              placeholder="Nhập mã nhân viên"
+              autocomplete="off"
+              maxlength="99"
+              (keydown.space)="$event.preventDefault()"
+              disabled
+            />
+            <app-validate
+              [control]="userFormUpdate.controls['code']"
+              [error]="'required'"
+              [message]="'Mã nhân viên không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="userFormUpdate.controls['code']"
+              [error]="'pattern'"
+              [message]="'Mã nhân viên sai định dạng'"
+            ></app-validate>
+            <app-validate
+              [control]="userFormUpdate.controls['code']"
+              [error]="'existed'"
+              [message]="'Mã nhân viên không được trùng'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label required">Tên nhân viên</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="name"
+              placeholder="Nhập tên nhân viên"
+              maxlength="99"
+              autocomplete="off"
+              trim="blur"
+              disabled
+            />
+            <app-validate
+              [control]="userFormUpdate.controls['name']"
+              [error]="'required'"
+              [message]="'Tên nhân viên không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label required">Tên đăng nhập</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="username"
+              placeholder="Nhập tên đăng nhập"
+              maxlength="99"
+              autocomplete="off"
+              trim="blur"
+              (keydown.space)="$event.preventDefault()"
+              disabled
+            />
+            <app-validate
+              [control]="userFormUpdate.controls['username']"
+              [error]="'required'"
+              [message]="'Tên đăng nhập không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="userFormUpdate.controls['username']"
+              [error]="'existed'"
+              [message]="'Tên đăng nhập không được trùng'"
+            ></app-validate>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-4">
+            <label class="form-label">Nhóm quyền</label>
+            <ng-select [multiple]="true" formControlName="roleIds" [closeOnSelect]="false">
+              <ng-option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</ng-option>
+            </ng-select>
+          </div>
+
+          <div class="col-lg-4">
+            <label class="form-label">Trạng thái</label>
+            <select
+              class="form-control form-control-lg form-control-solid"
+              name="type"
+              formControlName="status"
+              [value]="'ACTIVE'"
+            >
+              <option value="ACTIVE">Hoạt động</option>
+              <option value="INACTIVE">Không hoạt động</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-primary btn-dialog" (click)="onSubmit()">
+      Lưu
+    </button>
+  </div>
+</div>

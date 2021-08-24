@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { takeUntil } from 'rxjs/operators';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -68,25 +67,39 @@ export class PumpPoleModalComponent implements OnInit {
       name: this.pumpPoleForm.controls.name.value,
       status: this.pumpPoleForm.controls.status.value
     };
-    this.gasStationService
-      .createPumpPole(pumpPoleData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (res) => {
-          this.modal.close(res);
-        },
-        (err: IError) => {
-          this.checkError(err);
-        }
-      );
+    if (!this.isUpdate) {
+      this.gasStationService
+        .createPumpPole(pumpPoleData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (res) => {
+            this.modal.close(res);
+          },
+          (err: IError) => {
+            this.checkError(err);
+          }
+        );
+    } else {
+      this.gasStationService
+        .updatePumpPole(this.data.id, pumpPoleData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (res) => {
+            this.modal.close(res);
+          },
+          (err: IError) => {
+            this.checkError(err);
+          }
+        );
+    }
   }
 
   checkError(error: IError) {
     switch (error.code) {
-      case 'SUN-OIL-4508':
+      case 'SUN-OIL-4108':
         this.pumpPoleForm.get('code').setErrors({ existed: true });
         break;
-      case 'SUN-OIL-4509':
+      case 'SUN-OIL-4109':
         this.pumpPoleForm.get('name').setErrors({ existed: true });
         break;
     }

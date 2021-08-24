@@ -1,0 +1,121 @@
+<div class="card card-custom create-station-wrapper mt-1">
+	<div class="card-body">
+		<div class="row justify-content-center w-100">
+			<form [formGroup]="permissionForm" class="form form-label-right w-100">
+				<div class="form-group row">
+					<div class="col-lg-12 row d-flex align-items-center ml-0">
+						<label class="form-label required m-0 mr-20 ml-4">Tên nhóm quyền</label>
+						<div class="col-lg-9">
+							<input
+								type="text"
+								class="form-control form-control-lg form-control-solid"
+								formControlName="name"
+								placeholder="Nhập tên nhóm quyền"
+								autocomplete="off"
+								maxlength="99"
+								trim="blur"
+							/>
+							<app-validate
+								[control]="permissionForm.controls['name']"
+								[error]="'required'"
+								[message]="'Tên nhóm quyền không được để trống'"
+							></app-validate>
+							<app-validate
+								[control]="permissionForm.controls['name']"
+								[error]="'existed'"
+								[message]="'Tên quyền đã tồn tại'"
+							></app-validate>
+						</div>
+					</div>
+				</div>
+				<div class="form-group row d-inline">
+					<ngb-accordion [destroyOnHide]="false" #moduleAccordion>
+						<ngb-panel *ngFor="let module of modulesData" [id]="'module-panel-' + module.id">
+							<ng-template ngbPanelTitle>
+								<div class="d-flex justify-content-between">
+									<div class="d-flex align-items-center">
+										<label class="checkbox checkbox-lg mr-2">
+											<input
+												type="checkbox"
+												[checked]="module.checked"
+												(click)="$event.stopPropagation()"
+												(change)="permissionChange($event, module.id, 'MODULE')"
+											/>
+											<span (click)="$event.stopPropagation()"></span>
+										</label>
+										<label class="m-0">{{module.name}}</label>
+									</div>
+									<div
+										[ngClass]="{'icon-arrow-up': !isOpenModule('module-panel-' + module.id), 'icon-arrow-down': isOpenModule('module-panel-' + module.id)}"
+									></div>
+								</div>
+							</ng-template>
+							<ng-template ngbPanelContent>
+								<ngb-accordion [destroyOnHide]="false" #groupAccordion>
+									<ngb-panel
+										*ngFor="let group of module.groups"
+										[id]="'ngb-panel-'+ module.id + '-' + group.id"
+									>
+										<ng-template ngbPanelTitle>
+											<div class="d-flex justify-content-between">
+												<div class="d-flex align-items-center">
+													<label class="checkbox checkbox-lg mr-2">
+														<input
+															type="checkbox"
+															[checked]="group.checked"
+															(click)="$event.stopPropagation()"
+															(change)="permissionChange($event, module.id, 'GROUP', group.id)"
+														/>
+														<span (click)="$event.stopPropagation()"></span>
+													</label>
+													<label class="m-0">{{group.name}}</label>
+												</div>
+												<div
+													[ngClass]="{'icon-arrow-up': !isOpenGroup('ngb-panel-'+ module.id + '-' + group.id), 'icon-arrow-down': isOpenGroup('ngb-panel-'+ module.id + '-' + group.id)}"
+												></div>
+											</div>
+										</ng-template>
+										<ng-template ngbPanelContent>
+											<div class="d-flex permission-list">
+												<div
+													*ngFor="let feature of group.features"
+													class="d-flex align-items-center"
+												>
+													<label class="checkbox checkbox-lg mr-2">
+														<input
+															type="checkbox"
+															[checked]="feature.checked"
+															[disabled]="feature.method === eMethod.GET"
+															(change)="permissionChange($event, module.id, 'FEATURE' , group.id, feature.id)"
+														/>
+														<span
+															[style.opacity]="feature.method === eMethod.GET ? '0.6' : '1'"
+															(click)="$event.stopPropagation()"
+														></span>
+													</label>
+													<label class="m-0">{{feature.name}}</label>
+												</div>
+											</div>
+										</ng-template>
+									</ngb-panel>
+								</ngb-accordion>
+							</ng-template>
+						</ngb-panel>
+					</ngb-accordion>
+				</div>
+			</form>
+		</div>
+		<div class="row justify-content-center w-100">
+			<button
+				type="button"
+				class="btn btn-outline-secondary btn-dialog mr-6"
+				[routerLink]="['/phan-quyen']"
+			>
+				Hủy
+			</button>
+			<button type="button" ngbAutofocus class="btn btn-primary btn-dialog" (click)="onSubmit()">
+				Lưu
+			</button>
+		</div>
+	</div>
+</div>

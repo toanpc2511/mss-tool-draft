@@ -5,27 +5,21 @@ table thead th {
 table {
   min-width: 1024px;
   td {
-    &.code {
-      min-width: 100px;
-      max-width: 200px;
-    }
+    &.code,
     &.name {
       min-width: 200px;
-      max-width: 450px;
+      max-width: 200px;
     }
     &.description {
-      min-width: 300px;
-      max-width: 500px;
+      min-width: 350px;
+      max-width: 350px;
     }
     &.status {
-      min-width: 140px;
-    }
-    &.task {
-      min-width: 120px;
+      min-width: 200px;
     }
 
-    p {
-      width: 95%;
+    &.task {
+      min-width: 200px;
     }
   }
 
@@ -44,21 +38,21 @@ table {
 
 .card-toolbar {
   gap: 50px;
-  .search-form {
-    position: relative;
-    display: flex;
-    align-items: center;
+  // .search-form {
+  //   position: relative;
+  //   display: flex;
+  //   align-items: center;
 
-    i {
-      position: absolute;
-      left: 10px;
-      top: 7px;
-    }
+  //   i {
+  //     position: absolute;
+  //     left: 10px;
+  //     top: 7px;
+  //   }
 
-    input {
-      padding-left: 30px;
-    }
-  }
+  //   input {
+  //     padding-left: 30px;
+  //   }
+  // }
 
   button {
     width: 125px;

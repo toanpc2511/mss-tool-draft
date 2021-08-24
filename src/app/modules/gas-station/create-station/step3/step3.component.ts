@@ -80,20 +80,25 @@ export class Step3Component implements OnInit {
       .getPumpPolesByGasStation(this.gasStationService.gasStationId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        if (res.data) {
-          this.dataSource = this.dataSourceTemp = res.data;
-          // Set data after filter and apply current sorting
-          this.dataSource = this.sortService.sort(
-            this.filterService.filter(this.dataSourceTemp, this.filterField.field)
-          );
-          this.cdr.detectChanges();
+        this.dataSource = this.dataSourceTemp = res.data;
+        // Set data after filter and apply current sorting
+        this.dataSource = this.sortService.sort(
+          this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+        );
+        if (res?.data?.length > 0) {
+          const currentStepData = this.gasStationService.getStepDataValue();
+          this.gasStationService.setStepData({ ...currentStepData, step3: { isValid: true } });
+        } else {
+          const currentStepData = this.gasStationService.getStepDataValue();
+          this.gasStationService.setStepData({ ...currentStepData, step3: { isValid: false } });
         }
+        this.cdr.detectChanges();
       });
   }
 
   // Sort
   sort(column: string) {
-    this.dataSource = this.sortService.sort(this.dataSource, column);
+    this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
   }
 
   create() {
@@ -117,6 +122,8 @@ export class Step3Component implements OnInit {
               this.dataSource = this.dataSourceTemp = res.data;
               this.searchFormControl.patchValue(null);
               this.sort(null);
+              const currentStepData = this.gasStationService.getStepDataValue();
+              this.gasStationService.setStepData({ ...currentStepData, step3: { isValid: true } });
               this.cdr.detectChanges();
             }
           });
@@ -160,10 +167,12 @@ export class Step3Component implements OnInit {
     ) {
       return this.toastr.error('Không thể xóa vì trạm xăng không hoạt động');
     }
-    const modalRef = this.modalService.open(ConfirmDeleteComponent);
+    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+      backdrop: 'static'
+    });
     const data: IConfirmModalData = {
       title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xóa thông tin cột ${pumpPole.name}`,
+      message: `Bạn có chắc chắn muốn xóa thông tin cột ${pumpPole.code} - ${pumpPole.name} ?`,
       button: {
         class: 'btn-primary',
         title: 'Xác nhận'

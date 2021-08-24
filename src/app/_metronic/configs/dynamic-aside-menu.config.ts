@@ -3,19 +3,17 @@ export const DynamicAsideMenuConfig = {
     {
       title: 'Dashboard',
       root: true,
-      icon: 'fa-gas-pump',
-      svg: './assets/media/svg/icons/Design/Layers.svg',
+      icon: 'fas fa-layer-group',
       page: '/dashboard',
       translate: 'MENU.DASHBOARD',
       bullet: 'dot'
     },
     {
       title: 'Quản lý trạm xăng',
-      icon: 'fa-gas-pump',
+      icon: 'fa fa-gas-pump',
       root: true,
       page: '/tram-xang',
       bullet: 'dot',
-      svg: './assets/media/svg/icons/Design/Layers.svg',
       submenu: [
         {
           title: 'Danh sách trạm',
@@ -34,68 +32,94 @@ export const DynamicAsideMenuConfig = {
       ]
     },
     {
-      title: 'Quản lý nhóm sản phẩm',
+      title: 'Quản lý sản phẩm',
+      icon: 'fas fa-cubes',
       root: true,
+      page: '/san-pham',
       bullet: 'dot',
-      page: '/nhom-san-pham',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      submenu: [
+        {
+          title: 'Quản lý nhóm sản phẩm',
+          bullet: 'dot',
+          page: 'san-pham/nhom-san-pham',
+          notChild: true
+        },
+        {
+          title: 'Sản phẩm nhiên liệu',
+          bullet: 'dot',
+          page: 'san-pham/san-pham-nhien-lieu',
+          notChild: true
+        },
+        {
+          title: 'Sản phẩm khác',
+          bullet: 'dot',
+          page: 'san-pham/san-pham-khac',
+          notChild: true
+        }
+      ]
+    },
+    {
+      title: 'Quản lý hợp đồng',
+      icon: 'fas fa-file-contract',
+      root: true,
+      page: '/hop-dong',
+      bullet: 'dot',
     },
     {
       title: 'Quản lý QR code',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      page: '/qrcode',
+      icon: 'fas fa-qrcode'
     },
     {
       title: 'Báo cáo',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      page: '/bao-cao',
+      icon: 'fas fa-file-alt'
     },
     {
-      title: 'Quản lý User',
+      title: 'Quản lý tài khoản',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      page: '/tai-khoan',
+      icon: 'fas fa-user'
+    },
+    {
+      title: 'Quản lý phân quyền',
+      root: true,
+      bullet: 'dot',
+      page: '/phan-quyen',
+      icon: 'fas fa-lock'
     },
     {
       title: 'Quản lý ca làm việc',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      page: '/ca-lam-viec',
+      icon: 'fas fa-calendar-check'
     },
     {
       title: 'Quản lý khách hàng',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      page: '/khach-hang',
+      icon: 'fas fa-users'
     },
     {
       title: 'Quản lý chiết khấu',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      page: '/chiet-khau',
+      icon: 'fas fa-hand-holding-usd'
     },
     {
       title: 'Quản lý kho',
       root: true,
       bullet: 'dot',
-      page: '/nhom-san-pham',
-      icon: '	fa-cubes',
-      svg: './assets/media/svg/icons/Design/Layers.svg'
+      page: '/kho',
+      icon: 'fas fa-warehouse'
     }
   ]
 };

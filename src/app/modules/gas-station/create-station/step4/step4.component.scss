@@ -5,52 +5,41 @@ table thead th {
 table {
   min-width: 1024px;
   td {
-    &.code {
+    &.code,
+    &.name,
+    &.gas-field,
+    &.pump-pole {
       min-width: 150px;
       max-width: 150px;
     }
-    &.name {
-      min-width: 200px;
-      max-width: 200px;
-    }
-    &.gas-field {
-      min-width: 200px;
-      max-width: 200px;
-    }
-    &.pump-pole {
-      min-width: 200px;
-      max-width: 200px;
-    }
     &.description {
-      min-width: 350px;
-      max-width: 350px;
+      min-width: 150px;
+      max-width: 150px;
     }
-    &.status {
-      min-width: 140px;
-    }
+    &.status,
     &.task {
-      min-width: 120px;
+      min-width: 150px;
     }
   }
 }
 
 .card-toolbar {
   gap: 50px;
-  .search-form {
-    position: relative;
-    display: flex;
-    align-items: center;
+  // .search-form {
+  //   position: relative;
+  //   display: flex;
+  //   align-items: center;
 
-    i {
-      position: absolute;
-      left: 10px;
-      top: 7px;
-    }
+  //   i {
+  //     position: absolute;
+  //     left: 10px;
+  //     top: 7px;
+  //   }
 
-    input {
-      padding-left: 30px;
-    }
-  }
+  //   input {
+  //     padding-left: 30px;
+  //   }
+  // }
 
   button {
     width: 125px;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { Component, Input, OnInit } from '@angular/core';
 import { LayoutService } from '../../../../../core';
 

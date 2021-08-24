@@ -1,6 +1,7 @@
 <div class="modal-content">
   <div class="modal-header">
-    <div class="modal-title h4" id="example-modal-sizes-title-lg">Thêm bồn</div>
+    <div class="modal-title h4" id="example-modal-sizes-title-lg" *ngIf="!isUpdate">Thêm bồn</div>
+    <div class="modal-title h4" id="example-modal-sizes-title-lg" *ngIf="isUpdate">Sửa bồn</div>
     <div class="close-icon" (click)="modal.dismiss()"></div>
   </div>
   <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
@@ -156,13 +157,13 @@
   <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-outline-secondary btn-create-station-dialog mr-2"
+      class="btn btn-outline-secondary btn-dialog mr-2"
       (click)="modal.dismiss()"
     >
       Hủy
     </button>
 
-    <button type="button" (click)="onSubmit()" class="btn btn-primary btn-create-station-dialog">
+    <button type="button" (click)="onSubmit()" class="btn btn-primary btn-dialog">
       Lưu
     </button>
   </div>

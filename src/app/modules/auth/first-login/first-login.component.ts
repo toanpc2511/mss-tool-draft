@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class FirstLoginComponent implements OnInit {
   firstLoginForm: FormGroup;
-  hasError: boolean = false;
+  hasError = false;
   isLoading$: Observable<boolean>;
   isShowPasswordNew = false;
   isShowPasswordConfirm = false;

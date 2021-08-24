@@ -6,7 +6,7 @@
 
     <div class="card-toolbar row">
       <div class="search-form">
-        <i class="flaticon-search"></i>
+        <em class="flaticon-search"></em>
         <input
           type="text"
           name="searchText"
@@ -20,9 +20,9 @@
   </div>
   <div class="card-body">
     <div class="table-responsive angular-bootstrap-table">
-      <table class="table table-head-custom table-vertical-center overflow-hidden">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
-          <th>
+          <th scope="">
             Mã vòi
             <app-sort-icon
               column="code"
@@ -31,7 +31,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Tên vòi
             <app-sort-icon
               column="name"
@@ -40,7 +40,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Tên bồn
             <app-sort-icon
               column="gasFieldName"
@@ -49,7 +49,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Tên cột
             <app-sort-icon
               column="pumpPoleName"
@@ -58,7 +58,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Mô tả
             <app-sort-icon
               column="description"
@@ -67,7 +67,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Trạng thái
             <app-sort-icon
               column="status"
@@ -76,7 +76,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th class="text-center">Tác động</th>
+          <th class="text-center" scope="">Tác động</th>
         </thead>
         <tbody>
           <tr *ngFor="let pumpHose of dataSource">
@@ -133,8 +133,8 @@
             <td class="text-center task">
               <a
                 (click)="update(pumpHose)"
-                title="Edit product"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                [ngbTooltip]="'Sửa'"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -145,8 +145,8 @@
               </a>
               <a
                 (click)="delete(pumpHose)"
-                title="Delete product"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                [ngbTooltip]="'Xóa'"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"

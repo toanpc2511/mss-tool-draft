@@ -1,4 +1,4 @@
-<div class="card card-custom gutter-b">
+<div class="card card-custom gutter-b mt-1">
   <div class="card-header">
     <div class="card-title">
       <h3 class="card-label">Danh sách trạm</h3>
@@ -6,7 +6,7 @@
 
     <div class="card-toolbar row">
       <div class="search-form">
-        <i class="flaticon-search"></i>
+        <em class="flaticon-search"></em>
         <input
           type="text"
           name="searchText"
@@ -22,9 +22,9 @@
   </div>
   <div class="card-body">
     <div class="table-responsive angular-bootstrap-table">
-      <table class="table table-head-custom table-vertical-center overflow-hidden">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
-          <th>
+          <th scope="">
             Mã trạm
             <app-sort-icon
               column="code"
@@ -33,7 +33,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Tên trạm
             <app-sort-icon
               column="name"
@@ -42,7 +42,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Địa chỉ
             <app-sort-icon
               column="location"
@@ -51,7 +51,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>
+          <th scope="">
             Trạng thái
             <app-sort-icon
               column="status"
@@ -60,7 +60,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th class="text-center">Tác động</th>
+          <th class="text-center" scope="">Tác động</th>
         </thead>
         <tbody>
           <tr *ngFor="let station of dataSource">
@@ -78,9 +78,9 @@
               <p
                 class="cursor-pointer text-ellipsis"
                 placement="top"
-                [ngbTooltip]="station.address"
+                [ngbTooltip]="station.fullAddress"
               >
-                {{ station.address }}
+                {{ station.fullAddress }}
               </p>
             </td>
             <td class="status">
@@ -97,25 +97,27 @@
             </td>
 
             <td class="text-center action">
-              <a title="Sửa trạm" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+              <a
+                (click)="updateStation(station.id)"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                [ngbTooltip]="'Sửa'"
+              >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-primary"
-                  [ngbTooltip]=""
                 >
                 </span>
               </a>
               <a
-                title="Xóa trạm"
                 (click)="deleteStation(station)"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                [ngbTooltip]="'Xóa'"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-danger"
-                  [ngbTooltip]=""
                 >
                 </span>
               </a>

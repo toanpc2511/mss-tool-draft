@@ -1,0 +1,184 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+    <div class="close-icon" (click)="modal.close()"></div>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
+      <form [formGroup]="productForm" class="form form-label-right">
+        <div class="form-group row">
+<!--          Mã sản phẩm-->
+          <div class="col-lg-4">
+            <label class="form-label required">Mã sản phẩm</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="code"
+              placeholder="Nhập mã sản phẩm"
+              autocomplete="off"
+              maxlength="99"
+              (keydown.space)="$event.preventDefault()"
+            />
+            <app-validate
+              [control]="productForm.controls['code']"
+              [error]="'required'"
+              [message]="'Mã sản phẩm không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="productForm.controls['code']"
+              [error]="'codeExisted'"
+              [message]="'Mã sản phẩm đã tồn tại'"
+            ></app-validate>
+            <app-validate
+              [control]="productForm.controls['code']"
+              [error]="'pattern'"
+              [message]="'Mã sản phẩm sai định dạng'"
+            ></app-validate>
+          </div>
+
+<!--          Tên sản phẩm-->
+          <div class="col-lg-4">
+            <label class="form-label required">Tên sản phẩm</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="name"
+              placeholder="Nhập tên sản phẩm"
+              maxlength="99"
+              autocomplete="off"
+              trim="blur"
+            />
+            <app-validate
+              [control]="productForm.controls['name']"
+              [error]="'required'"
+              [message]="'Tên sản phẩm không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="productForm.controls['name']"
+              [error]="'nameExisted'"
+              [message]="'Tên sản phẩm đã tồn tại'"
+            ></app-validate>
+          </div>
+
+<!--          Đơn vị-->
+          <div class="col-lg-4">
+            <label class="form-label required">Đơn vị</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="unit"
+              placeholder="Nhập đơn vị"
+              maxlength="99"
+              autocomplete="off"
+              trim="blur"
+            />
+            <app-validate
+              [control]="productForm.controls['unit']"
+              [error]="'required'"
+              [message]="'Đơn vị không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+
+        <div class="form-group row">
+<!--          Giá nhập-->
+          <div class="col-lg-4">
+            <label class="form-label required">Giá nhập</label>
+            <input
+              type="text"
+              decimal-mask
+              class="form-control form-control-lg form-control-solid"
+              formControlName="entryPrice"
+              placeholder="Nhập giá nhập"
+              maxlength="17"
+              autocomplete="off"
+              trim="blur"
+            />
+            <app-validate
+              [control]="productForm.controls['entryPrice']"
+              [error]="'required'"
+              [message]="'Giá nhập không được để trống'"
+            ></app-validate>
+          </div>
+
+<!--          VAT-->
+          <div class="col-lg-4">
+            <label class="form-label">VAT (%)</label>
+            <input
+              type="text"
+              decimal-mask
+              class="form-control form-control-lg form-control-solid"
+              formControlName="valueAddedTax"
+              placeholder="Nhập VAT"
+              maxlength="3"
+              autocomplete="off"
+              trim="blur"
+            />
+          </div>
+
+<!--          Mô tả-->
+          <div class="col-lg-4">
+            <label class="form-label">Mô tả</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              formControlName="description"
+              placeholder="Nhập mô tả"
+              maxlength="199"
+              autocomplete="off"
+              trim="blur"
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+<!--          Giá vùng 1-->
+          <div class="col-lg-4">
+            <label class="form-label required">Giá bán cho vùng 1</label>
+            <input
+              type="text"
+              decimal-mask
+              class="form-control form-control-lg form-control-solid"
+              formControlName="priceArea1"
+              placeholder="Nhập giá bán cho vùng 1"
+              maxlength="17"
+              autocomplete="off"
+              trim="blur"
+            />
+            <app-validate
+              [control]="productForm.controls['priceArea1']"
+              [error]="'required'"
+              [message]="'Giá bán vùng 1 không được để trống'"
+            ></app-validate>
+          </div>
+
+<!--          Giá vùng 2-->
+          <div class="col-lg-4">
+            <label class="form-label required">Giá bán cho vùng 2</label>
+            <input
+              type="text"
+              decimal-mask
+              class="form-control form-control-lg form-control-solid"
+              formControlName="priceArea2"
+              placeholder="Nhập giá bán cho vùng 2"
+              maxlength="17"
+              autocomplete="off"
+              trim="blur"
+            />
+            <app-validate
+              [control]="productForm.controls['priceArea2']"
+              [error]="'required'"
+              [message]="'Giá bán vùng 2 không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
+  </div>
+</div>

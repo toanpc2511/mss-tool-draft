@@ -3,11 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  appVersion: '1.0.0',
-  USERDATA_KEY: 'authf649fc9a5f55',
-  isMockEnabled: false,
-  apiUrl: 'https://sunoil-management.firecloud.live/management'
+	production: false,
+	appVersion: '1.0.0',
+	USERDATA_KEY: 'authf649fc9a5f55',
+	isMockEnabled: false,
+	apiUrl: 'https://sunoil-management.firecloud.live/management',
+	apiUrlRoot: 'https://sunoil-management.firecloud.live'
 };
 
 /*
@@ -17,4 +18,3 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.

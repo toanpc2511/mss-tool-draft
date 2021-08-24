@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from '../../../../../core';
 
@@ -140,7 +141,7 @@ export class MixedWidget1Component implements OnInit {
           fontFamily: this.fontFamily,
         },
         y: {
-          // tslint:disable-next-line
+          // eslint-disable-next-line
           formatter: function (val) {
             return '$' + val + ' thousands';
           },

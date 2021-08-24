@@ -65,6 +65,69 @@
         </div>
       </div>
 
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label required col-lg-2">Tỉnh/Thành phố</label>
+        <div class="col-lg-4">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="type"
+            formControlName="provinceId"
+          >
+            <option disabled [value]="null">Chọn tỉnh/thành phố</option>
+            <option *ngFor="let province of provinces" [value]="province.id">
+              {{ province.name }}
+            </option>
+          </select>
+          <app-validate
+            [control]="stationForm.controls['provinceId']"
+            [error]="'required'"
+            [message]="'Tỉnh/Thành phố không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label required col-lg-2">Quận/Huyện</label>
+        <div class="col-lg-4">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="type"
+            formControlName="districtId"
+          >
+            <option disabled [value]="null">Chọn quận/huyện</option>
+            <option *ngFor="let district of districts" [value]="district.id">
+              {{ district.name }}
+            </option>
+          </select>
+          <app-validate
+            [control]="stationForm.controls['districtId']"
+            [error]="'required'"
+            [message]="'Quận/Huyện không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label required col-lg-2">Xã/Phường</label>
+        <div class="col-lg-4">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="type"
+            formControlName="wardId"
+          >
+            <option disabled [value]="null">Chọn xã/phường</option>
+            <option *ngFor="let ward of wards" [value]="ward.id">
+              {{ ward.name }}
+            </option>
+          </select>
+          <app-validate
+            [control]="stationForm.controls['wardId']"
+            [error]="'required'"
+            [message]="'Xã/Phường không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+
       <!-- station location -->
       <div class="col-lg-12 py-5 row align-items-center">
         <label class="form-label col-lg-2">Địa chỉ </label>
@@ -78,6 +141,36 @@
             formControlName="address"
             maxlength="100"
             trim="blur"
+          />
+        </div>
+      </div>
+
+      <!-- station full location -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2">Địa chỉ đầy đủ</label>
+        <div class="col-lg-10">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="Địa chỉ đầy đủ"
+            autocomplete="off"
+            formControlName="fullAddress"
+            disabled
+          />
+        </div>
+      </div>
+
+      <!-- station area -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2">Vùng</label>
+        <div class="col-lg-10">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            autocomplete="off"
+            placeholder="Vùng"
+            formControlName="areaDisplay"
+            disabled
           />
         </div>
       </div>

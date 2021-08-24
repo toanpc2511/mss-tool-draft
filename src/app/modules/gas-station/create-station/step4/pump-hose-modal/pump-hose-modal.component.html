@@ -1,8 +1,8 @@
 <div class="modal-content">
   <div class="modal-header">
     <div class="modal-title h4" id="example-modal-sizes-title-lg">
-      <ng-container *ngIf="data">Sửa</ng-container>
-      <ng-container *ngIf="!data">Thêm mới</ng-container>
+      <ng-container *ngIf="data">Sửa vòi</ng-container>
+      <ng-container *ngIf="!data">Thêm vòi</ng-container>
     </div>
     <div class="close-icon" (click)="modal.close()"></div>
   </div>
@@ -67,7 +67,7 @@
             name="type"
             formControlName="gasFieldId"
           >
-            <option [value]="null">Chọn tên bồn</option>
+            <option disabled [value]="null">Chọn tên bồn</option>
             <option *ngFor="let gasField of gasFields" [value]="gasField.id">
               {{ gasField.name }}
             </option>
@@ -85,7 +85,7 @@
             name="type"
             formControlName="pumpPoleId"
           >
-            <option [value]="null">Chọn tên cột</option>
+            <option disabled [value]="null">Chọn tên cột</option>
             <option *ngFor="let pumpPole of pumpPoles" [value]="pumpPole.id">
               {{ pumpPole.name }}
             </option>
@@ -128,13 +128,13 @@
   <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-outline-secondary btn-create-station-dialog mr-2"
+      class="btn btn-outline-secondary btn-dialog mr-2"
       (click)="modal.close()"
     >
       Hủy
     </button>
 
-    <button type="submit" class="btn btn-primary btn-create-station-dialog" (click)="submit()">
+    <button type="submit" class="btn btn-primary btn-dialog" (click)="submit()">
       Lưu
     </button>
   </div>

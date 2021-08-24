@@ -26,7 +26,11 @@ export class ListStationComponent implements OnInit {
   dataSourceTemp: Array<GasStationResponse>;
   sorting: SortState;
   searchFormControl: FormControl;
-  filterField: FilterField<GasStationResponse>;
+  filterField: FilterField<{
+    code: null;
+    name: null;
+    fullAddress: null;
+  }>;
   listStatus = LIST_STATUS;
 
   constructor(
@@ -41,11 +45,9 @@ export class ListStationComponent implements OnInit {
     this.dataSource = this.dataSourceTemp = [];
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
-      id: null,
       code: null,
       name: null,
-      address: null,
-      status: null
+      fullAddress: null
     });
     this.searchFormControl = new FormControl();
   }
@@ -71,7 +73,7 @@ export class ListStationComponent implements OnInit {
   }
 
   sort(column: string) {
-    this.dataSource = this.sortService.sort(this.dataSource, column);
+    this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
   }
 
   goToCreateGasStation() {
@@ -81,23 +83,35 @@ export class ListStationComponent implements OnInit {
   getListStation() {
     this.gasStationService.getListStation().subscribe((res) => {
       this.dataSource = this.dataSourceTemp = res.data;
+      // Set data after filter and apply current sorting
+      this.dataSource = this.sortService.sort(
+        this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+      );
       this.cdr.detectChanges();
     });
   }
 
   deleteStation(item: GasStationResponse) {
-    const modalRef = this.modalService.open(ConfirmDeleteComponent);
+    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+      backdrop: 'static'
+    });
     const data: IConfirmModalData = {
       title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xoá trạm ${item.name} ?`,
+      message: `Bạn có chắc chắn muốn xoá trạm ${item.code} - ${item.name}?`,
       button: { class: 'btn-primary', title: 'Xác nhận' }
     };
     modalRef.componentInstance.data = data;
 
     modalRef.result.then((result) => {
       if (result) {
-        this.gasStationService.deleteStation(item.id).subscribe(() => this.getListStation());
+        this.gasStationService.deleteStation(item.id).subscribe(() => {
+          this.getListStation();
+        });
       }
     });
+  }
+
+  updateStation(stationId: number) {
+    this.router.navigate([`/tram-xang/danh-sach/sua-tram/${stationId}`]);
   }
 }

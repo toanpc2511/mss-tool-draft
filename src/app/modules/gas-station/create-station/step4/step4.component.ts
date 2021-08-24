@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
@@ -11,7 +11,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
-import { GasStationService, IPumpHose, IPumpPole } from '../../gas-station.service';
+import { GasStationService, IPumpHose } from '../../gas-station.service';
 import { PumpHoseModalComponent } from './pump-hose-modal/pump-hose-modal.component';
 @Component({
   selector: 'app-step4',
@@ -93,20 +93,25 @@ export class Step4Component implements OnInit {
       .getPumpHosesByGasStation(this.gasStationService.gasStationId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        if (res.data) {
+        if (res?.data?.length > 0) {
           this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
           // Set data after filter and apply current sorting
           this.dataSource = this.sortService.sort(
             this.filterService.filter(this.dataSourceTemp, this.filterField.field)
           );
-          this.cdr.detectChanges();
+          const currentStepData = this.gasStationService.getStepDataValue();
+          this.gasStationService.setStepData({ ...currentStepData, step4: { isValid: true } });
+        } else {
+          const currentStepData = this.gasStationService.getStepDataValue();
+          this.gasStationService.setStepData({ ...currentStepData, step4: { isValid: false } });
         }
+        this.cdr.detectChanges();
       });
   }
 
   // Sort
   sort(column: string) {
-    this.dataSource = this.sortService.sort(this.dataSource, column);
+    this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
   }
 
   create() {
@@ -117,6 +122,25 @@ export class Step4Component implements OnInit {
       backdrop: 'static',
       size: 'xl'
     });
+    this.closeModalRef(modalRef);
+  }
+
+  update(data) {
+    if (
+      !this.gasStationService.gasStationId ||
+      this.gasStationService.gasStationStatus !== 'ACTIVE'
+    ) {
+      return this.toastr.error('Không thể sửa vì trạm xăng không hoạt động');
+    }
+    const modalRef = this.modalService.open(PumpHoseModalComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+    modalRef.componentInstance.data = data;
+    this.closeModalRef(modalRef);
+  }
+
+  closeModalRef(modalRef: NgbModalRef) {
     modalRef.result.then((result) => {
       if (result) {
         this.gasStationService
@@ -134,32 +158,6 @@ export class Step4Component implements OnInit {
     });
   }
 
-  update(data) {
-    if (!this.gasStationService.gasStationId && !this.gasStationService.gasStationStatus) {
-      return this.toastr.error('Không thể sửa vì trạm xăng không hoạt động');
-    }
-    const modalRef = this.modalService.open(PumpHoseModalComponent, {
-      backdrop: 'static',
-      size: 'xl'
-    });
-    modalRef.componentInstance.data = data;
-    modalRef.result.then((result) => {
-      if (result) {
-        this.gasStationService
-          .getPumpHosesByGasStation(this.gasStationService.gasStationId)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((res) => {
-            if (res.data) {
-              this.dataSource = this.dataSourceTemp = res.data;
-              this.searchFormControl.patchValue(null);
-              this.sort(null);
-              this.cdr.detectChanges();
-            }
-          });
-      }
-    });
-  }
-
   delete(pumpHose: IPumpHose) {
     if (
       !this.gasStationService.gasStationId ||
@@ -167,10 +165,12 @@ export class Step4Component implements OnInit {
     ) {
       return this.toastr.error('Không xóa thêm vì trạm xăng không hoạt động');
     }
-    const modalRef = this.modalService.open(ConfirmDeleteComponent);
+    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+      backdrop: 'static'
+    });
     const data: IConfirmModalData = {
       title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xóa thông tin vòi ${pumpHose.name}`,
+      message: `Bạn có chắc chắn muốn xóa thông tin vòi ${pumpHose.code} - ${pumpHose.name} ?`,
       button: {
         class: 'btn-primary',
         title: 'Xác nhận'
@@ -200,6 +200,9 @@ export class Step4Component implements OnInit {
   }
 
   submit() {
+    if (this.dataSource.length <= 0) {
+      return this.toastr.error('Vui lòng thêm vòi trước khi xác nhận');
+    }
     this.stepSubmitted.next({
       currentStep: 4,
       step4: {
