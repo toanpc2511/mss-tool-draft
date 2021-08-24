@@ -73,7 +73,7 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 						return this.permissionService.getPermissionByRoleId(id);
 					}
 					if (this.activeRoute.routeConfig.path === 'sua-nhom-quyen') {
-						this.router.navigate['/phan-quyen'];
+						this.router.navigate(['/phan-quyen']);
 					}
 					return of(null as DataResponse<ModuleData[]>);
 				}),
@@ -108,7 +108,7 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 			subBreadcump = {
 				title: 'Sửa nhóm quyền',
 				linkText: 'Sửa nhóm quyền',
-				linkPath: '/phan-quyen/sua-nhom-quyen'
+				linkPath: null
 			};
 		}
 		setTimeout(() => {
@@ -146,9 +146,7 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
 					(res) => {
-						if (res.data) {
-							this.router.navigate(['/phan-quyen']);
-						}
+						this.navigateToList(res);
 					},
 					(err: IError) => this.checkError(err)
 				);
@@ -158,12 +156,16 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
 					(res) => {
-						if (res.data) {
-							this.router.navigate(['/phan-quyen']);
-						}
+						this.navigateToList(res);
 					},
 					(err: IError) => this.checkError(err)
 				);
+		}
+	}
+
+	navigateToList(res: any) {
+		if (res.data) {
+			this.router.navigate(['/phan-quyen']);
 		}
 	}
 
@@ -181,12 +183,12 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 			}
 		}
 
-		const dataInput: IModuleInput = {
-			name: this.permissionForm.get('name').value,
-			groupFeature: Object.fromEntries(permissionData)
+		const name = this.permissionForm.get('name').value;
+		const groupFeature = Object.fromEntries(permissionData);
+		return {
+			name,
+			groupFeature
 		};
-
-		return dataInput;
 	}
 
 	checkError(err: IError) {
@@ -228,12 +230,7 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 			moduleData.checked = true;
 			moduleData.groups = moduleData.groups.map((g) => {
 				g.checked = true;
-				g.features = g.features.map((f) => {
-					if (f.method !== EMethod.DELETE) {
-						f.checked = true;
-					}
-					return f;
-				});
+				g.features = this.checkAllFeatureWithGroup(g);
 				return g;
 			});
 		} else {
@@ -253,16 +250,20 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 	setPermissionGroup(checked: boolean, groupData: GroupData) {
 		if (checked) {
 			groupData.checked = true;
-			groupData.features = groupData.features.map((f) => {
-				if (f.method !== EMethod.DELETE) {
-					f.checked = true;
-				}
-				return f;
-			});
+			groupData.features = this.checkAllFeatureWithGroup(groupData);
 		} else {
 			groupData.checked = false;
 			groupData.features = groupData.features.map((f) => ({ ...f, checked: false }));
 		}
+	}
+
+	checkAllFeatureWithGroup(groupData: GroupData): FeatureData[] {
+		return groupData.features.map((f) => {
+			if (f.method !== EMethod.DELETE) {
+				f.checked = true;
+			}
+			return f;
+		});
 	}
 
 	checkPermissionGroup(groupData: GroupData) {

@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { EStatus } from 'src/app/shared/data-enum/enums';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
 
@@ -9,11 +10,11 @@ export interface IUser {
 	name: string;
 	username: string;
 	roleIds: Array<number>;
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	status: EStatus;
 }
 
 export interface IUserInput {
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	status: EStatus;
 	code: string;
 	roleIds: Array<number>;
 	name: string;
@@ -22,7 +23,7 @@ export interface IUserInput {
 }
 
 export interface IUserUpdate {
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	status: EStatus;
 	roleIds: Array<number>;
 }
 export interface ISortData {

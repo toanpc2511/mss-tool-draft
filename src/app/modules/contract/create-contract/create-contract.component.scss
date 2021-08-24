@@ -50,11 +50,12 @@
 .customer-phone {
 	div {
 		position: relative;
-		i {
+		em {
 			cursor: pointer;
 			position: absolute;
 			right: 15px;
-			top: 32%;
+			top: 30%;
+			font-size: 1.4rem;
 			&:hover {
 				opacity: 0.8;
 			}

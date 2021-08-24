@@ -55,13 +55,13 @@
 // }
 
 // Brand themes
-.brand-dark {
-	@import './assets/sass/themes/layout/brand/dark.scss';
-}
+// .brand-dark {
+// 	@import './assets/sass/themes/layout/brand/dark.scss';
+// }
 
-.brand-light {
-	@import './assets/sass/themes/layout/brand/light.scss';
-}
+// .brand-light {
+// 	@import './assets/sass/themes/layout/brand/light.scss';
+// }
 
 // ng-select
 @import './app/shared/components/ng-select/themes/default.theme.scss';
@@ -80,11 +80,11 @@
 	}
 
 	.ng-select-container {
-		padding-right: 0 !important;
 		border: none !important;
 		background: #f3f6f9 !important;
 		height: fit-content;
 		padding: 0.51rem 1rem;
+		padding-right: 0;
 		font-size: 1.08rem;
 		line-height: 1.5;
 		border-radius: 0.42rem;
@@ -167,8 +167,6 @@ p {
 
 .angular-bootstrap-table {
 	overflow-x: auto;
-}
-.angular-bootstrap-table {
 	th {
 		outline: none;
 
@@ -261,7 +259,7 @@ input[type='number'] {
 
 .form-label.required::after {
 	content: ' (*)';
-	font-family: Roboto;
+	font-family: Roboto, sans-serif;
 	font-size: 14px;
 	font-style: normal;
 	font-weight: 700;
@@ -327,6 +325,25 @@ app-paginator {
 	justify-content: space-between;
 	align-items: center;
 }
+
+.search-form {
+	position: relative;
+	display: flex;
+	align-items: center;
+
+	em {
+		position: absolute;
+		left: 10px;
+		top: 7px;
+		font-size: 1.3rem;
+		opacity: 0.6;
+	}
+
+	input {
+		padding-left: 30px;
+	}
+}
+
 // hide shadow
 // .card.custom-card {
 //   box-shadow: none;

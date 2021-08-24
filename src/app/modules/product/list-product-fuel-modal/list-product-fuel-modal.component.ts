@@ -13,7 +13,6 @@ import { IProduct, ProductService } from '../product.service';
 @Component({
   selector: 'app-list-product-fuel-modal',
   templateUrl: './list-product-fuel-modal.component.html',
-  styleUrls: ['./list-product-fuel-modal.component.scss'],
   providers: [DestroyService, FormBuilder]
 })
 export class ListProductFuelModalComponent implements OnInit {

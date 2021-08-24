@@ -1,4 +1,4 @@
-<div class="card card-custom gutter-b mt-1">
+<div class="card card-custom gutter-b mt-1" *ngIf="isInitDataUpdate$ | async">
 	<div class="info-customer">
 		<div class="card-header">
 			<div class="card-title">
@@ -22,7 +22,7 @@
 								numbersOnly
 								[numberformControl]="infoForm.controls['phone']"
 							/>
-							<i class="fa fa-times" (click)="deleteNumberPhone()"></i>
+							<em *ngIf="!isUpdate" class="fa fa-times" (click)="deleteNumberPhone()"></em>
 						</div>
 						<app-validate
 							[control]="infoForm.controls['phone']"
@@ -107,7 +107,11 @@
 	<div class="info-contract">
 		<div class="card-header">
 			<div class="card-title">
-				<h3 class="title">Thông tin hợp đồng</h3>
+				<h3 class="title">
+					Thông tin hợp đồng<span *ngIf="isUpdate" class="text-success">
+						- {{contractDataUpdate?.code}}</span
+					>
+				</h3>
 			</div>
 		</div>
 
@@ -434,34 +438,34 @@
 		<div class="card-body">
 			<div class="table-responsive angular-bootstrap-table">
 				<form [formGroup]="productForm">
-					<table class="table table-vertical-center overflow-hidden">
+					<table class="table table-vertical-center overflow-hidden" aria-label="">
 						<thead class="thead-light">
 							<tr>
-								<th>
+								<th scope="">
 									<label class="form-label">STT</label>
 								</th>
-								<th>
+								<th scope="">
 									<label class="form-label required">Loại sản phẩm</label>
 								</th>
-								<th>
+								<th scope="">
 									<label class="form-label required">Tên sản phẩm</label>
 								</th>
-								<th>
+								<th scope="">
 									<label class="form-label">Đơn vị</label>
 								</th>
-								<th>
+								<th scope="">
 									<label class="form-label required">Số lượng</label>
 								</th>
-								<th>
+								<th scope="">
 									<label class="form-label">Đơn giá hiện tại (VND)</label>
 								</th>
-								<th>
+								<th scope="">
 									<label class="form-label">Đơn giá chiết khấu (VND)</label>
 								</th>
-								<th>
+								<th scope="">
 									<label class="form-label">Thành tiền</label>
 								</th>
-								<th>
+								<th scope="">
 									<label class="form-label">Xóa</label>
 								</th>
 							</tr>
@@ -618,18 +622,6 @@
 							<em class="fa fa-times" (click)="removeFile('ONE',file.id)"></em>
 							<span>{{file.name|stringMaxLength: 35}}</span>
 						</div>
-						<!-- <div
-							class="file form-control form-control-lg form-control-solid w-50 mt-2 mb-2"
-							*ngFor="let file of files; let i = index"
-							[ngbTooltip]="file.name"
-							[placement]="'right'"
-						>
-							<div *ngIf="filesUploadProgress[i] < 100">
-								<ngb-progressbar type="success" [value]="filesUploadProgress[i]"></ngb-progressbar>
-							</div>
-							<em class="fa fa-times"></em>
-							<span>{{file.name|stringMaxLength: 35}}</span>
-						</div> -->
 						<span class="text-warning mt-3">Dung lượng file tối đa 5Mb và tối đa 10 file</span>
 					</div>
 				</div>

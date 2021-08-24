@@ -1,4 +1,4 @@
-import { HttpEventType, HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpEventType } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpService } from './http.service';
