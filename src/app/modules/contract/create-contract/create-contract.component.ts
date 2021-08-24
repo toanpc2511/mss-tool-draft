@@ -185,13 +185,23 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	}
 
 	patchValuePlanContract(data: IContract) {
-		this.payPlanDateCount = data.countPayment || 1;
+		this.payPlanDateCount = data.countPayment && data.countPayment > 0 ? data.countPayment : 1;
 		this.contractForm.get('limit').patchValue(data.limitMoney);
-		this.contractForm.get('payPlanDate1').patchValue(data.dateOfPayment[0]);
-		this.contractForm.get('payPlanDate2').patchValue(data.dateOfPayment[1]);
-		this.contractForm.get('payPlanDate3').patchValue(data.dateOfPayment[2]);
-		this.contractForm.get('payPlanDate4').patchValue(data.dateOfPayment[3]);
-		this.contractForm.get('payPlanDate5').patchValue(data.dateOfPayment[4]);
+		this.contractForm
+			.get('payPlanDate1')
+			.patchValue(convertDateToDisplay(data.dateOfPayment.paymentTimeOne));
+		this.contractForm
+			.get('payPlanDate2')
+			.patchValue(convertDateToDisplay(data.dateOfPayment.paymentTimeTwo));
+		this.contractForm
+			.get('payPlanDate3')
+			.patchValue(convertDateToDisplay(data.dateOfPayment.paymentTimeThree));
+		this.contractForm
+			.get('payPlanDate4')
+			.patchValue(convertDateToDisplay(data.dateOfPayment.paymentTimeFour));
+		this.contractForm
+			.get('payPlanDate5')
+			.patchValue(convertDateToDisplay(data.dateOfPayment.paymentTimeFive));
 	}
 
 	ngAfterViewInit(): void {

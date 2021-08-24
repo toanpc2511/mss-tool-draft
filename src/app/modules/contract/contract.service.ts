@@ -94,10 +94,10 @@ export interface IContract {
 	limitMoney: number;
 	dateOfPayment: {
 		paymentTimeOne: string;
-		aymentTimeTwo: string;
-		aymentTimeThree: string;
-		aymentTimeFour: string;
-		aymentTimeFive: string;
+		paymentTimeTwo: string;
+		paymentTimeThree: string;
+		paymentTimeFour: string;
+		paymentTimeFive: string;
 	};
 	countPayment: number;
 	status: EContractStatus;
