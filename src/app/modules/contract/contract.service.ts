@@ -243,7 +243,7 @@ export class ContractService {
 	}
 
 	createPlanContract(contract: IContractPlanInput) {
-		return this.http.post<any>(`contracts/plans`, contract);
+		return this.http.post<any>(`contracts/plan`, contract);
 	}
 
 	updatePrepayContract(contractId: number, contract: IContractPrepayInput) {
@@ -251,7 +251,7 @@ export class ContractService {
 	}
 
 	updatePlanContract(contractId: number, contract: IContractPlanInput) {
-		return this.http.post<any>(`contracts/plans/${contractId}`, contract);
+		return this.http.put<any>(`contracts/plan/${contractId}`, contract);
 	}
 
 	deleteContract(contractId: number) {
