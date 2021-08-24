@@ -46,17 +46,22 @@ export const renameUniqueFileName = (originalFile: File, newName: string) => {
 };
 
 export const convertDateToServer = (value: string) => {
-	return value ? moment(value, 'DD/MM/YYYY').add(7, 'hours').toISOString(false) : null;
+	return value ? moment(value, 'DD/MM/YYYY').add(7, 'hours').format('YYYY-MM-DD') : null;
 };
 
 export const convertDateToDisplay = (value: string) => {
-	return value ? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY').toString() : null;
+	return value ? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY') : null;
 };
 
-export const formatMoney = (n) => {
+export const convertIsoDateToValue = (isoDate: string) => {
+	return isoDate ? moment(isoDate, moment.defaultFormatUtc).format('DD/MM/YYYY') : null;
+};
+
+export const formatMoney = (n): string | null => {
 	if (n !== '' && n >= 0) {
 		return (Math.round(n * 100) / 100).toLocaleString().split('.').join(',');
 	}
+	return null;
 };
 
 export const convertMoney = (value: string) => {

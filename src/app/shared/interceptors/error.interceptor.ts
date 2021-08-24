@@ -34,7 +34,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 				}
 
 				if (err.status === 404) {
-					Swal.fire('Not found!');
+					Swal.fire('Không tồn tại!', null, 'error');
 					this.router.navigate(['/']);
 				}
 
