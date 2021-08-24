@@ -1,0 +1,77 @@
+<div class='card card-custom create-station-wrapper mt-1'>
+  <div class='card-body'>
+    <div class='wizard wizard-3' id='kt_wizard_v3'>
+      <div class='kt-grid__item'>
+        <div class='wizard-nav mb-lg-3'>
+          <div class='wizard-steps px-8'>
+            <a
+              [class.can-active]='stepData$ | async | canActiveStep: 1'
+              [class.active]='(stepData$ | async).currentStep === 1'
+              (click)='gotoStep(1)'
+              class='wizard-step'
+              href='javascript:'
+            >
+              <div class='wizard-label'>
+                <div class='wizard-title'>Thông tin tài khoản</div>
+                <div class='wizard-bar'></div>
+              </div>
+            </a>
+            <a
+              [class.can-active]='stepData$ | async | canActiveStep: 2'
+              [class.active]='(stepData$ | async).currentStep === 2'
+              (click)='gotoStep(2)'
+              class='wizard-step'
+              href='javascript:'
+            >
+              <div class='wizard-label'>
+                <div class='wizard-title'>Thông tin xe</div>
+                <div class='wizard-bar'></div>
+              </div>
+            </a>
+            <a
+              [class.can-active]='stepData$ | async | canActiveStep: 3'
+              [class.active]='(stepData$ | async).currentStep === 3'
+              (click)='gotoStep(3)'
+              class='wizard-step'
+              href='javascript:'
+            >
+              <div class='wizard-label'>
+                <div class='wizard-title'>Thông tin tài khoản con</div>
+                <div class='wizard-bar'></div>
+              </div>
+            </a>
+            <a
+              [class.can-active]='stepData$ | async | canActiveStep: 4'
+              [class.active]='(stepData$ | async).currentStep === 4'
+              (click)='gotoStep(4)'
+              class='wizard-step'
+              href='javascript:'
+            >
+              <div class='wizard-label'>
+                <div class='wizard-title'>Thông tin hợp đồng</div>
+                <div class='wizard-bar'></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='row w-100'>
+      <div class='col-lg-12'>
+        <app-info-account
+          *ngIf='(stepData$ | async).currentStep === 1'
+        ></app-info-account>
+        <app-info-vehicle
+          *ngIf='(stepData$ | async).currentStep === 2'
+        ></app-info-vehicle>
+        <app-info-account-child
+          *ngIf='(stepData$ | async).currentStep === 3'
+        ></app-info-account-child>
+        <app-info-contract
+          *ngIf='(stepData$ | async).currentStep === 4'
+        ></app-info-contract>
+      </div>
+    </div>
+  </div>
+</div>

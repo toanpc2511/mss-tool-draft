@@ -1,0 +1,52 @@
+.card-header {
+  padding: 0 !important;
+  border-bottom: none;
+  .title {
+    text-transform: uppercase;
+    color: #4674EB;
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+.card-body {
+  padding: 0 0 0 25px !important;
+
+  .input-phone {
+    padding-right: 35px;
+  }
+}
+
+.table {
+  max-width: 600px;
+  border: 1px solid #cccccc;
+  th {
+    text-transform: none;
+  }
+
+  .hanMuc,
+  .amount,
+  .unit {
+    border-left: 1px solid #cccccc;
+  }
+
+  .amount {
+    padding-right: 25px;
+  }
+}
+
+.customer-phone {
+  div {
+    position: relative;
+    span {
+      color: #4674eb;
+      cursor: pointer;
+      position: absolute;
+      right: 15px;
+      top: 32%;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}

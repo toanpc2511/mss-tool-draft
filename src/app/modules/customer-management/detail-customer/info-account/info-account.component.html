@@ -1,0 +1,204 @@
+
+  <div class="info-customer">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Thông tin khách hàng</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-4 row customer-phone">
+          <div class='col-lg-5'>
+            <label class="form-label">Số điện thoại</label>
+          </div>
+          <div class='col-lg-7'>
+            <input
+              class="form-control form-control-lg form-control-solid input-phone"
+              placeholder="Nhập số điện thoại"
+              autocomplete="off"
+              (keydown.space)="$event.preventDefault()"
+              maxlength="12"
+              numbersOnly
+              [disabled]='isReadonly'
+              [(ngModel)]='numberPhone' name='numberPhone'
+            />
+            <span class="fas fa-edit" (click)='editNumber($event, isReadonly)'></span>
+          </div>
+        </div>
+
+        <div class="col-lg-4 row">
+          <div class="col-lg-5">
+            <label class="form-label">Tên khách hàng: </label>
+          </div>
+
+          <div class="col-lg-7">
+            <label class="form-label font-weight-bold">Phạm Công Toán</label>
+          </div>
+        </div>
+
+        <div class="col-lg-4 row">
+          <div class="col-lg-5">
+            <label class="form-label">Số CMT/CCCD: </label>
+          </div>
+
+          <div class="col-lg-7">
+            <label class="form-label font-weight-bold">036098003721</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-4 row">
+          <div class="col-lg-5">
+            <label class="form-label">Ngày sinh: </label>
+          </div>
+
+          <div class="col-lg-7">
+            <label class="form-label font-weight-bold">25/11/1998</label>
+          </div>
+        </div>
+
+        <div class="col-lg-8 row">
+          <div class="col-lg-2">
+            <label class="form-label">Địa chỉ: </label>
+          </div>
+
+          <div class="col-lg-10">
+            <label class="form-label font-weight-bold" style='padding-left: 20px'>31 Nguyễn Quốc Trị, Nam Từ Liêm, Hà nội</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-4 row">
+          <div class="col-lg-5">
+            <label class="form-label">Hạng khách hàng: </label>
+          </div>
+
+          <div class="col-lg-7">
+            <label class="form-label font-weight-bold">Đồng</label>
+          </div>
+        </div>
+
+        <div class="col-lg-4 row">
+          <div class='col-lg-4'>
+            <label class="form-label">Trạng thái</label>
+          </div>
+          <div class='col-lg-8'>
+            <select
+              class="form-control form-control-lg form-control-solid"
+            >
+              <option [value]="listStatus.ACTIVE">Hoạt động</option>
+              <option [value]="listStatus.INACTIVE">Không hoạt động</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-lg-4 row">
+          <div class='col-lg-4'>
+            <label class="form-label">Trạng thái</label>
+          </div>
+          <div class='col-lg-8'>
+            <select
+              class="form-control form-control-lg form-control-solid"
+            >
+              <option [value]="listStatus.ACTIVE">Hoạt động</option>
+              <option [value]="listStatus.INACTIVE">Không hoạt động</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-customer">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Thông tin hạn mức còn lại</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class='table-responsive angular-bootstrap-table'>
+        <table class='table table-head-custom table-vertical-center overflow-hidden'  aria-describedby="mydesc">
+          <thead>
+          <th id='stt' class='text-center'>
+            STT
+          </th>
+          <th id='han-muc' class='hanMuc'>
+            Loại hạn mức
+            <app-sort-icon
+              column='name'
+              [activeColumn]='sortData?.fieldSort'
+              [activeDirection]='sortData?.directionSort'
+              (sort)='sort($event)'
+            ></app-sort-icon>
+          </th>
+          <th id='amount' class='text-right amount'>
+            Số lượng
+            <app-sort-icon
+              column='contract_type'
+              [activeColumn]='sortData?.fieldSort'
+              [activeDirection]='sortData?.directionSort'
+              (sort)='sort($event)'
+            ></app-sort-icon>
+          </th>
+          <th id='unit' class='unit'>
+            Đơn vị
+            <app-sort-icon
+              column='contract_type'
+              [activeColumn]='sortData?.fieldSort'
+              [activeDirection]='sortData?.directionSort'
+              (sort)='sort($event)'
+            ></app-sort-icon>
+          </th>
+          </thead>
+
+          <tbody>
+          <tr *ngFor='let item of dataSource, let i = index'>
+            <td class='text-center stt'>
+              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='i+1'>
+                {{ i+1 }}
+              </p>
+            </td>
+
+            <td class='hanMuc'>
+              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.typeHanMuc'>
+                {{ item.typeHanMuc }}
+              </p>
+            </td>
+
+            <td class='amount text-right'>
+              <p
+                class='cursor-pointer text-ellipsis'
+                placement='top'
+                [ngbTooltip]="item.amount.toLocaleString('en-US')"
+              >
+                {{ item.amount.toLocaleString('en-US') }}
+              </p>
+            </td>
+            <td class='unit'>
+              <p
+                class='cursor-pointer text-ellipsis'
+                placement='top'
+                [ngbTooltip]='item.unit'
+              >
+                {{ item.unit }}
+              </p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-paginator [paginator]='paginatorState' (paginate)='pagingChange($event)'></app-paginator>
+    </div>
+  </div>
+
+  <div class="w-100 d-flex justify-content-center pb-10">
+    <button
+      class="btn btn-primary font-weight-bold m-2"
+    >
+      Cập nhật
+    </button>
+  </div>

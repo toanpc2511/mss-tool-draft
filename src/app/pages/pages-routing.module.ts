@@ -58,6 +58,11 @@ const routes: Routes = [
           import('../modules/contract/contract.module').then((m) => m.ContractModule)
       },
       {
+        path: 'khach-hang',
+        loadChildren: () =>
+          import('../modules/customer-management/customer-management.module').then((m) => m.CustomerManagementModule)
+      },
+      {
         path: 'tai-khoan',
         loadChildren: () => import('../modules/user/user.module').then((m) => m.UserModule)
       },
