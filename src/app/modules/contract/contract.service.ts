@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { EArea, EStatus } from 'src/app/shared/data-enum/enums';
 import { IFile } from 'src/app/shared/services/file.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 
@@ -16,13 +17,7 @@ export interface IContract {
 	id: number;
 	code: string;
 	name: string;
-	attachment: [
-		{
-			id: number;
-			url: string;
-			name: string;
-		}
-	];
+	attachment: IFile[];
 	customer: {
 		address: string;
 		dateOfBirth: string;
@@ -38,11 +33,22 @@ export interface IContract {
 		wardId: string;
 	};
 	customerId: string;
-	contractAddress: string;
+	station: {
+		address: string;
+		areaType: EArea;
+		code: string;
+		districtId: number;
+		fullDddress: string;
+		id: 5109;
+		name: string;
+		provinceId: number;
+		status: EStatus;
+		wardId: number;
+	};
 	fullAddress: string;
 	payMethod: {
 		id: number;
-		code: EPaymentMethods;
+		code: string;
 		name: string;
 		type: string;
 	};
@@ -71,7 +77,7 @@ export interface IContract {
 	transportMethod: {
 		id: number;
 		name: string;
-		code: ETransportMethods;
+		code: string;
 		type: string;
 	};
 	contractType: {
@@ -86,24 +92,22 @@ export interface IContract {
 	rejectReason: string;
 	approveDate: string;
 	limitMoney: number;
-	dateOfPayment: string;
-	status: 'ACCEPTED' | 'REJECT' | 'WAITING_ACCEPT';
-	station: {
-		id: number;
-		code: string;
-		address: string;
-		areaType: string;
-		fullAddress: string;
+	dateOfPayment: {
+		paymentTimeOne: string;
+		aymentTimeTwo: string;
+		aymentTimeThree: string;
+		aymentTimeFour: string;
+		aymentTimeFive: string;
 	};
-}
-
-export enum EPaymentMethods {
-	CASH = 'CASH',
-	TRANSFER = 'TRANSFER'
-}
-
-export enum ETransportMethods {
-	TEC = 'TEC'
+	countPayment: number;
+	status: EContractStatus;
+	employeeCreator: {
+		accountId: number;
+		code: string;
+		username: string;
+		status: EStatus;
+	};
+	creatorType: ECreatorType;
 }
 
 export enum EContractStatus {
@@ -121,7 +125,7 @@ export interface IAddress {
 	id: number;
 	name: string;
 	address: string;
-	status: 'ACTIVE';
+	status: EStatus;
 	code: string;
 	areaType: string;
 	fullAddress: string;
@@ -163,15 +167,15 @@ export interface IContractPrepayInput {
 	name: string;
 	effectEndDate: string;
 	contractTypeCode: EContractType;
-	transportMethodCode: ETransportMethods;
-	payMethodCode: EPaymentMethods;
+	transportMethodCode: string;
+	payMethodCode: string;
 	stationId: number;
 	fullAddress: string;
 
 	productInfoRequests: Array<IProductInfo>;
 	totalPayment: number;
 
-	attachmentRequests: Array<IFile>;
+	attachmentRequests: Array<number>;
 	statusType: EContractStatus;
 }
 export interface IContractPlanInput {
@@ -181,8 +185,8 @@ export interface IContractPlanInput {
 	name: string;
 	effectEndDate: string;
 	contractTypeCode: EContractType;
-	transportMethodCode: ETransportMethods;
-	payMethodCode: EPaymentMethods;
+	transportMethodCode: string;
+	payMethodCode: string;
 
 	limitMoney: number;
 	dateOfPayment: {
@@ -192,8 +196,9 @@ export interface IContractPlanInput {
 		paymentTimeFour: string;
 		paymentTimeFive: string;
 	};
+	countPayment: number;
 
-	attachmentRequests: Array<IFile>;
+	attachmentRequests: Array<number>;
 	statusType: EContractStatus;
 }
 
@@ -242,7 +247,7 @@ export class ContractService {
 	}
 
 	updatePrepayContract(contractId: number, contract: IContractPrepayInput) {
-		return this.http.put<any>(`contracts/${contractId}`, contract);
+		return this.http.put<any>(`contracts/pre-payment/${contractId}`, contract);
 	}
 
 	updatePlanContract(contractId: number, contract: IContractPlanInput) {

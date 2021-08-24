@@ -28,7 +28,9 @@ export class TValidators extends Validators {
 					return { min: true };
 				}
 			} else {
-				control.patchValue(formatMoney(value), { emitEvent: false, onlySelf: true });
+				if (value) {
+					control.patchValue(formatMoney(value), { emitEvent: false, onlySelf: true });
+				}
 			}
 			return null;
 		};
