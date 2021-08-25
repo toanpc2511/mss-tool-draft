@@ -1,12 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmDeleteComponent } from '../../../../shared/components/confirm-delete/confirm-delete.component';
-import { IConfirmModalData } from '../../../../shared/models/confirm-delete.interface';
-import { IError } from '../../../../shared/models/error.model';
 import { LIST_STATUS } from '../../../../shared/data-enum/list-status';
-import { IPaginatorState, PaginatorState } from '../../../../_metronic/shared/crud-table';
-import { ISortData } from '../../customer-management.service';
 
 @Component({
   selector: 'app-info-account',
@@ -18,24 +11,13 @@ export class InfoAccountComponent implements OnInit {
   numberPhone: string;
 
   listStatus = LIST_STATUS;
-  sortData: ISortData;
-  paginatorState = new PaginatorState();
   dataSource = [];
 
-  constructor(
-    private router: Router,
-    private modalService: NgbModal,
-  ) {
+  constructor() {
     this.init();
   }
 
   init() {
-    this.paginatorState.page = 1;
-    this.paginatorState.pageSize = 10;
-    this.paginatorState.pageSizes = [5, 10, 15, 20];
-    this.paginatorState.total = 0;
-    this.sortData = null;
-
     this.dataSource = [
       {
         typeHanMuc: 'trả trước',
@@ -77,23 +59,4 @@ export class InfoAccountComponent implements OnInit {
   editNumber($event: Event, isReadonly: any) {
     this.isReadonly = !isReadonly;
   }
-
-  sort(column: string) {
-    if (this.sortData && this.sortData.fieldSort === column) {
-      if (this.sortData.directionSort === 'ASC') {
-        this.sortData = { fieldSort: column, directionSort: 'DESC' };
-      } else {
-        this.sortData = null;
-      }
-    } else {
-      this.sortData = { fieldSort: column, directionSort: 'ASC' };
-    }
-    // this.getListContract();
-  }
-
-  pagingChange($event: IPaginatorState) {
-    this.paginatorState = $event as PaginatorState;
-    // this.getListContract();
-  }
-
 }
