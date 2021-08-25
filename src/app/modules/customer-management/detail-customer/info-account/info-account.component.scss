@@ -1,6 +1,7 @@
 .card-header {
-  padding: 0 !important;
+  padding: 0 15px !important;
   border-bottom: none;
+
   .title {
     text-transform: uppercase;
     color: #4674EB;
@@ -10,43 +11,48 @@
 }
 
 .card-body {
-  padding: 0 0 0 25px !important;
+  padding: 0 15px !important;
 
-  .input-phone {
-    padding-right: 35px;
+  .line-heght-50 {
+    line-height: 50px;
+  }
+
+  .customer-phone {
+    div {
+      position: relative;
+
+      .input-phone {
+        padding-right: 35px;
+      }
+
+      span {
+        color: #4674eb;
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 32%;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
   }
 }
 
 .table {
   max-width: 600px;
-  border: 1px solid #cccccc;
-  th {
-    text-transform: none;
-  }
 
-  .hanMuc,
-  .amount,
-  .unit {
-    border-left: 1px solid #cccccc;
+  thead {
+    background: #e9ecef;
+
+    th {
+      text-transform: none;
+      color: #333 !important;
+    }
   }
 
   .amount {
-    padding-right: 25px;
-  }
-}
-
-.customer-phone {
-  div {
-    position: relative;
-    span {
-      color: #4674eb;
-      cursor: pointer;
-      position: absolute;
-      right: 15px;
-      top: 32%;
-      &:hover {
-        opacity: 0.8;
-      }
-    }
+    padding-right: 35px;
   }
 }
