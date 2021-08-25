@@ -25,6 +25,7 @@ import {
 	renameUniqueFileName
 } from 'src/app/shared/helpers/functions';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { EFileType, FileService, IFile } from 'src/app/shared/services/file.service';
 import { TValidators } from 'src/app/shared/validators';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
@@ -121,6 +122,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				switchMap((contractId: number) => {
 					if (contractId) {
 						this.isUpdate = true;
+						this.contractId = contractId;
 						this.setBreadcumb();
 						return this.contractService.getContractById(contractId);
 					}
@@ -140,6 +142,10 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	loadDataUpdate(data: IContract) {
 		this.contractDataUpdate = data;
 		this.infoForm.patchValue(data.customer, { emitEvent: false, onlySelf: true });
+		this.infoForm.get('dateOfBirth').patchValue(convertDateToDisplay(data.customer.dateOfBirth), {
+			emitEvent: false,
+			onlySelf: true
+		});
 		if (data.contractType.code === EContractType.PLAN_CONTRACT) {
 			this.buildContractForm(EContractType.PLAN_CONTRACT);
 			this.contractType = EContractType.PLAN_CONTRACT;
@@ -149,29 +155,53 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			this.patchValueContract(data);
 			this.patchValuePrepayContract(data);
 		}
+		this.filesUploaded = data.attachment;
 	}
 
 	patchValueContract(data: IContract) {
-		this.infoForm.get('phone').disable();
+		this.infoForm.get('phone').disable({ emitEvent: false, onlySelf: true });
+		this.contractForm.get('contractTypeCode').disable({ emitEvent: false, onlySelf: true });
 		this.contractForm.get('name').patchValue(data.name);
-		this.contractForm.get('effectEndDate').patchValue(data.effectEndDate);
-		this.contractForm.get('transportMethodCode').patchValue(data.transportMethod.code);
+		this.contractForm.get('effectEndDate').patchValue(convertDateToDisplay(data.effectEndDate));
+		this.contractForm.get('transportMethodCode').patchValue(data.transportMethod?.code || null);
 		this.contractForm.get('payMethodCode').patchValue(data.payMethod.code);
 	}
 
 	patchValuePrepayContract(data: IContract) {
-		this.contractForm.get('addressContract').patchValue(data.contractAddress);
+		this.contractForm
+			.get('addressContract')
+			.patchValue(data.station.id, { emitEvent: false, onlySelf: true });
 		this.contractForm.get('fullAddress').patchValue(data.fullAddress);
+		data.product.forEach((product, i) => {
+			if (i >= 1) {
+				this.addProduct();
+			}
+			this.productFormArray.at(i).get('categoryProductId').patchValue(product.categoryResponse.id);
+			this.productFormArray.at(i).get('productId').patchValue(product.productResponse.id);
+			this.getListProduct(product.categoryResponse.id, i);
+			this.productFormArray.at(i).get('amount').patchValue(product.productResponse.amount);
+			this.patchInfoProduct(product.productResponse.id, i);
+		});
 	}
 
 	patchValuePlanContract(data: IContract) {
-		this.contractForm.get('contractTypeCode').disable({ emitEvent: false, onlySelf: true });
+		this.payPlanDateCount = data.countPayment && data.countPayment > 0 ? data.countPayment : 1;
 		this.contractForm.get('limit').patchValue(data.limitMoney);
-		this.contractForm.get('payPlanDate1').patchValue(data.dateOfPayment[0]);
-		this.contractForm.get('payPlanDate2').patchValue(data.dateOfPayment[1]);
-		this.contractForm.get('payPlanDate3').patchValue(data.dateOfPayment[2]);
-		this.contractForm.get('payPlanDate4').patchValue(data.dateOfPayment[3]);
-		this.contractForm.get('payPlanDate5').patchValue(data.dateOfPayment[4]);
+		this.contractForm
+			.get('payPlanDate1')
+			.patchValue(convertDateToDisplay(data.dateOfPayment.paymentTimeOne));
+		this.contractForm
+			.get('payPlanDate2')
+			.patchValue(convertDateToDisplay(data.dateOfPayment.paymentTimeTwo));
+		this.contractForm
+			.get('payPlanDate3')
+			.patchValue(convertDateToDisplay(data.dateOfPayment.paymentTimeThree));
+		this.contractForm
+			.get('payPlanDate4')
+			.patchValue(convertDateToDisplay(data.dateOfPayment.paymentTimeFour));
+		this.contractForm
+			.get('payPlanDate5')
+			.patchValue(convertDateToDisplay(data.dateOfPayment.paymentTimeFive));
 	}
 
 	ngAfterViewInit(): void {
@@ -402,21 +432,30 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.cdr.detectChanges();
 	}
 
-	productTypeChanged($event: Event, i: number) {
+	productTypeChanged($event: Event, index: number) {
 		const value = ($event.target as HTMLSelectElement).value;
+		this.getListProduct(value, index);
+	}
+
+	getListProduct(categoryId, index: number) {
 		this.productService
-			.getListProduct(Number(value))
+			.getListProduct(Number(categoryId))
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
-				this.products[i] = res.data;
+				this.products[index] = res.data;
+				this.cdr.detectChanges();
 			});
 	}
 
-	productChanged($event, i) {
-		const allProduct = this.productFormArray.value as Array<IProductInfo>;
+	productChanged($event, i: number) {
 		const value = ($event.target as HTMLSelectElement).value;
+		this.patchInfoProduct(value, i);
+	}
+
+	patchInfoProduct(productId: string | number, i: number) {
+		const allProduct = this.productFormArray.value as Array<IProductInfo>;
 		const checkExisted = allProduct.some(
-			(p, index) => p.productId && i !== index && Number(p.productId) === Number(value)
+			(p, index) => p.productId && i !== index && Number(p.productId) === Number(productId)
 		);
 
 		if (checkExisted) {
@@ -424,14 +463,14 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			this.productFormArray.at(i).get('productId').patchValue(null);
 			return;
 		}
-		if (!value) {
+		if (!productId) {
 			this.productFormArray.at(i).get('price').patchValue(0);
 			this.productFormArray.at(i).get('discount').patchValue(0);
 			this.productFormArray.at(i).get('unit').patchValue(0);
 			this.updateTotalProduct(i);
 		}
 		this.productService
-			.getProductInfo(Number(value), this.addressSelected?.areaType || 'AREA_1')
+			.getProductInfo(Number(productId), this.addressSelected?.areaType || 'AREA_1')
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
 				this.productFormArray.at(i).get('price').patchValue(res.data.price);
@@ -638,7 +677,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	}
 
 	save(status: EContractStatus) {
-		console.log(convertDateToServer(this.contractForm.value.effectEndDate));
 		let hasError = false;
 		this.infoForm.markAllAsTouched();
 		this.contractForm.markAllAsTouched();
@@ -678,21 +716,34 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				fullAddress: contractData.fullAddress,
 				productInfoRequests: productData,
 				totalPayment: this.getTotal(),
-				attachmentRequests: this.filesUploaded,
+				attachmentRequests: this.filesUploaded.map((f) => f.id),
 				statusType: status
 			};
-
-			this.contractService
-				.createPrepayContract(prepayContractData)
-				.pipe(takeUntil(this.destroy$))
-				.subscribe(
-					() => {
-						this.router.navigate(['/hop-dong']);
-					},
-					(err: IError) => {
-						this.checkError(err);
-					}
-				);
+			if (!this.isUpdate) {
+				this.contractService
+					.createPrepayContract(prepayContractData)
+					.pipe(takeUntil(this.destroy$))
+					.subscribe(
+						(res) => {
+							this.checkRes(res);
+						},
+						(err: IError) => {
+							this.checkError(err);
+						}
+					);
+			} else {
+				this.contractService
+					.updatePrepayContract(this.contractId, prepayContractData)
+					.pipe(takeUntil(this.destroy$))
+					.subscribe(
+						(res) => {
+							this.checkRes(res);
+						},
+						(err: IError) => {
+							this.checkError(err);
+						}
+					);
+			}
 		} else {
 			if (hasError) {
 				return;
@@ -713,20 +764,42 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					paymentTimeFour: convertDateToServer(contractData.payPlanDate4),
 					paymentTimeFive: convertDateToServer(contractData.payPlanDate5)
 				},
-				attachmentRequests: this.filesUploaded,
+				countPayment: this.payPlanDateCount,
+				attachmentRequests: this.filesUploaded.map((f) => f.id),
 				statusType: status
 			};
-			this.contractService
-				.createPlanContract(planContractData)
-				.pipe(takeUntil(this.destroy$))
-				.subscribe(
-					() => {
-						this.router.navigate(['/hop-dong']);
-					},
-					(err: IError) => {
-						this.checkError(err);
-					}
-				);
+
+			if (!this.isUpdate) {
+				this.contractService
+					.createPlanContract(planContractData)
+					.pipe(takeUntil(this.destroy$))
+					.subscribe(
+						(res) => {
+							this.checkRes(res);
+						},
+						(err: IError) => {
+							this.checkError(err);
+						}
+					);
+			} else {
+				this.contractService
+					.updatePlanContract(this.contractId, planContractData)
+					.pipe(takeUntil(this.destroy$))
+					.subscribe(
+						(res) => {
+							this.checkRes(res);
+						},
+						(err: IError) => {
+							this.checkError(err);
+						}
+					);
+			}
+		}
+	}
+
+	checkRes(res: DataResponse<any>) {
+		if (res.data) {
+			this.router.navigate(['/hop-dong']);
 		}
 	}
 }

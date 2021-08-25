@@ -24,4 +24,8 @@ table {
   thead th{
     text-transform: none;
   }
+
+  td.name {
+    max-width: 300px;
+  }
 }
