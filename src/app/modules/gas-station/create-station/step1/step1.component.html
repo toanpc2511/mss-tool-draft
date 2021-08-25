@@ -1,0 +1,207 @@
+<div class="pb-5">
+  <h4 class="px-8 px-lg-15 mb-10 font-weight-bold text-dark">Thông tin trạm</h4>
+
+  <div class="px-8 py-8 px-lg-15 py-lg-3">
+    <form class="form-group" [formGroup]="stationForm">
+      <!-- station code -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2 required">Mã trạm </label>
+        <div class="col-lg-10">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid mb-2"
+            name="firstName"
+            placeholder="Nhập mã trạm"
+            autocomplete="off"
+            formControlName="stationCode"
+            maxlength="100"
+            (keydown.space)="$event.preventDefault()"
+          />
+          <app-validate
+            [control]="stationForm.controls['stationCode']"
+            [error]="'required'"
+            [message]="'Mã trạm không được để trống'"
+          ></app-validate>
+
+          <app-validate
+            [control]="stationForm.controls['stationCode']"
+            [error]="'pattern'"
+            [message]="'Mã trạm sai định dạng'"
+          ></app-validate>
+
+          <app-validate
+            [control]="stationForm.controls['stationCode']"
+            [error]="'codeExisted'"
+            [message]="'Mã trạm đã tồn tại'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <!-- station name -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2 required">Tên trạm</label>
+        <div class="col-lg-10">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid mb-2"
+            name="firstName"
+            placeholder="Nhập tên trạm"
+            autocomplete="off"
+            formControlName="name"
+            maxlength="100"
+            trim="blur"
+          />
+          <app-validate
+            [control]="stationForm.controls['name']"
+            [error]="'required'"
+            [message]="'Tên trạm không được để trống'"
+          ></app-validate>
+
+          <app-validate
+            [control]="stationForm.controls['name']"
+            [error]="'nameExisted'"
+            [message]="'Tên trạm đã tồn tại'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label required col-lg-2">Tỉnh/Thành phố</label>
+        <div class="col-lg-4">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="type"
+            formControlName="provinceId"
+          >
+            <option disabled [value]="null">Chọn tỉnh/thành phố</option>
+            <option *ngFor="let province of provinces" [value]="province.id">
+              {{ province.name }}
+            </option>
+          </select>
+          <app-validate
+            [control]="stationForm.controls['provinceId']"
+            [error]="'required'"
+            [message]="'Tỉnh/Thành phố không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label required col-lg-2">Quận/Huyện</label>
+        <div class="col-lg-4">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="type"
+            formControlName="districtId"
+          >
+            <option disabled [value]="null">Chọn quận/huyện</option>
+            <option *ngFor="let district of districts" [value]="district.id">
+              {{ district.name }}
+            </option>
+          </select>
+          <app-validate
+            [control]="stationForm.controls['districtId']"
+            [error]="'required'"
+            [message]="'Quận/Huyện không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label required col-lg-2">Xã/Phường</label>
+        <div class="col-lg-4">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="type"
+            formControlName="wardId"
+          >
+            <option disabled [value]="null">Chọn xã/phường</option>
+            <option *ngFor="let ward of wards" [value]="ward.id">
+              {{ ward.name }}
+            </option>
+          </select>
+          <app-validate
+            [control]="stationForm.controls['wardId']"
+            [error]="'required'"
+            [message]="'Xã/Phường không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <!-- station location -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2">Địa chỉ </label>
+        <div class="col-lg-10">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            name="firstName"
+            placeholder="Nhập địa chỉ"
+            autocomplete="off"
+            formControlName="address"
+            maxlength="100"
+            trim="blur"
+          />
+        </div>
+      </div>
+
+      <!-- station full location -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2">Địa chỉ đầy đủ</label>
+        <div class="col-lg-10">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="Địa chỉ đầy đủ"
+            autocomplete="off"
+            formControlName="fullAddress"
+            disabled
+          />
+        </div>
+      </div>
+
+      <!-- station area -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2">Vùng</label>
+        <div class="col-lg-10">
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            autocomplete="off"
+            placeholder="Vùng"
+            formControlName="areaDisplay"
+            disabled
+          />
+        </div>
+      </div>
+
+      <!-- station status -->
+      <div class="col-lg-12 py-5 row align-items-center">
+        <label class="form-label col-lg-2">Trạng thái </label>
+
+        <div class="col-lg-4">
+          <select
+            class="form-control form-control-lg form-control-solid"
+            name="gender"
+            formControlName="status"
+          >
+            <option [value]="listStatus.ACTIVE">Hoạt động</option>
+            <option [value]="listStatus.INACTIVE">Không hoạt động</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="w-100 d-flex justify-content-center pb-10">
+    <button
+      type="button"
+      class="btn btn-outline-secondary font-weight-bold m-2"
+      (click)="backToList()"
+    >
+      Hủy
+    </button>
+    <button class="btn btn-primary font-weight-bold m-2" type="button" (click)="onSubmit()">
+      Lưu và tiếp tục
+    </button>
+  </div>
+</div>

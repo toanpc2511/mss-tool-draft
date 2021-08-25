@@ -1,4 +1,4 @@
-export type SortDirection = 'asc' | 'desc' | '';
+export type SortDirection = 'asc' | 'desc' | '' | 'ASC' | 'DESC';
 
 export interface ISortState {
   column: string;
@@ -6,12 +6,6 @@ export interface ISortState {
 }
 
 export class SortState implements ISortState {
-  column = 'id'; // Id by default
+  column = '';
   direction: SortDirection = 'asc'; // asc by default;
-}
-
-export interface ISortView {
-  sorting: SortState;
-  ngOnInit(): void;
-  sort(column: string): void;
 }

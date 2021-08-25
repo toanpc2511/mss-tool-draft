@@ -1,0 +1,35 @@
+@import '../../../../assets/sass/pages/wizard/wizard-3';
+
+.create-station-wrapper {
+  .card-body {
+    padding: 0;
+    app-step1,
+    app-step2,
+    app-step3,
+    app-step4 {
+      .card {
+        padding-bottom: 80px;
+      }
+    }
+  }
+  a {
+    &.can-active:hover {
+      .wizard-title {
+        color: #3699ff;
+      }
+
+      .wizard-bar {
+        background-color: #3699ff !important;
+      }
+    }
+    &.active {
+      .wizard-title {
+        color: #3699ff;
+      }
+
+      .wizard-bar {
+        background-color: #3699ff !important;
+      }
+    }
+  }
+}

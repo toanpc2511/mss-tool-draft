@@ -1,0 +1,6 @@
+<div
+	class="fv-plugins-message-container"
+	*ngIf="control.hasError(error) && (control.dirty || control.touched)"
+>
+	<div class="fv-help-block font-weight-bold">{{ message }}</div>
+</div>

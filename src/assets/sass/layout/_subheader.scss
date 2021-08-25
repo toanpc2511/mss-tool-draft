@@ -31,6 +31,7 @@
 	.subheader {
 		// Fixed subheader mode
 		.header-fixed.subheader-fixed & {
+			padding-left: 30px;
 			position: fixed;
 			height: get($subheader-config, fixed, height);
 			top: get($header-config, desktop, fixed, height);

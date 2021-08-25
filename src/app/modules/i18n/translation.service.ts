@@ -12,15 +12,16 @@ export interface Locale {
 const LOCALIZATION_LOCAL_STORAGE_KEY = 'language';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TranslationService {
   // Private properties
   private langIds: any = [];
 
   constructor(private translate: TranslateService) {
+    
     // add new langIds to the list
-    this.translate.addLangs(['vi']);
+    this.translate.addLangs(['en', 'vi']);
 
     // this language will be used as a fallback when a translation isn't found in the current language
     this.translate.setDefaultLang('vi');
@@ -53,6 +54,8 @@ export class TranslationService {
    * Returns selected language
    */
   getSelectedLanguage(): any {
-    return localStorage.getItem(LOCALIZATION_LOCAL_STORAGE_KEY) || 'vi';
+    return (
+      localStorage.getItem(LOCALIZATION_LOCAL_STORAGE_KEY) || 'vi'
+    );
   }
 }
