@@ -1,1 +1,118 @@
-<p>info-vehicle works!</p>
+<div class='card card-custom gutter-b mt-1'>
+  <div class='card-header'>
+    <div class='card-title'>
+      <h3 class='title'>Danh sách xe</h3>
+    </div>
+
+    <div class='card-toolbar'>
+      <div class='search-form'>
+        <em class='flaticon-search'></em>
+        <input
+          type='text'
+          name='searchText'
+          placeholder='Search...'
+          class='form-control'
+          [formControl]='searchFormControl'
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class='card-body'>
+    <div class='table-responsive angular-bootstrap-table'>
+      <table class='table table-head-custom table-vertical-center overflow-hidden' aria-describedby='list-customer'>
+        <thead id='thead'>
+        <th id='name'>
+          Tên xe
+          <app-sort-icon
+            column='name'
+            [activeColumn]='sortData?.fieldSort'
+            [activeDirection]='sortData?.directionSort'
+            (sort)='sort($event)'
+          ></app-sort-icon>
+        </th>
+        <th id='type-vehicle'>
+          Loại xe
+          <app-sort-icon
+            column='typeVehicle'
+            [activeColumn]='sortData?.fieldSort'
+            [activeDirection]='sortData?.directionSort'
+            (sort)='sort($event)'
+          ></app-sort-icon>
+        </th>
+        <th id='license-plates'>
+          Biển số xe
+          <app-sort-icon
+            column='licensePlates'
+            [activeColumn]='sortData?.fieldSort'
+            [activeDirection]='sortData?.directionSort'
+            (sort)='sort($event)'
+          ></app-sort-icon>
+        </th>
+        <th id='images'>Ảnh</th>
+        </thead>
+
+        <tbody>
+        <tr *ngFor='let item of dataSource'>
+          <td class='name'>
+            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.name'>
+              {{ item.name }}
+            </p>
+          </td>
+
+          <td class='type-vehicle'>
+            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.typeVehicle'>
+              {{ item.typeVehicle }}
+            </p>
+          </td>
+
+          <td class='license-plates'>
+            <p
+              class='cursor-pointer text-ellipsis'
+              placement='top'
+              [ngbTooltip]='item.licensePlates'
+            >
+              {{ item.licensePlates }}
+            </p>
+          </td>
+
+          <td class='images'>
+            <p
+              class='cursor-pointer text-ellipsis'
+              placement='top'
+              ngbTooltip='Ảnh'
+            >
+              <em class='fas fa-images' (click)='viewImages(content8, item)'></em>
+            </p>
+          </td>
+
+          <ng-template #content8 let-c='close' let-d='dismiss'>
+            <div class='modal-header'>
+              <h4 class='modal-title'>Thông tin xe: {{nameVehicle}}</h4>
+              <button type='button' class='close' aria-label='Close' (click)="d('Cross click')">
+                <span aria-hidden='true'>&times;</span>
+              </button>
+            </div>
+            <div class='modal-body'>
+              <div class='row'>
+                <div class='col-6'>
+                  <img src='{{image1}}' class='img-fluid' alt=''>
+                </div>
+                <div class='col-6'>
+                  <img src='{{image2}}' class='img-fluid' alt=''>
+                </div>
+              </div>
+            </div>
+            <div class='modal-footer'>
+              <button type='button' class='btn btn-outline-primary' (click)="c('Close click')" style='min-width: 135px'>
+                Đóng
+              </button>
+            </div>
+          </ng-template>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <app-paginator [paginator]='paginatorState' (paginate)='pagingChange($event)'></app-paginator>
+  </div>
+</div>

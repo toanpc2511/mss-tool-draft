@@ -1,0 +1,49 @@
+.card-header {
+  padding: 0 15px !important;
+  border-bottom: none;
+
+  .title {
+    text-transform: uppercase;
+    color: #4674EB;
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+.card-body {
+  padding: 0 15px !important;
+}
+
+.card-toolbar {
+  gap: 50px;
+
+  .search-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    i {
+      position: absolute;
+      left: 10px;
+      top: 7px;
+    }
+
+    input {
+      padding-left: 30px;
+    }
+  }
+}
+
+table {
+  thead th {
+    text-transform: none;
+  }
+
+  .fa-images {
+    color: #4674EB;
+  }
+
+  .money-limit {
+    padding-right: 35px;
+  }
+}
