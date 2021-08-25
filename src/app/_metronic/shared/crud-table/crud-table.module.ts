@@ -5,8 +5,9 @@ import { NgPagination } from './components/paginator/ng-pagination/ng-pagination
 import { FormsModule } from '@angular/forms';
 import { SortIconComponent } from './components/sort-icon/sort-icon.component';
 import { InlineSVGModule } from 'ng-inline-svg';
+import { PaginatorPipe } from './components/paginator/paginator.pipe';
 @NgModule({
-  declarations: [PaginatorComponent, NgPagination, SortIconComponent],
+  declarations: [PaginatorComponent, NgPagination, SortIconComponent, PaginatorPipe],
   imports: [CommonModule, FormsModule, InlineSVGModule  ],
   exports: [PaginatorComponent, NgPagination, SortIconComponent],
 })

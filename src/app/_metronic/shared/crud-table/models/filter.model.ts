@@ -6,6 +6,9 @@ export class FilterField<T> {
 
   setFilterFieldValue(fieldValue: any) {
     for (const key in this.field) {
+      if (key === 'status') {
+        continue;
+      }
       this.field[key] = fieldValue;
     }
   }

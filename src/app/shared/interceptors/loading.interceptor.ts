@@ -12,6 +12,7 @@ export class LoadingInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const { params } = request;
+
     if (params.get('callApiType') !== 'background') {
       if (this.count === 0) {
         this.spinner.show();

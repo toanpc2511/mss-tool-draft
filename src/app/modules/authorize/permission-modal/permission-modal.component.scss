@@ -1,0 +1,33 @@
+.permission-list {
+	gap: 20px;
+	flex-wrap: wrap;
+	div {
+		margin: 13px;
+		margin-bottom: unset;
+	}
+}
+
+label {
+	font-weight: 700;
+}
+
+.icon-arrow-up {
+	width: 20px;
+	height: 20px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	background-image: url('../../../../assets/media/sun-oil/down-arrow.svg');
+	transition: transform 0.2s ease-in-out;
+	transform: rotate(-90deg);
+}
+
+.icon-arrow-down {
+	width: 20px;
+	height: 20px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	background-image: url('../../../../assets/media/sun-oil/down-arrow.svg');
+	transition: transform 0.2s ease-in-out;
+}

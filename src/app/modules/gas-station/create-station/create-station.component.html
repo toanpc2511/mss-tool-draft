@@ -1,0 +1,81 @@
+<div class="card card-custom create-station-wrapper mt-1">
+  <div class="card-body">
+    <div class="wizard wizard-3" id="kt_wizard_v3">
+      <div class="kt-grid__item">
+        <div class="wizard-nav mb-1 mb-lg-5">
+          <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
+            <a
+              [class.can-active]="stepData$ | async | canActiveStep: 1"
+              [class.active]="(stepData$ | async).currentStep === 1"
+              (click)="gotoStep(1)"
+              class="wizard-step"
+              href="javascript:;"
+            >
+              <div class="wizard-label">
+                <div class="wizard-title"><span>1</span> Trạm</div>
+                <div class="wizard-bar"></div>
+              </div>
+            </a>
+            <a
+              (click)="gotoStep(2)"
+              [class.can-active]="stepData$ | async | canActiveStep: 2"
+              [class.active]="(stepData$ | async).currentStep === 2"
+              class="wizard-step"
+              href="javascript:;"
+            >
+              <div class="wizard-label">
+                <div class="wizard-title"><span>2</span> Bồn</div>
+                <div class="wizard-bar"></div>
+              </div>
+            </a>
+            <a
+              (click)="gotoStep(3)"
+              [class.can-active]="stepData$ | async | canActiveStep: 3"
+              [class.active]="(stepData$ | async).currentStep === 3"
+              class="wizard-step"
+              href="javascript:;"
+            >
+              <div class="wizard-label">
+                <div class="wizard-title"><span>3</span> Cột bơm</div>
+                <div class="wizard-bar"></div>
+              </div>
+            </a>
+            <a
+              (click)="gotoStep(4)"
+              [class.can-active]="stepData$ | async | canActiveStep: 4"
+              [class.active]="(stepData$ | async).currentStep === 4"
+              class="wizard-step"
+              href="javascript:;"
+            >
+              <div class="wizard-label">
+                <div class="wizard-title"><span>4</span> Vòi bơm</div>
+                <div class="wizard-bar"></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center w-100">
+        <div class="col-xl-12">
+          <app-step1
+            *ngIf="(stepData$ | async).currentStep === 1"
+            [step1Data]="gasStationUpdateData"
+            (stepSubmitted)="stepSubmitted($event)"
+          ></app-step1>
+          <app-step2
+            *ngIf="(stepData$ | async).currentStep === 2"
+            (stepSubmitted)="stepSubmitted($event)"
+          ></app-step2>
+          <app-step3
+            *ngIf="(stepData$ | async).currentStep === 3"
+            (stepSubmitted)="stepSubmitted($event)"
+          ></app-step3>
+          <app-step4
+            *ngIf="(stepData$ | async).currentStep === 4"
+            (stepSubmitted)="stepSubmitted($event)"
+          ></app-step4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

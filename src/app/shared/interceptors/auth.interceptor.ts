@@ -5,8 +5,6 @@ import { UserModel } from 'src/app/modules/auth/services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor() {}
-
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     try {
       const currentUser = JSON.parse(localStorage.getItem('currentUser')) as UserModel;

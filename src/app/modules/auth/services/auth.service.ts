@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { storageUtils } from 'src/app/shared/helpers/storage';
-import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { finalize } from 'rxjs/operators';
-import { HttpService } from 'src/app/shared/services/http.service';
 import jwt_decode from 'jwt-decode';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { storageUtils } from 'src/app/shared/helpers/storage';
+import { HttpService } from 'src/app/shared/services/http.service';
+import { environment } from 'src/environments/environment';
 
 export enum UserStatus {
   ACTIVE = 'ACTIVE',

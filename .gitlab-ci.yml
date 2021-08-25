@@ -10,6 +10,7 @@ build_master:
   before_script:
     - node -v
     - npm -v
+    - yarn sonar
   script:
     - yarn
     - yarn build-prod
@@ -42,6 +43,7 @@ build_develop:
   before_script:
     - node -v
     - npm -v
+    - yarn sonar
   script:
     - yarn
     - yarn build-staging

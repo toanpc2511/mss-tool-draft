@@ -1,4 +1,4 @@
-<ng-container *ngIf="user$ | async as user">
+<ng-container *ngIf="user$ | async as _user">
   <ng-container *ngIf="extrasUserDropdownStyle === 'light'">
     <!--begin::Header-->
     <div class="d-flex align-items-center p-8 rounded-top">
@@ -10,9 +10,10 @@
 
       <!--begin::Text-->
       <div class="text-dark m-0 flex-grow-1 mr-3 font-size-h5">
-        {{ user.driverAuth.profile.name }}
+        {{ _user.firstname }} {{ _user.lastname }}
       </div>
-      <span class="label label-light-success label-lg font-weight-bold label-inline"
+      <span
+        class="label label-light-success label-lg font-weight-bold label-inline"
         >3 messages</span
       >
       <!--end::Text-->
@@ -24,33 +25,28 @@
   <ng-container *ngIf="extrasUserDropdownStyle === 'dark'">
     <!--begin::Header-->
     <div
-      class="
-        d-flex
-        align-items-center
-        justify-content-between
-        flex-wrap
-        p-8
-        bgi-size-cover bgi-no-repeat
-        rounded-top
-      "
-      style="background-image: url('./assets/media/misc/bg-1.jpg')"
+      class="d-flex align-items-center justify-content-between flex-wrap p-8 bgi-size-cover bgi-no-repeat rounded-top"
+      style="background-image: url('./assets/media/misc/bg-1.jpg');"
     >
       <div class="d-flex align-items-center mr-2">
         <!--begin::Symbol-->
         <div class="symbol bg-white-o-15 mr-3">
-          <span class="symbol-label text-success font-weight-bold font-size-h4">{{
-            user.driverAuth.profile.name | firstLetter
-          }}</span>
+          <span
+            class="symbol-label text-success font-weight-bold font-size-h4"
+            >{{ _user.firstname | firstLetter }}</span
+          >
         </div>
         <!--end::Symbol-->
 
         <!--begin::Text-->
         <div class="text-white m-0 flex-grow-1 mr-3 font-size-h5">
-          {{ user.driverAuth.profile.name }}
+          {{ _user.firstname }} {{ _user.lastname }}
         </div>
         <!--end::Text-->
       </div>
-      <span class="label label-success label-lg font-weight-bold label-inline">3 messages</span>
+      <span class="label label-success label-lg font-weight-bold label-inline"
+        >3 messages</span
+      >
     </div>
     <!--end::Header-->
   </ng-container>
@@ -64,10 +60,14 @@
           <i class="flaticon2-calendar-3 text-success"></i>
         </div>
         <div class="navi-text">
-          <div class="font-weight-bold">My Profile</div>
+          <div class="font-weight-bold">
+            My Profile
+          </div>
           <div class="text-muted">
             Account settings and more
-            <span class="label label-light-danger label-inline font-weight-bold">update</span>
+            <span class="label label-light-danger label-inline font-weight-bold"
+              >update</span
+            >
           </div>
         </div>
       </div>
@@ -81,8 +81,12 @@
           <i class="flaticon2-mail text-warning"></i>
         </div>
         <div class="navi-text">
-          <div class="font-weight-bold">My Messages</div>
-          <div class="text-muted">Inbox and tasks</div>
+          <div class="font-weight-bold">
+            My Messages
+          </div>
+          <div class="text-muted">
+            Inbox and tasks
+          </div>
         </div>
       </div>
     </a>
@@ -95,8 +99,12 @@
           <i class="flaticon2-rocket-1 text-danger"></i>
         </div>
         <div class="navi-text">
-          <div class="font-weight-bold">My Activities</div>
-          <div class="text-muted">Logs and notifications</div>
+          <div class="font-weight-bold">
+            My Activities
+          </div>
+          <div class="text-muted">
+            Logs and notifications
+          </div>
         </div>
       </div>
     </a>
@@ -109,8 +117,12 @@
           <i class="flaticon2-hourglass text-primary"></i>
         </div>
         <div class="navi-text">
-          <div class="font-weight-bold">My Tasks</div>
-          <div class="text-muted">latest tasks and projects</div>
+          <div class="font-weight-bold">
+            My Tasks
+          </div>
+          <div class="text-muted">
+            latest tasks and projects
+          </div>
         </div>
       </div>
     </a>
@@ -119,7 +131,9 @@
     <!--begin::Footer-->
     <div class="navi-separator mt-3"></div>
     <div class="navi-footer px-8 py-5">
-      <a class="btn btn-light-primary font-weight-bold cursor-pointer" (click)="logout()"
+      <a
+        class="btn btn-light-primary font-weight-bold cursor-pointer"
+        (click)="logout()"
         >Sign Out</a
       >
       <a class="btn btn-clean font-weight-bold cursor-pointer">Upgrade Plan</a>

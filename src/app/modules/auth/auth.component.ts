@@ -1,17 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent implements OnInit {
-
-  today: Date = new Date();
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class AuthComponent {}
