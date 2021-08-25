@@ -79,7 +79,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	filesUploadProgress: Array<number> = [];
 
 	minDate: NgbDateStruct = {
-		day: this.currentDate.getDate(),
+		day: this.currentDate.getDate() + 1,
 		month: this.currentDate.getMonth() + 1,
 		year: this.currentDate.getFullYear()
 	};
