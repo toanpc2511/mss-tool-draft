@@ -80,7 +80,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	filesUploadProgress: Array<number> = [];
 
 	minDate: NgbDateStruct = {
-		day: this.currentDate.getDate(),
+		day: this.currentDate.getDate() + 1,
 		month: this.currentDate.getMonth() + 1,
 		year: this.currentDate.getFullYear()
 	};
@@ -117,12 +117,17 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				this.cdr.detectChanges();
 			});
 
+		const phoneNumber = this.authService.getCurrentUserValue().driverAuth.phone;
+
 		this.contractService
-			.getInfoUser(this.authService.getCurrentUserValue().driverAuth.phone)
+			.getInfoUser(phoneNumber)
 			.pipe(
 				takeUntil(this.destroy$),
 				tap((res) => {
-					if (res?.data) this.infoForm.patchValue(res.data, { emitEvent: false, onlySelf: true });
+					this.infoForm.get('phone').patchValue(phoneNumber);
+					if (res?.data) {
+						this.patchValueInfoForm(res?.data);
+					}
 				})
 			)
 			.subscribe();

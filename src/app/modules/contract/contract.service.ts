@@ -240,7 +240,7 @@ export class ContractService {
 
 	getInfoUser(phone: string) {
 		const params = new HttpParams().set('phone-number', phone).set('callApiType', 'background');
-		return this.http.get<ICustomerInfo>('information', { params });
+		return this.http.get<ICustomerInfo>('profiles', { params });
 	}
 
 	getContractById(contractId: number) {
