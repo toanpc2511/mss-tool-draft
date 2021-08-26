@@ -102,7 +102,7 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.contractType.name}}</label>
+						<label class="form-label font-weight-bold">{{data?.contractType?.name}}</label>
 					</div>
 				</div>
 
@@ -158,7 +158,7 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.payMethod.name}}</label>
+						<label class="form-label font-weight-bold">{{data?.payMethod?.name}}</label>
 					</div>
 				</div>
 			</div>
@@ -174,7 +174,7 @@
 					</div>
 				</div>
 
-				<div class="col-lg-4 row" *ngIf='data?.contractType.code === "PRE_PAY"'>
+				<div class="col-lg-4 row" *ngIf='data?.contractType?.code === "PRE_PAY"'>
 					<div class="col-lg-5">
 						<label class="form-label">Địa chỉ ký HĐ: </label>
 					</div>
@@ -184,7 +184,7 @@
 					</div>
 				</div>
 
-				<div class="col-lg-4 row" *ngIf='data?.contractType.code === "PRE_PAY"'>
+				<div class="col-lg-4 row" *ngIf='data?.contractType?.code === "PRE_PAY"'>
 					<div class="col-lg-5">
 						<label class="form-label">Địa chỉ chi tiết: </label>
 					</div>
@@ -194,70 +194,97 @@
 					</div>
 				</div>
 
-				<div class="col-lg-4 row" *ngIf='data?.contractType.code === "PLAN"'>
+				<div class="col-lg-4 row" *ngIf='data?.contractType?.code === "PLAN"'>
 					<div class="col-lg-5">
 						<label class="form-label">Hạn mức: </label>
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.limitMoney?.toLocaleString('en-US')}}</label>
+						<label class="form-label font-weight-bold"
+							>{{data?.limitMoney?.toLocaleString('en-US')}}</label
+						>
 					</div>
 				</div>
 
-        <div class="col-lg-4 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeOne'>
-          <div class="col-lg-5">
-            <label class="form-label">Ngày dự kiến lần 1: </label>
-          </div>
+				<div
+					class="col-lg-4 row"
+					*ngIf='data?.contractType?.code === "PLAN" && data?.dateOfPayment?.paymentTimeOne'
+				>
+					<div class="col-lg-5">
+						<label class="form-label">Ngày dự kiến lần 1: </label>
+					</div>
 
-          <div class="col-lg-7">
-            <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeOne | date: 'dd/MM/yyyy'}}</label>
-          </div>
-        </div>
+					<div class="col-lg-7">
+						<label class="form-label font-weight-bold"
+							>{{data?.dateOfPayment.paymentTimeOne | date: 'dd/MM/yyyy'}}</label
+						>
+					</div>
+				</div>
 
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeTwo'>
-          <div class="col-lg-5">
-            <label class="form-label">Ngày dự kiến lần 2: </label>
-          </div>
+				<div
+					class="col-lg-4 pt-5 row"
+					*ngIf='data?.contractType?.code === "PLAN" && data?.dateOfPayment?.paymentTimeTwo'
+				>
+					<div class="col-lg-5">
+						<label class="form-label">Ngày dự kiến lần 2: </label>
+					</div>
 
-          <div class="col-lg-7">
-            <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeTwo | date: 'dd/MM/yyyy'}}</label>
-          </div>
-        </div>
+					<div class="col-lg-7">
+						<label class="form-label font-weight-bold"
+							>{{data?.dateOfPayment?.paymentTimeTwo | date: 'dd/MM/yyyy'}}</label
+						>
+					</div>
+				</div>
 
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeThree'>
-          <div class="col-lg-5">
-            <label class="form-label">Ngày dự kiến lần 3: </label>
-          </div>
+				<div
+					class="col-lg-4 pt-5 row"
+					*ngIf='data?.contractType?.code === "PLAN" && data?.dateOfPayment?.paymentTimeThree'
+				>
+					<div class="col-lg-5">
+						<label class="form-label">Ngày dự kiến lần 3: </label>
+					</div>
 
-          <div class="col-lg-7">
-            <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeThree | date: 'dd/MM/yyyy'}}</label>
-          </div>
-        </div>
+					<div class="col-lg-7">
+						<label class="form-label font-weight-bold"
+							>{{data?.dateOfPayment?.paymentTimeThree | date: 'dd/MM/yyyy'}}</label
+						>
+					</div>
+				</div>
 
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeFour'>
-          <div class="col-lg-5">
-            <label class="form-label">Ngày dự kiến lần 4: </label>
-          </div>
+				<div
+					class="col-lg-4 pt-5 row"
+					*ngIf='data?.contractType?.code === "PLAN" && data?.dateOfPayment?.paymentTimeFour'
+				>
+					<div class="col-lg-5">
+						<label class="form-label">Ngày dự kiến lần 4: </label>
+					</div>
 
-          <div class="col-lg-7">
-            <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeFour | date: 'dd/MM/yyyy'}}</label>
-          </div>
-        </div>
+					<div class="col-lg-7">
+						<label class="form-label font-weight-bold"
+							>{{data?.dateOfPayment?.paymentTimeFour | date: 'dd/MM/yyyy'}}</label
+						>
+					</div>
+				</div>
 
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeFive'>
-          <div class="col-lg-5">
-            <label class="form-label">Ngày dự kiến lần 5: </label>
-          </div>
+				<div
+					class="col-lg-4 pt-5 row"
+					*ngIf='data?.contractType?.code === "PLAN" && data?.dateOfPayment?.paymentTimeFive'
+				>
+					<div class="col-lg-5">
+						<label class="form-label">Ngày dự kiến lần 5: </label>
+					</div>
 
-          <div class="col-lg-7">
-            <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeFive | date: 'dd/MM/yyyy'}}</label>
-          </div>
-        </div>
+					<div class="col-lg-7">
+						<label class="form-label font-weight-bold"
+							>{{data?.dateOfPayment?.paymentTimeFive | date: 'dd/MM/yyyy'}}</label
+						>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="list-product" *ngIf='data?.contractType.code === "PRE_PAY"'>
+	<div class="list-product" *ngIf='data?.contractType?.code === "PRE_PAY"'>
 		<div class="card-header">
 			<div class="card-title">
 				<h3 class="title">danh sách hàng hóa</h3>
@@ -281,7 +308,7 @@
 							<th scope="">
 								<label class="form-label">Đơn vị</label>
 							</th>
-							<th class='text-right' scope="">
+							<th class="text-right" scope="">
 								<label class="form-label">Số lượng</label>
 							</th>
 							<th class="text-right" scope="">
@@ -302,7 +329,7 @@
 							<td>{{prod.categoryResponse.name}}</td>
 							<td>{{prod.productResponse.name}}</td>
 							<td>{{prod.productResponse.unit}}</td>
-							<td class='text-right'>{{prod.productResponse.amount}}</td>
+							<td class="text-right">{{prod.productResponse.amount}}</td>
 							<td class="text-right">{{prod.productResponse.price.toLocaleString('en-US')}}</td>
 							<td class="text-right">{{prod.productResponse.discount.toLocaleString('en-US')}}</td>
 							<td class="text-right">
@@ -312,10 +339,12 @@
 					</tbody>
 
 					<tfoot>
-						<tr class='py-3'>
+						<tr class="py-3">
 							<td colspan="4"></td>
 							<td colspan="3" class="text-right"><strong>Tổng tiền thanh toán</strong></td>
-							<td colspan="1" class="text-right"><strong>{{data?.totalPayment?.toLocaleString('en-US')}}</strong></td>
+							<td colspan="1" class="text-right">
+								<strong>{{data?.totalPayment?.toLocaleString('en-US')}}</strong>
+							</td>
 						</tr>
 					</tfoot>
 				</table>
@@ -352,14 +381,29 @@
 	</div>
 
 	<div class="w-100 d-flex justify-content-center pb-10">
-    <button *ngIf='data?.status !== "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="goToListContract()">
-      Quay lại
-    </button>
-    <button *ngIf='data?.status === "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="refuseContract($event, data)">
-      Từ chối
-    </button>
-    <button *ngIf='data?.status === "WAITING_ACCEPT"' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
-      Phê duyệt
-    </button>
+		<button
+			*ngIf='data?.status !== "WAITING_ACCEPT"'
+			type="button"
+			class="btn btn-outline-primary mr-3"
+			(click)="goToListContract()"
+		>
+			Quay lại
+		</button>
+		<!-- <button
+			*ngIf='data?.status === "WAITING_ACCEPT"'
+			type="button"
+			class="btn btn-outline-primary mr-3"
+			(click)="refuseContract($event, data)"
+		>
+			Từ chối
+		</button>
+		<button
+			*ngIf='data?.status === "WAITING_ACCEPT"'
+			type="button"
+			class="btn btn-primary mr-3"
+			(click)="acceptContract($event, data)"
+		>
+			Phê duyệt
+		</button> -->
 	</div>
 </div>

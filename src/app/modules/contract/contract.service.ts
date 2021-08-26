@@ -208,8 +208,15 @@ export interface IContractPlanInput {
 export class ContractService {
 	constructor(private http: HttpService) {}
 
-	getListContract(page: number, size: number, searchText: string, sortData: ISortData) {
+	getListContract(
+		driverId: string,
+		page: number,
+		size: number,
+		searchText: string,
+		sortData: ISortData
+	) {
 		const params = new HttpParams()
+			.set('driver-id', driverId)
 			.set('page', page.toString())
 			.set('page', page.toString())
 			.set('size', size.toString())
@@ -217,7 +224,9 @@ export class ContractService {
 			.set('direction-sort', sortData?.directionSort || '')
 			.set('search-text', searchText || '');
 
-		return this.http.get<Array<IContract>>('contracts', { params });
+		return this.http.get<Array<IContract>>(`contracts/enterprise`, {
+			params
+		});
 	}
 
 	getAddress() {
