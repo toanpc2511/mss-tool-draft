@@ -208,8 +208,15 @@ export interface IContractPlanInput {
 export class ContractService {
 	constructor(private http: HttpService) {}
 
-	getListContract(page: number, size: number, searchText: string, sortData: ISortData) {
+	getListContract(
+		driverId: string,
+		page: number,
+		size: number,
+		searchText: string,
+		sortData: ISortData
+	) {
 		const params = new HttpParams()
+			.set('driver-id', driverId)
 			.set('page', page.toString())
 			.set('page', page.toString())
 			.set('size', size.toString())
@@ -217,7 +224,9 @@ export class ContractService {
 			.set('direction-sort', sortData?.directionSort || '')
 			.set('search-text', searchText || '');
 
-		return this.http.get<Array<IContract>>('contracts', { params });
+		return this.http.get<Array<IContract>>(`contracts/enterprise`, {
+			params
+		});
 	}
 
 	getAddress() {
@@ -231,7 +240,7 @@ export class ContractService {
 
 	getInfoUser(phone: string) {
 		const params = new HttpParams().set('phone-number', phone).set('callApiType', 'background');
-		return this.http.get<ICustomerInfo>('drivers/information', { params });
+		return this.http.get<ICustomerInfo>('profiles', { params });
 	}
 
 	getContractById(contractId: number) {
@@ -239,7 +248,7 @@ export class ContractService {
 	}
 
 	createPrepayContract(contract: IContractPrepayInput) {
-		return this.http.post<any>(`contracts`, contract);
+		return this.http.post<any>(`contracts/pre`, contract);
 	}
 
 	createPlanContract(contract: IContractPlanInput) {

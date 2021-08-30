@@ -13,32 +13,13 @@
 						<label class="form-label required">Số điện thoại</label>
 						<div>
 							<input
+								disabled
 								class="form-control form-control-lg form-control-solid input-phone"
 								placeholder="Nhập số điện thoại"
 								formControlName="phone"
 								autocomplete="off"
-								(keydown.space)="$event.preventDefault()"
-								maxlength="12"
-								numbersOnly
-								[numberformControl]="infoForm.controls['phone']"
 							/>
-							<em *ngIf="!isUpdate" class="fa fa-times" (click)="deleteNumberPhone()"></em>
 						</div>
-						<app-validate
-							[control]="infoForm.controls['phone']"
-							[error]="'required'"
-							[message]="'Số diện thoại không được để trống'"
-						></app-validate>
-						<app-validate
-							[control]="infoForm.controls['phone']"
-							[error]="'notExisted'"
-							[message]="'Không tìm thấy thông tin tài xế với số điện thoại này'"
-						></app-validate>
-						<app-validate
-							[control]="infoForm.controls['phone']"
-							[error]="'invalid'"
-							[message]="'Số điện thoại không thuộc Việt Nam hoặc sai định dạng'"
-						></app-validate>
 					</div>
 
 					<div class="col-lg-4">
@@ -533,10 +514,13 @@
 												[message]="'Số lượng phải lớn hơn 0'"
 											></app-validate>
 										</td>
-										<td class="col5" [textContent]="productInfoFromGroup.get('price').value"></td>
+										<td
+											class="col5"
+											[textContent]="productInfoFromGroup.get('price').value | number | vnCurrency"
+										></td>
 										<td
 											class="col6"
-											[textContent]="productInfoFromGroup.get('discount').value"
+											[textContent]="productInfoFromGroup.get('discount').value | number| vnCurrency"
 										></td>
 										<td
 											class="col7"

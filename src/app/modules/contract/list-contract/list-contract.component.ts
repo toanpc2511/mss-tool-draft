@@ -8,12 +8,15 @@ import { IError } from '../../../shared/models/error.model';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import {
-  ContractService,
-  EContractStatus,
-  EContractType, IContract, ISortData
+	ContractService,
+	EContractStatus,
+	EContractType,
+	IContract,
+	ISortData
 } from '../contract.service';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
 	selector: 'app-list-contract',
@@ -34,6 +37,7 @@ export class ListContractComponent implements OnInit {
 		private modalService: NgbModal,
 		private contractService: ContractService,
 		private cdr: ChangeDetectorRef,
+		private authService: AuthService,
 		private destroy$: DestroyService,
 		private toastr: ToastrService
 	) {
@@ -56,6 +60,7 @@ export class ListContractComponent implements OnInit {
 				debounceTime(400),
 				switchMap(() => {
 					return this.contractService.getListContract(
+						this.authService.getCurrentUserValue().driverAuth.driverId,
 						this.paginatorState.page,
 						this.paginatorState.pageSize,
 						this.searchFormControl.value,
@@ -74,6 +79,7 @@ export class ListContractComponent implements OnInit {
 	getListContract(): void {
 		this.contractService
 			.getListContract(
+				this.authService.getCurrentUserValue().driverAuth.driverId,
 				this.paginatorState.page,
 				this.paginatorState.pageSize,
 				this.searchFormControl.value,
@@ -131,30 +137,30 @@ export class ListContractComponent implements OnInit {
 	}
 
 	deleteContract($event: Event, item: IContract): void {
-    $event.stopPropagation();
-    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-      backdrop: 'static'
-    });
-    const data: IConfirmModalData = {
-      title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xoá hợp đồng  ${item.code} - ${item.name} ?`,
-      button: { class: 'btn-primary', title: 'Xác nhận' }
-    };
-    modalRef.componentInstance.data = data;
+		$event.stopPropagation();
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+			backdrop: 'static'
+		});
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn xoá hợp đồng  ${item.code} - ${item.name} ?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
 
-    modalRef.result.then((result) => {
-      if (result) {
-        this.contractService.deleteContract(item.id).subscribe(
-          (res) => {
-            if (res.data) {
-              this.getListContract();
-            }
-          },
-          (err: IError) => {
-            this.checkError(err);
-          }
-        );
-      }
-    });
+		modalRef.result.then((result) => {
+			if (result) {
+				this.contractService.deleteContract(item.id).subscribe(
+					(res) => {
+						if (res.data) {
+							this.getListContract();
+						}
+					},
+					(err: IError) => {
+						this.checkError(err);
+					}
+				);
+			}
+		});
 	}
 }

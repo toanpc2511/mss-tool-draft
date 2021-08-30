@@ -32,6 +32,7 @@ import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IError } from '../../../shared/models/error.model';
 import { DestroyService } from '../../../shared/services/destroy.service';
+import { AuthService } from '../../auth/services/auth.service';
 import { IProduct, IProductType, ProductService } from '../../product/product.service';
 import {
 	ContractService,
@@ -79,7 +80,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	filesUploadProgress: Array<number> = [];
 
 	minDate: NgbDateStruct = {
-		day: this.currentDate.getDate(),
+		day: this.currentDate.getDate() + 1,
 		month: this.currentDate.getMonth() + 1,
 		year: this.currentDate.getFullYear()
 	};
@@ -101,6 +102,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		private subheader: SubheaderService,
 		private fileService: FileService,
 		private activeRoute: ActivatedRoute,
+		private authService: AuthService,
 		private destroy$: DestroyService
 	) {}
 
@@ -114,6 +116,21 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				this.productTypes = res.data;
 				this.cdr.detectChanges();
 			});
+
+		const phoneNumber = this.authService.getCurrentUserValue().driverAuth.phone;
+
+		this.contractService
+			.getInfoUser(phoneNumber)
+			.pipe(
+				takeUntil(this.destroy$),
+				tap((res) => {
+					this.infoForm.get('phone').patchValue(phoneNumber);
+					if (res?.data) {
+						this.patchValueInfoForm(res?.data);
+					}
+				})
+			)
+			.subscribe();
 
 		this.activeRoute.params
 			.pipe(
@@ -141,7 +158,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 
 	loadDataUpdate(data: IContract) {
 		this.contractDataUpdate = data;
-		this.infoForm.patchValue(data.customer, { emitEvent: false, onlySelf: true });
 		this.infoForm.get('dateOfBirth').patchValue(convertDateToDisplay(data.customer.dateOfBirth), {
 			emitEvent: false,
 			onlySelf: true

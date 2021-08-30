@@ -28,4 +28,12 @@ table {
   td.name {
     max-width: 300px;
   }
+
+  td.status {
+    min-width: 130px;
+  }
+
+  td.action {
+    min-width: 120px
+  }
 }

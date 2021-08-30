@@ -47,7 +47,7 @@ export class ProductService {
 	constructor(private http: HttpService) {}
 	// Nhóm sản phẩm
 	getListProductType() {
-		return this.http.get<IProductType[]>('categories');
+		return this.http.get<IProductType[]>('categories/actives');
 	}
 
 	getProductList() {
@@ -72,7 +72,7 @@ export class ProductService {
 
 	// Danh sách sản phẩm
 	getListProduct(categoryId: number) {
-		return this.http.get<IProduct[]>(`products/category/${categoryId}`);
+		return this.http.get<IProduct[]>(`products/categories/${categoryId}`);
 	}
 
 	deleteProduct(prodId: string | number) {
