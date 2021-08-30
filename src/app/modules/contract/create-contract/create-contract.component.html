@@ -107,11 +107,7 @@
 	<div class="info-contract">
 		<div class="card-header">
 			<div class="card-title">
-				<h3 class="title">
-					Thông tin hợp đồng<span *ngIf="isUpdate" class="text-success">
-						- {{contractDataUpdate?.code}}</span
-					>
-				</h3>
+				<h3 class="title">Thông tin hợp đồng</h3>
 			</div>
 		</div>
 
@@ -128,6 +124,15 @@
 								{{item.name}}
 							</option>
 						</select>
+					</div>
+
+					<div class="col-lg-4" *ngIf="isUpdate">
+						<label class="form-label required">Mã hợp đồng</label>
+						<input
+							disabled
+							class="form-control form-control-lg form-control-solid"
+							[value]="contractDataUpdate.code"
+						/>
 					</div>
 
 					<div class="col-lg-4">
@@ -152,7 +157,7 @@
 						></app-validate>
 					</div>
 
-					<div class="col-lg-4">
+					<div class="col-lg-4" [class.mt-10]="isUpdate">
 						<label class="form-label">Ngày hết hạn</label>
 						<div class="input-group">
 							<input
@@ -182,10 +187,8 @@
 							[message]="'Ngày hết hạn không được nhỏ hơn ngày tạo'"
 						></app-validate>
 					</div>
-				</div>
 
-				<div class="form-group row">
-					<div class="col-lg-4">
+					<div class="col-lg-4 mt-10">
 						<label class="form-label">HT giao nhận</label>
 						<select
 							class="form-control form-control-lg form-control-solid"
@@ -198,7 +201,7 @@
 						</select>
 					</div>
 
-					<div class="col-lg-4">
+					<div class="col-lg-4 mt-10">
 						<label class="form-label required">HT thanh toán</label>
 						<select
 							class="form-control form-control-lg form-control-solid"
@@ -216,7 +219,7 @@
 						></app-validate>
 					</div>
 
-					<div class="col-lg-4" *ngIf="contractType === eContractType.PREPAID_CONTRACT">
+					<div class="col-lg-4 mt-10" *ngIf="contractType === eContractType.PREPAID_CONTRACT">
 						<label class="form-label required">Địa chỉ ký hợp đồng</label>
 						<select
 							class="form-control form-control-lg form-control-solid"
@@ -233,7 +236,7 @@
 						></app-validate>
 					</div>
 
-					<div class="col-lg-4" *ngIf="contractType === eContractType.PLAN_CONTRACT">
+					<div class="col-lg-4 mt-10" *ngIf="contractType === eContractType.PLAN_CONTRACT">
 						<label class="form-label required">Hạn mức</label>
 						<div class="input-group">
 							<input
@@ -417,10 +420,8 @@
 							[message]="'Ngày dự kiến thanh toán không đúng định dạng'"
 						></app-validate>
 					</div>
-				</div>
 
-				<div class="form-group row" *ngIf="contractType === eContractType.PREPAID_CONTRACT">
-					<div class="col-lg-8">
+					<div class="col-lg-8 mt-10" *ngIf="contractType === eContractType.PREPAID_CONTRACT">
 						<label class="form-label">Địa chỉ chi tiết</label>
 						<input disabled class="form-control" autocomplete="off" formControlName="fullAddress" />
 					</div>
@@ -532,10 +533,13 @@
 												[message]="'Số lượng phải lớn hơn 0'"
 											></app-validate>
 										</td>
-										<td class="col5" [textContent]="productInfoFromGroup.get('price').value"></td>
+										<td
+											class="col5"
+											[textContent]="productInfoFromGroup.get('price').value | number | vnCurrency"
+										></td>
 										<td
 											class="col6"
-											[textContent]="productInfoFromGroup.get('discount').value"
+											[textContent]="productInfoFromGroup.get('discount').value | number | vnCurrency"
 										></td>
 										<td
 											class="col7"
@@ -578,8 +582,8 @@
 									</a>
 								</td>
 								<td colspan="4"></td>
-								<td colspan="2">Tổng tiền thanh toán</td>
-								<td [textContent]="getTotal() | number | vnCurrency"></td>
+								<td class='font-weight-bold' colspan="2">Tổng tiền thanh toán</td>
+								<td class='font-weight-bold' [textContent]="getTotal() | number | vnCurrency"></td>
 								<td></td>
 							</tr>
 						</tfoot>

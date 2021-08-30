@@ -14,12 +14,13 @@ export class DetailCustomerComponent implements OnInit {
   stepData$: Observable<StepData>;
 
   constructor(
-    private customerService: CustomerManagementService,
+    private customerService: CustomerManagementService
   ) {
     this.stepData$ = customerService.stepData$;
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   ngOnDestroy() {
     this.customerService.resetCreateData();
