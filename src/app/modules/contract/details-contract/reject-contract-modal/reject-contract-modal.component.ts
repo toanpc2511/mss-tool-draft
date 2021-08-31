@@ -50,7 +50,6 @@ export class RejectContractModalComponent implements OnInit {
 
 		this.contractService.rejectContract(this.dataContract.id, body).subscribe(
 			(res) => {
-				console.log(body);
 				this.rejectForm.markAllAsTouched();
 				if (this.rejectForm.invalid) {
 					return;
@@ -72,7 +71,10 @@ export class RejectContractModalComponent implements OnInit {
 				this.modal.close();
 				this.router.navigate(['/hop-dong/danh-sach']);
 			}
-		});
+		},
+      (err: IError) => {
+        this.checkError(err);
+      });
 	}
 
 	getProd() {

@@ -25,7 +25,7 @@
         padding-right: 35px;
       }
 
-      span {
+      em {
         color: #4674eb;
         cursor: pointer;
         position: absolute;
@@ -55,4 +55,8 @@
   .amount {
     padding-right: 35px;
   }
+}
+
+.info-limit {
+  padding-top: 50px;
 }

@@ -1,20 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ISortData } from '../../customer-management.service';
+import { CustomerManagementService, IContract, ISortData } from '../../customer-management.service';
 import { IPaginatorState, PaginatorState } from '../../../../_metronic/shared/crud-table';
+import { EContractStatus } from '../../../contract/contract.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DestroyService } from '../../../../shared/services/destroy.service';
+import { IError } from '../../../../shared/models/error.model';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-info-contract',
   templateUrl: './info-contract.component.html',
-  styleUrls: ['./info-contract.component.scss']
+  styleUrls: ['./info-contract.component.scss'],
+  providers: [DestroyService]
 })
 export class InfoContractComponent implements OnInit {
   searchFormControl: FormControl = new FormControl();
   sortData: ISortData;
   paginatorState = new PaginatorState();
-  dataSource = [];
+  dataSource: Array<IContract> = [];
+  contractStatus = EContractStatus;
+  customerId: number;
 
-  constructor() {
+  constructor(
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private customerManagementService: CustomerManagementService,
+    private cdr: ChangeDetectorRef,
+    private destroy$: DestroyService
+  ) {
     this.init();
   }
 
@@ -24,52 +38,63 @@ export class InfoContractComponent implements OnInit {
     this.paginatorState.pageSizes = [5, 10, 15, 20];
     this.paginatorState.total = 0;
     this.sortData = null;
-
-    this.dataSource = [
-      {
-        id: 1000,
-        type: 'Hợp đồng trả trước',
-        code: 'HDTT251669',
-        name: 'Xuất hàng',
-        totalMoney: 168110000
-      },
-      {
-        id: 1000,
-        type: 'Hợp đồng trả trước',
-        code: 'HDTT225888',
-        name: 'Xuất dầu',
-        totalMoney: 99988000000
-      },
-      {
-        id: 1000,
-        type: 'Hợp đồng dự trù',
-        code: 'HDDT598841',
-        name: 'Tích trữ hàng cấm',
-        totalMoney: 1988800000000
-      },
-      {
-        id: 1000,
-        type: 'Hợp đồng trả trước',
-        code: 'HDTT225888',
-        name: 'Xuất dầu',
-        totalMoney: 99988000000
-      },
-      {
-        id: 1000,
-        type: 'Hợp đồng dự trù',
-        code: 'HDDT598841',
-        name: 'Tích trữ hàng cấm',
-        totalMoney: 1988800000000
-      }
-    ];
   }
 
   ngOnInit() {
-    this.getListCustomer();
+    // Lấy id khách hàng
+    this.activeRoute.params.subscribe((res) => {
+      this.customerId = res.customerId;
+    });
+
+    this.getListContractByCustomer();
+
+    this.searchFormControl.valueChanges
+      .pipe(
+        debounceTime(400),
+        switchMap(() => {
+          return this.customerManagementService.getListContractByCustomer(
+            this.paginatorState.page,
+            this.paginatorState.pageSize,
+            this.searchFormControl.value,
+            this.sortData,
+            this.customerId
+          );
+        }),
+        tap((res) => {
+          this.dataSource = res.data;
+          this.paginatorState.recalculatePaginator(res.meta.total);
+          this.cdr.detectChanges();
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
-  getListCustomer() {
-    console.log('danh sách khach hang');
+  async viewDetalContract(id: number) {
+    await this.router.navigate([`/khach-hang/danh-sach/chi-tiet/${this.customerId}/chi-tiet-hop-dong/${id}`]);
+  }
+
+  getListContractByCustomer() {
+    this.customerManagementService
+      .getListContractByCustomer(
+        this.paginatorState.page,
+        this.paginatorState.pageSize,
+        this.searchFormControl.value,
+        this.sortData,
+        this.customerId
+      )
+      .subscribe(
+        (res) => {
+          if (res.data) {
+            this.dataSource = res.data;
+            this.paginatorState.recalculatePaginator(res.meta.total);
+            this.cdr.detectChanges();
+          }
+        },
+        (err: IError) => {
+          this.checkError(err);
+        }
+      );
   }
 
   sort(column: string) {
@@ -82,12 +107,16 @@ export class InfoContractComponent implements OnInit {
     } else {
       this.sortData = { fieldSort: column, directionSort: 'ASC' };
     }
-    this.getListCustomer();
+    this.getListContractByCustomer();
   }
 
   pagingChange($event: IPaginatorState) {
     this.paginatorState = $event as PaginatorState;
-    this.getListCustomer();
+    this.getListContractByCustomer();
+  }
+
+  checkError(err: IError) {
+    console.log(err);
   }
 }
 
