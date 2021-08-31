@@ -32,7 +32,7 @@ export class FileService {
 
 	uploadFile(fileFormData: FormData, type: EFileType) {
 		return this.http.postUpload<Array<IFile>>(
-			`${environment.apiUrlRoot}/files`,
+			`${environment.apiDriverRoot}/files`,
 			fileFormData,
 			type
 		);
