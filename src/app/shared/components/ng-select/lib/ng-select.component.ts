@@ -375,7 +375,7 @@ export class NgSelectComponent
 				$event.preventDefault();
 				break;
 			case KeyCode.Backspace:
-				this._handleBackspace();
+				// this._handleBackspace();
 				break;
 		}
 	}

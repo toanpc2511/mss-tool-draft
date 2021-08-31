@@ -8,33 +8,37 @@
 		<div class="ng-placeholder">{{ placeholder }}</div>
 
 		<ng-container *ngIf="(!multiLabelTemplate || !multiple) && selectedItems.length > 0">
-			<div
-				[class.ng-value-disabled]="item.disabled"
-				class="ng-value"
-				*ngFor="let item of selectedItems; let i = index; trackBy: trackByOption"
-			>
+			<ng-container *ngFor="let item of selectedItems; let i = index; trackBy: trackByOption">
 				<ng-template #defaultLabelTemplate>
 					<span class="ng-value-icon left" (click)="unselect(item)" aria-hidden="true">×</span>
 					<span class="ng-value-label" [ngItemLabel]="item.label" [escape]="escapeHTML"></span>
 				</ng-template>
-				<ng-container *ngIf="isGroupDisplay && i <= minLengthGroup - 1">
-					<ng-template
-						[ngTemplateOutlet]="labelTemplate || defaultLabelTemplate"
-						[ngTemplateOutletContext]="{ item: item.value, clear: clearItem, label: item.label }"
-					>
-					</ng-template>
-				</ng-container>
-				<ng-container *ngIf="!isGroupDisplay">
-					<ng-template
-						[ngTemplateOutlet]="labelTemplate || defaultLabelTemplate"
-						[ngTemplateOutletContext]="{ item: item.value, clear: clearItem, label: item.label }"
-					>
-					</ng-template>
-				</ng-container>
-				<span class="ng-value-label" *ngIf="isGroupDisplay && i === minLengthGroup"
-					>Và {{ selectedItems.length - 2 }} {{groupText}}</span
+				<div
+					[class.ng-value-disabled]="item.disabled"
+					class="ng-value"
+					*ngIf="isGroupDisplay && i <= minLengthGroup"
 				>
-			</div>
+					<ng-container *ngIf="isGroupDisplay && i <= minLengthGroup - 1">
+						<ng-template
+							[ngTemplateOutlet]="labelTemplate || defaultLabelTemplate"
+							[ngTemplateOutletContext]="{ item: item.value, clear: clearItem, label: item.label }"
+						>
+						</ng-template>
+					</ng-container>
+					<span class="ng-value-label" *ngIf="isGroupDisplay && i === minLengthGroup"
+						>Và {{ selectedItems.length - 2 }} {{groupText}}</span
+					>
+				</div>
+				<div [class.ng-value-disabled]="item.disabled" class="ng-value" *ngIf="!isGroupDisplay">
+					<ng-container>
+						<ng-template
+							[ngTemplateOutlet]="labelTemplate || defaultLabelTemplate"
+							[ngTemplateOutletContext]="{ item: item.value, clear: clearItem, label: item.label }"
+						>
+						</ng-template>
+					</ng-container>
+				</div>
+			</ng-container>
 		</ng-container>
 
 		<ng-template
