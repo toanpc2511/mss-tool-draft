@@ -99,6 +99,9 @@ export class NgSelectComponent
 {
 	@Input() bindLabel: string;
 	@Input() bindValue: string;
+	@Input() minLengthGroup: number;
+	@Input() isGroupDisplay: boolean;
+	@Input() groupText: string;
 	@Input() markFirst = true;
 	@Input() placeholder: string;
 	@Input() notFoundText: string;
@@ -372,7 +375,7 @@ export class NgSelectComponent
 				$event.preventDefault();
 				break;
 			case KeyCode.Backspace:
-				this._handleBackspace();
+				// this._handleBackspace();
 				break;
 		}
 	}
