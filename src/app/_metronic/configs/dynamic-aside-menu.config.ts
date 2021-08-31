@@ -16,11 +16,11 @@ export const DynamicAsideMenuConfig = {
 			bullet: 'dot'
 		},
 		{
-			title: 'Quản lý QR code',
+			title: 'Quản lý tài xế',
+			icon: 'fas fa-users',
 			root: true,
-			bullet: 'dot',
-			page: '/qrcode',
-			icon: 'fas fa-qrcode'
+			page: '/tai-xe',
+			bullet: 'dot'
 		},
 		{
 			title: 'Báo cáo',

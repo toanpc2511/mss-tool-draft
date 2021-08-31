@@ -1,0 +1,126 @@
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Danh sách tài xế</h3>
+		</div>
+
+		<div class="card-toolbar row">
+			<div class="search-form">
+				<em class="flaticon-search"></em>
+				<input
+					type="text"
+					name="searchText"
+					placeholder="Search..."
+					class="form-control"
+					[formControl]="searchFormControl"
+				/>
+			</div>
+			<button type="button" class="btn btn-primary" (click)="openPartnerModal()">Thêm mới</button>
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+				<thead>
+					<th scope="">
+						Họ và tên
+						<app-sort-icon
+							column="fullName"
+							[activeColumn]="sortData?.fieldSort"
+							[activeDirection]="sortData?.directionSort"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Tên đăng nhập/SĐT
+						<app-sort-icon
+							column="phone"
+							[activeColumn]="sortData?.fieldSort"
+							[activeDirection]="sortData?.directionSort"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">Xe sử dụng</th>
+					<th scope="">
+						Trạng thái
+						<app-sort-icon
+							column="status"
+							[activeColumn]="sortData?.fieldSort"
+							[activeDirection]="sortData?.directionSort"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th class="text-center" scope="">Tác động</th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of dataSource">
+						<td class="full-name">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.fullName">
+								{{ item.fullName }}
+							</p>
+						</td>
+
+						<td class="phone">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.phone">
+								{{ item.phone }}
+							</p>
+						</td>
+
+						<td class="cars">
+							<p
+								class="cursor-pointer text-ellipsis text-primary"
+								placement="top"
+								[ngbTooltip]="item.cars | carsDisplay: true"
+							>
+								{{item.cars | carsDisplay}}
+							</p>
+						</td>
+
+						<td class="status">
+							<span
+								class="label label-lg label-inline"
+								[class.label-light-success]="item.status === eStatus.ACCEPTED"
+								[class.label-light-danger]="item.status === eStatus.REJECTED"
+								[class.label-light-warning]="item.status === eStatus.WAITING_ACCEPTED"
+							>
+								<ng-container *ngIf="item.status === eStatus.ACCEPTED">Xác nhận</ng-container>
+								<ng-container *ngIf="item.status === eStatus.REJECTED">Từ chối </ng-container>
+								<ng-container *ngIf="item.status === eStatus.WAITING_ACCEPTED"
+									>Chờ xác nhận</ng-container
+								>
+							</span>
+						</td>
+
+						<td class="text-center action">
+							<a
+								(click)="openPartnerModal(item.id)"
+								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+							>
+								<span
+									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-primary"
+									[ngbTooltip]="'Sửa'"
+								>
+								</span>
+							</a>
+							<a
+								(click)="openDeletePartnerModal($event ,item)"
+								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+							>
+								<span
+									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-danger"
+									[ngbTooltip]="'Xóa'"
+								>
+								</span>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+	</div>
+</div>

@@ -1,0 +1,43 @@
+.title {
+	text-transform: uppercase;
+	color: #4674eb;
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.customer-phone {
+	div {
+		position: relative;
+		em {
+			cursor: pointer;
+			position: absolute;
+			right: 15px;
+			top: 30%;
+			font-size: 1.4rem;
+			&:hover {
+				opacity: 0.8;
+			}
+		}
+	}
+}
+
+.list-product {
+	width: 100%;
+	.table {
+		th label{
+            font-weight: 500;
+			color: #1e1e1e !important;
+			text-transform: none;
+            margin-bottom: 0;
+		}
+
+		td {
+			&.col1 {
+				width: 150px;
+			}
+			&.col2 {
+				width: 250px;
+			}
+		}
+	}
+}

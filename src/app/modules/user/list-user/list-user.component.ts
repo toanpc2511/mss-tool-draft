@@ -32,8 +32,7 @@ export class ListUserComponent implements OnInit {
 		private userService: UserService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
-		private modalService: NgbModal,
-		private toastr: ToastrService
+		private modalService: NgbModal
 	) {
 		this.init();
 	}

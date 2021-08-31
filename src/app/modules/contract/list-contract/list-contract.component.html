@@ -67,7 +67,15 @@
 							(sort)="sort($event)"
 						></app-sort-icon>
 					</th>
-					<th scope="">Trạng thái</th>
+					<th scope="">
+						Trạng thái
+						<app-sort-icon
+							column="status"
+							[activeColumn]="sortData?.fieldSort"
+							[activeDirection]="sortData?.directionSort"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
 					<th class="text-center" scope="">Tác động</th>
 				</thead>
 				<tbody>
