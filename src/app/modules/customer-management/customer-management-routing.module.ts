@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListCustomerComponent } from './list-customer/list-customer.component';
 import { DetailCustomerComponent } from './detail-customer/detail-customer.component';
+import { DetailsContractComponent } from '../contract/details-contract/details-contract.component';
 
 const routes: Routes = [
   {
@@ -17,8 +18,17 @@ const routes: Routes = [
         component: ListCustomerComponent
       },
       {
-        path: 'chi-tiet/:id',
-        component: DetailCustomerComponent
+        path: 'chi-tiet/:customerId',
+        children: [
+          {
+            path: '',
+            component: DetailCustomerComponent
+          },
+          {
+            path: 'chi-tiet-hop-dong/:contractId',
+            component: DetailsContractComponent
+          }
+        ]
       }
     ]
   }

@@ -1,25 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IPaginatorState, PaginatorState } from '../../../../_metronic/shared/crud-table';
 import { FormControl } from '@angular/forms';
-import { ISortData } from '../../customer-management.service';
+import { CustomerManagementService, ISortData, IVehicles } from '../../customer-management.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DestroyService } from '../../../../shared/services/destroy.service';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-info-vehicle',
   templateUrl: './info-vehicle.component.html',
-  styleUrls: ['./info-vehicle.component.scss']
+  styleUrls: ['./info-vehicle.component.scss'],
+  providers: [DestroyService]
 })
 export class InfoVehicleComponent implements OnInit {
   searchFormControl: FormControl = new FormControl();
   sortData: ISortData;
   paginatorState = new PaginatorState();
-  dataSource = [];
+  dataSource: Array<IVehicles> = [];
   nameVehicle: string;
   image1: string;
   image2: string;
+  driverId: number;
 
   constructor(
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private customerManagementService: CustomerManagementService,
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
+    private destroy$: DestroyService
   ) {
     this.init();
   }
@@ -30,73 +40,63 @@ export class InfoVehicleComponent implements OnInit {
     this.paginatorState.pageSizes = [5, 10, 15, 20];
     this.paginatorState.total = 0;
     this.sortData = null;
-
-    this.dataSource = [
-      {
-        id: 1000,
-        name: 'Phạm Công Toán',
-        typeVehicle: 'toanpc',
-        licensePlates: '18H111844',
-        images: [
-          {
-            name: 'ảnh 1',
-            url: 'https://dbk.vn/uploads/ckfinder/images/1-content/anh-dep-1.jpg'
-          },
-          {
-            name: 'ảnh 2',
-            url: 'https://cdnmedia.thethaovanhoa.vn/2011/06/28/10/10/traitim.jpg'
-          }
-        ]
-      },
-      {
-        id: 1000,
-        name: 'Phạm Công Toán',
-        typeVehicle: 'toanpc',
-        licensePlates: '29H74444',
-        images: [
-          {
-            name: 'ảnh 1',
-            url: 'https://znews-photo.zadn.vn/w660/Uploaded/rugtzn/2014_03_27/jakeolsonphotography10.jpg'
-          },
-          {
-            name: 'ảnh 2',
-            url: 'http://baoquangbinh.vn/dataimages/201610/original/images599179_anh_1_1475573097.jpg'
-          }
-        ]
-      },
-      {
-        id: 1000,
-        name: 'Phạm Công Toán',
-        typeVehicle: 'toanpc',
-        licensePlates: '30K158854',
-        images: [
-          {
-            name: 'ảnh 1',
-            url: 'http://truongnp.com/wp-content/uploads/2016/12/qua-tang-cuoc-song-bo-anh-tre-tho-dep-nhu-cotich08.jpg'
-          },
-          {
-            name: 'ảnh 2',
-            url: 'https://1.bp.blogspot.com/-X9C3JmqQbgI/Vpuxkh9BLWI/AAAAAAAARxU/k1g1exv3wT8/s1600/Hinh-anh-tre-em-mien-nui-dep-hon-nhien-%25281%2529.jpg'
-          }
-        ]
-      }
-    ];
   }
 
   ngOnInit() {
-    this.getListCustomer();
+    this.activeRoute.params.subscribe((res) => {
+      this.driverId = res.customerId;
+    });
+
+    this.getListVehicles();
+
+    this.searchFormControl.valueChanges
+      .pipe(
+        debounceTime(400),
+        switchMap(() => {
+          return this.customerManagementService.getListVehicles(
+            this.paginatorState.page,
+            this.paginatorState.pageSize,
+            this.searchFormControl.value,
+            this.sortData,
+            this.driverId
+          );
+        }),
+        tap((res) => {
+          this.dataSource = res.data;
+          this.paginatorState.recalculatePaginator(res.meta.total);
+          this.cdr.detectChanges();
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
-  getListCustomer() {
-    console.log('danh sách khach han');
+  getListVehicles(): void {
+    this.customerManagementService
+      .getListVehicles(
+        this.paginatorState.page,
+        this.paginatorState.pageSize,
+        this.searchFormControl.value,
+        this.sortData,
+        this.driverId
+      )
+      .subscribe(
+        (res) => {
+          if (res.data) {
+            this.dataSource = res.data;
+            this.paginatorState.recalculatePaginator(res.meta.total);
+            this.cdr.detectChanges();
+          }
+        }
+      );
   }
 
   viewImages(content, item: any) {
     this.modalService.open(content, { size: 'lg' });
 
     this.nameVehicle = item.licensePlates;
-    this.image1 = item.images[0].url;
-    this.image2 = item.images[1].url;
+    this.image1 = item.credentialImages[0].url;
+    this.image2 = item.credentialImages[1].url;
   }
 
   sort(column: string) {
@@ -109,11 +109,11 @@ export class InfoVehicleComponent implements OnInit {
     } else {
       this.sortData = { fieldSort: column, directionSort: 'ASC' };
     }
-    this.getListCustomer();
+    this.getListVehicles();
   }
 
   pagingChange($event: IPaginatorState) {
     this.paginatorState = $event as PaginatorState;
-    this.getListCustomer();
+    this.getListVehicles();
   }
 }
