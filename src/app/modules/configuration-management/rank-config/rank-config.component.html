@@ -1,0 +1,89 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách hạng</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <form class="form form-label-right w-100">
+        <div class="form-group row d-inline">
+          <ngb-accordion [destroyOnHide]="false" #moduleAccordion>
+            <ngb-panel *ngFor='let item of data' [id]='"toggle" +  item.id'>
+              <ng-template ngbPanelTitle>
+                <div class='d-flex justify-content-between'>
+                  <div class='d-flex align-items-center'>
+                    <label class='m-0 title-rank'>{{item.name}} - điểm đạt hạng:  {{item.score.toLocaleString('us-EN')}}</label>
+                  </div>
+                  <div
+                    [ngClass]="{'icon-arrow-up': !isOpenModule('toggle-'+ item.id), 'icon-arrow-down': isOpenModule('toggle-'+ item.id)}"
+                  ></div>
+                </div>
+              </ng-template>
+              <ng-template ngbPanelContent>
+                <div class='row mb-3'>
+                  <div class='col-lg-2'>Chính sách</div>
+                  <div class='col-lg-10'>
+                    <textarea
+                      class='form-control form-control-solid'
+                      id='chinh-sach'
+                      placeholder='Nhập chính sách'
+                      maxlength='3000'
+                      rows='2'
+                      trim='blur'
+                      name='policy'
+                      [(ngModel)]='item.policy'
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class='row mb-3'>
+                  <div class='col-lg-2'>Giới thiệu</div>
+                  <div class='col-lg-10'>
+                    <textarea
+                      class='form-control form-control-solid'
+                      id='gioi-thieu'
+                      placeholder='Nhập giới thiệu'
+                      maxlength='3000'
+                      rows='2'
+                      trim='blur'
+                      name='introduction'
+                      [(ngModel)]='item.introduction'
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class='row mb-3'>
+                  <div class='col-lg-2'>Ưu đãi</div>
+                  <div class='col-lg-10'>
+                    <textarea
+                      class='form-control form-control-solid'
+                      id='uu-dai'
+                      placeholder='Nhập ưu đãi'
+                      maxlength='3000'
+                      rows='2'
+                      trim='blur'
+                      name='promotion'
+                      [(ngModel)]='item.promotion'
+                    ></textarea>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+        </div>
+      </form>
+    </div>
+    <div class="row justify-content-center w-100">
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-dialog mr-6"
+      >
+        Hủy
+      </button>
+      <button type="button" ngbAutofocus class="btn btn-primary btn-dialog" (click)="onSubmit()">
+        Lưu
+      </button>
+    </div>
+  </div>
+</div>
