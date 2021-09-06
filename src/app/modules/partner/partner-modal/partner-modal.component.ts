@@ -1,15 +1,17 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of } from 'rxjs';
-import { catchError, concatMap, debounceTime, takeUntil } from 'rxjs/operators';
-import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
-import { NgSelectConfig } from 'src/app/shared/components/ng-select/public-api';
+import { of, Subject } from 'rxjs';
+import { catchError, concatMap, debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { pathValueWithoutEvent } from 'src/app/shared/data-enum/patch-value-without-event';
+import { convertMoney, formatMoney } from 'src/app/shared/helpers/functions';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { EPartnerStatus, ICar, PartnerService } from '../partner.service';
+import { TValidators } from 'src/app/shared/validators';
+import { AuthService } from '../../auth/services/auth.service';
+import { IProduct, ProductService } from '../../product/product.service';
+import { EPartnerStatus, IVehicle, PartnerService } from '../partner.service';
 
 @Component({
 	selector: 'app-partner-modal',
@@ -18,19 +20,28 @@ import { EPartnerStatus, ICar, PartnerService } from '../partner.service';
 	providers: [DestroyService, FormBuilder]
 })
 export class PartnerModalComponent implements OnInit {
+	currentAccountPhoneNumber: string;
 	@Input() partnerId: number;
 	eStatus = EPartnerStatus;
-	cars: Array<ICar> = [];
+	vehicles: IVehicle[] = [];
 	partnerForm: FormGroup;
+	cashLimitOilFormArray: FormArray;
+	isLoadingFormSubject = new Subject<boolean>();
+	isLoadingForm$ = this.isLoadingFormSubject.asObservable();
+
 	isUpdate = false;
+	cashLimitMoney = 0;
+	oils: IProduct[] = [];
 	constructor(
 		public modal: NgbActiveModal,
 		private modalService: NgbModal,
 		private fb: FormBuilder,
+		private authService: AuthService,
 		private partnerService: PartnerService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService
 	) {
+		this.currentAccountPhoneNumber = authService.getCurrentUserValue().driverAuth.phone;
 	}
 
 	ngOnInit(): void {
@@ -46,43 +57,59 @@ export class PartnerModalComponent implements OnInit {
 		}
 
 		this.partnerService
-			.getAllCars()
+			.getAllVehicles()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
-				this.cars = res.data;
+				this.vehicles = res.data;
 				this.cdr.detectChanges();
+			});
+
+		this.partnerService
+			.getCashLimit()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((res) => {
+				if (res.data) {
+					const vehicleFormArray = this.fb.array(
+						res.data.cashLimitOilAccount.map((cashLimit) => {
+							return this.fb.group({
+								productId: [cashLimit.productId],
+								cashLimitOil: [null, [TValidators.min(1), TValidators.max(cashLimit.cashLimitOil)]],
+								maxCashLimitOil: [cashLimit.cashLimitOil],
+								unitCashLimitOil: [cashLimit.unitCashLimitOil]
+							});
+						})
+					);
+					this.partnerForm.setControl('cashLimitOil', vehicleFormArray);
+					this.cashLimitOilFormArray = this.partnerForm.get('cashLimitOil') as FormArray;
+					this.cashLimitMoney = res.data.cashLimitMoney;
+					this.partnerForm
+						.get('cashLimitMoney')
+						.setValidators([TValidators.min(1), TValidators.max(this.cashLimitMoney)]);
+					this.partnerForm.updateValueAndValidity();
+					this.isLoadingFormSubject.next(true);
+				}
 			});
 	}
 
-	patchInfoPartner(data: { name: string }) {
+	patchInfoPartner(data: { id: number; name: string }) {
+		this.partnerForm.get('driverId').patchValue(data.id);
 		this.partnerForm.get('name').patchValue(data.name);
 	}
 
 	deleteNumberPhone(): void {
-		// const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-		// 	backdrop: 'static'
-		// });
-		// modalRef.componentInstance.data = {
-		// 	title: 'Xác nhận',
-		// 	message: `Nếu thay đổi số điện thoại, dữ liệu khách hàng sẽ thay đổi theo. Bạn có chắc chắn muốn thay đổi không?`,
-		// 	button: { class: 'btn-primary', title: 'Xác nhận' }
-		// };
-
-		// modalRef.result.then((result) => {
-		// 	if (result) {
 		this.partnerForm.get('phone').patchValue(null, pathValueWithoutEvent);
 		this.partnerForm.get('name').patchValue(null, pathValueWithoutEvent);
 		this.partnerForm.updateValueAndValidity();
-		// 	}
-		// });
 	}
 
 	buildForm(): void {
 		this.partnerForm = this.fb.group({
 			phone: [null, [Validators.required]],
 			name: [null, [Validators.required]],
-			carIds: [null],
-			limit: [null]
+			driverId: [null],
+			vehicleIds: [null],
+			cashLimitOil: this.fb.array([]),
+			cashLimitMoney: [null]
 		});
 
 		this.partnerForm.get('name').disable();
@@ -116,9 +143,16 @@ export class PartnerModalComponent implements OnInit {
 		if (this.partnerForm.invalid) {
 			return;
 		}
+
+		const data = {
+			...this.partnerForm.value,
+			driverId: Number(this.partnerForm.value.driverId),
+			cashLimitMoney: convertMoney(this.partnerForm.value.cashLimitMoney)
+		};
+
 		if (!this.isUpdate) {
 			this.partnerService
-				.createPartner(this.partnerForm.value)
+				.createPartner(data)
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
 					(res) => this.closeModal(res),
@@ -126,7 +160,7 @@ export class PartnerModalComponent implements OnInit {
 				);
 		} else {
 			this.partnerService
-				.updatePartner(this.partnerId, this.partnerForm.value)
+				.updatePartner(this.partnerId, data)
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
 					(res) => this.closeModal(res),
@@ -141,7 +175,21 @@ export class PartnerModalComponent implements OnInit {
 		}
 	}
 
-	checkError(err: IError) {}
+	checkError(err: IError) {
+		if (err?.code === 'SUN-OIL-4005') {
+			this.partnerForm.get('phone').setErrors({ notExisted: true });
+		}
+		if (err?.code === 'SUN-OIL-4866') {
+			this.partnerForm.get('phone').setErrors({ current: true });
+		}
+		if (err?.code === 'SUN-OIL-4868') {
+			this.partnerForm.get('phone').setErrors({ isEnterprise: true });
+		}
+		if (err?.code === 'SUN-OIL-4869') {
+			this.partnerForm.get('phone').setErrors({ existed: true });
+		}
+		this.cdr.detectChanges();
+	}
 
 	onClose(): void {
 		this.modal.close();

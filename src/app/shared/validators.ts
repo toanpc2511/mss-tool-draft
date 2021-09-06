@@ -34,4 +34,21 @@ export class TValidators extends Validators {
 			}
 			return null;
 		};
+
+	static max =
+		(max: number) =>
+		(control: FormControl): ValidationErrors | null => {
+			const value = control?.value as string;
+			if (typeof value === 'string') {
+				const valueOrigin = value?.replace(/,/g, '') || null;
+				if (valueOrigin && Number(valueOrigin) > max) {
+					return { max: true };
+				}
+			} else {
+				if (value) {
+					control.patchValue(formatMoney(value), { emitEvent: false, onlySelf: true });
+				}
+			}
+			return null;
+		};
 }

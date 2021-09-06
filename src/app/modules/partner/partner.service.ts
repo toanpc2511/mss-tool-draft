@@ -5,23 +5,50 @@ import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { ISortData } from '../contract/contract.service';
 
+export interface IPartner {
+	id: number;
+	name: string;
+	phone: string;
+	status: EPartnerStatus;
+	numberVariables: string[];
+}
+
 export enum EPartnerStatus {
-	WAITING_ACCEPTED = 'WAITING_ACCEPTED',
+	WAITING = 'WAITING',
 	ACCEPTED = 'ACCEPTED',
 	REJECTED = 'REJECTED'
 }
 
-export interface ICar {
+export interface IVehicle {
 	id: number;
 	name: string;
+	vehicleCompany: string;
+	color: string;
+	numberVariable: string;
+	type: 'CAR';
 }
 
-export interface IPartner {
-	id: number;
-	fullName: string;
-	phone: string;
-	cars: ICar[];
-	status: EPartnerStatus;
+export interface ICashLimit {
+	productId: number;
+	cashLimitOil: number;
+	unitCashLimitOil?: string;
+}
+export interface ICashLimitInfo {
+	rank: string;
+	cashLimitMoney: number;
+	userType: string;
+	cashLimitOilAccount: ICashLimit[];
+}
+
+export interface IPartnerInput {
+	driverId: number;
+	cashLimitOil: Array<{
+		productId: number;
+		cashLimitOil: number;
+		unitCashLimitOil?: string;
+	}>;
+	vehicleIds: IVehicle[];
+	cashLimitMoney: number;
 }
 
 @Injectable({
@@ -30,7 +57,7 @@ export interface IPartner {
 export class PartnerService {
 	constructor(private http: HttpService) {}
 
-	getPartner(
+	getPartners(
 		driverId: string,
 		page: number,
 		size: number,
@@ -40,87 +67,18 @@ export class PartnerService {
 		const params = new HttpParams()
 			.set('driver-id', driverId)
 			.set('page', page.toString())
-			.set('page', page.toString())
 			.set('size', size.toString())
 			.set('field-sort', sortData?.fieldSort || '')
 			.set('direction-sort', sortData?.directionSort || '')
 			.set('search-text', searchText || '');
 
-		return of<DataResponse<Array<IPartner>>>({
-			data: [
-				{
-					id: 1,
-					fullName: '1',
-					phone: '01927382',
-					cars: [
-						{ id: 1, name: '123' },
-						{ id: 2, name: '456' }
-					],
-					status: EPartnerStatus.ACCEPTED
-				},
-				{
-					id: 2,
-					fullName: '2',
-					phone: '01927383',
-					cars: [
-						{ id: 6, name: '12375' },
-						{ id: 7, name: '456445' },
-						{ id: 8, name: '456445' }
-					],
-					status: EPartnerStatus.REJECTED
-				},
-				{
-					id: 3,
-					fullName: '3',
-					phone: '3333333',
-					cars: [
-						{ id: 6, name: '3333333' },
-						{ id: 7, name: '333333' }
-					],
-					status: EPartnerStatus.WAITING_ACCEPTED
-				}
-			],
-			meta: {
-				code: 'SUN-OIL-200',
-				page: 1,
-				size: 15,
-				total: 3
-			}
+		return this.http.get<Array<IPartner>>('enterprises/child-account', {
+			params
 		});
-
-		// return this.http.get<Array<IPartner>>(`partners/enterprise`, {
-		// 	params
-		// });
 	}
 
-	getAllCars() {
-		return of<DataResponse<ICar[]>>({
-			data: [
-				{
-					id: 1,
-					name: '1244444444443'
-				},
-				{
-					id: 2,
-					name: '234444444444'
-				},
-				{
-					id: 3,
-					name: '344444444444445'
-				},
-				{
-					id: 5,
-					name: '344444444444445'
-				},
-				{
-					id: 7,
-					name: '344444444444445'
-				}
-			],
-			meta: {
-				code: 'SUN-OIL-200'
-			}
-		});
+	getAllVehicles() {
+		return this.http.get<IVehicle[]>('vehicles/enterprise/list');
 	}
 
 	getPartnerById(partnerId: number) {
@@ -128,11 +86,18 @@ export class PartnerService {
 	}
 
 	getPartnerByPhone(phoneNumber: string) {
-		return of<DataResponse<any>>(null);
+		const params = new HttpParams()
+			.set('phone-number', phoneNumber)
+			.set('callApiType', 'background');
+		return this.http.get<IPartner>('profiles/names', { params });
+	}
+
+	getCashLimit() {
+		return this.http.get<ICashLimitInfo>('cash-limit/enterprises');
 	}
 
 	createPartner(body: IPartner) {
-		return of<DataResponse<any>>(null);
+		return this.http.post<any>('enterprises/childes', body);
 	}
 
 	updatePartner(partnerId: number, body: IPartner) {

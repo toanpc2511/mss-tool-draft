@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
-import { EStatus } from 'src/app/shared/data-enum/enums';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -12,7 +11,7 @@ import { IPaginatorState, PaginatorState } from 'src/app/_metronic/shared/crud-t
 import { AuthService } from '../../auth/services/auth.service';
 import { ISortData } from '../../contract/contract.service';
 import { PartnerModalComponent } from '../partner-modal/partner-modal.component';
-import { EPartnerStatus, ICar, IPartner, PartnerService } from '../partner.service';
+import { EPartnerStatus, IVehicle, IPartner, PartnerService } from '../partner.service';
 
 @Component({
 	selector: 'app-list-partner',
@@ -21,6 +20,7 @@ import { EPartnerStatus, ICar, IPartner, PartnerService } from '../partner.servi
 	providers: [DestroyService]
 })
 export class ListPartnerComponent implements OnInit {
+	driverId = '';
 	searchFormControl: FormControl = new FormControl();
 	sortData: ISortData;
 	eStatus = EPartnerStatus;
@@ -34,6 +34,7 @@ export class ListPartnerComponent implements OnInit {
 		private modalService: NgbModal,
 		private destroy$: DestroyService
 	) {
+		this.driverId = authService.getCurrentUserValue().driverAuth.driverId;
 		this.init();
 	}
 
@@ -45,8 +46,8 @@ export class ListPartnerComponent implements OnInit {
 				startWith(''),
 				debounceTime(400),
 				switchMap(() => {
-					return this.partnerService.getPartner(
-						this.authService.getCurrentUserValue().driverAuth.driverId,
+					return this.partnerService.getPartners(
+						this.driverId,
 						this.paginatorState.page,
 						this.paginatorState.pageSize,
 						this.searchFormControl.value,
@@ -67,9 +68,20 @@ export class ListPartnerComponent implements OnInit {
 		this.paginatorState.pageSizes = [5, 10, 15, 20];
 		this.paginatorState.total = 0;
 		this.sortData = null;
+		this.getPartners();
 	}
 
-	getPartners() {}
+	getPartners() {
+		this.partnerService
+			.getPartners(
+				this.driverId,
+				this.paginatorState.page,
+				this.paginatorState.pageSize,
+				this.searchFormControl.value,
+				this.sortData
+			)
+			.subscribe((res) => (this.dataSource = res.data));
+	}
 
 	sort(column: string) {
 		if (this.sortData && this.sortData.fieldSort === column) {
@@ -105,6 +117,8 @@ export class ListPartnerComponent implements OnInit {
 			modalRef.componentInstance.partnerId = partnerId;
 		}
 		modalRef.result.then((result) => {
+			console.log(result);
+
 			if (result) {
 				this.init();
 				this.getPartners();
@@ -119,7 +133,7 @@ export class ListPartnerComponent implements OnInit {
 		});
 		const data: IConfirmModalData = {
 			title: 'Xác nhận',
-			message: `Bạn có chắc chắn muốn xoá tài xế ${partner.fullName}?`,
+			message: `Bạn có chắc chắn muốn xoá tài xế ${partner.name}?`,
 			button: { class: 'btn-primary', title: 'Xác nhận' }
 		};
 		modalRef.componentInstance.data = data;
