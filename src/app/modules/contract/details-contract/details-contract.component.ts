@@ -79,14 +79,9 @@ export class DetailsContractComponent implements OnInit {
     modalRef.componentInstance.data = {
       title: 'Từ chối hợp đồng',
       contract: data,
-      type: 'REJECT'
+      type: 'REJECT',
+      customerId: this.customerId
     };
-
-    await modalRef.result.then((result) => {
-      if (result) {
-        this.router.navigate(['/hop-dong/danh-sach']);
-      }
-    });
   }
 
   async acceptContract($event?: Event, data?: IDataTransfer) {
@@ -101,14 +96,9 @@ export class DetailsContractComponent implements OnInit {
     modalRef.componentInstance.data = {
       title: 'Xác nhận hợp đồng',
       contract: data,
-      type: 'ACCEPTED'
+      type: 'ACCEPTED',
+      customerId: this.customerId
     };
-
-    await modalRef.result.then((result) => {
-      if (result) {
-        this.router.navigate(['/hop-dong/danh-sach']);
-      }
-    });
   }
 
   downloadFile(fileUrl: string) {

@@ -18,7 +18,49 @@
 }
 
 table {
+  min-width: 1024px;
+
   thead th{
     text-transform: none;
+  }
+
+  td {
+    &.name {
+      max-width: 200px;
+    }
+    &.phone {
+      max-width: 200px;
+    }
+    &.rank {
+      max-width: 150px;
+    }
+    &.location {
+      max-width: 220px;
+    }
+    &.profileStatus {
+      max-width: 160px;
+    }
+    &.status {
+      max-width: 160px;
+    }
+    &.action {
+      min-width: 70px;
+    }
+  }
+
+  .location {
+    max-width: 350px;
+  }
+
+  tr {
+    &:hover {
+      background-color: #f3f6f9;
+
+      td {
+        .btn.btn-light {
+          background-color: #ffffff;
+        }
+      }
+    }
   }
 }
