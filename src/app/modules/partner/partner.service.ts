@@ -40,6 +40,23 @@ export interface ICashLimitInfo {
 	cashLimitOilAccount: ICashLimit[];
 }
 
+export interface ICashLimitOilChildNMaster {
+	productId: number;
+	productName: string;
+	cashLimitOilChild: number;
+	cashLimitOilMaster: number;
+}
+
+export interface ICashLimitMoneyChildNMaster {
+	cashLimitMoneyChild: number;
+	cashLimitMoneyMaster: number;
+}
+
+export interface IPartnerData {
+	driverInfo: IPartner;
+	cashLimitMoneyChildNMaster: ICashLimitMoneyChildNMaster;
+	cashLimitOilChildNMaster: ICashLimitOilChildNMaster[];
+}
 export interface IPartnerInput {
 	driverId: number;
 	cashLimitOil: Array<{
@@ -82,7 +99,7 @@ export class PartnerService {
 	}
 
 	getPartnerById(partnerId: number) {
-		return of<DataResponse<IPartner>>(null);
+		return this.http.get<IPartnerData>(`ticket-assign/childes/${partnerId}`);
 	}
 
 	getPartnerByPhone(phoneNumber: string) {

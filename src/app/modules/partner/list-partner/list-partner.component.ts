@@ -80,7 +80,10 @@ export class ListPartnerComponent implements OnInit {
 				this.searchFormControl.value,
 				this.sortData
 			)
-			.subscribe((res) => (this.dataSource = res.data));
+			.subscribe((res) => {
+				this.dataSource = res.data;
+				this.cdr.detectChanges();
+			});
 	}
 
 	sort(column: string) {
@@ -117,8 +120,6 @@ export class ListPartnerComponent implements OnInit {
 			modalRef.componentInstance.partnerId = partnerId;
 		}
 		modalRef.result.then((result) => {
-			console.log(result);
-
 			if (result) {
 				this.init();
 				this.getPartners();

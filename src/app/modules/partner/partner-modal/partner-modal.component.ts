@@ -52,7 +52,9 @@ export class PartnerModalComponent implements OnInit {
 				.getPartnerById(this.partnerId)
 				.pipe(takeUntil(this.destroy$))
 				.subscribe((res) => {
-					this.partnerForm.patchValue(res.data);
+					console.log(res);
+
+					// this.partnerForm.patchValue(res.data);
 				});
 			this.partnerForm.get('phone').disable();
 		}
@@ -71,14 +73,14 @@ export class PartnerModalComponent implements OnInit {
 			.subscribe((res) => {
 				if (res.data) {
 					const vehicleFormArray = this.fb.array(
-						res.data.cashLimitOilAccount.map((cashLimit) => {
+						res.data.cashLimitOilAccount?.map((cashLimit) => {
 							return this.fb.group({
 								productId: [cashLimit.productId],
 								cashLimitOil: [null, [TValidators.min(1), TValidators.max(cashLimit.cashLimitOil)]],
 								maxCashLimitOil: [cashLimit.cashLimitOil],
 								unitCashLimitOil: [cashLimit.unitCashLimitOil]
 							});
-						})
+						}) || []
 					);
 					this.partnerForm.setControl('cashLimitOil', vehicleFormArray);
 					this.cashLimitOilFormArray = this.partnerForm.get('cashLimitOil') as FormArray;
