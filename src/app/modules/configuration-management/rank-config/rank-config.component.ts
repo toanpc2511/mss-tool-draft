@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../shared/services/destroy.service';
-import { ConfigurationManagementService, IRank } from '../configuration-management.service';
+import { ConfigurationManagementService } from '../configuration-management.service';
+import { IError } from '../../../shared/models/error.model';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-rank-config',
@@ -14,10 +16,7 @@ export class RankConfigComponent implements OnInit {
   permissionForm: FormGroup;
   moduleAccordion: NgbAccordion;
   groupAccordions: Array<NgbAccordion>;
-
-  rankForm: FormGroup;
-  data: Array<IRank> = [];
-  newData;
+  configRankFormArray: FormArray = new FormArray([]);
 
   @ViewChild('moduleAccordion', { static: false }) set module(element: NgbAccordion) {
     this.moduleAccordion = element;
@@ -27,6 +26,7 @@ export class RankConfigComponent implements OnInit {
     private fb: FormBuilder,
     private configManagement: ConfigurationManagementService,
     private cdr: ChangeDetectorRef,
+    private destroy$: DestroyService
   ) {
   }
 
@@ -37,13 +37,43 @@ export class RankConfigComponent implements OnInit {
   getListRank() {
     this.configManagement.getListRank()
       .subscribe((res) => {
-        this.data = res.data;
-        sessionStorage.tt = res.data;
+        this.configRankFormArray = this.fb.array(
+          res.data.map((x) => {
+            return this.fb.group({
+              id: [x.id],
+              name: [x.name],
+              score: [x.score],
+              introduction: [x.introduction],
+              policy: [x.policy],
+              promotion: [x.promotion]
+            });
+          })
+        );
         this.cdr.detectChanges();
       });
   }
 
   onSubmit() {
+    const req = {
+      rankRequests: this.configRankFormArray.value
+    };
+    this.configManagement.updateRankConfig(req)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => {
+          setTimeout(() => {
+            this.getListRank();
+          }, 300);
+        },
+        (err: IError) => this.checkError(err)
+      );
+  }
+
+  checkError(error: IError) {
+    console.log(error);
+  }
+
+  cancel() {
     this.getListRank();
   }
 
