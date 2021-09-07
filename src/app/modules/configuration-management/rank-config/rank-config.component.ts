@@ -59,18 +59,7 @@ export class RankConfigComponent implements OnInit {
     };
     this.configManagement.updateRankConfig(req)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        () => {
-          setTimeout(() => {
-            this.getListRank();
-          }, 300);
-        },
-        (err: IError) => this.checkError(err)
-      );
-  }
-
-  checkError(error: IError) {
-    console.log(error);
+      .subscribe();
   }
 
   cancel() {
@@ -86,5 +75,10 @@ export class RankConfigComponent implements OnInit {
       this.groupAccordions?.length > 0 &&
       this.groupAccordions.some((ga) => ga.activeIds.includes(groupId))
     );
+  }
+
+  autoGrowTextZone(e) {
+    e.target.style.height = "auto";
+    e.target.style.height = (e.target.scrollHeight + 10)+"px";
   }
 }

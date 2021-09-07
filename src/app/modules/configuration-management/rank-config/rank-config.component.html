@@ -22,9 +22,11 @@
                 </div>
               </ng-template>
               <ng-template ngbPanelContent [formGroup]='item'>
-                <div class='mb-3'>
+                <div class='mb-8'>
                   <label for='chinh-sach'>Chính sách</label>
                   <textarea
+                    (keyup)="autoGrowTextZone($event)"
+                    (click)="autoGrowTextZone($event)"
                     class='form-control form-control-solid'
                     id='chinh-sach'
                     placeholder='Nhập chính sách'
@@ -35,9 +37,11 @@
                   ></textarea>
                 </div>
 
-                <div class='mb-3'>
+                <div class='mb-8'>
                   <label for='gioi-thieu'>Giới thiệu</label>
                   <textarea
+                    (keyup)="autoGrowTextZone($event)"
+                    (click)="autoGrowTextZone($event)"
                     class='form-control form-control-solid'
                     id='gioi-thieu'
                     placeholder='Nhập giới thiệu'
@@ -48,9 +52,11 @@
                   ></textarea>
                 </div>
 
-                <div class='mb-3'>
+                <div class='mb-8'>
                   <label for='uu-dai'>Ưu đãi</label>
                   <textarea
+                    (keyup)="autoGrowTextZone($event)"
+                    (click)="autoGrowTextZone($event)"
                     class='form-control form-control-solid'
                     id='uu-dai'
                     placeholder='Nhập ưu đãi'
