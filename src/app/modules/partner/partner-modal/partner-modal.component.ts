@@ -54,6 +54,7 @@ export class PartnerModalComponent implements OnInit {
 				.subscribe((res) => {
 					this.partnerForm.patchValue(res.data);
 				});
+			this.partnerForm.get('phone').disable();
 		}
 
 		this.partnerService
@@ -176,8 +177,8 @@ export class PartnerModalComponent implements OnInit {
 	}
 
 	checkError(err: IError) {
-		if (err?.code === 'SUN-OIL-4005') {
-			this.partnerForm.get('phone').setErrors({ notExisted: true });
+		if (err?.code === 'SUN-OIL-4005' || err?.code === 'SUN-OIL-4834') {
+			this.partnerForm.get('phone').setErrors({ notFound: true });
 		}
 		if (err?.code === 'SUN-OIL-4866') {
 			this.partnerForm.get('phone').setErrors({ current: true });

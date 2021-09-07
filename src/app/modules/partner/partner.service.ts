@@ -101,6 +101,10 @@ export class PartnerService {
 	}
 
 	updatePartner(partnerId: number, body: IPartner) {
-		return of<DataResponse<any>>(null);
+		return this.http.put<any>(`ticket-assign/childes/${partnerId}`, body);
+	}
+
+	deletePartner(partnerId: number) {
+		return this.http.delete(`enterprises/${partnerId}`);
 	}
 }

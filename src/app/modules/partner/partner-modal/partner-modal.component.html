@@ -1,6 +1,8 @@
 <div class="modal-content">
 	<div class="modal-header">
-		<h4 class="modal-title" id="modal-title">{{ isUpdate ? 'Sửa tài xế' : 'Thêm mới tài xế' }}</h4>
+		<h4 class="modal-title" id="modal-title">
+			{{ isUpdate ? 'Sửa thông tin tài xế' : 'Thêm mới tài xế' }}
+		</h4>
 		<div class="close-icon" (click)="modal.close()"></div>
 	</div>
 	<div class="modal-body">
@@ -29,7 +31,7 @@
 						></app-validate>
 						<app-validate
 							[control]="partnerForm.controls['phone']"
-							[error]="'notExisted'"
+							[error]="'notFound'"
 							[message]="'Không tìm thấy số điện thoại'"
 						></app-validate>
 						<app-validate
@@ -41,6 +43,11 @@
 							[control]="partnerForm.controls['phone']"
 							[error]="'isEnterprise'"
 							[message]="'Tài khoản là chủ doanh nghiệp vận tải'"
+						></app-validate>
+						<app-validate
+							[control]="partnerForm.controls['phone']"
+							[error]="'existed'"
+							[message]="'Tài khoản con đã tồn tại'"
 						></app-validate>
 					</div>
 
