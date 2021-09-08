@@ -2,17 +2,17 @@
 import camelize from 'camelize';
 export class DataResponse<T> {
 	meta: {
-		code: string;
-		errors: [
+		code?: string;
+		errors?: [
 			{
-				description: string;
-				field: string;
+				description?: string;
+				field?: string;
 			}
 		];
-		message: string;
-		page: number;
-		size: number;
-		total: number;
+		message?: string;
+		page?: number;
+		size?: number;
+		total?: number;
 	};
 	data?: T;
 	constructor(response: any) {
