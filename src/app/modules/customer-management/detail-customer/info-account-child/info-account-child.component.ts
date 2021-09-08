@@ -2,8 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CustomerManagementService, IAccountChild, ISortData } from '../../customer-management.service';
 import { IPaginatorState, PaginatorState } from '../../../../_metronic/shared/crud-table';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 
@@ -18,9 +17,9 @@ export class InfoAccountChildComponent implements OnInit {
   sortData: ISortData;
   paginatorState = new PaginatorState();
   dataSource: Array<IAccountChild> = [];
-  driverId: number;
+  driverId: string;
   listVehicle;
-  limitOil;
+  listLimitOils = [];
 
   constructor(
     private customerManagementService: CustomerManagementService,
@@ -80,12 +79,7 @@ export class InfoAccountChildComponent implements OnInit {
       .subscribe(
         (res) => {
           if (res.data) {
-            console.log(res.data);
             this.dataSource = res.data;
-            this.dataSource.filter(
-              (item) => {
-                console.log(item);
-              });
 
             this.paginatorState.recalculatePaginator(res.meta.total);
             this.cdr.detectChanges();
@@ -112,4 +106,3 @@ export class InfoAccountChildComponent implements OnInit {
     this.getListChildAccounts();
   }
 }
-

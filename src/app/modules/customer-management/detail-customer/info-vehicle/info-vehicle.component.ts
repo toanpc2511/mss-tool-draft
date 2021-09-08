@@ -21,7 +21,7 @@ export class InfoVehicleComponent implements OnInit {
   nameVehicle: string;
   image1: string;
   image2: string;
-  driverId: number;
+  driverId: string;
 
   constructor(
     private modalService: NgbModal,

@@ -22,19 +22,19 @@
     <div class='table-responsive angular-bootstrap-table'>
       <table class='table table-head-custom table-vertical-center overflow-hidden' aria-describedby='list-customer'>
         <thead id='thead'>
-        <th id='name'>
+        <th id='phone'>
           Số điện thoại
           <app-sort-icon
-            column='name'
+            column='phone'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
           ></app-sort-icon>
         </th>
-        <th id='type-vehicle'>
+        <th id='number-variable'>
           Biển kiểm soát
           <app-sort-icon
-            column='typeVehicle'
+            column='number_variable'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -43,7 +43,7 @@
         <th id='money-limit' class='text-right'>
           Hạn mức tiền
           <app-sort-icon
-            column='licensePlates'
+            column='cashLimit_money'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -51,17 +51,11 @@
         </th>
         <th id='license'>
           Hạn mức nhiên liệu
-          <app-sort-icon
-            column='licensePlates'
-            [activeColumn]='sortData?.fieldSort'
-            [activeDirection]='sortData?.directionSort'
-            (sort)='sort($event)'
-          ></app-sort-icon>
         </th>
         <th id='licens'>
           Trạng thái
           <app-sort-icon
-            column='licensePlates'
+            column='status'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -78,8 +72,8 @@
           </td>
 
           <td class='type-vehicle'>
-            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.numberVariable.join(", ")'>
-            {{ item.numberVariable.join(', ') }}
+            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.numberVariable?.join(", ")'>
+              {{ item.numberVariable?.join(', ') }}
             </p>
           </td>
 
@@ -94,13 +88,14 @@
           </td>
 
           <td class='license-plates'>
-            <p
-              class='cursor-pointer text-ellipsis'
-              placement='top'
-              [ngbTooltip]='item.cashLimitMoney'
-            >
-              {{ item.cashLimitMoney}}
-            </p>
+            <div *ngFor='let x of item.cashLimitOilResponses'>
+              <p
+                class='cursor-pointer text-ellipsis' placement='top'
+                [ngbTooltip]='x.productName + " - " + x.cashLimitOil + " " + x.unitCashLimitOil'
+              >
+                {{x.productName}} - {{x.cashLimitOil}} {{x.unitCashLimitOil}}
+              </p>
+            </div>
           </td>
 
           <td class='status'>

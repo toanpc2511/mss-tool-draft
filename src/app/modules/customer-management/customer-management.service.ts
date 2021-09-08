@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { HttpService } from '../../shared/services/http.service';
-import { IProductInfo } from '../product/product.service';
 
 export interface ISortData {
   fieldSort: string;
@@ -10,10 +9,14 @@ export interface ISortData {
 }
 
 export interface ICustomers {
-  id: number;
+  id: string;
   name: string;
   phone: string;
-  rank: string;
+  rank: {
+    id: number;
+    code: string;
+    name: string;
+  },
   location: string;
   profileStatus: 'UNCONFIRMED' | 'SUCCESS' | 'UN_SUCCESS';
   status: 'ACTIVE' | 'LOCK' | 'DELETE';
@@ -25,7 +28,7 @@ export interface IInfoCutomer {
   phone: string;
   location: string;
   rank: string;
-  idCard:  string;
+  idCard: string;
   dateOfBirth: string;
   userType: string;
   accountStatus: 'ACTIVE' | 'LOCK' | 'DELETE';
@@ -34,6 +37,7 @@ export interface IInfoCutomer {
   cashLimitOilAccount: [
     {
       productId: number;
+      productName: string;
       cashLimitOil: number;
       unitCashLimitOil: string;
     }
@@ -140,55 +144,57 @@ export class CustomerManagementService {
   }
 
   // Cập nhập thông tin khách hàng
-  updateCustomer(customerId: number, itemUpdate) {
-    return this.http.put(`customers/${customerId}`, itemUpdate);
+  updateCustomer(customerId: string, itemUpdate) {
+    const params = new HttpParams()
+      .set('account-id', customerId);
+    return this.http.put(`customers`, itemUpdate, { params });
   }
 
   //  Lấy thông tin khách hàng
-  getCustomerInfo(driverId: number) {
+  getCustomerInfo(driverId: string) {
     const params = new HttpParams()
-      .set('account-id', driverId.toString())
+      .set('account-id', driverId)
       .set('user-type', 'ENTERPRISE');
 
-    return this.http.get<Array<IInfoCutomer>>('customers/info', { params });
+    return this.http.get<Array<IInfoCutomer>>('customers/infos', { params });
   }
 
   // Lấy danh sách xe
-  getListVehicles(page: number, size: number, searchText: string, sortData: ISortData, driverId: number) {
+  getListVehicles(page: number, size: number, searchText: string, sortData: ISortData, driverId: string) {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
       .set('search-text', searchText || '')
-      .set('driver-id', driverId.toString());
+      .set('driver-id', driverId);
 
     return this.http.get<Array<IVehicles>>('vehicles', { params });
   }
 
   // Lấy danh sách thông tin tài khoản con
 
-  getListChildAccounts(page: number, size: number, searchText: string, sortData: ISortData, driverId: number) {
+  getListChildAccounts(page: number, size: number, searchText: string, sortData: ISortData, driverId: string) {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
       .set('search-text', searchText || '')
-      .set('driver-id', driverId.toString());
+      .set('driver-id', driverId);
 
-    return this.http.get<Array<IAccountChild>>('customers/child-accounts', { params });
+    return this.http.get<Array<IAccountChild>>('customers/accounts-children', { params });
   }
 
   // Lấy danh sách hợp đồng của khách hàng
-  getListContractByCustomer(page: number, size: number, searchText: string, sortData: ISortData, driverId: number) {
+  getListContractByCustomer(page: number, size: number, searchText: string, sortData: ISortData, driverId: string) {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
       .set('search-text', searchText || '')
-      .set('driver-id', driverId.toString());
+      .set('driver-id', driverId);
 
     return this.http.get<Array<IContract>>('contracts/enterprise', { params });
   }
