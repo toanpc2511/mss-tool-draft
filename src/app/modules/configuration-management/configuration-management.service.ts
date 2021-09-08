@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
-import { HttpParams } from '@angular/common/http';
 
 export interface IRank {
   id: number;
@@ -11,11 +10,21 @@ export interface IRank {
   promotion: string;
 }
 
+export interface IRankStock {
+  id: number;
+  nameRank: string;
+  nameProduct: string;
+  scoreExportInvoice: number;
+  scoreNoInvoice: number;
+  discount: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigurationManagementService {
-  constructor(private http: HttpService) {}
+  constructor(private http: HttpService) {
+  }
 
   // Lấy danh sách cấu hình hạng
   getListRank() {
@@ -25,5 +34,10 @@ export class ConfigurationManagementService {
   // Sửa cấu hình hạng
   updateRankConfig(rankConfig) {
     return this.http.put<any>(`ranks`, rankConfig);
+  }
+
+  // Lấy ds cấu hình tích điểm
+  getListRankStock() {
+    return this.http.get<Array<IRankStock>>('rank-stock');
   }
 }
