@@ -1,1 +1,88 @@
-<p>discount-config works!</p>
+<div class="mt-1 card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title row w-100">
+			<div class="p-0 col-lg-6">
+				<h3 class="card-label">Danh sách cấu hình chiết khấu</h3>
+			</div>
+			<div class="col-lg-6 d-flex justify-content-end">
+				<div class="search-form w-100 w-lg-260px">
+					<em class="flaticon-search"></em>
+					<input
+						type="text"
+						name="searchText"
+						placeholder="Search..."
+						class="form-control"
+						[formControl]="searchFormControl"
+					/>
+				</div>
+			</div>
+		</div>
+		<strong class="text-danger w-100">Lưu ý: Mỗi lít nhiên liệu khách hàng mua sẽ nhận được</strong>
+		<strong class="text-danger w-100">- Mỗi lít nhiên liệu khách hàng mua sẽ nhận được</strong>
+		<strong class="text-danger w-100">- Mỗi lít nhiên liệu khách hàng mua sẽ nhận được</strong>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table overflow-hidden table-head-custom table-vertical-center" aria-label="">
+				<thead>
+					<th scope="">
+						Hạng
+						<app-sort-icon
+							column="name"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Loại nhiên liệu
+						<app-sort-icon
+							column="productName"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Cấu hình chiết khấu
+						<app-sort-icon
+							column="moneyDiscount"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of dataSource.controls" [formGroup]="item">
+						<td class="rank">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.get('name').value "
+							>
+								{{ item.get('name').value }}
+							</p>
+						</td>
+						<td class="rank">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.get('productName').value "
+							>
+								{{ item.get('productName').value }}
+							</p>
+						</td>
+						<td class="rank">
+							<input
+								class="form-control w-50"
+								[value]="item.get('moneyDiscount').value"
+								placeholder="Nhập chiết khấu"
+							/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
