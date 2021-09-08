@@ -2,16 +2,23 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subject } from 'rxjs';
-import { catchError, concatMap, debounceTime, filter, takeUntil } from 'rxjs/operators';
+import {
+	catchError,
+	concatMap,
+	debounceTime,
+	skipUntil,
+	takeUntil,
+	takeWhile
+} from 'rxjs/operators';
 import { pathValueWithoutEvent } from 'src/app/shared/data-enum/patch-value-without-event';
-import { convertMoney, formatMoney } from 'src/app/shared/helpers/functions';
+import { convertMoney } from 'src/app/shared/helpers/functions';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
 import { AuthService } from '../../auth/services/auth.service';
-import { IProduct, ProductService } from '../../product/product.service';
-import { EPartnerStatus, IVehicle, PartnerService } from '../partner.service';
+import { IProduct } from '../../product/product.service';
+import { EPartnerStatus, IPartnerData, IVehicle, PartnerService } from '../partner.service';
 
 @Component({
 	selector: 'app-partner-modal',
@@ -29,6 +36,9 @@ export class PartnerModalComponent implements OnInit {
 	isLoadingFormSubject = new Subject<boolean>();
 	isLoadingForm$ = this.isLoadingFormSubject.asObservable();
 
+	isInitCashOilSubject = new Subject<void>();
+	isInitCashOil$ = this.isInitCashOilSubject.asObservable();
+
 	isUpdate = false;
 	cashLimitMoney = 0;
 	oils: IProduct[] = [];
@@ -45,20 +55,6 @@ export class PartnerModalComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.buildForm();
-		if (this.partnerId) {
-			this.isUpdate = true;
-			this.partnerService
-				.getPartnerById(this.partnerId)
-				.pipe(takeUntil(this.destroy$))
-				.subscribe((res) => {
-					console.log(res);
-
-					// this.partnerForm.patchValue(res.data);
-				});
-			this.partnerForm.get('phone').disable();
-		}
-
 		this.partnerService
 			.getAllVehicles()
 			.pipe(takeUntil(this.destroy$))
@@ -66,6 +62,8 @@ export class PartnerModalComponent implements OnInit {
 				this.vehicles = res.data;
 				this.cdr.detectChanges();
 			});
+
+		this.buildForm();
 
 		this.partnerService
 			.getCashLimit()
@@ -90,8 +88,38 @@ export class PartnerModalComponent implements OnInit {
 						.setValidators([TValidators.min(1), TValidators.max(this.cashLimitMoney)]);
 					this.partnerForm.updateValueAndValidity();
 					this.isLoadingFormSubject.next(true);
+					this.isInitCashOilSubject.next();
 				}
 			});
+
+		if (this.partnerId) {
+			this.isUpdate = true;
+			this.partnerService
+				.getPartnerById(this.partnerId)
+				.pipe(skipUntil(this.isInitCashOil$), takeUntil(this.destroy$))
+				.subscribe((res) => {
+					this.patchInfoParterUpdate(res.data);
+				});
+			this.partnerForm.get('phone').disable();
+		}
+	}
+
+	patchInfoParterUpdate(partnerData: IPartnerData) {
+		this.partnerForm.get('phone').patchValue(partnerData.driverInfo.phone, pathValueWithoutEvent);
+		this.partnerForm.get('name').patchValue(partnerData.driverInfo.name, pathValueWithoutEvent);
+		this.partnerForm.get('driverId').patchValue(partnerData.driverInfo.id, pathValueWithoutEvent);
+		this.partnerForm
+			.get('vehicleIds')
+			.patchValue(partnerData.driverInfo.numberVariables, pathValueWithoutEvent);
+		this.partnerForm
+			.get('cashLimitOil')
+			.patchValue(partnerData.cashLimitOilChildNMaster, pathValueWithoutEvent);
+		this.partnerForm
+			.get('cashLimitMoney')
+			.patchValue(
+				partnerData.cashLimitMoneyChildNMaster.cashLimitMoneyChild,
+				pathValueWithoutEvent
+			);
 	}
 
 	patchInfoPartner(data: { id: number; name: string }) {
