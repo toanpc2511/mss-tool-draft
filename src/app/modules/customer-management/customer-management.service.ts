@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { HttpService } from '../../shared/services/http.service';
+import { IProductInfo } from '../product/product.service';
 
 export interface ISortData {
   fieldSort: string;
@@ -55,6 +56,23 @@ export interface IVehicles {
       face: string;
     }
   ]
+}
+
+export interface IAccountChild {
+  accountId: number;
+  cashLimitMoney: number;
+  phone: string;
+  status: 'ACTIVE' | 'LOCK' | 'DELETE';
+  unitCashLimitMoney: string;
+  cashLimitOilResponses: [
+    {
+      productId: number;
+      productName: string;
+      cashLimitOil: number;
+      unitCashLimitOil: string;
+    }
+  ];
+  numberVariable: [string]
 }
 
 export interface IContract {
@@ -113,13 +131,17 @@ export class CustomerManagementService {
   getLisrCustomer(page: number, size: number, searchText: string, sortData: ISortData) {
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('page', page.toString())
       .set('size', size.toString())
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
       .set('search-text', searchText || '');
 
     return this.http.get<Array<ICustomers>>('customers', { params });
+  }
+
+  // Cập nhập thông tin khách hàng
+  updateCustomer(customerId: number, itemUpdate) {
+    return this.http.put(`customers/${customerId}`, itemUpdate);
   }
 
   //  Lấy thông tin khách hàng
@@ -135,7 +157,6 @@ export class CustomerManagementService {
   getListVehicles(page: number, size: number, searchText: string, sortData: ISortData, driverId: number) {
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('page', page.toString())
       .set('size', size.toString())
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
@@ -145,10 +166,23 @@ export class CustomerManagementService {
     return this.http.get<Array<IVehicles>>('vehicles', { params });
   }
 
+  // Lấy danh sách thông tin tài khoản con
+
+  getListChildAccounts(page: number, size: number, searchText: string, sortData: ISortData, driverId: number) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('field-sort', sortData?.fieldSort || '')
+      .set('direction-sort', sortData?.directionSort || '')
+      .set('search-text', searchText || '')
+      .set('driver-id', driverId.toString());
+
+    return this.http.get<Array<IAccountChild>>('customers/child-accounts', { params });
+  }
+
   // Lấy danh sách hợp đồng của khách hàng
   getListContractByCustomer(page: number, size: number, searchText: string, sortData: ISortData, driverId: number) {
     const params = new HttpParams()
-      .set('page', page.toString())
       .set('page', page.toString())
       .set('size', size.toString())
       .set('field-sort', sortData?.fieldSort || '')

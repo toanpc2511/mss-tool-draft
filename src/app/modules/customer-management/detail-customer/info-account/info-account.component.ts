@@ -40,25 +40,28 @@ export class InfoAccountComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activeRoute.params.subscribe((res) => {
+      this.customerId = res.customerId;
+    });
+
     this.buildInfoForm();
     this.getCustomerInfo();
   }
 
   getCustomerInfo() {
-    this.activeRoute.params
-      .pipe(
-        pluck('customerId'),
-        filter((customerId: number) => !!customerId),
-        switchMap((customerId: number) => {
-          return this.customerManagementService.getCustomerInfo(customerId);
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((res) => {
-        this.dataSource = res.data;
-        this.pathValueForm();
-        this.cdr.detectChanges();
-      });
+    this.customerManagementService
+      .getCustomerInfo(this.customerId)
+      .subscribe(
+        (res) => {
+          if (res.data) {
+            console.log(res.data);
+            this.dataSource = res.data;
+
+            this.pathValueForm();
+            this.cdr.detectChanges();
+          }
+        }
+      );
   }
 
   editNumber($event: Event, isReadonly: any) {
@@ -135,11 +138,11 @@ export class InfoAccountComponent implements OnInit {
   }
 
   onSubmit() {
-    const valuePhone = this.infoForm.get('phone').value;
-    const valueStatusContract = this.infoForm.get('statusContract').value;
-    const valueStatus = this.infoForm.get('status').value;
+    const phone = this.infoForm.get('phone').value;
+    const profileStatus = this.infoForm.get('statusContract').value;
+    const status = this.infoForm.get('status').value;
 
-    if (valuePhone !== this.dataSource?.phone) {
+    if (phone !== this.dataSource?.phone) {
       const modalRef = this.modalService.open(ConfirmDeleteComponent, {
         backdrop: 'static'
       });
@@ -151,12 +154,24 @@ export class InfoAccountComponent implements OnInit {
       modalRef.componentInstance.data = data;
 
       modalRef.result.then((result) => {
+        console.log(result);
         if (result) {
-          console.log(valuePhone, valueStatus, valueStatusContract);
+          const itemUpdate = {
+            phone,
+            profileStatus,
+            status
+          }
+          this.customerManagementService
+            .updateCustomer(
+              this.customerId,
+              itemUpdate
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
         }
       });
     } else {
-      console.log(valuePhone, valueStatus, valueStatusContract);
+      console.log('else');
     }
   }
 
