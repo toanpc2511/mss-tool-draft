@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class='card-body'>
-    <div class='note'>
+    <div class='text-danger w-100'>
       <p class='mb-2'>Lưu ý: 1 điểm tương ứng với 1 VNĐ</p>
       <p class='mb-2'>Mỗi lít nhiên liệu khách hàng mua sẽ được:</p>
       <ul>
@@ -51,14 +51,26 @@
         </th>
         <th id='no-invoice'>
           Cấu hình tích điểm (Điểm/Lít) (HK)
+          <app-sort-icon
+            column='scoreNoInvoice'
+            [activeColumn]='sorting.column'
+            [activeDirection]='sorting.direction'
+            (sort)='sort($event)'
+          ></app-sort-icon>
         </th>
         <th id='export-invoice'>
           Cấu hình tích điểm (Điểm/Lít) (HC)
+          <app-sort-icon
+            column='scoreExportInvoice'
+            [activeColumn]='sorting.column'
+            [activeDirection]='sorting.direction'
+            (sort)='sort($event)'
+          ></app-sort-icon>
         </th>
         </thead>
 
         <tbody>
-        <tr *ngFor='let item of configRankStockFormArray.controls'>
+        <tr *ngFor='let item of dataSource.controls'>
           <ng-container [formGroup]='item'>
             <td class='name-rank'>
               <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.get("nameRank").value'>
@@ -72,7 +84,7 @@
             </td>
             <td class='no-invoice text-right'>
               <input
-                placeholder='Nhập số lượng'
+                placeholder='Nhập số điểm'
                 class='form-control text-right pr-3'
                 formControlName='scoreNoInvoice'
                 maxlength='5'
@@ -110,12 +122,14 @@
       <button
         type='button'
         class='btn btn-outline-secondary btn-dialog mr-6'
+        (click)='cancel()'
       >
         Hủy
       </button>
       <button
         type='button'
         class='btn btn-primary btn-dialog'
+        (click)='onSubmit()'
       >
         Lưu
       </button>
