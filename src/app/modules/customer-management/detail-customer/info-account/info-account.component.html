@@ -142,17 +142,17 @@
             </td>
             <td>
               <p class='cursor-pointer text-ellipsis' placement='top' ngbTooltip='Tiền mặt'>
-                Tiền mặt (CT)
+                Tiền mặt
               </p>
             </td>
             <td class='amount text-right'>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='dataSource?.cashLimitMoney || 0'>
+              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='dataSource?.cashLimitMoney || "0"'>
                 {{dataSource?.cashLimitMoney || 0}}
               </p>
             </td>
             <td>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='dataSource?.userType'>
-                {{dataSource?.userType}}
+              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='dataSource?.userType || "VNĐ"'>
+                {{dataSource?.userType || 'VNĐ'}}
               </p>
             </td>
           </tr>
@@ -165,8 +165,8 @@
             </td>
 
             <td class='hanMuc'>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.typeHanMuc'>
-                {{ item.typeHanMuc }}
+              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.productName'>
+                {{ item.productName }}
               </p>
             </td>
 
@@ -197,8 +197,8 @@
 
   <div class='w-100 d-flex justify-content-center pb-10'>
     <button
-      class='btn btn-primary font-weight-bold m-2' style='color: #000'
-      [disabled]='submit'
+      class='btn btn-primary font-weight-bold m-2'
+      [disabled]='btnSubmit'
       (click)='onSubmit()'
     >
       Cập nhật

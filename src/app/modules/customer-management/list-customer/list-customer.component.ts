@@ -20,7 +20,7 @@ export class ListCustomerComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private  customerManagementService: CustomerManagementService,
+    private customerManagementService: CustomerManagementService,
     private cdr: ChangeDetectorRef,
     private destroy$: DestroyService
   ) {
