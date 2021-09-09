@@ -43,7 +43,7 @@
         <th id='money-limit' class='text-right'>
           Hạn mức tiền
           <app-sort-icon
-            column='cashLimit_money'
+            column='cash_limit_money'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -91,9 +91,9 @@
             <div *ngFor='let x of item.cashLimitOilResponses'>
               <p
                 class='cursor-pointer text-ellipsis' placement='top'
-                [ngbTooltip]='x.productName + " - " + x.cashLimitOil + " " + x.unitCashLimitOil'
+                [ngbTooltip]='x.productName + " - " + x.cashLimitOil.toLocaleString("en-US") + " " + x.unitCashLimitOil'
               >
-                {{x.productName}} - {{x.cashLimitOil}} {{x.unitCashLimitOil}}
+                {{x.productName}} - {{x.cashLimitOil.toLocaleString('en-US')}} {{x.unitCashLimitOil}}
               </p>
             </div>
           </td>
@@ -110,6 +110,12 @@
           </td>
         </tr>
         </tbody>
+
+        <tfoot *ngIf='dataSource.length === 0'>
+        <tr>
+          <td colspan='5' class='text-center' style='color: #ccc'>Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
       </table>
     </div>
     <app-paginator [paginator]='paginatorState' (paginate)='pagingChange($event)'></app-paginator>
