@@ -102,9 +102,10 @@ export class PartnerModalComponent implements OnInit {
 		this.partnerForm.get('name').patchValue(partnerData.driverInfo.name, pathValueWithoutEvent);
 		this.partnerForm.get('driverId').patchValue(partnerData.driverInfo.id, pathValueWithoutEvent);
 
-		this.partnerForm
-			.get('vehicleIds')
-			.patchValue(partnerData.driverInfo?.vehicles?.map((v) => v.id) || [], pathValueWithoutEvent);
+		this.partnerForm.get('vehicleIds').patchValue(
+			partnerData.vehicles?.map((v) => v.id),
+			pathValueWithoutEvent
+		);
 
 		const cashLimitOils = partnerData.cashLimitOilChildNmaster;
 

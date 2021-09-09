@@ -54,11 +54,11 @@ export interface ICashLimitMoneyChildNMaster {
 }
 
 export interface IPartnerData {
+	vehicles: IVehicle[];
 	driverInfo: {
 		id: number;
 		name: string;
 		phone: string;
-		vehicles: IVehicle[];
 	};
 	cashLimitMoneyChildNmaster: ICashLimitMoneyChildNMaster;
 	cashLimitOilChildNmaster: ICashLimitOilChildNMaster[];
