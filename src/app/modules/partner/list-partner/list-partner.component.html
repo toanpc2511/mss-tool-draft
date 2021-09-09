@@ -25,7 +25,7 @@
 					<th scope="">
 						Họ và tên
 						<app-sort-icon
-							column="fullName"
+							column="name"
 							[activeColumn]="sortData?.fieldSort"
 							[activeDirection]="sortData?.directionSort"
 							(sort)="sort($event)"
@@ -91,7 +91,7 @@
 
 						<td class="text-center action">
 							<a
-								(click)="openPartnerModal(item.id)"
+								(click)="openPartnerModal(item.ticketId)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 							>
 								<span

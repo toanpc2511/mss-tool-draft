@@ -6,7 +6,8 @@ import { HttpService } from 'src/app/shared/services/http.service';
 import { ISortData } from '../contract/contract.service';
 
 export interface IPartner {
-	id: number;
+	driverId: number;
+	ticketId: number;
 	name: string;
 	phone: string;
 	status: EPartnerStatus;
@@ -53,9 +54,14 @@ export interface ICashLimitMoneyChildNMaster {
 }
 
 export interface IPartnerData {
-	driverInfo: IPartner;
-	cashLimitMoneyChildNMaster: ICashLimitMoneyChildNMaster;
-	cashLimitOilChildNMaster: ICashLimitOilChildNMaster[];
+	driverInfo: {
+		id: number;
+		name: string;
+		phone: string;
+		vehicles: IVehicle[];
+	};
+	cashLimitMoneyChildNmaster: ICashLimitMoneyChildNMaster;
+	cashLimitOilChildNmaster: ICashLimitOilChildNMaster[];
 }
 export interface IPartnerInput {
 	driverId: number;
@@ -74,15 +80,8 @@ export interface IPartnerInput {
 export class PartnerService {
 	constructor(private http: HttpService) {}
 
-	getPartners(
-		driverId: string,
-		page: number,
-		size: number,
-		searchText: string,
-		sortData: ISortData
-	) {
+	getPartners(page: number, size: number, searchText: string, sortData: ISortData) {
 		const params = new HttpParams()
-			.set('driver-id', driverId)
 			.set('page', page.toString())
 			.set('size', size.toString())
 			.set('field-sort', sortData?.fieldSort || '')

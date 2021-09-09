@@ -5,19 +5,14 @@ import { IVehicle } from './partner.service';
 	name: 'carsDisplay'
 })
 export class CarsDisplayPipe implements PipeTransform {
-	transform(vehicles: IVehicle[], isToolTip?: boolean): string {
+	transform(vehicles: string[], isToolTip?: boolean): string {
 		const carLength = vehicles?.length;
 		if (carLength > 2 && !isToolTip) {
-			return (
-				vehicles
-					.slice(0, 2)
-					.map((c) => c.numberVariable)
-					.join(', ') + ` và ${carLength - 2} xe khác`
-			);
+			return vehicles.slice(0, 2).join(', ') + ` và ${carLength - 2} xe khác`;
 		}
 		if (!carLength) {
 			return null;
 		}
-		return vehicles.map((c) => c.numberVariable).join(', ');
+		return vehicles.join(', ');
 	}
 }

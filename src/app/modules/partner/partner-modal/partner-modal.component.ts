@@ -2,14 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subject } from 'rxjs';
-import {
-	catchError,
-	concatMap,
-	debounceTime,
-	skipUntil,
-	takeUntil,
-	takeWhile
-} from 'rxjs/operators';
+import { catchError, concatMap, debounceTime, skipUntil, takeUntil } from 'rxjs/operators';
 import { pathValueWithoutEvent } from 'src/app/shared/data-enum/patch-value-without-event';
 import { convertMoney } from 'src/app/shared/helpers/functions';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
@@ -108,16 +101,25 @@ export class PartnerModalComponent implements OnInit {
 		this.partnerForm.get('phone').patchValue(partnerData.driverInfo.phone, pathValueWithoutEvent);
 		this.partnerForm.get('name').patchValue(partnerData.driverInfo.name, pathValueWithoutEvent);
 		this.partnerForm.get('driverId').patchValue(partnerData.driverInfo.id, pathValueWithoutEvent);
+
 		this.partnerForm
 			.get('vehicleIds')
-			.patchValue(partnerData.driverInfo.numberVariables, pathValueWithoutEvent);
-		this.partnerForm
-			.get('cashLimitOil')
-			.patchValue(partnerData.cashLimitOilChildNMaster, pathValueWithoutEvent);
+			.patchValue(partnerData.driverInfo?.vehicles?.map((v) => v.id) || [], pathValueWithoutEvent);
+
+		const cashLimitOils = partnerData.cashLimitOilChildNmaster;
+
+		for (let i = 0; i < cashLimitOils.length; i++) {
+			const group = this.cashLimitOilFormArray.at(i);
+			group
+				.get('cashLimitOil')
+				.patchValue(cashLimitOils[i].cashLimitOilChild, pathValueWithoutEvent);
+			group.get('maxCashLimitOil').patchValue(cashLimitOils[i].cashLimitOilMaster);
+		}
+
 		this.partnerForm
 			.get('cashLimitMoney')
 			.patchValue(
-				partnerData.cashLimitMoneyChildNMaster.cashLimitMoneyChild,
+				partnerData.cashLimitMoneyChildNmaster.cashLimitMoneyChild,
 				pathValueWithoutEvent
 			);
 	}
@@ -175,10 +177,16 @@ export class PartnerModalComponent implements OnInit {
 			return;
 		}
 
+		const formValue = this.partnerForm.getRawValue();
+
 		const data = {
-			...this.partnerForm.value,
+			...formValue,
 			driverId: Number(this.partnerForm.value.driverId),
-			cashLimitMoney: convertMoney(this.partnerForm.value.cashLimitMoney)
+			cashLimitOil: formValue.cashLimitOil.map((c) => ({
+				...c,
+				cashLimitOil: convertMoney(c.cashLimitOil)
+			})),
+			cashLimitMoney: convertMoney(formValue.cashLimitMoney)
 		};
 
 		if (!this.isUpdate) {

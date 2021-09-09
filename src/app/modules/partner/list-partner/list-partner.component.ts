@@ -38,7 +38,6 @@ export class ListPartnerComponent implements OnInit {
 		this.init();
 	}
 
-	// eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
 	ngOnInit(): void {
 		// Filter
 		this.searchFormControl.valueChanges
@@ -47,7 +46,6 @@ export class ListPartnerComponent implements OnInit {
 				debounceTime(400),
 				switchMap(() => {
 					return this.partnerService.getPartners(
-						this.driverId,
 						this.paginatorState.page,
 						this.paginatorState.pageSize,
 						this.searchFormControl.value,
@@ -74,7 +72,6 @@ export class ListPartnerComponent implements OnInit {
 	getPartners() {
 		this.partnerService
 			.getPartners(
-				this.driverId,
 				this.paginatorState.page,
 				this.paginatorState.pageSize,
 				this.searchFormControl.value,
@@ -110,14 +107,14 @@ export class ListPartnerComponent implements OnInit {
 		this.cdr.detectChanges();
 	}
 
-	openPartnerModal(partnerId?: number) {
+	openPartnerModal(ticketId?: number) {
 		const modalRef = this.modalService.open(PartnerModalComponent, {
 			backdrop: 'static',
 			size: 'xl'
 		});
 		// Sử dụng api get user by id để lấy data fill vào form sửa
-		if (partnerId) {
-			modalRef.componentInstance.partnerId = partnerId;
+		if (ticketId) {
+			modalRef.componentInstance.partnerId = ticketId;
 		}
 		modalRef.result.then((result) => {
 			if (result) {
@@ -141,7 +138,7 @@ export class ListPartnerComponent implements OnInit {
 
 		modalRef.result.then((result) => {
 			if (result) {
-				this.partnerService.deletePartner(partner.id).subscribe((res) => {
+				this.partnerService.deletePartner(partner.ticketId).subscribe((res) => {
 					if (res.data) {
 						this.getPartners();
 					}
