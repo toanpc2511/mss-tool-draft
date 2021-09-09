@@ -1,9 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { debounceTime, takeUntil, tap } from 'rxjs/operators';
+import { convertMoney } from 'src/app/shared/helpers/functions';
+import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FilterService } from 'src/app/shared/services/filter.service';
 import { SortService } from 'src/app/shared/services/sort.service';
+import { TValidators } from 'src/app/shared/validators';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
 import { ConfigurationManagementService, IDiscount } from '../configuration-management.service';
 
@@ -18,13 +22,14 @@ export class DiscountConfigComponent implements OnInit {
 	dataSource: FormArray = new FormArray([]);
 	dataSourceTemp: FormArray = new FormArray([]);
 	sorting: SortState;
-	filterField = new FilterField({ name: null, productName: null, moneyDiscount: null });
+	filterField = new FilterField({ nameRank: null, nameProduct: null, discount: null });
 	constructor(
 		private sortService: SortService<IDiscount>,
 		private filterService: FilterService<IDiscount>,
 		private cdr: ChangeDetectorRef,
 		private fb: FormBuilder,
 		private configurationManagementService: ConfigurationManagementService,
+		private toastr: ToastrService,
 		private destroy$: DestroyService
 	) {
 		this.sorting = sortService.sorting;
@@ -35,16 +40,7 @@ export class DiscountConfigComponent implements OnInit {
 			.getListDiscount()
 			.pipe(
 				tap((res) => {
-					const controls = res.data.map((d) => {
-						return this.fb.group({
-							id: d.id,
-							name: d.name,
-							productName: d.productName,
-							moneyDiscount: d.moneyDiscount
-						});
-					});
-
-					this.dataSource = this.dataSourceTemp = this.fb.array(controls);
+					this.dataSource = this.dataSourceTemp = this.convertToFormArray(res.data);
 					this.cdr.detectChanges();
 				}),
 				takeUntil(this.destroy$)
@@ -61,12 +57,7 @@ export class DiscountConfigComponent implements OnInit {
 				}
 
 				// Set data after filter and apply current sorting
-				this.dataSource = this.convertToFormArray(
-					this.sortService.sort(
-						this.filterService.filter(this.dataSourceTemp.value, this.filterField.field)
-					)
-				);
-				this.cdr.detectChanges();
+				this.sortAndFilter();
 			});
 
 		this.dataSource.valueChanges
@@ -79,21 +70,75 @@ export class DiscountConfigComponent implements OnInit {
 			.subscribe();
 	}
 
-	sort(column: string) {
+	sortAndFilter(column?: string) {
 		this.dataSource = this.convertToFormArray(
-			this.sortService.sort(this.dataSourceTemp.value, column)
+			this.sortService.sort(
+				this.filterService.filter(this.dataSourceTemp.value, this.filterField.field),
+				column
+			)
 		);
+		this.cdr.detectChanges();
 	}
 
 	convertToFormArray(data: IDiscount[]): FormArray {
 		const controls = data.map((d) => {
 			return this.fb.group({
-				id: d.id,
-				name: d.name,
-				productName: d.productName,
-				moneyDiscount: d.moneyDiscount
+				id: [d.id],
+				nameRank: [d.nameRank],
+				nameProduct: [d.nameProduct],
+				discount: [d.discount, [TValidators.min(0), TValidators.max(499999)]]
 			});
 		});
 		return this.fb.array(controls);
+	}
+
+	onInputDiscount(index: number) {
+		this.dataSourceTemp
+			.at(index)
+			.get('discount')
+			.patchValue(this.dataSource.at(index).get('discount').value);
+	}
+
+	onSubmit() {
+		this.dataSource = this.dataSourceTemp;
+		this.onReset(false);
+		if (this.dataSource.invalid) {
+			return null;
+		}
+		this.configurationManagementService
+			.updateDiscountConfig({
+				discountRequests: this.dataSource.value.map((d) => ({
+					id: d.id,
+					discount: convertMoney(d.discount)
+				}))
+			})
+			.subscribe(
+				(res) => {
+					this.checkRes(res);
+				},
+				(error: IError) => this.checkError(error)
+			);
+	}
+
+	onReset(reInit: boolean) {
+		if (reInit) {
+			this.ngOnInit();
+		}
+		this.sortService.sorting.column = '';
+		this.sortService.sorting.direction = 'asc';
+		this.searchFormControl.patchValue(null, {
+			emitEvent: false,
+			onlySelf: true
+		});
+	}
+
+	checkRes(res) {
+		if (res.data) {
+			this.toastr.success('Lưu thông tin thành công');
+		}
+	}
+
+	checkError(error: IError) {
+		this.toastr.error(error.code);
 	}
 }
