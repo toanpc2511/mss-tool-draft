@@ -9,10 +9,14 @@ export interface ISortData {
 }
 
 export interface ICustomers {
-  id: number;
+  id: string;
   name: string;
   phone: string;
-  rank: string;
+  rank: {
+    id: number;
+    code: string;
+    name: string;
+  },
   location: string;
   profileStatus: 'UNCONFIRMED' | 'SUCCESS' | 'UN_SUCCESS';
   status: 'ACTIVE' | 'LOCK' | 'DELETE';
@@ -24,7 +28,7 @@ export interface IInfoCutomer {
   phone: string;
   location: string;
   rank: string;
-  idCard:  string;
+  idCard: string;
   dateOfBirth: string;
   userType: string;
   accountStatus: 'ACTIVE' | 'LOCK' | 'DELETE';
@@ -33,6 +37,7 @@ export interface IInfoCutomer {
   cashLimitOilAccount: [
     {
       productId: number;
+      productName: string;
       cashLimitOil: number;
       unitCashLimitOil: string;
     }
@@ -55,6 +60,23 @@ export interface IVehicles {
       face: string;
     }
   ]
+}
+
+export interface IAccountChild {
+  accountId: number;
+  cashLimitMoney: number;
+  phone: string;
+  status: 'ACTIVE' | 'LOCK' | 'DELETE';
+  unitCashLimitMoney: string;
+  cashLimitOilResponses: [
+    {
+      productId: number;
+      productName: string;
+      cashLimitOil: number;
+      unitCashLimitOil: string;
+    }
+  ];
+  numberVariable: [string]
 }
 
 export interface IContract {
@@ -113,7 +135,6 @@ export class CustomerManagementService {
   getLisrCustomer(page: number, size: number, searchText: string, sortData: ISortData) {
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('page', page.toString())
       .set('size', size.toString())
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
@@ -122,39 +143,58 @@ export class CustomerManagementService {
     return this.http.get<Array<ICustomers>>('customers', { params });
   }
 
-  //  Lấy thông tin khách hàng
-  getCustomerInfo(driverId: number) {
+  // Cập nhập thông tin khách hàng
+  updateCustomer(customerId: string, itemUpdate) {
     const params = new HttpParams()
-      .set('account-id', driverId.toString())
+      .set('account-id', customerId);
+    return this.http.put(`customers`, itemUpdate, { params });
+  }
+
+  //  Lấy thông tin khách hàng
+  getCustomerInfo(driverId: string) {
+    const params = new HttpParams()
+      .set('account-id', driverId)
       .set('user-type', 'ENTERPRISE');
 
-    return this.http.get<Array<IInfoCutomer>>('customers/info', { params });
+    return this.http.get<Array<IInfoCutomer>>('customers/infos', { params });
   }
 
   // Lấy danh sách xe
-  getListVehicles(page: number, size: number, searchText: string, sortData: ISortData, driverId: number) {
+  getListVehicles(page: number, size: number, searchText: string, sortData: ISortData, driverId: string) {
     const params = new HttpParams()
-      .set('page', page.toString())
       .set('page', page.toString())
       .set('size', size.toString())
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
       .set('search-text', searchText || '')
-      .set('driver-id', driverId.toString());
+      .set('driver-id', driverId);
 
     return this.http.get<Array<IVehicles>>('vehicles', { params });
   }
 
-  // Lấy danh sách hợp đồng của khách hàng
-  getListContractByCustomer(page: number, size: number, searchText: string, sortData: ISortData, driverId: number) {
+  // Lấy danh sách thông tin tài khoản con
+
+  getListChildAccounts(page: number, size: number, searchText: string, sortData: ISortData, driverId: string) {
     const params = new HttpParams()
-      .set('page', page.toString())
       .set('page', page.toString())
       .set('size', size.toString())
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
       .set('search-text', searchText || '')
-      .set('driver-id', driverId.toString());
+      .set('driver-id', driverId);
+
+    return this.http.get<Array<IAccountChild>>('customers/accounts-children', { params });
+  }
+
+  // Lấy danh sách hợp đồng của khách hàng
+  getListContractByCustomer(page: number, size: number, searchText: string, sortData: ISortData, driverId: string) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('field-sort', sortData?.fieldSort || '')
+      .set('direction-sort', sortData?.directionSort || '')
+      .set('search-text', searchText || '')
+      .set('driver-id', driverId);
 
     return this.http.get<Array<IContract>>('contracts/enterprise', { params });
   }

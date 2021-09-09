@@ -22,19 +22,19 @@
     <div class='table-responsive angular-bootstrap-table'>
       <table class='table table-head-custom table-vertical-center overflow-hidden' aria-describedby='list-customer'>
         <thead id='thead'>
-        <th id='name'>
+        <th id='phone'>
           Số điện thoại
           <app-sort-icon
-            column='name'
+            column='phone'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
           ></app-sort-icon>
         </th>
-        <th id='type-vehicle'>
+        <th id='number-variable'>
           Biển kiểm soát
           <app-sort-icon
-            column='typeVehicle'
+            column='number_variable'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -43,7 +43,7 @@
         <th id='money-limit' class='text-right'>
           Hạn mức tiền
           <app-sort-icon
-            column='licensePlates'
+            column='cashLimit_money'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -51,17 +51,11 @@
         </th>
         <th id='license'>
           Hạn mức nhiên liệu
-          <app-sort-icon
-            column='licensePlates'
-            [activeColumn]='sortData?.fieldSort'
-            [activeDirection]='sortData?.directionSort'
-            (sort)='sort($event)'
-          ></app-sort-icon>
         </th>
         <th id='licens'>
           Trạng thái
           <app-sort-icon
-            column='licensePlates'
+            column='status'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -78,8 +72,8 @@
           </td>
 
           <td class='type-vehicle'>
-            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.seaOfControl'>
-              {{ item.seaOfControl }}
+            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.numberVariable?.join(", ")'>
+              {{ item.numberVariable?.join(', ') }}
             </p>
           </td>
 
@@ -87,40 +81,31 @@
             <p
               class='cursor-pointer text-ellipsis'
               placement='top'
-              [ngbTooltip]='item.moneyLimit.toLocaleString("en-US")'
+              [ngbTooltip]='item.cashLimitMoney.toLocaleString("en-US")'
             >
-              {{ item.moneyLimit.toLocaleString('en-US') }}
+              {{ item.cashLimitMoney.toLocaleString('en-US') }}
             </p>
           </td>
 
           <td class='license-plates'>
-            <p
-              class='cursor-pointer text-ellipsis'
-              placement='top'
-              [ngbTooltip]='item.fuelLimit'
-            >
-              {{ item.fuelLimit }}
-            </p>
+            <div *ngFor='let x of item.cashLimitOilResponses'>
+              <p
+                class='cursor-pointer text-ellipsis' placement='top'
+                [ngbTooltip]='x.productName + " - " + x.cashLimitOil + " " + x.unitCashLimitOil'
+              >
+                {{x.productName}} - {{x.cashLimitOil}} {{x.unitCashLimitOil}}
+              </p>
+            </div>
           </td>
 
           <td class='status'>
-            <span
-              class='label label-lg label-inline'
-              [class.label-light-success]="item.status === 'ACCEPTED'"
-              [class.label-light-danger]="item.status === 'REJECT'"
-              [class.label-light-warning]="item.status === 'WAITING_ACCEPT'"
-              [class.label-light-primary]="item.status === 'DRAFT'"
-            >
-              <ng-container *ngIf="item.status === 'ACCEPTED'"
-              >Đã duyệt</ng-container
-              >
-              <ng-container *ngIf="item.status === 'REJECT'"
-              >Đã từ chối</ng-container
-              >
-              <ng-container *ngIf="item.status === 'WAITING_ACCEPT'"
-              >Chờ phê duyệt</ng-container
-              >
-              <ng-container *ngIf="item.status === 'DRAFT'">Lưu nháp</ng-container>
+           <span
+             class='label label-lg label-inline'
+             [class.label-light-success]="item.status === 'ACTIVE'"
+             [class.label-light-danger]="item.status === 'LOCK'"
+           >
+              <ng-container *ngIf="item.status === 'ACTIVE'">Hoạt động</ng-container>
+              <ng-container *ngIf="item.status === 'LOCK'">Không hoạt động</ng-container>
             </span>
           </td>
         </tr>

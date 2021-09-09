@@ -34,7 +34,7 @@
         <th id='type-vehicle'>
           Loại xe
           <app-sort-icon
-            column='type'
+            column='vehicle_company'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -61,8 +61,8 @@
           </td>
 
           <td class='type-vehicle'>
-            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.type'>
-              {{ item.type }}
+            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.vehicleCompany'>
+              {{ item.vehicleCompany }}
             </p>
           </td>
 

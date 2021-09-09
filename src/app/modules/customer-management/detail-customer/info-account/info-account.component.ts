@@ -2,14 +2,15 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { LIST_STATUS_CUSTOMER, LIST_STATUS_PROFILE_CUSTOMER } from '../../../../shared/data-enum/list-status';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { convertDateToDisplay } from '../../../../shared/helpers/functions';
-import { debounceTime, filter, pluck, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ConfirmDeleteComponent } from '../../../../shared/components/confirm-delete/confirm-delete.component';
 import { IConfirmModalData } from '../../../../shared/models/confirm-delete.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DestroyService } from '../../../../shared/services/destroy.service';
-import { CustomerManagementService, IInfoCutomer } from '../../customer-management.service';
+import { CustomerManagementService } from '../../customer-management.service';
 import { IError } from '../../../../shared/models/error.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-info-account',
@@ -24,8 +25,8 @@ export class InfoAccountComponent implements OnInit {
   listStatusCustomer = LIST_STATUS_CUSTOMER;
   dataSource;
   infoForm: FormGroup;
-  submit: boolean = true;
-  customerId: number;
+  btnSubmit: boolean = true;
+  customerId: string;
 
   constructor(
     private fb: FormBuilder,
@@ -34,31 +35,34 @@ export class InfoAccountComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private destroy$: DestroyService
+    private destroy$: DestroyService,
+    private toastr: ToastrService
   ) {
 
   }
 
   ngOnInit(): void {
+    this.activeRoute.params.subscribe((res) => {
+      this.customerId = res.customerId;
+    });
+
     this.buildInfoForm();
     this.getCustomerInfo();
   }
 
   getCustomerInfo() {
-    this.activeRoute.params
-      .pipe(
-        pluck('customerId'),
-        filter((customerId: number) => !!customerId),
-        switchMap((customerId: number) => {
-          return this.customerManagementService.getCustomerInfo(customerId);
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((res) => {
-        this.dataSource = res.data;
-        this.pathValueForm();
-        this.cdr.detectChanges();
-      });
+    this.customerManagementService
+      .getCustomerInfo(this.customerId)
+      .subscribe(
+        (res) => {
+          if (res.data) {
+            this.dataSource = res.data;
+
+            this.pathValueForm();
+            this.cdr.detectChanges();
+          }
+        }
+      );
   }
 
   editNumber($event: Event, isReadonly: any) {
@@ -81,7 +85,6 @@ export class InfoAccountComponent implements OnInit {
 
     this.infoForm.get('phone')
       .valueChanges.pipe(
-      debounceTime(300)
     )
       .subscribe(() => {
           this.changeValue();
@@ -90,7 +93,6 @@ export class InfoAccountComponent implements OnInit {
 
     this.infoForm.get('statusContract')
       .valueChanges.pipe(
-      debounceTime(300)
     )
       .subscribe(() => {
           this.changeValue();
@@ -99,7 +101,6 @@ export class InfoAccountComponent implements OnInit {
 
     this.infoForm.get('status')
       .valueChanges.pipe(
-      debounceTime(300)
     )
       .subscribe(() => {
           this.changeValue();
@@ -128,18 +129,24 @@ export class InfoAccountComponent implements OnInit {
       valueStatus !== this.dataSource?.accountStatus ||
       valueStatusContract !== this.dataSource?.profileStatus
     ) {
-      this.submit = false;
+      this.btnSubmit = false;
     } else {
-      this.submit = true;
+      this.btnSubmit = true;
     }
   }
 
   onSubmit() {
-    const valuePhone = this.infoForm.get('phone').value;
-    const valueStatusContract = this.infoForm.get('statusContract').value;
-    const valueStatus = this.infoForm.get('status').value;
+    const phone = this.infoForm.get('phone').value;
+    const profileStatus = this.infoForm.get('statusContract').value;
+    const status = this.infoForm.get('status').value;
 
-    if (valuePhone !== this.dataSource?.phone) {
+    const itemUpdate = {
+      phone,
+      profileStatus,
+      status
+    };
+
+    if (phone !== this.dataSource?.phone) {
       const modalRef = this.modalService.open(ConfirmDeleteComponent, {
         backdrop: 'static'
       });
@@ -152,15 +159,39 @@ export class InfoAccountComponent implements OnInit {
 
       modalRef.result.then((result) => {
         if (result) {
-          console.log(valuePhone, valueStatus, valueStatusContract);
+          this.customerManagementService
+            .updateCustomer(this.customerId, itemUpdate)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+              (res) => {
+                this.getCustomerInfo();
+              }, (err: IError) => {
+                this.checkError(err);
+              }
+            );
         }
       });
     } else {
-      console.log(valuePhone, valueStatus, valueStatusContract);
+      this.customerManagementService
+        .updateCustomer(this.customerId, itemUpdate)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (res) => {
+            this.getCustomerInfo();
+          }, (err: IError) => {
+            this.checkError(err);
+          }
+        );
     }
   }
 
   checkError(error: IError) {
-    console.log(error);
+    if (error.code === 'SUN-OIL-4811') {
+      this.toastr.error('Số điện thoại không thuộc Việt Nam hoặc sai định dạng');
+    }
+
+    if (error.code === 'SUN-OIL-4854') {
+      this.toastr.error('Số điện thoại đã được sử dụng');
+    }
   }
 }

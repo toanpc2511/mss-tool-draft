@@ -61,7 +61,7 @@
         <th id='profileStatus'>
           Trạng thái hồ sơ
           <app-sort-icon
-            column='profileStatus'
+            column='profile_status'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -97,9 +97,9 @@
             <p
               class='cursor-pointer text-ellipsis'
               placement='top'
-              [ngbTooltip]='item.rank'
+              [ngbTooltip]='item.rank?.name'
             >
-              {{ item.rank }}
+              {{ item.rank?.name }}
             </p>
           </td>
           <td class='location'>

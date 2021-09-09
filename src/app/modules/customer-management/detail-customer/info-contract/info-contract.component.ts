@@ -20,7 +20,7 @@ export class InfoContractComponent implements OnInit {
   paginatorState = new PaginatorState();
   dataSource: Array<IContract> = [];
   contractStatus = EContractStatus;
-  customerId: number;
+  customerId: string;
 
   constructor(
     private router: Router,
