@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -51,7 +50,7 @@ import {
 	selector: 'app-create-contract',
 	templateUrl: './create-contract.component.html',
 	styleUrls: ['./create-contract.component.scss'],
-	providers: [DestroyService, AsyncPipe]
+	providers: [DestroyService]
 })
 export class CreateContractComponent implements OnInit, AfterViewInit {
 	eContractStatus = EContractStatus;

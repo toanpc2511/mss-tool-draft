@@ -24,9 +24,11 @@ export interface IRankStock {
 
 export interface IDiscount {
 	id: number;
-	name: string;
-	productName: string;
-	moneyDiscount: number;
+	nameProduct: string;
+	nameRank: string;
+	scoreExportInvoice: number;
+	scoreNoInvoice: number;
+	discount: number;
 }
 
 @Injectable({
@@ -45,15 +47,13 @@ export class ConfigurationManagementService {
 		return this.http.put<any>(`ranks`, rankConfig);
 	}
 
+	// Lấy danh sách cấu hình chiết khấu
 	getListDiscount() {
-		let dataFake = [];
-		for (let i = 0; i < 20; i++) {
-			dataFake = [
-				...dataFake,
-				{ id: 1, name: `Thân thiết ${i}`, moneyDiscount: 10000 + i, productName: `Dầu gì đó ${i}` }
-			];
-		}
-		return of<DataResponse<IDiscount[]>>({ data: dataFake, meta: { code: 'SUN-OIL-200' } });
+		return this.http.get<Array<IDiscount>>('rank-stock/discounts');
+	}
+
+	updateDiscountConfig(discountConfig: any) {
+		return this.http.put<any>('rank-stock/discounts', discountConfig);
 	}
 
   // Lấy ds cấu hình tích điểm
