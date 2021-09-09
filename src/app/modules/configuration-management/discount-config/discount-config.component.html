@@ -17,9 +17,13 @@
 				</div>
 			</div>
 		</div>
-		<strong class="text-danger w-100">Lưu ý: Mỗi lít nhiên liệu khách hàng mua sẽ nhận được</strong>
-		<strong class="text-danger w-100">- Mỗi lít nhiên liệu khách hàng mua sẽ nhận được</strong>
-		<strong class="text-danger w-100">- Mỗi lít nhiên liệu khách hàng mua sẽ nhận được</strong>
+		<strong class="text-danger w-100"
+			>Lưu ý: Mỗi lít nhiên liệu khách hàng mua sẽ nhận được:</strong
+		>
+		<strong class="text-danger w-100"
+			>- Cộng 1 điểm tích lũy xét hạng (Không phụ thuộc vào hạng hay loại nhiên liệu)</strong
+		>
+		<strong class="text-danger w-100">- Số tiền chiết khấu tương ứng với cấu hình</strong>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive angular-bootstrap-table">
@@ -28,61 +32,81 @@
 					<th scope="">
 						Hạng
 						<app-sort-icon
-							column="name"
+							column="nameRank"
 							[activeColumn]="sorting.column"
 							[activeDirection]="sorting.direction"
-							(sort)="sort($event)"
+							(sort)="sortAndFilter($event)"
 						></app-sort-icon>
 					</th>
 					<th scope="">
 						Loại nhiên liệu
 						<app-sort-icon
-							column="productName"
+							column="nameProduct"
 							[activeColumn]="sorting.column"
 							[activeDirection]="sorting.direction"
-							(sort)="sort($event)"
+							(sort)="sortAndFilter($event)"
 						></app-sort-icon>
 					</th>
 					<th scope="">
-						Cấu hình chiết khấu
+						Cấu hình chiết khấu (Đồng/Lít)
 						<app-sort-icon
-							column="moneyDiscount"
+							column="discount"
 							[activeColumn]="sorting.column"
 							[activeDirection]="sorting.direction"
-							(sort)="sort($event)"
+							(sort)="sortAndFilter($event)"
 						></app-sort-icon>
 					</th>
 				</thead>
 				<tbody>
-					<tr *ngFor="let item of dataSource.controls" [formGroup]="item">
+					<tr *ngFor="let item of dataSource.controls; let i = index" [formGroup]="item">
 						<td class="rank">
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.get('name').value "
+								[ngbTooltip]="item.get('nameRank').value "
 							>
-								{{ item.get('name').value }}
+								{{ item.get('nameRank').value }}
 							</p>
 						</td>
-						<td class="rank">
+						<td class="name-product">
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.get('productName').value "
+								[ngbTooltip]="item.get('nameProduct').value "
 							>
-								{{ item.get('productName').value }}
+								{{ item.get('nameProduct').value }}
 							</p>
 						</td>
-						<td class="rank">
+						<td class="discount">
 							<input
 								class="form-control w-50"
-								[value]="item.get('moneyDiscount').value"
+								formControlName="discount"
 								placeholder="Nhập chiết khấu"
+								decimal-mask
+								maxlength="6"
+								(input)="onInputDiscount(i)"
 							/>
+							<app-validate
+								[control]="item.get('discount')"
+								[error]="'max'"
+								[message]="'Chiết khấu không được lớn hơn 50% giá vùng 2'"
+							></app-validate>
 						</td>
 					</tr>
 				</tbody>
 			</table>
+		</div>
+	</div>
+	<div class="card-footer">
+		<div class="row justify-content-center w-100">
+			<button
+				type="button"
+				class="mr-6 btn btn-outline-secondary btn-dialog"
+				(click)="onReset(true)"
+			>
+				Hủy
+			</button>
+			<button type="button" class="btn btn-primary btn-dialog" (click)="onSubmit()">Lưu</button>
 		</div>
 	</div>
 </div>
