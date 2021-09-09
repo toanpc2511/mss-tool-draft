@@ -37,7 +37,7 @@
             column='nameRank'
             [activeColumn]='sorting.column'
             [activeDirection]='sorting.direction'
-            (sort)='sort($event)'
+            (sort)='sortAndFilter($event)'
           ></app-sort-icon>
         </th>
         <th id='name-product'>
@@ -46,7 +46,7 @@
             column='nameProduct'
             [activeColumn]='sorting.column'
             [activeDirection]='sorting.direction'
-            (sort)='sort($event)'
+            (sort)='sortAndFilter($event)'
           ></app-sort-icon>
         </th>
         <th id='no-invoice'>
@@ -55,7 +55,7 @@
             column='scoreNoInvoice'
             [activeColumn]='sorting.column'
             [activeDirection]='sorting.direction'
-            (sort)='sort($event)'
+            (sort)='sortAndFilter($event)'
           ></app-sort-icon>
         </th>
         <th id='export-invoice'>
@@ -64,13 +64,13 @@
             column='scoreExportInvoice'
             [activeColumn]='sorting.column'
             [activeDirection]='sorting.direction'
-            (sort)='sort($event)'
+            (sort)='sortAndFilter($event)'
           ></app-sort-icon>
         </th>
         </thead>
 
         <tbody>
-        <tr *ngFor='let item of dataSource.controls'>
+        <tr *ngFor='let item of dataSource.controls,let i = index'>
           <ng-container [formGroup]='item'>
             <td class='name-rank'>
               <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.get("nameRank").value'>
@@ -82,14 +82,14 @@
                 {{ item.get('nameProduct').value }}
               </p>
             </td>
-            <td class='no-invoice text-right'>
+            <td class='no-invoice'>
               <input
-                placeholder='Nhập số điểm'
-                class='form-control text-right pr-3'
+                class='form-control w-50'
                 formControlName='scoreNoInvoice'
-                maxlength='5'
-                numbersOnly
-                [numberformControl]="item.get('scoreNoInvoice')"
+                placeholder='Nhập số điểm'
+                decimal-mask
+                maxlength='6'
+                (input)='onInputScoreNoInvoice(i)'
               />
               <app-validate
                 [control]="item.get('scoreNoInvoice')"
@@ -97,14 +97,14 @@
                 [message]="'Trường này không được để trống'"
               ></app-validate>
             </td>
-            <td class='export-invoice text-right'>
+            <td class='export-invoice'>
               <input
-                placeholder='Nhập số điểm'
-                class='form-control text-right pr-3'
+                class='form-control w-50'
                 formControlName='scoreExportInvoice'
-                maxlength='5'
-                numbersOnly
-                [numberformControl]="item.get('scoreExportInvoice')"
+                placeholder='Nhập số điểm'
+                decimal-mask
+                maxlength='6'
+                (input)='onInputScoreExportInvoice(i)'
               />
               <app-validate
                 [control]="item.get('scoreExportInvoice')"
@@ -122,7 +122,7 @@
       <button
         type='button'
         class='btn btn-outline-secondary btn-dialog mr-6'
-        (click)='cancel()'
+        (click)='onReset(true)'
       >
         Hủy
       </button>

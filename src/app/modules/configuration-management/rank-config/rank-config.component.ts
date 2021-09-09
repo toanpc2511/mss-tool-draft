@@ -3,8 +3,8 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { ConfigurationManagementService } from '../configuration-management.service';
-import { IError } from '../../../shared/models/error.model';
 import { takeUntil } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-rank-config',
@@ -26,7 +26,8 @@ export class RankConfigComponent implements OnInit {
     private fb: FormBuilder,
     private configManagement: ConfigurationManagementService,
     private cdr: ChangeDetectorRef,
-    private destroy$: DestroyService
+    private destroy$: DestroyService,
+    private toastr: ToastrService
   ) {
   }
 
@@ -59,7 +60,13 @@ export class RankConfigComponent implements OnInit {
     };
     this.configManagement.updateRankConfig(req)
       .pipe(takeUntil(this.destroy$))
-      .subscribe();
+      .subscribe(
+        (res) => {
+          if (res.data) {
+            this.toastr.success('Lưu thông tin thành công');
+          }
+        }
+      );
   }
 
   cancel() {
