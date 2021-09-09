@@ -13,6 +13,15 @@ export interface IRank {
 	promotion: string;
 }
 
+export interface IRankStock {
+  id: number;
+  nameRank: string;
+  nameProduct: string;
+  scoreExportInvoice: number;
+  scoreNoInvoice: number;
+  discount: number;
+}
+
 export interface IDiscount {
 	id: number;
 	nameProduct: string;
@@ -46,4 +55,14 @@ export class ConfigurationManagementService {
 	updateDiscountConfig(discountConfig: any) {
 		return this.http.put<any>('rank-stock/discounts', discountConfig);
 	}
+
+  // Lấy ds cấu hình tích điểm
+  getListRankStock() {
+    return this.http.get<Array<IRankStock>>('rank-stock');
+  }
+
+  // Sửa cấu hình tích điểm
+  updateRankStock(rankStock) {
+    return this.http.put<any>(`rank-stock`, rankStock);
+  }
 }

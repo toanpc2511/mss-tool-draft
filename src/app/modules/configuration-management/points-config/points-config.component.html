@@ -1,1 +1,138 @@
-<p>points-config works!</p>
+<div class='card card-custom gutter-b mt-1'>
+  <div class='card-header'>
+    <div class='card-title'>
+      <h3 class='card-label'>Danh sách cấu hình tích điểm</h3>
+    </div>
+
+    <div class='card-toolbar row'>
+      <div class='search-form'>
+        <em class='flaticon-search'></em>
+        <input
+          type='text'
+          name='searchText'
+          placeholder='Search...'
+          class='form-control'
+          autocomplete='off'
+          [formControl]='searchFormControl'
+        />
+      </div>
+    </div>
+  </div>
+  <div class='card-body'>
+    <div class='text-danger w-100'>
+      <p class='mb-2'>Lưu ý: 1 điểm tương ứng với 1 VNĐ</p>
+      <p class='mb-2'>Mỗi lít nhiên liệu khách hàng mua sẽ được:</p>
+      <ul>
+        <li class='mb-2'>Cộng số điểm tiêu dùng tích lũy tương ứng vơi cấu hình</li>
+        <li class='mb-2'>Cộng 1 điểm tích lũy xét hạng (Không phụ thuộc vào hạng và loại nhiên liệu)</li>
+      </ul>
+    </div>
+
+    <div class='table-responsive angular-bootstrap-table'>
+      <table class='table table-head-custom table-vertical-center overflow-hidden' aria-describedby='list-customer'>
+        <thead id='thead'>
+        <th id='name-rank'>
+          Hạng
+          <app-sort-icon
+            column='nameRank'
+            [activeColumn]='sorting.column'
+            [activeDirection]='sorting.direction'
+            (sort)='sortAndFilter($event)'
+          ></app-sort-icon>
+        </th>
+        <th id='name-product'>
+          Loại nhiên liệu
+          <app-sort-icon
+            column='nameProduct'
+            [activeColumn]='sorting.column'
+            [activeDirection]='sorting.direction'
+            (sort)='sortAndFilter($event)'
+          ></app-sort-icon>
+        </th>
+        <th id='no-invoice'>
+          Cấu hình tích điểm (Điểm/Lít) (HK)
+          <app-sort-icon
+            column='scoreNoInvoice'
+            [activeColumn]='sorting.column'
+            [activeDirection]='sorting.direction'
+            (sort)='sortAndFilter($event)'
+          ></app-sort-icon>
+        </th>
+        <th id='export-invoice'>
+          Cấu hình tích điểm (Điểm/Lít) (HC)
+          <app-sort-icon
+            column='scoreExportInvoice'
+            [activeColumn]='sorting.column'
+            [activeDirection]='sorting.direction'
+            (sort)='sortAndFilter($event)'
+          ></app-sort-icon>
+        </th>
+        </thead>
+
+        <tbody>
+        <tr *ngFor='let item of dataSource.controls,let i = index'>
+          <ng-container [formGroup]='item'>
+            <td class='name-rank'>
+              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.get("nameRank").value'>
+                {{ item.get('nameRank').value }}
+              </p>
+            </td>
+            <td class='name-product'>
+              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.get("nameProduct").value'>
+                {{ item.get('nameProduct').value }}
+              </p>
+            </td>
+            <td class='no-invoice'>
+              <input
+                class='form-control w-50'
+                formControlName='scoreNoInvoice'
+                placeholder='Nhập số điểm'
+                decimal-mask
+                maxlength='6'
+                (input)='onInputScoreNoInvoice(i)'
+              />
+              <app-validate
+                [control]="item.get('scoreNoInvoice')"
+                [error]="'required'"
+                [message]="'Trường này không được để trống'"
+              ></app-validate>
+            </td>
+            <td class='export-invoice'>
+              <input
+                class='form-control w-50'
+                formControlName='scoreExportInvoice'
+                placeholder='Nhập số điểm'
+                decimal-mask
+                maxlength='6'
+                (input)='onInputScoreExportInvoice(i)'
+              />
+              <app-validate
+                [control]="item.get('scoreExportInvoice')"
+                [error]="'required'"
+                [message]="'Trường này không được để trống'"
+              ></app-validate>
+            </td>
+          </ng-container>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class='row justify-content-center w-100'>
+      <button
+        type='button'
+        class='btn btn-outline-secondary btn-dialog mr-6'
+        (click)='onReset(true)'
+      >
+        Hủy
+      </button>
+      <button
+        type='button'
+        class='btn btn-primary btn-dialog'
+        (click)='onSubmit()'
+      >
+        Lưu
+      </button>
+    </div>
+  </div>
+</div>
