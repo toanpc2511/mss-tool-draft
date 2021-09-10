@@ -76,6 +76,11 @@
 								>{{ vehicle.numberVariable }}</ng-option
 							>
 						</ng-select>
+						<app-validate
+							[control]="partnerForm.controls['vehicleIds']"
+							[error]="'required'"
+							[message]="'Xe sử dụng không được để trống'"
+						></app-validate>
 					</div>
 				</div>
 				<div

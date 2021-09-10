@@ -147,7 +147,7 @@ export class PartnerModalComponent implements OnInit {
 			phone: [null, [Validators.required]],
 			name: [null, [Validators.required]],
 			driverId: [null],
-			vehicleIds: [null],
+			vehicleIds: [null, Validators.required],
 			cashLimitOil: this.fb.array([]),
 			cashLimitMoney: [null]
 		});
@@ -181,6 +181,8 @@ export class PartnerModalComponent implements OnInit {
 
 	onSubmit(): void {
 		this.partnerForm.markAllAsTouched();
+		console.log(this.partnerForm);
+		
 		if (this.partnerForm.invalid) {
 			return;
 		}
