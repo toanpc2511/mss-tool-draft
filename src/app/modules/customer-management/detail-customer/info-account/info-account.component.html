@@ -1,4 +1,4 @@
-<div class='card card-custom gutter-b mt-1'>
+<div class='mt-1 card card-custom gutter-b'>
   <div class='info-customer'>
     <div class='card-header'>
       <div class='card-title'>
@@ -122,70 +122,61 @@
           <th id='stt' class='text-center'>
             STT
           </th>
-          <th id='han-muc' class='hanMuc'>
+          <th id='loai-tai-khoan' class='hanMuc'>
+            Loại tài khoản
+          </th>
+          <th id='loai-han-muc' class='text-right amount'>
             Loại hạn mức
           </th>
-          <th id='amount' class='text-right amount'>
+          <th id='so-luong' class='text-right amount'>
             Số lượng
           </th>
-          <th id='unit' class='unit'>
+          <th id='don-vi' class='unit'>
             Đơn vị
           </th>
           </thead>
 
           <tbody>
-          <tr>
+          <tr *ngFor='let item of cashLimitInfos; let i = index'>
             <td class='text-center stt'>
-              <p class='cursor-pointer text-ellipsis' placement='top' ngbTooltip='1'>
-                1
-              </p>
-            </td>
-            <td>
-              <p class='cursor-pointer text-ellipsis' placement='top' ngbTooltip='Tiền mặt'>
-                Tiền mặt
-              </p>
-            </td>
-            <td class='amount text-right'>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='dataSource?.cashLimitMoney || "0"'>
-                {{dataSource?.cashLimitMoney || 0}}
-              </p>
-            </td>
-            <td>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='dataSource?.userType || "VNĐ"'>
-                {{dataSource?.userType || 'VNĐ'}}
-              </p>
-            </td>
-          </tr>
-
-          <tr *ngFor='let item of dataSource?.cashLimitOilAccount, let i = index'>
-            <td class='text-center stt'>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='i+2'>
-                {{ i + 2 }}
+              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='i+1'>
+                {{ i + 1 }}
               </p>
             </td>
 
             <td class='hanMuc'>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.productName'>
-                {{ item.productName }}
+              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]="item.userType === 'DRIVER' ? 'Cá nhân' : 'Doanh nghiệp' ">
+                {{ item.userType === 'DRIVER' ? 'Cá nhân' : 'Doanh nghiệp' }}
               </p>
             </td>
 
-            <td class='amount text-right'>
+            
+            <td class='text-right type-limit'>
               <p
                 class='cursor-pointer text-ellipsis'
                 placement='top'
-                [ngbTooltip]="item.cashLimitOil.toLocaleString('en-US')"
+                [ngbTooltip]="item.limitType"
               >
-                {{ item.cashLimitOil.toLocaleString('en-US') }}
+                {{ item.limitType }}
+              </p>
+            </td>
+
+            <td class='text-right amount'>
+              <p
+                class='cursor-pointer text-ellipsis'
+                placement='top'
+                [ngbTooltip]="item.amount"
+              >
+                {{ item.amount }}
               </p>
             </td>
             <td class='unit'>
               <p
                 class='cursor-pointer text-ellipsis'
                 placement='top'
-                [ngbTooltip]='item.unitCashLimitOil'
+                [ngbTooltip]='item.unit'
               >
-                {{ item.unitCashLimitOil }}
+                {{ item.unit }}
               </p>
             </td>
           </tr>
@@ -195,9 +186,9 @@
     </div>
   </div>
 
-  <div class='w-100 d-flex justify-content-center pb-10'>
+  <div class='pb-10 w-100 d-flex justify-content-center'>
     <button
-      class='btn btn-primary font-weight-bold m-2'
+      class='m-2 btn btn-primary font-weight-bold'
       [disabled]='btnSubmit'
       (click)='onSubmit()'
     >
