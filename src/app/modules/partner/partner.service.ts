@@ -31,6 +31,7 @@ export interface IVehicle {
 
 export interface ICashLimit {
 	productId: number;
+	productName: string;
 	cashLimitOil: number;
 	unitCashLimitOil?: string;
 }

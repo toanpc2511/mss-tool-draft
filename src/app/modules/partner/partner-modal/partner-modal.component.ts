@@ -67,6 +67,7 @@ export class PartnerModalComponent implements OnInit {
 						res.data.cashLimitOilAccount?.map((cashLimit) => {
 							return this.fb.group({
 								productId: [cashLimit.productId],
+								productName: [cashLimit.productName],
 								cashLimitOil: [null, [TValidators.min(1), TValidators.max(cashLimit.cashLimitOil)]],
 								maxCashLimitOil: [cashLimit.cashLimitOil],
 								unitCashLimitOil: [cashLimit.unitCashLimitOil]
@@ -156,11 +157,13 @@ export class PartnerModalComponent implements OnInit {
 					if (phoneNumber) {
 						return this.partnerService.getPartnerByPhone(phoneNumber).pipe(
 							catchError((err: IError) => {
+								this.partnerForm.get('name').patchValue(null, pathValueWithoutEvent);
 								this.checkError(err);
 								return of(err);
 							})
 						);
 					}
+					this.partnerForm.get('name').patchValue(null, pathValueWithoutEvent);
 					return of(null);
 				}),
 				takeUntil(this.destroy$)
@@ -182,7 +185,7 @@ export class PartnerModalComponent implements OnInit {
 
 		const data = {
 			...formValue,
-			driverId: Number(this.partnerForm.value.driverId),
+			driverId: this.partnerForm.value.driverId,
 			cashLimitOil: formValue.cashLimitOil.map((c) => ({
 				...c,
 				cashLimitOil: convertMoney(c.cashLimitOil)
