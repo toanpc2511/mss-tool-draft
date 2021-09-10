@@ -86,7 +86,10 @@ export class DiscountConfigComponent implements OnInit {
 				id: [d.id],
 				nameRank: [d.nameRank],
 				nameProduct: [d.nameProduct],
-				discount: [d.discount, [TValidators.min(0), TValidators.max(d.priceAreaTwo / 2)]],
+				discount: [
+					d.discount,
+					[TValidators.min(0), TValidators.max(d.priceAreaTwo / 2), TValidators.required]
+				],
 				priceAreaTwo: [d.priceAreaTwo]
 			});
 		});
@@ -103,9 +106,8 @@ export class DiscountConfigComponent implements OnInit {
 	onSubmit() {
 		this.dataSource = this.dataSourceTemp;
 		this.dataSource.markAllAsTouched();
-		this.onReset(false);
 		if (this.dataSource.invalid) {
-			return null;
+			return;
 		}
 		this.configurationManagementService
 			.updateDiscountConfig({
@@ -117,6 +119,7 @@ export class DiscountConfigComponent implements OnInit {
 			.subscribe(
 				(res) => {
 					this.checkRes(res);
+					this.onReset(false);
 				},
 				(error: IError) => this.checkError(error)
 			);
