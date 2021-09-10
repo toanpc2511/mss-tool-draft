@@ -56,7 +56,7 @@
 							(sort)="sortAndFilter($event)"
 						></app-sort-icon>
 					</th>
-					<th scope="">
+					<th scope="" class="text-center">
 						Giá vùng 2 (Đồng/Lít)
 						<app-sort-icon
 							column="priceAreaTwo"
@@ -100,8 +100,13 @@
 								[error]="'max'"
 								[message]="'Chiết khấu không được lớn hơn 50% giá vùng 2'"
 							></app-validate>
+							<app-validate
+								[control]="item.get('discount')"
+								[error]="'required'"
+								[message]="'Chiết khấu không được để trống'"
+							></app-validate>
 						</td>
-						<td class="price-area-two">
+						<td class="text-center price-area-two">
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
