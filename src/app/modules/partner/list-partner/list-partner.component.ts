@@ -42,7 +42,6 @@ export class ListPartnerComponent implements OnInit {
 		// Filter
 		this.searchFormControl.valueChanges
 			.pipe(
-				startWith(''),
 				debounceTime(400),
 				switchMap(() => {
 					return this.partnerService.getPartners(

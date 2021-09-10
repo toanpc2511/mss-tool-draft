@@ -1,15 +1,21 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subject } from 'rxjs';
-import { catchError, concatMap, debounceTime, skipUntil, takeUntil } from 'rxjs/operators';
+import {
+	catchError,
+	concatMap,
+	debounceTime,
+	finalize,
+	skipUntil,
+	takeUntil
+} from 'rxjs/operators';
 import { pathValueWithoutEvent } from 'src/app/shared/data-enum/patch-value-without-event';
 import { convertMoney } from 'src/app/shared/helpers/functions';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
-import { AuthService } from '../../auth/services/auth.service';
 import { IProduct } from '../../product/product.service';
 import { EPartnerStatus, IPartnerData, IVehicle, PartnerService } from '../partner.service';
 
@@ -20,7 +26,6 @@ import { EPartnerStatus, IPartnerData, IVehicle, PartnerService } from '../partn
 	providers: [DestroyService, FormBuilder]
 })
 export class PartnerModalComponent implements OnInit {
-	currentAccountPhoneNumber: string;
 	@Input() partnerId: number;
 	eStatus = EPartnerStatus;
 	vehicles: IVehicle[] = [];
@@ -33,19 +38,16 @@ export class PartnerModalComponent implements OnInit {
 	isInitCashOil$ = this.isInitCashOilSubject.asObservable();
 
 	isUpdate = false;
-	cashLimitMoney = 0;
+	cashLimitMoneyChild = 0;
+	cashLimitMoneyMaster = 0;
 	oils: IProduct[] = [];
 	constructor(
 		public modal: NgbActiveModal,
-		private modalService: NgbModal,
 		private fb: FormBuilder,
-		private authService: AuthService,
 		private partnerService: PartnerService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService
-	) {
-		this.currentAccountPhoneNumber = authService.getCurrentUserValue().driverAuth.phone;
-	}
+	) {}
 
 	ngOnInit(): void {
 		this.partnerService
@@ -60,7 +62,10 @@ export class PartnerModalComponent implements OnInit {
 
 		this.partnerService
 			.getCashLimit()
-			.pipe(takeUntil(this.destroy$))
+			.pipe(
+				finalize(() => this.isInitCashOilSubject.next()),
+				takeUntil(this.destroy$)
+			)
 			.subscribe((res) => {
 				if (res.data) {
 					const vehicleFormArray = this.fb.array(
@@ -76,13 +81,12 @@ export class PartnerModalComponent implements OnInit {
 					);
 					this.partnerForm.setControl('cashLimitOil', vehicleFormArray);
 					this.cashLimitOilFormArray = this.partnerForm.get('cashLimitOil') as FormArray;
-					this.cashLimitMoney = res.data.cashLimitMoney;
+					this.cashLimitMoneyMaster = res.data.cashLimitMoney;
 					this.partnerForm
 						.get('cashLimitMoney')
-						.setValidators([TValidators.min(1), TValidators.max(this.cashLimitMoney)]);
+						.setValidators([TValidators.min(1), TValidators.max(this.cashLimitMoneyMaster)]);
 					this.partnerForm.updateValueAndValidity();
 					this.isLoadingFormSubject.next(true);
-					this.isInitCashOilSubject.next();
 				}
 			});
 
@@ -94,7 +98,7 @@ export class PartnerModalComponent implements OnInit {
 				.subscribe((res) => {
 					this.patchInfoParterUpdate(res.data);
 				});
-			this.partnerForm.get('phone').disable();
+			this.partnerForm.get('phone').disable(pathValueWithoutEvent);
 		}
 	}
 
@@ -124,6 +128,7 @@ export class PartnerModalComponent implements OnInit {
 				partnerData.cashLimitMoneyChildNmaster.cashLimitMoneyChild,
 				pathValueWithoutEvent
 			);
+		this.cashLimitMoneyChild = partnerData.cashLimitMoneyChildNmaster.cashLimitMoneyChild;
 	}
 
 	patchInfoPartner(data: { id: number; name: string }) {
@@ -147,8 +152,6 @@ export class PartnerModalComponent implements OnInit {
 			cashLimitMoney: [null]
 		});
 
-		this.partnerForm.get('name').disable();
-
 		this.partnerForm
 			.get('phone')
 			.valueChanges.pipe(
@@ -160,7 +163,8 @@ export class PartnerModalComponent implements OnInit {
 								this.partnerForm.get('name').patchValue(null, pathValueWithoutEvent);
 								this.checkError(err);
 								return of(err);
-							})
+							}),
+							takeUntil(this.destroy$)
 						);
 					}
 					this.partnerForm.get('name').patchValue(null, pathValueWithoutEvent);
