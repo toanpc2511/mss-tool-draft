@@ -88,7 +88,7 @@
 						</td>
 						<td class="discount">
 							<input
-								class="form-control w-50"
+								class="form-control"
 								formControlName="discount"
 								placeholder="Nhập chiết khấu"
 								decimal-mask
@@ -98,7 +98,7 @@
 							<app-validate
 								[control]="item.get('discount')"
 								[error]="'max'"
-								[message]="'Chiết khấu không được lớn hơn 50% giá vùng 2'"
+								[message]="'Chiết khấu không được lớn hơn 50% giá vùng 2 của nhiên liệu'"
 							></app-validate>
 							<app-validate
 								[control]="item.get('discount')"
