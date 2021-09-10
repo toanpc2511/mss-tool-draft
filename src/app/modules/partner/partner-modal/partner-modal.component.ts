@@ -234,7 +234,7 @@ export class PartnerModalComponent implements OnInit {
 		if (err?.code === 'SUN-OIL-4868') {
 			this.partnerForm.get('phone').setErrors({ isEnterprise: true });
 		}
-		if (err?.code === 'SUN-OIL-4869') {
+		if (err?.code === 'SUN-OIL-4870') {
 			this.partnerForm.get('phone').setErrors({ existed: true });
 		}
 		this.cdr.detectChanges();
