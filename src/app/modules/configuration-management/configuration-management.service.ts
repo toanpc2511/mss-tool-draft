@@ -29,6 +29,7 @@ export interface IDiscount {
 	scoreExportInvoice: number;
 	scoreNoInvoice: number;
 	discount: number;
+	priceAreaTwo: number;
 }
 
 @Injectable({

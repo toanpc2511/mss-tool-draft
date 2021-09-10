@@ -86,7 +86,7 @@ export class DiscountConfigComponent implements OnInit {
 				id: [d.id],
 				nameRank: [d.nameRank],
 				nameProduct: [d.nameProduct],
-				discount: [d.discount, [TValidators.min(0), TValidators.max(499999)]]
+				discount: [d.discount, [TValidators.min(0), TValidators.max(d.priceAreaTwo / 2)]]
 			});
 		});
 		return this.fb.array(controls);
