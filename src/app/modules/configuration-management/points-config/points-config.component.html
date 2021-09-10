@@ -1,4 +1,4 @@
-<div class='card card-custom gutter-b mt-1'>
+<div class='mt-1 card card-custom gutter-b'>
   <div class='card-header'>
     <div class='card-title'>
       <h3 class='card-label'>Danh sách cấu hình tích điểm</h3>
@@ -19,17 +19,16 @@
     </div>
   </div>
   <div class='card-body'>
-    <div class='text-danger w-100'>
-      <p class='mb-2'>Lưu ý: 1 điểm tương ứng với 1 VNĐ</p>
-      <p class='mb-2'>Mỗi lít nhiên liệu khách hàng mua sẽ được:</p>
-      <ul>
-        <li class='mb-2'>Cộng số điểm tiêu dùng tích lũy tương ứng vơi cấu hình</li>
-        <li class='mb-2'>Cộng 1 điểm tích lũy xét hạng (Không phụ thuộc vào hạng và loại nhiên liệu)</li>
-      </ul>
+    <div class='w-100'>
+      <strong class='d-block text-danger w-100'>Lưu ý: 1 điểm tương ứng với 1 VNĐ</strong>
+      <strong class='d-block text-danger w-100'>Mỗi lít nhiên liệu khách hàng mua sẽ được:</strong>
+ <strong class="d-block text-danger w-100">- Cộng số điểm tiêu dùng tích lũy tương ứng vơi cấu hình</strong>
+        <strong class="text-danger w-100">- Cộng 1 điểm tích lũy xét hạng (Không phụ thuộc vào hạng và loại nhiên liệu)</strong>
+  
     </div>
 
     <div class='table-responsive angular-bootstrap-table'>
-      <table class='table table-head-custom table-vertical-center overflow-hidden' aria-describedby='list-customer'>
+      <table class='table overflow-hidden table-head-custom table-vertical-center' aria-describedby='list-customer'>
         <thead id='thead'>
         <th id='name-rank'>
           Hạng
@@ -94,7 +93,7 @@
               <app-validate
                 [control]="item.get('scoreNoInvoice')"
                 [error]="'required'"
-                [message]="'Trường này không được để trống'"
+                [message]="'Tích điểm không được để trống'"
               ></app-validate>
             </td>
             <td class='export-invoice'>
@@ -109,7 +108,7 @@
               <app-validate
                 [control]="item.get('scoreExportInvoice')"
                 [error]="'required'"
-                [message]="'Trường này không được để trống'"
+                [message]="'Tích điểm không được để trống'"
               ></app-validate>
             </td>
           </ng-container>
@@ -121,7 +120,7 @@
     <div class='row justify-content-center w-100'>
       <button
         type='button'
-        class='btn btn-outline-secondary btn-dialog mr-6'
+        class='mr-6 btn btn-outline-secondary btn-dialog'
         (click)='onReset(true)'
       >
         Hủy
