@@ -17,7 +17,7 @@ export interface IPartner {
 export enum EPartnerStatus {
 	WAITING = 'WAITING',
 	ACCEPTED = 'ACCEPTED',
-	REJECTED = 'REJECTED'
+	REJECTED = 'REJECT'
 }
 
 export interface IVehicle {
