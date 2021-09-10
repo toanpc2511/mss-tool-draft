@@ -56,6 +56,15 @@
 							(sort)="sortAndFilter($event)"
 						></app-sort-icon>
 					</th>
+					<th scope="">
+						Giá vùng 2 (Đồng/Lít)
+						<app-sort-icon
+							column="priceAreaTwo"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sortAndFilter($event)"
+						></app-sort-icon>
+					</th>
 				</thead>
 				<tbody>
 					<tr *ngFor="let item of dataSource.controls; let i = index" [formGroup]="item">
@@ -91,6 +100,15 @@
 								[error]="'max'"
 								[message]="'Chiết khấu không được lớn hơn 50% giá vùng 2'"
 							></app-validate>
+						</td>
+						<td class="price-area-two">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.get('priceAreaTwo').value | number| vnCurrency"
+							>
+								{{ item.get('priceAreaTwo').value | number| vnCurrency}}
+							</p>
 						</td>
 					</tr>
 				</tbody>

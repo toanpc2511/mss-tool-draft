@@ -86,7 +86,8 @@ export class DiscountConfigComponent implements OnInit {
 				id: [d.id],
 				nameRank: [d.nameRank],
 				nameProduct: [d.nameProduct],
-				discount: [d.discount, [TValidators.min(0), TValidators.max(d.priceAreaTwo / 2)]]
+				discount: [d.discount, [TValidators.min(0), TValidators.max(d.priceAreaTwo / 2)]],
+				priceAreaTwo: [d.priceAreaTwo]
 			});
 		});
 		return this.fb.array(controls);
@@ -101,6 +102,7 @@ export class DiscountConfigComponent implements OnInit {
 
 	onSubmit() {
 		this.dataSource = this.dataSourceTemp;
+		this.dataSource.markAllAsTouched();
 		this.onReset(false);
 		if (this.dataSource.invalid) {
 			return null;
