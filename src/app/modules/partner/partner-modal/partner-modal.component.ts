@@ -1,15 +1,23 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of } from 'rxjs';
-import { catchError, concatMap, debounceTime, takeUntil } from 'rxjs/operators';
-import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
-import { NgSelectConfig } from 'src/app/shared/components/ng-select/public-api';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { of, Subject } from 'rxjs';
+import {
+	catchError,
+	concatMap,
+	debounceTime,
+	finalize,
+	skipUntil,
+	takeUntil
+} from 'rxjs/operators';
 import { pathValueWithoutEvent } from 'src/app/shared/data-enum/patch-value-without-event';
+import { convertMoney } from 'src/app/shared/helpers/functions';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { EPartnerStatus, ICar, PartnerService } from '../partner.service';
+import { TValidators } from 'src/app/shared/validators';
+import { IProduct } from '../../product/product.service';
+import { EPartnerStatus, IPartnerData, IVehicle, PartnerService } from '../partner.service';
 
 @Component({
 	selector: 'app-partner-modal',
@@ -20,72 +28,129 @@ import { EPartnerStatus, ICar, PartnerService } from '../partner.service';
 export class PartnerModalComponent implements OnInit {
 	@Input() partnerId: number;
 	eStatus = EPartnerStatus;
-	cars: Array<ICar> = [];
+	vehicles: IVehicle[] = [];
 	partnerForm: FormGroup;
+	cashLimitOilFormArray: FormArray;
+	isLoadingFormSubject = new Subject<boolean>();
+	isLoadingForm$ = this.isLoadingFormSubject.asObservable();
+
+	isInitCashOilSubject = new Subject<void>();
+	isInitCashOil$ = this.isInitCashOilSubject.asObservable();
+
 	isUpdate = false;
+	cashLimitMoneyChild = 0;
+	cashLimitMoneyMaster = 0;
+	oils: IProduct[] = [];
 	constructor(
 		public modal: NgbActiveModal,
-		private modalService: NgbModal,
 		private fb: FormBuilder,
 		private partnerService: PartnerService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService
-	) {
-	}
+	) {}
 
 	ngOnInit(): void {
+		this.partnerService
+			.getAllVehicles()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((res) => {
+				this.vehicles = res.data;
+				this.cdr.detectChanges();
+			});
+
 		this.buildForm();
+
+		this.partnerService
+			.getCashLimit()
+			.pipe(
+				finalize(() => this.isInitCashOilSubject.next()),
+				takeUntil(this.destroy$)
+			)
+			.subscribe((res) => {
+				if (res.data) {
+					const vehicleFormArray = this.fb.array(
+						res.data.cashLimitOilAccount?.map((cashLimit) => {
+							return this.fb.group({
+								productId: [cashLimit.productId],
+								productName: [cashLimit.productName],
+								cashLimitOil: [null, [TValidators.min(1), TValidators.max(cashLimit.cashLimitOil)]],
+								maxCashLimitOil: [cashLimit.cashLimitOil],
+								unitCashLimitOil: [cashLimit.unitCashLimitOil]
+							});
+						}) || []
+					);
+					this.partnerForm.setControl('cashLimitOil', vehicleFormArray);
+					this.cashLimitOilFormArray = this.partnerForm.get('cashLimitOil') as FormArray;
+					this.cashLimitMoneyMaster = res.data.cashLimitMoney;
+					this.partnerForm
+						.get('cashLimitMoney')
+						.setValidators([TValidators.min(1), TValidators.max(this.cashLimitMoneyMaster)]);
+					this.partnerForm.updateValueAndValidity();
+					this.isLoadingFormSubject.next(true);
+				}
+			});
+
 		if (this.partnerId) {
 			this.isUpdate = true;
 			this.partnerService
 				.getPartnerById(this.partnerId)
-				.pipe(takeUntil(this.destroy$))
+				.pipe(skipUntil(this.isInitCashOil$), takeUntil(this.destroy$))
 				.subscribe((res) => {
-					this.partnerForm.patchValue(res.data);
+					this.patchInfoParterUpdate(res.data);
 				});
+			this.partnerForm.get('phone').disable(pathValueWithoutEvent);
 		}
-
-		this.partnerService
-			.getAllCars()
-			.pipe(takeUntil(this.destroy$))
-			.subscribe((res) => {
-				this.cars = res.data;
-				this.cdr.detectChanges();
-			});
 	}
 
-	patchInfoPartner(data: { name: string }) {
+	patchInfoParterUpdate(partnerData: IPartnerData) {
+		this.partnerForm.get('phone').patchValue(partnerData.driverInfo.phone, pathValueWithoutEvent);
+		this.partnerForm.get('name').patchValue(partnerData.driverInfo.name, pathValueWithoutEvent);
+		this.partnerForm.get('driverId').patchValue(partnerData.driverInfo.id, pathValueWithoutEvent);
+
+		this.partnerForm.get('vehicleIds').patchValue(
+			partnerData.vehicles?.map((v) => v.id),
+			pathValueWithoutEvent
+		);
+
+		const cashLimitOils = partnerData.cashLimitOilChildNmaster;
+
+		for (let i = 0; i < cashLimitOils.length; i++) {
+			const group = this.cashLimitOilFormArray.at(i);
+			group
+				.get('cashLimitOil')
+				.patchValue(cashLimitOils[i].cashLimitOilChild, pathValueWithoutEvent);
+			group.get('maxCashLimitOil').patchValue(cashLimitOils[i].cashLimitOilMaster);
+		}
+
+		this.partnerForm
+			.get('cashLimitMoney')
+			.patchValue(
+				partnerData.cashLimitMoneyChildNmaster.cashLimitMoneyChild,
+				pathValueWithoutEvent
+			);
+		this.cashLimitMoneyChild = partnerData.cashLimitMoneyChildNmaster.cashLimitMoneyChild;
+	}
+
+	patchInfoPartner(data: { id: number; name: string }) {
+		this.partnerForm.get('driverId').patchValue(data.id);
 		this.partnerForm.get('name').patchValue(data.name);
 	}
 
 	deleteNumberPhone(): void {
-		// const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-		// 	backdrop: 'static'
-		// });
-		// modalRef.componentInstance.data = {
-		// 	title: 'Xác nhận',
-		// 	message: `Nếu thay đổi số điện thoại, dữ liệu khách hàng sẽ thay đổi theo. Bạn có chắc chắn muốn thay đổi không?`,
-		// 	button: { class: 'btn-primary', title: 'Xác nhận' }
-		// };
-
-		// modalRef.result.then((result) => {
-		// 	if (result) {
 		this.partnerForm.get('phone').patchValue(null, pathValueWithoutEvent);
 		this.partnerForm.get('name').patchValue(null, pathValueWithoutEvent);
 		this.partnerForm.updateValueAndValidity();
-		// 	}
-		// });
 	}
 
 	buildForm(): void {
 		this.partnerForm = this.fb.group({
 			phone: [null, [Validators.required]],
 			name: [null, [Validators.required]],
-			carIds: [null],
-			limit: [null]
+			driverId: [null],
+			vehicleIds: [null, Validators.required],
+			cashLimitOil: this.fb.array([]),
+			cashLimitMoney: [null]
 		});
-
-		this.partnerForm.get('name').disable();
 
 		this.partnerForm
 			.get('phone')
@@ -95,11 +160,14 @@ export class PartnerModalComponent implements OnInit {
 					if (phoneNumber) {
 						return this.partnerService.getPartnerByPhone(phoneNumber).pipe(
 							catchError((err: IError) => {
+								this.partnerForm.get('name').patchValue(null, pathValueWithoutEvent);
 								this.checkError(err);
 								return of(err);
-							})
+							}),
+							takeUntil(this.destroy$)
 						);
 					}
+					this.partnerForm.get('name').patchValue(null, pathValueWithoutEvent);
 					return of(null);
 				}),
 				takeUntil(this.destroy$)
@@ -113,12 +181,27 @@ export class PartnerModalComponent implements OnInit {
 
 	onSubmit(): void {
 		this.partnerForm.markAllAsTouched();
+		console.log(this.partnerForm);
+		
 		if (this.partnerForm.invalid) {
 			return;
 		}
+
+		const formValue = this.partnerForm.getRawValue();
+
+		const data = {
+			...formValue,
+			driverId: this.partnerForm.value.driverId,
+			cashLimitOil: formValue.cashLimitOil.map((c) => ({
+				...c,
+				cashLimitOil: convertMoney(c.cashLimitOil)
+			})),
+			cashLimitMoney: convertMoney(formValue.cashLimitMoney)
+		};
+
 		if (!this.isUpdate) {
 			this.partnerService
-				.createPartner(this.partnerForm.value)
+				.createPartner(data)
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
 					(res) => this.closeModal(res),
@@ -126,7 +209,7 @@ export class PartnerModalComponent implements OnInit {
 				);
 		} else {
 			this.partnerService
-				.updatePartner(this.partnerId, this.partnerForm.value)
+				.updatePartner(this.partnerId, data)
 				.pipe(takeUntil(this.destroy$))
 				.subscribe(
 					(res) => this.closeModal(res),
@@ -141,7 +224,21 @@ export class PartnerModalComponent implements OnInit {
 		}
 	}
 
-	checkError(err: IError) {}
+	checkError(err: IError) {
+		if (err?.code === 'SUN-OIL-4005' || err?.code === 'SUN-OIL-4834') {
+			this.partnerForm.get('phone').setErrors({ notFound: true });
+		}
+		if (err?.code === 'SUN-OIL-4866') {
+			this.partnerForm.get('phone').setErrors({ current: true });
+		}
+		if (err?.code === 'SUN-OIL-4868') {
+			this.partnerForm.get('phone').setErrors({ isEnterprise: true });
+		}
+		if (err?.code === 'SUN-OIL-4870') {
+			this.partnerForm.get('phone').setErrors({ existed: true });
+		}
+		this.cdr.detectChanges();
+	}
 
 	onClose(): void {
 		this.modal.close();

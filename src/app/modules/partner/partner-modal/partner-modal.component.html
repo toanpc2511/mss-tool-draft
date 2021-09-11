@@ -1,6 +1,8 @@
 <div class="modal-content">
 	<div class="modal-header">
-		<h4 class="modal-title" id="modal-title">{{ isUpdate ? 'Sửa tài xế' : 'Thêm mới tài xế' }}</h4>
+		<h4 class="modal-title" id="modal-title">
+			{{ isUpdate ? 'Sửa thông tin tài xế' : 'Thêm mới tài xế' }}
+		</h4>
 		<div class="close-icon" (click)="modal.close()"></div>
 	</div>
 	<div class="modal-body">
@@ -12,7 +14,7 @@
 						<div>
 							<input
 								class="form-control form-control-lg form-control-solid input-phone"
-								placeholder="Nhập số điện thoại"
+								placeholder="Nhập số điện thoại để tìm kiếm"
 								formControlName="phone"
 								autocomplete="off"
 								(keydown.space)="$event.preventDefault()"
@@ -29,13 +31,23 @@
 						></app-validate>
 						<app-validate
 							[control]="partnerForm.controls['phone']"
-							[error]="'notExisted'"
-							[message]="'Không tìm thấy thông tin tài xế với số điện thoại này'"
+							[error]="'notFound'"
+							[message]="'Không tìm thấy số điện thoại'"
 						></app-validate>
 						<app-validate
 							[control]="partnerForm.controls['phone']"
-							[error]="'invalid'"
-							[message]="'Số điện thoại không thuộc Việt Nam hoặc sai định dạng'"
+							[error]="'current'"
+							[message]="'Bạn không thể thêm chính mình vào tài khoản con'"
+						></app-validate>
+						<app-validate
+							[control]="partnerForm.controls['phone']"
+							[error]="'isEnterprise'"
+							[message]="'Tài khoản là chủ doanh nghiệp vận tải'"
+						></app-validate>
+						<app-validate
+							[control]="partnerForm.controls['phone']"
+							[error]="'existed'"
+							[message]="'Tài khoản con đã tồn tại'"
 						></app-validate>
 					</div>
 
@@ -46,6 +58,7 @@
 							class="form-control form-control-lg form-control-solid"
 							formControlName="name"
 							autocomplete="off"
+							disabled
 						/>
 					</div>
 				</div>
@@ -54,16 +67,26 @@
 						<label class="form-label required">Xe sử dụng</label>
 						<ng-select
 							[multiple]="true"
-							formControlName="carIds"
+							formControlName="vehicleIds"
 							[closeOnSelect]="false"
 							[placeholder]="'Chọn xe sử dụng'"
 							[notFoundText]="'...'"
 						>
-							<ng-option *ngFor="let car of cars" [value]="car.id">{{ car.name }}</ng-option>
+							<ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.id"
+								>{{ vehicle.numberVariable }}</ng-option
+							>
 						</ng-select>
+						<app-validate
+							[control]="partnerForm.controls['vehicleIds']"
+							[error]="'required'"
+							[message]="'Xe sử dụng không được để trống'"
+						></app-validate>
 					</div>
 				</div>
-				<div class="form-group row">
+				<div
+					class="form-group row"
+					*ngIf="(isLoadingForm$ |async) && cashLimitOilFormArray.length > 0"
+				>
 					<div class="list-product col-lg-12">
 						<h3 class="title">Thông tin hạn mức nhiên liệu</h3>
 						<div class="table-responsive angular-bootstrap-table">
@@ -75,141 +98,97 @@
 												<label class="form-label">STT</label>
 											</th>
 											<th scope="">
-												<label class="form-label required">Loại nhiên liệu</label>
+												<label class="form-label">Loại nhiên liệu</label>
 											</th>
 											<th scope="">
-												<label class="form-label required"
-													>Hạn mức tài khoản con {{isUpdate ? 'còn lại': null}}</label
-												>
-											</th>
-											<th scope="" *ngIf="isUpdate">
-												<label class="form-label required">Hạn mức tài khoản con mới</label>
+												<label class="form-label">Hạn mức cho tài xế</label>
 											</th>
 											<th scope="">
-												<label class="form-label required">Đơn vị</label>
+												<label class="form-label">Hạn mức còn lại của doanh nghiệp</label>
+											</th>
+											<th scope="">
+												<label class="form-label">Đơn vị</label>
 											</th>
 										</tr>
 									</thead>
 
 									<tbody>
-										<!-- <ng-container formArrayName="products">
-												<tr
-													*ngFor="let productInfoFromGroup of productFormArray.controls; let i = index"
-												>
-													<ng-container [formGroup]="productInfoFromGroup">
-														<td>{{i + 1}}</td>
-														<td>
-															<select
-																(change)="productTypeChanged($event, i)"
-																class="form-control form-control-sm"
-																formControlName="categoryProductId"
-															>
-																<option [value]="null">Chọn loại sản phẩm</option>
-																<option *ngFor="let prodType of productTypes" [value]="prodType.id">
-																	{{prodType.name}}
-																</option>
-															</select>
-															<app-validate
-																[control]="productInfoFromGroup.get('categoryProductId')"
-																[error]="'required'"
-																[message]="'Loại sản phẩm được để trống'"
-															></app-validate>
-														</td>
-														<td class="col2">
-															<select
-																(change)="productChanged($event, i)"
-																class="form-control form-control-sm"
-																formControlName="productId"
-															>
-																<option [value]="null">Chọn sản phẩm</option>
-																<option *ngFor="let prod of products[i]" [value]="prod.id">
-																	{{prod.name}}
-																</option>
-															</select>
-															<app-validate
-																[control]="productInfoFromGroup.get('productId')"
-																[error]="'required'"
-																[message]="'Sản phẩm được để trống'"
-															></app-validate>
-														</td>
-														<td
-															class="col3"
-															[textContent]="productInfoFromGroup.get('unit').value"
-														></td>
-														<td class="col4">
-															<input
-																(input)="updateTotalProduct(i)"
-																placeholder="Nhập số lượng"
-																class="form-control form-control-sm"
-																formControlName="amount"
-																maxlength="6"
-																numbersOnly
-																[numberformControl]="productInfoFromGroup.get('amount')"
-															/>
-															<app-validate
-																[control]="productInfoFromGroup.get('amount')"
-																[error]="'required'"
-																[message]="'Số lượng được để trống'"
-															></app-validate>
-															<app-validate
-																[control]="productInfoFromGroup.get('amount')"
-																[error]="'min'"
-																[message]="'Số lượng phải lớn hơn 0'"
-															></app-validate>
-														</td>
-														<td
-															class="col5"
-															[textContent]="productInfoFromGroup.get('price').value | number | vnCurrency"
-														></td>
-														<td
-															class="col6"
-															[textContent]="productInfoFromGroup.get('discount').value | number | vnCurrency"
-														></td>
-														<td
-															class="col7"
-															[textContent]="productInfoFromGroup.get('totalMoney').value | number | vnCurrency"
-														></td>
-														<td class="col8">
-															<a
-																*ngIf="i > 0 || productFormArray.length >= 2"
-																(click)="deleteProduct(i)"
-																class="btn btn-icon btn-light btn-hover-danger btn-sm"
-															>
-																<span
-																	[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
-																	cacheSVG="true"
-																	class="svg-icon svg-icon-md svg-icon-danger"
-																	[ngbTooltip]="'Xóa'"
-																>
-																</span>
-															</a>
-														</td>
-													</ng-container></tr
-											></ng-container> -->
+										<ng-container formArrayName="cashLimitOil">
+											<tr
+												*ngFor="let cashLimitOilFormGroup of cashLimitOilFormArray.controls; let i = index"
+											>
+												<ng-container [formGroup]="cashLimitOilFormGroup">
+													<td>{{i + 1}}</td>
+													<td [textContent]="cashLimitOilFormGroup.get('productName').value"></td>
+													<td class="col2">
+														<input
+															placeholder="Nhập hạn mức"
+															class="form-control form-control-sm"
+															formControlName="cashLimitOil"
+															maxlength="6"
+															numbersOnly
+															[numberformControl]="cashLimitOilFormGroup.get('cashLimitOil')"
+														/>
+														<app-validate
+															[control]="cashLimitOilFormGroup.get('cashLimitOil')"
+															[error]="'min'"
+															[message]="'Hạn mức phải lớn hơn 0'"
+														></app-validate>
+														<app-validate
+															[control]="cashLimitOilFormGroup.get('cashLimitOil')"
+															[error]="'max'"
+															[message]="'Hạn mức lớn hơn hạn mức tối đa'"
+														></app-validate>
+													</td>
+													<td
+														class="col3"
+														[textContent]="cashLimitOilFormGroup.get('maxCashLimitOil').value"
+													></td>
+													<td
+														class="col4"
+														[textContent]="cashLimitOilFormGroup.get('unitCashLimitOil').value"
+													></td>
+												</ng-container></tr
+										></ng-container>
 									</tbody>
 								</table>
 							</form>
 						</div>
 					</div>
 				</div>
-				<div class="form-group row">
+				<div class="form-group row" *ngIf="cashLimitMoneyMaster > 0">
 					<div class="list-product col-lg-12">
 						<h3 class="title">Thông tin hạn mức tiền</h3>
-						<label class="text-black-50">Hạn mức đang có Tiền: 100,000,000VNĐ</label>
+						<label class="text-black-50" *ngIf="isUpdate"
+							>Hạn mức đang có Tiền: {{cashLimitMoneyChild |number|vnCurrency}}VNĐ</label
+						>
 					</div>
 					<div class="col-lg-6">
-						<label class="form-label required">Hạn mức tiền</label>
+						<label class="form-label">Hạn mức tiền</label>
 						<input
 							type="text"
-							class="form-control form-control-lg form-control-solid"
-							formControlName="limit"
+							class="form-control form-control-lg form-control-solid mb-1"
+							formControlName="cashLimitMoney"
 							placeholder="Nhập số tiền"
 							autocomplete="off"
 							numbersOnly
-							[numberformControl]="partnerForm.get('limit')"
+							[numberformControl]="partnerForm.get('cashLimitMoney')"
 							decimal-mask
 							maxlength="18"
 						/>
+						<app-validate
+							[control]="partnerForm.get('cashLimitMoney')"
+							[error]="'min'"
+							[message]="'Hạn mức tiền phải lớn hơn 0'"
+						></app-validate>
+						<app-validate
+							[control]="partnerForm.get('cashLimitMoney')"
+							[error]="'max'"
+							[message]="'Hạn mức tiền lớn hơn hạn mức tiền tối đa'"
+						></app-validate>
+						<strong class="text-warning"
+							>Hạn mức còn lại: {{cashLimitMoneyMaster |number|vnCurrency}}VNĐ</strong
+						>
 					</div>
 				</div>
 			</form>
@@ -220,7 +199,7 @@
 			Hủy
 		</button>
 		<button type="button" ngbAutofocus class="btn btn-primary btn-dialog" (click)="onSubmit()">
-			Lưu
+			{{isUpdate ? 'Lưu': 'Gửi yêu cầu'}}
 		</button>
 	</div>
 </div>

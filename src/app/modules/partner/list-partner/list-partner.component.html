@@ -25,7 +25,7 @@
 					<th scope="">
 						Họ và tên
 						<app-sort-icon
-							column="fullName"
+							column="name"
 							[activeColumn]="sortData?.fieldSort"
 							[activeDirection]="sortData?.directionSort"
 							(sort)="sort($event)"
@@ -55,8 +55,8 @@
 				<tbody>
 					<tr *ngFor="let item of dataSource">
 						<td class="full-name">
-							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.fullName">
-								{{ item.fullName }}
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
+								{{ item.name }}
 							</p>
 						</td>
 
@@ -68,11 +68,11 @@
 
 						<td class="cars">
 							<p
-								class="cursor-pointer text-ellipsis text-primary"
+								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.cars | carsDisplay: true"
+								[ngbTooltip]="item?.numberVariables | carsDisplay: true"
 							>
-								{{item.cars | carsDisplay}}
+								{{item.numberVariables | carsDisplay}}
 							</p>
 						</td>
 
@@ -81,19 +81,18 @@
 								class="label label-lg label-inline"
 								[class.label-light-success]="item.status === eStatus.ACCEPTED"
 								[class.label-light-danger]="item.status === eStatus.REJECTED"
-								[class.label-light-warning]="item.status === eStatus.WAITING_ACCEPTED"
+								[class.label-light-warning]="item.status === eStatus.WAITING"
 							>
 								<ng-container *ngIf="item.status === eStatus.ACCEPTED">Xác nhận</ng-container>
 								<ng-container *ngIf="item.status === eStatus.REJECTED">Từ chối </ng-container>
-								<ng-container *ngIf="item.status === eStatus.WAITING_ACCEPTED"
-									>Chờ xác nhận</ng-container
-								>
+								<ng-container *ngIf="item.status === eStatus.WAITING">Chờ xác nhận</ng-container>
 							</span>
 						</td>
 
 						<td class="text-center action">
 							<a
-								(click)="openPartnerModal(item.id)"
+								*ngIf="item.status === eStatus.ACCEPTED"
+								(click)="openPartnerModal(item.ticketId)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 							>
 								<span

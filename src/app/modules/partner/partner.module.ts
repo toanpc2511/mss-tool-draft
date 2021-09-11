@@ -13,6 +13,7 @@ import { SharedComponentsModule } from 'src/app/shared/components/shared-compone
 import { InputTrimModule } from 'ng2-trim-directive';
 import { CarsDisplayPipe } from './cars-display.pipe';
 import { DirectivesModule } from 'src/app/shared/directives/directives.module';
+import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [PartnerComponent, ListPartnerComponent, PartnerModalComponent, CarsDisplayPipe],
@@ -27,6 +28,7 @@ import { DirectivesModule } from 'src/app/shared/directives/directives.module';
     SharedComponentsModule,
     ReactiveFormsModule,
     InputTrimModule,
+    PipesModule,
     DirectivesModule
   ]
 })
