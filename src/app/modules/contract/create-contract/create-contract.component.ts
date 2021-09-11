@@ -139,6 +139,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				switchMap((contractId: number) => {
 					if (contractId) {
 						this.isUpdate = true;
+						this.minDate = null;
 						this.contractId = contractId;
 						this.setBreadcumb();
 						return this.contractService.getContractById(contractId);
