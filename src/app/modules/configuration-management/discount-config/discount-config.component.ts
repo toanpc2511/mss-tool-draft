@@ -111,9 +111,9 @@ export class DiscountConfigComponent implements OnInit {
 		}
 		this.configurationManagementService
 			.updateDiscountConfig({
-				discountRequests: this.dataSource.value.map((d) => ({
+				discountRequests: this.dataSource.getRawValue().map((d) => ({
 					id: d.id,
-					discount: convertMoney(d.discount)
+					discount: Number(d.discount)
 				}))
 			})
 			.subscribe(
