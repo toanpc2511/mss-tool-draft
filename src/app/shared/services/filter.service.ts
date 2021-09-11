@@ -32,12 +32,16 @@ export class FilterService<T> {
 	}
 
 	checkDataKey(data, filterField, key): boolean {
-		return (
-			((typeof data[key] === 'string' || typeof data[key] === 'number') &&
-				cleanAccents(data[key] as string)
-					.toLowerCase()
-					.includes(cleanAccents(filterField[key] as string).toLowerCase())) ||
-			data[key] === filterField[key]
-		);
+		let dataByKey: string = data[key];
+		const filterFieldValue: string = filterField[key];
+		if (typeof dataByKey === 'number') {
+			dataByKey = String(dataByKey);
+		}
+		if (!dataByKey || !(typeof dataByKey === 'string' || typeof dataByKey === 'number')) {
+			return false;
+		}
+		return cleanAccents(dataByKey)
+			.toLowerCase()
+			.includes(cleanAccents(filterFieldValue).toLowerCase());
 	}
 }
