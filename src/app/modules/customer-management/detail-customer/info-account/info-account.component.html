@@ -1,198 +1,189 @@
-<div class='mt-1 card card-custom gutter-b'>
-  <div class='info-customer'>
-    <div class='card-header'>
-      <div class='card-title'>
-        <h3 class='title'>Thông tin khách hàng</h3>
-      </div>
-    </div>
+<div class="mt-1 card card-custom gutter-b">
+	<div class="info-customer">
+		<div class="card-header">
+			<div class="card-title">
+				<h3 class="title">Thông tin khách hàng</h3>
+			</div>
+		</div>
 
-    <div class='card-body'>
-      <form [formGroup]='infoForm' class='form form-label-right'>
-        <div class='form-group row'>
-          <div class='col-lg-4 customer-phone'>
-            <label class='form-label required'>Số điện thoại</label>
-            <div>
-              <input
-                class='form-control form-control-lg form-control-solid input-phone'
-                placeholder='Nhập số điện thoại'
-                autocomplete='off'
-                formControlName='phone'
-                (keydown.space)='$event.preventDefault()'
-                maxlength='12'
-                numbersOnly
-                [numberformControl]="infoForm.controls['phone']"
-              />
-              <em class='fas fa-edit' (click)='editNumber($event, isReadonly)'></em>
-            </div>
-            <app-validate
-              [control]="infoForm.controls['phone']"
-              [error]="'required'"
-              [message]="'Số diện thoại không được để trống'"
-            ></app-validate>
-          </div>
+		<div class="card-body">
+			<form [formGroup]="infoForm" class="form form-label-right">
+				<div class="form-group row">
+					<div class="col-lg-4 customer-phone">
+						<label class="form-label required">Số điện thoại</label>
+						<div>
+							<input
+								class="form-control form-control-lg form-control-solid input-phone"
+								placeholder="Nhập số điện thoại"
+								autocomplete="off"
+								formControlName="phone"
+								(keydown.space)="$event.preventDefault()"
+								maxlength="12"
+								numbersOnly
+								[numberformControl]="infoForm.controls['phone']"
+							/>
+							<em class="fas fa-edit" (click)="editNumber($event, isReadonly)"></em>
+						</div>
+						<app-validate
+							[control]="infoForm.controls['phone']"
+							[error]="'required'"
+							[message]="'Số diện thoại không được để trống'"
+						></app-validate>
+					</div>
 
-          <div class='col-lg-4'>
-            <label class='form-label'>Tên khách hàng</label>
-            <input
-              [attr.disabled]="true"
-              formControlName='name'
-              class='form-control form-control-lg form-control-solid'
-            />
-          </div>
+					<div class="col-lg-4">
+						<label class="form-label">Tên khách hàng</label>
+						<input
+							[attr.disabled]="true"
+							formControlName="name"
+							class="form-control form-control-lg form-control-solid"
+						/>
+					</div>
 
-          <div class='col-lg-4'>
-            <label class='form-label'>CMND/CCCD</label>
-            <input
-              [attr.disabled]="true"
-              formControlName='idCard'
-              class='form-control form-control-lg form-control-solid'
-            />
-          </div>
-        </div>
+					<div class="col-lg-4">
+						<label class="form-label">CMND/CCCD</label>
+						<input
+							[attr.disabled]="true"
+							formControlName="idCard"
+							class="form-control form-control-lg form-control-solid"
+						/>
+					</div>
+				</div>
 
-        <div class='form-group row'>
-          <div class='col-lg-4'>
-            <label class='form-label'>Ngày sinh</label>
-            <input
-              #birthDate
-              [attr.disabled]="true"
-              formControlName='dateOfBirth'
-              class='form-control form-control-lg form-control-solid'
-            />
-          </div>
+				<div class="form-group row">
+					<div class="col-lg-4">
+						<label class="form-label">Ngày sinh</label>
+						<input
+							#birthDate
+							[attr.disabled]="true"
+							formControlName="dateOfBirth"
+							class="form-control form-control-lg form-control-solid"
+						/>
+					</div>
 
-          <div class='col-lg-8'>
-            <label class='form-label'>Địa chỉ</label>
-            <input
-              [attr.disabled]="true"
-              formControlName='address'
-              class='form-control form-control-lg form-control-solid'
-            />
-          </div>
-        </div>
+					<div class="col-lg-8">
+						<label class="form-label">Địa chỉ</label>
+						<input
+							[attr.disabled]="true"
+							formControlName="address"
+							class="form-control form-control-lg form-control-solid"
+						/>
+					</div>
+				</div>
 
-        <div class='form-group row'>
-          <div class='col-lg-4'>
-            <label class='form-label'>Hạng khách hàng</label>
-            <input
-              [attr.disabled]="true"
-              formControlName='rank'
-              class='form-control form-control-lg form-control-solid'
-            />
-          </div>
+				<div class="form-group row">
+					<div class="col-lg-4">
+						<label class="form-label">Hạng khách hàng</label>
+						<input
+							[attr.disabled]="true"
+							formControlName="rank"
+							class="form-control form-control-lg form-control-solid"
+						/>
+					</div>
 
-          <div class='col-lg-4'>
-            <label class='form-label'>Trạng thái hồ sơ</label>
-            <select
-              formControlName='statusContract'
-              class='form-control form-control-lg form-control-solid'
-            >
-              <option [value]='listStatusProfileCustomer.SUCCESS'>Xác thực thành công</option>
-              <option [value]='listStatusProfileCustomer.UN_SUCCESS'>Xác thực không thành công</option>
-              <option [value]='listStatusProfileCustomer.UNCONFIRMED'>Chưa xác thực</option>
-            </select>
-          </div>
+					<div class="col-lg-4">
+						<label class="form-label">Trạng thái hồ sơ</label>
+						<select
+							formControlName="statusContract"
+							class="form-control form-control-lg form-control-solid"
+						>
+							<option [value]="listStatusProfileCustomer.SUCCESS">Xác thực thành công</option>
+							<option [value]="listStatusProfileCustomer.UN_SUCCESS">
+								Xác thực không thành công
+							</option>
+							<option [value]="listStatusProfileCustomer.UNCONFIRMED">Chưa xác thực</option>
+						</select>
+					</div>
 
-          <div class='col-lg-4'>
-            <label class='form-label'>Trạng thái</label>
-            <select
-              class='form-control form-control-lg form-control-solid'
-              formControlName='status'
-            >
-              <option [value]='listStatusCustomer.ACTIVE'>Hoạt động</option>
-              <option [value]='listStatusCustomer.LOCK'>Không hoạt động</option>
-            </select>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
+					<div class="col-lg-4">
+						<label class="form-label">Trạng thái</label>
+						<select
+							class="form-control form-control-lg form-control-solid"
+							formControlName="status"
+						>
+							<option [value]="listStatusCustomer.ACTIVE">Hoạt động</option>
+							<option [value]="listStatusCustomer.LOCK">Không hoạt động</option>
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 
-  <div class='info-limit'>
-    <div class='card-header'>
-      <div class='card-title'>
-        <h3 class='title'>Thông tin hạn mức còn lại</h3>
-      </div>
-    </div>
+	<div class="info-limit">
+		<div class="card-header">
+			<div class="card-title">
+				<h3 class="title">Thông tin hạn mức còn lại</h3>
+			</div>
+		</div>
 
-    <div class='card-body'>
-      <div class='table-responsive angular-bootstrap-table'>
-        <table class='table' aria-describedby='mydesc'>
-          <thead>
-          <th id='stt' class='text-center'>
-            STT
-          </th>
-          <th id='loai-tai-khoan' class='hanMuc'>
-            Loại tài khoản
-          </th>
-          <th id='loai-han-muc' class='text-right amount'>
-            Loại hạn mức
-          </th>
-          <th id='so-luong' class='text-right amount'>
-            Số lượng
-          </th>
-          <th id='don-vi' class='unit'>
-            Đơn vị
-          </th>
-          </thead>
+		<div class="card-body">
+			<div class="table-responsive angular-bootstrap-table">
+				<table class="table" aria-describedby="mydesc">
+					<thead>
+						<th id="stt" class="text-center">STT</th>
+						<th id="loai-tai-khoan" class="hanMuc">Loại tài khoản</th>
+						<th id="loai-han-muc" class="amount">Loại hạn mức</th>
+						<th id="so-luong" class="text-right amount">Số lượng</th>
+						<th id="don-vi" class="unit">Đơn vị</th>
+					</thead>
 
-          <tbody>
-          <tr *ngFor='let item of cashLimitInfos; let i = index'>
-            <td class='text-center stt'>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='i+1'>
-                {{ i + 1 }}
-              </p>
-            </td>
+					<tbody>
+						<tr *ngFor="let item of cashLimitInfos; let i = index">
+							<td class="text-center stt">
+								<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="i+1">
+									{{ i + 1 }}
+								</p>
+							</td>
 
-            <td class='hanMuc'>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]="item.userType === 'DRIVER' ? 'Cá nhân' : 'Doanh nghiệp' ">
-                {{ item.userType === 'DRIVER' ? 'Cá nhân' : 'Doanh nghiệp' }}
-              </p>
-            </td>
+							<td class="hanMuc">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.userType === 'DRIVER' ? 'Cá nhân' : 'Doanh nghiệp' "
+								>
+									{{ item.userType === 'DRIVER' ? 'Cá nhân' : 'Doanh nghiệp' }}
+								</p>
+							</td>
 
-            
-            <td class='text-right type-limit'>
-              <p
-                class='cursor-pointer text-ellipsis'
-                placement='top'
-                [ngbTooltip]="item.limitType"
-              >
-                {{ item.limitType }}
-              </p>
-            </td>
+							<td class="type-limit">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.limitType"
+								>
+									{{ item.limitType }}
+								</p>
+							</td>
 
-            <td class='text-right amount'>
-              <p
-                class='cursor-pointer text-ellipsis'
-                placement='top'
-                [ngbTooltip]="item.amount"
-              >
-                {{ item.amount }}
-              </p>
-            </td>
-            <td class='unit'>
-              <p
-                class='cursor-pointer text-ellipsis'
-                placement='top'
-                [ngbTooltip]='item.unit'
-              >
-                {{ item.unit }}
-              </p>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+							<td class="text-right amount">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.amount.toLocaleString('en-US')"
+								>
+									{{ item.amount.toLocaleString('en-US') }}
+								</p>
+							</td>
+							<td class="unit">
+								<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.unit">
+									{{ item.unit }}
+								</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 
-  <div class='pb-10 w-100 d-flex justify-content-center'>
-    <button
-      class='m-2 btn btn-primary font-weight-bold'
-      [disabled]='btnSubmit'
-      (click)='onSubmit()'
-    >
-      Cập nhật
-    </button>
-  </div>
+	<div class="pb-10 w-100 d-flex justify-content-center">
+		<button
+			class="m-2 btn btn-primary font-weight-bold"
+			[disabled]="btnSubmit"
+			(click)="onSubmit()"
+		>
+			Cập nhật
+		</button>
+	</div>
 </div>
