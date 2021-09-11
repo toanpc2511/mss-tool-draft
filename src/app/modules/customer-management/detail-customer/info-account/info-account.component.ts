@@ -25,14 +25,14 @@ import { ToastrService } from 'ngx-toastr';
 	styleUrls: ['./info-account.component.scss']
 })
 export class InfoAccountComponent implements OnInit {
-	isReadonly: boolean = true;
+	isReadonly: boolean;
 	numberPhone: string;
 
 	listStatusProfileCustomer = LIST_STATUS_PROFILE_CUSTOMER;
 	listStatusCustomer = LIST_STATUS_CUSTOMER;
 	dataSource: IInfoCutomer;
 	infoForm: FormGroup;
-	btnSubmit: boolean = true;
+	btnSubmit: boolean;
 	customerId: string;
 	cashLimitInfos = [];
 
@@ -45,7 +45,10 @@ export class InfoAccountComponent implements OnInit {
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private toastr: ToastrService
-	) {}
+	) {
+		this.isReadonly = true;
+		this.btnSubmit = true;
+	}
 
 	ngOnInit(): void {
 		this.activeRoute.params.subscribe((res) => {
@@ -79,16 +82,19 @@ export class InfoAccountComponent implements OnInit {
 					unit: cash.unitTypeMoney
 				}
 			];
-			for (const oil of cash.cashLimitOilAccount) {
-				flatArray = [
-					...flatArray,
-					{
-						userType: cash.type,
-						limitType: oil.productName,
-						amount: oil.cashLimitOil,
-						unit: oil.unitCashLimitOil
-					}
-				];
+
+			if (cash.cashLimitOilAccount !== null) {
+				for (const oil of cash.cashLimitOilAccount) {
+					flatArray = [
+						...flatArray,
+						{
+							userType: cash.type,
+							limitType: oil.productName,
+							amount: oil.cashLimitOil,
+							unit: oil.unitCashLimitOil
+						}
+					];
+				}
 			}
 		}
 
@@ -136,8 +142,6 @@ export class InfoAccountComponent implements OnInit {
 	}
 
 	pathValueForm() {
-		console.log(this.dataSource);
-
 		this.infoForm.get('phone').patchValue(this.dataSource?.phone);
 		this.infoForm.get('name').patchValue(this.dataSource?.name);
 		this.infoForm.get('idCard').patchValue(this.dataSource?.idCard);
