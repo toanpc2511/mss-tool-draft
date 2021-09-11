@@ -34,7 +34,7 @@
         <th id='type-vehicle'>
           Loại xe
           <app-sort-icon
-            column='typeVehicle'
+            column='vehicle_company'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -43,7 +43,7 @@
         <th id='license-plates'>
           Biển số xe
           <app-sort-icon
-            column='licensePlates'
+            column='number_variable'
             [activeColumn]='sortData?.fieldSort'
             [activeDirection]='sortData?.directionSort'
             (sort)='sort($event)'
@@ -61,18 +61,18 @@
           </td>
 
           <td class='type-vehicle'>
-            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.typeVehicle'>
-              {{ item.typeVehicle }}
+            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.vehicleCompany'>
+              {{ item.vehicleCompany }}
             </p>
           </td>
 
-          <td class='license-plates'>
+          <td class='number-variable'>
             <p
               class='cursor-pointer text-ellipsis'
               placement='top'
-              [ngbTooltip]='item.licensePlates'
+              [ngbTooltip]='item.numberVariable'
             >
-              {{ item.licensePlates }}
+              {{ item.numberVariable }}
             </p>
           </td>
 
@@ -88,9 +88,9 @@
 
           <ng-template #content8 let-c='close' let-d='dismiss'>
             <div class='modal-header'>
-              <h4 class='modal-title'>Thông tin xe: {{nameVehicle}}</h4>
+              <h4 class='modal-title'>Thông tin xe: {{item.numberVariable}}</h4>
               <button type='button' class='close' aria-label='Close' (click)="d('Cross click')">
-                <span aria-hidden='true'>&times;</span>
+                <span aria-hidden='true' class='fas fa-times'></span>
               </button>
             </div>
             <div class='modal-body'>
@@ -111,6 +111,12 @@
           </ng-template>
         </tr>
         </tbody>
+
+        <tfoot *ngIf='dataSource.length === 0'>
+        <tr>
+          <td colspan='4' class='text-center' style='color: #ccc'>Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
       </table>
     </div>
     <app-paginator [paginator]='paginatorState' (paginate)='pagingChange($event)'></app-paginator>

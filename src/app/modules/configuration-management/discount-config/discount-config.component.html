@@ -1,0 +1,135 @@
+<div class="mt-1 card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title row w-100">
+			<div class="p-0 col-lg-6">
+				<h3 class="card-label">Danh sách cấu hình chiết khấu</h3>
+			</div>
+			<div class="col-lg-6 d-flex justify-content-end">
+				<div class="search-form w-100 w-lg-260px">
+					<em class="flaticon-search"></em>
+					<input
+						type="text"
+						name="searchText"
+						placeholder="Search..."
+						class="form-control"
+						[formControl]="searchFormControl"
+					/>
+				</div>
+			</div>
+		</div>
+		<strong class="text-danger w-100"
+			>Lưu ý: Mỗi lít nhiên liệu khách hàng mua sẽ nhận được:</strong
+		>
+		<strong class="text-danger w-100"
+			>- Cộng 1 điểm tích lũy xét hạng (Không phụ thuộc vào hạng hay loại nhiên liệu)</strong
+		>
+		<strong class="text-danger w-100">- Số tiền chiết khấu tương ứng với cấu hình</strong>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table overflow-hidden table-head-custom table-vertical-center" aria-label="">
+				<thead>
+					<th scope="">
+						Hạng
+						<app-sort-icon
+							column="nameRank"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sortAndFilter($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Loại nhiên liệu
+						<app-sort-icon
+							column="nameProduct"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sortAndFilter($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Cấu hình chiết khấu (Đồng/Lít)
+						<app-sort-icon
+							column="discount"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sortAndFilter($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Giá vùng 2 (Đồng/Lít)
+						<app-sort-icon
+							column="priceAreaTwo"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sortAndFilter($event)"
+						></app-sort-icon>
+					</th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of dataSource.controls; let i = index" [formGroup]="item">
+						<td class="rank">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.get('nameRank').value "
+							>
+								{{ item.get('nameRank').value }}
+							</p>
+						</td>
+						<td class="name-product">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.get('nameProduct').value "
+							>
+								{{ item.get('nameProduct').value }}
+							</p>
+						</td>
+						<td class="discount">
+							<input
+								class="form-control w-50"
+								formControlName="discount"
+								placeholder="Nhập chiết khấu"
+								decimal-mask
+								maxlength="6"
+								(input)="onInputDiscount(i)"
+							/>
+							<app-validate
+								[control]="item.get('discount')"
+								[error]="'max'"
+								[message]="'Chiết khấu không được lớn hơn 50% giá vùng 2 của nhiên liệu'"
+							></app-validate>
+							<app-validate
+								[control]="item.get('discount')"
+								[error]="'required'"
+								[message]="'Chiết khấu không được để trống'"
+							></app-validate>
+						</td>
+						<td class="price-area-two">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.get('priceAreaTwo').value | number| vnCurrency"
+							>
+								{{ item.get('priceAreaTwo').value | number| vnCurrency}}
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="card-footer">
+		<div class="row justify-content-center w-100">
+			<button
+				type="button"
+				class="mr-6 btn btn-outline-secondary btn-dialog"
+				(click)="onReset(true)"
+			>
+				Hủy
+			</button>
+			<button type="button" class="btn btn-primary btn-dialog" (click)="onSubmit()">Lưu</button>
+		</div>
+	</div>
+</div>

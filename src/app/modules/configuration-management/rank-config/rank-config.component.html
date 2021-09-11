@@ -1,0 +1,87 @@
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Danh sách hạng</h3>
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="row">
+			<form class="form form-label-right w-100">
+				<div class="form-group row d-inline">
+					<ngb-accordion [destroyOnHide]="false" #moduleAccordion>
+						<ngb-panel
+							*ngFor="let item of configRankFormArray.controls, let i = index"
+							[id]='"module-panel-" + item.get("id").value'
+						>
+							<ng-template ngbPanelTitle>
+								<div class="d-flex justify-content-between">
+									<div class="d-flex align-items-center">
+										<label class="m-0 title-rank"
+											>{{item.get('name').value}} - điểm đạt hạng:
+											{{item.get('score').value.toLocaleString('en-US')}}</label
+										>
+									</div>
+									<div
+										[ngClass]="{'icon-arrow-up': !isOpenModule('module-panel-' + item.get('id').value), 'icon-arrow-down': isOpenModule('module-panel-' + item.get('id').value)}"
+									></div>
+								</div>
+							</ng-template>
+							<ng-template ngbPanelContent [formGroup]="item">
+								<div class="mb-8">
+									<label for="chinh-sach">Chính sách</label>
+									<textarea
+										(keyup)="autoGrowTextZone($event)"
+										class="form-control form-control-solid"
+										id="chinh-sach"
+										placeholder="Nhập chính sách"
+										maxlength="2999"
+										[rows]="arrayLength[i].policy/140"
+										trim="blur"
+										name="policy"
+										formControlName="policy"
+									></textarea>
+								</div>
+
+								<div class="mb-8">
+									<label for="gioi-thieu">Giới thiệu</label>
+									<textarea
+										(keyup)="autoGrowTextZone($event)"
+										class="form-control form-control-solid"
+										id="gioi-thieu"
+										placeholder="Nhập giới thiệu"
+										maxlength="2999"
+										[rows]="arrayLength[i].introduction/140"
+										trim="blur"
+										name="introduction"
+										formControlName="introduction"
+									></textarea>
+								</div>
+
+								<div class="mb-8">
+									<label for="uu-dai">Ưu đãi</label>
+									<textarea
+										(keyup)="autoGrowTextZone($event)"
+										class="form-control form-control-solid"
+										id="uu-dai"
+										placeholder="Nhập ưu đãi"
+										maxlength="2999"
+										[rows]="arrayLength[i].promotion/140"
+										trim="blur"
+										name="promotion"
+										formControlName="promotion"
+									></textarea>
+								</div>
+							</ng-template>
+						</ngb-panel>
+					</ngb-accordion>
+				</div>
+			</form>
+		</div>
+		<div class="row justify-content-center w-100">
+			<button type="button" class="btn btn-outline-secondary btn-dialog mr-6" (click)="cancel()">
+				Hủy
+			</button>
+			<button type="button" class="btn btn-primary btn-dialog" (click)="onSubmit()">Lưu</button>
+		</div>
+	</div>
+</div>

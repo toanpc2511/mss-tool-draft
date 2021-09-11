@@ -50,14 +50,17 @@ export class RejectContractModalComponent implements OnInit {
 
 		this.contractService.rejectContract(this.dataContract.id, body).subscribe(
 			(res) => {
-				console.log(body);
 				this.rejectForm.markAllAsTouched();
 				if (this.rejectForm.invalid) {
 					return;
 				}
 				if (res.data) {
 					this.modal.close();
-					this.router.navigate(['/hop-dong/danh-sach']);
+          if (this.data.customerId) {
+            this.router.navigate([`/khach-hang/danh-sach/chi-tiet/${this.data.customerId}`]);
+          } else {
+            this.router.navigate(['/hop-dong/danh-sach']);
+          }
 				}
 			},
 			(err: IError) => {
@@ -70,14 +73,21 @@ export class RejectContractModalComponent implements OnInit {
 		this.contractService.acceptContract(this.dataContract.id).subscribe((res) => {
 			if (res.data) {
 				this.modal.close();
-				this.router.navigate(['/hop-dong/danh-sach']);
+        if (this.data.customerId) {
+          this.router.navigate([`/khach-hang/danh-sach/chi-tiet/${this.data.customerId}`]);
+        } else {
+          this.router.navigate(['/hop-dong/danh-sach']);
+        }
 			}
-		});
+		},
+      (err: IError) => {
+        this.checkError(err);
+      });
 	}
 
 	getProd() {
 		let item;
-		for (let i = 0; i < this.data.contract.product.length; i++) {
+		for (let i = 0; i < this.data.contract.product?.length; i++) {
 			item = `${this.data.contract.product[i].productResponse.name} - ${this.data.contract.product[i].productResponse.amount} ${this.data.contract.product[i].productResponse.unit}`;
 
 			this.listProduct.push(item);
@@ -92,6 +102,9 @@ export class RejectContractModalComponent implements OnInit {
 		if (err.code === 'SUN-OIL-4720') {
 			this.toastr.error('Không có nhân viên nào tương ứng với tài khoản này');
 		}
+    if (err.code === 'SUN-OIL-4717') {
+      this.toastr.error('Hợp đồng không không ở trạng thái chờ phê duyệt hoặc không tồn tại');
+    }
 	}
 }
 
@@ -99,4 +112,5 @@ export interface IDataTransfer {
 	title: string;
 	contract?: IContract;
 	type: string;
+	customerId?: string;
 }

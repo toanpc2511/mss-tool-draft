@@ -1,187 +1,189 @@
-<div class='card card-custom gutter-b mt-1'>
-  <div class='info-customer'>
-    <div class='card-header'>
-      <div class='card-title'>
-        <h3 class='title'>Thông tin khách hàng</h3>
-      </div>
-    </div>
+<div class="mt-1 card card-custom gutter-b">
+	<div class="info-customer">
+		<div class="card-header">
+			<div class="card-title">
+				<h3 class="title">Thông tin khách hàng</h3>
+			</div>
+		</div>
 
-    <div class='card-body'>
-      <div class='form-group row'>
-        <div class='col-lg-4 row customer-phone'>
-          <div class='col-lg-5 line-heght-50'>
-            <label class='form-label'>Số điện thoại</label>
-          </div>
-          <div class='col-lg-7'>
-            <input
-              class='form-control form-control-lg form-control-solid input-phone'
-              placeholder='Nhập số điện thoại'
-              autocomplete='off'
-              (keydown.space)='$event.preventDefault()'
-              maxlength='12'
-              numbersOnly
-              [disabled]='isReadonly'
-              [(ngModel)]='numberPhone' name='numberPhone'
-            />
-            <span class='fas fa-edit' (click)='editNumber($event, isReadonly)'></span>
-          </div>
-        </div>
+		<div class="card-body">
+			<form [formGroup]="infoForm" class="form form-label-right">
+				<div class="form-group row">
+					<div class="col-lg-4 customer-phone">
+						<label class="form-label required">Số điện thoại</label>
+						<div>
+							<input
+								class="form-control form-control-lg form-control-solid input-phone"
+								placeholder="Nhập số điện thoại"
+								autocomplete="off"
+								formControlName="phone"
+								(keydown.space)="$event.preventDefault()"
+								maxlength="12"
+								numbersOnly
+								[numberformControl]="infoForm.controls['phone']"
+							/>
+							<em class="fas fa-edit" (click)="editNumber($event, isReadonly)"></em>
+						</div>
+						<app-validate
+							[control]="infoForm.controls['phone']"
+							[error]="'required'"
+							[message]="'Số diện thoại không được để trống'"
+						></app-validate>
+					</div>
 
-        <div class='col-lg-4 row'>
-          <div class='col-lg-5 line-heght-50'>
-            <label class='form-label'>Tên khách hàng: </label>
-          </div>
+					<div class="col-lg-4">
+						<label class="form-label">Tên khách hàng</label>
+						<input
+							[attr.disabled]="true"
+							formControlName="name"
+							class="form-control form-control-lg form-control-solid"
+						/>
+					</div>
 
-          <div class='col-lg-7 line-heght-50'>
-            <label class='form-label font-weight-bold'>Phạm Công Toán</label>
-          </div>
-        </div>
+					<div class="col-lg-4">
+						<label class="form-label">CMND/CCCD</label>
+						<input
+							[attr.disabled]="true"
+							formControlName="idCard"
+							class="form-control form-control-lg form-control-solid"
+						/>
+					</div>
+				</div>
 
-        <div class='col-lg-4 row'>
-          <div class='col-lg-5 line-heght-50'>
-            <label class='form-label'>Số CMT/CCCD: </label>
-          </div>
+				<div class="form-group row">
+					<div class="col-lg-4">
+						<label class="form-label">Ngày sinh</label>
+						<input
+							#birthDate
+							[attr.disabled]="true"
+							formControlName="dateOfBirth"
+							class="form-control form-control-lg form-control-solid"
+						/>
+					</div>
 
-          <div class='col-lg-7 line-heght-50'>
-            <label class='form-label font-weight-bold'>036098003721</label>
-          </div>
-        </div>
-      </div>
+					<div class="col-lg-8">
+						<label class="form-label">Địa chỉ</label>
+						<input
+							[attr.disabled]="true"
+							formControlName="address"
+							class="form-control form-control-lg form-control-solid"
+						/>
+					</div>
+				</div>
 
-      <div class='form-group row'>
-        <div class='col-lg-4 row'>
-          <div class='col-lg-5'>
-            <label class='form-label'>Ngày sinh: </label>
-          </div>
+				<div class="form-group row">
+					<div class="col-lg-4">
+						<label class="form-label">Hạng khách hàng</label>
+						<input
+							[attr.disabled]="true"
+							formControlName="rank"
+							class="form-control form-control-lg form-control-solid"
+						/>
+					</div>
 
-          <div class='col-lg-7'>
-            <label class='form-label font-weight-bold'>25/11/1998</label>
-          </div>
-        </div>
+					<div class="col-lg-4">
+						<label class="form-label">Trạng thái hồ sơ</label>
+						<select
+							formControlName="statusContract"
+							class="form-control form-control-lg form-control-solid"
+						>
+							<option [value]="listStatusProfileCustomer.SUCCESS">Xác thực thành công</option>
+							<option [value]="listStatusProfileCustomer.UN_SUCCESS">
+								Xác thực không thành công
+							</option>
+							<option [value]="listStatusProfileCustomer.UNCONFIRMED">Chưa xác thực</option>
+						</select>
+					</div>
 
-        <div class='col-lg-8 row'>
-          <div class='col-lg-2'>
-            <label class='form-label'>Địa chỉ: </label>
-          </div>
+					<div class="col-lg-4">
+						<label class="form-label">Trạng thái</label>
+						<select
+							class="form-control form-control-lg form-control-solid"
+							formControlName="status"
+						>
+							<option [value]="listStatusCustomer.ACTIVE">Hoạt động</option>
+							<option [value]="listStatusCustomer.LOCK">Không hoạt động</option>
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 
-          <div class='col-lg-10'>
-            <label class='form-label font-weight-bold' style='padding-left: 20px'>31 Nguyễn Quốc Trị, Nam Từ Liêm, Hà
-              nội</label>
-          </div>
-        </div>
-      </div>
+	<div class="info-limit">
+		<div class="card-header">
+			<div class="card-title">
+				<h3 class="title">Thông tin hạn mức còn lại</h3>
+			</div>
+		</div>
 
-      <div class='form-group row'>
-        <div class='col-lg-4 row'>
-          <div class='col-lg-5 line-heght-50'>
-            <label class='form-label'>Hạng khách hàng: </label>
-          </div>
+		<div class="card-body">
+			<div class="table-responsive angular-bootstrap-table">
+				<table class="table" aria-describedby="mydesc">
+					<thead>
+						<th id="stt" class="text-center">STT</th>
+						<th id="loai-tai-khoan" class="hanMuc">Loại tài khoản</th>
+						<th id="loai-han-muc" class="amount">Loại hạn mức</th>
+						<th id="so-luong" class="text-right amount">Số lượng</th>
+						<th id="don-vi" class="unit">Đơn vị</th>
+					</thead>
 
-          <div class='col-lg-7 line-heght-50'>
-            <label class='form-label font-weight-bold'>Đồng</label>
-          </div>
-        </div>
+					<tbody>
+						<tr *ngFor="let item of cashLimitInfos; let i = index">
+							<td class="text-center stt">
+								<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="i+1">
+									{{ i + 1 }}
+								</p>
+							</td>
 
-        <div class='col-lg-4 row'>
-          <div class='col-lg-5 line-heght-50'>
-            <label class='form-label'>Trạng thái hồ sơ</label>
-          </div>
-          <div class='col-lg-7'>
-            <select
-              class='form-control form-control-lg form-control-solid'
-            >
-              <option [value]='listStatus.ACTIVE'>Hoạt động</option>
-              <option [value]='listStatus.INACTIVE'>Không hoạt động</option>
-            </select>
-          </div>
-        </div>
+							<td class="hanMuc">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.userType === 'DRIVER' ? 'Cá nhân' : 'Doanh nghiệp' "
+								>
+									{{ item.userType === 'DRIVER' ? 'Cá nhân' : 'Doanh nghiệp' }}
+								</p>
+							</td>
 
-        <div class='col-lg-4 row'>
-          <div class='col-lg-5 line-heght-50'>
-            <label class='form-label'>Trạng thái</label>
-          </div>
-          <div class='col-lg-7'>
-            <select
-              class='form-control form-control-lg form-control-solid'
-            >
-              <option [value]='listStatus.ACTIVE'>Hoạt động</option>
-              <option [value]='listStatus.INACTIVE'>Không hoạt động</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+							<td class="type-limit">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.limitType"
+								>
+									{{ item.limitType }}
+								</p>
+							</td>
 
-  <div class='info-customer'>
-    <div class='card-header'>
-      <div class='card-title'>
-        <h3 class='title'>Thông tin hạn mức còn lại</h3>
-      </div>
-    </div>
+							<td class="text-right amount">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.amount.toLocaleString('en-US')"
+								>
+									{{ item.amount.toLocaleString('en-US') }}
+								</p>
+							</td>
+							<td class="unit">
+								<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.unit">
+									{{ item.unit }}
+								</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 
-    <div class='card-body'>
-      <div class='table-responsive angular-bootstrap-table'>
-        <table class='table' aria-describedby='mydesc'>
-          <thead>
-          <th id='stt' class='text-center'>
-            STT
-          </th>
-          <th id='han-muc' class='hanMuc'>
-            Loại hạn mức
-          </th>
-          <th id='amount' class='text-right amount'>
-            Số lượng
-          </th>
-          <th id='unit' class='unit'>
-            Đơn vị
-          </th>
-          </thead>
-
-          <tbody>
-          <tr *ngFor='let item of dataSource, let i = index'>
-            <td class='text-center stt'>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='i+1'>
-                {{ i + 1 }}
-              </p>
-            </td>
-
-            <td class='hanMuc'>
-              <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.typeHanMuc'>
-                {{ item.typeHanMuc }}
-              </p>
-            </td>
-
-            <td class='amount text-right'>
-              <p
-                class='cursor-pointer text-ellipsis'
-                placement='top'
-                [ngbTooltip]="item.amount.toLocaleString('en-US')"
-              >
-                {{ item.amount.toLocaleString('en-US') }}
-              </p>
-            </td>
-            <td class='unit'>
-              <p
-                class='cursor-pointer text-ellipsis'
-                placement='top'
-                [ngbTooltip]='item.unit'
-              >
-                {{ item.unit }}
-              </p>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <div class='w-100 d-flex justify-content-center pb-10'>
-    <button
-      class='btn btn-primary font-weight-bold m-2'
-    >
-      Cập nhật
-    </button>
-  </div>
+	<div class="pb-10 w-100 d-flex justify-content-center">
+		<button
+			class="m-2 btn btn-primary font-weight-bold"
+			[disabled]="btnSubmit"
+			(click)="onSubmit()"
+		>
+			Cập nhật
+		</button>
+	</div>
 </div>

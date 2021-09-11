@@ -22,7 +22,7 @@ const routes: Routes = [
         component: CreateContractComponent
       },
       {
-        path: 'chi-tiet/:id',
+        path: 'chi-tiet/:contractId',
         component: DetailsContractComponent
       },
       {

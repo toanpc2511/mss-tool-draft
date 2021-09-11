@@ -108,11 +108,31 @@ export const DynamicAsideMenuConfig = {
       icon: 'fas fa-users'
     },
     {
-      title: 'Quản lý chiết khấu',
+      title: 'Quản lý cấu hình',
+      icon: 'fas fa-hand-holding-usd',
       root: true,
+      page: '/cau-hinh',
       bullet: 'dot',
-      page: '/chiet-khau',
-      icon: 'fas fa-hand-holding-usd'
+      submenu: [
+        {
+          title: 'Cấu hình tích điểm',
+          bullet: 'dot',
+          page: 'cau-hinh/tich-diem',
+          notChild: true
+        },
+        {
+          title: 'Cấu hình chiết khấu',
+          bullet: 'dot',
+          page: 'cau-hinh/chiet-khau',
+          notChild: true
+        },
+        {
+          title: 'Cấu hình hạng',
+          bullet: 'dot',
+          page: 'cau-hinh/hang',
+          notChild: true
+        }
+      ]
     },
     {
       title: 'Quản lý kho',

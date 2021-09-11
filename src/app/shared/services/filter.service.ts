@@ -22,7 +22,7 @@ export class FilterService<T> {
 		return filter(dataSource, (data) => {
 			let isMatched = false;
 			for (const key in filterField) {
-				if (data[key] && filterField[key] && this.checkDataKey(data, filterField, key)) {
+				if (this.checkDataKey(data, filterField, key)) {
 					isMatched = true;
 					break;
 				}

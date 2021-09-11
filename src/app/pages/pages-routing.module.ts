@@ -51,6 +51,10 @@ const routes: Routes = [
           import('../modules/authorize/permission.module').then((m) => m.PermissionModule)
       },
       {
+        path: 'cau-hinh',
+        loadChildren: () => import('../modules/configuration-management/configuration-management.module').then((m) => m.ConfigurationManagementModule)
+      },
+      {
         path: '',
         redirectTo: '/dashboard',
         pathMatch: 'full'

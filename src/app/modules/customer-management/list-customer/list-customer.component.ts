@@ -1,91 +1,100 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
-import { ISortData } from '../customer-management.service';
+import { CustomerManagementService, ICustomers, ISortData } from '../customer-management.service';
 import { Router } from '@angular/router';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { DestroyService } from '../../../shared/services/destroy.service';
 
 @Component({
-  selector: 'app-list-customer',
-  templateUrl: './list-customer.component.html',
-  styleUrls: ['./list-customer.component.scss']
+	selector: 'app-list-customer',
+	templateUrl: './list-customer.component.html',
+	styleUrls: ['./list-customer.component.scss'],
+	providers: [DestroyService]
 })
 export class ListCustomerComponent implements OnInit {
-  searchFormControl: FormControl = new FormControl();
-  sortData: ISortData;
-  paginatorState = new PaginatorState();
-  dataSource = [];
+	searchFormControl: FormControl = new FormControl();
+	sortData: ISortData;
+	paginatorState = new PaginatorState();
+	dataSource: Array<ICustomers> = [];
 
-  constructor(
-    private router: Router
-  ) {
-    this.init();
-  }
+	constructor(
+		private router: Router,
+		private customerManagementService: CustomerManagementService,
+		private cdr: ChangeDetectorRef,
+		private destroy$: DestroyService
+	) {
+		this.init();
+	}
 
-  init() {
-    this.paginatorState.page = 1;
-    this.paginatorState.pageSize = 10;
-    this.paginatorState.pageSizes = [5, 10, 15, 20];
-    this.paginatorState.total = 0;
-    this.sortData = null;
+	init() {
+		this.paginatorState.page = 1;
+		this.paginatorState.pageSize = 10;
+		this.paginatorState.pageSizes = [5, 10, 15, 20];
+		this.paginatorState.total = 0;
+		this.sortData = null;
+	}
 
-    this.dataSource = [
-      {
-        id: 1000,
-        name: 'Phạm Công Toán',
-        accName: 'toanpc',
-        rank: 'Conqueror',
-        address: 'Hải Hậu - Nam Định',
-        statusContract: 'ACCEPTED',
-        status: 'WAITING_ACCEPT'
-      },
-      {
-        id: 1998,
-        name: 'Phạm Công Toán',
-        accName: 'toanpc',
-        rank: 'Conqueror',
-        address: 'Hải Hậu - Nam Định',
-        statusContract: 'ACCEPTED',
-        status: 'WAITING_ACCEPT'
-      },
-      {
-        id: 1521,
-        name: 'Phạm Công Toán',
-        accName: 'toanpc',
-        rank: 'Conqueror',
-        address: 'Hải Hậu - Nam Định',
-        statusContract: 'ACCEPTED',
-        status: 'WAITING_ACCEPT'
-      }
-    ];
-  }
+	ngOnInit() {
+		this.getListCustomer();
 
-  ngOnInit() {
-    this.getListCustomer();
-  }
+		this.searchFormControl.valueChanges
+			.pipe(
+				debounceTime(400),
+				switchMap(() => {
+					return this.customerManagementService.getLisrCustomer(
+						this.paginatorState.page,
+						this.paginatorState.pageSize,
+						this.searchFormControl.value,
+						this.sortData
+					);
+				}),
+				tap((res) => {
+					this.dataSource = res.data;
+					this.paginatorState.recalculatePaginator(res.meta.total);
+					this.cdr.detectChanges();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
 
-  getListCustomer() {
-    console.log('danh sách khach hang');
-  }
+	getListCustomer() {
+		this.customerManagementService
+			.getLisrCustomer(
+				this.paginatorState.page,
+				this.paginatorState.pageSize,
+				this.searchFormControl.value,
+				this.sortData
+			)
+			.subscribe((res) => {
+				if (res.data) {
+					this.dataSource = res.data;
+					this.paginatorState.recalculatePaginator(res.meta.total);
+					this.cdr.detectChanges();
+				}
+			});
+	}
 
-  async viewDetalCustomer($event: Event, item) {
-    await this.router.navigate([`/khach-hang/danh-sach/chi-tiet/${item.id}`]);
-  }
+	async viewDetalCustomer($event: Event, item: ICustomers) {
+		await this.router.navigate([`/khach-hang/danh-sach/chi-tiet/${item.id}`]);
+	}
 
-  sort(column: string) {
-    if (this.sortData && this.sortData.fieldSort === column) {
-      if (this.sortData.directionSort === 'ASC') {
-        this.sortData = { fieldSort: column, directionSort: 'DESC' };
-      } else {
-        this.sortData = null;
-      }
-    } else {
-      this.sortData = { fieldSort: column, directionSort: 'ASC' };
-    }
-    this.getListCustomer();
-  }
+	sort(column: string) {
+		if (this.sortData && this.sortData.fieldSort === column) {
+			if (this.sortData.directionSort === 'ASC') {
+				this.sortData = { fieldSort: column, directionSort: 'DESC' };
+			} else {
+				this.sortData = null;
+			}
+		} else {
+			this.sortData = { fieldSort: column, directionSort: 'ASC' };
+		}
+		this.getListCustomer();
+	}
 
-  pagingChange($event: IPaginatorState) {
-    this.paginatorState = $event as PaginatorState;
-    this.getListCustomer();
-  }
+	pagingChange($event: IPaginatorState) {
+		this.paginatorState = $event as PaginatorState;
+		this.getListCustomer();
+	}
 }

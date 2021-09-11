@@ -1,155 +1,149 @@
-<div class='card card-custom gutter-b mt-1'>
-  <div class='card-header'>
-    <div class='card-title'>
-      <h3 class='card-label'>Danh sách khách hàng</h3>
-    </div>
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Danh sách khách hàng</h3>
+		</div>
 
-    <div class='card-toolbar'>
-      <div class='search-form'>
-        <em class='flaticon-search'></em>
-        <input
-          type='text'
-          name='searchText'
-          placeholder='Search...'
-          class='form-control'
-          [formControl]='searchFormControl'
-        />
-      </div>
-    </div>
-  </div>
+		<div class="card-toolbar">
+			<div class="search-form">
+				<em class="flaticon-search"></em>
+				<input
+					type="text"
+					name="searchText"
+					placeholder="Search..."
+					class="form-control"
+					[formControl]="searchFormControl"
+				/>
+			</div>
+		</div>
+	</div>
 
-  <div class='card-body'>
-    <div class='table-responsive angular-bootstrap-table'>
-      <table class='table table-head-custom table-vertical-center overflow-hidden' aria-describedby='list-customer'>
-        <thead id='thead'>
-        <th id='name'>
-          Tên khách hàng
-          <app-sort-icon
-            column='code'
-            [activeColumn]='sortData?.fieldSort'
-            [activeDirection]='sortData?.directionSort'
-            (sort)='sort($event)'
-          ></app-sort-icon>
-        </th>
-        <th id='acc'>
-          Tên tài khoản
-          <app-sort-icon
-            column='name'
-            [activeColumn]='sortData?.fieldSort'
-            [activeDirection]='sortData?.directionSort'
-            (sort)='sort($event)'
-          ></app-sort-icon>
-        </th>
-        <th id='rank'>
-          Hạng khách hàng
-          <app-sort-icon
-            column='contract_type'
-            [activeColumn]='sortData?.fieldSort'
-            [activeDirection]='sortData?.directionSort'
-            (sort)='sort($event)'
-          ></app-sort-icon>
-        </th>
-        <th id='address'>
-          Địa chỉ
-          <app-sort-icon
-            column='created_at'
-            [activeColumn]='sortData?.fieldSort'
-            [activeDirection]='sortData?.directionSort'
-            (sort)='sort($event)'
-          ></app-sort-icon>
-        </th>
-        <th id='status-contract'>
-          Trạng thái hồ sơ
-          <app-sort-icon
-            column='effect_end_date'
-            [activeColumn]='sortData?.fieldSort'
-            [activeDirection]='sortData?.directionSort'
-            (sort)='sort($event)'
-          ></app-sort-icon>
-        </th>
-        <th id='status'>Trạng thái</th>
-        <th id='action' class='text-center'>Tác động</th>
-        </thead>
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table
+				class="table table-head-custom table-vertical-center overflow-hidden"
+				aria-describedby="list-customer"
+			>
+				<thead id="thead">
+					<th id="name">
+						Tên khách hàng
+						<app-sort-icon
+							column="name"
+							[activeColumn]="sortData?.fieldSort"
+							[activeDirection]="sortData?.directionSort"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th id="phone">
+						Tên tài khoản
+						<app-sort-icon
+							column="phone"
+							[activeColumn]="sortData?.fieldSort"
+							[activeDirection]="sortData?.directionSort"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th id="rank">
+						Hạng khách hàng
+						<app-sort-icon
+							column="rank"
+							[activeColumn]="sortData?.fieldSort"
+							[activeDirection]="sortData?.directionSort"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th id="location">
+						Địa chỉ
+						<app-sort-icon
+							column="location"
+							[activeColumn]="sortData?.fieldSort"
+							[activeDirection]="sortData?.directionSort"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th id="profileStatus">
+						Trạng thái hồ sơ
+						<app-sort-icon
+							column="profile_status"
+							[activeColumn]="sortData?.fieldSort"
+							[activeDirection]="sortData?.directionSort"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th id="status">
+						Trạng thái
+						<app-sort-icon
+							column="status"
+							[activeColumn]="sortData?.fieldSort"
+							[activeDirection]="sortData?.directionSort"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th id="action" class="text-center">Tác động</th>
+				</thead>
 
-        <tbody>
-        <tr *ngFor='let item of dataSource' (click)='viewDetalCustomer($event, item)'>
-          <td class='code'>
-            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.name'>
-              {{ item.name }}
-            </p>
-          </td>
+				<tbody>
+					<tr *ngFor="let item of dataSource" (click)="viewDetalCustomer($event, item)">
+						<td class="name">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
+								{{ item.name }}
+							</p>
+						</td>
 
-          <td class='name'>
-            <p class='cursor-pointer text-ellipsis' placement='top' [ngbTooltip]='item.accName'>
-              {{ item.accName }}
-            </p>
-          </td>
+						<td class="phone">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.phone">
+								{{ item.phone }}
+							</p>
+						</td>
 
-          <td class='contractType'>
-            <p
-              class='cursor-pointer text-ellipsis'
-              placement='top'
-              [ngbTooltip]='item.rank'
-            >
-              {{ item.rank }}
-            </p>
-          </td>
-          <td class='createAt'>
-            <p
-              class='cursor-pointer text-ellipsis'
-              placement='top'
-              [ngbTooltip]='item.address'
-            >
-              {{ item.address }}
-            </p>
-          </td>
-          <td class='effectEndDate'>
-            <span
-              class='label label-lg label-inline'
-              [class.label-light-success]="item.status === 'ACCEPTED'"
-              [class.label-light-danger]="item.status === 'REJECT'"
-              [class.label-light-warning]="item.status === 'WAITING_ACCEPT'"
-              [class.label-light-primary]="item.status === 'DRAFT'"
-            >
-              <ng-container *ngIf="item.status === 'ACCEPTED'"
-              >Đã duyệt</ng-container
-              >
-              <ng-container *ngIf="item.status === 'REJECT'"
-              >Đã từ chối</ng-container
-              >
-              <ng-container *ngIf="item.status === 'WAITING_ACCEPT'"
-              >Chờ phê duyệt</ng-container
-              >
-              <ng-container *ngIf="item.status === 'DRAFT'">Lưu nháp</ng-container>
-            </span>
-          </td>
+						<td class="rank">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.rank?.name"
+							>
+								{{ item.rank?.name }}
+							</p>
+						</td>
+						<td class="location">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.location">
+								{{ item.location }}
+							</p>
+						</td>
+						<td class="profileStatus">
+							<span
+								class="label label-lg label-inline"
+								[class.label-light-success]="item.profileStatus === 'SUCCESS'"
+								[class.label-light-danger]="item.profileStatus === 'UN_SUCCESS'"
+								[class.label-light-warning]="item.profileStatus === 'UNCONFIRMED'"
+							>
+								<ng-container *ngIf="item.profileStatus === 'SUCCESS'"
+									>Xác thực thành công</ng-container
+								>
+								<ng-container *ngIf="item.profileStatus === 'UN_SUCCESS'"
+									>Xác thực thất bại</ng-container
+								>
+								<ng-container *ngIf="item.profileStatus === 'UNCONFIRMED'"
+									>Chưa xác thực</ng-container
+								>
+							</span>
+						</td>
 
-          <td class='status'>
-            <span
-              class='label label-lg label-inline'
-              [class.label-light-success]="item.statusContract === 'ACCEPTED'"
-              [class.label-light-danger]="item.statusContract === 'REJECT'"
-              [class.label-light-warning]="item.statusContract === 'WAITING_ACCEPT'"
-              [class.label-light-primary]="item.statusContract === 'DRAFT'"
-            >
-              <ng-container *ngIf="item.statusContract === 'ACCEPTED'"
-              >Đã duyệt</ng-container
-              >
-              <ng-container *ngIf="item.statusContract === 'REJECT'"
-              >Đã từ chối</ng-container
-              >
-              <ng-container *ngIf="item.statusContract === 'WAITING_ACCEPT'"
-              >Chờ phê duyệt</ng-container
-              >
-              <ng-container *ngIf="item.statusContract === 'DRAFT'">Lưu nháp</ng-container>
-            </span>
-          </td>
-          <td class='text-center action'>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <app-paginator [paginator]='paginatorState' (paginate)='pagingChange($event)'></app-paginator>
-  </div>
+						<td class="status">
+							<span
+								class="label label-lg label-inline"
+								[class.label-light-success]="item.status === 'ACTIVE'"
+								[class.label-light-danger]="item.status === 'LOCK'"
+							>
+								<ng-container *ngIf="item.status === 'ACTIVE'">Hoạt động</ng-container>
+								<ng-container *ngIf="item.status === 'LOCK'">Không hoạt động</ng-container>
+							</span>
+						</td>
+						<td class="text-center action"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+	</div>
 </div>
