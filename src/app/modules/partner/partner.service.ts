@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { ISortData } from '../contract/contract.service';
