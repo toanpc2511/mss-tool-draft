@@ -58,7 +58,6 @@
 							class="form-control form-control-lg form-control-solid"
 							formControlName="name"
 							autocomplete="off"
-							disabled
 						/>
 					</div>
 				</div>
@@ -103,10 +102,10 @@
 											<th scope="">
 												<label class="form-label">Hạn mức cho tài xế</label>
 											</th>
-											<th scope="">
+											<th scope="text-right" class="d-flex justify-content-end">
 												<label class="form-label">Hạn mức còn lại của doanh nghiệp</label>
 											</th>
-											<th scope="">
+											<th scope="" class="text-center">
 												<label class="form-label">Đơn vị</label>
 											</th>
 										</tr>
@@ -141,11 +140,11 @@
 														></app-validate>
 													</td>
 													<td
-														class="col3"
+														class="col3 text-right unit"
 														[textContent]="cashLimitOilFormGroup.get('maxCashLimitOil').value"
 													></td>
 													<td
-														class="col4"
+														class="col4 text-center"
 														[textContent]="cashLimitOilFormGroup.get('unitCashLimitOil').value"
 													></td>
 												</ng-container></tr
@@ -160,7 +159,7 @@
 					<div class="list-product col-lg-12">
 						<h3 class="title">Thông tin hạn mức tiền</h3>
 						<label class="text-black-50" *ngIf="isUpdate"
-							>Hạn mức đang có Tiền: {{cashLimitMoneyChild |number|vnCurrency}}VNĐ</label
+							>Hạn mức đang có Tiền: {{cashLimitMoneyChild |number|vnCurrency}} VNĐ</label
 						>
 					</div>
 					<div class="col-lg-6">
@@ -187,7 +186,7 @@
 							[message]="'Hạn mức tiền lớn hơn hạn mức tiền tối đa'"
 						></app-validate>
 						<strong class="text-warning"
-							>Hạn mức còn lại: {{cashLimitMoneyMaster |number|vnCurrency}}VNĐ</strong
+							>Hạn mức còn lại: {{cashLimitMoneyMaster |number|vnCurrency}} VNĐ</strong
 						>
 					</div>
 				</div>

@@ -8,7 +8,9 @@ import {
 	debounceTime,
 	finalize,
 	skipUntil,
-	takeUntil
+	switchMap,
+	takeUntil,
+	tap
 } from 'rxjs/operators';
 import { pathValueWithoutEvent } from 'src/app/shared/data-enum/patch-value-without-event';
 import { convertMoney } from 'src/app/shared/helpers/functions';
@@ -33,9 +35,6 @@ export class PartnerModalComponent implements OnInit {
 	cashLimitOilFormArray: FormArray;
 	isLoadingFormSubject = new Subject<boolean>();
 	isLoadingForm$ = this.isLoadingFormSubject.asObservable();
-
-	isInitCashOilSubject = new Subject<void>();
-	isInitCashOil$ = this.isInitCashOilSubject.asObservable();
 
 	isUpdate = false;
 	cashLimitMoneyChild = 0;
@@ -63,47 +62,54 @@ export class PartnerModalComponent implements OnInit {
 		this.partnerService
 			.getCashLimit()
 			.pipe(
-				finalize(() => this.isInitCashOilSubject.next()),
+				tap((res) => {
+					if (res.data) {
+						const vehicleFormArray = this.fb.array(
+							res.data.cashLimitOilAccount?.map((cashLimit) => {
+								return this.fb.group({
+									productId: [cashLimit.productId],
+									productName: [cashLimit.productName],
+									cashLimitOil: [
+										null,
+										[TValidators.min(1), TValidators.max(cashLimit.cashLimitOil)]
+									],
+									maxCashLimitOil: [cashLimit.cashLimitOil],
+									unitCashLimitOil: [cashLimit.unitCashLimitOil]
+								});
+							}) || []
+						);
+						this.partnerForm.setControl('cashLimitOil', vehicleFormArray);
+						this.cashLimitOilFormArray = this.partnerForm.get('cashLimitOil') as FormArray;
+						this.cashLimitMoneyMaster = res.data.cashLimitMoney;
+						this.partnerForm
+							.get('cashLimitMoney')
+							.setValidators([TValidators.min(1), TValidators.max(this.cashLimitMoneyMaster)]);
+						this.partnerForm.updateValueAndValidity();
+						this.isLoadingFormSubject.next(true);
+					}
+				}),
+				switchMap(() => {
+					if (this.partnerId) {
+						this.isUpdate = true;
+						return this.partnerService
+							.getPartnerById(this.partnerId)
+							.pipe(takeUntil(this.destroy$));
+					}
+					return of(null);
+				}),
+				tap((res) => {
+					if (res) {
+						this.patchInfoParterUpdate(res.data);
+					}
+				}),
 				takeUntil(this.destroy$)
 			)
-			.subscribe((res) => {
-				if (res.data) {
-					const vehicleFormArray = this.fb.array(
-						res.data.cashLimitOilAccount?.map((cashLimit) => {
-							return this.fb.group({
-								productId: [cashLimit.productId],
-								productName: [cashLimit.productName],
-								cashLimitOil: [null, [TValidators.min(1), TValidators.max(cashLimit.cashLimitOil)]],
-								maxCashLimitOil: [cashLimit.cashLimitOil],
-								unitCashLimitOil: [cashLimit.unitCashLimitOil]
-							});
-						}) || []
-					);
-					this.partnerForm.setControl('cashLimitOil', vehicleFormArray);
-					this.cashLimitOilFormArray = this.partnerForm.get('cashLimitOil') as FormArray;
-					this.cashLimitMoneyMaster = res.data.cashLimitMoney;
-					this.partnerForm
-						.get('cashLimitMoney')
-						.setValidators([TValidators.min(1), TValidators.max(this.cashLimitMoneyMaster)]);
-					this.partnerForm.updateValueAndValidity();
-					this.isLoadingFormSubject.next(true);
-				}
-			});
-
-		if (this.partnerId) {
-			this.isUpdate = true;
-			this.partnerService
-				.getPartnerById(this.partnerId)
-				.pipe(skipUntil(this.isInitCashOil$), takeUntil(this.destroy$))
-				.subscribe((res) => {
-					this.patchInfoParterUpdate(res.data);
-				});
-			this.partnerForm.get('phone').disable(pathValueWithoutEvent);
-		}
+			.subscribe();
 	}
 
 	patchInfoParterUpdate(partnerData: IPartnerData) {
 		this.partnerForm.get('phone').patchValue(partnerData.driverInfo.phone, pathValueWithoutEvent);
+		this.partnerForm.get('phone').disable(pathValueWithoutEvent);
 		this.partnerForm.get('name').patchValue(partnerData.driverInfo.name, pathValueWithoutEvent);
 		this.partnerForm.get('driverId').patchValue(partnerData.driverInfo.id, pathValueWithoutEvent);
 
@@ -152,6 +158,8 @@ export class PartnerModalComponent implements OnInit {
 			cashLimitMoney: [null]
 		});
 
+		this.partnerForm.get('name').disable(pathValueWithoutEvent);
+
 		this.partnerForm
 			.get('phone')
 			.valueChanges.pipe(
@@ -182,7 +190,7 @@ export class PartnerModalComponent implements OnInit {
 	onSubmit(): void {
 		this.partnerForm.markAllAsTouched();
 		console.log(this.partnerForm);
-		
+
 		if (this.partnerForm.invalid) {
 			return;
 		}
