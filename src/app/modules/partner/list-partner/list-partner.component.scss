@@ -19,7 +19,11 @@ table thead th {
         min-width: 130px;
       }
       &.action {
-        max-width: 130px;
+        width: 130px;
+        a {
+          width: 35px;
+          height: 35px;
+        }
       }
     }
   
