@@ -77,7 +77,7 @@ export class ListPartnerComponent implements OnInit {
 				this.sortData
 			)
 			.subscribe((res) => {
-				this.dataSource = res.data;
+				this.checkRes(res);
 				this.cdr.detectChanges();
 			});
 	}
