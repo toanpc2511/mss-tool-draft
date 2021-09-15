@@ -4,4 +4,4 @@ import { Component } from '@angular/core';
 	selector: 'app-user',
 	templateUrl: './user.component.html'
 })
-export class ProductTypeComponent {}
+export class UserComponent {}

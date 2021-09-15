@@ -9,14 +9,14 @@ import { SharedComponentsModule } from 'src/app/shared/components/shared-compone
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { ListUserComponent } from './list-user/list-user.component';
 import { UserModalComponent } from './user-modal/user-modal.component';
-import { ProductTypeRoutingModule } from './user-routing.module';
-import { ProductTypeComponent } from './user.component';
+import { UserRoutingModule } from './user-routing.module';
+import { UserComponent } from './user.component';
 
 @NgModule({
-  declarations: [ProductTypeComponent, ListUserComponent, UserModalComponent],
+  declarations: [UserComponent, ListUserComponent, UserModalComponent],
   imports: [
     CommonModule,
-    ProductTypeRoutingModule,
+    UserRoutingModule,
     NgbTooltipModule,
     InlineSVGModule,
     CRUDTableModule,

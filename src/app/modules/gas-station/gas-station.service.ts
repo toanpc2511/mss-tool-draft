@@ -153,6 +153,16 @@ export interface IWard {
 	prefix: string;
 	provinceId: 0;
 }
+export interface IAddress {
+	id: number;
+	name: string;
+	address: string;
+	status: EStatus;
+	code: string;
+	areaType: string;
+	fullAddress: string;
+	provinceId: number;
+}
 @Injectable({
 	providedIn: 'root'
 })
@@ -289,6 +299,10 @@ export class GasStationService {
 
 	deletePumpHose(id: number) {
 		return this.http.delete<any>(`pump-hoses/${id}`);
+	}
+
+	getAddress() {
+		return this.http.get<IAddress[]>('gas-stations/address');
 	}
 
 	resetCreateData() {
