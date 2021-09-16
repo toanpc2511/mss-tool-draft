@@ -146,7 +146,7 @@ export class ListEmployeeComponent implements OnInit {
 		});
 		const data: IConfirmModalData = {
 			title: 'Xác nhận',
-			message: `Bạn có chắc chắn muốn xoá thông tin ${employee.name}?`,
+			message: `Bạn có chắc chắn muốn xoá thông tin ${employee.code} - ${employee.name}?`,
 			button: { class: 'btn-primary', title: 'Xác nhận' }
 		};
 		modalRef.componentInstance.data = data;
