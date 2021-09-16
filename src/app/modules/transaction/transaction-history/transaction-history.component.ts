@@ -10,7 +10,7 @@ import { IProductType, ProductService } from '../../product/product.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { TransactionService } from '../transaction.service';
+import { IPaymentMethod, TransactionService } from '../transaction.service';
 
 @Component({
 	selector: 'app-transaction-history',
@@ -43,8 +43,9 @@ import { TransactionService } from '../transaction.service';
 export class TransactionHistoryComponent implements OnInit {
 	listStatus = LIST_STATUS;
 	productTypes: Array<IProductType> = [];
-	paymentMethods;
+	paymentMethods: Array<IPaymentMethod> = [];
 	stationEmployee;
+	listEmployees;
 
 	hoveredDate: NgbDate | null = null;
 
@@ -96,16 +97,24 @@ export class TransactionHistoryComponent implements OnInit {
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
 				this.paymentMethods = res.data;
-        console.log(this.paymentMethods);
 				this.cdr.detectChanges();
 			});
 
-		this.transactionService
+    this.transactionService
       .getStationEmployee()
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.stationEmployee = res.data;
         console.log(this.stationEmployee);
+        this.cdr.detectChanges();
+      });
+
+    this.transactionService
+      .getEmployee()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.listEmployees = res.data;
+        console.log( this.listEmployees);
         this.cdr.detectChanges();
       });
 

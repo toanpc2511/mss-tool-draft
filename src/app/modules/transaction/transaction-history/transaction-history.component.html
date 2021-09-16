@@ -39,7 +39,7 @@
             formControlName='station'
           >
             <option [value]="null">Tất cả</option>
-            <option *ngFor='let item of productTypes' [value]='item.id'>{{item.name}}</option>
+            <option *ngFor='let item of stationEmployee' [value]='item.name'>{{item.name}}</option>
           </select>
 				</div>
 			</div>
@@ -91,7 +91,7 @@
             formControlName='payMethod'
           >
             <option [value]="null">Tất cả</option>
-            <option *ngFor="let item of paymentMethods" [value]="item.code"
+            <option *ngFor="let item of paymentMethods" [value]="item.id"
             >{{ item.name }}</option>
           </select>
 				</div>
@@ -102,8 +102,8 @@
             class="form-control form-control-solid"
             formControlName='staff'
           >
-            <option [value]="null">Tất cả</option>
-            <option *ngFor="let item of paymentMethods" [value]="item.code"
+            <option [value]="">Tất cả</option>
+            <option *ngFor="let item of listEmployees" [value]="item.id"
             >{{ item.name }}</option>
           </select>
 				</div>
