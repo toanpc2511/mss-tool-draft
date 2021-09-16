@@ -8,9 +8,9 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { IProductType, ProductService } from '../../product/product.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
-import { ContractService, IProperties } from '../../contract/contract.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { TransactionService } from '../transaction.service';
 
 @Component({
 	selector: 'app-transaction-history',
@@ -43,7 +43,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class TransactionHistoryComponent implements OnInit {
 	listStatus = LIST_STATUS;
 	productTypes: Array<IProductType> = [];
-	paymentMethods: Array<IProperties>;
+	paymentMethods;
+	stationEmployee;
 
 	hoveredDate: NgbDate | null = null;
 
@@ -61,7 +62,7 @@ export class TransactionHistoryComponent implements OnInit {
 	constructor(
 		private modalService: NgbModal,
 		private productService: ProductService,
-		private contractService: ContractService,
+		private transactionService: TransactionService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private calendar: NgbCalendar,
@@ -90,13 +91,23 @@ export class TransactionHistoryComponent implements OnInit {
 				this.cdr.detectChanges();
 			});
 
-		this.contractService
-			.getProperties('PAYMENT_METHOD_CONTRACT')
+		this.transactionService
+			.getPaymentMethods()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
 				this.paymentMethods = res.data;
+        console.log(this.paymentMethods);
 				this.cdr.detectChanges();
 			});
+
+		this.transactionService
+      .getStationEmployee()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.stationEmployee = res.data;
+        console.log(this.stationEmployee);
+        this.cdr.detectChanges();
+      });
 
 		this.buildForm();
 	}
@@ -189,6 +200,6 @@ export class TransactionHistoryComponent implements OnInit {
 		const day = date.day <= 9 ? `0${date.day}` : date.day.toString();
 		const month = date.month <= 9 ? `0${date.month}` : date.month.toString();
 		const year = date.year.toString();
-		return year + '-' + month + '-' + day;
+		return year + '/' + month + '/' + day;
 	}
 }
