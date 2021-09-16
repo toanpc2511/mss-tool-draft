@@ -19,21 +19,20 @@
 					<div class="col-lg-9 row">
 						<div class="col-lg-6">
 							<div class="col-lg-12">
-								<label class="form-label required">Mã nhân viên</label>
-								<input
-									class="form-control form-control-lg form-control-solid"
-									placeholder="Nhập mã nhân viên"
-								/>
-							</div>
-
-							<div class="col-lg-12 mt-8">
 								<label class="form-label required">Họ và tên</label>
 								<input
 									class="form-control form-control-lg form-control-solid"
 									placeholder="Nhập họ và tên"
 									formControlName="name"
 									trim="blur"
+									maxlength="99"
 								/>
+
+								<app-validate
+									[control]="employeeForm.controls['name']"
+									[error]="'required'"
+									[message]="'Họ và tên không được để trống'"
+								></app-validate>
 							</div>
 
 							<div class="col-lg-12 mt-8">
@@ -45,6 +44,7 @@
 										ngbDatepicker
 										#dateOfBirth="ngbDatepicker"
 										formControlName="dateOfBirth"
+										[maxDate]="maxDate"
 									/>
 									<div class="input-group-append">
 										<button
@@ -57,17 +57,37 @@
 								<app-validate
 									[control]="employeeForm.controls['dateOfBirth']"
 									[error]="'ngbDate'"
-									[message]="'Ngày dự kiến thanh toán không đúng định dạng'"
+									[message]="'Ngày sinh không đúng định dạng'"
 								></app-validate>
 							</div>
 
 							<div class="col-lg-12 mt-8">
 								<label class="form-label">Giới tính</label>
-								<select class="form-control form-control-lg form-control-solid">
+								<select
+									class="form-control form-control-lg form-control-solid"
+									formControlName="sex"
+								>
 									<option [value]="null">Chọn giới tính</option>
 									<option [value]="eSex.MALE">Nam</option>
 									<option [value]="eSex.FEMALE">Nữ</option>
 								</select>
+							</div>
+
+							<div class="col-lg-12 mt-8">
+								<label class="form-label">Địa điểm làm việc</label>
+								<ng-select
+									[placeholder]="'Chọn điểm điểm làm việc'"
+									[multiple]="true"
+									formControlName="stationIds"
+									[closeOnSelect]="false"
+									[isGroupDisplay]="true"
+									[groupText]="'địa điểm khác'"
+									[minLengthGroup]="2"
+								>
+									<ng-option *ngFor="let station of stationAddress" [value]="station.id"
+										>{{ station.name }}</ng-option
+									>
+								</ng-select>
 							</div>
 						</div>
 						<div class="col-lg-6">
@@ -76,7 +96,19 @@
 								<input
 									class="form-control form-control-lg form-control-solid"
 									placeholder="Nhập số điện thoại"
+									formControlName="phone"
+									autocomplete="off"
+									(keydown.space)="$event.preventDefault()"
+									maxlength="20"
+									numbersOnly
+									[numberformControl]="employeeForm.controls['phone']"
 								/>
+
+								<app-validate
+									[control]="employeeForm.controls['phone']"
+									[error]="'pattern'"
+									[message]="'Số điện thoại không đúng định dạng'"
+								></app-validate>
 							</div>
 
 							<div class="col-lg-12 mt-8">
@@ -84,44 +116,52 @@
 								<input
 									class="form-control form-control-lg form-control-solid"
 									placeholder="Nhập email"
+									formControlName="email"
+									trim="blur"
+									maxlength="50"
 								/>
+								<app-validate
+									[control]="employeeForm.controls['email']"
+									[error]="'email'"
+									[message]="'Email không đúng định dạng'"
+								></app-validate>
 							</div>
 
 							<div class="col-lg-12 mt-8">
 								<label class="form-label required">Phòng ban</label>
 								<select
-									formControlName="departmentCode"
+									formControlName="departmentId"
 									class="form-control form-control-lg form-control-solid"
 								>
 									<option [value]="null" disabled>Chọn phòng ban</option>
-									<option *ngFor="let department of departments" [value]="department.code">
+									<option *ngFor="let department of departments" [value]="department.id">
 										{{department.name}}
 									</option>
 								</select>
+								<app-validate
+									[control]="employeeForm.controls['departmentId']"
+									[error]="'required'"
+									[message]="'Phòng ban không được để trống'"
+								></app-validate>
 							</div>
 
 							<div class="col-lg-12 mt-8">
 								<label class="form-label required">Chức vụ</label>
 								<select
-									formControlName="positionCode"
+									formControlName="positionId"
 									class="form-control form-control-lg form-control-solid"
 								>
 									<option [value]="null" disabled>Chọn chức vụ</option>
-									<option *ngFor="let position of positions" [value]="position.code">
+									<option *ngFor="let position of positions" [value]="position.id">
 										{{position.name}}
 									</option>
 								</select>
-							</div>
-						</div>
-						<div class="col-lg-12 mt-8">
-							<div class="col-lg-12">
-								<label class="form-label">Địa điểm làm việc</label>
-								<select class="form-control form-control-lg form-control-solid">
-									<option [value]="null">Chọn địa điểm làm việc</option>
-									<option *ngFor="let address of stationAddress" [value]="address.id">
-										{{address.name}}
-									</option>
-								</select>
+
+								<app-validate
+									[control]="employeeForm.controls['positionId']"
+									[error]="'required'"
+									[message]="'Chức vụ không được để trống'"
+								></app-validate>
 							</div>
 						</div>
 					</div>
@@ -137,11 +177,14 @@
 					<h3 class="title">Thông tin khác</h3>
 				</div>
 			</div>
-			<div class="row ml-5">
+			<div class="row ml-5" [formGroup]="employeeForm">
 				<div class="col-lg-12">
 					<label class="form-label">Tình trạng hôn nhân</label>
-					<select class="form-control form-control-lg form-control-solid">
-						<option [value]="null">Chọn tình trạng hôn nhân</option>
+					<select
+						class="form-control form-control-lg form-control-solid"
+						formControlName="maritalStatus"
+					>
+						<option [value]="null" disabled>Chọn tình trạng hôn nhân</option>
 						<option [value]="eMaritalStatus.MARRIED">Đã kết hôn</option>
 						<option [value]="eMaritalStatus.MARRIED">Chưa kết hôn</option>
 					</select>
@@ -152,6 +195,9 @@
 					<input
 						class="form-control form-control-lg form-control-solid"
 						placeholder="Nhập dân tộc"
+						trim="blur"
+						maxlength="100"
+						formControlName="nation"
 					/>
 				</div>
 
@@ -160,6 +206,9 @@
 					<input
 						class="form-control form-control-lg form-control-solid"
 						placeholder="Nhập tôn giáo"
+						trim="blur"
+						maxlength="100"
+						formControlName="religion"
 					/>
 				</div>
 
@@ -168,15 +217,50 @@
 					<input
 						class="form-control form-control-lg form-control-solid"
 						placeholder="Nhập CMND/CCCD"
+						autocomplete="off"
+						formControlName="identityCardNumber"
+						(keydown.space)="$event.preventDefault()"
+						maxlength="12"
+						numbersOnly
+						[numberformControl]="employeeForm.controls['phone']"
 					/>
+
+					<app-validate
+						[control]="employeeForm.controls['identityCardNumber']"
+						[error]="'required'"
+						[message]="'CMND/CCCD không được để trống'"
+					></app-validate>
+					<app-validate
+						[control]="employeeForm.controls['identityCardNumber']"
+						[error]="'pattern'"
+						[message]="'CMND/CCCD không đúng định dạng'"
+					></app-validate>
 				</div>
 
 				<div class="col-lg-12 mt-8">
 					<label class="form-label">Ngày cấp CMND/CCCD</label>
-					<input
-						class="form-control form-control-lg form-control-solid"
-						placeholder="Nhập ngày cấp CMND/CCCD"
-					/>
+					<div class="input-group">
+						<input
+							class="form-control form-control-lg form-control-solid"
+							placeholder="DD/MM/YYYY"
+							ngbDatepicker
+							#dateRange="ngbDatepicker"
+							formControlName="dateRange"
+							[maxDate]="maxDate"
+						/>
+						<div class="input-group-append">
+							<button
+								class="btn btn-outline-secondary fa fa-calendar-alt"
+								(click)="dateRange.toggle()"
+								type="button"
+							></button>
+						</div>
+					</div>
+					<app-validate
+						[control]="employeeForm.controls['dateRange']"
+						[error]="'ngbDate'"
+						[message]="'Ngày cấp CMND/CCCD không đúng định dạng'"
+					></app-validate>
 				</div>
 
 				<div class="col-lg-12 mt-8">
@@ -184,6 +268,9 @@
 					<input
 						class="form-control form-control-lg form-control-solid"
 						placeholder="Nhập nơi cấp CMND/CCCD"
+						trim="blur"
+						maxlength="199"
+						formControlName="supplyAddress"
 					/>
 				</div>
 			</div>
@@ -236,6 +323,8 @@
 						class="form-control form-control-lg form-control-solid"
 						placeholder="Nhập địa chỉ"
 						formControlName="address"
+						trim="blur"
+						maxlength="100"
 					/>
 				</div>
 
