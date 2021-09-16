@@ -50,7 +50,6 @@ export class UserService {
 	getUsers(page: number, size: number, searchText: string, sortData: ISortData) {
 		const params = new HttpParams()
 			.set('page', page.toString())
-			.set('page', page.toString())
 			.set('size', size.toString())
 			.set('field-sort', sortData?.fieldSort || '')
 			.set('direction-sort', sortData?.directionSort || '')

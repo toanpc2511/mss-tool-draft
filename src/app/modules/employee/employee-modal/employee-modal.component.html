@@ -1,0 +1,439 @@
+<div class="mt-1 card card-custom wrapper-content">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="title">Thông tin chung</h3>
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="row justify-content-center w-100">
+			<form [formGroup]="employeeForm" class="form form-label-right w-100">
+				<div class="row">
+					<div class="col-lg-3 d-flex align-items-center justify-content-center flex-column">
+						<div class="avatar" (click)="avatarFile.click()">
+							<img
+								alt=""
+								[src]="avatarImage?.url ? avatarImage?.url : 'assets/media/sun-oil/employee/placeholder-user.png'"
+							/>
+							<span *ngIf="!avatarImage?.url" class="fa fa-plus fa-2x plus-icon"></span>
+						</div>
+						<input hidden type="file" #avatarFile (change)="addImage($event)" />
+						<span class="mt-8">Ảnh hồ sơ</span>
+					</div>
+					<div class="col-lg-9 row">
+						<div class="col-lg-6">
+							<label class="form-label required">Họ và tên</label>
+							<input
+								class="form-control form-control-lg form-control-solid"
+								placeholder="Nhập họ và tên"
+								formControlName="name"
+								trim="blur"
+								maxlength="99"
+							/>
+
+							<app-validate
+								[control]="employeeForm.controls['name']"
+								[error]="'required'"
+								[message]="'Họ và tên không được để trống'"
+							></app-validate>
+						</div>
+
+						<div class="col-lg-6">
+							<label class="form-label">Số điện thoại</label>
+							<input
+								class="form-control form-control-lg form-control-solid"
+								placeholder="Nhập số điện thoại"
+								formControlName="phone"
+								autocomplete="off"
+								(keydown.space)="$event.preventDefault()"
+								maxlength="20"
+								numbersOnly
+								[numberformControl]="employeeForm.controls['phone']"
+							/>
+
+							<app-validate
+								[control]="employeeForm.controls['phone']"
+								[error]="'pattern'"
+								[message]="'Số điện thoại không đúng định dạng'"
+							></app-validate>
+
+							<app-validate
+								[control]="employeeForm.controls['phone']"
+								[error]="'existed'"
+								[message]="'Số điện thoại của nhân viên đã tồn tại'"
+							></app-validate>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label">Ngày sinh</label>
+							<div class="input-group">
+								<input
+									class="form-control form-control-lg form-control-solid"
+									placeholder="DD/MM/YYYY"
+									ngbDatepicker
+									#dateOfBirth="ngbDatepicker"
+									formControlName="dateOfBirth"
+									[maxDate]="maxDate"
+								/>
+								<div class="input-group-append">
+									<button
+										class="btn btn-outline-secondary fa fa-calendar-alt"
+										(click)="dateOfBirth.toggle()"
+										type="button"
+									></button>
+								</div>
+							</div>
+							<app-validate
+								[control]="employeeForm.controls['dateOfBirth']"
+								[error]="'ngbDate'"
+								[message]="'Ngày sinh không đúng định dạng'"
+							></app-validate>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label">Email</label>
+							<input
+								class="form-control form-control-lg form-control-solid"
+								placeholder="Nhập email"
+								formControlName="email"
+								trim="blur"
+								maxlength="50"
+							/>
+							<app-validate
+								[control]="employeeForm.controls['email']"
+								[error]="'email'"
+								[message]="'Email không đúng định dạng'"
+							></app-validate>
+
+							<app-validate
+								[control]="employeeForm.controls['email']"
+								[error]="'existed'"
+								[message]="'Email của nhân viên đã tồn tại'"
+							></app-validate>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label">Giới tính</label>
+							<select class="form-control form-control-lg form-control-solid" formControlName="sex">
+								<option [value]="null" disabled>Chọn giới tính</option>
+								<option [value]="eSex.MALE">Nam</option>
+								<option [value]="eSex.FEMALE">Nữ</option>
+							</select>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label required">Phòng ban</label>
+							<select
+								formControlName="departmentId"
+								class="form-control form-control-lg form-control-solid"
+							>
+								<option [value]="null" disabled>Chọn phòng ban</option>
+								<option *ngFor="let department of departments" [value]="department.id">
+									{{department.name}}
+								</option>
+							</select>
+							<app-validate
+								[control]="employeeForm.controls['departmentId']"
+								[error]="'required'"
+								[message]="'Phòng ban không được để trống'"
+							></app-validate>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label">Địa điểm làm việc</label>
+							<ng-select
+								[placeholder]="'Chọn điểm điểm làm việc'"
+								[multiple]="true"
+								formControlName="stationIds"
+								[closeOnSelect]="false"
+								[isGroupDisplay]="true"
+								[groupText]="'địa điểm khác'"
+								[minLengthGroup]="2"
+							>
+								<ng-option *ngFor="let station of stationAddress" [value]="station.id"
+									>{{ station.name }}</ng-option
+								>
+							</ng-select>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label required">Chức vụ</label>
+							<select
+								formControlName="positionId"
+								class="form-control form-control-lg form-control-solid"
+							>
+								<option [value]="null" disabled>Chọn chức vụ</option>
+								<option *ngFor="let position of positions" [value]="position.id">
+									{{position.name}}
+								</option>
+							</select>
+
+							<app-validate
+								[control]="employeeForm.controls['positionId']"
+								[error]="'required'"
+								[message]="'Chức vụ không được để trống'"
+							></app-validate>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="pr-20 mt-10 row">
+		<div class="col-lg-6">
+			<div class="card-header">
+				<div class="card-title">
+					<h3 class="title">Thông tin khác</h3>
+				</div>
+			</div>
+			<div class="ml-5 row" [formGroup]="employeeForm">
+				<div class="col-lg-12">
+					<label class="form-label">Tình trạng hôn nhân</label>
+					<select
+						class="form-control form-control-lg form-control-solid"
+						formControlName="maritalStatus"
+					>
+						<option [value]="null" disabled>Chọn tình trạng hôn nhân</option>
+						<option [value]="eMaritalStatus.MARRIED">Đã kết hôn</option>
+						<option [value]="eMaritalStatus.MARRIED">Chưa kết hôn</option>
+					</select>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label">Dân tộc</label>
+					<input
+						class="form-control form-control-lg form-control-solid"
+						placeholder="Nhập dân tộc"
+						trim="blur"
+						maxlength="100"
+						formControlName="nation"
+					/>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label">Tôn giáo</label>
+					<input
+						class="form-control form-control-lg form-control-solid"
+						placeholder="Nhập tôn giáo"
+						trim="blur"
+						maxlength="100"
+						formControlName="religion"
+					/>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label required">CMND/CCCD</label>
+					<input
+						class="form-control form-control-lg form-control-solid"
+						placeholder="Nhập CMND/CCCD"
+						autocomplete="off"
+						formControlName="identityCardNumber"
+						(keydown.space)="$event.preventDefault()"
+						maxlength="12"
+						numbersOnly
+						[numberformControl]="employeeForm.controls['identityCardNumber']"
+					/>
+
+					<app-validate
+						[control]="employeeForm.controls['identityCardNumber']"
+						[error]="'required'"
+						[message]="'CMND/CCCD không được để trống'"
+					></app-validate>
+					<app-validate
+						[control]="employeeForm.controls['identityCardNumber']"
+						[error]="'pattern'"
+						[message]="'CMND/CCCD không đúng định dạng'"
+					></app-validate>
+
+					<app-validate
+						[control]="employeeForm.controls['identityCardNumber']"
+						[error]="'existed'"
+						[message]="'CMND/CCCD của nhân viên đã tồn tại'"
+					></app-validate>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label">Ngày cấp CMND/CCCD</label>
+					<div class="input-group">
+						<input
+							class="form-control form-control-lg form-control-solid"
+							placeholder="DD/MM/YYYY"
+							ngbDatepicker
+							#dateRange="ngbDatepicker"
+							formControlName="dateRange"
+							[maxDate]="maxDate"
+						/>
+						<div class="input-group-append">
+							<button
+								class="btn btn-outline-secondary fa fa-calendar-alt"
+								(click)="dateRange.toggle()"
+								type="button"
+							></button>
+						</div>
+					</div>
+					<app-validate
+						[control]="employeeForm.controls['dateRange']"
+						[error]="'ngbDate'"
+						[message]="'Ngày cấp CMND/CCCD không đúng định dạng'"
+					></app-validate>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label">Nơi cấp CMND/CCCD</label>
+					<input
+						class="form-control form-control-lg form-control-solid"
+						placeholder="Nhập nơi cấp CMND/CCCD"
+						trim="blur"
+						maxlength="199"
+						formControlName="supplyAddress"
+					/>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6" [formGroup]="employeeForm">
+			<div class="card-header">
+				<div class="card-title">
+					<h3 class="title">Địa chỉ nhân viên</h3>
+				</div>
+			</div>
+
+			<div class="ml-5 row">
+				<div class="col-lg-12">
+					<label class="form-label">Tỉnh/Thành phố</label>
+					<select
+						class="form-control form-control-lg form-control-solid"
+						formControlName="provinceId"
+					>
+						<option [value]="null" disabled>Chọn tỉnh/Thành phố</option>
+						<option *ngFor="let province of provinces" [value]="province.id">
+							{{province.name}}
+						</option>
+					</select>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label">Quận/Huyện</label>
+					<select
+						class="form-control form-control-lg form-control-solid"
+						formControlName="districtId"
+					>
+						<option [value]="null" disabled>Chọn quận/huyện</option>
+						<option *ngFor="let district of districts" [value]="district.id">
+							{{district.name}}
+						</option>
+					</select>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label">Xã/Phường</label>
+					<select class="form-control form-control-lg form-control-solid" formControlName="wardId">
+						<option [value]="null" disabled>Chọn xã/phường</option>
+						<option *ngFor="let ward of wards" [value]="ward.id">{{ward.name}}</option>
+					</select>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label">Địa chỉ</label>
+					<input
+						class="form-control form-control-lg form-control-solid"
+						placeholder="Nhập địa chỉ"
+						formControlName="address"
+						trim="blur"
+						maxlength="100"
+					/>
+				</div>
+
+				<div
+					class="col-lg-12"
+					[class]="employeeForm.controls['identityCardNumber'].invalid ? 'mt-14': 'mt-8'"
+				>
+					<label class="form-label">Địa chỉ đầy đủ</label>
+					<input
+						class="form-control form-control-lg form-control-solid"
+						formControlName="fullAddress"
+					/>
+				</div>
+			</div>
+		</div>
+
+		<div class="mt-8 col-lg-12">
+			<div class="card-header">
+				<div class="card-title">
+					<h3 class="title">Ảnh CMND/CCCD</h3>
+				</div>
+			</div>
+			<div class="ml-5 row">
+				<div class="col-lg-6 d-flex align-items-center cmnd">
+					<div class="cmnd-title">
+						<label class="mr-10 form-label">CMND/CCCD(Mặt trước)</label>
+					</div>
+					<input hidden type="file" #cmndFront (change)="addImage($event, eFace.FRONT)" />
+					<img
+						alt="CMND/CCCD(Mặt trước)"
+						class="cmnd-placeholder"
+						(click)="cmndFront.click()"
+						width="300px"
+						[src]="credentialImages && credentialImages[0]?.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+					/>
+				</div>
+				<div class="col-lg-6 d-flex align-items-center cmnd">
+					<div class="cmnd-title">
+						<label class="mr-10 form-label">CMND/CCCD(Mặt sau)</label>
+					</div>
+					<input hidden type="file" #cmndBack (change)="addImage($event, eFace.BACK)" />
+					<img
+						alt="CMND/CCCD(Mặt sau)"
+						class="cmnd-placeholder"
+						(click)="cmndBack.click()"
+						[src]="credentialImages && credentialImages[1]?.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+					/>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="mt-10 card-body">
+		<div class="p-0 m-0 card-header">
+			<div class="card-title">
+				<h3 class="title">File đính kèm</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 row">
+			<div class="col-lg-12">
+				<input #fileChoose multiple type="file" (change)="addFiles($event)" hidden />
+				<button class="mr-3 btn btn-outline-primary" (click)="fileChoose.click()">
+					Đính kèm file
+				</button>
+				<button class="ml-3 btn btn-outline-primary" (click)="removeFile('ALL')">Xóa tất cả</button>
+			</div>
+			<div class="mt-2 col-lg-12">
+				<div
+					class="mt-2 mb-2 file form-control form-control-lg form-control-solid w-50"
+					*ngFor="let file of filesUploaded; let i = index"
+					[ngbTooltip]="file.name"
+					[placement]="'right'"
+				>
+					<div *ngIf="filesUploadProgress[i] < 100">
+						<ngb-progressbar type="success" [value]="filesUploadProgress[i]"></ngb-progressbar>
+					</div>
+					<em class="fa fa-times" (click)="removeFile('ONE',file.id)"></em>
+					<span>{{file.name|stringMaxLength: 35}}</span>
+				</div>
+				<span class="mt-3 text-warning">Dung lượng file tối đa 5Mb và tối đa 10 file</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row justify-content-center w-100 mt-15 mb-15">
+		<button
+			type="button"
+			class="mr-6 btn btn-outline-secondary btn-dialog"
+			[routerLink]="['/phan-quyen']"
+		>
+			Hủy
+		</button>
+		<button type="button" ngbAutofocus class="btn btn-primary btn-dialog" (click)="onSubmit()">
+			Lưu
+		</button>
+	</div>
+</div>
