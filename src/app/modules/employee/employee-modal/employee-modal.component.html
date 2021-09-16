@@ -114,7 +114,7 @@
 						<div class="mt-8 col-lg-6">
 							<label class="form-label">Giới tính</label>
 							<select class="form-control form-control-lg form-control-solid" formControlName="sex">
-								<option [value]="null">Chọn giới tính</option>
+								<option [value]="null" disabled>Chọn giới tính</option>
 								<option [value]="eSex.MALE">Nam</option>
 								<option [value]="eSex.FEMALE">Nữ</option>
 							</select>
@@ -350,7 +350,6 @@
 					<label class="form-label">Địa chỉ đầy đủ</label>
 					<input
 						class="form-control form-control-lg form-control-solid"
-						placeholder="Nhập địa chỉ đầy đủ"
 						formControlName="fullAddress"
 					/>
 				</div>
