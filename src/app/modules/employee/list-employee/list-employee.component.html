@@ -1,23 +1,29 @@
-<div class="card card-custom gutter-b mt-1">
+<div class="mt-1 card card-custom gutter-b">
 	<div class="card-header">
 		<h3 class="card-label">Danh sách nhân viên</h3>
 	</div>
-	<div class="card-header mt-0">
-		<div class="d-flex w-100 ml-1">
+	<div class="mt-0 card-header">
+		<div class="ml-1 d-flex w-100">
 			<div class="w-33 d-flex align-items-center">
 				<strong class="mr-6"> Phòng ban </strong>
-				<select class="form-control w-50">
-					<option>Tất cả</option>
+				<select class="form-control w-50" [formControl]="departmentControl" [value]="null">
+					<option [value]="null">Tất cả</option>
+					<option *ngFor="let department of departments" [value]="department.id">
+						{{department.name}}
+					</option>
 				</select>
 			</div>
 			<div class="w-33 d-flex align-items-center">
 				<strong class="mr-6">Chức vụ</strong>
-				<select class="form-control w-50">
-					<option>Tất cả</option>
+				<select class="form-control w-50" [formControl]="positionControl" [value]="null">
+					<option [value]="null">Tất cả</option>
+					<option *ngFor="let position of positions" [value]="position.id">
+						{{position.name}}
+					</option>
 				</select>
 			</div>
 			<div class="w-33 d-flex align-items-center justify-content-end">
-				<div class="search-form w-50 mr-6">
+				<div class="mr-6 search-form w-50">
 					<em class="flaticon-search"></em>
 					<input
 						type="text"
@@ -36,7 +42,7 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive angular-bootstrap-table">
-			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+			<table class="table overflow-hidden table-head-custom table-vertical-center" aria-label="">
 				<thead>
 					<th scope="">
 						Mã nhân viên
@@ -139,7 +145,7 @@
 						<td class="text-center action">
 							<a
 								(click)="openEmployeeModal(item.code)"
-								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								class="mx-3 btn btn-icon btn-light btn-hover-primary btn-sm"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"

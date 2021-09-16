@@ -32,7 +32,7 @@ export interface IEmployee {
 }
 
 export interface IDepartment {
-	id: string;
+	id: number;
 	code: string;
 	departmentType: string;
 	name: string;
@@ -40,7 +40,7 @@ export interface IDepartment {
 }
 
 export interface IPosition {
-	id: string;
+	id: number;
 	code: string;
 	name: string;
 	type: string;
@@ -61,8 +61,14 @@ export interface IEmployeeInput {
 	sex: ESex;
 	phone: string;
 	email: string;
-	department: IDepartment;
-	positions: IPosition;
+	department: {
+		code: string;
+		departmentType: string;
+	};
+	positions: {
+		code: string;
+		departmentType: string;
+	};
 	stationId: string;
 	nation: string;
 	address: string;
@@ -71,12 +77,21 @@ export interface IEmployeeInput {
 	dateRange: string;
 	fullAddress: string;
 	supplyAddress: string;
-	province: IProvince;
-	district: IDistrict;
-	ward: IWard;
+	province: {
+		id: number;
+		name: string;
+	};
+	district: {
+		id: number;
+		name: string;
+	};
+	ward: {
+		id: number;
+		name: string;
+	};
 	maritalStatus: EMaritalStatus;
 	credentialImages: IImage[];
-	attachmentRequests: IFile[];
+	attachmentRequests: number[];
 }
 
 @Injectable({
