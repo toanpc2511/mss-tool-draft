@@ -6,7 +6,6 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { combineLatest, Observable, of } from 'rxjs';
 import {
-	catchError,
 	concatMap,
 	debounceTime,
 	pluck,
@@ -174,7 +173,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 					this.employeeForm.get('wardId').reset(null, NO_EMIT_EVENT);
 					this.selectedWard = null;
 					if (provinceId) {
-						this.selectedProvince = this.provinces.find((p) => p.id === provinceId);
+						this.selectedProvince = this.provinces.find((p) => p.id === Number(provinceId));
 						return this.stationService.getDistrictsByProvince(provinceId);
 					}
 					return of(null);
@@ -193,10 +192,10 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			.get('districtId')
 			.valueChanges.pipe(
 				concatMap((districtId: number) => {
-					this.selectedDistrict = this.districts.find((d) => d.id === districtId);
+					this.selectedDistrict = this.districts.find((d) => d.id === Number(districtId));
 					this.wards = [];
 					this.selectedWard = null;
-					this.employeeForm.get('wardId').reset(NO_EMIT_EVENT);
+					this.employeeForm.get('wardId').reset(null, NO_EMIT_EVENT);
 					return this.stationService.getWardsByDistrict(districtId);
 				}),
 				tap((res) => {
@@ -213,7 +212,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			.get('wardId')
 			.valueChanges.pipe(
 				tap((wardId: number) => {
-					this.selectedWard = this.wards.find((w) => w.id === wardId);
+					this.selectedWard = this.wards.find((w) => w.id === Number(wardId));
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -304,7 +303,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			religion: [null],
 			identityCardNumber: [
 				null,
-				[TValidators.required, TValidators.pattern(/^[0-9]{9}$|^[0-9]{12}$/)]
+				[TValidators.required, TValidators.pattern(/^[0-9]{12}$/)]
 			],
 			dateRange: [null],
 			fullAddress: [null],
@@ -323,10 +322,10 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		this.employeeForm
 			.get('departmentId')
 			.valueChanges.pipe(
-				switchMap((value: string) => {
-					this.selectedDepartment = this.departments.find((d) => d.departmentType === value);
+				switchMap((value: number) => {
+					this.selectedDepartment = this.departments.find((d) => d.id === Number(value));
 					return this.employeeService.getPositionByDepartment(
-						this.selectedDepartment.departmentType
+						this.selectedDepartment?.departmentType || ''
 					);
 				}),
 				tap((res) => {
@@ -342,8 +341,8 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		this.employeeForm
 			.get('positionId')
 			.valueChanges.pipe(
-				tap((value: string) => {
-					this.selectedPosition = this.positions.find((d) => d.id === value);
+				tap((value: number) => {
+					this.selectedPosition = this.positions.find((d) => d.id === Number(value));
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -434,7 +433,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 				// }
 				if (event?.data) {
 					if (face) {
-						const existImageIndex = this.credentialImages.findIndex((ci) => ci.face === face);					
+						const existImageIndex = this.credentialImages.findIndex((ci) => ci.face === face);
 						if (existImageIndex >= 0) {
 							this.credentialImages[existImageIndex].id = event.data[0].id;
 							this.credentialImages[existImageIndex].name = event.data[0].name;
@@ -474,19 +473,32 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 		const dataEmployee: IEmployeeInput = {
 			...employeeFormValue,
-			department: this.selectedDepartment,
-			positions: this.selectedPosition,
-			province: this.selectedProvince,
-			district: this.selectedDistrict,
-			ward: this.selectedWard,
+			department: {
+				code: this.selectedDepartment.code,
+				departmentType: this.selectedDepartment.departmentType
+			},
+			positions: {
+				code: this.selectedPosition.code,
+				departmentType: this.selectedDepartment.departmentType
+			},
+			province: {
+				id: this.selectedProvince.id,
+				name: this.selectedProvince.name
+			},
+			district: {
+				id: this.selectedDistrict.id,
+				name: this.selectedDistrict.name
+			},
+			ward: {
+				id: this.selectedWard.id,
+				name: this.selectedWard.name
+			},
 			dateOfBirth: convertDateToServer(employeeFormValue.dateOfBirth),
 			dateRange: convertDateToServer(employeeFormValue.dateRange),
-			attachmentRequests: this.filesUploaded,
+			attachmentRequests: this.filesUploaded.map((f) => f.id),
 			avatar: this.avatarImage,
 			credentialImages: this.credentialImages
 		};
-
-		console.log(dataEmployee);
 
 		if (!this.isUpdate) {
 			this.employeeService.createEmployee(dataEmployee).subscribe(
@@ -509,6 +521,16 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	checkError(err: IError) {
 		if (err.code) {
+			const code = err.code;
+			if (code === 'SUN-OIL-4854') {
+				this.employeeForm.get('phone').setErrors({ existed: true });
+			}
+			if (code === 'SUN-OIL-4247') {
+				this.employeeForm.get('email').setErrors({ existed: true });
+			}
+			if (code === 'SUN-OIL-4246') {
+				this.employeeForm.get('identityCardNumber').setErrors({ existed: true });
+			}
 		}
 	}
 }
