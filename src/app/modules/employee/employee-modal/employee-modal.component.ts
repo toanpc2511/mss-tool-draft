@@ -1,7 +1,7 @@
 import { HttpEventType } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -16,7 +16,8 @@ import {
 	tap
 } from 'rxjs/operators';
 import { NO_EMIT_EVENT } from 'src/app/shared/app-constants';
-import { renameUniqueFileName } from 'src/app/shared/helpers/functions';
+import { convertDateToServer, renameUniqueFileName } from 'src/app/shared/helpers/functions';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { EFileType, FileService, IFile } from 'src/app/shared/services/file.service';
@@ -35,6 +36,7 @@ import {
 	EmployeeService,
 	ESex,
 	IDepartment,
+	IEmployeeInput,
 	IImage,
 	IPosition
 } from '../employee.service';
@@ -61,38 +63,22 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	filesUploaded: Array<IFile> = [];
 	filesUploadProgress: Array<number> = [];
 
-	avatarImage: IImage = {
-		id: null,
-		name: null,
-		type: 'img',
-		url: null,
-		face: EFace.FRONT
-	};
-	credentialImages: IImage[] = [
-		{
-			id: null,
-			name: null,
-			type: 'img',
-			url: null,
-			face: EFace.FRONT
-		},
-		{
-			id: null,
-			name: null,
-			type: 'img',
-			url: null,
-			face: EFace.BACK
-		}
-	];
+	avatarImage: IImage;
+	credentialImages: IImage[] = [];
 	employeeForm: FormGroup;
 
 	departments: IDepartment[] = [];
+	selectedDepartment: IDepartment;
 	positions: IPosition[] = [];
+	selectedPosition: IPosition;
 	stationAddress: IAddress[] = [];
 
 	provinces: IProvince[] = [];
+	selectedProvince: IProvince;
 	districts: IDistrict[] = [];
+	selectedDistrict: IDistrict;
 	wards: IWard[] = [];
+	selectedWard: IWard;
 
 	isFirstLoad = true;
 
@@ -105,6 +91,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		private subheader: SubheaderService,
 		private fileService: FileService,
 		private toastr: ToastrService,
+		private router: Router,
 		private destroy$: DestroyService
 	) {}
 
@@ -147,6 +134,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 		this.handleProvinceChange();
 		this.handleDistrictChange();
+		this.handleWardChange();
 		this.combineAddress();
 
 		this.activeRoute.params
@@ -182,8 +170,11 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 					this.districts = [];
 					this.wards = [];
 					this.employeeForm.get('districtId').reset(null, NO_EMIT_EVENT);
+					this.selectedDistrict = null;
 					this.employeeForm.get('wardId').reset(null, NO_EMIT_EVENT);
+					this.selectedWard = null;
 					if (provinceId) {
+						this.selectedProvince = this.provinces.find((p) => p.id === provinceId);
 						return this.stationService.getDistrictsByProvince(provinceId);
 					}
 					return of(null);
@@ -202,15 +193,27 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			.get('districtId')
 			.valueChanges.pipe(
 				concatMap((districtId: number) => {
+					this.selectedDistrict = this.districts.find((d) => d.id === districtId);
 					this.wards = [];
-					if (this.employeeForm.get('wardId').value) {
-						this.employeeForm.get('wardId').reset();
-					}
+					this.selectedWard = null;
+					this.employeeForm.get('wardId').reset(NO_EMIT_EVENT);
 					return this.stationService.getWardsByDistrict(districtId);
 				}),
 				tap((res) => {
 					this.wards = res.data || [];
 					this.cdr.detectChanges();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	handleWardChange() {
+		this.employeeForm
+			.get('wardId')
+			.valueChanges.pipe(
+				tap((wardId: number) => {
+					this.selectedWard = this.wards.find((w) => w.id === wardId);
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -320,11 +323,27 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		this.employeeForm
 			.get('departmentId')
 			.valueChanges.pipe(
-				switchMap((value: string) => this.employeeService.getPositionByDepartment(value)),
+				switchMap((value: string) => {
+					this.selectedDepartment = this.departments.find((d) => d.departmentType === value);
+					return this.employeeService.getPositionByDepartment(
+						this.selectedDepartment.departmentType
+					);
+				}),
 				tap((res) => {
 					this.employeeForm.get('positionId').patchValue(null, NO_EMIT_EVENT);
+					this.selectedPosition = null;
 					this.positions = res.data;
 					this.cdr.detectChanges();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+
+		this.employeeForm
+			.get('positionId')
+			.valueChanges.pipe(
+				tap((value: string) => {
+					this.selectedPosition = this.positions.find((d) => d.id === value);
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -374,6 +393,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 				if (event?.data) {
 					this.filesUploaded[index].id = event.data[0].id;
 					this.filesUploaded[index].url = event.data[0].url;
+					this.filesUploaded[index].name = event.data[0].name;
 				}
 				this.cdr.detectChanges();
 			});
@@ -414,15 +434,30 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 				// }
 				if (event?.data) {
 					if (face) {
-						const index = this.credentialImages.findIndex((ci) => ci.face === face);
-						this.credentialImages[index].id = event.data[0].id;
-						this.credentialImages[index].name = event.data[0].name;
-						this.credentialImages[index].url = event.data[0].url;
+						const existImageIndex = this.credentialImages.findIndex((ci) => ci.face === face);					
+						if (existImageIndex >= 0) {
+							this.credentialImages[existImageIndex].id = event.data[0].id;
+							this.credentialImages[existImageIndex].name = event.data[0].name;
+							this.credentialImages[existImageIndex].url = event.data[0].url;
+						} else {
+							const credentialImage: IImage = {
+								id: event.data[0].id,
+								name: event.data[0].name,
+								url: event.data[0].url,
+								type: 'img',
+								face
+							};
+							this.credentialImages = [...this.credentialImages, credentialImage];
+						}
 					} else {
-						this.avatarImage.id = event.data[0].id;
-						this.avatarImage.name = event.data[0].name;
-						this.avatarImage.url = event.data[0].url;
-						console.log(this.avatarImage);
+						const avatarImage: IImage = {
+							id: event.data[0].id,
+							name: event.data[0].name,
+							url: event.data[0].url,
+							type: 'img',
+							face: EFace.FRONT
+						};
+						this.avatarImage = avatarImage;
 					}
 				}
 				this.cdr.detectChanges();
@@ -431,12 +466,49 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	onSubmit(): void {
 		this.employeeForm.markAllAsTouched();
-		console.log(this.employeeForm.getRawValue());
+		if (this.employeeForm.invalid) {
+			return;
+		}
+
+		const employeeFormValue = this.employeeForm.getRawValue() as IEmployeeInput;
+
+		const dataEmployee: IEmployeeInput = {
+			...employeeFormValue,
+			department: this.selectedDepartment,
+			positions: this.selectedPosition,
+			province: this.selectedProvince,
+			district: this.selectedDistrict,
+			ward: this.selectedWard,
+			dateOfBirth: convertDateToServer(employeeFormValue.dateOfBirth),
+			dateRange: convertDateToServer(employeeFormValue.dateRange),
+			attachmentRequests: this.filesUploaded,
+			avatar: this.avatarImage,
+			credentialImages: this.credentialImages
+		};
+
+		console.log(dataEmployee);
 
 		if (!this.isUpdate) {
+			this.employeeService.createEmployee(dataEmployee).subscribe(
+				(res) => this.checkRes(res),
+				(error: IError) => this.checkError(error)
+			);
 		} else {
+			this.employeeService.updateEmployee(this.employeeId, dataEmployee).subscribe(
+				(res) => this.checkRes(res),
+				(error: IError) => this.checkError(error)
+			);
 		}
 	}
 
-	checkError(err: IError) {}
+	checkRes(res: DataResponse<any>) {
+		if (res.data) {
+			this.router.navigate(['/nhan-vien/danh-sach']);
+		}
+	}
+
+	checkError(err: IError) {
+		if (err.code) {
+		}
+	}
 }
