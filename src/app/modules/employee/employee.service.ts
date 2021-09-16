@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
+import { IFile } from 'src/app/shared/services/file.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { SortState } from 'src/app/_metronic/shared/crud-table';
+import { IDistrict, IProvince, IWard } from '../gas-station/gas-station.service';
 
 export enum EMaritalStatus {
 	MARRIED = 'MARRIED',
@@ -61,11 +63,7 @@ export interface IEmployeeInput {
 	email: string;
 	department: IDepartment;
 	positions: IPosition;
-	station: {
-		id: string;
-		code: string;
-		name: string;
-	};
+	stationId: string;
 	nation: string;
 	address: string;
 	religion: string;
@@ -73,20 +71,12 @@ export interface IEmployeeInput {
 	dateRange: string;
 	fullAddress: string;
 	supplyAddress: string;
-	province: {
-		id: string;
-		name: string;
-	};
-	district: {
-		id: string;
-		name: string;
-	};
-	ward: {
-		id: string;
-		name: string;
-	};
+	province: IProvince;
+	district: IDistrict;
+	ward: IWard;
 	maritalStatus: EMaritalStatus;
 	credentialImages: IImage[];
+	attachmentRequests: IFile[];
 }
 
 @Injectable({
@@ -142,7 +132,7 @@ export class EmployeeService {
 		return this.http.post(`employees`, employee);
 	}
 
-	updateEmployee(id: number, user: IEmployeeInput) {
+	updateEmployee(id: string, user: IEmployeeInput) {
 		return this.http.put(`employee/${id}`, user);
 	}
 

@@ -11,14 +11,15 @@
 	}
 
 	.avatar {
+		width: 80%;
 		cursor: pointer;
-		width: 250px;
-		height: 250px;
-		background-color: lighten($color: grey, $amount: 40);
 		border-radius: 5px;
 		position: relative;
-		display: flex;
-		align-items: center;
+		img {
+			border-radius: 5px;
+			width: 100%;
+			object-fit: contain;
+		}
 		&:hover {
 			opacity: 0.8;
 		}
@@ -33,7 +34,7 @@
 
 	.cmnd {
 		.cmnd-title {
-			width: 300px;
+			width: 50%;
 			height: 100%;
 			display: flex;
 			justify-content: center;
@@ -43,8 +44,8 @@
 		}
 		img {
 			border: 1px dashed;
-			width: 300px;
-			height: 175px;
+			width: 50%;
+			height: 100%;
 			object-fit: contain;
 			&:hover {
 				opacity: 0.8;

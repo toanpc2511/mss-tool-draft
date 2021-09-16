@@ -10,8 +10,8 @@
 				<div class="row">
 					<div class="col-lg-3 d-flex align-items-center justify-content-center flex-column">
 						<div class="avatar" (click)="avatarFile.click()">
-							<img alt="" width="100%" [src]="avatarImage.url" />
-							<span *ngIf="!avatarImage.url" class="fa fa-plus fa-2x plus-icon"></span>
+							<img alt="" [src]="avatarImage?.url ? avatarImage?.url : 'assets/media/sun-oil/employee/placeholder-user.png'" />
+							<span *ngIf="!avatarImage?.url" class="fa fa-plus fa-2x plus-icon"></span>
 						</div>
 						<input hidden type="file" #avatarFile (change)="addImage($event)" />
 						<span class="mt-8">Ảnh hồ sơ</span>
@@ -109,6 +109,12 @@
 									[error]="'pattern'"
 									[message]="'Số điện thoại không đúng định dạng'"
 								></app-validate>
+
+								<app-validate
+									[control]="employeeForm.controls['phone']"
+									[error]="'existed'"
+									[message]="'Số điện thoại của nhân viên đã tồn tại'"
+								></app-validate>
 							</div>
 
 							<div class="col-lg-12 mt-8">
@@ -124,6 +130,12 @@
 									[control]="employeeForm.controls['email']"
 									[error]="'email'"
 									[message]="'Email không đúng định dạng'"
+								></app-validate>
+
+								<app-validate
+									[control]="employeeForm.controls['email']"
+									[error]="'existed'"
+									[message]="'Email của nhân viên đã tồn tại'"
 								></app-validate>
 							</div>
 
@@ -234,6 +246,12 @@
 						[control]="employeeForm.controls['identityCardNumber']"
 						[error]="'pattern'"
 						[message]="'CMND/CCCD không đúng định dạng'"
+					></app-validate>
+
+					<app-validate
+						[control]="employeeForm.controls['identityCardNumber']"
+						[error]="'existed'"
+						[message]="'CMND/CCCD của nhân viên đã tồn tại'"
 					></app-validate>
 				</div>
 
@@ -356,7 +374,7 @@
 						class="cmnd-placeholder"
 						(click)="cmndFront.click()"
 						width="300px"
-						[src]="credentialImages[0].url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+						[src]="credentialImages && credentialImages[0]?.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
 					/>
 				</div>
 				<div class="col-lg-6 d-flex align-items-center cmnd">
@@ -368,7 +386,7 @@
 						alt="CMND/CCCD(Mặt sau)"
 						class="cmnd-placeholder"
 						(click)="cmndBack.click()"
-						[src]="credentialImages[1].url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+						[src]="credentialImages && credentialImages[1]?.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
 					/>
 				</div>
 			</div>
