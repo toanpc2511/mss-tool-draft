@@ -2,9 +2,11 @@ import { HttpEventType } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { combineLatest, Observable, of } from 'rxjs';
 import {
+	catchError,
 	concatMap,
 	debounceTime,
 	pluck,
@@ -44,6 +46,13 @@ import {
 	providers: [DestroyService]
 })
 export class EmployeeModalComponent implements OnInit, AfterViewInit {
+	currentDate = new Date();
+	maxDate: NgbDateStruct = {
+		day: this.currentDate.getDate(),
+		month: this.currentDate.getMonth() + 1,
+		year: this.currentDate.getFullYear()
+	};
+
 	eFace = EFace;
 	eSex = ESex;
 	eMaritalStatus = EMaritalStatus;
@@ -279,18 +288,21 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	buildForm(): void {
 		this.employeeForm = this.fb.group({
-			name: [null],
+			name: [null, TValidators.required],
 			dateOfBirth: [null],
 			sex: [null],
-			phone: [null],
-			email: [null],
-			departmentCode: [null, TValidators.required],
-			positionCode: [null, TValidators.required],
-			stationId: [null],
+			phone: [null, TValidators.pattern(/^([\\+84|84|0]+(3|5|7|8|9))+([0-9]{8})$/)],
+			email: [null, TValidators.email],
+			departmentId: [null, TValidators.required],
+			positionId: [null, TValidators.required],
+			stationIds: [null],
 			nation: [null],
 			address: [null],
 			religion: [null],
-			identityCardNumber: [null],
+			identityCardNumber: [
+				null,
+				[TValidators.required, TValidators.pattern(/^[0-9]{9}$|^[0-9]{12}$/)]
+			],
 			dateRange: [null],
 			fullAddress: [null],
 			supplyAddress: [],
@@ -300,14 +312,17 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			maritalStatus: [null]
 		});
 
+		//Disable form control
+		this.employeeForm.get('fullAddress').disable(NO_EMIT_EVENT);
+
 		//Handle form event
 
 		this.employeeForm
-			.get('departmentCode')
+			.get('departmentId')
 			.valueChanges.pipe(
 				switchMap((value: string) => this.employeeService.getPositionByDepartment(value)),
 				tap((res) => {
-					this.employeeForm.get('positionCode').patchValue(null, NO_EMIT_EVENT);
+					this.employeeForm.get('positionId').patchValue(null, NO_EMIT_EVENT);
 					this.positions = res.data;
 					this.cdr.detectChanges();
 				}),
@@ -378,8 +393,8 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		const inputElement = $event.target as HTMLInputElement;
 		const files = Array.from(inputElement.files);
 
-		if (files[0].size > 5000000) {
-			this.toastr.error('Ảnh tải lên có dung lượng lớn hơn 5Mb');
+		if (files[0].size > 2000000) {
+			this.toastr.error('Dung lượng ảnh quá lớn');
 		}
 
 		this.uploadImageFile(files[0], face);
@@ -408,7 +423,6 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 						this.avatarImage.name = event.data[0].name;
 						this.avatarImage.url = event.data[0].url;
 						console.log(this.avatarImage);
-						
 					}
 				}
 				this.cdr.detectChanges();
@@ -416,6 +430,9 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	}
 
 	onSubmit(): void {
+		this.employeeForm.markAllAsTouched();
+		console.log(this.employeeForm.getRawValue());
+
 		if (!this.isUpdate) {
 		} else {
 		}

@@ -30,12 +30,15 @@ export interface IEmployee {
 }
 
 export interface IDepartment {
+	id: string;
 	code: string;
+	departmentType: string;
 	name: string;
 	type: string;
 }
 
 export interface IPosition {
+	id: string;
 	code: string;
 	name: string;
 	type: string;
@@ -126,8 +129,9 @@ export class EmployeeService {
 		return this.http.get<IDepartment[]>(`properties?type=DEPARTMENT`);
 	}
 
-	getPositionByDepartment(departmentCode: string) {
-		return this.http.get<IDepartment[]>(`properties/dempartment?department_type=${departmentCode}`);
+	getPositionByDepartment(departmentType: string) {
+		const params = new HttpParams().set('type-department', departmentType);
+		return this.http.get<IDepartment[]>(`properties/department`, { params });
 	}
 
 	getEmployeeById(employeeId: string) {

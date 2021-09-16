@@ -11,6 +11,7 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { InputTrimModule } from 'ng2-trim-directive';
 import { NgSelectModule } from 'src/app/shared/components/ng-select/public-api';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
+import { DirectivesModule } from 'src/app/shared/directives/directives.module';
 import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { EmployeeModalComponent } from './employee-modal/employee-modal.component';
@@ -34,7 +35,8 @@ import { ListEmployeeComponent } from './list-employee/list-employee.component';
 		NgbDatepickerModule,
 		TextMaskModule,
 		PipesModule,
-		NgbProgressbarModule
+		NgbProgressbarModule,
+		DirectivesModule
 	]
 })
 export class EmployeeModule {}
