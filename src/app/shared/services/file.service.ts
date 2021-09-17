@@ -1,7 +1,8 @@
-import { HttpEventType, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpService } from './http.service';
+import { saveAs } from 'file-saver';
 
 export enum EFileType {
 	IMAGE = 'IMAGE',
@@ -24,11 +25,19 @@ export interface IUploadProgress {
 	providedIn: 'root'
 })
 export class FileService {
-	constructor(private http: HttpService) {}
+	constructor(private http: HttpService, private httpClient: HttpClient) {}
 
-	downloadFile(fileId: string) {
+	downloadFile(fileId: string, fileName: string) {
 		const params = new HttpParams().set('file-id', fileId);
-		this.http.get('files/downloads', { params }).subscribe();
+		return this.httpClient
+			.get(`${environment.apiUrl}/files/downloads`, {
+				params,
+				observe: 'response',
+				responseType: 'blob'
+			})
+			.subscribe((res) => {
+				saveAs(res.body, fileName);
+			});
 	}
 
 	uploadFile(fileFormData: FormData, type: EFileType) {

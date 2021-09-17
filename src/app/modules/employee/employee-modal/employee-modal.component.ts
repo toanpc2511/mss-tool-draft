@@ -293,7 +293,10 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			name: [null, TValidators.required],
 			dateOfBirth: [null],
 			sex: [null],
-			phone: [null, TValidators.pattern(/^([\\+84|84|0]+(3|5|7|8|9))+([0-9]{8})$/)],
+			phone: [
+				null,
+				[TValidators.required, TValidators.pattern(/^([\\+84|84|0]+(3|5|7|8|9))+([0-9]{8})$/)]
+			],
 			email: [null, TValidators.email],
 			departmentId: [null, TValidators.required],
 			positionId: [null, TValidators.required],

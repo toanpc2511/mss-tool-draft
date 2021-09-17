@@ -38,7 +38,7 @@
 						</div>
 
 						<div class="col-lg-6">
-							<label class="form-label">Số điện thoại</label>
+							<label class="form-label required">Số điện thoại</label>
 							<input
 								class="form-control form-control-lg form-control-solid"
 								placeholder="Nhập số điện thoại"
@@ -49,6 +49,12 @@
 								numbersOnly
 								[numberformControl]="employeeForm.controls['phone']"
 							/>
+
+							<app-validate
+								[control]="employeeForm.controls['phone']"
+								[error]="'required'"
+								[message]="'Số điện thoại không đúng định dạng'"
+							></app-validate>
 
 							<app-validate
 								[control]="employeeForm.controls['phone']"
