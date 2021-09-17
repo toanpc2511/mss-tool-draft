@@ -64,6 +64,10 @@ const routes: Routes = [
 						(m) => m.ConfigurationManagementModule
 					)
 			},
+      {
+        path: 'lich-su-giao-dich',
+        loadChildren: () => import('../modules/transaction/transaction.module').then((m) => m.TransactionModule)
+      },
 			{
 				path: '',
 				redirectTo: '/dashboard',

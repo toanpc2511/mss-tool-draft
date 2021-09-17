@@ -1,17 +1,32 @@
 .card.card-custom {
-  box-shadow: none !important;
+	box-shadow: none !important;
 
-  .card-body,
-  .card-header {
-    border: 0;
-    padding-top: 0 !important;
-  }
+	.card-body,
+	.card-header {
+		border: 0;
+		padding-top: 0 !important;
+	}
 
-  table {
-    min-width: 1024px;
+	table {
+		min-width: 1024px;
 
-    thead th {
-      text-transform: none;
-    }
-  }
+		thead th {
+			text-transform: none;
+		}
+
+		td {
+			&.name-rank {
+				width: 220px;
+			}
+			&.name-product {
+				width: 220px;
+			}
+			&.no-invoice {
+				width: 270px;
+			}
+			&.export-invoice {
+				width: 270px;
+			}
+		}
+	}
 }

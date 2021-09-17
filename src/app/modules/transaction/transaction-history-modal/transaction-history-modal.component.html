@@ -1,0 +1,158 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-title">{{ data.title }}: {{itemTransaction.code}}</h4>
+		<div class="close-icon" (click)="modal.close()"></div>
+	</div>
+	<div class="modal-body">
+		<div class="overlay overlay-block cursor-default">
+			<div class="pb-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Thông tin khách hàng</label>
+				</div>
+
+				<div class="body-card px-5">
+					<div class="row pb-3">
+						<div class="col-lg-7">Số điện thoại</div>
+						<div class="col-lg-5">{{itemTransaction.phone}}</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Tên khách hàng</div>
+						<div class="col-lg-5">{{itemTransaction.nameDriver}}</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pb-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Thông tin chung</label>
+				</div>
+
+				<div class="body-card px-5">
+					<div class="row pb-3">
+						<div class="col-lg-7">Tên trạm xăng</div>
+						<div class="col-lg-5">{{itemTransaction.stationName}}</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Cột bơm</div>
+						<div class="col-lg-5">{{itemTransaction.pumpPole}}</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Nhân viên thực hiện</div>
+						<div class="col-lg-5">{{itemTransaction.nameEmployee}}</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Loại nhiên liệu</div>
+						<div class="col-lg-5">{{itemTransaction.productName}}</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Đơn giá</div>
+						<div class="col-lg-5">
+							{{itemTransaction.price?.toLocaleString('en-US') || 0}} VNĐ/L
+						</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Nhận hóa đơn</div>
+						<div class="col-lg-5">{{itemTransaction.takeReceipt ? 'Có' : 'Không'}}</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pb-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Thông tin thanh toán</label>
+				</div>
+
+				<div class="body-card px-5">
+					<div class="row pb-3">
+						<div class="col-lg-7">Số lít</div>
+						<div class="col-lg-5">
+							{{itemTransaction.totalNumberLiters?.toLocaleString('en-US') || 0}} L
+						</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Tổng tiền đã thanh toán</div>
+						<div class="col-lg-5">
+							{{itemTransaction.totalMoney?.toLocaleString('en-US') || 0}} VNĐ
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pb-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Thanh toán bằng</label>
+				</div>
+
+				<div class="body-card px-5">
+					<div class="row pb-3">
+						<div class="col-lg-7">Tiền mặt</div>
+						<div class="col-lg-5">{{itemTransaction.billMoney?.toLocaleString('en-US')}} VNĐ</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Hạn mức</div>
+						<div class="col-lg-5">{{itemTransaction.cashLimit?.toLocaleString('en-US')}}</div>
+					</div>
+
+					<div class="row py-3" *ngIf="itemTransaction.paymentMethodName !== 'Hạn mức nhiên liệu'">
+						<div class="col-lg-7">Điểm SunOil</div>
+						<div class="col-lg-5">
+							{{itemTransaction.accumulationPointUse?.toLocaleString('en-US')}}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pb-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Thông tin khuyễn mãi</label>
+				</div>
+
+				<div class="body-card px-5">
+					<div class="row pb-3" *ngIf="itemTransaction.paymentMethodName !== 'Hạn mức nhiên liệu'">
+						<div class="col-lg-7">Điểm SunOil nhận được</div>
+						<div class="col-lg-5">
+							{{itemTransaction.accumulationPointReceive?.toLocaleString('en-US')}}
+						</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Khuyến mãi</div>
+						<div class="col-lg-5">{{itemTransaction.promotions}}</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pb-5">
+				<div class="body-card row px-5">
+					<div class="col-lg-6 text-center info-vihicle">
+						<p class="py-2">Biển số xe</p>
+						<div class="card-images">
+							<img src="{{itemTransaction.imageNumberVariableReal}}" alt="" />
+							<div class="error" *ngIf="!itemTransaction.validLicensePlate">
+								<em class="fas fa-exclamation-triangle"></em>
+								<p>Biển số xe này không khớp</p>
+							</div>
+						</div>
+						<p class="pt-2">{{itemTransaction.numberVariableReal}}</p>
+					</div>
+
+					<div class="col-lg-6 text-center info-vihicle">
+						<p class="py-2">Công tơ mét</p>
+						<div class="card-images">
+							<img src="{{itemTransaction.imageSpeedometer}}" alt="" />
+						</div>
+						<p class="pt-2">{{itemTransaction.speedometer?.toLocaleString('en-US')}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

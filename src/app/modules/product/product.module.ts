@@ -13,6 +13,8 @@ import { ProductRoutingModule } from './product-routing.module';
 import { ProductTypeComponent } from './product-type/product-type.component';
 import { ProductComponent } from './product.component';
 import { DirectivesModule } from '../../shared/directives/directives.module';
+import { ListProductOtherComponent } from './list-product-other/list-product-other.component';
+import { ListProductOtherModalComponent } from './list-product-other-modal/list-product-other-modal.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { DirectivesModule } from '../../shared/directives/directives.module';
     ProductModalComponent,
     ProductTypeComponent,
     ListProductFuelComponent,
-    ListProductFuelModalComponent
+    ListProductFuelModalComponent,
+    ListProductOtherComponent,
+    ListProductOtherModalComponent
   ],
   imports: [
     CommonModule,

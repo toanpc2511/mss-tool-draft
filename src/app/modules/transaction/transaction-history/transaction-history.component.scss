@@ -1,0 +1,99 @@
+.card-header {
+	border-bottom: 0;
+}
+
+.search-result {
+	padding: 0 1em;
+	line-height: 35px;
+	background: #e3f1ff;
+	.card-toolbar {
+		gap: 50px;
+	}
+}
+
+.item {
+	padding-right: 35px;
+	line-height: 35px;
+}
+
+.fa-circle {
+	color: #ff0000;
+	padding-right: 12px;
+	font-size: 8px;
+}
+
+.btn-def {
+	min-width: 110px;
+}
+
+table {
+	min-width: 1024px;
+
+	thead {
+		tr {
+			&:hover {
+				background-color: #fff;
+			}
+
+			th {
+				text-transform: none;
+			}
+		}
+	}
+
+	tbody {
+		td {
+			&.a-1 {
+				min-width: 150px;
+			}
+
+			&.a-2 {
+				min-width: 150px;
+			}
+
+			&.a-3 {
+				min-width: 150px;
+			}
+
+			&.a-4 {
+				min-width: 150px;
+			}
+
+			&.a-5 {
+				min-width: 150px;
+			}
+
+			&.a-6 {
+				min-width: 150px;
+			}
+
+			&.a-7 {
+				min-width: 150px;
+			}
+
+			&.a-8 {
+				min-width: 200px;
+			}
+
+			&.a-9 {
+				min-width: 140px;
+			}
+
+			&.a-10 {
+				min-width: 140px;
+			}
+
+			&.a-11 {
+				min-width: 140px;
+			}
+
+			&.a-12 {
+				min-width: 140px;
+			}
+
+			&.a-13 {
+				min-width: 140px;
+			}
+		}
+	}
+}

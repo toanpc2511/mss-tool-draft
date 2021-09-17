@@ -1,0 +1,42 @@
+.title-card {
+	text-transform: uppercase;
+	color: #4674eb;
+	font-size: 1.3em;
+}
+
+.info-vihicle {
+	.card-images {
+		margin: 0 auto;
+		position: relative;
+
+		img {
+			width: 195px;
+			height: 138px;
+			border: 1px solid #1db3c2;
+			border-radius: 20px;
+			object-fit: scale-down;
+		}
+
+		.error {
+			width: 195px;
+			height: 138px;
+			border-radius: 20px;
+			position: absolute;
+			top: 0;
+			left: 21.75%;
+			display: block;
+			background: rgba(0, 0, 0, 0.4);
+			padding-top: 16%;
+
+			.fas {
+				color: #ff3838;
+				font-size: 1.85em;
+				padding-bottom: 15px;
+			}
+			p {
+				font-size: 12px;
+				color: #fff;
+			}
+		}
+	}
+}
