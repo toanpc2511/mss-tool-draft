@@ -65,7 +65,7 @@
 					<th scope="">
 						Địa điểm làm việc
 						<app-sort-icon
-							column="officeAddress"
+							column="stationId"
 							[activeColumn]="sortData?.column"
 							[activeDirection]="sortData?.direction"
 							(sort)="sort($event)"
@@ -83,7 +83,7 @@
 					<th scope="">
 						Chức vụ
 						<app-sort-icon
-							column="position"
+							column="positions"
 							[activeColumn]="sortData?.column"
 							[activeDirection]="sortData?.direction"
 							(sort)="sort($event)"
@@ -106,12 +106,8 @@
 						</td>
 
 						<td class="office-address">
-							<p
-								class="cursor-pointer text-ellipsis"
-								placement="top"
-								[ngbTooltip]="item.officeAddress"
-							>
-								{{ item.officeAddress }}
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.stationId">
+								{{ item.stationId }}
 							</p>
 						</td>
 
@@ -119,15 +115,19 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.department"
+								[ngbTooltip]="item.department?.name"
 							>
-								{{ item.department }}
+								{{ item.department?.name }}
 							</p>
 						</td>
 
 						<td class="position">
-							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.position">
-								{{ item.position }}
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.positions?.name"
+							>
+								{{ item.positions?.name }}
 							</p>
 						</td>
 
