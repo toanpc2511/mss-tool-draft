@@ -1,0 +1,153 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-title">{{ data.title }}: 30G - 123.45</h4>
+		<div class="close-icon" (click)="modal.close()"></div>
+	</div>
+	<div class="modal-body">
+		<div class="overlay overlay-block cursor-default">
+			<div class="pb-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Thông tin khách hàng</label>
+				</div>
+
+				<div class="body-card px-5">
+					<div class="row pb-3">
+						<div class="col-lg-7">Số điện thoại</div>
+						<div class="col-lg-5">0355162255</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Tên khách hàng</div>
+						<div class="col-lg-5">Phạm Công Toán</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pb-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Thông tin chung</label>
+				</div>
+
+				<div class="body-card px-5">
+					<div class="row pb-3">
+						<div class="col-lg-7">Tên trạm xăng</div>
+						<div class="col-lg-5">TTC-Solutions</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Cột bơm</div>
+						<div class="col-lg-5">Cột A</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Nhân viên thực hiện</div>
+						<div class="col-lg-5">HieuPV - Phạm Văn Hiếu</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Loại nhiên liệu</div>
+						<div class="col-lg-5">Ron95</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Đơn giá</div>
+						<div class="col-lg-5">20.000 VND/L</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Nhận hóa đơn</div>
+						<div class="col-lg-5">Không</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pb-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Thông tin thanh toán</label>
+				</div>
+
+				<div class="body-card px-5">
+					<div class="row pb-3">
+						<div class="col-lg-7">Số lít</div>
+						<div class="col-lg-5">300.000</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Tổng tiền đã thanh toán</div>
+						<div class="col-lg-5">5.000.000 VND</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pb-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Thanh toán bằng</label>
+				</div>
+
+				<div class="body-card px-5">
+					<div class="row pb-3">
+						<div class="col-lg-7">Tiền mặt</div>
+						<div class="col-lg-5">4.000.000 VND</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Hạn mức</div>
+						<div class="col-lg-5">0</div>
+					</div>
+
+					<div class="row py-3" *ngIf="!isData">
+						<div class="col-lg-7">Điểm SunOil</div>
+						<div class="col-lg-5">1000</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pb-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Thông tin khuyễn mãi</label>
+				</div>
+
+				<div class="body-card px-5">
+					<div class="row pb-3" *ngIf="!isData">
+						<div class="col-lg-7">Điểm SunOil nhận được</div>
+						<div class="col-lg-5">10.000</div>
+					</div>
+
+					<div class="row py-3">
+						<div class="col-lg-7">Khuyến mãi</div>
+						<div class="col-lg-5">
+							1 khăn lạnh + 1 nước lọc+ 1 khăn lạnh + 1 nước lọc+ 1 khăn lạnh + 1 nước lọc
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pb-5">
+				<div class="body-card row px-5">
+					<div class="col-lg-6 text-center info-vihicle">
+						<p class="py-2">Biển số xe</p>
+						<div class="card-images">
+							<img src="https://file.vfo.vn/hinh/2014/9/bien-so-xe-may-dep-2.jpg" alt="" />
+							<div class="error" *ngIf="isData">
+								<em class="fas fa-exclamation-triangle"></em>
+								<p>Biển số xe này không khớp</p>
+							</div>
+						</div>
+						<p class="pt-2">30G -123.45</p>
+					</div>
+
+					<div class="col-lg-6 text-center info-vihicle">
+						<p class="py-2">Công tơ mét</p>
+						<div class="card-images">
+							<img
+								src="https://choxe.net/blog/wp-content/uploads/2019/02/Dich-vu-sua-chua-do-1441963348.jpg"
+								alt=""
+							/>
+						</div>
+						<p class="pt-2">80000</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

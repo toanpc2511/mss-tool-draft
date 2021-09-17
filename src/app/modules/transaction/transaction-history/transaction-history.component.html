@@ -1,0 +1,364 @@
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Tìm kiếm giao dịch</h3>
+		</div>
+	</div>
+	<div class="card-body">
+		<form [formGroup]="searchForm" class="form form-label-right">
+			<div class="form-group row">
+				<div class="col-lg-4">
+					<label for="code">Mã đơn hàng</label>
+					<input
+						type="text"
+						id="code"
+						class="form-control form-control-solid"
+						placeholder="Nhập mã đơn hàng"
+						formControlName="code"
+						autocomplete="off"
+						maxlength="199"
+						trim="blur"
+					/>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Loại nhiên liệu</label>
+          <select
+            class="form-control form-control-solid"
+            formControlName='typeOil'
+          >
+            <option [value]="null">Tất cả</option>
+            <option *ngFor='let item of productTypes' [value]='item.id'>{{item.name}}</option>
+          </select>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Trạm</label>
+          <select
+            class="form-control form-control-solid"
+            formControlName='station'
+          >
+            <option [value]="null">Tất cả</option>
+            <option *ngFor='let item of stationEmployee' [value]='item.name'>{{item.name}}</option>
+          </select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-lg-4">
+					<label>Thời gian</label>
+					<div class="input-group">
+						<input
+							class="form-control form-control-solid"
+							placeholder="DD/MM/YYYY - DD/MM/YYYY"
+							ngbDatepicker
+							readonly
+							#effectEndDate="ngbDatepicker"
+							[autoClose]="'outside'"
+							(dateSelect)="onDateSelection($event)"
+							[displayMonths]="2"
+							[dayTemplate]="t"
+							outsideDays="hidden"
+							[startDate]="startDate!"
+							[value]='formatter.format(startDate) + " - " + formatter.format(endDate)'
+						/>
+						<ng-template #t let-date let-focused="focused">
+							<span
+								class="custom-day"
+								[class.focused]="focused"
+								[class.range]="isRange(date)"
+								[class.faded]="isHovered(date) || isInside(date)"
+								(mouseenter)="hoveredDate = date"
+								(mouseleave)="hoveredDate = null"
+							>
+								{{ date.day }}
+							</span>
+						</ng-template>
+						<div class="input-group-append">
+							<button
+								class="btn btn-outline-secondary fa fa-calendar-alt"
+								(click)="effectEndDate.toggle()"
+								type="button"
+							></button>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Hình thức thanh toán</label>
+          <select
+            class="form-control form-control-solid"
+            formControlName='payMethod'
+          >
+            <option [value]="null">Tất cả</option>
+            <option *ngFor="let item of paymentMethods" [value]="item.id"
+            >{{ item.name }}</option>
+          </select>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Nhân viên thực hiện</label>
+          <select
+            class="form-control form-control-solid"
+            formControlName='staff'
+          >
+            <option [value]="">Tất cả</option>
+            <option *ngFor="let item of listEmployees" [value]="item.id"
+            >{{ item.name }}</option>
+          </select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-lg-4">
+					<label>Số điện thoại khách hàng</label>
+					<input
+						type="text"
+						class="form-control form-control-solid"
+						placeholder="Nhấp số điện thoại"
+						autocomplete="off"
+						maxlength="199"
+						trim="blur"
+						formControlName="phone"
+					/>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Tên khách hàng</label>
+					<input
+						type="text"
+						class="form-control form-control-solid"
+						placeholder="Nhập tên khách hàng"
+						autocomplete="off"
+						maxlength="199"
+						trim="blur"
+						formControlName="nameUser"
+					/>
+				</div>
+			</div>
+		</form>
+
+		<div class="form-group row py-3">
+			<button type="button" class="btn btn-primary mr-3" (click)="onSearch()">
+				<em class="fas fa-search"> Tìm kiếm</em>
+			</button>
+			<button type="button" class="btn btn-secondary" (click)="onReset()">Nhập lại</button>
+		</div>
+
+		<div class="form-group row search-result">
+			<p class="item">Tổng số <strong>150 giao dịch</strong></p>
+			<p class="item">
+				<em class="fas fa-circle"></em>Tổng lít:
+				<strong>{{totalLiters.toLocaleString("en-US")}}</strong>
+			</p>
+			<p class="item">
+				<em class="fas fa-circle"></em>Tiền mặt:
+				<strong>{{totalMoney.toLocaleString("en-US")}}</strong>
+			</p>
+			<p class="item">
+				<em class="fas fa-circle"></em>Điểm sunoil:
+				<strong>{{pointSunoil.toLocaleString("en-US")}}</strong>
+			</p>
+			<p class="item">
+				<em class="fas fa-circle"></em>Hạn mức nhiên liệu:
+				<strong>{{limitOil.toLocaleString("en-US")}}</strong>
+			</p>
+			<p class="item">
+				<em class="fas fa-circle"></em>Hạn mức tiền:
+				<strong>{{limitMoney.toLocaleString("en-US")}}</strong>
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Danh sách giao dịch</h3>
+		</div>
+
+		<div class="card-toolbar row">
+			<button type="button" class="btn btn-primary">Xuất file</button>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+				<thead>
+					<tr>
+						<th rowspan="2" id="1" class="align-bottom">Mã đơn hàng</th>
+						<th rowspan="2" id="2" class="align-bottom">Thời gian</th>
+						<th rowspan="2" id="3" class="align-bottom">Trạm</th>
+						<th rowspan="2" id="4" class="align-bottom">Nhân viên</th>
+						<th rowspan="2" id="5" class="align-bottom">SĐT KH</th>
+						<th rowspan="2" id="6" class="align-bottom">Tên KH</th>
+						<th rowspan="2" id="7" class="align-bottom">Loại nhiên liệu</th>
+						<th rowspan="2" id="8" class="align-bottom">Hình thức thanh toán</th>
+						<th rowspan="2" id="9" class="align-bottom">Tổng lít</th>
+						<th colspan="4" id="10" class="text-center">Thanh toán bằng</th>
+					</tr>
+					<tr>
+						<th id="11">Tiền mặt</th>
+						<th id="12">Điểm sunoil</th>
+						<th id="13">Hạn mức NL</th>
+						<th id="14">Hạn mức tiền</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr (click)="viewModal($event)">
+						<td class="a-1">1</td>
+						<td class="a-2">1</td>
+						<td class="a-3">1</td>
+						<td class="a-4">1</td>
+						<td class="a-5">1</td>
+						<td class="a-6">1</td>
+						<td class="a-7">1</td>
+						<td class="a-8">1</td>
+						<td class="a-9">1</td>
+						<td class="a-10">1</td>
+						<td class="a-11">1</td>
+						<td class="a-12">1</td>
+						<td class="a-13">1</td>
+					</tr>
+					<tr>
+						<td class="a-1">1</td>
+						<td class="a-2">1</td>
+						<td class="a-3">1</td>
+						<td class="a-4">1</td>
+						<td class="a-5">1</td>
+						<td class="a-6">1</td>
+						<td class="a-7">1</td>
+						<td class="a-8">1</td>
+						<td class="a-9">1</td>
+						<td class="a-10">1</td>
+						<td class="a-11">1</td>
+						<td class="a-12">1</td>
+						<td class="a-13">1</td>
+					</tr>
+					<tr>
+						<td class="a-1">1</td>
+						<td class="a-2">1</td>
+						<td class="a-3">1</td>
+						<td class="a-4">1</td>
+						<td class="a-5">1</td>
+						<td class="a-6">1</td>
+						<td class="a-7">1</td>
+						<td class="a-8">1</td>
+						<td class="a-9">1</td>
+						<td class="a-10">1</td>
+						<td class="a-11">1</td>
+						<td class="a-12">1</td>
+						<td class="a-13">1</td>
+					</tr>
+					<tr>
+						<td class="a-1">1</td>
+						<td class="a-2">1</td>
+						<td class="a-3">1</td>
+						<td class="a-4">1</td>
+						<td class="a-5">1</td>
+						<td class="a-6">1</td>
+						<td class="a-7">1</td>
+						<td class="a-8">1</td>
+						<td class="a-9">1</td>
+						<td class="a-10">1</td>
+						<td class="a-11">1</td>
+						<td class="a-12">1</td>
+						<td class="a-13">1</td>
+					</tr>
+					<tr>
+						<td class="a-1">1</td>
+						<td class="a-2">1</td>
+						<td class="a-3">1</td>
+						<td class="a-4">1</td>
+						<td class="a-5">1</td>
+						<td class="a-6">1</td>
+						<td class="a-7">1</td>
+						<td class="a-8">1</td>
+						<td class="a-9">1</td>
+						<td class="a-10">1</td>
+						<td class="a-11">1</td>
+						<td class="a-12">1</td>
+						<td class="a-13">1</td>
+					</tr>
+					<tr>
+						<td class="a-1">1</td>
+						<td class="a-2">1</td>
+						<td class="a-3">1</td>
+						<td class="a-4">1</td>
+						<td class="a-5">1</td>
+						<td class="a-6">1</td>
+						<td class="a-7">1</td>
+						<td class="a-8">1</td>
+						<td class="a-9">1</td>
+						<td class="a-10">1</td>
+						<td class="a-11">1</td>
+						<td class="a-12">1</td>
+						<td class="a-13">1</td>
+					</tr>
+					<tr>
+						<td class="a-1">1</td>
+						<td class="a-2">1</td>
+						<td class="a-3">1</td>
+						<td class="a-4">1</td>
+						<td class="a-5">1</td>
+						<td class="a-6">1</td>
+						<td class="a-7">1</td>
+						<td class="a-8">1</td>
+						<td class="a-9">1</td>
+						<td class="a-10">1</td>
+						<td class="a-11">1</td>
+						<td class="a-12">1</td>
+						<td class="a-13">1</td>
+					</tr>
+					<tr>
+						<td class="a-1">1</td>
+						<td class="a-2">1</td>
+						<td class="a-3">1</td>
+						<td class="a-4">1</td>
+						<td class="a-5">1</td>
+						<td class="a-6">1</td>
+						<td class="a-7">1</td>
+						<td class="a-8">1</td>
+						<td class="a-9">1</td>
+						<td class="a-10">1</td>
+						<td class="a-11">1</td>
+						<td class="a-12">1</td>
+						<td class="a-13">1</td>
+					</tr>
+					<tr>
+						<td class="a-1">1</td>
+						<td class="a-2">1</td>
+						<td class="a-3">1</td>
+						<td class="a-4">1</td>
+						<td class="a-5">1</td>
+						<td class="a-6">1</td>
+						<td class="a-7">1</td>
+						<td class="a-8">1</td>
+						<td class="a-9">1</td>
+						<td class="a-10">1</td>
+						<td class="a-11">1</td>
+						<td class="a-12">1</td>
+						<td class="a-13">1</td>
+					</tr>
+					<tr>
+						<td class="a-1">1</td>
+						<td class="a-2">1</td>
+						<td class="a-3">1</td>
+						<td class="a-4">1</td>
+						<td class="a-5">1</td>
+						<td class="a-6">1</td>
+						<td class="a-7">1</td>
+						<td class="a-8">1</td>
+						<td class="a-9">1</td>
+						<td class="a-10">1</td>
+						<td class="a-11">1</td>
+						<td class="a-12">1</td>
+						<td class="a-13">1</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
