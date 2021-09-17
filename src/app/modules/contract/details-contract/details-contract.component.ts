@@ -101,7 +101,7 @@ export class DetailsContractComponent implements OnInit {
     };
   }
 
-  downloadFile(fileUrl: string) {
-    return this.fileService.downloadFile(fileUrl);
+  downloadFile(fileId: string, fileName: string) {
+    return this.fileService.downloadFile(fileId, fileName);
   }
 }
