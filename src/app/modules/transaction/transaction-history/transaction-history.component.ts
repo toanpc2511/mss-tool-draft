@@ -5,12 +5,21 @@ import {
 	IDataTransfer,
 	TransactionHistoryModalComponent
 } from '../transaction-history-modal/transaction-history-modal.component';
-import { takeUntil } from 'rxjs/operators';
+import { concatMap, takeUntil, tap } from 'rxjs/operators';
 import { IProductType, ProductService } from '../../product/product.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IPaymentMethod, TransactionService } from '../transaction.service';
+import {
+	IEmployees,
+	IPaymentMethod,
+	IStationEployee,
+	ITransaction,
+	TransactionService
+} from '../transaction.service';
+import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
+import { NO_EMIT_EVENT } from '../../../shared/app-constants';
+import { of } from 'rxjs';
 
 @Component({
 	selector: 'app-transaction-history',
@@ -44,8 +53,9 @@ export class TransactionHistoryComponent implements OnInit {
 	listStatus = LIST_STATUS;
 	productTypes: Array<IProductType> = [];
 	paymentMethods: Array<IPaymentMethod> = [];
-	stationEmployee;
-	listEmployees;
+	stationEmployee: Array<IStationEployee> = [];
+	selectedStation: IStationEployee;
+	listEmployees: Array<IEmployees> = [];
 
 	hoveredDate: NgbDate | null = null;
 
@@ -53,12 +63,17 @@ export class TransactionHistoryComponent implements OnInit {
 	endDate: NgbDate | null;
 	firstDayOfMonth: NgbDate | null;
 
+	paginatorState = new PaginatorState();
+	dataSource: Array<ITransaction>;
+	result;
+
 	searchForm: FormGroup;
 	totalLiters: number;
 	totalMoney: number;
 	pointSunoil: number;
 	limitOil: number;
 	limitMoney: number;
+	totalRecord: number;
 
 	constructor(
 		private modalService: NgbModal,
@@ -76,14 +91,47 @@ export class TransactionHistoryComponent implements OnInit {
 		this.startDate = this.firstDayOfMonth;
 		this.endDate = calendar.getToday();
 
-		this.totalLiters = 155555000;
-		this.totalMoney = 88911110;
-		this.pointSunoil = 544200000;
-		this.limitOil = 988121210;
-		this.limitMoney = 55587800;
+		this.init();
+	}
+
+	init() {
+		this.paginatorState.page = 1;
+		this.paginatorState.pageSize = 10;
+		this.paginatorState.pageSizes = [5, 10, 15, 20];
+		this.paginatorState.total = 0;
+
+		this.totalRecord = 0;
+		this.totalLiters = 0;
+		this.totalMoney = 0;
+		this.pointSunoil = 0;
+		this.limitOil = 0;
+		this.limitMoney = 0;
 	}
 
 	ngOnInit(): void {
+		this.getListProductType();
+		this.getPaymentMethods();
+		this.getStationEmployee();
+		this.getAllEmployee();
+
+		this.buildForm();
+		this.onSearch();
+		this.handleStationChange();
+	}
+
+	buildForm() {
+		this.searchForm = this.fb.group({
+			orderCode: [''],
+			category: [''],
+			station: [''],
+			payMethod: [''],
+			employee: [''],
+			phone: [''],
+			userName: ['']
+		});
+	}
+
+	getListProductType() {
 		this.productService
 			.getListProductType()
 			.pipe(takeUntil(this.destroy$))
@@ -91,7 +139,9 @@ export class TransactionHistoryComponent implements OnInit {
 				this.productTypes = res.data;
 				this.cdr.detectChanges();
 			});
+	}
 
+	getPaymentMethods() {
 		this.transactionService
 			.getPaymentMethods()
 			.pipe(takeUntil(this.destroy$))
@@ -99,38 +149,49 @@ export class TransactionHistoryComponent implements OnInit {
 				this.paymentMethods = res.data;
 				this.cdr.detectChanges();
 			});
-
-    this.transactionService
-      .getStationEmployee()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.stationEmployee = res.data;
-        console.log(this.stationEmployee);
-        this.cdr.detectChanges();
-      });
-
-    this.transactionService
-      .getEmployee()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.listEmployees = res.data;
-        console.log( this.listEmployees);
-        this.cdr.detectChanges();
-      });
-
-		this.buildForm();
 	}
 
-	buildForm() {
-		this.searchForm = this.fb.group({
-			code: [null],
-			typeOil: [null],
-			station: [null],
-			payMethod: [null],
-			staff: [null],
-			phone: [null],
-			nameUser: [null]
-		});
+	getStationEmployee() {
+		this.transactionService
+			.getStationEmployee()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((res) => {
+				this.stationEmployee = res.data;
+				this.cdr.detectChanges();
+			});
+	}
+
+	getAllEmployee() {
+		this.transactionService
+			.getAllEmployee()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((res) => {
+				this.listEmployees = res.data;
+				this.cdr.detectChanges();
+			});
+	}
+
+	handleStationChange() {
+		this.searchForm
+			.get('station')
+			.valueChanges.pipe(
+				concatMap((stationName: string) => {
+					this.listEmployees = [];
+					this.searchForm.get('employee').reset('', NO_EMIT_EVENT);
+					if (stationName) {
+						return this.transactionService.getEmployeeStation(stationName);
+					} else {
+						return this.transactionService.getAllEmployee();
+					}
+					return of(null);
+				}),
+				tap((res) => {
+					this.listEmployees = res.data;
+					this.cdr.detectChanges();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
 	}
 
 	onSearch() {
@@ -139,7 +200,29 @@ export class TransactionHistoryComponent implements OnInit {
 		} else {
 			this.searchForm.value.startDate = this.formatDate(this.startDate);
 			this.searchForm.value.endDate = this.formatDate(this.endDate);
-			console.log(this.searchForm.value);
+
+			this.transactionService
+				.searchTransaction(
+					this.paginatorState.page,
+					this.paginatorState.pageSize,
+					this.searchForm.value
+				)
+				.subscribe((res) => {
+					if (res.data) {
+						this.result = res.data;
+						this.dataSource = this.result.data.orderFilterResponses;
+
+						this.totalRecord = this.result.totalRecord;
+						this.totalLiters = this.result.data.orderTotalResponse.totalNumberLiters;
+						this.totalMoney = this.result.data.orderTotalResponse.totalCashPaid;
+						this.pointSunoil = this.result.data.orderTotalResponse.totalAccumulationPointUse;
+						this.limitOil = this.result.data.orderTotalResponse.numberLiters;
+						this.limitMoney = this.result.data.orderTotalResponse.totalBillMoney;
+
+						this.paginatorState.recalculatePaginator(this.result.totalRecord);
+						this.cdr.detectChanges();
+					}
+				});
 		}
 	}
 
@@ -147,6 +230,11 @@ export class TransactionHistoryComponent implements OnInit {
 		this.ngOnInit();
 		this.startDate = this.firstDayOfMonth;
 		this.endDate = this.calendar.getToday();
+	}
+
+	pagingChange($event: IPaginatorState) {
+		this.paginatorState = $event as PaginatorState;
+		this.onSearch();
 	}
 
 	viewModal($event?: Event, data?: IDataTransfer): void {
@@ -160,7 +248,7 @@ export class TransactionHistoryComponent implements OnInit {
 
 		modalRef.componentInstance.data = {
 			title: 'Chi tiết lịch sử đơn hàng',
-			product: data
+			transaction: data
 		};
 	}
 
