@@ -301,10 +301,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			nation: [null],
 			address: [null],
 			religion: [null],
-			identityCardNumber: [
-				null,
-				[TValidators.required, TValidators.pattern(/^[0-9]{12}$/)]
-			],
+			identityCardNumber: [null, [TValidators.required, TValidators.pattern(/^[0-9]{12}$/)]],
 			dateRange: [null],
 			fullAddress: [null],
 			supplyAddress: [],
@@ -465,6 +462,8 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	onSubmit(): void {
 		this.employeeForm.markAllAsTouched();
+		console.log(this.employeeForm);
+
 		if (this.employeeForm.invalid) {
 			return;
 		}
@@ -481,18 +480,24 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 				code: this.selectedPosition.code,
 				departmentType: this.selectedDepartment.departmentType
 			},
-			province: {
-				id: this.selectedProvince.id,
-				name: this.selectedProvince.name
-			},
-			district: {
-				id: this.selectedDistrict.id,
-				name: this.selectedDistrict.name
-			},
-			ward: {
-				id: this.selectedWard.id,
-				name: this.selectedWard.name
-			},
+			province: this.selectedProvince
+				? {
+						id: this.selectedProvince.id,
+						name: this.selectedProvince.name
+				  }
+				: null,
+			district: this.selectedDistrict
+				? {
+						id: this.selectedDistrict.id,
+						name: this.selectedDistrict.name
+				  }
+				: null,
+			ward: this.selectedWard
+				? {
+						id: this.selectedWard.id,
+						name: this.selectedWard.name
+				  }
+				: null,
 			dateOfBirth: convertDateToServer(employeeFormValue.dateOfBirth),
 			dateRange: convertDateToServer(employeeFormValue.dateRange),
 			attachmentRequests: this.filesUploaded.map((f) => f.id),
@@ -532,5 +537,6 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 				this.employeeForm.get('identityCardNumber').setErrors({ existed: true });
 			}
 		}
+		this.cdr.detectChanges();
 	}
 }

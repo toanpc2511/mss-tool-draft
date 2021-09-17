@@ -1,4 +1,4 @@
-import { HttpEventType } from '@angular/common/http';
+import { HttpEventType, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpService } from './http.service';
@@ -26,8 +26,9 @@ export interface IUploadProgress {
 export class FileService {
 	constructor(private http: HttpService) {}
 
-	downloadFile(urlFile: string) {
-		window.open(urlFile, '_blank');
+	downloadFile(fileId: string) {
+		const params = new HttpParams().set('file-id', fileId);
+		this.http.get('files/downloads', { params }).subscribe();
 	}
 
 	uploadFile(fileFormData: FormData, type: EFileType) {

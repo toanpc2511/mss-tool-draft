@@ -26,9 +26,9 @@ export enum EFace {
 export interface IEmployee {
 	code: string;
 	name: string;
-	officeAddress: string;
-	department: string;
-	position: string;
+	stationId: string;
+	department: IDepartment;
+	positions: IPosition;
 }
 
 export interface IDepartment {
@@ -107,27 +107,28 @@ export class EmployeeService {
 			.set('field-sort', sortData?.column || '')
 			.set('direction-sort', sortData?.direction || '')
 			.set('search-text', searchText || '');
-		let fakeData: IEmployee[] = [];
-		for (let i = 0; i < 20; i++) {
-			fakeData = [
-				...fakeData,
-				{
-					code: `NV${i}`,
-					name: `Nhân viên ${i}`,
-					department: `Phòng ban ${i}`,
-					position: `Vị trí ${i}`,
-					officeAddress: `Địa chỉ làm việc ${i}`
-				}
-			];
-		}
-		return of<DataResponse<IEmployee[]>>({
-			data: fakeData,
-			meta: {
-				code: 'SUN-OIL-200',
-				page: 1,
-				total: 20
-			}
-		});
+		// let fakeData: IEmployee[] = [];
+		// for (let i = 0; i < 20; i++) {
+		// 	fakeData = [
+		// 		...fakeData,
+		// 		{
+		// 			code: `NV${i}`,
+		// 			name: `Nhân viên ${i}`,
+		// 			department: `Phòng ban ${i}`,
+		// 			position: `Vị trí ${i}`,
+		// 			officeAddress: `Địa chỉ làm việc ${i}`
+		// 		}
+		// 	];
+		// }
+		// return of<DataResponse<IEmployee[]>>({
+		// 	data: fakeData,
+		// 	meta: {
+		// 		code: 'SUN-OIL-200',
+		// 		page: 1,
+		// 		total: 20
+		// 	}
+		// });
+		return this.http.get<IEmployee>('employees', { params });
 	}
 
 	getAllDepartment() {
@@ -140,7 +141,7 @@ export class EmployeeService {
 	}
 
 	getEmployeeById(employeeId: string) {
-		return this.http.get(`employee/${employeeId}`);
+		return this.http.get(`employees/${employeeId}`);
 	}
 
 	createEmployee(employee: IEmployeeInput) {
@@ -148,10 +149,10 @@ export class EmployeeService {
 	}
 
 	updateEmployee(id: string, user: IEmployeeInput) {
-		return this.http.put(`employee/${id}`, user);
+		return this.http.put(`employees/${id}`, user);
 	}
 
 	deleteEmployee(id: number) {
-		return this.http.delete(`employee/${id}`);
+		return this.http.delete(`employees/${id}`);
 	}
 }
