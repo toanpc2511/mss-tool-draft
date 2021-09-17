@@ -123,6 +123,8 @@ export class ListEmployeeComponent implements OnInit {
 				this.sortData
 			)
 			.subscribe((res) => {
+				console.log(res);
+				
 				this.checkRes(res);
 			});
 	}
