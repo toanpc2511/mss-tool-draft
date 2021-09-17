@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ITransaction } from '../transaction.service';
 
 @Component({
 	selector: 'app-transaction-history-modal',
@@ -8,13 +9,16 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TransactionHistoryModalComponent implements OnInit {
 	@Input() data: IDataTransfer;
-	isData: boolean = true;
+	itemTransaction: ITransaction;
 
 	constructor(public modal: NgbActiveModal) {}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		this.itemTransaction = this.data.transaction;
+	}
 }
 
 export interface IDataTransfer {
 	title: string;
+	transaction: ITransaction;
 }
