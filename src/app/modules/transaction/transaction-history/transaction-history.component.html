@@ -23,9 +23,9 @@
 
 				<div class="col-lg-4">
 					<label>Loại nhiên liệu</label>
-					<select class="form-control form-control-solid" formControlName="category">
+					<select class="form-control form-control-solid" formControlName="product">
 						<option [value]="''">Tất cả</option>
-						<option *ngFor="let item of productTypes" [value]="item.id">{{item.name}}</option>
+						<option *ngFor="let item of dataProduct" [value]="item.name">{{item.name}}</option>
 					</select>
 				</div>
 
@@ -142,23 +142,23 @@
 			<p class="item">Tổng số <strong>{{totalRecord}} giao dịch</strong></p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Tổng lít:
-				<strong>{{totalLiters.toLocaleString("en-US")}} L</strong>
+				<strong>{{totalLiters?.toLocaleString("en-US")}} L</strong>
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Tiền mặt:
-				<strong>{{totalMoney.toLocaleString("en-US")}} VNĐ</strong>
+				<strong>{{totalMoney?.toLocaleString("en-US")}} VNĐ</strong>
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Điểm sunoil:
-				<strong>{{pointSunoil.toLocaleString("en-US")}} VNĐ</strong>
+				<strong>{{pointSunoil?.toLocaleString("en-US")}} VNĐ</strong>
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Hạn mức nhiên liệu:
-				<strong>{{limitOil.toLocaleString("en-US")}} VNĐ</strong>
+				<strong>{{limitOil?.toLocaleString("en-US")}} VNĐ</strong>
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Hạn mức tiền:
-				<strong>{{totalPaymentMoney.toLocaleString("en-US")}} VNĐ</strong>
+				<strong>{{totalPaymentMoney?.toLocaleString("en-US")}} VNĐ</strong>
 			</p>
 		</div>
 	</div>
