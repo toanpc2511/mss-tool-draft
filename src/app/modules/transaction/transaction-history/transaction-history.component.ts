@@ -5,7 +5,7 @@ import {
 	TransactionHistoryModalComponent
 } from '../transaction-history-modal/transaction-history-modal.component';
 import { concatMap, takeUntil, tap } from 'rxjs/operators';
-import { IProductType, ProductService } from '../../product/product.service';
+import { IProduct, ProductService } from '../../product/product.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -28,7 +28,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 	providers: [DestroyService]
 })
 export class TransactionHistoryComponent implements OnInit {
-	productTypes: Array<IProductType> = [];
+	dataProduct: Array<IProduct> = [];
 	paymentMethods: Array<IPaymentMethod> = [];
 	stationEmployee: Array<IStationEployee> = [];
 	listEmployees: Array<IEmployees> = [];
@@ -49,6 +49,7 @@ export class TransactionHistoryComponent implements OnInit {
 	totalRecord: number;
 
 	dataFileExcel: any;
+  categoryId: number = 0;
 
 	constructor(
 		private modalService: NgbModal,
@@ -97,7 +98,7 @@ export class TransactionHistoryComponent implements OnInit {
 	buildForm() {
 		this.searchForm = this.fb.group({
 			orderCode: [''],
-			category: [''],
+			product: [''],
 			station: [''],
 			payMethod: [''],
 			employee: [''],
@@ -108,10 +109,10 @@ export class TransactionHistoryComponent implements OnInit {
 
 	getListProductType() {
 		this.productService
-			.getListProductType()
+			.getListProduct(this.categoryId)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
-				this.productTypes = res.data;
+				this.dataProduct = res.data;
 				this.cdr.detectChanges();
 			});
 	}
@@ -214,7 +215,7 @@ export class TransactionHistoryComponent implements OnInit {
 
 		const params = new HttpParams()
 			.set('order-code', data.orderCode)
-			.set('category-id', data.category)
+			.set('product-name', data.product)
 			.set('station-name', data.station)
 			.set('payment-method', data.payMethod)
 			.set('employee-id', data.employee)

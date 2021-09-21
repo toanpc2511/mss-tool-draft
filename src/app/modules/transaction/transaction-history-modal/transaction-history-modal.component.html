@@ -164,10 +164,10 @@
 						<p class="pt-2">{{itemTransaction.numberVariableReal}}</p>
 					</div>
 
-					<div class="col-lg-6 text-center info-vihicle">
+					<div class="col-lg-6 text-center info-vihicle" *ngIf='itemTransaction.imageSpeedometer !== null'>
 						<p class="py-2">Công tơ mét</p>
 						<div class="card-images">
-							<img src="{{itemTransaction.imageSpeedometer}}" alt="" />
+							<img src="{{itemTransaction?.imageSpeedometer}}" alt="" />
 						</div>
 						<p class="pt-2">{{itemTransaction.speedometer?.toLocaleString('en-US')}}</p>
 					</div>

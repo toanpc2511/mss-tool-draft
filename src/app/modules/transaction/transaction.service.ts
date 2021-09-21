@@ -93,7 +93,7 @@ export class TransactionService {
 			.set('page', page.toString())
 			.set('size', size.toString())
 			.set('order-code', data.orderCode)
-			.set('category-id', data.category)
+			.set('product-name', data.product)
 			.set('station-name', data.station)
 			.set('payment-method', data.payMethod)
 			.set('employee-id', data.employee)
