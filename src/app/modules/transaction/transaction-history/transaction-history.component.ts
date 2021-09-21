@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { LIST_STATUS } from '../../../shared/data-enum/list-status';
-import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
 	IDataTransfer,
 	TransactionHistoryModalComponent
@@ -20,44 +19,19 @@ import {
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { NO_EMIT_EVENT } from '../../../shared/app-constants';
 import { of } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
 	selector: 'app-transaction-history',
 	templateUrl: './transaction-history.component.html',
 	styleUrls: ['./transaction-history.component.scss'],
-	providers: [DestroyService],
-	styles: [
-		`
-			.custom-day {
-				text-align: center;
-				padding: 0.185rem 0.25rem;
-				display: inline-block;
-				height: 2rem;
-				width: 2rem;
-			}
-			.custom-day.focused {
-				background-color: #e6e6e6;
-			}
-			.custom-day.range,
-			.custom-day:hover {
-				background-color: rgb(2, 117, 216);
-				color: white;
-			}
-			.custom-day.faded {
-				background-color: rgba(2, 117, 216, 0.5);
-			}
-		`
-	]
+	providers: [DestroyService]
 })
 export class TransactionHistoryComponent implements OnInit {
-	listStatus = LIST_STATUS;
 	productTypes: Array<IProductType> = [];
 	paymentMethods: Array<IPaymentMethod> = [];
 	stationEmployee: Array<IStationEployee> = [];
-	selectedStation: IStationEployee;
 	listEmployees: Array<IEmployees> = [];
-
-	hoveredDate: NgbDate | null = null;
 
 	startDate: NgbDate | null;
 	endDate: NgbDate | null;
@@ -65,15 +39,16 @@ export class TransactionHistoryComponent implements OnInit {
 
 	paginatorState = new PaginatorState();
 	dataSource: Array<ITransaction>;
-	result;
 
 	searchForm: FormGroup;
 	totalLiters: number;
 	totalMoney: number;
 	pointSunoil: number;
 	limitOil: number;
-	limitMoney: number;
+	totalPaymentMoney: number;
 	totalRecord: number;
+
+	dataFileExcel: any;
 
 	constructor(
 		private modalService: NgbModal,
@@ -82,9 +57,9 @@ export class TransactionHistoryComponent implements OnInit {
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private calendar: NgbCalendar,
-		public formatter: NgbDateParserFormatter,
 		private toastr: ToastrService,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+		private http: HttpClient
 	) {
 		this.firstDayOfMonth = calendar.getToday();
 		this.firstDayOfMonth.day = 1;
@@ -105,7 +80,7 @@ export class TransactionHistoryComponent implements OnInit {
 		this.totalMoney = 0;
 		this.pointSunoil = 0;
 		this.limitOil = 0;
-		this.limitMoney = 0;
+		this.totalPaymentMoney = 0;
 	}
 
 	ngOnInit(): void {
@@ -195,41 +170,81 @@ export class TransactionHistoryComponent implements OnInit {
 	}
 
 	onSearch() {
-		if (this.endDate === null) {
-			this.toastr.error('Thời gian đến ngày không được để trống');
-		} else {
-			this.searchForm.value.startDate = this.formatDate(this.startDate);
-			this.searchForm.value.endDate = this.formatDate(this.endDate);
+		this.searchForm.value.startDate = this.formatDate(this.startDate, 'yyyy-mm-dd');
+		this.searchForm.value.endDate = this.formatDate(this.endDate, 'yyyy-mm-dd');
 
-			this.transactionService
-				.searchTransaction(
-					this.paginatorState.page,
-					this.paginatorState.pageSize,
-					this.searchForm.value
-				)
-				.subscribe((res) => {
-					if (res.data) {
-						this.result = res.data;
-						this.dataSource = this.result.data.orderFilterResponses;
+		this.transactionService
+			.searchTransaction(
+				this.paginatorState.page,
+				this.paginatorState.pageSize,
+				this.searchForm.value
+			)
+			.subscribe((res) => {
+				if (res.data) {
+					this.dataSource = res.data;
+					if (this.dataSource.length > 0) {
+						this.exportFileExcel();
 
-						this.totalRecord = this.result.totalRecord;
-						this.totalLiters = this.result.data.orderTotalResponse.totalNumberLiters;
-						this.totalMoney = this.result.data.orderTotalResponse.totalCashPaid;
-						this.pointSunoil = this.result.data.orderTotalResponse.totalAccumulationPointUse;
-						this.limitOil = this.result.data.orderTotalResponse.numberLiters;
-						this.limitMoney = this.result.data.orderTotalResponse.totalBillMoney;
-
-						this.paginatorState.recalculatePaginator(this.result.totalRecord);
-						this.cdr.detectChanges();
+						this.totalLiters = this.dataSource[0].orderTotalResponse.totalNumberLiters;
+						this.totalMoney = this.dataSource[0].orderTotalResponse.totalCashPaid;
+						this.pointSunoil = this.dataSource[0].orderTotalResponse.totalAccumulationPointUse;
+						this.limitOil = this.dataSource[0].orderTotalResponse.numberLiters;
+						this.totalPaymentMoney = this.dataSource[0].orderTotalResponse.totalPaymentMoney;
+					} else {
+						this.totalRecord = 0;
+						this.totalLiters = 0;
+						this.totalMoney = 0;
+						this.pointSunoil = 0;
+						this.limitOil = 0;
+						this.totalPaymentMoney = 0;
 					}
-				});
-		}
+
+					this.totalRecord = res.meta.total;
+					this.paginatorState.recalculatePaginator(res.meta.total);
+					this.cdr.detectChanges();
+				}
+			});
+	}
+
+	exportFileExcel() {
+		this.searchForm.value.startDate = this.formatDate(this.startDate, 'yyyy-mm-dd');
+		this.searchForm.value.endDate = this.formatDate(this.endDate, 'yyyy-mm-dd');
+
+		const data = this.searchForm.value;
+
+		const params = new HttpParams()
+			.set('order-code', data.orderCode)
+			.set('category-id', data.category)
+			.set('station-name', data.station)
+			.set('payment-method', data.payMethod)
+			.set('employee-id', data.employee)
+			.set('phone', data.phone)
+			.set('start-at', data.startDate)
+			.set('end-at', data.endDate)
+			.set('user-name', data.userName);
+
+		this.http
+			.get('https://sunoil-management.firecloud.live/management/orders/filters/excels', { params })
+			.subscribe((res) => {
+				if (res) {
+					this.dataFileExcel = res;
+					this.cdr.detectChanges();
+				}
+			});
 	}
 
 	onReset() {
 		this.ngOnInit();
 		this.startDate = this.firstDayOfMonth;
 		this.endDate = this.calendar.getToday();
+	}
+
+	onSelectStartAt(date: NgbDate) {
+		this.startDate = date;
+	}
+
+	onSelectEndAt(date: NgbDate) {
+		this.endDate = date;
 	}
 
 	pagingChange($event: IPaginatorState) {
@@ -252,51 +267,17 @@ export class TransactionHistoryComponent implements OnInit {
 		};
 	}
 
-	onDateSelection(date: NgbDate) {
-		if (!this.startDate && !this.endDate) {
-			this.startDate = date;
-		} else if (this.startDate && !this.endDate && date && date.after(this.startDate)) {
-			this.endDate = date;
-		} else {
-			this.endDate = null;
-			this.startDate = date;
-		}
-	}
-
-	isHovered(date: NgbDate) {
-		return (
-			this.startDate &&
-			!this.endDate &&
-			this.hoveredDate &&
-			date.after(this.startDate) &&
-			date.before(this.hoveredDate)
-		);
-	}
-
-	isInside(date: NgbDate) {
-		return this.endDate && date.after(this.startDate) && date.before(this.endDate);
-	}
-
-	isRange(date: NgbDate) {
-		return (
-			date.equals(this.startDate) ||
-			(this.endDate && date.equals(this.endDate)) ||
-			this.isInside(date) ||
-			this.isHovered(date)
-		);
-	}
-
-	validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
-		const parsed = this.formatter.parse(input);
-		return parsed && this.calendar.isValid(NgbDate.from(parsed))
-			? NgbDate.from(parsed)
-			: currentValue;
-	}
-
-	formatDate(date: NgbDate) {
+	formatDate(date: NgbDate, type: string) {
 		const day = date.day <= 9 ? `0${date.day}` : date.day.toString();
 		const month = date.month <= 9 ? `0${date.month}` : date.month.toString();
 		const year = date.year.toString();
-		return year + '/' + month + '/' + day;
+
+		if (type === 'dd/mm/yyyy') {
+			return day + '/' + month + '/' + year;
+		}
+
+		if (type === 'yyyy-mm-dd') {
+			return year + '-' + month + '-' + day;
+		}
 	}
 }

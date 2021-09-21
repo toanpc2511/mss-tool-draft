@@ -72,14 +72,21 @@
 					<div class="row pb-3">
 						<div class="col-lg-7">Số lít</div>
 						<div class="col-lg-5">
-							{{itemTransaction.totalNumberLiters?.toLocaleString('en-US') || 0}} L
+							{{itemTransaction.numberLiters?.toLocaleString('en-US') || 0}} L
 						</div>
 					</div>
 
-					<div class="row py-3">
+					<div class="row py-3" *ngIf="itemTransaction.paymentMethodName !== 'Hạn mức nhiên liệu'">
 						<div class="col-lg-7">Tổng tiền đã thanh toán</div>
 						<div class="col-lg-5">
-							{{itemTransaction.totalMoney?.toLocaleString('en-US') || 0}} VNĐ
+							{{itemTransaction.actualityMoney?.toLocaleString('en-US') || 0}} VNĐ
+						</div>
+					</div>
+
+					<div class="row py-3" *ngIf="itemTransaction.paymentMethodName === 'Hạn mức nhiên liệu'">
+						<div class="col-lg-7">Tổng lít đã thanh toán</div>
+						<div class="col-lg-5">
+							{{itemTransaction.numberLiters?.toLocaleString('en-US') || 0}} L
 						</div>
 					</div>
 				</div>
@@ -93,18 +100,31 @@
 				<div class="body-card px-5">
 					<div class="row pb-3">
 						<div class="col-lg-7">Tiền mặt</div>
-						<div class="col-lg-5">{{itemTransaction.billMoney?.toLocaleString('en-US')}} VNĐ</div>
+						<div class="col-lg-5">
+							{{itemTransaction.cashPaid?.toLocaleString('en-US') || 0}} VNĐ
+						</div>
 					</div>
 
 					<div class="row py-3">
 						<div class="col-lg-7">Hạn mức</div>
-						<div class="col-lg-5">{{itemTransaction.cashLimit?.toLocaleString('en-US')}}</div>
+						<div
+							class="col-lg-5"
+							*ngIf="itemTransaction.paymentMethodName !== 'Hạn mức nhiên liệu'"
+						>
+							{{itemTransaction.paymentLimit?.toLocaleString('en-US')}} VNĐ
+						</div>
+						<div
+							class="col-lg-5"
+							*ngIf="itemTransaction.paymentMethodName === 'Hạn mức nhiên liệu'"
+						>
+							{{itemTransaction.numberLiters?.toLocaleString('en-US')}} L
+						</div>
 					</div>
 
 					<div class="row py-3" *ngIf="itemTransaction.paymentMethodName !== 'Hạn mức nhiên liệu'">
 						<div class="col-lg-7">Điểm SunOil</div>
 						<div class="col-lg-5">
-							{{itemTransaction.accumulationPointUse?.toLocaleString('en-US')}}
+							{{itemTransaction.accumulationPointUse?.toLocaleString('en-US')}} VNĐ
 						</div>
 					</div>
 				</div>
