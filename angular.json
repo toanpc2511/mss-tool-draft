@@ -44,7 +44,8 @@
               "snakecase-keys",
               "camelize",
               "ng2-trim-directive",
-              "angular2-text-mask"
+              "angular2-text-mask",
+              "file-saver"
             ],
             "index": "src/index.html",
             "main": "src/main.ts",

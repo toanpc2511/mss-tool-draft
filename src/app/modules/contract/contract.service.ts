@@ -143,6 +143,7 @@ export interface IProperties {
 export interface ICustomerInfo {
 	id: number;
 	name: string;
+	idRank: string;
 	address: string;
 	enterpriseName: string;
 	phone: string;
