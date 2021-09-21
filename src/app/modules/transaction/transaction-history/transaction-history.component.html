@@ -40,39 +40,22 @@
 
 			<div class="form-group row">
 				<div class="col-lg-4">
-					<label>Thời gian</label>
+					<label>Từ ngày</label>
+
 					<div class="input-group">
 						<input
 							class="form-control form-control-solid"
-							placeholder="DD/MM/YYYY - DD/MM/YYYY"
+							placeholder="DD/MM/YYYY"
 							ngbDatepicker
 							readonly
-							#effectEndDate="ngbDatepicker"
-							[autoClose]="'outside'"
-							(dateSelect)="onDateSelection($event)"
-							[displayMonths]="2"
-							[dayTemplate]="t"
-							outsideDays="hidden"
-							[startDate]="startDate!"
-							[value]='formatter.format(startDate) + " - " + formatter.format(endDate)'
-							(click)="effectEndDate.toggle()"
+							#startAt="ngbDatepicker"
+							[value]='formatDate(startDate, "dd/mm/yyyy")'
+							(dateSelect)="onSelectStartAt($event)"
 						/>
-						<ng-template #t let-date let-focused="focused">
-							<span
-								class="custom-day"
-								[class.focused]="focused"
-								[class.range]="isRange(date)"
-								[class.faded]="isHovered(date) || isInside(date)"
-								(mouseenter)="hoveredDate = date"
-								(mouseleave)="hoveredDate = null"
-							>
-								{{ date.day }}
-							</span>
-						</ng-template>
 						<div class="input-group-append">
 							<button
 								class="btn btn-outline-secondary fa fa-calendar-alt"
-								(click)="effectEndDate.toggle()"
+								(click)="startAt.toggle()"
 								type="button"
 							></button>
 						</div>
@@ -80,11 +63,26 @@
 				</div>
 
 				<div class="col-lg-4">
-					<label>Hình thức thanh toán</label>
-					<select class="form-control form-control-solid" formControlName="payMethod">
-						<option [value]="''">Tất cả</option>
-						<option *ngFor="let item of paymentMethods" [value]="item.code">{{ item.name }}</option>
-					</select>
+					<label>Đến ngày</label>
+
+					<div class="input-group">
+						<input
+							class="form-control form-control-solid"
+							placeholder="DD/MM/YYYY"
+							ngbDatepicker
+							readonly
+							#endAt="ngbDatepicker"
+							[value]='formatDate(endDate, "dd/mm/yyyy")'
+							(dateSelect)="onSelectEndAt($event)"
+						/>
+						<div class="input-group-append">
+							<button
+								class="btn btn-outline-secondary fa fa-calendar-alt"
+								(click)="endAt.toggle()"
+								type="button"
+							></button>
+						</div>
+					</div>
 				</div>
 
 				<div class="col-lg-4">
@@ -97,6 +95,14 @@
 			</div>
 
 			<div class="form-group row">
+				<div class="col-lg-4">
+					<label>Hình thức thanh toán</label>
+					<select class="form-control form-control-solid" formControlName="payMethod">
+						<option [value]="''">Tất cả</option>
+						<option *ngFor="let item of paymentMethods" [value]="item.code">{{ item.name }}</option>
+					</select>
+				</div>
+
 				<div class="col-lg-4">
 					<label>Số điện thoại khách hàng</label>
 					<input
@@ -152,7 +158,7 @@
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Hạn mức tiền:
-				<strong>{{limitMoney.toLocaleString("en-US")}} VNĐ</strong>
+				<strong>{{totalPaymentMoney.toLocaleString("en-US")}} VNĐ</strong>
 			</p>
 		</div>
 	</div>
@@ -164,8 +170,10 @@
 			<h3 class="card-label">Danh sách giao dịch</h3>
 		</div>
 
-		<div class="card-toolbar row">
-			<button type="button" class="btn btn-primary btn-def">Xuất file</button>
+		<div class="card-toolbar row" *ngIf="totalRecord > 0">
+			<a href="{{dataFileExcel?.data}}">
+				<button type="button" class="btn btn-primary btn-def">Xuất file</button>
+			</a>
 		</div>
 	</div>
 
@@ -205,9 +213,9 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.createdAt | date: 'dd/MM/yyyy'"
+								[ngbTooltip]="item.createdAt | date: 'dd/MM/yyyy - hh:mm'"
 							>
-								{{ item.createdAt | date: 'dd/MM/yyyy' }}
+								{{ item.createdAt | date: 'dd/MM/yyyy - hh:mm' }}
 							</p>
 						</td>
 
@@ -281,9 +289,9 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.totalMoney?.toLocaleString('en-US')|| 0"
+								[ngbTooltip]="item.cashPaid?.toLocaleString('en-US')|| 0"
 							>
-								{{ item.totalMoney?.toLocaleString('en-US') || 0}}
+								{{ item.cashPaid?.toLocaleString('en-US') || 0}}
 							</p>
 						</td>
 
@@ -332,9 +340,9 @@
 								*ngIf='item.paymentMethodName !== "Hạn mức nhiên liệu"'
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.billMoney?.toLocaleString('en-US') || 0"
+								[ngbTooltip]="item.paymentLimit?.toLocaleString('en-US') || 0"
 							>
-								{{ item.billMoney?.toLocaleString('en-US') || 0 }}
+								{{ item.paymentLimit?.toLocaleString('en-US') || 0 }}
 							</p>
 
 							<p

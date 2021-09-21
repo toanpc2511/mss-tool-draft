@@ -25,6 +25,7 @@ export interface IEmployees {
 export interface ITransaction {
 	accumulationPointReceive: number;
 	accumulationPointUse: number;
+	actualityMoney: number;
 	billMoney: number;
 	cashLimit: number;
 	cashPaid: number;
@@ -37,6 +38,15 @@ export interface ITransaction {
 	numberLiters: number;
 	numberVariable: [string];
 	numberVariableReal: string;
+	orderTotalResponse: {
+		numberLiters: number;
+		totalAccumulationPointUse: number;
+		totalCashPaid: number;
+		totalNumberLiters: number;
+		totalOrder: number;
+		totalPaymentMoney: number;
+	};
+	paymentLimit: number;
 	paymentMethodName: string;
 	phone: string;
 	price: number;
@@ -46,7 +56,6 @@ export interface ITransaction {
 	speedometer: number;
 	stationName: string;
 	takeReceipt: boolean;
-	totalMoney: number;
 	totalNumberLiters: number;
 	validLicensePlate: boolean;
 }
@@ -74,8 +83,8 @@ export class TransactionService {
 
 	// Lấy ds nhân viên theo trạm
 	getEmployeeStation(stationName: string) {
-		const params = new HttpParams().set('nane-station', stationName);
-		return this.http.get(`gas-stations/employee`);
+		const params = new HttpParams().set('name-station', stationName);
+		return this.http.get(`gas-stations/employee`, { params });
 	}
 
 	// Tìm kiếm giao dịch
@@ -86,11 +95,11 @@ export class TransactionService {
 			.set('order-code', data.orderCode)
 			.set('category-id', data.category)
 			.set('station-name', data.station)
-			.set('start-at', data.startDate)
-			.set('end-at', data.endDate)
 			.set('payment-method', data.payMethod)
 			.set('employee-id', data.employee)
 			.set('phone', data.phone)
+			.set('start-at', data.startDate)
+			.set('end-at', data.endDate)
 			.set('user-name', data.userName);
 
 		return this.http.get<Array<ITransaction>>('orders/filters', { params });
