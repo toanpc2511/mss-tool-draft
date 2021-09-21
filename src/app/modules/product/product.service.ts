@@ -87,9 +87,10 @@ export class ProductService {
 		return this.http.put(`products/oils/${id}`, data);
 	}
 
-	getProductInfo(productId: number, areaProduct: string) {
+	getProductInfo(productId: number, rankId: string, areaProduct: string) {
 		const params = new HttpParams()
 			.set('product-id', productId.toString())
+			.set('rank-id', rankId)
 			.set('area-product', areaProduct);
 		return this.http.get<IProductInfo>('area-products', { params });
 	}
