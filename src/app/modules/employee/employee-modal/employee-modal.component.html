@@ -16,7 +16,7 @@
 							/>
 							<span *ngIf="!avatarImage?.url" class="fa fa-plus fa-2x plus-icon"></span>
 						</div>
-						<input hidden type="file" #avatarFile (change)="addImage($event)" />
+						<input hidden type="file" accept="image/*" #avatarFile (change)="addImage($event)" />
 						<span class="mt-8">Ảnh hồ sơ</span>
 					</div>
 					<div class="col-lg-9 row">
@@ -373,7 +373,13 @@
 					<div class="cmnd-title">
 						<label class="mr-10 form-label">CMND/CCCD(Mặt trước)</label>
 					</div>
-					<input hidden type="file" #cmndFront (change)="addImage($event, eFace.FRONT)" />
+					<input
+						hidden
+						type="file"
+						accept="image/*"
+						#cmndFront
+						(change)="addImage($event, eFace.FRONT)"
+					/>
 					<img
 						alt="CMND/CCCD(Mặt trước)"
 						class="cmnd-placeholder"
@@ -386,7 +392,13 @@
 					<div class="cmnd-title">
 						<label class="mr-10 form-label">CMND/CCCD(Mặt sau)</label>
 					</div>
-					<input hidden type="file" #cmndBack (change)="addImage($event, eFace.BACK)" />
+					<input
+						hidden
+						type="file"
+						accept="image/*"
+						#cmndBack
+						(change)="addImage($event, eFace.BACK)"
+					/>
 					<img
 						alt="CMND/CCCD(Mặt sau)"
 						class="cmnd-placeholder"

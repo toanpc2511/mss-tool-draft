@@ -118,6 +118,10 @@ export interface IEmployeeDetail {
 		code: string;
 		departmentType: string;
 	};
+	stationList: {
+		id: number;
+		name: string;
+	}[];
 	accountId: number;
 	nation: string;
 	religion: string;

@@ -7,7 +7,9 @@ import { ToastrService } from 'ngx-toastr';
 import { combineLatest, Observable, of } from 'rxjs';
 import {
 	concatMap,
-	debounceTime, pluck,
+	debounceTime,
+	filter,
+	pluck,
 	startWith,
 	switchMap,
 	takeUntil,
@@ -133,6 +135,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		this.activeRoute.params
 			.pipe(
 				pluck('id'),
+				filter((id) => !!id),
 				switchMap((id) => {
 					this.employeeId = id;
 					if (this.employeeId) {
@@ -152,6 +155,8 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	patchUpdateValueToForm(data: IEmployeeDetail) {
 		this.employeeForm.patchValue(data, NO_EMIT_EVENT);
+
+		this.employeeForm.get('stationIds').patchValue(data.stationList?.map((s) => s.id));
 		this.employeeForm
 			.get('dateOfBirth')
 			.patchValue(convertDateToDisplay(data.dateOfBirth), NO_EMIT_EVENT);
