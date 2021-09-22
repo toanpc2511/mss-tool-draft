@@ -20,6 +20,18 @@
 						<span class="mt-8">Ảnh hồ sơ</span>
 					</div>
 					<div class="col-lg-9 row">
+						<div class="col-lg-6" *ngIf="isUpdate">
+							<label class="form-label required">Mã nhân viên</label>
+							<input
+								class="form-control form-control-lg form-control-solid"
+								placeholder="Nhập họ và tên"
+								formControlName="code"
+								trim="blur"
+								maxlength="99"
+								disabled
+							/>
+						</div>
+
 						<div class="col-lg-6">
 							<label class="form-label required">Họ và tên</label>
 							<input
@@ -37,7 +49,7 @@
 							></app-validate>
 						</div>
 
-						<div class="col-lg-6">
+						<div class="col-lg-6" [class.mt-8]="isUpdate">
 							<label class="form-label required">Số điện thoại</label>
 							<input
 								class="form-control form-control-lg form-control-solid"

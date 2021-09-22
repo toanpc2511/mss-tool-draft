@@ -154,6 +154,8 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	}
 
 	patchUpdateValueToForm(data: IEmployeeDetail) {
+		console.log(data.code);
+		
 		this.employeeForm.patchValue(data, NO_EMIT_EVENT);
 
 		this.employeeForm.get('stationIds').patchValue(data.stationList?.map((s) => s.id));
@@ -296,6 +298,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	buildForm(): void {
 		this.employeeForm = this.fb.group({
+			code: [null],
 			name: [null, TValidators.required],
 			dateOfBirth: [null],
 			sex: [null],
