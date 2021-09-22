@@ -1,12 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IFile } from 'src/app/shared/services/file.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { SortState } from 'src/app/_metronic/shared/crud-table';
-import { IDistrict, IProvince, IWard } from '../gas-station/gas-station.service';
 
 export enum EMaritalStatus {
 	MARRIED = 'MARRIED',
@@ -153,13 +149,23 @@ export interface IEmployeeDetail {
 export class EmployeeService {
 	constructor(private http: HttpService) {}
 
-	getEmployees(page: number, size: number, searchText: string, sortData: SortState) {
+	getEmployees(
+		page: number,
+		size: number,
+		searchDepartmentId: string,
+		searchPositionId: string,
+		searchText: string,
+		sortData: SortState
+	) {
 		const params = new HttpParams()
 			.set('page', page.toString())
 			.set('size', size.toString())
+			.set('department-id', searchDepartmentId)
+			.set('positions-id', searchPositionId)
 			.set('field-sort', sortData?.column || '')
 			.set('direction-sort', sortData?.direction || '')
-			.set('search-text', searchText || '');
+			.set('search-text', searchText || '')
+			.set('callApiType', 'background');
 		return this.http.get<IEmployee>('employees', { params });
 	}
 

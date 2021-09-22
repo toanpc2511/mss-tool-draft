@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { merge } from 'rxjs';
 import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { NO_EMIT_EVENT } from 'src/app/shared/app-constants';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
@@ -11,8 +12,7 @@ import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interfac
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { IPaginatorState, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
-import { EmployeeModalComponent } from '../employee-modal/employee-modal.component';
-import { IEmployee, EmployeeService, IDepartment, IPosition } from '../employee.service';
+import { EmployeeService, IDepartment, IEmployee, IPosition } from '../employee.service';
 
 @Component({
 	selector: 'app-list-employee',
@@ -89,16 +89,15 @@ export class ListEmployeeComponent implements OnInit {
 		this.handleSelectDepartment();
 
 		// Filter
-		this.searchFormControl.valueChanges
+		const searchFormControl$ = this.searchFormControl.valueChanges.pipe(takeUntil(this.destroy$));
+		const departmentControl$ = this.departmentControl.valueChanges.pipe(takeUntil(this.destroy$));
+		const positionControl$ = this.positionControl.valueChanges.pipe(takeUntil(this.destroy$));
+
+		merge(searchFormControl$, departmentControl$, positionControl$)
 			.pipe(
 				debounceTime(400),
 				switchMap(() => {
-					return this.employeeService.getEmployees(
-						this.paginatorState.page,
-						this.paginatorState.pageSize,
-						this.searchFormControl.value,
-						this.sortData
-					);
+					return this.getByCondition();
 				}),
 				tap((res) => {
 					this.checkRes(res);
@@ -108,6 +107,17 @@ export class ListEmployeeComponent implements OnInit {
 			.subscribe();
 	}
 
+	getByCondition() {
+		return this.employeeService.getEmployees(
+			this.paginatorState.page,
+			this.paginatorState.pageSize,
+			this.departmentControl.value || '',
+			this.positionControl.value || '',
+			this.searchFormControl.value,
+			this.sortData
+		);
+	}
+
 	checkRes(res) {
 		this.dataSource = res.data;
 		this.paginatorState.recalculatePaginator(res.meta.total);
@@ -115,18 +125,9 @@ export class ListEmployeeComponent implements OnInit {
 	}
 
 	getEmployees() {
-		this.employeeService
-			.getEmployees(
-				this.paginatorState.page,
-				this.paginatorState.pageSize,
-				this.searchFormControl.value,
-				this.sortData
-			)
-			.subscribe((res) => {
-				console.log(res);
-				
-				this.checkRes(res);
-			});
+		this.getByCondition().subscribe((res) => {
+			this.checkRes(res);
+		});
 	}
 
 	sort(column: string) {
