@@ -24,6 +24,7 @@ export enum EFace {
 }
 
 export interface IEmployee {
+	id: number;
 	code: string;
 	name: string;
 	stationId: string;
@@ -94,6 +95,54 @@ export interface IEmployeeInput {
 	attachmentRequests: number[];
 }
 
+export interface IEmployeeDetail {
+	id: number;
+	avatar: IImage;
+	code: string;
+	name: string;
+	dateOfBirth: string;
+	sex: ESex;
+	phone: string;
+	email: string;
+	department: {
+		id: number;
+		name: string;
+		type: string;
+		code: string;
+		departmentType: string;
+	};
+	positions: {
+		id: number;
+		name: string;
+		type: string;
+		code: string;
+		departmentType: string;
+	};
+	accountId: number;
+	nation: string;
+	religion: string;
+	address: string;
+	identityCardNumber: string;
+	dateRange: string;
+	fullAddress: string;
+	supplyAddress: string;
+	province: {
+		id: number;
+		name: string;
+	};
+	district: {
+		id: number;
+		name: string;
+	};
+	ward: {
+		id: number;
+		name: string;
+	};
+	maritalStatus: EMaritalStatus;
+	credentialImages: IImage[];
+	attachment: IFile[];
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -107,27 +156,6 @@ export class EmployeeService {
 			.set('field-sort', sortData?.column || '')
 			.set('direction-sort', sortData?.direction || '')
 			.set('search-text', searchText || '');
-		// let fakeData: IEmployee[] = [];
-		// for (let i = 0; i < 20; i++) {
-		// 	fakeData = [
-		// 		...fakeData,
-		// 		{
-		// 			code: `NV${i}`,
-		// 			name: `Nhân viên ${i}`,
-		// 			department: `Phòng ban ${i}`,
-		// 			position: `Vị trí ${i}`,
-		// 			officeAddress: `Địa chỉ làm việc ${i}`
-		// 		}
-		// 	];
-		// }
-		// return of<DataResponse<IEmployee[]>>({
-		// 	data: fakeData,
-		// 	meta: {
-		// 		code: 'SUN-OIL-200',
-		// 		page: 1,
-		// 		total: 20
-		// 	}
-		// });
 		return this.http.get<IEmployee>('employees', { params });
 	}
 
@@ -141,15 +169,15 @@ export class EmployeeService {
 	}
 
 	getEmployeeById(employeeId: string) {
-		return this.http.get(`employees/${employeeId}`);
+		return this.http.get<IEmployeeDetail>(`employees/details/${employeeId}`);
 	}
 
-	createEmployee(employee: IEmployeeInput) {
-		return this.http.post(`employees`, employee);
+	createEmployee(employeeData: IEmployeeInput) {
+		return this.http.post(`employees`, employeeData);
 	}
 
-	updateEmployee(id: string, user: IEmployeeInput) {
-		return this.http.put(`employees/${id}`, user);
+	updateEmployee(id: string, employeeData: IEmployeeInput) {
+		return this.http.put(`employees/${id}`, employeeData);
 	}
 
 	deleteEmployee(id: number) {

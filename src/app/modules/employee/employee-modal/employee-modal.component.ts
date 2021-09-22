@@ -7,15 +7,18 @@ import { ToastrService } from 'ngx-toastr';
 import { combineLatest, Observable, of } from 'rxjs';
 import {
 	concatMap,
-	debounceTime,
-	pluck,
+	debounceTime, pluck,
 	startWith,
 	switchMap,
 	takeUntil,
 	tap
 } from 'rxjs/operators';
 import { NO_EMIT_EVENT } from 'src/app/shared/app-constants';
-import { convertDateToServer, renameUniqueFileName } from 'src/app/shared/helpers/functions';
+import {
+	convertDateToDisplay,
+	convertDateToServer,
+	renameUniqueFileName
+} from 'src/app/shared/helpers/functions';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
@@ -35,6 +38,7 @@ import {
 	EmployeeService,
 	ESex,
 	IDepartment,
+	IEmployeeDetail,
 	IEmployeeInput,
 	IImage,
 	IPosition
@@ -61,24 +65,15 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	isUpdate = false;
 	filesUploaded: Array<IFile> = [];
 	filesUploadProgress: Array<number> = [];
-
 	avatarImage: IImage;
 	credentialImages: IImage[] = [];
 	employeeForm: FormGroup;
-
 	departments: IDepartment[] = [];
-	selectedDepartment: IDepartment;
 	positions: IPosition[] = [];
-	selectedPosition: IPosition;
 	stationAddress: IAddress[] = [];
-
 	provinces: IProvince[] = [];
-	selectedProvince: IProvince;
 	districts: IDistrict[] = [];
-	selectedDistrict: IDistrict;
 	wards: IWard[] = [];
-	selectedWard: IWard;
-
 	isFirstLoad = true;
 
 	constructor(
@@ -133,22 +128,49 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 		this.handleProvinceChange();
 		this.handleDistrictChange();
-		this.handleWardChange();
 		this.combineAddress();
 
 		this.activeRoute.params
 			.pipe(
 				pluck('id'),
-				tap((id) => {
+				switchMap((id) => {
 					this.employeeId = id;
 					if (this.employeeId) {
 						this.isUpdate = true;
 						this.setBreadcumb();
+						return this.employeeService.getEmployeeById(id);
 					}
+					return of(null);
+				}),
+				tap((res) => {
+					this.patchUpdateValueToForm(res.data);
 				}),
 				takeUntil(this.destroy$)
 			)
 			.subscribe();
+	}
+
+	patchUpdateValueToForm(data: IEmployeeDetail) {
+		this.employeeForm.patchValue(data, NO_EMIT_EVENT);
+		this.employeeForm
+			.get('dateOfBirth')
+			.patchValue(convertDateToDisplay(data.dateOfBirth), NO_EMIT_EVENT);
+		this.employeeForm
+			.get('dateRange')
+			.patchValue(convertDateToDisplay(data.dateRange), NO_EMIT_EVENT);
+		this.employeeForm.get('address').patchValue(data.address);
+		this.employeeForm.get('provinceId').patchValue(data.province?.id);
+		this.employeeForm.get('districtId').patchValue(data.district?.id);
+		this.employeeForm.get('wardId').patchValue(data.ward?.id);
+
+		this.employeeForm.get('departmentId').patchValue(data.department?.id);
+
+		this.employeeForm.get('positionId').patchValue(data.positions?.id);
+
+		//File
+		this.filesUploaded = data.attachment;
+		this.avatarImage = data.avatar;
+		this.credentialImages = data.credentialImages;
 	}
 
 	getAllProvinces() {
@@ -169,11 +191,8 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 					this.districts = [];
 					this.wards = [];
 					this.employeeForm.get('districtId').reset(null, NO_EMIT_EVENT);
-					this.selectedDistrict = null;
 					this.employeeForm.get('wardId').reset(null, NO_EMIT_EVENT);
-					this.selectedWard = null;
 					if (provinceId) {
-						this.selectedProvince = this.provinces.find((p) => p.id === Number(provinceId));
 						return this.stationService.getDistrictsByProvince(provinceId);
 					}
 					return of(null);
@@ -192,27 +211,13 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			.get('districtId')
 			.valueChanges.pipe(
 				concatMap((districtId: number) => {
-					this.selectedDistrict = this.districts.find((d) => d.id === Number(districtId));
 					this.wards = [];
-					this.selectedWard = null;
 					this.employeeForm.get('wardId').reset(null, NO_EMIT_EVENT);
 					return this.stationService.getWardsByDistrict(districtId);
 				}),
 				tap((res) => {
 					this.wards = res.data || [];
 					this.cdr.detectChanges();
-				}),
-				takeUntil(this.destroy$)
-			)
-			.subscribe();
-	}
-
-	handleWardChange() {
-		this.employeeForm
-			.get('wardId')
-			.valueChanges.pipe(
-				tap((wardId: number) => {
-					this.selectedWard = this.wards.find((w) => w.id === Number(wardId));
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -245,10 +250,6 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 					})
 				),
 				tap((data) => {
-					if (this.isUpdate && this.isFirstLoad) {
-						this.isFirstLoad = false;
-						return;
-					}
 					const provinceName = this.provinces.find((p) => p.id === Number(data.proviceId))?.name;
 					const districtName = this.districts.find((d) => d.id === Number(data.districtId))?.name;
 					const wardName = this.wards.find((w) => w.id === Number(data.wardId))?.name;
@@ -323,26 +324,19 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			.get('departmentId')
 			.valueChanges.pipe(
 				switchMap((value: number) => {
-					this.selectedDepartment = this.departments.find((d) => d.id === Number(value));
+					const selectedDepartment = this.departments.find((d) => d.id === Number(value));
 					return this.employeeService.getPositionByDepartment(
-						this.selectedDepartment?.departmentType || ''
+						selectedDepartment?.departmentType || ''
 					);
 				}),
 				tap((res) => {
-					this.employeeForm.get('positionId').patchValue(null, NO_EMIT_EVENT);
-					this.selectedPosition = null;
+					// Is first load will not reset value of positionIds
+					if (!this.isFirstLoad) {
+						this.employeeForm.get('positionId').patchValue(null, NO_EMIT_EVENT);
+						this.isFirstLoad = false;
+					}
 					this.positions = res.data;
 					this.cdr.detectChanges();
-				}),
-				takeUntil(this.destroy$)
-			)
-			.subscribe();
-
-		this.employeeForm
-			.get('positionId')
-			.valueChanges.pipe(
-				tap((value: number) => {
-					this.selectedPosition = this.positions.find((d) => d.id === Number(value));
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -473,32 +467,51 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 		const employeeFormValue = this.employeeForm.getRawValue() as IEmployeeInput;
 
+		const selectedDepartment = this.departments.find(
+			(d) => d.id === Number(this.employeeForm.get('departmentId').value)
+		);
+		const selectedPosition = this.positions.find(
+			(d) => d.id === Number(this.employeeForm.get('positionId').value)
+		);
+
+		const selectedProvince = this.provinces.find(
+			(p) => p.id === Number(this.employeeForm.get('provinceId').value)
+		);
+
+		const selectedDistrict = this.districts.find(
+			(d) => d.id === Number(this.employeeForm.get('districtId').value)
+		);
+
+		const selectedWard = this.wards.find(
+			(w) => w.id === Number(this.employeeForm.get('wardId').value)
+		);
+
 		const dataEmployee: IEmployeeInput = {
 			...employeeFormValue,
 			department: {
-				code: this.selectedDepartment.code,
-				departmentType: this.selectedDepartment.departmentType
+				code: selectedDepartment.code,
+				departmentType: selectedDepartment.departmentType
 			},
 			positions: {
-				code: this.selectedPosition.code,
-				departmentType: this.selectedDepartment.departmentType
+				code: selectedPosition.code,
+				departmentType: selectedDepartment.departmentType
 			},
-			province: this.selectedProvince
+			province: selectedProvince
 				? {
-						id: this.selectedProvince.id,
-						name: this.selectedProvince.name
+						id: selectedProvince.id,
+						name: selectedProvince.name
 				  }
 				: null,
-			district: this.selectedDistrict
+			district: selectedDistrict
 				? {
-						id: this.selectedDistrict.id,
-						name: this.selectedDistrict.name
+						id: selectedDistrict.id,
+						name: selectedDistrict.name
 				  }
 				: null,
-			ward: this.selectedWard
+			ward: selectedWard
 				? {
-						id: this.selectedWard.id,
-						name: this.selectedWard.name
+						id: selectedWard.id,
+						name: selectedWard.name
 				  }
 				: null,
 			dateOfBirth: convertDateToServer(employeeFormValue.dateOfBirth),
