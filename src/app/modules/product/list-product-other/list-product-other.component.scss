@@ -1,15 +1,76 @@
 .card-header {
-  border-bottom: 0;
+	border-bottom: 0;
+}
+
+.card-body {
+	padding-top: 0 !important;
 }
 
 button {
-  min-width: 110px;
+	min-width: 110px;
 }
 
 .input-group-text {
-  border: 0;
+	border: 0;
 }
 
-table thead th {
-  text-transform: none;
+table {
+	min-width: 1024px;
+
+	th,
+	td {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	thead {
+		th {
+			text-transform: none;
+		}
+	}
+
+	th,
+	td {
+		&.code {
+			min-width: 140px;
+			max-width: 160px;
+		}
+
+		&.category,
+		&.name {
+			min-width: 150px;
+			max-width: 220px;
+
+			p {
+				padding-right: 45px;
+			}
+		}
+
+		&.entry-price,
+		&.price,
+		&.vat {
+			min-width: 110px;
+			max-width: 150px;
+			p {
+				padding-right: 25px;
+			}
+		}
+
+		&.unit {
+			min-width: 90px;
+			max-width: 120px;
+		}
+
+		&.status {
+			min-width: 150px;
+		}
+
+		&.qr-code {
+			min-width: 140px;
+		}
+
+		&.action {
+			min-width: 130px;
+		}
+	}
 }

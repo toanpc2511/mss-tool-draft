@@ -27,16 +27,52 @@ export interface IProduct {
 	unit: string;
 	valueAddedTax: number;
 	vat: number;
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	status: IStatus;
 }
 
 export interface IProductType {
 	id: number;
 	name: string;
 	description: string;
-	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
+	status: IStatus;
 	code: string;
 	type: string;
+}
+
+export interface IProductOther {
+	id: number;
+	code: string;
+	description: string;
+	entryPrice: number;
+	name: string;
+	nameCategory: string;
+	price: number;
+	valueAddedTax: number;
+	createQrCode: boolean;
+	status: IStatus;
+	categoryId: number;
+	unit: string;
+}
+
+export interface IValueSearchProduct {
+	productType: string;
+	productName: string;
+	productCode: string;
+	importPriceFrom: string;
+	importPriceTo: string;
+	exportPriceFrom: string;
+	exportPriceTo: string;
+	status: string;
+	qrCode: string;
+}
+
+export interface ISortData {
+	fieldSort: string;
+	directionSort: string;
+}
+
+export interface IStatus {
+	status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 }
 
 @Injectable({
@@ -48,6 +84,10 @@ export class ProductService {
 	// Nhóm sản phẩm
 	getListProductType() {
 		return this.http.get<IProductType[]>('categories');
+	}
+
+	getListProductTypeOther() {
+		return this.http.get<IProductType[]>('categories/other');
 	}
 
 	getProductList() {
@@ -92,5 +132,37 @@ export class ProductService {
 			.set('product-id', productId.toString())
 			.set('area-product', areaProduct);
 		return this.http.get<IProductInfo>('area-products', { params });
+	}
+
+	// Danh sách sản phẩm khác
+	getListProductOther(page: number, size: number, data: IValueSearchProduct, sortData: ISortData) {
+		const params = new HttpParams()
+			.set('page', page.toString())
+			.set('size', size.toString())
+			.set('field-sort', sortData?.fieldSort || '')
+			.set('direction-sort', sortData?.directionSort || '')
+			.set('name', data.productName)
+			.set('code', data.productCode)
+			.set('status', data.status)
+			.set('status-qr', data.qrCode)
+			.set('category-id', data.productType)
+			.set('price-biggest', data.exportPriceTo)
+			.set('price-smallest', data.exportPriceFrom)
+			.set('entry-price-biggest', data.importPriceTo)
+			.set('entry-price-smallest', data.importPriceFrom);
+
+		return this.http.get('products/filters', { params });
+	}
+
+	createProductOther(data: IProductOther) {
+		return this.http.post(`products/except-oils`, data);
+	}
+
+	updateProductOther(id: number, data: IProductOther) {
+		return this.http.put(`products/except-oils/${id}`, data);
+	}
+
+	deleteProductOther(productId: string | number) {
+		return this.http.delete(`products/except-oils/${productId}`);
 	}
 }
