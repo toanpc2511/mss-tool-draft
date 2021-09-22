@@ -149,6 +149,7 @@ export interface ICustomerInfo {
 	email: string;
 	dateOfBirth: Date;
 	idCard: string;
+	idRank: string;
 }
 
 export interface IProductInfo {
