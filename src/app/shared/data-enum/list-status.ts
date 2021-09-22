@@ -21,3 +21,13 @@ export const LIST_STATUS_CUSTOMER = {
   LOCK:'LOCK',
   DELETE:'DELETE'
 }
+
+export const LIST_STATUS_QR = {
+  YES: 'YES',
+  NO: 'NO'
+}
+
+export const LIST_STATUS_SEARCH = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+}
