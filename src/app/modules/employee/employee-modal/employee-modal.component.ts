@@ -154,8 +154,6 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	}
 
 	patchUpdateValueToForm(data: IEmployeeDetail) {
-		console.log(data.code);
-		
 		this.employeeForm.patchValue(data, NO_EMIT_EVENT);
 
 		this.employeeForm.get('stationIds').patchValue(data.stationList?.map((s) => s.id));
@@ -340,7 +338,8 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 				tap((res) => {
 					// Is first load will not reset value of positionIds
 					if (!this.isFirstLoad) {
-						this.employeeForm.get('positionId').patchValue(null, NO_EMIT_EVENT);
+						this.employeeForm.get('positionId').reset(null, NO_EMIT_EVENT);
+					} else {
 						this.isFirstLoad = false;
 					}
 					this.positions = res.data;
