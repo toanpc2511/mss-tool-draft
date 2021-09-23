@@ -162,7 +162,7 @@ export class ListEmployeeComponent implements OnInit {
 
 		modalRef.result.then((result) => {
 			if (result) {
-				this.employeeService.deleteEmployee(1).subscribe(
+				this.employeeService.deleteEmployee(employee.id).subscribe(
 					(res) => {
 						if (res.data) {
 							this.init();
