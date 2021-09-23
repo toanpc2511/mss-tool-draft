@@ -108,8 +108,8 @@
 					<label>Tạo QR code</label>
 					<select class="form-control form-control-solid form-control-lg" formControlName="qrCode">
 						<option [value]="''">Tất cả</option>
-						<option [value]="listStatusQr.YES">Có</option>
-						<option [value]="listStatusQr.NO">Không</option>
+						<option [value]="listStatusQr.YES">Đã tạo</option>
+						<option [value]="listStatusQr.NO">Chưa tạo</option>
 					</select>
 				</div>
 			</div>
@@ -151,7 +151,7 @@
 					<th class="category" scope="">
 						Nhóm sản phẩm
 						<app-sort-icon
-							column="category"
+							column="categoryId"
 							[activeColumn]="sortData?.fieldSort"
 							[activeDirection]="sortData?.directionSort"
 							(sort)="sort($event)"
@@ -169,7 +169,7 @@
 					<th class="entry-price text-right" scope="">
 						Giá nhập
 						<app-sort-icon
-							column="entry_price"
+							column="entryPrice"
 							[activeColumn]="sortData?.fieldSort"
 							[activeDirection]="sortData?.directionSort"
 							(sort)="sort($event)"
@@ -196,7 +196,7 @@
 					<th class="vat text-right" scope="">
 						VAT (%)
 						<app-sort-icon
-							column="value_added_tax"
+							column="valueAddedTax"
 							[activeColumn]="sortData?.fieldSort"
 							[activeDirection]="sortData?.directionSort"
 							(sort)="sort($event)"
@@ -283,7 +283,7 @@
 								[class.label-light-danger]="item.status !== listStatus.ACTIVE"
 							>
 								<ng-container *ngIf="item.status === listStatus.ACTIVE">Hoạt động</ng-container>
-								<ng-container *ngIf="item.status !== listStatus.ACTIVE">
+								<ng-container *ngIf="item.status === listStatus.INACTIVE">
 									Không hoạt động
 								</ng-container>
 							</span>
