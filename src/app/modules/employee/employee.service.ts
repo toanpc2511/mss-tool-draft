@@ -170,6 +170,10 @@ export class EmployeeService {
 		return this.http.get<IEmployee[]>('employees', { params });
 	}
 
+	getAllStationAddress() {
+		return this.http.get<GasStationResponse[]>('gas-stations/address');
+	}
+
 	getAllDepartment() {
 		return this.http.get<IDepartment[]>(`properties?type=DEPARTMENT`);
 	}
