@@ -39,12 +39,12 @@ export interface ITransaction {
 	numberVariable: [string];
 	numberVariableReal: string;
 	orderTotalResponse: {
-		numberLiters: number;
+    totalPaymentLimitOil: number;
 		totalAccumulationPointUse: number;
 		totalCashPaid: number;
-		totalNumberLiters: number;
+    totalActualityLiters: number;
 		totalOrder: number;
-		totalPaymentMoney: number;
+    totalPaymentLimitMoney: number;
 	};
 	paymentLimit: number;
 	paymentMethodName: string;
@@ -58,6 +58,9 @@ export interface ITransaction {
 	takeReceipt: boolean;
 	totalNumberLiters: number;
 	validLicensePlate: boolean;
+  actualityLiters: number;
+  paymentLimitMoney: number;
+  paymentLimitOil: number;
 }
 
 @Injectable({
@@ -73,12 +76,12 @@ export class TransactionService {
 
 	// Lấy ds trạm
 	getStationEmployee() {
-		return this.http.get<Array<IStationEployee>>(`gas-stations/station-employee`);
+		return this.http.get<Array<IStationEployee>>(`employees/station`);
 	}
 
 	// Lấy ds tất cả nhân viên thực hiện
 	getAllEmployee() {
-		return this.http.get<Array<IEmployees>>(`employees`);
+		return this.http.get<Array<IEmployees>>(`employees/stations-employee`);
 	}
 
 	// Lấy ds nhân viên theo trạm

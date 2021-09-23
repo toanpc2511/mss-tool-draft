@@ -154,7 +154,7 @@
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Hạn mức nhiên liệu:
-				<strong>{{limitOil?.toLocaleString("en-US")}} VNĐ</strong>
+				<strong>{{limitOil?.toLocaleString("en-US")}} L</strong>
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Hạn mức tiền:
@@ -279,9 +279,9 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.totalNumberLiters?.toLocaleString('en-US') || 0"
+								[ngbTooltip]="item.actualityLiters?.toLocaleString('en-US') || 0"
 							>
-								{{ item.totalNumberLiters?.toLocaleString('en-US') ||0 }}
+								{{ item.actualityLiters?.toLocaleString('en-US') ||0 }}
 							</p>
 						</td>
 
@@ -320,9 +320,9 @@
 								*ngIf='item.paymentMethodName === "Hạn mức nhiên liệu"'
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.numberLiters?.toLocaleString('en-US') || 0"
+								[ngbTooltip]="item.paymentLimitOil?.toLocaleString('en-US') || 0"
 							>
-								{{ item.numberLiters?.toLocaleString('en-US') || 0 }}
+								{{ item.paymentLimitOil?.toLocaleString('en-US') || 0 }}
 							</p>
 
 							<p
@@ -340,9 +340,9 @@
 								*ngIf='item.paymentMethodName !== "Hạn mức nhiên liệu"'
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.paymentLimit?.toLocaleString('en-US') || 0"
+								[ngbTooltip]="item.paymentLimitMoney?.toLocaleString('en-US') || 0"
 							>
-								{{ item.paymentLimit?.toLocaleString('en-US') || 0 }}
+								{{ item.paymentLimitMoney?.toLocaleString('en-US') || 0 }}
 							</p>
 
 							<p

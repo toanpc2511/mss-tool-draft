@@ -186,11 +186,11 @@ export class TransactionHistoryComponent implements OnInit {
 					if (this.dataSource.length > 0) {
 						this.exportFileExcel();
 
-						this.totalLiters = this.dataSource[0].orderTotalResponse.totalNumberLiters;
+						this.totalLiters = this.dataSource[0].orderTotalResponse.totalActualityLiters;
 						this.totalMoney = this.dataSource[0].orderTotalResponse.totalCashPaid;
 						this.pointSunoil = this.dataSource[0].orderTotalResponse.totalAccumulationPointUse;
-						this.limitOil = this.dataSource[0].orderTotalResponse.numberLiters;
-						this.totalPaymentMoney = this.dataSource[0].orderTotalResponse.totalPaymentMoney;
+						this.limitOil = this.dataSource[0].orderTotalResponse.totalPaymentLimitOil;
+						this.totalPaymentMoney = this.dataSource[0].orderTotalResponse.totalPaymentLimitMoney;
 					} else {
 						this.totalRecord = 0;
 						this.totalLiters = 0;

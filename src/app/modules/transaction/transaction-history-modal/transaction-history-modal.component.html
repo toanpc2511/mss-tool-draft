@@ -72,7 +72,7 @@
 					<div class="row pb-3">
 						<div class="col-lg-7">Số lít</div>
 						<div class="col-lg-5">
-							{{itemTransaction.numberLiters?.toLocaleString('en-US') || 0}} L
+							{{itemTransaction.actualityLiters?.toLocaleString('en-US') || 0}} L
 						</div>
 					</div>
 
@@ -86,7 +86,7 @@
 					<div class="row py-3" *ngIf="itemTransaction.paymentMethodName === 'Hạn mức nhiên liệu'">
 						<div class="col-lg-7">Tổng lít đã thanh toán</div>
 						<div class="col-lg-5">
-							{{itemTransaction.numberLiters?.toLocaleString('en-US') || 0}} L
+							{{itemTransaction.totalNumberLiters?.toLocaleString('en-US') || 0}} L
 						</div>
 					</div>
 				</div>
@@ -111,13 +111,13 @@
 							class="col-lg-5"
 							*ngIf="itemTransaction.paymentMethodName !== 'Hạn mức nhiên liệu'"
 						>
-							{{itemTransaction.paymentLimit?.toLocaleString('en-US')}} VNĐ
+							{{itemTransaction.paymentLimitMoney?.toLocaleString('en-US') || 0}} VNĐ
 						</div>
 						<div
 							class="col-lg-5"
 							*ngIf="itemTransaction.paymentMethodName === 'Hạn mức nhiên liệu'"
 						>
-							{{itemTransaction.numberLiters?.toLocaleString('en-US')}} L
+							{{itemTransaction.paymentLimitOil?.toLocaleString('en-US') || 0}} L
 						</div>
 					</div>
 
@@ -164,10 +164,10 @@
 						<p class="pt-2">{{itemTransaction.numberVariableReal}}</p>
 					</div>
 
-					<div class="col-lg-6 text-center info-vihicle" *ngIf='itemTransaction.imageSpeedometer !== null'>
+					<div class="col-lg-6 text-center info-vihicle" >
 						<p class="py-2">Công tơ mét</p>
 						<div class="card-images">
-							<img src="{{itemTransaction?.imageSpeedometer}}" alt="" />
+							<img src="{{itemTransaction?.imageSpeedometer}}" alt=""  *ngIf='itemTransaction.imageSpeedometer !== null'/>
 						</div>
 						<p class="pt-2">{{itemTransaction.speedometer?.toLocaleString('en-US')}}</p>
 					</div>

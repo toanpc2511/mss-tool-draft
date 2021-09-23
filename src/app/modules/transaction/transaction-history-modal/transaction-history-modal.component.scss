@@ -8,12 +8,14 @@
 	.card-images {
 		margin: 0 auto;
 		position: relative;
+    width: 197px;
+    height: 140px;
+    border: 1px solid #1db3c2;
+    border-radius: 20px;
 
 		img {
 			width: 195px;
 			height: 138px;
-			border: 1px solid #1db3c2;
-			border-radius: 20px;
 			object-fit: scale-down;
 		}
 
