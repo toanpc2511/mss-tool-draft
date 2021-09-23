@@ -9,6 +9,7 @@ import {
 	concatMap,
 	debounceTime,
 	filter,
+	mergeMap,
 	pluck,
 	skipUntil,
 	startWith,
@@ -125,6 +126,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	ngOnInit(): void {
 		this.buildForm();
+		this.handleDepartmentChange();
 
 		this.getAllProvinces();
 
@@ -157,6 +159,44 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			.subscribe();
 	}
 
+	getListPosition(selectedDepartmentType: string) {
+		this.employeeService
+			.getPositionByDepartment(selectedDepartmentType)
+			.pipe(
+				tap((res) => {
+					this.positions = res.data;
+					this.cdr.detectChanges();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	handleDepartmentChange() {
+		this.employeeForm
+			.get('departmentId')
+			.valueChanges.pipe(
+				concatMap((value: number) => {
+					const selectedDepartment = this.departments.find((d) => d.id === Number(value));
+					return this.employeeService.getPositionByDepartment(
+						selectedDepartment?.departmentType || ''
+					);
+				}),
+				tap((res) => {
+					// Is first load will not reset value of positionIds
+					if (!this.isFirstLoad) {
+						this.employeeForm.get('positionId').reset(null, NO_EMIT_EVENT);
+					} else {
+						this.isFirstLoad = false;
+					}
+					this.positions = res.data;
+					this.cdr.detectChanges();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
 	patchUpdateValueToForm(data: IEmployeeDetail) {
 		this.employeeForm.patchValue(data, NO_EMIT_EVENT);
 
@@ -172,14 +212,16 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		this.employeeForm.get('districtId').patchValue(data.district?.id);
 		this.employeeForm.get('wardId').patchValue(data.ward?.id);
 
-		this.employeeForm.get('departmentId').patchValue(data.department?.id);
+		this.employeeForm.get('departmentId').patchValue(data.department?.id, NO_EMIT_EVENT);
 
+		this.getListPosition(data?.department?.departmentType);
 		this.employeeForm.get('positionId').patchValue(data.positions?.id);
 
 		//File
 		this.filesUploaded = data.attachment;
 		this.avatarImage = data.avatar;
 		this.credentialImages = data.credentialImages;
+		this.cdr.detectChanges();
 	}
 
 	getAllProvinces() {
@@ -331,32 +373,6 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 		//Disable form control
 		this.employeeForm.get('fullAddress').disable(NO_EMIT_EVENT);
-
-		//Handle form event
-
-		this.employeeForm
-			.get('departmentId')
-			.valueChanges.pipe(
-				skipUntil(this.isDepartmentLoaded$),
-				switchMap((value: number) => {
-					const selectedDepartment = this.departments.find((d) => d.id === Number(value));
-					return this.employeeService.getPositionByDepartment(
-						selectedDepartment?.departmentType || ''
-					);
-				}),
-				tap((res) => {
-					// Is first load will not reset value of positionIds
-					if (!this.isFirstLoad) {
-						this.employeeForm.get('positionId').reset(null, NO_EMIT_EVENT);
-					} else {
-						this.isFirstLoad = false;
-					}
-					this.positions = res.data;
-					this.cdr.detectChanges();
-				}),
-				takeUntil(this.destroy$)
-			)
-			.subscribe();
 	}
 
 	addFiles($event: Event) {

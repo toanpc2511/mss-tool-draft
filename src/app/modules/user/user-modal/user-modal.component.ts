@@ -70,7 +70,6 @@ export class UserModalComponent implements OnInit {
 	buildFormCreate(): void {
 		this.userFormCreate = this.fb.group({
 			employeeId: [null, Validators.required],
-			name: [null, [Validators.required]],
 			username: [null, [Validators.required]],
 			password: [null, [Validators.required]],
 			roleIds: [[]],
@@ -81,7 +80,6 @@ export class UserModalComponent implements OnInit {
 	buildFormUpdate(): void {
 		this.userFormUpdate = this.fb.group({
 			employeeId: [null, Validators.required],
-			name: [null, [Validators.required]],
 			username: [null, [Validators.required]],
 			roleIds: [[]],
 			status: [null]
