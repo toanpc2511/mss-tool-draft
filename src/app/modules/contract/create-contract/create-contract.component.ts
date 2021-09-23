@@ -762,6 +762,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			const planContractData: IContractPlanInput = {
 				creatorType: ECreatorType.EMPLOYEE,
 				profileId: infoData.id,
+				idRank: infoData.idRank,
 				contractTypeCode: contractData.contractTypeCode,
 				name: contractData.name,
 				effectEndDate: convertDateToServer(contractData.effectEndDate),

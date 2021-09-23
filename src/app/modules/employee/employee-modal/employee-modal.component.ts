@@ -491,8 +491,6 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	onSubmit(): void {
 		this.employeeForm.markAllAsTouched();
-		console.log(this.employeeForm);
-
 		if (this.employeeForm.invalid) {
 			return;
 		}
