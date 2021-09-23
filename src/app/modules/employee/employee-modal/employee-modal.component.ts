@@ -330,8 +330,8 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	}
 
 	getAllStationAddress() {
-		this.stationService
-			.getAddress()
+		this.employeeService
+			.getAllStationAddress()
 			.pipe(
 				tap((res) => {
 					this.stationAddress = res.data;
