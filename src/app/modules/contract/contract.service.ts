@@ -25,6 +25,7 @@ export interface IContract {
 		email: string;
 		enterpriseName: string;
 		id: string;
+		idRank: number;
 		idCard: string;
 		name: string;
 		phone: null;
@@ -181,7 +182,7 @@ export interface IContractPrepayInput {
 }
 export interface IContractPlanInput {
 	profileId: number;
-
+	idRank: string;
 	creatorType: ECreatorType;
 	name: string;
 	effectEndDate: string;
