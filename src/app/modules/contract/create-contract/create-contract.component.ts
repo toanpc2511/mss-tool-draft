@@ -165,8 +165,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.contractForm.get('contractTypeCode').disable({ emitEvent: false, onlySelf: true });
 		this.contractForm.get('name').patchValue(data.name);
 		this.contractForm.get('effectEndDate').patchValue(convertDateToDisplay(data.effectEndDate));
-		console.log(this.contractForm.get('effectEndDate'));
-
 		this.contractForm.get('transportMethodCode').patchValue(data.transportMethod?.code || null);
 		this.contractForm.get('payMethodCode').patchValue(data.payMethod.code);
 	}

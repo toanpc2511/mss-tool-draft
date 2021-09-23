@@ -31,6 +31,7 @@ export interface IContract {
 		provinceId: string;
 		status: 'ACTIVE' | 'INACTIVE' | 'DELETE';
 		wardId: string;
+		idRank: number;
 	};
 	customerId: string;
 	station: {
