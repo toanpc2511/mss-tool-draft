@@ -278,8 +278,6 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			.getAllDepartment()
 			.pipe(
 				tap((res) => {
-					console.log('zô');
-					
 					this.departments = res.data;
 					this.cdr.detectChanges();
 					this.isDepartmentLoadedSubject.next();
