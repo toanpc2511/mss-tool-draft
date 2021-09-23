@@ -49,10 +49,6 @@ export class ListProductOtherModalComponent implements OnInit {
 		const dataProduct = this.data.product;
 		if (dataProduct) {
 			this.productForm = this.fb.group({
-				code: [
-					dataProduct.code,
-					[Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
-				],
 				name: [dataProduct.name, Validators.required],
 				categoryId: [dataProduct.categoryId, Validators.required],
 				price: [this.formatMoney(dataProduct.price || 0), Validators.required],
@@ -69,7 +65,6 @@ export class ListProductOtherModalComponent implements OnInit {
 			});
 		} else {
 			this.productForm = this.fb.group({
-				code: ['SSP', [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]],
 				name: ['', Validators.required],
 				categoryId: ['', Validators.required],
 				price: ['', Validators.required],
@@ -123,7 +118,8 @@ export class ListProductOtherModalComponent implements OnInit {
 	}
 
 	onClose() {
-		this.modal.close();
+		// this.modal.close();
+    console.log(this.productForm.value);
 	}
 
 	formatMoney(n) {
@@ -135,6 +131,9 @@ export class ListProductOtherModalComponent implements OnInit {
 	checkError(err: IError) {
 		if (err.code === 'SUN-OIL-4710') {
 			this.toastr.error('Tên sản phẩm trùng');
+		}
+		if (err.code === 'SUN-OIL-4711') {
+			this.toastr.error('Mã sản phẩm không được trùng');
 		}
 		if (err.code === 'SUN-OIL-4790') {
 			this.toastr.error('Nhập thuế k nằm trong khoảng 0-100');
