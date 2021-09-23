@@ -4,12 +4,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
 import {
 	concatMap,
 	debounceTime,
 	filter,
 	pluck,
+	skipUntil,
 	startWith,
 	switchMap,
 	takeUntil,
@@ -77,6 +78,8 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	districts: IDistrict[] = [];
 	wards: IWard[] = [];
 	isFirstLoad = true;
+	isDepartmentLoadedSubject = new Subject();
+	isDepartmentLoaded$ = this.isDepartmentLoadedSubject.asObservable();
 
 	constructor(
 		private fb: FormBuilder,
@@ -140,6 +143,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 					this.employeeId = id;
 					if (this.employeeId) {
 						this.isUpdate = true;
+						this.maxDate = null;
 						this.setBreadcumb();
 						return this.employeeService.getEmployeeById(id);
 					}
@@ -274,8 +278,11 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			.getAllDepartment()
 			.pipe(
 				tap((res) => {
+					console.log('zô');
+					
 					this.departments = res.data;
 					this.cdr.detectChanges();
+					this.isDepartmentLoadedSubject.next();
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -332,6 +339,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		this.employeeForm
 			.get('departmentId')
 			.valueChanges.pipe(
+				skipUntil(this.isDepartmentLoaded$),
 				switchMap((value: number) => {
 					const selectedDepartment = this.departments.find((d) => d.id === Number(value));
 					return this.employeeService.getPositionByDepartment(
