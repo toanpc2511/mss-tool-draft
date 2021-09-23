@@ -13,6 +13,7 @@ import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { IPaginatorState, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
+import { GasStationResponse } from '../../gas-station/gas-station.service';
 import { EmployeeService, IDepartment, IEmployee, IPosition } from '../employee.service';
 
 @Component({
@@ -197,5 +198,18 @@ export class ListEmployeeComponent implements OnInit {
 	pagingChange($event: IPaginatorState) {
 		this.paginatorState = $event as PaginatorState;
 		this.getEmployees();
+	}
+
+	displayStationList(stations: GasStationResponse[], maxLength?: number) {
+		if (!stations) {
+			return '';
+		}
+		if (stations.length > maxLength) {
+			return (
+				stations.map(s => s.name).slice(0, maxLength).join(', ') +
+				` và ${stations.length - maxLength} địa điểm khác`
+			);
+		}
+		return stations.map((s) => s.name).join(', ');
 	}
 }

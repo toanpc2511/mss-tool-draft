@@ -106,8 +106,12 @@
 						</td>
 
 						<td class="office-address">
-							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.stationId">
-								{{ item.stationId }}
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="displayStationList(item.station)"
+							>
+								{{ displayStationList(item.station, 2) }}
 							</p>
 						</td>
 

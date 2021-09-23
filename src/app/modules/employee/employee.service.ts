@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { IFile } from 'src/app/shared/services/file.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { SortState } from 'src/app/_metronic/shared/crud-table';
+import { GasStationResponse } from '../gas-station/gas-station.service';
 
 export enum EMaritalStatus {
 	MARRIED = 'MARRIED',
@@ -23,7 +24,7 @@ export interface IEmployee {
 	id: number;
 	code: string;
 	name: string;
-	stationId: string;
+	station: GasStationResponse[];
 	department: IDepartment;
 	positions: IPosition;
 }
