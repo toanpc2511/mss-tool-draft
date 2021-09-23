@@ -1,0 +1,87 @@
+.wrapper-content {
+	a {
+		text-decoration: underline;
+	}
+	.w-30 {
+		width: 30%;
+	}
+	.w-70 {
+		width: 70%;
+	}
+	width: inherit;
+	.card-header {
+		border-bottom: none;
+		.title {
+			text-transform: uppercase;
+			color: #4674eb;
+			font-weight: 500;
+			font-size: 14px;
+		}
+	}
+
+	.avatar {
+		width: 80%;
+		cursor: pointer;
+		border-radius: 5px;
+		position: relative;
+		img {
+			border-radius: 5px;
+			width: 100%;
+			object-fit: contain;
+		}
+		&:hover {
+			opacity: 0.8;
+		}
+		.plus-icon {
+			position: absolute;
+			color: #ffffff;
+			top: 40%;
+			right: 50%;
+			transform: translate(50%, 50%);
+		}
+	}
+
+	.cmnd {
+		.cmnd-title {
+			width: 50%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border: 1px solid gray;
+			border-right: none;
+		}
+		img {
+			border: 1px dashed;
+			width: 50%;
+			height: 100%;
+			object-fit: contain;
+			&:hover {
+				opacity: 0.8;
+			}
+		}
+	}
+
+	.file {
+		position: relative;
+		div {
+			width: 5rem;
+			position: absolute;
+			right: 2rem;
+			top: 35%;
+		}
+
+		span {
+			cursor: pointer;
+		}
+
+		em {
+			position: absolute;
+			right: 10px;
+			top: 33%;
+			&:hover {
+				opacity: 0.8;
+			}
+		}
+	}
+}

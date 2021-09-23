@@ -3,15 +3,17 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { merge } from 'rxjs';
+import { merge, of } from 'rxjs';
 import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { NO_EMIT_EVENT } from 'src/app/shared/app-constants';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { IPaginatorState, PaginatorState, SortState } from 'src/app/_metronic/shared/crud-table';
+import { GasStationResponse } from '../../gas-station/gas-station.service';
 import { EmployeeService, IDepartment, IEmployee, IPosition } from '../employee.service';
 
 @Component({
@@ -27,8 +29,8 @@ export class ListEmployeeComponent implements OnInit {
 	dataSource: Array<IEmployee> = [];
 	paginatorState = new PaginatorState();
 
-	departmentControl = new FormControl();
-	positionControl = new FormControl();
+	departmentControl = new FormControl('');
+	positionControl = new FormControl('');
 	departments: IDepartment[] = [];
 	positions: IPosition[] = [];
 
@@ -69,12 +71,16 @@ export class ListEmployeeComponent implements OnInit {
 			.pipe(
 				switchMap((value: number) => {
 					const selectedDepartment = this.departments.find((d) => d.id === Number(value));
-					return this.employeeService.getPositionByDepartment(
-						selectedDepartment?.departmentType || ''
-					);
+					if (selectedDepartment?.departmentType) {
+						return this.employeeService.getPositionByDepartment(selectedDepartment?.departmentType);
+					}
+					return of<DataResponse<any>>({
+						data: [],
+						meta: null
+					});
 				}),
 				tap((res) => {
-					this.positionControl.patchValue(null, NO_EMIT_EVENT);
+					this.positionControl.patchValue('', NO_EMIT_EVENT);
 					this.positions = res.data;
 					this.cdr.detectChanges();
 				}),
@@ -143,7 +149,8 @@ export class ListEmployeeComponent implements OnInit {
 		this.getEmployees();
 	}
 
-	deleteEmployee(employee: IEmployee): void {
+	deleteEmployee($event: Event, employee: IEmployee): void {
+		$event.stopPropagation();
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
 			backdrop: 'static'
 		});
@@ -156,7 +163,7 @@ export class ListEmployeeComponent implements OnInit {
 
 		modalRef.result.then((result) => {
 			if (result) {
-				this.employeeService.deleteEmployee(1).subscribe(
+				this.employeeService.deleteEmployee(employee.id).subscribe(
 					(res) => {
 						if (res.data) {
 							this.init();
@@ -171,7 +178,12 @@ export class ListEmployeeComponent implements OnInit {
 		});
 	}
 
-	openEmployeeModal(employeeId?: number) {
+	viewDetailEmployee(employeeId: number) {
+		this.router.navigate([`/nhan-vien/danh-sach/chi-tiet/${employeeId}`]);
+	}
+
+	openEmployeeModal($event: Event, employeeId?: number) {
+		$event.stopPropagation();
 		if (!employeeId) {
 			this.router.navigate(['/nhan-vien/danh-sach/them-moi']);
 		} else {
@@ -186,5 +198,18 @@ export class ListEmployeeComponent implements OnInit {
 	pagingChange($event: IPaginatorState) {
 		this.paginatorState = $event as PaginatorState;
 		this.getEmployees();
+	}
+
+	displayStationList(stations: GasStationResponse[], maxLength?: number) {
+		if (!stations) {
+			return '';
+		}
+		if (stations.length > maxLength) {
+			return (
+				stations.map(s => s.name).slice(0, maxLength).join(', ') +
+				` và ${stations.length - maxLength} địa điểm khác`
+			);
+		}
+		return stations.map((s) => s.name).join(', ');
 	}
 }

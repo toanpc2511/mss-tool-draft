@@ -14,13 +14,14 @@ import { SharedComponentsModule } from 'src/app/shared/components/shared-compone
 import { DirectivesModule } from 'src/app/shared/directives/directives.module';
 import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
+import { EmployeeDetailModalComponent } from './employee-detail-modal/employee-detail-modal.component';
 import { EmployeeModalComponent } from './employee-modal/employee-modal.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { EmployeeComponent } from './employee.component';
 import { ListEmployeeComponent } from './list-employee/list-employee.component';
 
 @NgModule({
-	declarations: [EmployeeComponent, ListEmployeeComponent, EmployeeModalComponent],
+	declarations: [EmployeeComponent, ListEmployeeComponent, EmployeeModalComponent, EmployeeDetailModalComponent],
 	imports: [
 		CommonModule,
 		EmployeeRoutingModule,

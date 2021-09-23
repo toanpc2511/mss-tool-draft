@@ -4,12 +4,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
 import {
 	concatMap,
 	debounceTime,
 	filter,
+	mergeMap,
 	pluck,
+	skipUntil,
 	startWith,
 	switchMap,
 	takeUntil,
@@ -77,6 +79,8 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	districts: IDistrict[] = [];
 	wards: IWard[] = [];
 	isFirstLoad = true;
+	isDepartmentLoadedSubject = new Subject();
+	isDepartmentLoaded$ = this.isDepartmentLoadedSubject.asObservable();
 
 	constructor(
 		private fb: FormBuilder,
@@ -122,6 +126,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	ngOnInit(): void {
 		this.buildForm();
+		this.handleDepartmentChange();
 
 		this.getAllProvinces();
 
@@ -140,6 +145,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 					this.employeeId = id;
 					if (this.employeeId) {
 						this.isUpdate = true;
+						this.maxDate = null;
 						this.setBreadcumb();
 						return this.employeeService.getEmployeeById(id);
 					}
@@ -147,6 +153,44 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 				}),
 				tap((res) => {
 					this.patchUpdateValueToForm(res.data);
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	getListPosition(selectedDepartmentType: string) {
+		this.employeeService
+			.getPositionByDepartment(selectedDepartmentType)
+			.pipe(
+				tap((res) => {
+					this.positions = res.data;
+					this.cdr.detectChanges();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	handleDepartmentChange() {
+		this.employeeForm
+			.get('departmentId')
+			.valueChanges.pipe(
+				concatMap((value: number) => {
+					const selectedDepartment = this.departments.find((d) => d.id === Number(value));
+					return this.employeeService.getPositionByDepartment(
+						selectedDepartment?.departmentType || ''
+					);
+				}),
+				tap((res) => {
+					// Is first load will not reset value of positionIds
+					if (!this.isFirstLoad) {
+						this.employeeForm.get('positionId').reset(null, NO_EMIT_EVENT);
+					} else {
+						this.isFirstLoad = false;
+					}
+					this.positions = res.data;
+					this.cdr.detectChanges();
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -168,14 +212,16 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		this.employeeForm.get('districtId').patchValue(data.district?.id);
 		this.employeeForm.get('wardId').patchValue(data.ward?.id);
 
-		this.employeeForm.get('departmentId').patchValue(data.department?.id);
+		this.employeeForm.get('departmentId').patchValue(data.department?.id, NO_EMIT_EVENT);
 
+		this.getListPosition(data?.department?.departmentType);
 		this.employeeForm.get('positionId').patchValue(data.positions?.id);
 
 		//File
 		this.filesUploaded = data.attachment;
 		this.avatarImage = data.avatar;
 		this.credentialImages = data.credentialImages;
+		this.cdr.detectChanges();
 	}
 
 	getAllProvinces() {
@@ -276,6 +322,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 				tap((res) => {
 					this.departments = res.data;
 					this.cdr.detectChanges();
+					this.isDepartmentLoadedSubject.next();
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -296,6 +343,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	buildForm(): void {
 		this.employeeForm = this.fb.group({
+			code: [null],
 			name: [null, TValidators.required],
 			dateOfBirth: [null],
 			sex: [null],
@@ -310,7 +358,10 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			nation: [null],
 			address: [null],
 			religion: [null],
-			identityCardNumber: [null, [TValidators.required, TValidators.pattern(/^[0-9]{12}$/)]],
+			identityCardNumber: [
+				null,
+				[TValidators.required, TValidators.pattern(/^[0-9]{9}$|^[0-9]{12}$/)]
+			],
 			dateRange: [null],
 			fullAddress: [null],
 			supplyAddress: [],
@@ -322,30 +373,6 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 		//Disable form control
 		this.employeeForm.get('fullAddress').disable(NO_EMIT_EVENT);
-
-		//Handle form event
-
-		this.employeeForm
-			.get('departmentId')
-			.valueChanges.pipe(
-				switchMap((value: number) => {
-					const selectedDepartment = this.departments.find((d) => d.id === Number(value));
-					return this.employeeService.getPositionByDepartment(
-						selectedDepartment?.departmentType || ''
-					);
-				}),
-				tap((res) => {
-					// Is first load will not reset value of positionIds
-					if (!this.isFirstLoad) {
-						this.employeeForm.get('positionId').patchValue(null, NO_EMIT_EVENT);
-						this.isFirstLoad = false;
-					}
-					this.positions = res.data;
-					this.cdr.detectChanges();
-				}),
-				takeUntil(this.destroy$)
-			)
-			.subscribe();
 	}
 
 	addFiles($event: Event) {

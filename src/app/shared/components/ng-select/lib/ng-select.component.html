@@ -132,7 +132,7 @@
 			[attr.id]="item?.htmlId"
 		>
 			<ng-template #defaultOptionTemplate>
-				<input type="checkbox" [checked]="item.selected" />
+				<input *ngIf="multiple" type="checkbox" [checked]="item.selected" />
 				<span class="ng-option-label" [ngItemLabel]="item.label" [escape]="escapeHTML"></span>
 			</ng-template>
 
