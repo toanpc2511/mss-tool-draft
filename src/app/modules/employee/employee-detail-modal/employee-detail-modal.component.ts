@@ -1,14 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { filter, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { convertDateToDisplay } from 'src/app/shared/helpers/functions';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { FileService } from 'src/app/shared/services/file.service';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
-import { GasStationResponse, GasStationService } from '../../gas-station/gas-station.service';
+import { GasStationResponse } from '../../gas-station/gas-station.service';
 import { EFace, EMaritalStatus, EmployeeService, ESex, IEmployeeDetail } from '../employee.service';
 
 @Component({

@@ -166,7 +166,7 @@ export class EmployeeService {
 			.set('direction-sort', sortData?.direction || '')
 			.set('search-text', searchText || '')
 			.set('callApiType', 'background');
-		return this.http.get<IEmployee>('employees', { params });
+		return this.http.get<IEmployee[]>('employees', { params });
 	}
 
 	getAllDepartment() {

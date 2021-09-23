@@ -6,34 +6,31 @@
 		<div class="close-icon" (click)="modal.close()"></div>
 	</div>
 	<div class="modal-body">
-		<div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
+		<div class="cursor-default overlay overlay-block modal-body" style="min-height: 300px">
 			<form [formGroup]="userFormCreate" class="form form-label-right" *ngIf="!isUpdate">
 				<div class="form-group row">
 					<div class="col-lg-4">
-						<label class="form-label required">Mã nhân viên</label>
-						<input
-							type="text"
-							class="form-control form-control-lg form-control-solid"
-							formControlName="code"
-							placeholder="Nhập mã nhân viên"
-							autocomplete="off"
-							maxlength="99"
-							(keydown.space)="$event.preventDefault()"
-						/>
+						<label class="form-label required">Chọn nhân viên</label>
+						<ng-select
+							[multiple]="false"
+							formControlName="employeeId"
+							[closeOnSelect]="true"
+							[notFoundText]="'...'"
+							[placeholder]="'Chọn nhân viên'"
+						>
+							<ng-option *ngFor="let employee of employees" [value]="employee.id"
+								>{{ employee.name + ' - ' + employee.code }}</ng-option
+							>
+						</ng-select>
 						<app-validate
-							[control]="userFormCreate.controls['code']"
+							[control]="userFormCreate.controls['employeeId']"
 							[error]="'required'"
-							[message]="'Mã nhân viên không được để trống'"
+							[message]="'Nhân viên không được để trống'"
 						></app-validate>
 						<app-validate
-							[control]="userFormCreate.controls['code']"
-							[error]="'pattern'"
-							[message]="'Mã nhân viên sai định dạng'"
-						></app-validate>
-						<app-validate
-							[control]="userFormCreate.controls['code']"
+							[control]="userFormCreate.controls['employeeId']"
 							[error]="'existed'"
-							[message]="'Mã nhân viên không được trùng'"
+							[message]="'Nhân viên đã có tài khoản'"
 						></app-validate>
 					</div>
 
@@ -108,6 +105,8 @@
 					<div class="col-lg-4">
 						<label class="form-label">Nhóm quyền</label>
 						<ng-select
+							[notFoundText]="'...'"
+							[placeholder]="'Chọn nhóm quyền'"
 							[multiple]="true"
 							formControlName="roleIds"
 							[closeOnSelect]="false"

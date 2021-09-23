@@ -71,14 +71,26 @@
 	flex-direction: row-reverse;
 }
 
-.ng-select {
+.ng-select.ng-select-single .ng-select-container {
+	position: relative;
+	align-items: center;
+	height: 3.4rem;
+	.ng-value-container .ng-input {
+		top: 0.9rem;
+		left: 0.3rem !important;
+	}
+}
+
+.ng-select.ng-select.ng-select-multiple {
 	.ng-value {
 		background: #cff9df !important;
 		span {
 			color: #6993ff !important;
 		}
 	}
+}
 
+.ng-select {
 	.ng-select-container {
 		border: none !important;
 		background: #f3f6f9 !important;
