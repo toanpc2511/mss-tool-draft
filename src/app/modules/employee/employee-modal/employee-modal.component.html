@@ -19,19 +19,7 @@
 						<input hidden type="file" accept="image/*" #avatarFile (change)="addImage($event)" />
 						<span class="mt-8">Ảnh hồ sơ</span>
 					</div>
-					<div class="col-lg-9 row">
-						<div class="col-lg-6" *ngIf="isUpdate">
-							<label class="form-label required">Mã nhân viên</label>
-							<input
-								class="form-control form-control-lg form-control-solid"
-								placeholder="Nhập họ và tên"
-								formControlName="code"
-								trim="blur"
-								maxlength="99"
-								disabled
-							/>
-						</div>
-
+					<div class="col-lg-9 row" *ngIf="!isUpdate">
 						<div class="col-lg-6">
 							<label class="form-label required">Họ và tên</label>
 							<input
@@ -49,7 +37,7 @@
 							></app-validate>
 						</div>
 
-						<div class="col-lg-6" [class.mt-8]="isUpdate">
+						<div class="col-lg-6">
 							<label class="form-label required">Số điện thoại</label>
 							<input
 								class="form-control form-control-lg form-control-solid"
@@ -190,6 +178,180 @@
 								[error]="'required'"
 								[message]="'Chức vụ không được để trống'"
 							></app-validate>
+						</div>
+					</div>
+
+					<div class="col-lg-9 row" *ngIf="isUpdate">
+						<div class="col-lg-6">
+							<label class="form-label required">Mã nhân viên</label>
+							<input
+								class="form-control form-control-lg form-control-solid"
+								placeholder="Nhập họ và tên"
+								formControlName="code"
+								trim="blur"
+								maxlength="99"
+								disabled
+							/>
+						</div>
+
+						<div class="col-lg-6">
+							<label class="form-label required">Số điện thoại</label>
+							<input
+								class="form-control form-control-lg form-control-solid"
+								placeholder="Nhập số điện thoại"
+								formControlName="phone"
+								autocomplete="off"
+								(keydown.space)="$event.preventDefault()"
+								maxlength="20"
+								numbersOnly
+								[numberformControl]="employeeForm.controls['phone']"
+							/>
+
+							<app-validate
+								[control]="employeeForm.controls['phone']"
+								[error]="'required'"
+								[message]="'Số điện thoại không đúng định dạng'"
+							></app-validate>
+
+							<app-validate
+								[control]="employeeForm.controls['phone']"
+								[error]="'pattern'"
+								[message]="'Số điện thoại không đúng định dạng'"
+							></app-validate>
+
+							<app-validate
+								[control]="employeeForm.controls['phone']"
+								[error]="'existed'"
+								[message]="'Số điện thoại của nhân viên đã tồn tại'"
+							></app-validate>
+						</div>
+
+						<div class="col-lg-6 mt-8">
+							<label class="form-label required">Họ và tên</label>
+							<input
+								class="form-control form-control-lg form-control-solid"
+								placeholder="Nhập họ và tên"
+								formControlName="name"
+								trim="blur"
+								maxlength="99"
+							/>
+
+							<app-validate
+								[control]="employeeForm.controls['name']"
+								[error]="'required'"
+								[message]="'Họ và tên không được để trống'"
+							></app-validate>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label">Email</label>
+							<input
+								class="form-control form-control-lg form-control-solid"
+								placeholder="Nhập email"
+								formControlName="email"
+								trim="blur"
+								maxlength="50"
+							/>
+							<app-validate
+								[control]="employeeForm.controls['email']"
+								[error]="'email'"
+								[message]="'Email không đúng định dạng'"
+							></app-validate>
+
+							<app-validate
+								[control]="employeeForm.controls['email']"
+								[error]="'existed'"
+								[message]="'Email của nhân viên đã tồn tại'"
+							></app-validate>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label">Ngày sinh</label>
+							<div class="input-group">
+								<input
+									class="form-control form-control-lg form-control-solid"
+									placeholder="DD/MM/YYYY"
+									ngbDatepicker
+									#dateOfBirth="ngbDatepicker"
+									formControlName="dateOfBirth"
+									[maxDate]="maxDate"
+								/>
+								<div class="input-group-append">
+									<button
+										class="btn btn-outline-secondary fa fa-calendar-alt"
+										(click)="dateOfBirth.toggle()"
+										type="button"
+									></button>
+								</div>
+							</div>
+							<app-validate
+								[control]="employeeForm.controls['dateOfBirth']"
+								[error]="'ngbDate'"
+								[message]="'Ngày sinh không đúng định dạng'"
+							></app-validate>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label required">Phòng ban</label>
+							<select
+								formControlName="departmentId"
+								class="form-control form-control-lg form-control-solid"
+							>
+								<option [value]="null" disabled>Chọn phòng ban</option>
+								<option *ngFor="let department of departments" [value]="department.id">
+									{{department.name}}
+								</option>
+							</select>
+							<app-validate
+								[control]="employeeForm.controls['departmentId']"
+								[error]="'required'"
+								[message]="'Phòng ban không được để trống'"
+							></app-validate>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label">Giới tính</label>
+							<select class="form-control form-control-lg form-control-solid" formControlName="sex">
+								<option [value]="null" disabled>Chọn giới tính</option>
+								<option [value]="eSex.MALE">Nam</option>
+								<option [value]="eSex.FEMALE">Nữ</option>
+							</select>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label required">Chức vụ</label>
+							<select
+								formControlName="positionId"
+								class="form-control form-control-lg form-control-solid"
+							>
+								<option [value]="null" disabled>Chọn chức vụ</option>
+								<option *ngFor="let position of positions" [value]="position.id">
+									{{position.name}}
+								</option>
+							</select>
+
+							<app-validate
+								[control]="employeeForm.controls['positionId']"
+								[error]="'required'"
+								[message]="'Chức vụ không được để trống'"
+							></app-validate>
+						</div>
+
+						<div class="mt-8 col-lg-12">
+							<label class="form-label">Địa điểm làm việc</label>
+							<ng-select
+								[placeholder]="'Chọn điểm điểm làm việc'"
+								[multiple]="true"
+								formControlName="stationIds"
+								[closeOnSelect]="false"
+								[isGroupDisplay]="true"
+								[groupText]="'địa điểm khác'"
+								[minLengthGroup]="2"
+							>
+								<ng-option *ngFor="let station of stationAddress" [value]="station.id"
+									>{{ station.name }}</ng-option
+								>
+							</ng-select>
 						</div>
 					</div>
 				</div>

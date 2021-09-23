@@ -1,0 +1,217 @@
+<div class="mt-1 card card-custom wrapper-content">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="title">Thông tin chung</h3>
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="row justify-content-center w-100">
+			<div class="form form-label-right w-100">
+				<div class="row">
+					<div class="col-lg-3 d-flex align-items-center justify-content-center flex-column">
+						<div class="avatar">
+							<img
+								alt=""
+								[src]="employeeData?.avatar?.url ? employeeData.avatar?.url : 'assets/media/sun-oil/employee/placeholder-user.png'"
+							/>
+						</div>
+						<span class="mt-8">Ảnh hồ sơ</span>
+					</div>
+
+					<div class="col-lg-9 row">
+						<div class="col-lg-6">
+							<label class="form-label w-30">Mã nhân viên</label>
+							<label class="form-label w-70">{{employeeData?.code}}</label>
+						</div>
+
+						<div class="col-lg-6">
+							<label class="form-label w-30">Số điện thoại</label>
+							<label class="form-label w-70">{{employeeData?.phone}}</label>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label w-30">Họ và tên</label>
+							<label class="form-label w-70">{{employeeData?.name}}</label>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label w-30">Email</label>
+							<label class="form-label w-70">{{employeeData?.email}}</label>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label w-30">Ngày sinh</label>
+							<label
+								class="form-label w-70"
+								[textContent]="convertDateToDisplay(employeeData?.dateOfBirth)"
+							></label>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label w-30">Phòng ban</label>
+							<label class="form-label w-70">{{employeeData?.department?.name}}</label>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label w-30">Giới tính</label>
+							<label class="form-label w-70"
+								>{{employeeData?.sex === eSex.MALE ? 'Nam' : 'Nữ'}}</label
+							>
+						</div>
+
+						<div class="mt-8 col-lg-6">
+							<label class="form-label w-30">Chức vụ</label>
+							<label class="form-label w-70">{{employeeData?.positions?.name}}</label>
+						</div>
+
+						<div class="mt-8 col-lg-12">
+							<label class="form-label" style="width: calc(((30 / 100) * 50%) - 4px)"
+								>Địa điểm làm việc</label
+							>
+							<label
+								class="form-label w-70"
+								[textContent]="displayStationList(employeeData?.stationList)"
+							></label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="pr-20 mt-10 row">
+		<div class="col-lg-6">
+			<div class="card-header">
+				<div class="card-title">
+					<h3 class="title">Thông tin khác</h3>
+				</div>
+			</div>
+			<div class="ml-5 row">
+				<div class="col-lg-12">
+					<label class="form-label w-30">Tình trạng hôn nhân</label>
+					<label class="form-label w-70"
+						>{{employeeData?.maritalStatus === eMaritalStatus.MARRIED ? 'Đã kết hôn' : 'Độcthân'}}
+					</label>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label w-30">Dân tộc</label>
+					<label class="form-label w-70">{{employeeData?.nation}}</label>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label w-30">Tôn giáo</label>
+					<label class="form-label w-70">{{employeeData?.religion}}</label>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label w-30">CMND/CCCD</label>
+					<label class="form-label w-70">{{employeeData?.identityCardNumber}}</label>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label w-30">Ngày cấp CMND/CCCD</label>
+					<label
+						class="form-label w-70"
+						[textContent]="convertDateToDisplay(employeeData?.dateRange)"
+					></label>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label w-30">Nơi cấp CMND/CCCD</label>
+					<label class="form-label w-70">{{employeeData?.supplyAddress}}</label>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="card-header">
+				<div class="card-title">
+					<h3 class="title">Địa chỉ nhân viên</h3>
+				</div>
+			</div>
+
+			<div class="ml-5 row">
+				<div class="col-lg-12">
+					<label class="form-label w-30">Tỉnh/Thành phố</label>
+					<label class="form-label w-70">{{employeeData?.province?.name}}</label>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label w-30">Quận/Huyện</label>
+					<label class="form-label w-70">{{employeeData?.district?.name}}</label>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label w-30">Xã/Phường</label>
+					<label class="form-label w-70">{{employeeData?.ward?.name}}</label>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label w-30">Địa chỉ</label>
+					<label class="form-label w-70">{{employeeData?.address}}</label>
+				</div>
+
+				<div class="mt-8 col-lg-12">
+					<label class="form-label w-30">Địa chỉ đầy đủ</label>
+					<label class="form-label w-70">{{employeeData?.fullAddress}}</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="mt-8 col-lg-12">
+			<div class="card-header">
+				<div class="card-title">
+					<h3 class="title">Ảnh CMND/CCCD</h3>
+				</div>
+			</div>
+			<div class="ml-5 row">
+				<div class="col-lg-6 d-flex align-items-center cmnd">
+					<div class="cmnd-title">
+						<label class="mr-10 form-label">CMND/CCCD(Mặt trước)</label>
+					</div>
+					<img
+						alt="CMND/CCCD(Mặt trước)"
+						width="300px"
+						[src]="employeeData?.credentialImages && employeeData?.credentialImages[0]?.url ? employeeData?.credentialImages[0]?.url: 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+					/>
+				</div>
+				<div class="col-lg-6 d-flex align-items-center cmnd">
+					<div class="cmnd-title">
+						<label class="mr-10 form-label">CMND/CCCD(Mặt sau)</label>
+					</div>
+					<img
+						alt="CMND/CCCD(Mặt sau)"
+						width="300px"
+						[src]="employeeData?.credentialImages && employeeData?.credentialImages[1]?.url ? employeeData?.credentialImages[1]?.url: 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+					/>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="mt-10 card-body">
+		<div class="p-0 m-0 card-header">
+			<div class="card-title">
+				<h3 class="title">File đính kèm</h3>
+			</div>
+		</div>
+		<div class="col-lg-12 row">
+			<a
+				[routerLink]="null"
+				(click)="downloadFile( file.id,file.name)"
+				*ngFor="let file of employeeData?.attachment"
+				>{{file.name}}</a
+			>
+		</div>
+	</div>
+
+	<div class="row justify-content-center w-100 mt-15 mb-15">
+		<button
+			type="button"
+			class="mr-6 btn btn-outline-secondary btn-dialog"
+			[routerLink]="['/nhan-vien/danh-sach']"
+		>
+			Quay lại
+		</button>
+	</div>
+</div>

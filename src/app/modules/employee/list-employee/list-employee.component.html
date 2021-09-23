@@ -6,8 +6,8 @@
 		<div class="ml-1 d-flex w-100">
 			<div class="w-33 d-flex align-items-center">
 				<strong class="mr-6"> Phòng ban </strong>
-				<select class="form-control w-50" [formControl]="departmentControl" [value]="null">
-					<option [value]="null">Tất cả</option>
+				<select class="form-control w-50" [formControl]="departmentControl">
+					<option value="">Tất cả</option>
 					<option *ngFor="let department of departments" [value]="department.id">
 						{{department.name}}
 					</option>
@@ -15,8 +15,8 @@
 			</div>
 			<div class="w-33 d-flex align-items-center">
 				<strong class="mr-6">Chức vụ</strong>
-				<select class="form-control w-50" [formControl]="positionControl" [value]="null">
-					<option [value]="null">Tất cả</option>
+				<select class="form-control w-50" [formControl]="positionControl">
+					<option value="">Tất cả</option>
 					<option *ngFor="let position of positions" [value]="position.id">
 						{{position.name}}
 					</option>
@@ -34,7 +34,7 @@
 					/>
 				</div>
 
-				<button type="button" class="btn btn-primary" (click)="openEmployeeModal()">
+				<button type="button" class="btn btn-primary" (click)="openEmployeeModal($event)">
 					Thêm mới
 				</button>
 			</div>
@@ -92,7 +92,7 @@
 					<th class="text-center" scope="">Tác động</th>
 				</thead>
 				<tbody>
-					<tr *ngFor="let item of dataSource">
+					<tr *ngFor="let item of dataSource" (click)="viewDetailEmployee(item.id)">
 						<td class="code">
 							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
 								{{ item.code }}
@@ -144,7 +144,7 @@
 
 						<td class="text-center action">
 							<a
-								(click)="openEmployeeModal(item.id)"
+								(click)="openEmployeeModal($event, item.id)"
 								class="mx-3 btn btn-icon btn-light btn-hover-primary btn-sm"
 							>
 								<span
@@ -156,7 +156,7 @@
 								</span>
 							</a>
 							<a
-								(click)="deleteEmployee(item)"
+								(click)="deleteEmployee($event, item)"
 								class="btn btn-icon btn-light btn-hover-danger btn-sm"
 							>
 								<span

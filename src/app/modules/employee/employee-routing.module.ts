@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { EmployeeDetailModalComponent } from './employee-detail-modal/employee-detail-modal.component';
 import { EmployeeModalComponent } from './employee-modal/employee-modal.component';
 import { ListEmployeeComponent } from './list-employee/list-employee.component';
 
@@ -23,6 +24,10 @@ const routes: Routes = [
 			{
 				path: 'sua-nhan-vien/:id',
 				component: EmployeeModalComponent
+			},
+			{
+				path: 'chi-tiet/:id',
+				component: EmployeeDetailModalComponent
 			}
 		]
 	}

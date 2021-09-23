@@ -311,7 +311,10 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			nation: [null],
 			address: [null],
 			religion: [null],
-			identityCardNumber: [null, [TValidators.required, TValidators.pattern(/^[0-9]{12}$/)]],
+			identityCardNumber: [
+				null,
+				[TValidators.required, TValidators.pattern(/^[0-9]{9}$|^[0-9]{12}$/)]
+			],
 			dateRange: [null],
 			fullAddress: [null],
 			supplyAddress: [],
