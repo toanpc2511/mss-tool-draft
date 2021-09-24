@@ -12,13 +12,13 @@
 
 				<div class="body-card px-5">
 					<div class="row pb-3">
-						<div class="col-lg-7">Số điện thoại</div>
-						<div class="col-lg-5">{{itemTransaction.phone}}</div>
+						<div class="col-lg-8">Số điện thoại</div>
+						<div class="col-lg-4">{{itemTransaction.phone}}</div>
 					</div>
 
 					<div class="row py-3">
-						<div class="col-lg-7">Tên khách hàng</div>
-						<div class="col-lg-5">{{itemTransaction.nameDriver}}</div>
+						<div class="col-lg-8">Tên khách hàng</div>
+						<div class="col-lg-4">{{itemTransaction.nameDriver}}</div>
 					</div>
 				</div>
 			</div>
@@ -30,35 +30,35 @@
 
 				<div class="body-card px-5">
 					<div class="row pb-3">
-						<div class="col-lg-7">Tên trạm xăng</div>
-						<div class="col-lg-5">{{itemTransaction.stationName}}</div>
+						<div class="col-lg-8">Tên trạm xăng</div>
+						<div class="col-lg-4">{{itemTransaction.stationName}}</div>
 					</div>
 
 					<div class="row py-3">
-						<div class="col-lg-7">Cột bơm</div>
-						<div class="col-lg-5">{{itemTransaction.pumpPole}}</div>
+						<div class="col-lg-8">Cột bơm</div>
+						<div class="col-lg-4">{{itemTransaction.pumpPole}}</div>
 					</div>
 
 					<div class="row py-3">
-						<div class="col-lg-7">Nhân viên thực hiện</div>
-						<div class="col-lg-5">{{itemTransaction.nameEmployee}}</div>
+						<div class="col-lg-8">Nhân viên thực hiện</div>
+						<div class="col-lg-4">{{itemTransaction.nameEmployee}}</div>
 					</div>
 
 					<div class="row py-3">
-						<div class="col-lg-7">Loại nhiên liệu</div>
-						<div class="col-lg-5">{{itemTransaction.productName}}</div>
+						<div class="col-lg-8">Loại nhiên liệu</div>
+						<div class="col-lg-4">{{itemTransaction.productName}}</div>
 					</div>
 
 					<div class="row py-3">
-						<div class="col-lg-7">Đơn giá</div>
-						<div class="col-lg-5">
+						<div class="col-lg-8">Đơn giá</div>
+						<div class="col-lg-4">
 							{{itemTransaction.price?.toLocaleString('en-US') || 0}} VNĐ/L
 						</div>
 					</div>
 
 					<div class="row py-3">
-						<div class="col-lg-7">Nhận hóa đơn</div>
-						<div class="col-lg-5">{{itemTransaction.takeReceipt ? 'Có' : 'Không'}}</div>
+						<div class="col-lg-8">Nhận hóa đơn</div>
+						<div class="col-lg-4">{{itemTransaction.takeReceipt ? 'Có' : 'Không'}}</div>
 					</div>
 				</div>
 			</div>
@@ -70,22 +70,22 @@
 
 				<div class="body-card px-5">
 					<div class="row pb-3">
-						<div class="col-lg-7">Số lít</div>
-						<div class="col-lg-5">
+						<div class="col-lg-8">Số lít</div>
+						<div class="col-lg-4">
 							{{itemTransaction.actualityLiters?.toLocaleString('en-US') || 0}} L
 						</div>
 					</div>
 
 					<div class="row py-3" *ngIf="itemTransaction.paymentMethodName !== 'Hạn mức nhiên liệu'">
-						<div class="col-lg-7">Tổng tiền đã thanh toán</div>
-						<div class="col-lg-5">
+						<div class="col-lg-8">Tổng tiền đã thanh toán</div>
+						<div class="col-lg-4">
 							{{itemTransaction.actualityMoney?.toLocaleString('en-US') || 0}} VNĐ
 						</div>
 					</div>
 
 					<div class="row py-3" *ngIf="itemTransaction.paymentMethodName === 'Hạn mức nhiên liệu'">
-						<div class="col-lg-7">Tổng lít đã thanh toán</div>
-						<div class="col-lg-5">
+						<div class="col-lg-8">Tổng lít đã thanh toán</div>
+						<div class="col-lg-4">
 							{{itemTransaction.totalNumberLiters?.toLocaleString('en-US') || 0}} L
 						</div>
 					</div>
@@ -99,22 +99,22 @@
 
 				<div class="body-card px-5">
 					<div class="row pb-3">
-						<div class="col-lg-7">Tiền mặt</div>
-						<div class="col-lg-5">
+						<div class="col-lg-8">Tiền mặt</div>
+						<div class="col-lg-4">
 							{{itemTransaction.cashPaid?.toLocaleString('en-US') || 0}} VNĐ
 						</div>
 					</div>
 
 					<div class="row py-3">
-						<div class="col-lg-7">Hạn mức</div>
+						<div class="col-lg-8">Hạn mức</div>
 						<div
-							class="col-lg-5"
+							class="col-lg-4"
 							*ngIf="itemTransaction.paymentMethodName !== 'Hạn mức nhiên liệu'"
 						>
 							{{itemTransaction.paymentLimitMoney?.toLocaleString('en-US') || 0}} VNĐ
 						</div>
 						<div
-							class="col-lg-5"
+							class="col-lg-4"
 							*ngIf="itemTransaction.paymentMethodName === 'Hạn mức nhiên liệu'"
 						>
 							{{itemTransaction.paymentLimitOil?.toLocaleString('en-US') || 0}} L
@@ -122,8 +122,8 @@
 					</div>
 
 					<div class="row py-3" *ngIf="itemTransaction.paymentMethodName !== 'Hạn mức nhiên liệu'">
-						<div class="col-lg-7">Điểm SunOil</div>
-						<div class="col-lg-5">
+						<div class="col-lg-8">Điểm SunOil</div>
+						<div class="col-lg-4">
 							{{itemTransaction.accumulationPointUse?.toLocaleString('en-US')}} VNĐ
 						</div>
 					</div>
@@ -137,15 +137,15 @@
 
 				<div class="body-card px-5">
 					<div class="row pb-3" *ngIf="itemTransaction.paymentMethodName !== 'Hạn mức nhiên liệu'">
-						<div class="col-lg-7">Điểm SunOil nhận được</div>
-						<div class="col-lg-5">
+						<div class="col-lg-8">Điểm SunOil nhận được</div>
+						<div class="col-lg-4">
 							{{itemTransaction.accumulationPointReceive?.toLocaleString('en-US')}}
 						</div>
 					</div>
 
 					<div class="row py-3">
-						<div class="col-lg-7">Khuyến mãi</div>
-						<div class="col-lg-5">{{itemTransaction.promotions}}</div>
+						<div class="col-lg-8">Khuyến mãi</div>
+						<div class="col-lg-4">{{itemTransaction.promotions}}</div>
 					</div>
 				</div>
 			</div>
