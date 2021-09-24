@@ -360,7 +360,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			email: [null, TValidators.email],
 			departmentId: [null, TValidators.required],
 			positionId: [null, TValidators.required],
-			stationIds: [null],
+			stationIds: [null, TValidators.required],
 			nation: [null],
 			address: [null],
 			religion: [null],
