@@ -210,7 +210,11 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		this.employeeForm.get('address').patchValue(data.address);
 		this.employeeForm.get('provinceId').patchValue(data.province?.id || null);
 		this.employeeForm.get('districtId').patchValue(data.district?.id || null);
-		this.employeeForm.get('wardId').patchValue(data.ward?.id || null);
+
+		// Fix async máy yếu
+		setTimeout(() => {
+			this.employeeForm.get('wardId').patchValue(data.ward?.id || null);
+		}, 300);
 
 		this.employeeForm.get('departmentId').patchValue(data.department?.id, NO_EMIT_EVENT);
 
