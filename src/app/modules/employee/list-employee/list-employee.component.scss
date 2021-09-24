@@ -12,16 +12,21 @@ table {
 			}
 		}
 		&.name {
-			width: 350px;
+			p {
+				width: 150px;
+			}
 		}
-		&.office-address {
-		}
+
 		&.department {
-			width: 250px;
+			p {
+				width: 250px;
+			}
 		}
 
 		&.position {
-			width: 250px;
+			p {
+				width: 250px;
+			}
 		}
 
 		&.action {
