@@ -202,7 +202,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	patchUpdateValueToForm(data: IEmployeeDetail) {
 		this.employeeForm.patchValue(data, NO_EMIT_EVENT);
-
+		this.isStationAddressLoadedSubject.subscribe(() => console.log('zô'));
 		this.isStationAddressLoaded$
 			.pipe(
 				tap(() => {
@@ -359,7 +359,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 					this.cdr.detectChanges();
 					setTimeout(() => {
 						this.isStationAddressLoadedSubject.next();
-					});
+					}, 300);
 				}, takeUntil(this.destroy$))
 			)
 			.subscribe();
