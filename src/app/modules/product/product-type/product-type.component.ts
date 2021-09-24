@@ -143,5 +143,8 @@ export class ProductTypeComponent implements OnInit {
     if (error.code === 'SUN-OIL-4124') {
       this.toastr.error('Nhóm sản phẩm không thể chỉnh sửa');
     }
+    if (error.code === 'SUN-OIL-4870') {
+      this.toastr.error('Nhóm sản phẩm đang có sản phẩm. Không được phép xoá');
+    }
   }
 }
