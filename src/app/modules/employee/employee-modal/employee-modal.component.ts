@@ -8,11 +8,7 @@ import { combineLatest, Observable, of, Subject } from 'rxjs';
 import {
 	concatMap,
 	debounceTime,
-	filter,
-	mergeMap,
-	pluck,
-	skipUntil,
-	startWith,
+	filter, pluck, startWith,
 	switchMap,
 	takeUntil,
 	tap
@@ -78,7 +74,6 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	provinces: IProvince[] = [];
 	districts: IDistrict[] = [];
 	wards: IWard[] = [];
-	isFirstLoad = true;
 	isDepartmentLoadedSubject = new Subject();
 	isDepartmentLoaded$ = this.isDepartmentLoadedSubject.asObservable();
 
@@ -186,12 +181,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 					);
 				}),
 				tap((res) => {
-					// Is first load will not reset value of positionIds
-					if (!this.isFirstLoad) {
-						this.employeeForm.get('positionId').reset(null, NO_EMIT_EVENT);
-					} else {
-						this.isFirstLoad = false;
-					}
+					this.employeeForm.get('positionId').reset(null, NO_EMIT_EVENT);
 					this.positions = res.data;
 					this.cdr.detectChanges();
 				}),
