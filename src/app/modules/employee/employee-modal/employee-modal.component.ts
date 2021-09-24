@@ -208,9 +208,9 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 			.get('dateRange')
 			.patchValue(convertDateToDisplay(data.dateRange), NO_EMIT_EVENT);
 		this.employeeForm.get('address').patchValue(data.address);
-		this.employeeForm.get('provinceId').patchValue(data.province?.id);
-		this.employeeForm.get('districtId').patchValue(data.district?.id);
-		this.employeeForm.get('wardId').patchValue(data.ward?.id);
+		this.employeeForm.get('provinceId').patchValue(data.province?.id || null);
+		this.employeeForm.get('districtId').patchValue(data.district?.id || null);
+		this.employeeForm.get('wardId').patchValue(data.ward?.id || null);
 
 		this.employeeForm.get('departmentId').patchValue(data.department?.id, NO_EMIT_EVENT);
 
@@ -238,6 +238,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		this.employeeForm
 			.get('provinceId')
 			.valueChanges.pipe(
+				filter((provinceId) => !!provinceId),
 				concatMap((provinceId: number) => {
 					this.districts = [];
 					this.wards = [];
@@ -261,6 +262,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		this.employeeForm
 			.get('districtId')
 			.valueChanges.pipe(
+				filter((districtId) => !!districtId),
 				concatMap((districtId: number) => {
 					this.wards = [];
 					this.employeeForm.get('wardId').reset(null, NO_EMIT_EVENT);
