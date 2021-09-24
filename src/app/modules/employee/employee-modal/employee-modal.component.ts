@@ -82,6 +82,9 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	isDepartmentLoadedSubject = new Subject();
 	isDepartmentLoaded$ = this.isDepartmentLoadedSubject.asObservable();
 
+	isStationAddressLoadedSubject = new Subject();
+	isStationAddressLoaded$ = this.isStationAddressLoadedSubject.asObservable();
+
 	constructor(
 		private fb: FormBuilder,
 		private employeeService: EmployeeService,
@@ -200,7 +203,19 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 	patchUpdateValueToForm(data: IEmployeeDetail) {
 		this.employeeForm.patchValue(data, NO_EMIT_EVENT);
 
-		this.employeeForm.get('stationIds').patchValue(data.stationList?.map((s) => s.id));
+		this.isStationAddressLoaded$
+			.pipe(
+				tap(() => {
+					const stations = data.stationList
+						?.filter((s) => this.stationAddress.some((sa) => sa.id === s.id))
+						?.map((s) => s.id);
+					this.employeeForm.get('stationIds').patchValue(stations);
+					this.cdr.detectChanges();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+
 		this.employeeForm
 			.get('dateOfBirth')
 			.patchValue(convertDateToDisplay(data.dateOfBirth), NO_EMIT_EVENT);
@@ -342,6 +357,9 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 				tap((res) => {
 					this.stationAddress = res.data;
 					this.cdr.detectChanges();
+					setTimeout(() => {
+						this.isStationAddressLoadedSubject.next();
+					});
 				}, takeUntil(this.destroy$))
 			)
 			.subscribe();
