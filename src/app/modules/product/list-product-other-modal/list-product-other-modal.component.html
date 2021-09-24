@@ -22,7 +22,12 @@
 							[control]="productForm.controls['name']"
 							[error]="'required'"
 							[message]="'Tên sản phẩm không được để trống'"
-						></app-validate>
+              ></app-validate>
+            <app-validate
+              [control]="productForm.controls['name']"
+              [error]="'nameExisted'"
+              [message]="'Tên sản phẩm đã tồn tại'"
+            ></app-validate>
 					</div>
 
 					<div class="col-lg-4">

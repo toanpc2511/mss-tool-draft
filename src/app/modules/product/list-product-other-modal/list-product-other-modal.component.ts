@@ -87,8 +87,6 @@ export class ListProductOtherModalComponent implements OnInit {
 					return;
 				}
 
-				console.log(this.productForm.value);
-
 				const valueForm = { ...this.productForm.getRawValue() };
 				valueForm.entryPrice = Number(valueForm.entryPrice.split(',').join(''));
 				valueForm.price = Number(valueForm.price.split(',').join(''));
@@ -118,8 +116,7 @@ export class ListProductOtherModalComponent implements OnInit {
 	}
 
 	onClose() {
-		// this.modal.close();
-    console.log(this.productForm.value);
+		this.modal.close();
 	}
 
 	formatMoney(n) {
@@ -130,7 +127,7 @@ export class ListProductOtherModalComponent implements OnInit {
 
 	checkError(err: IError) {
 		if (err.code === 'SUN-OIL-4710') {
-			this.toastr.error('Tên sản phẩm trùng');
+      this.productForm.get('name').setErrors({ nameExisted: true });
 		}
 		if (err.code === 'SUN-OIL-4711') {
 			this.toastr.error('Mã sản phẩm không được trùng');

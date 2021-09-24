@@ -273,7 +273,7 @@
 								placement="top"
 								[ngbTooltip]="item.valueAddedTax + '%'"
 							>
-								{{ item.valueAddedTax }}
+								{{ item.valueAddedTax || '-'}}
 							</p>
 						</td>
 						<td class="status">
