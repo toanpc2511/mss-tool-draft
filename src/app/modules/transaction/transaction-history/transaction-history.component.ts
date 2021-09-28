@@ -49,7 +49,7 @@ export class TransactionHistoryComponent implements OnInit {
 	totalRecord: number;
 
 	dataFileExcel: any;
-  categoryId: number = 0;
+	categoryId: number = 0;
 
 	constructor(
 		private modalService: NgbModal,
@@ -183,6 +183,7 @@ export class TransactionHistoryComponent implements OnInit {
 			.subscribe((res) => {
 				if (res.data) {
 					this.dataSource = res.data;
+
 					if (this.dataSource.length > 0) {
 						this.exportFileExcel();
 
