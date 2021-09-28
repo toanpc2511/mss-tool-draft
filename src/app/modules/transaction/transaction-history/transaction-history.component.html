@@ -133,7 +133,7 @@
 
 		<div class="form-group row py-3">
 			<button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
-				<em class="fas fa-search"> Tìm kiếm</em>
+				<em class="fas fa-search"></em> Tìm kiếm
 			</button>
 			<button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
 		</div>
@@ -213,9 +213,9 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.createdAt | date: 'dd/MM/yyyy - HH:MM'"
+								[ngbTooltip]="item.createdAt | dateCustom"
 							>
-								{{ item.createdAt | date: 'dd/MM/yyyy - HH:MM' }}
+								{{ item.createdAt | dateCustom}}
 							</p>
 						</td>
 

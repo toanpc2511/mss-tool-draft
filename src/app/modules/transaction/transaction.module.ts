@@ -17,12 +17,14 @@ import { TransactionRoutingModule } from './transaction-routing.module';
 import { TransactionHistoryComponent } from './transaction-history/transaction-history.component';
 import { TransactionHistoryModalComponent } from './transaction-history-modal/transaction-history-modal.component';
 import { NgSelectModule } from 'src/app/shared/components/ng-select/public-api';
+import { DatePipe } from './date.pipe';
 
 @NgModule({
 	declarations: [
 		TransactionComponent,
 		TransactionHistoryComponent,
-		TransactionHistoryModalComponent
+		TransactionHistoryModalComponent,
+		DatePipe
 	],
 	imports: [
 		CommonModule,
