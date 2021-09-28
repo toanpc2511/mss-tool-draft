@@ -28,6 +28,13 @@ export const DynamicAsideMenuConfig = {
 			bullet: 'dot',
 			page: '/bao-cao',
 			icon: 'fas fa-file-alt'
-		}
+		},
+		{
+			title: 'Lịch sử giao dịch',
+			root: true,
+			bullet: 'dot',
+			page: '/lich-su-giao-dich',
+			icon: 'fas fa-history'
+		  }
 	]
 };
