@@ -367,7 +367,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.infoForm = this.fb.group({
 			phone: [null, [Validators.required]],
 			id: [null],
-			idRank: [null],
+			rankId: [null],
 			name: [null],
 			enterpriseName: [null],
 			dateOfBirth: [null],
@@ -490,7 +490,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.productService
 			.getProductInfo(
 				Number(productId),
-				this.infoForm.get('idRank').value,
+				this.infoForm.get('rankId').value,
 				this.addressSelected?.areaType || 'AREA_1'
 			)
 			.pipe(takeUntil(this.destroy$))
@@ -522,7 +522,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 
 	patchValueInfoForm(infoData: any) {
 		this.infoForm.get('id').patchValue(infoData.id);
-		this.infoForm.get('idRank').patchValue(infoData.idRank);
+		this.infoForm.get('rankId').patchValue(infoData.idRank);
 		this.infoForm.get('name').patchValue(infoData.name);
 		this.infoForm.get('enterpriseName').patchValue(infoData.enterpriseName);
 		this.infoForm.get('dateOfBirth').patchValue(convertDateToDisplay(infoData.dateOfBirth));
@@ -535,7 +535,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 
 	resetInfoForm() {
 		this.infoForm.get('id').reset();
-		this.infoForm.get('idRank').reset();
+		this.infoForm.get('rankId').reset();
 		this.infoForm.get('name').reset();
 		this.infoForm.get('enterpriseName').reset();
 		this.infoForm.get('dateOfBirth').reset();
@@ -731,6 +731,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			const prepayContractData: IContractPrepayInput = {
 				creatorType: ECreatorType.ENTERPRISE,
 				profileId: infoData.id,
+				rankId: infoData.rankId,
 				contractTypeCode: contractData.contractTypeCode,
 				name: contractData.name,
 				effectEndDate: convertDateToServer(contractData.effectEndDate),
@@ -774,7 +775,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			}
 			const planContractData: IContractPlanInput = {
 				creatorType: ECreatorType.ENTERPRISE,
-				idRank: infoData.idRank,
+				rankId: infoData.rankId,
 				profileId: infoData.id,
 				contractTypeCode: contractData.contractTypeCode,
 				name: contractData.name,
