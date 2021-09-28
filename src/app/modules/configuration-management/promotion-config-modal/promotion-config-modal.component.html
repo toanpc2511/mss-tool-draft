@@ -1,0 +1,50 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+    <div class="close-icon" (click)="modal.close()"></div>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default modal-body">
+      <form class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class="form-label required">Loại nhiên liệu</label>
+            <select class="form-control form-control-solid form-control-lg">
+              <option [value]="''">Chọn loại nhiên liệu</option>
+              <option [value]="''">Tất cả</option>
+              <option [value]="''">Tất cả</option>
+            </select>
+          </div>
+
+          <div class="col-lg-6">
+            <label class="form-label required">Số lượng cần đạt/ giao dịch (Lít)</label>
+            <input
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="Nhập số lít"
+              autocomplete="off"
+              maxlength="20"
+              (keydown.space)="$event.preventDefault()"
+            />
+          </div>
+        </div>
+      </form>
+
+      <div class="pt-5">
+        <div class="title-card pb-3 font-weight-bold">
+          <label>Danh sách sản phẩm nhận khuyến mại</label>
+        </div>
+
+        <div class="body-card px-5">
+          <h1>a</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
+  </div>
+</div>

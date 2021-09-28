@@ -165,8 +165,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.contractForm.get('contractTypeCode').disable({ emitEvent: false, onlySelf: true });
 		this.contractForm.get('name').patchValue(data.name);
 		this.contractForm.get('effectEndDate').patchValue(convertDateToDisplay(data.effectEndDate));
-		console.log(this.contractForm.get('effectEndDate'));
-
 		this.contractForm.get('transportMethodCode').patchValue(data.transportMethod?.code || null);
 		this.contractForm.get('payMethodCode').patchValue(data.payMethod.code);
 	}
@@ -359,6 +357,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			dateOfBirth: [null],
 			idCard: [null],
 			email: [null],
+			rankId: [null],
 			address: [null]
 		});
 
@@ -370,11 +369,13 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					if (phoneNumber) {
 						return this.contractService.getInfoUser(phoneNumber).pipe(
 							catchError((err: IError) => {
+								this.resetInfoForm();
 								this.checkError(err);
 								return of(err);
 							})
 						);
 					}
+					this.resetInfoForm();
 					return of(null);
 				}),
 				takeUntil(this.destroy$)
@@ -474,23 +475,27 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			this.updateTotalProduct(i);
 		}
 		this.productService
-			.getProductInfo(Number(productId), this.addressSelected?.areaType || 'AREA_1')
+			.getProductInfo(
+				Number(productId),
+				this.infoForm.get('rankId').value,
+				this.addressSelected?.areaType || 'AREA_1'
+			)
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
 				this.productFormArray.at(i).get('price').patchValue(res.data.price);
-				this.productFormArray.at(i).get('discount').patchValue(res.data.price);
+				this.productFormArray.at(i).get('discount').patchValue(res.data.discount);
 				this.productFormArray.at(i).get('unit').patchValue(res.data.unit);
 				this.updateTotalProduct(i);
 			});
 	}
 
 	updateTotalProduct(i: number) {
-		const price = this.productFormArray.at(i).get('price').value;
-		const value = this.productFormArray.at(i).get('amount').value;
+		const discount = this.productFormArray.at(i).get('discount').value;
+		const amount = this.productFormArray.at(i).get('amount').value;
 		this.productFormArray
 			.at(i)
 			.get('totalMoney')
-			.patchValue(value * price);
+			.patchValue(amount * discount);
 		this.cdr.detectChanges();
 	}
 
@@ -505,6 +510,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	patchValueInfoForm(infoData: any) {
 		this.infoForm.get('id').patchValue(infoData.id);
 		this.infoForm.get('name').patchValue(infoData.name);
+		this.infoForm.get('rankId').patchValue(infoData.idRank);
 		this.infoForm.get('enterpriseName').patchValue(infoData.enterpriseName);
 		this.infoForm.get('dateOfBirth').patchValue(convertDateToDisplay(infoData.dateOfBirth));
 		this.infoForm.get('idCard').patchValue(infoData.idCard);
@@ -517,6 +523,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	resetInfoForm() {
 		this.infoForm.get('id').reset();
 		this.infoForm.get('name').reset();
+		this.infoForm.get('rankId').reset();
 		this.infoForm.get('enterpriseName').reset();
 		this.infoForm.get('dateOfBirth').reset();
 		this.infoForm.get('idCard').reset();
@@ -683,6 +690,8 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	save(status: EContractStatus) {
 		let hasError = false;
 		this.infoForm.markAllAsTouched();
+
+
 		this.contractForm.markAllAsTouched();
 		if (this.infoForm.invalid) {
 			hasError = true;
@@ -711,6 +720,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			const prepayContractData: IContractPrepayInput = {
 				creatorType: ECreatorType.EMPLOYEE,
 				profileId: infoData.id,
+				rankId: infoData.rankId,
 				contractTypeCode: contractData.contractTypeCode,
 				name: contractData.name,
 				effectEndDate: convertDateToServer(contractData.effectEndDate),
@@ -755,6 +765,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			const planContractData: IContractPlanInput = {
 				creatorType: ECreatorType.EMPLOYEE,
 				profileId: infoData.id,
+				rankId: infoData.rankId,
 				contractTypeCode: contractData.contractTypeCode,
 				name: contractData.name,
 				effectEndDate: convertDateToServer(contractData.effectEndDate),

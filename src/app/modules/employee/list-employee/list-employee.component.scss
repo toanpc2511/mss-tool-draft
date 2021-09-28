@@ -1,0 +1,92 @@
+table thead th {
+	text-transform: none;
+}
+
+table {
+	min-width: 1024px;
+
+	td {
+		&.code {
+			p {
+				width: 120px;
+			}
+		}
+		&.name {
+			p {
+				width: 150px;
+			}
+		}
+
+		&.department {
+			p {
+				width: 200px;
+			}
+		}
+
+		&.position {
+			p {
+				width: 200px;
+			}
+		}
+
+		&.action {
+			min-width: 180px;
+		}
+	}
+
+	tr {
+		&:hover {
+			background-color: #f3f6f9;
+
+			td {
+				.btn.btn-light {
+					background-color: #ffffff;
+				}
+			}
+		}
+	}
+}
+
+.card-toolbar {
+	gap: 50px;
+	// .search-form {
+	//   position: relative;
+	//   display: flex;
+	//   align-items: center;
+
+	//   i {
+	//     position: absolute;
+	//     left: 10px;
+	//     top: 7px;
+	//   }
+
+	//   input {
+	//     padding-left: 30px;
+	//   }
+	// }
+
+	button {
+		width: 110px;
+	}
+}
+
+.card.card-custom {
+	box-shadow: none !important;
+
+	.card-body,
+	.card-header {
+		border: 0;
+	}
+
+	.card-body {
+		padding-top: 1rem;
+	}
+
+	.card-header {
+		margin-top: 2rem;
+	}
+}
+
+.w-33 {
+	width: 33%;
+}

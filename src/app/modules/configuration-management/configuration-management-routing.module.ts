@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RankConfigComponent } from './rank-config/rank-config.component';
 import { PointsConfigComponent } from './points-config/points-config.component';
 import { DiscountConfigComponent } from './discount-config/discount-config.component';
+import { PromotionConfigComponent } from './promotion-config/promotion-config.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'hang',
     component: RankConfigComponent,
+  },
+  {
+    path: 'khuyen-mai',
+    component: PromotionConfigComponent,
   }
 ];
 

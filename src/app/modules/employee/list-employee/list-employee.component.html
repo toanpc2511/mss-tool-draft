@@ -1,0 +1,181 @@
+<div class="mt-1 card card-custom gutter-b">
+	<div class="card-header">
+		<h3 class="card-label">Danh sách nhân viên</h3>
+	</div>
+	<div class="mt-0 card-header">
+		<div class="ml-1 d-flex w-100">
+			<div class="w-33 d-flex align-items-center">
+				<strong class="mr-6"> Phòng ban </strong>
+				<select class="form-control w-50" [formControl]="departmentControl">
+					<option value="">Tất cả</option>
+					<option *ngFor="let department of departments" [value]="department.id">
+						{{department.name}}
+					</option>
+				</select>
+			</div>
+			<div class="w-33 d-flex align-items-center">
+				<strong class="mr-6">Chức vụ</strong>
+				<select class="form-control w-50" [formControl]="positionControl">
+					<option value="">Tất cả</option>
+					<option *ngFor="let position of positions" [value]="position.id">
+						{{position.name}}
+					</option>
+				</select>
+			</div>
+			<div class="w-33 d-flex align-items-center justify-content-end">
+				<div class="mr-6 search-form w-50">
+					<em class="flaticon-search"></em>
+					<input
+						type="text"
+						name="searchText"
+						placeholder="Search..."
+						class="form-control"
+						[formControl]="searchFormControl"
+					/>
+				</div>
+
+				<button type="button" class="btn btn-primary" (click)="openEmployeeModal($event)">
+					Thêm mới
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table overflow-hidden table-head-custom table-vertical-center" aria-label="">
+				<thead>
+					<th scope="">
+						Mã nhân viên
+						<app-sort-icon
+							column="code"
+							[activeColumn]="sortData?.column"
+							[activeDirection]="sortData?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Tên nhân viên
+						<app-sort-icon
+							column="name"
+							[activeColumn]="sortData?.column"
+							[activeDirection]="sortData?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Địa điểm làm việc
+						<!-- <app-sort-icon
+							column="stationId"
+							[activeColumn]="sortData?.column"
+							[activeDirection]="sortData?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon> -->
+					</th>
+					<th scope="">
+						Phòng ban
+						<app-sort-icon
+							column="department"
+							[activeColumn]="sortData?.column"
+							[activeDirection]="sortData?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Chức vụ
+						<app-sort-icon
+							column="positions"
+							[activeColumn]="sortData?.column"
+							[activeDirection]="sortData?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th class="text-center" scope="">Tác động</th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of dataSource" (click)="viewDetailEmployee(item.id)">
+						<td class="code">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
+								{{ item.code }}
+							</p>
+						</td>
+
+						<td class="name">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
+								{{ item.name }}
+							</p>
+						</td>
+
+						<td class="office-address">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="displayStationList(item.station)"
+							>
+								{{ displayStationList(item.station, 2) }}
+							</p>
+						</td>
+
+						<td class="department">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.department?.name"
+							>
+								{{ item.department?.name }}
+							</p>
+						</td>
+
+						<td class="position">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.positions?.name"
+							>
+								{{ item.positions?.name }}
+							</p>
+						</td>
+
+						<!-- <td class="status">
+							<span
+								class="label label-lg label-inline"
+								[class.label-light-success]="item.status === status.ACTIVE"
+								[class.label-light-danger]="item.status !== status.ACTIVE"
+							>
+								<ng-container *ngIf="item.status === status.ACTIVE">Hoạt động</ng-container>
+								<ng-container *ngIf="item.status !== status.ACTIVE"> Không hoạt động </ng-container>
+							</span>
+						</td> -->
+
+						<td class="text-center action">
+							<a
+								(click)="openEmployeeModal($event, item.id)"
+								class="mx-3 btn btn-icon btn-light btn-hover-primary btn-sm"
+							>
+								<span
+									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-primary"
+									[ngbTooltip]="'Sửa'"
+								>
+								</span>
+							</a>
+							<a
+								(click)="deleteEmployee($event, item)"
+								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+							>
+								<span
+									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-danger"
+									[ngbTooltip]="'Xóa'"
+								>
+								</span>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+	</div>
+</div>

@@ -80,11 +80,18 @@ export const DynamicAsideMenuConfig = {
       icon: 'fas fa-file-alt'
     },
     {
+      title: 'Quản lý nhân viên',
+      root: true,
+      bullet: 'dot',
+      page: '/nhan-vien',
+      icon: 'fas fa-user'
+    },
+    {
       title: 'Quản lý tài khoản',
       root: true,
       bullet: 'dot',
       page: '/tai-khoan',
-      icon: 'fas fa-user'
+      icon: 'fas fa-user-shield'
     },
     {
       title: 'Quản lý phân quyền',
@@ -131,6 +138,12 @@ export const DynamicAsideMenuConfig = {
           bullet: 'dot',
           page: 'cau-hinh/hang',
           notChild: true
+        },
+        {
+          title: 'Cấu hình khuyến mãi',
+          bullet: 'dot',
+          page: 'cau-hinh/khuyen-mai',
+          notChild: true
         }
       ]
     },
@@ -140,6 +153,13 @@ export const DynamicAsideMenuConfig = {
       bullet: 'dot',
       page: '/kho',
       icon: 'fas fa-warehouse'
+    },
+    {
+      title: 'Lịch sử giao dịch',
+      root: true,
+      bullet: 'dot',
+      page: '/lich-su-giao-dich',
+      icon: 'fas fa-history'
     }
   ]
 };
