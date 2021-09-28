@@ -32,6 +32,13 @@ export interface IDiscount {
 	priceAreaTwo: number;
 }
 
+export interface IConfigPromotion {
+  promotionId: number;
+  nameProduct: string;
+  amountLiterOrder: number;
+  promotion: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -65,5 +72,15 @@ export class ConfigurationManagementService {
   // Sửa cấu hình tích điểm
   updateRankStock(rankStock) {
     return this.http.put<any>(`rank-stock`, rankStock);
+  }
+
+  // Lấy ds cấu hình khuyến mại
+  getListConfigPromotion() {
+    return this.http.get<Array<IConfigPromotion>>('promotions');
+  }
+
+  // Xóa cấu hình khuyến mại
+  deleteConfigPromotion(id: any) {
+    console.log(id);
   }
 }

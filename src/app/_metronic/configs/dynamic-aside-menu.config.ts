@@ -138,6 +138,12 @@ export const DynamicAsideMenuConfig = {
           bullet: 'dot',
           page: 'cau-hinh/hang',
           notChild: true
+        },
+        {
+          title: 'Cấu hình khuyến mãi',
+          bullet: 'dot',
+          page: 'cau-hinh/khuyen-mai',
+          notChild: true
         }
       ]
     },

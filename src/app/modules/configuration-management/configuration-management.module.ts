@@ -13,13 +13,17 @@ import { RankConfigComponent } from './rank-config/rank-config.component';
 import { PointsConfigComponent } from './points-config/points-config.component';
 import { DiscountConfigComponent } from './discount-config/discount-config.component';
 import { PipesModule } from 'src/app/shared/pipes/pipes.module';
+import { PromotionConfigComponent } from './promotion-config/promotion-config.component';
+import { PromotionConfigModalComponent } from './promotion-config-modal/promotion-config-modal.component';
 
 @NgModule({
   declarations: [
     ConfigurationManagementComponent,
     RankConfigComponent,
     PointsConfigComponent,
-    DiscountConfigComponent
+    DiscountConfigComponent,
+    PromotionConfigComponent,
+    PromotionConfigModalComponent
   ],
   imports: [
     CommonModule,
