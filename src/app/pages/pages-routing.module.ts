@@ -58,16 +58,21 @@ const routes: Routes = [
 					import('../modules/authorize/permission.module').then((m) => m.PermissionModule)
 			},
 			{
+				path: 'ca-lam-viec',
+				loadChildren: () => import('../modules/shift/shift.module').then((m) => m.ShiftModule)
+			},
+			{
 				path: 'cau-hinh',
 				loadChildren: () =>
 					import('../modules/configuration-management/configuration-management.module').then(
 						(m) => m.ConfigurationManagementModule
 					)
 			},
-      {
-        path: 'lich-su-giao-dich',
-        loadChildren: () => import('../modules/transaction/transaction.module').then((m) => m.TransactionModule)
-      },
+			{
+				path: 'lich-su-giao-dich',
+				loadChildren: () =>
+					import('../modules/transaction/transaction.module').then((m) => m.TransactionModule)
+			},
 			{
 				path: '',
 				redirectTo: '/dashboard',
