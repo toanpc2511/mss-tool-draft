@@ -10,8 +10,8 @@ export class DatePipe implements PipeTransform {
     if(value) {
       const momentValue = moment(value);
       const date = momentValue.format('DD/MM/YYYY');
-      const hour = momentValue.hour();
-      const minute = momentValue.minute();
+      const hour = momentValue.hour() > 10 ? momentValue.hour() : '0' + momentValue.hour();
+      const minute = momentValue.minute() > 10 ? momentValue.minute() : '0' + momentValue.minute();
       return `${date} ${hour}:${minute}`
     }
     return '';
