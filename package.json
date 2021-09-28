@@ -39,7 +39,7 @@
     "highlightjs-line-numbers.js": "^2.8.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
-    "moment": "^2.27.0",
+    "moment": "^2.29.1",
     "ng-apexcharts": "^1.5.1",
     "ng-inline-svg": "^10.1.0",
     "ng2-trim-directive": "^2.3.4",
