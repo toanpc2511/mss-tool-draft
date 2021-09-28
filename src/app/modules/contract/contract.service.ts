@@ -145,6 +145,7 @@ export interface ICustomerInfo {
 	id: number;
 	name: string;
 	idRank: string;
+	rankId: string;
 	address: string;
 	enterpriseName: string;
 	phone: string;
@@ -164,7 +165,7 @@ export interface IProductInfo {
 }
 export interface IContractPrepayInput {
 	profileId: number;
-
+	rankId: string;
 	creatorType: ECreatorType;
 	name: string;
 	effectEndDate: string;
@@ -182,7 +183,7 @@ export interface IContractPrepayInput {
 }
 export interface IContractPlanInput {
 	profileId: number;
-	idRank: string;
+	rankId: string;
 	creatorType: ECreatorType;
 	name: string;
 	effectEndDate: string;
