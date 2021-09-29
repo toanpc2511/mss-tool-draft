@@ -302,4 +302,8 @@ export class GasStationService {
 			step4: { isValid: false }
 		});
 	}
+
+	getAllStations() {
+		return this.http.get<GasStationResponse[]>('gas-stations/address');
+	}
 }

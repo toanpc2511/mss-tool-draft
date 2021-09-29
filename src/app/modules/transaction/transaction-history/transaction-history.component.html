@@ -76,7 +76,6 @@
 							ngbDatepicker
 							#endAt="ngbDatepicker"
 							formControlName="endAt"
-
 						/>
 						<div class="input-group-append">
 							<button
@@ -222,9 +221,9 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.createdAt | dateCustom"
+								[ngbTooltip]="item.createdAt | date: 'dd/MM/yyyy HH:MM'"
 							>
-								{{ item.createdAt | dateCustom}}
+								{{ item.createdAt | date: 'dd/MM/yyyy HH:MM'}}
 							</p>
 						</td>
 

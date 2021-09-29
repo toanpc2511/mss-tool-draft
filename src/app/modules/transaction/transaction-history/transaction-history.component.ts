@@ -126,7 +126,7 @@ export class TransactionHistoryComponent implements OnInit {
 
 	getStations() {
 		this.gasStationService
-			.getListStation()
+			.getAllStations()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
 				this.stations = res.data;
