@@ -20,6 +20,7 @@ import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-
 import { NO_EMIT_EVENT } from '../../../shared/app-constants';
 import { of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-transaction-history',
@@ -49,7 +50,7 @@ export class TransactionHistoryComponent implements OnInit {
 	totalRecord: number;
 
 	dataFileExcel: any;
-  categoryId: number = 0;
+	categoryId: number = 0;
 
 	constructor(
 		private modalService: NgbModal,
@@ -182,7 +183,7 @@ export class TransactionHistoryComponent implements OnInit {
 			)
 			.subscribe((res) => {
 				if (res.data) {
-					this.dataSource = res.data;
+					this.dataSource = res.data;					
 					if (this.dataSource.length > 0) {
 						this.exportFileExcel();
 

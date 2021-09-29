@@ -22,7 +22,7 @@ import { NgSelectModule } from 'src/app/shared/components/ng-select/public-api';
 	declarations: [
 		TransactionComponent,
 		TransactionHistoryComponent,
-		TransactionHistoryModalComponent
+		TransactionHistoryModalComponent,
 	],
 	imports: [
 		CommonModule,

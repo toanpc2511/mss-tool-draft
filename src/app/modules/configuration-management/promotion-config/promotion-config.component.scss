@@ -1,0 +1,73 @@
+.card-toolbar {
+	gap: 50px;
+
+	.search-form {
+		position: relative;
+		display: flex;
+		align-items: center;
+
+		em {
+			position: absolute;
+			left: 10px;
+			top: 7px;
+		}
+
+		input {
+			padding-left: 30px;
+		}
+	}
+
+	button {
+		width: 110px;
+	}
+}
+
+.card.card-custom {
+	box-shadow: none !important;
+
+	.card-body,
+	.card-header {
+		border: 0;
+	}
+
+	.card-body {
+		padding-top: 1rem;
+	}
+
+	.card-header {
+		margin-top: 2rem;
+	}
+}
+
+table {
+	min-width: 1024px;
+
+	thead th {
+		text-transform: none;
+	}
+
+	th,
+	td {
+		&.name {
+			width: 18%;
+			max-width: 170px;
+		}
+		&.quantity {
+			width: 30%;
+		}
+		&.promotion {
+			width: 37%;
+			padding-left: 40px;
+			max-width: 320px;
+		}
+		&.action {
+			width: 15%;
+		}
+	}
+	th.quantity {
+		padding-right: 50px;
+	}
+	td.quantity {
+		padding-right: 75px;
+	}
+}
