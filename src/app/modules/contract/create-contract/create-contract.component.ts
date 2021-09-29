@@ -730,7 +730,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				fullAddress: contractData.fullAddress,
 				productInfoRequests: productData,
 				totalPayment: this.getTotal(),
-				attachmentRequests: this.filesUploaded.map((f) => f.id),
+				attachmentRequests: this.filesUploaded?.map((f) => f.id) || [],
 				statusType: status
 			};
 			if (!this.isUpdate) {
@@ -780,7 +780,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					paymentTimeFive: convertDateToServer(contractData.payPlanDate5)
 				},
 				countPayment: this.payPlanDateCount,
-				attachmentRequests: this.filesUploaded.map((f) => f.id),
+				attachmentRequests: this.filesUploaded?.map((f) => f.id) || [],
 				statusType: status
 			};
 
