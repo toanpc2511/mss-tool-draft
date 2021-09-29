@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { environment } from 'src/environments/environment';
 
 export interface IPaymentMethod {
 	id: number;
@@ -8,13 +9,6 @@ export interface IPaymentMethod {
 	code: string;
 	description: string;
 	status: string;
-}
-export interface IStationEployee {
-	id: number;
-	name: string;
-	address: string;
-	status: string;
-	code: string;
 }
 export interface IEmployees {
 	id: number;
@@ -39,12 +33,12 @@ export interface ITransaction {
 	numberVariable: [string];
 	numberVariableReal: string;
 	orderTotalResponse: {
-    totalPaymentLimitOil: number;
+		totalPaymentLimitOil: number;
 		totalAccumulationPointUse: number;
 		totalCashPaid: number;
-    totalActualityLiters: number;
+		totalActualityLiters: number;
 		totalOrder: number;
-    totalPaymentLimitMoney: number;
+		totalPaymentLimitMoney: number;
 	};
 	paymentLimit: number;
 	paymentMethodName: string;
@@ -58,9 +52,21 @@ export interface ITransaction {
 	takeReceipt: boolean;
 	totalNumberLiters: number;
 	validLicensePlate: boolean;
-  actualityLiters: number;
-  paymentLimitMoney: number;
-  paymentLimitOil: number;
+	actualityLiters: number;
+	paymentLimitMoney: number;
+	paymentLimitOil: number;
+}
+
+export interface IFilterTransaction {
+	orderCode: string;
+	product: string;
+	accountType: string;
+	station: string;
+	payMethod: string;
+	phone: string;
+	startAt: string;
+	endAt: string;
+	userName: string;
 }
 
 @Injectable({
@@ -74,37 +80,36 @@ export class TransactionService {
 		return this.http.get<Array<IPaymentMethod>>(`payments/methods/actively`);
 	}
 
-	// Lấy ds trạm
-	getStationEmployee() {
-		return this.http.get<Array<IStationEployee>>(`employees/station`);
-	}
-
-	// Lấy ds tất cả nhân viên thực hiện
-	getAllEmployee() {
-		return this.http.get<Array<IEmployees>>(`employees/stations-employee`);
-	}
-
-	// Lấy ds nhân viên theo trạm
-	getEmployeeStation(stationName: string) {
-		const params = new HttpParams().set('name-station', stationName);
-		return this.http.get(`gas-stations/employee`, { params });
-	}
-
 	// Tìm kiếm giao dịch
-	searchTransaction(page: number, size: number, data: any) {
+	searchTransaction(page: number, size: number, data: IFilterTransaction) {
 		const params = new HttpParams()
 			.set('page', page.toString())
 			.set('size', size.toString())
 			.set('order-code', data.orderCode)
 			.set('product-name', data.product)
+			.set('account-type', data.accountType)
 			.set('station-name', data.station)
 			.set('payment-method', data.payMethod)
-			.set('employee-id', data.employee)
-			.set('phone', data.phone)
-			.set('start-at', data.startDate)
-			.set('end-at', data.endDate)
+			.set('phone-driver', data.phone)
+			.set('start-at', data.startAt)
+			.set('end-at', data.endAt)
 			.set('user-name', data.userName);
+		return this.http.get<Array<ITransaction>>('order/filters-enterprises', { params });
+	}
 
-		return this.http.get<Array<ITransaction>>('orders/filters', { params });
+	exportFileExcel(data: IFilterTransaction) {
+		const params = new HttpParams()
+			.set('order-code', data.orderCode)
+			.set('product-name', data.product)
+			.set('account-type', data.accountType)
+			.set('station-name', data.station)
+			.set('payment-method', data.payMethod)
+			.set('phone-driver', data.phone)
+			.set('start-at', data.startAt)
+			.set('end-at', data.endAt)
+			.set('user-name', data.userName);
+		return this.http.customGet<string>(`${environment.apiManagementUrl}/orders/filters/excels`, {
+			params
+		});
 	}
 }

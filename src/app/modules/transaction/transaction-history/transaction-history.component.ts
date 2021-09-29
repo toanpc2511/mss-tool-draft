@@ -1,25 +1,24 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
+import { takeUntil, tap } from 'rxjs/operators';
+import { convertDateToServer } from 'src/app/shared/helpers/functions';
+import { FileService } from 'src/app/shared/services/file.service';
+import { DestroyService } from '../../../shared/services/destroy.service';
+import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
+import { GasStationResponse, GasStationService } from '../../gas-station/gas-station.service';
+import { IProduct, ProductService } from '../../product/product.service';
 import {
 	IDataTransfer,
 	TransactionHistoryModalComponent
 } from '../transaction-history-modal/transaction-history-modal.component';
-import { concatMap, takeUntil, tap } from 'rxjs/operators';
-import { IProduct, ProductService } from '../../product/product.service';
-import { DestroyService } from '../../../shared/services/destroy.service';
-import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import {
-	IEmployees,
+	IFilterTransaction,
 	IPaymentMethod,
-	IStationEployee,
 	ITransaction,
 	TransactionService
 } from '../transaction.service';
-import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
-import { NO_EMIT_EVENT } from '../../../shared/app-constants';
-import { of } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
 	selector: 'app-transaction-history',
@@ -30,12 +29,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class TransactionHistoryComponent implements OnInit {
 	dataProduct: Array<IProduct> = [];
 	paymentMethods: Array<IPaymentMethod> = [];
-	stationEmployee: Array<IStationEployee> = [];
-	listEmployees: Array<IEmployees> = [];
+	stations: Array<GasStationResponse> = [];
 
-	startDate: NgbDate | null;
-	endDate: NgbDate | null;
-	firstDayOfMonth: NgbDate | null;
+	today: string;
+	firstDayOfMonth: string;
 
 	paginatorState = new PaginatorState();
 	dataSource: Array<ITransaction>;
@@ -47,26 +44,20 @@ export class TransactionHistoryComponent implements OnInit {
 	limitOil: number;
 	totalPaymentMoney: number;
 	totalRecord: number;
-
-	dataFileExcel: any;
-	categoryId: number = 0;
+	categoryId = 0;
 
 	constructor(
 		private modalService: NgbModal,
 		private productService: ProductService,
+		private gasStationService: GasStationService,
 		private transactionService: TransactionService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
-		private calendar: NgbCalendar,
-		private toastr: ToastrService,
 		private fb: FormBuilder,
-		private http: HttpClient
+		private fileService: FileService
 	) {
-		this.firstDayOfMonth = calendar.getToday();
-		this.firstDayOfMonth.day = 1;
-		this.startDate = this.firstDayOfMonth;
-		this.endDate = calendar.getToday();
-
+		this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
+		this.today = moment().format('DD/MM/YYYY');
 		this.init();
 	}
 
@@ -87,12 +78,11 @@ export class TransactionHistoryComponent implements OnInit {
 	ngOnInit(): void {
 		this.getListProductType();
 		this.getPaymentMethods();
-		this.getStationEmployee();
-		this.getAllEmployee();
+		this.getStations();
 
 		this.buildForm();
+		this.initDate();
 		this.onSearch();
-		this.handleStationChange();
 	}
 
 	buildForm() {
@@ -101,10 +91,17 @@ export class TransactionHistoryComponent implements OnInit {
 			product: [''],
 			station: [''],
 			payMethod: [''],
-			employee: [''],
 			phone: [''],
-			userName: ['']
+			accountType: [''],
+			userName: [''],
+			endAt: [],
+			startAt: []
 		});
+	}
+
+	initDate() {
+		this.searchForm.get('startAt').patchValue(this.firstDayOfMonth);
+		this.searchForm.get('endAt').patchValue(this.today);
 	}
 
 	getListProductType() {
@@ -127,66 +124,34 @@ export class TransactionHistoryComponent implements OnInit {
 			});
 	}
 
-	getStationEmployee() {
-		this.transactionService
-			.getStationEmployee()
+	getStations() {
+		this.gasStationService
+			.getListStation()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
-				this.stationEmployee = res.data;
+				this.stations = res.data;
 				this.cdr.detectChanges();
 			});
 	}
 
-	getAllEmployee() {
-		this.transactionService
-			.getAllEmployee()
-			.pipe(takeUntil(this.destroy$))
-			.subscribe((res) => {
-				this.listEmployees = res.data;
-				this.cdr.detectChanges();
-			});
-	}
-
-	handleStationChange() {
-		this.searchForm
-			.get('station')
-			.valueChanges.pipe(
-				concatMap((stationName: string) => {
-					this.listEmployees = [];
-					this.searchForm.get('employee').reset('', NO_EMIT_EVENT);
-					if (stationName) {
-						return this.transactionService.getEmployeeStation(stationName);
-					} else {
-						return this.transactionService.getAllEmployee();
-					}
-					return of(null);
-				}),
-				tap((res) => {
-					this.listEmployees = res.data;
-					this.cdr.detectChanges();
-				}),
-				takeUntil(this.destroy$)
-			)
-			.subscribe();
+	getFilterData() {
+		const filterFormData: IFilterTransaction = this.searchForm.value;
+		return {
+			...filterFormData,
+			startAt: convertDateToServer(filterFormData.startAt),
+			endAt: convertDateToServer(filterFormData.endAt)
+		};
 	}
 
 	onSearch() {
-		this.searchForm.value.startDate = this.formatDate(this.startDate, 'yyyy-mm-dd');
-		this.searchForm.value.endDate = this.formatDate(this.endDate, 'yyyy-mm-dd');
-
+		const filterData: IFilterTransaction = this.getFilterData();
 		this.transactionService
-			.searchTransaction(
-				this.paginatorState.page,
-				this.paginatorState.pageSize,
-				this.searchForm.value
-			)
+			.searchTransaction(this.paginatorState.page, this.paginatorState.pageSize, filterData)
 			.subscribe((res) => {
 				if (res.data) {
 					this.dataSource = res.data;
 
 					if (this.dataSource.length > 0) {
-						this.exportFileExcel();
-
 						this.totalLiters = this.dataSource[0].orderTotalResponse.totalActualityLiters;
 						this.totalMoney = this.dataSource[0].orderTotalResponse.totalCashPaid;
 						this.pointSunoil = this.dataSource[0].orderTotalResponse.totalAccumulationPointUse;
@@ -209,44 +174,21 @@ export class TransactionHistoryComponent implements OnInit {
 	}
 
 	exportFileExcel() {
-		this.searchForm.value.startDate = this.formatDate(this.startDate, 'yyyy-mm-dd');
-		this.searchForm.value.endDate = this.formatDate(this.endDate, 'yyyy-mm-dd');
-
-		const data = this.searchForm.value;
-
-		const params = new HttpParams()
-			.set('order-code', data.orderCode)
-			.set('product-name', data.product)
-			.set('station-name', data.station)
-			.set('payment-method', data.payMethod)
-			.set('employee-id', data.employee)
-			.set('phone', data.phone)
-			.set('start-at', data.startDate)
-			.set('end-at', data.endDate)
-			.set('user-name', data.userName);
-
-		this.http
-			.get('https://sunoil-management.firecloud.live/management/orders/filters/excels', { params })
-			.subscribe((res) => {
-				if (res) {
-					this.dataFileExcel = res;
-					this.cdr.detectChanges();
-				}
-			});
+		const filterData: IFilterTransaction = this.getFilterData();
+		this.transactionService
+			.exportFileExcel(filterData)
+			.pipe(
+				tap((res) => {
+					if (res) {
+						this.fileService.downloadFromUrl(res.data);
+					}
+				})
+			)
+			.subscribe();
 	}
 
 	onReset() {
 		this.ngOnInit();
-		this.startDate = this.firstDayOfMonth;
-		this.endDate = this.calendar.getToday();
-	}
-
-	onSelectStartAt(date: NgbDate) {
-		this.startDate = date;
-	}
-
-	onSelectEndAt(date: NgbDate) {
-		this.endDate = date;
 	}
 
 	pagingChange($event: IPaginatorState) {
@@ -267,19 +209,5 @@ export class TransactionHistoryComponent implements OnInit {
 			title: 'Chi tiết lịch sử đơn hàng',
 			transaction: data
 		};
-	}
-
-	formatDate(date: NgbDate, type: string) {
-		const day = date.day <= 9 ? `0${date.day}` : date.day.toString();
-		const month = date.month <= 9 ? `0${date.month}` : date.month.toString();
-		const year = date.year.toString();
-
-		if (type === 'dd/mm/yyyy') {
-			return day + '/' + month + '/' + year;
-		}
-
-		if (type === 'yyyy-mm-dd') {
-			return year + '-' + month + '-' + day;
-		}
 	}
 }

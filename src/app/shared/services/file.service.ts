@@ -48,6 +48,13 @@ export class FileService {
 			);
 	}
 
+	downloadFromUrl(fileUrl: string) {
+		const a = document.createElement('a');
+		a.href = fileUrl;
+		a.click();
+		document.removeChild(a);
+	}
+
 	uploadFile(fileFormData: FormData, type: EFileType) {
 		return this.http.postUpload<Array<IFile>>(
 			`${environment.apiUrlRoot}/files`,

@@ -33,7 +33,7 @@
 					<label>Trạm</label>
 					<select class="form-control form-control-solid" formControlName="station">
 						<option [value]="''">Tất cả</option>
-						<option *ngFor="let item of stationEmployee" [value]="item.name">{{item.name}}</option>
+						<option *ngFor="let item of stations" [value]="item.name">{{item.name}}</option>
 					</select>
 				</div>
 			</div>
@@ -47,10 +47,8 @@
 							class="form-control form-control-solid"
 							placeholder="DD/MM/YYYY"
 							ngbDatepicker
-							readonly
 							#startAt="ngbDatepicker"
-							[value]='formatDate(startDate, "dd/mm/yyyy")'
-							(dateSelect)="onSelectStartAt($event)"
+							formControlName="startAt"
 						/>
 						<div class="input-group-append">
 							<button
@@ -60,6 +58,12 @@
 							></button>
 						</div>
 					</div>
+
+					<app-validate
+						[control]="searchForm.controls['startAt']"
+						[error]="'ngbDate'"
+						[message]="'Từ ngày không đúng định dạng'"
+					></app-validate>
 				</div>
 
 				<div class="col-lg-4">
@@ -70,10 +74,9 @@
 							class="form-control form-control-solid"
 							placeholder="DD/MM/YYYY"
 							ngbDatepicker
-							readonly
 							#endAt="ngbDatepicker"
-							[value]='formatDate(endDate, "dd/mm/yyyy")'
-							(dateSelect)="onSelectEndAt($event)"
+							formControlName="endAt"
+
 						/>
 						<div class="input-group-append">
 							<button
@@ -83,6 +86,12 @@
 							></button>
 						</div>
 					</div>
+
+					<app-validate
+						[control]="searchForm.controls['endAt']"
+						[error]="'ngbDate'"
+						[message]="'Đến ngày không đúng định dạng'"
+					></app-validate>
 				</div>
 
 				<div class="col-lg-4">
@@ -97,7 +106,7 @@
 			<div class="form-group row">
 				<div class="col-lg-4">
 					<label>Loại tài khoản</label>
-					<select class="form-control form-control-solid" formControlName="employee">
+					<select class="form-control form-control-solid" formControlName="accountType">
 						<option [value]="''">Tất cả</option>
 						<option value="DRIVER">Cá nhân</option>
 						<option value="ENTERPRISE">Doanh nghiệp</option>
@@ -172,7 +181,7 @@
 		</div>
 
 		<div class="card-toolbar row" *ngIf="totalRecord > 0">
-			<a href="{{dataFileExcel?.data}}">
+			<a (click)="exportFileExcel()">
 				<button type="button" class="btn btn-primary btn-def">Xuất file</button>
 			</a>
 		</div>
