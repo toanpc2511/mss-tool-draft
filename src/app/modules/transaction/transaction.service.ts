@@ -47,6 +47,7 @@ export interface ITransaction {
 	productName: string;
 	promotions: string;
 	pumpPole: string;
+	pumpHose: string;
 	speedometer: number;
 	stationName: string;
 	takeReceipt: boolean;
