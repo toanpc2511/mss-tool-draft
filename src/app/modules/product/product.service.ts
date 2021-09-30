@@ -166,4 +166,8 @@ export class ProductService {
 	deleteProductOther(productId: string | number) {
 		return this.http.delete(`products/except-oils/${productId}`);
 	}
+
+	getInfoProductOther(id: number) {
+    return this.http.get(`products/other/${id}`);
+  }
 }
