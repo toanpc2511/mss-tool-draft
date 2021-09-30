@@ -26,8 +26,14 @@ import localeVi from '@angular/common/locales/vi';
 import localeViExtra from '@angular/common/locales/extra/vi';
 import { CustomAdapter, CustomDateParserFormatter } from './shared/helpers/datepicker-adapter';
 import { TextMaskModule } from 'angular2-text-mask';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+import timeGridPlugin from '@fullcalendar/timegrid';
 
 registerLocaleData(localeVi, 'vi', localeViExtra);
+
+FullCalendarModule.registerPlugins([bootstrapPlugin, dayGridPlugin, timeGridPlugin]);
 
 function appInitializer(authService: AuthService, router: Router) {
 	return () => {
@@ -69,7 +75,8 @@ function appInitializer(authService: AuthService, router: Router) {
 		NgxSpinnerModule,
 		NgSelectModule,
 		FormsModule,
-		TextMaskModule
+		TextMaskModule,
+		FullCalendarModule
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'vi' },

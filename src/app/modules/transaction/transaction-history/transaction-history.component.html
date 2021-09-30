@@ -213,9 +213,9 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.createdAt | dateCustom"
+								[ngbTooltip]="item.createdAt | date:'dd/MM/YYYY HH:mm'"
 							>
-								{{ item.createdAt | dateCustom}}
+								{{ item.createdAt | date:'dd/MM/YYYY HH:mm'}}
 							</p>
 						</td>
 
