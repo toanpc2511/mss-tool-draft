@@ -304,6 +304,6 @@ export class GasStationService {
 	}
 
 	getAllStations() {
-		return this.http.get<GasStationResponse[]>('gas-stations/address');
+		return this.http.get<GasStationResponse[]>('gas-stations/order-filter');
 	}
 }
