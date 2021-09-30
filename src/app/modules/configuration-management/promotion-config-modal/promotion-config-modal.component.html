@@ -13,7 +13,7 @@
 							class="form-control form-control-lg form-control-solid"
 							formControlName="productOil"
 						>
-							<option [value]="''">Chọn loại sản phẩm</option>
+							<option [value]="''">Chọn loại nhiên liệu</option>
 							<option *ngFor="let prodType of productTypeOil" [value]="prodType.id">
 								{{prodType.name}}
 							</option>
@@ -57,7 +57,7 @@
 							<table class="table table-vertical-center overflow-hidden" aria-label="">
 								<thead class="thead-light">
 									<tr>
-										<th scope="">
+										<th scope="" class="text-center">
 											<label class="form-label">STT</label>
 										</th>
 										<th scope="">
@@ -84,14 +84,14 @@
 											*ngFor="let productInfoFromGroup of promotionFormArray.controls; let i = index"
 										>
 											<ng-container [formGroup]="productInfoFromGroup">
-												<td>{{i + 1}}</td>
+												<td class="text-center">{{i + 1}}</td>
 												<td class="col1">
 													<select
 														(change)="productTypeChanged($event, i)"
 														class="form-control form-control-sm"
 														formControlName="categoryId"
 													>
-														<option [value]="null">Chọn loại sản phẩm</option>
+														<option [value]="''">Chọn nhóm sản phẩm</option>
 														<option
 															*ngFor="let prodType of productTypeOrther"
 															[value]="prodType.id"
@@ -111,7 +111,7 @@
 														class="form-control form-control-sm"
 														formControlName="productId"
 													>
-														<option [value]="null">Chọn sản phẩm</option>
+														<option [value]="''" disabled>Chọn sản phẩm</option>
 														<option *ngFor="let prod of promotions[i]" [value]="prod.id">
 															{{prod.name}}
 														</option>
@@ -168,7 +168,7 @@
 
 								<tfoot>
 									<tr>
-										<td colspan="6">
+										<td class="text-center">
 											<a
 												*ngIf="promotionFormArray.length < 5"
 												(click)="addItem()"
@@ -183,6 +183,8 @@
 												</span>
 											</a>
 										</td>
+
+										<td colspan="5"></td>
 									</tr>
 								</tfoot>
 							</table>

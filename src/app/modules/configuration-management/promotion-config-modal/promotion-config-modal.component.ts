@@ -71,7 +71,10 @@ export class PromotionConfigModalComponent implements OnInit {
 				this.promotionFormArray.at(i).get('categoryId').patchValue(promotion.categoryId);
 				this.promotionFormArray.at(i).get('productId').patchValue(promotion.productId);
 				this.promotionFormArray.at(i).get('unit').patchValue(promotion.unit);
-				this.promotionFormArray.at(i).get('quantity').patchValue(promotion.quantity);
+				this.promotionFormArray
+					.at(i)
+					.get('quantity')
+					.patchValue(promotion.quantity);
 				this.getListProduct(promotion.categoryId, i);
 				this.patchInfoProduct(promotion.productId, i);
 			});
@@ -97,10 +100,10 @@ export class PromotionConfigModalComponent implements OnInit {
 		this.promotionForm = this.fb.group({
 			promotions: this.fb.array([
 				this.fb.group({
-					categoryId: [null, Validators.required],
-					productId: [null, Validators.required],
-					unit: [null],
-					quantity: [null, [Validators.required, Validators.min(1)]]
+					categoryId: ['', Validators.required],
+					productId: ['', Validators.required],
+					unit: [''],
+					quantity: ['', [Validators.required, Validators.min(1)]]
 				})
 			])
 		});
@@ -139,7 +142,7 @@ export class PromotionConfigModalComponent implements OnInit {
 
 		if (checkExisted) {
 			this.toastr.error('Sản phẩm này đã được thêm');
-			this.promotionFormArray.at(i).get('productId').patchValue(null);
+			this.promotionFormArray.at(i).get('productId').patchValue('');
 			return;
 		}
 		if (!productId) {
@@ -159,10 +162,10 @@ export class PromotionConfigModalComponent implements OnInit {
 	addItem() {
 		this.promotionFormArray.push(
 			this.fb.group({
-				categoryId: [null, Validators.required],
-				productId: [null, Validators.required],
-				unit: [null],
-				quantity: [null, [Validators.required, Validators.min(1)]]
+				categoryId: ['', Validators.required],
+				productId: ['', Validators.required],
+				unit: [''],
+				quantity: ['', [Validators.required, Validators.min(1)]]
 			})
 		);
 	}
