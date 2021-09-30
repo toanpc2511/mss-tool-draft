@@ -3,6 +3,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/co
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { of, Subject, Subscription } from 'rxjs';
 import {
@@ -70,7 +71,9 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	paymentMethods: Array<IProperties>;
 
 	eContractType = EContractType;
-	currentDate = new Date();
+	currentDate = moment().add({
+		day: 1
+	});
 
 	contractSubscription = new Subscription();
 
@@ -78,9 +81,9 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	filesUploadProgress: Array<number> = [];
 
 	minDate: NgbDateStruct = {
-		day: this.currentDate.getDate() + 1,
-		month: this.currentDate.getMonth() + 1,
-		year: this.currentDate.getFullYear()
+		day: this.currentDate.date(),
+		month: this.currentDate.month() + 1,
+		year: this.currentDate.year()
 	};
 	payPlanDateCount = 1;
 	isUpdate = false;
@@ -414,6 +417,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					payPlanDate4: [null],
 					payPlanDate5: [null]
 				});
+				this.contractForm.get('effectEndDate').valueChanges.subscribe(console.log);
 				break;
 		}
 		this.switchType(type);
@@ -690,7 +694,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	save(status: EContractStatus) {
 		let hasError = false;
 		this.infoForm.markAllAsTouched();
-
 
 		this.contractForm.markAllAsTouched();
 		if (this.infoForm.invalid) {

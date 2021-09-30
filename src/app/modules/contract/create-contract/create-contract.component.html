@@ -1,4 +1,4 @@
-<div class="card card-custom gutter-b mt-1" *ngIf="isInitDataUpdate$ | async">
+<div class="mt-1 card card-custom gutter-b" *ngIf="isInitDataUpdate$ | async">
 	<div class="info-customer">
 		<div class="card-header">
 			<div class="card-title">
@@ -188,7 +188,7 @@
 						></app-validate>
 					</div>
 
-					<div class="col-lg-4 mt-10">
+					<div class="mt-10 col-lg-4">
 						<label class="form-label">HT giao nhận</label>
 						<select
 							class="form-control form-control-lg form-control-solid"
@@ -201,7 +201,7 @@
 						</select>
 					</div>
 
-					<div class="col-lg-4 mt-10">
+					<div class="mt-10 col-lg-4">
 						<label class="form-label required">HT thanh toán</label>
 						<select
 							class="form-control form-control-lg form-control-solid"
@@ -219,7 +219,7 @@
 						></app-validate>
 					</div>
 
-					<div class="col-lg-4 mt-10" *ngIf="contractType === eContractType.PREPAID_CONTRACT">
+					<div class="mt-10 col-lg-4" *ngIf="contractType === eContractType.PREPAID_CONTRACT">
 						<label class="form-label required">Địa chỉ ký hợp đồng</label>
 						<select
 							class="form-control form-control-lg form-control-solid"
@@ -236,7 +236,7 @@
 						></app-validate>
 					</div>
 
-					<div class="col-lg-4 mt-10" *ngIf="contractType === eContractType.PLAN_CONTRACT">
+					<div class="mt-10 col-lg-4" *ngIf="contractType === eContractType.PLAN_CONTRACT">
 						<label class="form-label required">Hạn mức</label>
 						<div class="input-group">
 							<input
@@ -259,7 +259,7 @@
 						></app-validate>
 					</div>
 
-					<div class="col-lg-4 mt-10" *ngIf="contractType === eContractType.PLAN_CONTRACT">
+					<div class="mt-10 col-lg-4" *ngIf="contractType === eContractType.PLAN_CONTRACT">
 						<label class="form-label">Ngày dự kiến TT lần 1</label>
 						<div class="input-group">
 							<input
@@ -291,7 +291,7 @@
 					</div>
 
 					<div
-						class="col-lg-4 mt-10"
+						class="mt-10 col-lg-4"
 						*ngIf="contractType === eContractType.PLAN_CONTRACT && payPlanDateCount >= 2"
 					>
 						<label class="form-label">Ngày dự kiến TT lần 2</label>
@@ -325,7 +325,7 @@
 					</div>
 
 					<div
-						class="col-lg-4 mt-10"
+						class="mt-10 col-lg-4"
 						*ngIf="contractType === eContractType.PLAN_CONTRACT && payPlanDateCount >= 3"
 					>
 						<label class="form-label">Ngày dự kiến TT lần 3</label>
@@ -359,7 +359,7 @@
 					</div>
 
 					<div
-						class="col-lg-4 mt-10"
+						class="mt-10 col-lg-4"
 						*ngIf="contractType === eContractType.PLAN_CONTRACT && payPlanDateCount >= 4"
 					>
 						<label class="form-label">Ngày dự kiến TT lần 4</label>
@@ -393,7 +393,7 @@
 					</div>
 
 					<div
-						class="col-lg-4 mt-10"
+						class="mt-10 col-lg-4"
 						*ngIf="contractType === eContractType.PLAN_CONTRACT && payPlanDateCount >= 5"
 					>
 						<label class="form-label">Ngày dự kiến TT lần 5</label>
@@ -421,7 +421,7 @@
 						></app-validate>
 					</div>
 
-					<div class="col-lg-8 mt-10" *ngIf="contractType === eContractType.PREPAID_CONTRACT">
+					<div class="mt-10 col-lg-8" *ngIf="contractType === eContractType.PREPAID_CONTRACT">
 						<label class="form-label">Địa chỉ chi tiết</label>
 						<input disabled class="form-control" autocomplete="off" formControlName="fullAddress" />
 					</div>
@@ -439,7 +439,7 @@
 		<div class="card-body">
 			<div class="table-responsive angular-bootstrap-table">
 				<form [formGroup]="productForm">
-					<table class="table table-vertical-center overflow-hidden" aria-label="">
+					<table class="table overflow-hidden table-vertical-center" aria-label="">
 						<thead class="thead-light">
 							<tr>
 								<th scope="">
@@ -582,8 +582,8 @@
 									</a>
 								</td>
 								<td colspan="4"></td>
-								<td class='font-weight-bold' colspan="2">Tổng tiền thanh toán</td>
-								<td class='font-weight-bold' [textContent]="getTotal() | number | vnCurrency"></td>
+								<td class="font-weight-bold" colspan="2">Tổng tiền thanh toán</td>
+								<td class="font-weight-bold" [textContent]="getTotal() | number | vnCurrency"></td>
 								<td></td>
 							</tr>
 						</tfoot>
@@ -606,16 +606,16 @@
 				<div class="col-lg-10 row">
 					<div class="col-lg-12">
 						<input #fileChoose multiple type="file" (change)="addFiles($event)" hidden />
-						<button class="btn btn-outline-primary mr-3" (click)="fileChoose.click()">
+						<button class="mr-3 btn btn-outline-primary" (click)="fileChoose.click()">
 							Đính kèm file
 						</button>
-						<button class="btn btn-outline-primary ml-3" (click)="removeFile('ALL')">
+						<button class="ml-3 btn btn-outline-primary" (click)="removeFile('ALL')">
 							Xóa tất cả
 						</button>
 					</div>
-					<div class="col-lg-12 mt-2">
+					<div class="mt-2 col-lg-12">
 						<div
-							class="file form-control form-control-lg form-control-solid w-50 mt-2 mb-2"
+							class="mt-2 mb-2 file form-control form-control-lg form-control-solid w-50"
 							*ngFor="let file of filesUploaded; let i = index"
 							[ngbTooltip]="file.name"
 							[placement]="'right'"
@@ -626,22 +626,22 @@
 							<em class="fa fa-times" (click)="removeFile('ONE',file.id)"></em>
 							<span>{{file.name|stringMaxLength: 35}}</span>
 						</div>
-						<span class="text-warning mt-3">Dung lượng file tối đa 5Mb và tối đa 10 file</span>
+						<span class="mt-3 text-warning">Dung lượng file tối đa 5Mb và tối đa 10 file</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="w-100 d-flex justify-content-center pb-10">
+	<div class="pb-10 w-100 d-flex justify-content-center">
 		<button
-			class="btn btn-outline-secondary font-weight-bold m-2"
+			class="m-2 btn btn-outline-secondary font-weight-bold"
 			(click)="save(eContractStatus.DRAFT)"
 		>
 			Lưu nháp
 		</button>
 		<button
-			class="btn btn-primary font-weight-bold m-2"
+			class="m-2 btn btn-primary font-weight-bold"
 			(click)="save(eContractStatus.WAITING_ACCEPT)"
 		>
 			Gửi duyệt

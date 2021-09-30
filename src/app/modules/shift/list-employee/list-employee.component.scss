@@ -1,92 +1,36 @@
-table thead th {
-	text-transform: none;
-}
-
-table {
-	min-width: 1024px;
-
-	td {
-		&.code {
-			p {
-				width: 120px;
+:host ::ng-deep {
+	.fc-header-toolbar {
+		.fc-toolbar-chunk {
+			&:nth-child(1) {
+				.btn-group {
+					gap: 3px;
+					.btn-primary,
+					.btn-primary:disabled {
+						opacity: 1;
+						color: #3f4254;
+						background-color: #f3f6f9!important;
+						border-color: #f3f6f9;
+						&:hover {
+							opacity: 0.7;
+						}
+					}
+				}
 			}
-		}
-		&.name {
-			p {
-				width: 150px;
-			}
-		}
 
-		&.department {
-			p {
-				width: 200px;
-			}
-		}
+			&:nth-child(3) {
+				.btn-group {
+					button {
+						background-color: #fff;
+						color: #3f4254;
+						border: 1px solid #EBEDF2;
 
-		&.position {
-			p {
-				width: 200px;
-			}
-		}
-
-		&.action {
-			min-width: 180px;
-		}
-	}
-
-	tr {
-		&:hover {
-			background-color: #f3f6f9;
-
-			td {
-				.btn.btn-light {
-					background-color: #ffffff;
+						&.active {
+							background-color: #187DE4;
+							color: #fff;
+						}
+					}
 				}
 			}
 		}
 	}
-}
-
-.card-toolbar {
-	gap: 50px;
-	// .search-form {
-	//   position: relative;
-	//   display: flex;
-	//   align-items: center;
-
-	//   i {
-	//     position: absolute;
-	//     left: 10px;
-	//     top: 7px;
-	//   }
-
-	//   input {
-	//     padding-left: 30px;
-	//   }
-	// }
-
-	button {
-		width: 110px;
-	}
-}
-
-.card.card-custom {
-	box-shadow: none !important;
-
-	.card-body,
-	.card-header {
-		border: 0;
-	}
-
-	.card-body {
-		padding-top: 1rem;
-	}
-
-	.card-header {
-		margin-top: 2rem;
-	}
-}
-
-.w-33 {
-	width: 33%;
 }
