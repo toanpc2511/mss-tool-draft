@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { tap } from 'rxjs/operators';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
 
@@ -109,7 +110,7 @@ export class TransactionService {
 			.set('start-at', data.startAt)
 			.set('end-at', data.endAt)
 			.set('user-name', data.userName);
-		return this.http.customGet<string>(`${environment.apiManagementUrl}/orders/filters/excels`, {
+		return this.http.get<any>(`order/filters-enterprises/excels`, {
 			params
 		});
 	}

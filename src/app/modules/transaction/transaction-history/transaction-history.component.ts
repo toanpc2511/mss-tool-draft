@@ -180,9 +180,11 @@ export class TransactionHistoryComponent implements OnInit {
 			.pipe(
 				tap((res) => {
 					if (res) {
+						console.log(res);
 						this.fileService.downloadFromUrl(res.data);
 					}
-				})
+				}),
+				takeUntil(this.destroy$)
 			)
 			.subscribe();
 	}
