@@ -41,7 +41,7 @@
 			<div class="form-group row">
 				<div class="col-lg-4">
 					<label>Từ ngày</label>
-
+					
 					<div class="input-group">
 						<input
 							class="form-control form-control-solid"
@@ -49,8 +49,7 @@
 							ngbDatepicker
 							readonly
 							#startAt="ngbDatepicker"
-							[value]='formatDate(startDate, "dd/mm/yyyy")'
-							(dateSelect)="onSelectStartAt($event)"
+							formControlName="startAt"
 						/>
 						<div class="input-group-append">
 							<button
@@ -72,8 +71,7 @@
 							ngbDatepicker
 							readonly
 							#endAt="ngbDatepicker"
-							[value]='formatDate(endDate, "dd/mm/yyyy")'
-							(dateSelect)="onSelectEndAt($event)"
+							formControlName="endAt"
 						/>
 						<div class="input-group-append">
 							<button
@@ -171,7 +169,7 @@
 		</div>
 
 		<div class="card-toolbar row" *ngIf="totalRecord > 0">
-			<a href="{{dataFileExcel?.data}}">
+			<a (click)="exportFileExcel()">
 				<button type="button" class="btn btn-primary btn-def">Xuất file</button>
 			</a>
 		</div>
