@@ -15,8 +15,12 @@ export class DataResponse<T> {
 		total?: number;
 	};
 	data?: T;
-	constructor(response: any) {
+	constructor(response: any, isLink?: boolean) {
 		this.meta = response.meta;
-		this.data = camelize(response.data) as T;
+		if (!isLink) {
+			this.data = camelize(response.data) as T;
+		} else {
+			this.data = response.data as T;
+		}
 	}
 }
