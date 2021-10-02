@@ -92,7 +92,7 @@ export class TransactionService {
 			.set('user-type', data.accountType)
 			.set('station-name', data.station)
 			.set('payment-method', data.payMethod)
-			.set('phone-driver', data.phone)
+			.set('phone', data.phone)
 			.set('start-at', data.startAt)
 			.set('end-at', data.endAt)
 			.set('user-name', data.userName);

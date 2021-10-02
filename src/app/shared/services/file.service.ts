@@ -49,11 +49,7 @@ export class FileService {
 	}
 
 	downloadFromUrl(fileUrl: string) {
-		const a = document.createElement('a');
-		a.href = fileUrl;
-		a.target = "_blank";
-		a.click();
-		document.removeChild(a);
+		window.open(fileUrl, '_blank');
 	}
 
 	uploadFile(fileFormData: FormData, type: EFileType) {
