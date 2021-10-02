@@ -110,7 +110,7 @@ export class TransactionService {
 			.set('start-at', data.startAt)
 			.set('end-at', data.endAt)
 			.set('user-name', data.userName);
-		return this.http.get<any>(`order/filters-enterprises/excels`, {
+		return this.http.getFileUrl<string>(`order/filters-enterprises/excels`, {
 			params
 		});
 	}

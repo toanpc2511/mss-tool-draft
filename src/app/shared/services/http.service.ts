@@ -1,4 +1,10 @@
-import { HttpClient, HttpEventType, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
+import {
+	HttpClient,
+	HttpEventType,
+	HttpHeaders,
+	HttpParams,
+	HttpRequest
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { concatMap, switchMap } from 'rxjs/operators';
@@ -33,6 +39,31 @@ export class HttpService {
 		return this.httpClient.get(url, options).pipe(
 			switchMap((response) => {
 				const res = new DataResponse<T>(response);
+				return of(res);
+			})
+		);
+	}
+
+	getFileUrl<T>(
+		endPoint: string,
+		options?: {
+			headers?:
+				| HttpHeaders
+				| {
+						[header: string]: string | string[];
+				  };
+			params?:
+				| HttpParams
+				| {
+						[param: string]: string | string[];
+				  };
+			reportProgress?: boolean;
+			withCredentials?: boolean;
+		}
+	): Observable<DataResponse<T>> {
+		return this.httpClient.get(`${this.apiUrl}/${endPoint}`, options).pipe(
+			switchMap((response) => {
+				const res = new DataResponse<T>(response, true);
 				return of(res);
 			})
 		);
@@ -127,7 +158,7 @@ export class HttpService {
 
 		return this.httpClient.request(request).pipe(
 			concatMap((response: any) => {
-				if(response.type === HttpEventType.Response) {
+				if (response.type === HttpEventType.Response) {
 					const res = new DataResponse<T>(response.body);
 					return of(res);
 				}
