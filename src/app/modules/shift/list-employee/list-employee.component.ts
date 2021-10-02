@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { merge, of } from 'rxjs';
 import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
@@ -17,18 +18,14 @@ import { IPaginatorState, PaginatorState, SortState } from 'src/app/_metronic/sh
 import { GasStationResponse } from '../../gas-station/gas-station.service';
 import { EmployeeService, IDepartment, IEmployee, IPosition } from '../shift.service';
 
-import dayGridPlugin from '@fullcalendar/daygrid';
-import bootstrapPlugin from '@fullcalendar/bootstrap';
-import timeGridPlugin from '@fullcalendar/timegrid';
-
 @Component({
 	selector: 'app-list-employee',
 	templateUrl: './list-employee.component.html',
 	styleUrls: ['./list-employee.component.scss'],
 	providers: [DestroyService]
 })
-export class ListEmployeeComponent implements OnInit {
-	@ViewChild('calendar') calendarComponent: FullCalendarComponent; // the #calendar in the template
+export class ListEmployeeComponent implements OnInit, AfterViewInit {
+	@ViewChild('calendar') calendarComponent: FullCalendarComponent;
 	searchFormControl: FormControl = new FormControl();
 	sortData: SortState;
 	status = LIST_STATUS;
@@ -40,9 +37,17 @@ export class ListEmployeeComponent implements OnInit {
 	departments: IDepartment[] = [];
 	positions: IPosition[] = [];
 
+	//////////
+
+	todayDate = moment().startOf('day');
+	YM = this.todayDate.format('YYYY-MM');
+	YESTERDAY = this.todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+	TODAY = this.todayDate.format('YYYY-MM-DD');
+	TOMORROW = this.todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+
 	calendarOptions: CalendarOptions = {
 		headerToolbar: {
-			left: 'prev,next today',
+			left: 'prev,today,next',
 			center: 'title',
 			right: 'dayGridMonth,timeGridWeek,timeGridDay'
 		},
@@ -50,13 +55,24 @@ export class ListEmployeeComponent implements OnInit {
 		nowIndicator: true,
 		droppable: false, // this allows things to be dropped onto the calendar
 		editable: false,
-		navLinks: true,
+		navLinks: false,
 		locale: 'vi',
 		buttonText: {
 			today: 'Hôm nay',
 			month: 'Tháng',
 			week: 'Tuần',
 			day: 'Ngày'
+		},
+		views: {
+			dayGridMonth: {
+				titleFormat: { year: 'numeric', month: '2-digit' }
+			},
+			timeGridWeek: {
+				titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' }
+			},
+			timeGridDay: {
+				titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' }
+			}
 		},
 		themeSystem: 'bootstrap',
 		aspectRatio: 1.7,
@@ -65,7 +81,108 @@ export class ListEmployeeComponent implements OnInit {
 		slotLabelFormat: {
 			hour: '2-digit',
 			hour12: false
-		}
+		},
+		// Start with monday
+		firstDay: 1,
+		showNonCurrentDates: false,
+		events: [
+			{
+				title: 'All Day Event',
+				start: this.YM + '-01',
+				description: 'Toto lorem ipsum dolor sit incid idunt ut',
+				className: 'fc-event-danger fc-event-solid-warning'
+			},
+			{
+				title: 'Reporting',
+				start: this.YM + '-14T13:30:00',
+				description: 'Lorem ipsum dolor incid idunt ut labore',
+				end: this.YM + '-14',
+				className: 'fc-event-success'
+			},
+			{
+				title: 'Company Trip',
+				start: this.YM + '-02',
+				description: 'Lorem ipsum dolor sit tempor incid',
+				end: this.YM + '-03',
+				className: 'fc-event-primary'
+			},
+			{
+				title: 'ICT Expo 2017 - Product Release',
+				start: this.YM + '-03',
+				description: 'Lorem ipsum dolor sit tempor inci',
+				end: this.YM + '-05',
+				className: 'fc-event-light fc-event-solid-primary'
+			},
+			{
+				title: 'Dinner',
+				start: this.YM + '-12',
+				description: 'Lorem ipsum dolor sit amet, conse ctetur',
+				end: this.YM + '-10'
+			},
+			{
+				id: '999',
+				title: 'Repeating Event',
+				start: this.YM + '-09T16:00:00',
+				description: 'Lorem ipsum dolor sit ncididunt ut labore',
+				className: 'fc-event-danger'
+			},
+			{
+				id: '999',
+				title: 'Repeating Event',
+				description: 'Lorem ipsum dolor sit amet, labore',
+				start: this.YM + '-16T16:00:00'
+			},
+			{
+				title: 'Conference',
+				start: this.YESTERDAY,
+				end: this.TOMORROW,
+				description: 'Lorem ipsum dolor eius mod tempor labore',
+				className: 'fc-event-primary'
+			},
+			{
+				title: 'Meeting',
+				start: this.TODAY + 'T10:30:00',
+				end: this.TODAY + 'T12:30:00',
+				description: 'Lorem ipsum dolor eiu idunt ut labore'
+			},
+			{
+				title: 'Lunch',
+				start: this.TODAY + 'T12:00:00',
+				className: 'fc-event-info',
+				description: 'Lorem ipsum dolor sit amet, ut labore'
+			},
+			{
+				title: 'Meeting',
+				start: this.TODAY + 'T14:30:00',
+				className: 'fc-event-warning',
+				description: 'Lorem ipsum conse ctetur adipi scing'
+			},
+			{
+				title: 'Happy Hour',
+				start: this.TODAY + 'T17:30:00',
+				className: 'fc-event-info',
+				description: 'Lorem ipsum dolor sit amet, conse ctetur'
+			},
+			{
+				title: 'Dinner',
+				start: this.TOMORROW + 'T05:00:00',
+				className: 'fc-event-solid-danger fc-event-light',
+				description: 'Lorem ipsum dolor sit ctetur adipi scing'
+			},
+			{
+				title: 'Birthday Party',
+				start: this.TOMORROW + 'T07:00:00',
+				className: 'fc-event-primary',
+				description: 'Lorem ipsum dolor sit amet, scing'
+			},
+			{
+				title: 'Click for Google',
+				url: 'http://google.com/',
+				start: this.YM + '-28',
+				className: 'fc-event-solid-info fc-event-light',
+				description: 'Lorem ipsum dolor sit amet, labore'
+			}
+		]
 	};
 
 	constructor(
@@ -77,6 +194,11 @@ export class ListEmployeeComponent implements OnInit {
 		private toastr: ToastrService
 	) {
 		this.init();
+	}
+	ngAfterViewInit(): void {
+		this.calendarComponent.getApi().addEvent([]);
+
+		this.cdr.detectChanges();
 	}
 
 	init() {

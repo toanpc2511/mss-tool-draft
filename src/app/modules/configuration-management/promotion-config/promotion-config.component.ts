@@ -5,7 +5,6 @@ import { SortService } from '../../../shared/services/sort.service';
 import { FilterService } from '../../../shared/services/filter.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
-import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 import { IError } from '../../../shared/models/error.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -35,13 +34,13 @@ export class PromotionConfigComponent implements OnInit {
 	filterField: FilterField<{
 		nameProduct: null;
 		amountLiterOrder: null;
-		promotion: null;
+		listPromotion: null;
 	}>;
 
 	constructor(
 		private configManagementService: ConfigurationManagementService,
-		private sortService: SortService<any>,
-		private filterService: FilterService<any>,
+		private sortService: SortService<IConfigPromotion>,
+		private filterService: FilterService<IConfigPromotion>,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private modalService: NgbModal,
@@ -52,13 +51,13 @@ export class PromotionConfigComponent implements OnInit {
 		this.filterField = new FilterField({
 			nameProduct: null,
 			amountLiterOrder: null,
-			promotion: null
+			listPromotion: null
 		});
 		this.searchFormControl = new FormControl();
 	}
 
 	ngOnInit(): void {
-		this.getListConfigPromo();
+		this.getListConfigPromotion();
 
 		this.searchFormControl.valueChanges
 			.pipe(debounceTime(500), takeUntil(this.destroy$))
@@ -76,7 +75,7 @@ export class PromotionConfigComponent implements OnInit {
 			});
 	}
 
-	getListConfigPromo() {
+	getListConfigPromotion() {
 		this.configManagementService.getListConfigPromotion().subscribe((res) => {
 			this.dataSource = this.dataSourceTemp = res.data;
 			this.dataSource = this.sortService.sort(
@@ -97,37 +96,53 @@ export class PromotionConfigComponent implements OnInit {
 
 		modalRef.componentInstance.data = {
 			title: data ? 'Sửa khuyến mại' : 'Thêm khuyến mại',
-			product: data
+			promoConfig: data
 		};
 
 		modalRef.result.then((result) => {
 			if (result) {
-				this.getListConfigPromo();
+				this.getListConfigPromotion();
 			}
 		});
 	}
 
-	deleteConfig($event: Event, item: any) {
+	deleteConfig($event: Event, item: IConfigPromotion) {
 		$event.stopPropagation();
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
 			backdrop: 'static'
 		});
-		const data: IConfirmModalData = {
+		modalRef.componentInstance.data = {
 			title: 'Xác nhận',
 			message: `Bạn có chắc chắn muốn xoá cấu hình khuyến mại?`,
 			button: { class: 'btn-primary', title: 'Xác nhận' }
 		};
-		modalRef.componentInstance.data = data;
 
 		modalRef.result.then((result) => {
 			if (result) {
-				console.log(result);
+				this.configManagementService.deleteConfigPromotion(item.promotionId).subscribe(
+					(res) => {
+						if (res.data) {
+							this.getListConfigPromotion();
+						}
+					},
+					(err: IError) => {
+						this.checkError(err);
+					}
+				);
 			}
 		});
 	}
 
+	getListPromotions(item: IConfigPromotion) {
+		const valuePromotion = item.promotionProducts
+			?.map((x) => `${x.quantity.toLocaleString('en-US')} ${x.productName}`)
+			.join(' + ');
+		item.listPromotion = valuePromotion;
+		return valuePromotion;
+	}
+
 	checkError(error: IError) {
-		console.log(error);
+		this.toastr.error(error.code);
 	}
 
 	sort(column: string) {
