@@ -62,6 +62,31 @@ export class HttpService {
 			})
 		);
 	}
+	
+	getFileUrl<T>(
+		endPoint: string,
+		options?: {
+			headers?:
+				| HttpHeaders
+				| {
+						[header: string]: string | string[];
+				  };
+			params?:
+				| HttpParams
+				| {
+						[param: string]: string | string[];
+				  };
+			reportProgress?: boolean;
+			withCredentials?: boolean;
+		}
+	): Observable<DataResponse<T>> {
+		return this.httpClient.get(`${this.apiUrl}/${endPoint}`, options).pipe(
+			switchMap((response) => {
+				const res = new DataResponse<T>(response, true);
+				return of(res);
+			})
+		);
+	}
 
 	customPost<T>(
 		url: string,

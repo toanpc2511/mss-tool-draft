@@ -47,6 +47,10 @@ export class FileService {
 				() => this.toastr.error('Bạn không có quyền tải file này')
 			);
 	}
+	
+	downloadFromUrl(fileUrl: string) {
+		window.open(fileUrl, "_blank")
+	}
 
 	uploadFile(fileFormData: FormData, type: EFileType) {
 		return this.http.postUpload<Array<IFile>>(
