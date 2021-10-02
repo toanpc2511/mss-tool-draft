@@ -41,7 +41,7 @@
 			<div class="form-group row">
 				<div class="col-lg-4">
 					<label>Từ ngày</label>
-					
+
 					<div class="input-group">
 						<input
 							class="form-control form-control-solid"
@@ -87,7 +87,9 @@
 					<label>Nhân viên thực hiện</label>
 					<select class="form-control form-control-solid" formControlName="employee">
 						<option [value]="''">Tất cả</option>
-						<option *ngFor="let item of listEmployees" [value]="item.id">{{ item.code }} - {{item.name}}</option>
+						<option *ngFor="let item of listEmployees" [value]="item.id">
+							{{ item.code }} - {{item.name}}
+						</option>
 					</select>
 				</div>
 			</div>
@@ -208,11 +210,7 @@
 						</td>
 
 						<td class="a-2">
-							<p
-								class="cursor-pointer text-ellipsis"
-								placement="top"
-								[ngbTooltip]="item.createdAt"
-							>
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.createdAt">
 								{{ item.createdAt }}
 							</p>
 						</td>
