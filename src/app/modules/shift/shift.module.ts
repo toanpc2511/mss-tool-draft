@@ -18,9 +18,11 @@ import { EmployeeRoutingModule } from './shift-routing.module';
 import { ShiftComponent } from './shift.component';
 import { ShiftWorkComponent } from './shift-work/shift-work.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { ShiftWorkConfigComponent } from './shift-work-config/shift-work-config.component';
+import { ShiftWorkConfigModalComponent } from './shift-work-config-modal/shift-work-config-modal.component';
 
 @NgModule({
-	declarations: [ShiftComponent, ShiftWorkComponent],
+	declarations: [ShiftComponent, ShiftWorkComponent, ShiftWorkConfigComponent, ShiftWorkConfigModalComponent],
 	imports: [
 		CommonModule,
 		EmployeeRoutingModule,

@@ -1,0 +1,110 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+    <div class="close-icon" (click)="modal.close()"></div>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px;">
+      <form class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-12">
+            <label class="form-label required">Tên ca</label>
+            <select
+              class="form-control form-control-lg form-control-solid"
+            >
+              <option value=''>Chọn tên ca</option>
+              <option value='1'>Ca sáng</option>
+              <option value='2'>Ca đêm</option>
+              <option value='3'>Ca ngày</option>
+              <option value='3'>Ca gãy</option>
+            </select>
+<!--            <app-validate-->
+<!--              [control]=".controls['status']"-->
+<!--              [error]="'required'"-->
+<!--              [message]="'Vui lòng chọn tên ca'"-->
+<!--            ></app-validate>-->
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class="form-label required">Thời gian bắt đầu</label>
+            <div class="input-group">
+              <select
+                class="form-control form-control-lg form-control-solid text-center"
+              >
+                <option *ngFor='let item of hours' value='item'>{{item}}</option>
+              </select>
+              <div class="input-group-prepend input-group-append">
+                <span class="input-group-text"> : </span>
+              </div>
+              <select
+                class="form-control form-control-lg form-control-solid text-center"
+              >
+                <option *ngFor='let item of minutes' value='item'>{{item}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <label class="form-label required">Thời gian kết thúc</label>
+            <div class="input-group">
+              <select
+                class="form-control form-control-lg form-control-solid text-center"
+              >
+                <option *ngFor='let item of hours' value='item'>{{item}}</option>
+              </select>
+              <div class="input-group-prepend input-group-append">
+                <span class="input-group-text"> : </span>
+              </div>
+              <select
+                class="form-control form-control-lg form-control-solid text-center"
+              >
+                <option *ngFor='let item of minutes' value='item'>{{item}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class="form-label">Thời gian nghỉ giữa giờ</label>
+            <div class="input-group">
+              <select
+                class="form-control form-control-lg form-control-solid text-center"
+              >
+                <option *ngFor='let item of hours' value='item'>{{item}}</option>
+              </select>
+              <div class="input-group-prepend input-group-append">
+                <span class="input-group-text"> : </span>
+              </div>
+              <select
+                class="form-control form-control-lg form-control-solid text-center"
+              >
+                <option *ngFor='let item of minutes' value='item'>{{item}}</option>
+              </select>
+
+              <button
+                class="btn plus-icon"
+                placement="top" ngbTooltip="Thêm giờ nghỉ"
+                (click)="add()"
+              ></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-12">
+            <label class="form-label required">Chi tiết ca</label>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ShiftWorkComponent } from './shift-work/shift-work.component';
+import { ShiftWorkConfigComponent } from './shift-work-config/shift-work-config.component';
 
 const routes: Routes = [
 	{
@@ -11,6 +12,10 @@ const routes: Routes = [
 	{
 		path: 'lich-lam-viec',
 		component: ShiftWorkComponent
+	},
+	{
+		path: 'cauhinh-ca',
+		component: ShiftWorkConfigComponent
 	}
 ];
 
