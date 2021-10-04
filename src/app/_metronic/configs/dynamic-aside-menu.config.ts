@@ -69,7 +69,7 @@ export const DynamicAsideMenuConfig = {
       title: 'Quản lý QR code',
       root: true,
       bullet: 'dot',
-      page: '/qrcode',
+      page: '/qr-code',
       icon: 'fas fa-qrcode'
     },
     {

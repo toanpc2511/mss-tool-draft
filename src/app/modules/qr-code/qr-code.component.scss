@@ -1,0 +1,60 @@
+.card-toolbar {
+	gap: 50px;
+
+	button {
+		width: 110px;
+	}
+
+	.option-type {
+		padding-top: 6px;
+
+		select {
+			width: 170px;
+		}
+	}
+}
+
+.card.card-custom {
+	box-shadow: none !important;
+
+	.card-body,
+	.card-header {
+		border: 0;
+	}
+}
+
+
+table {
+	min-width: 1024px;
+
+	th,
+	td {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	thead {
+		th {
+			text-transform: none;
+		}
+	}
+
+  td {
+    &.id {
+      width: 50px;
+    }
+    &.product-type,
+    &.product-name {
+      min-width: 150px;
+      max-width: 250px;
+    }
+    &.price {
+      min-width: 100px;
+      max-width: 150px;
+    }
+    &.unit {
+      min-width: 100px;
+    }
+  }
+}
+
