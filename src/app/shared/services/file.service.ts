@@ -52,14 +52,6 @@ export class FileService {
 		window.open(fileUrl, "_blank")
 	}
 
-	downloadFromUrl(fileUrl: string) {
-		const a = document.createElement('a');
-		a.href = fileUrl;
-		a.target = '_blank';
-		a.click();
-		document.removeChild(a);
-	}
-
 	uploadFile(fileFormData: FormData, type: EFileType) {
 		return this.http.postUpload<Array<IFile>>(
 			`${environment.apiUrlRoot}/files`,
