@@ -19,12 +19,12 @@ import { GasStationResponse } from '../../gas-station/gas-station.service';
 import { EmployeeService, IDepartment, IEmployee, IPosition } from '../shift.service';
 
 @Component({
-	selector: 'app-list-employee',
-	templateUrl: './list-employee.component.html',
-	styleUrls: ['./list-employee.component.scss'],
+	selector: 'app-shift-work',
+	templateUrl: './shift-work.component.html',
+	styleUrls: ['./shift-work.component.scss'],
 	providers: [DestroyService]
 })
-export class ListEmployeeComponent implements OnInit, AfterViewInit {
+export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	@ViewChild('calendar') calendarComponent: FullCalendarComponent;
 	searchFormControl: FormControl = new FormControl();
 	sortData: SortState;

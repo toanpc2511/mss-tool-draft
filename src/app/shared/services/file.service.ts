@@ -47,6 +47,10 @@ export class FileService {
 				() => this.toastr.error('Bạn không có quyền tải file này')
 			);
 	}
+	
+	downloadFromUrl(fileUrl: string) {
+		window.open(fileUrl, "_blank")
+	}
 
 	downloadFromUrl(fileUrl: string) {
 		const a = document.createElement('a');

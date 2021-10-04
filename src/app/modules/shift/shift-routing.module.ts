@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ListEmployeeComponent } from './list-employee/list-employee.component';
+import { ShiftWorkComponent } from './shift-work/shift-work.component';
 
 const routes: Routes = [
 	{
@@ -9,13 +9,8 @@ const routes: Routes = [
 		pathMatch: 'full'
 	},
 	{
-		path: 'danh-sach',
-		children: [
-			{
-				path: '',
-				component: ListEmployeeComponent
-			}
-		]
+		path: 'lich-lam-viec',
+		component: ShiftWorkComponent
 	}
 ];
 

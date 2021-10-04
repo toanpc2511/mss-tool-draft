@@ -16,11 +16,11 @@ import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { EmployeeRoutingModule } from './shift-routing.module';
 import { ShiftComponent } from './shift.component';
-import { ListEmployeeComponent } from './list-employee/list-employee.component';
+import { ShiftWorkComponent } from './shift-work/shift-work.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
-	declarations: [ShiftComponent, ListEmployeeComponent],
+	declarations: [ShiftComponent, ShiftWorkComponent],
 	imports: [
 		CommonModule,
 		EmployeeRoutingModule,
