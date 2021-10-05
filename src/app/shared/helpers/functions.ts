@@ -2,6 +2,16 @@ import * as moment from 'moment';
 import { of } from 'rxjs';
 import { DataResponse } from '../models/data-response.model';
 
+export interface IHour {
+  hour: string;
+  valueHour: string;
+}
+
+export interface IMinute {
+  minute: string;
+  valueMinute: string;
+}
+
 export const makeId = (length) => {
 	let result = '';
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -71,3 +81,34 @@ export const convertMoney = (value: string) => {
 export const ofNull = () => {
 	return of(null as DataResponse<any>);
 };
+
+export const getHours = (value: number) => {
+  let hour: any = [];
+
+  for (let i = 0; i < value; i++) {
+    if (i < 24) {
+      hour = [...hour, {
+        hour: i < 10 ? `0${i}` : i.toString(),
+        valueHour: i < 10 ? `0${i} giờ` : `${i} giờ`
+      }]
+    } else {
+      hour = [...hour, {
+        hour: (i) < 10 ? `0${i}` : (i).toString(),
+        valueHour: (i - 24) < 10 ? `0${i-24} giờ hôm sau` : `${i - 24} giờ hôm sau`
+      }]
+    }
+  }
+  return hour;
+}
+
+export const getMinutes = () => {
+  let minutes: any = [];
+
+  for (let i = 0; i < 60; i=i+5) {
+    minutes = [...minutes, {
+      minute: i < 10 ? `0${i}` : i.toString(),
+      valueMinute: i < 10 ? `0${i} phút` : `${i} phút`
+    }]
+  }
+  return minutes
+}
