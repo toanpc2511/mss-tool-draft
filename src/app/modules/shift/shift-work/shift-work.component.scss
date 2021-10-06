@@ -1,4 +1,9 @@
 :host ::ng-deep {
+	.fc-scrollgrid-sync-table {
+		tr {
+			height: 20%;
+		}
+	}
 	.fc-header-toolbar {
 		.fc-toolbar-chunk {
 			&:nth-child(1) {
@@ -8,10 +13,10 @@
 					.btn-primary:disabled {
 						opacity: 1;
 						color: #3f4254;
-						background-color: #f3f6f9!important;
+						background-color: #f3f6f9 !important;
 						border-color: #f3f6f9;
 						&:hover {
-							opacity: 0.7;
+							opacity: 0.8;
 						}
 					}
 				}
@@ -22,13 +27,128 @@
 					button {
 						background-color: #fff;
 						color: #3f4254;
-						border: 1px solid #EBEDF2;
+						border: 1px solid #ebedf2;
 
 						&.active {
-							background-color: #187DE4;
+							background-color: #187de4;
 							color: #fff;
 						}
 					}
+				}
+			}
+		}
+	}
+	.day {
+		.fc-daygrid-event-harness {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			.event {
+				margin-left: 0;
+				width: 100%;
+				height: 30px;
+				border: 1px solid #ecf0f3 !important;
+				border-radius: 5px;
+				display: flex;
+				align-items: center;
+				&:hover {
+					opacity: 0.7;
+				}
+				.fc-event-main {
+					width: 94%;
+					margin-left: 0.5rem;
+					.fc-event-title.fc-sticky {
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+				}
+			}
+		}
+		.fc-daygrid-event.fc-event-start {
+			margin-left: 0 !important;
+		}
+	}
+
+	.show-more {
+		color: #3699ff !important;
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+
+	tbody tr:hover {
+		background-color: #ffffff;
+	}
+
+	.fc-more-popover {
+		font-size: 1.3rem;
+		z-index: 1049 !important;
+		min-width: 260px;
+		.fc-popover-header {
+			span {
+				font-size: 1.3rem;
+			}
+		}
+		.fc-popover-body {
+			gap: 6px;
+			display: flex;
+			flex-direction: column;
+			.fc-daygrid-event-harness {
+				a {
+					box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+				}
+			}
+		}
+
+		.day-cell-custom {
+			.warning-icon {
+				margin-top: 2px;
+			}
+		}
+	}
+
+	// Theme
+	.fc-event-primary {
+		color: #ffffff;
+		background-color: #3699ff;
+	}
+
+	.fc-event-success {
+		color: #ffffff;
+		background-color: #1bc5bd;
+	}
+
+	.fc-event-warning {
+		color: #ffffff;
+		background-color: #ffa800;
+	}
+
+	.fc-event-danger {
+		color: #ffffff;
+		background-color: #f64e60;
+	}
+}
+
+@import '../../../../assets/sass/pages/wizard/wizard-3';
+
+.shift-wrapper {
+	.header {
+		padding-left: 30px;
+		width: 100%;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		background-color: #ffffff;
+		gap: 10px;
+		&.tab {
+			.tab-item {
+				width: 110px;
+				color: #80808f;
+				&.active,
+				&:hover {
+					color: #3699ff;
+					background: #f3f6f9;
 				}
 			}
 		}
