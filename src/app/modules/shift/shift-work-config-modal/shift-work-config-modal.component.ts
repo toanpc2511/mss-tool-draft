@@ -61,7 +61,7 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 
   buildForm() {
     this.configForm = this.fb.group({
-      nameShift: ['1', Validators.required],
+      nameShift: ['', Validators.required],
       hourStart: ['00'],
       hourEnd: ['00'],
       minutesStart: ['00'],
@@ -84,7 +84,7 @@ export class ShiftWorkConfigModalComponent implements OnInit {
   combineShiftDetail() {
     const nameShift$ = this.configForm
       .get('nameShift')
-      .valueChanges.pipe(startWith(1), takeUntil(this.destroy$)) as Observable<number>;
+      .valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
 
     const hourStart$ = this.configForm
       .get('hourStart')
@@ -119,7 +119,7 @@ export class ShiftWorkConfigModalComponent implements OnInit {
           })
         ),
         tap((data) => {
-          const name: string = this.shifts.find((p) => p.id === Number(data.nameShift))?.name;
+          const name: string = this.configForm.get('nameShift').value;
           const hourStart: number = this.configForm.get('hourStart').value;
           const minutesStart: number = this.configForm.get('minutesStart').value;
           const hourEnd: number = this.configForm.get('hourEnd').value;
@@ -130,6 +130,15 @@ export class ShiftWorkConfigModalComponent implements OnInit {
           this.timeEnd = convertTimeToString(hourEnd, minutesEnd);
 
           const shiftDetail = `${name} ( ${this.timeStart} - ${this.timeEnd}), Nghỉ (${valueTimeBreak})`;
+
+          for (const control in this.configForm.controls) {
+            this.configForm.controls[control].setErrors(null);
+          }
+
+          if (hourStart > hourEnd) {
+            this.configForm.get('hourStart').setErrors({existed: true});
+            this.configForm.get('hourEnd').setErrors({existed: true});
+          }
 
           this.configForm.get('shiftDetail').patchValue(shiftDetail);
         }),
@@ -169,7 +178,7 @@ export class ShiftWorkConfigModalComponent implements OnInit {
         if (this.configForm.invalid) {
           return;
         }
-        console.log(this.configForm.value);
+        console.log(this.configForm.getRawValue())
       });
   }
 }
