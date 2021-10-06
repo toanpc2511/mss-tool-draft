@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { DataResponse } from 'src/app/shared/models/data-response.model';
@@ -39,7 +38,7 @@ export class UserModalComponent implements OnInit {
 		const sortState = new SortState();
 		sortState.direction = '';
 		this.employeeService
-			.getEmployees(1, 15, '', '', '', sortState)
+			.getAllEmployees()
 			.pipe(
 				tap((res) => {
 					this.employees = res.data;

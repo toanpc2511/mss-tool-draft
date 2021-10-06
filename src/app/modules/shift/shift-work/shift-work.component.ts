@@ -1,3 +1,4 @@
+import { IEmployee } from './../shift.service';
 import {
 	AfterViewInit,
 	ApplicationRef,
@@ -5,37 +6,63 @@ import {
 	Component,
 	ComponentFactoryResolver,
 	ComponentRef,
-	ElementRef,
 	Injector,
 	OnInit,
 	TemplateRef,
-	ViewChild
+	ViewChild,
+	ViewEncapsulation
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { CalendarOptions, EventSourceInput, FullCalendarComponent } from '@fullcalendar/angular';
-import { NgbModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { createPopper, Instance } from '@popperjs/core/lib/popper-lite';
+import { NgbModal, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { EmployeeService } from '../shift.service';
 
+// Event
 @Component({
 	template: `
 		<div
-			[ngbPopover]="template"
-			[popoverClass]="'shift-detail'"
-			placement="top"
-			container="body"
+			[ngbPopover]="popoverTemplate"
+			[popoverClass]="'shift-detail-popover'"
 			triggers="manual"
+			container="body"
+			[placement]="['top', 'left', 'right', 'bottom']"
+			[autoClose]="'outside'"
 		>
 			<ng-content></ng-content>
 		</div>
-	`
+	`,
+	styleUrls: ['event-wrapper.component.scss'],
+	encapsulation: ViewEncapsulation.None
 })
-export class PopoverWrapperComponent {
-	template: TemplateRef<any>;
+export class EventWrapperComponent {
+	popoverTemplate: TemplateRef<any>;
 	@ViewChild(NgbPopover, { static: true }) popover: NgbPopover;
+}
+
+//Check không có nhân viên trong ca của cột
+@Component({
+	template: `
+		<div class="day-cell-custom">
+			<div
+				[ngbTooltip]="tooltipContent"
+				[tooltipClass]="'warning-tooltip'"
+				[placement]="['top', 'right', 'left', 'bottom']"
+				triggers="hover"
+				container="body"
+				class="warning-icon"
+			></div>
+			<ng-content></ng-content>
+		</div>
+	`,
+	styleUrls: ['day-wrapper.component.scss'],
+	encapsulation: ViewEncapsulation.None
+})
+export class DayWrapperComponent {
+	tooltipContent: string;
+	@ViewChild(NgbTooltip, { static: true }) tooltip: NgbTooltip;
 }
 
 @Component({
@@ -53,6 +80,65 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	YESTERDAY = this.todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
 	TODAY = this.todayDate.format('YYYY-MM-DD');
 	TOMORROW = this.todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+
+	employees: IEmployee[] = [
+		{
+			id: 1,
+			code: 'Employee1',
+			department: null,
+			name: 'Employee 1',
+			positions: null,
+			station: []
+		},
+		{
+			id: 2,
+			code: 'Employee2',
+			department: null,
+			name: 'Employee 2',
+			positions: null,
+			station: []
+		},
+		{
+			id: 3,
+			code: 'Employee3',
+			department: null,
+			name: 'Employee 3',
+			positions: null,
+			station: []
+		},
+		{
+			id: 4,
+			code: 'Employee4',
+			department: null,
+			name: 'Employee 4',
+			positions: null,
+			station: []
+		},
+		{
+			id: 5,
+			code: 'Employee5',
+			department: null,
+			name: 'Employee 5',
+			positions: null,
+			station: []
+		},
+		{
+			id: 6,
+			code: 'Employee6',
+			department: null,
+			name: 'Employee 6',
+			positions: null,
+			station: []
+		},
+		{
+			id: 7,
+			code: 'Employee7',
+			department: null,
+			name: 'Employee 7',
+			positions: null,
+			station: []
+		}
+	];
 
 	events: EventSourceInput = [
 		{
@@ -194,9 +280,6 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			},
 			timeGridWeek: {
 				titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' }
-			},
-			timeGridDay: {
-				titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' }
 			}
 		},
 		themeSystem: 'bootstrap',
@@ -211,30 +294,45 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		moreLinkText: 'ca khác',
 		moreLinkClick: this.showMore.bind(this),
 		moreLinkClassNames: 'show-more',
-		height: 700,
-		eventDidMount: this.renderEvent.bind(this),
-		eventWillUnmount: this.destroyPopover.bind(this),
-		eventClick: this.showPopover.bind(this),
-		eventMouseEnter: (event: any) => {
-			const instance = createPopper(event.el as HTMLElement, this.toolTipTmpl.nativeElement, {
-				placement: 'left'
-			});
-			this.toolTipsMap.set(event.el, instance);
+		dayPopoverFormat: {
+			weekday: 'long',
+			day: '2-digit',
+			month: 'numeric',
+			year: 'numeric'
 		},
-		eventMouseLeave: (event: any) => {
-			const toolTip = this.toolTipsMap.get(event.el);
-			if (toolTip) {
-				this.toolTipsMap.delete(event.el);
-				toolTip.destroy();
-			}
-		}
+		height: 700,
+		eventDidMount: this.renderEventContainer.bind(this),
+		eventWillUnmount: this.destroyEventContainer.bind(this),
+		eventClick: this.popoverShowOrHide.bind(this),
+		dayHeaders: true,
+		dayCellDidMount: this.dayCellRender.bind(this)
 	};
 
 	@ViewChild('popoverTmpl', { static: true }) popoverTmpl: TemplateRef<any>;
-	@ViewChild('toolTipTmpl', { static: true }) toolTipTmpl: ElementRef;
-	popoversMap = new Map<any, ComponentRef<PopoverWrapperComponent>>();
-	toolTipsMap = new Map<any, Instance>();
-	popoverFactory = this.resolver.resolveComponentFactory(PopoverWrapperComponent);
+	eventContainersMap = new Map<any, ComponentRef<EventWrapperComponent>>();
+	eventContainerFactory = this.resolver.resolveComponentFactory(EventWrapperComponent);
+
+	dayWrappersMap = new Map<any, ComponentRef<DayWrapperComponent>>();
+	dayWrapperFactory = this.resolver.resolveComponentFactory(DayWrapperComponent);
+
+	gasStationTabs = [
+		{
+			id: 1,
+			title: 'Station 1'
+		},
+		{
+			id: 2,
+			title: 'Station 2'
+		},
+		{
+			id: 3,
+			title: 'Station 3'
+		},
+		{
+			id: 4,
+			title: 'Station 4'
+		}
+	];
 
 	constructor(
 		private employeeService: EmployeeService,
@@ -251,12 +349,13 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 	ngAfterViewInit(): void {
 		this.calendarComponent.getApi().addEventSource(this.events);
-		this.cdr.detectChanges();
 	}
 
 	init() {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.init();
+	}
 
 	checkRes(res) {
 		this.cdr.detectChanges();
@@ -266,46 +365,75 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		console.log(info);
 	}
 
-	tabChange($event) {}
+	gasStationTabChange($event) {
+		console.log($event);
+	}
 
 	renderTitleEvent(event: any) {}
 
-	renderEvent(event: any) {
-		const el = event?.el as HTMLElement;
-		el.title = `${event.event.title}: ${event.event.extendedProps?.description}`;
-		this.renderPopover(event);
-	}
-
-	renderPopover(event: any) {
+	renderEventContainer(event: any) {
 		const projectableNodes = Array.from(event.el.childNodes);
-		const compPopoverRef = this.popoverFactory.create(this.injector, [projectableNodes], event.el);
-		compPopoverRef.instance.template = this.popoverTmpl;
+		const compPopoverRef = this.eventContainerFactory.create(
+			this.injector,
+			[projectableNodes],
+			event.el
+		);
+		compPopoverRef.instance.popoverTemplate = this.popoverTmpl;
 		this.appRef.attachView(compPopoverRef.hostView);
-		this.popoversMap.set(event.el, compPopoverRef);
+		this.eventContainersMap.set(event.el, compPopoverRef);
 	}
 
-	destroyPopover(event: any) {
-		const popover = this.popoversMap.get(event.el);
-		if (popover) {
-			this.appRef.detachView(popover.hostView);
-			popover.destroy();
-			this.popoversMap.delete(event.el);
+	destroyEventContainer(event: any) {
+		const eventContainer = this.eventContainersMap.get(event.el);
+		if (eventContainer) {
+			this.appRef.detachView(eventContainer.hostView);
+			eventContainer.destroy();
+			this.eventContainersMap.delete(event.el);
 		}
 	}
 
-	showPopover(event: any) {
-		const popover = this.popoversMap.get(event.el);
-		if (popover) {
-			const isShow = popover.instance.popover.isOpen();
+	popoverShowOrHide(event: any) {
+		const eventContainer = this.eventContainersMap.get(event.el);
+		if (eventContainer) {
+			const isShow = eventContainer.instance.popover.isOpen();
 			if (!isShow) {
-				popover.instance.popover.open({ event: event.event });
+				eventContainer.instance.popover.open({ event });
 			} else {
-				popover.instance.popover.close();
+				eventContainer.instance.popover.close();
 			}
 		}
 	}
 
-	eventRender(info) {
-		console.log(info.el);
+	closeShiftDetail(event) {
+		const eventContainer = this.eventContainersMap.get(event.el);
+		if (eventContainer) {
+			eventContainer.instance.popover.close();
+		}
+	}
+
+	selectedEmployeeChange($event) {
+		console.log($event);
+	}
+
+	dayCellRender(event) {
+		const projectableNodes = Array.from(event.el.childNodes);
+
+		const compPopoverRef = this.dayWrapperFactory.create(
+			this.injector,
+			[projectableNodes],
+			event.el
+		);
+		compPopoverRef.instance.tooltipContent = 'Trạm có ca chưa được gán nhân viên';
+		this.appRef.attachView(compPopoverRef.hostView);
+		this.dayWrappersMap.set(event.el, compPopoverRef);
+	}
+
+	destroyDayCell(event) {
+		const dayWrapper = this.eventContainersMap.get(event.el);
+		if (dayWrapper) {
+			this.appRef.detachView(dayWrapper.hostView);
+			dayWrapper.destroy();
+			this.dayWrappersMap.delete(event.el);
+		}
 	}
 }

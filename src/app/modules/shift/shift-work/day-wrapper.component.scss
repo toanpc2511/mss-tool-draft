@@ -1,0 +1,26 @@
+.day-cell-custom {
+    &:hover {
+        background-color: #f3f6f9;
+    }
+	position: relative;
+    height: 100%;
+	.warning-icon {
+		width: 1.5rem;
+		height: 1.5rem;
+		position: absolute;
+		top: 3px;
+		right: 1.7rem;
+        z-index: 1;
+        background-image: url('../../../../assets/media/svg/icons/General/Error.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+	}
+}
+
+.warning-tooltip {
+    div {
+        color: #f64e60;
+        z-index: 99999;
+    }
+}
