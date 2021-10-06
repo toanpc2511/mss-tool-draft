@@ -24,6 +24,7 @@ export class UserModalComponent implements OnInit {
 	userFormCreate: FormGroup;
 	userFormUpdate: FormGroup;
 	isUpdate = false;
+	userNameAndCode = '';
 
 	constructor(
 		public modal: NgbActiveModal,
@@ -53,6 +54,7 @@ export class UserModalComponent implements OnInit {
 				.getUserById(this.accountId)
 				.pipe(takeUntil(this.destroy$))
 				.subscribe((res) => {
+					this.userNameAndCode = `${res.data.employeeName} - ${res.data.employeeCode}`;
 					this.userFormUpdate.patchValue(res.data);
 				});
 		} else {

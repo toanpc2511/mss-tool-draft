@@ -11,6 +11,9 @@ export interface IUser {
 	username: string;
 	roleIds: Array<number>;
 	status: EStatus;
+	employeeId: string;
+	employeeCode: string;
+	employeeName: string;
 }
 
 export interface IUserInput {
