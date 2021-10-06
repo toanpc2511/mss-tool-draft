@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
 	NgbDatepickerModule,
+	NgbNavModule,
+	NgbPopover,
+	NgbPopoverModule,
 	NgbProgressbarModule,
 	NgbTooltipModule
 } from '@ng-bootstrap/ng-bootstrap';
@@ -16,11 +19,11 @@ import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { EmployeeRoutingModule } from './shift-routing.module';
 import { ShiftComponent } from './shift.component';
-import { ShiftWorkComponent } from './shift-work/shift-work.component';
+import { PopoverWrapperComponent, ShiftWorkComponent } from './shift-work/shift-work.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
-	declarations: [ShiftComponent, ShiftWorkComponent],
+	declarations: [ShiftComponent, ShiftWorkComponent, PopoverWrapperComponent],
 	imports: [
 		CommonModule,
 		EmployeeRoutingModule,
@@ -37,7 +40,9 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 		PipesModule,
 		NgbProgressbarModule,
 		DirectivesModule,
-		FullCalendarModule
+		FullCalendarModule,
+		NgbPopoverModule,
+		NgbTooltipModule
 	]
 })
 export class ShiftModule {}
