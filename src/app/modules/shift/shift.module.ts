@@ -21,6 +21,8 @@ import { DayWrapperComponent, EventWrapperComponent, ShiftWorkComponent } from '
 import { ShiftComponent } from './shift.component';
 import { EmployeeComponent } from './shift-work/employee/employee.component';
 import { CheckAllPipe } from './shift-work/employee/check-all.pipe';
+import { ShiftWorkConfigComponent } from './shift-work-config/shift-work-config.component';
+import { ShiftWorkConfigModalComponent } from './shift-work-config-modal/shift-work-config-modal.component';
 
 @NgModule({
 	declarations: [
@@ -29,7 +31,9 @@ import { CheckAllPipe } from './shift-work/employee/check-all.pipe';
 		EventWrapperComponent,
 		EmployeeComponent,
 		CheckAllPipe,
-		DayWrapperComponent
+		DayWrapperComponent,
+    ShiftWorkConfigComponent,
+    ShiftWorkConfigModalComponent
 	],
 	imports: [
 		CommonModule,

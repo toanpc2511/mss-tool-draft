@@ -144,10 +144,29 @@ export interface IEmployeeDetail {
 	attachment: IFile[];
 }
 
+export interface IShiftConfig {
+  id: number;
+  name: string;
+  type: string;
+  description: string;
+  startHour: number;
+  startMinute: number;
+  endHour: number;
+  endMinute: number;
+  offTimes: [ITime]
+}
+
+export interface ITime {
+  startHour: number;
+  startMinute: number;
+  endHour: number;
+  endMinute: number;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
-export class EmployeeService {
+export class ShiftService {
 	constructor(private http: HttpService) {}
 
 	getEmployees(
@@ -198,4 +217,14 @@ export class EmployeeService {
 	deleteEmployee(id: number) {
 		return this.http.delete(`employees/${id}`);
 	}
+
+  // ds cấu hình ca
+  getListShiftConfig() {
+    return this.http.get<Array<IShiftConfig>>(`shifts`);
+  }
+
+  // xóa cấu hình ca
+  deleteShiftConfg(id: number) {
+    return this.http.delete(`shifts/${id}`);
+  }
 }

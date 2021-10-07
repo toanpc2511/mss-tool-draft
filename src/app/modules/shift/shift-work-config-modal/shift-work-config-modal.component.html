@@ -1,0 +1,183 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+		<div class="close-icon" (click)="modal.close()"></div>
+	</div>
+	<div class="modal-body">
+		<div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
+			<form class="form form-label-right" [formGroup]="configForm">
+				<div class="form-group row">
+					<div class="col-lg-12">
+						<label class="form-label required">Tên ca</label>
+						<input
+							class="form-control form-control-lg form-control-solid"
+							placeholder="Nhập tên ca"
+							autocomplete="off"
+							formControlName="nameShift"
+							maxlength="99"
+						/>
+						<app-validate
+							[control]="configForm.controls['nameShift']"
+							[error]="'required'"
+							[message]="'Tên ca không được để trống'"
+						></app-validate>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-lg-6">
+						<label class="form-label">Thời gian bắt đầu</label>
+						<div class="input-group option-time">
+							<select
+								class="form-control form-control-lg form-control-solid text-center"
+								formControlName="startHour"
+							>
+								<ng-container *ngFor="let item of hours; let i = index">
+									<option *ngIf="i < 24" [value]="item.hour">{{item.valueHour}}</option>
+								</ng-container>
+							</select>
+							<div class="input-group-prepend input-group-append">
+								<span class="input-group-text"> : </span>
+							</div>
+							<select
+								class="form-control form-control-lg form-control-solid text-center"
+								formControlName="startMinute"
+							>
+								<option *ngFor="let item of minutes" [value]="item.minute">
+									{{item.valueMinute}}
+								</option>
+							</select>
+						</div>
+
+						<app-validate
+							[control]="configForm.controls['startHour']"
+							[error]="'existed'"
+							[message]="'Thời gian bắt đầu không lớn hơn thời gian kết thúc'"
+						></app-validate>
+					</div>
+
+					<div class="col-lg-6">
+						<label class="form-label">Thời gian kết thúc</label>
+						<div class="input-group option-time">
+							<select
+								class="form-control form-control-lg form-control-solid text-center"
+								formControlName="endHour"
+							>
+								<option *ngFor="let item of hours" [value]="item.hour">{{item.valueHour}}</option>
+							</select>
+							<div class="input-group-prepend input-group-append">
+								<span class="input-group-text"> : </span>
+							</div>
+							<select
+								class="form-control form-control-lg form-control-solid text-center"
+								formControlName="endMinute"
+							>
+								<option *ngFor="let item of minutes" [value]="item.minute">
+									{{item.valueMinute}}
+								</option>
+							</select>
+						</div>
+						<app-validate
+							[control]="configForm.controls['endHour']"
+							[error]="'existed'"
+							[message]="'Thời gian bắt đầu không lớn hơn thời gian kết thúc'"
+						></app-validate>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-lg-12">
+						<label class="form-label">Thời gian nghỉ giữa giờ</label>
+					</div>
+
+					<ng-container *ngFor="let itemForm of timeBreakArray.controls; let i = index">
+						<ng-container [formGroup]="itemForm">
+							<div class="col-lg-6 pb-3">
+								<div class="input-group option-time">
+									<select
+										class="form-control form-control-lg form-control-solid text-center"
+										formControlName="startHour"
+									>
+										<option *ngFor="let item of hours" [value]="item.hour">
+											{{item.valueHour}}
+										</option>
+									</select>
+									<div class="input-group-prepend input-group-append">
+										<span class="input-group-text"> : </span>
+									</div>
+									<select
+										class="form-control form-control-lg form-control-solid text-center"
+										formControlName="startMinute"
+									>
+										<option *ngFor="let item of minutes" [value]="item.minute">
+											{{item.valueMinute}}
+										</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-lg-6 pb-3">
+								<div class="input-group option-time">
+									<select
+										class="form-control form-control-lg form-control-solid text-center"
+										formControlName="endHour"
+									>
+										<option *ngFor="let item of hours" [value]="item.hour">
+											{{item.valueHour}}
+										</option>
+									</select>
+									<div class="input-group-prepend input-group-append">
+										<span class="input-group-text"> : </span>
+									</div>
+									<select
+										class="form-control form-control-lg form-control-solid text-center"
+										formControlName="endMinute"
+									>
+										<option *ngFor="let item of minutes" [value]="item.minute">
+											{{item.valueMinute}}
+										</option>
+									</select>
+									<button
+										*ngIf="timeBreakArray.length > 1"
+										class="btn plus-icon-delete"
+										placement="top"
+										ngbTooltip="Xóa giờ nghỉ"
+										(click)="deleteItem(i)"
+									></button>
+								</div>
+							</div>
+						</ng-container>
+					</ng-container>
+
+					<div class="col-lg-12">
+						<button
+							*ngIf="timeBreakArray.length < 5"
+							class="btn plus-icon"
+							placement="top"
+							ngbTooltip="Thêm giờ nghỉ"
+							(click)="addItem()"
+						></button>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-lg-12 pt-5">
+						<label class="form-label">Chi tiết ca</label>
+						<textarea
+							class="form-control form-control-solid"
+							rows="2"
+							readonly
+							formControlName="shiftDetail"
+						></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+			Hủy
+		</button>
+		<button type="button" ngbAutofocus class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
+	</div>
+</div>

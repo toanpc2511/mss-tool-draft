@@ -110,7 +110,7 @@ export const DynamicAsideMenuConfig = {
 				{
 					title: 'Cấu hình ca',
 					bullet: 'dot',
-					page: 'ca-lam-viec/cau-hinh-ca',
+					page: 'ca-lam-viec/cauhinh-ca',
 					notChild: true
 				},
 				{

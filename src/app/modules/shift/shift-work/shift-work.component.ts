@@ -18,7 +18,7 @@ import { NgbModal, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { EmployeeService } from '../shift.service';
+import { ShiftService } from '../shift.service';
 
 // Event
 @Component({
@@ -349,7 +349,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	];
 
 	constructor(
-		private employeeService: EmployeeService,
+		private shiftService: ShiftService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private modalService: NgbModal,
