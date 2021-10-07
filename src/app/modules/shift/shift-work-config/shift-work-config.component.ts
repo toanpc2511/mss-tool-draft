@@ -1,81 +1,144 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
-  IDataTransfer,
-  ShiftWorkConfigModalComponent
+	IDataTransfer,
+	ShiftWorkConfigModalComponent
 } from '../shift-work-config-modal/shift-work-config-modal.component';
+import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
+import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
+import { IError } from '../../../shared/models/error.model';
+import { ToastrService } from 'ngx-toastr';
+import { convertTimeToString } from '../../../shared/helpers/functions';
+import { IShiftConfig, ShiftService } from '../shift.service';
+import { FilterField, SortState } from '../../../_metronic/shared/crud-table';
+import { SortService } from '../../../shared/services/sort.service';
+import { FilterService } from '../../../shared/services/filter.service';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { DestroyService } from '../../../shared/services/destroy.service';
 
 @Component({
-  selector: 'app-shift-work-config',
-  templateUrl: './shift-work-config.component.html',
-  styleUrls: ['./shift-work-config.component.scss']
+	selector: 'app-shift-work-config',
+	templateUrl: './shift-work-config.component.html',
+	styleUrls: ['./shift-work-config.component.scss'],
+	providers: [SortService, FilterService, DestroyService]
 })
 export class ShiftWorkConfigComponent implements OnInit {
-  searchFormControl: FormControl;
-  dataRes: Array<any> = [];
+	searchFormControl: FormControl;
+	dataSource: Array<IShiftConfig>;
+	dataSourceTemp: Array<IShiftConfig>;
+	sorting: SortState;
 
-  constructor(
-    private modalService: NgbModal,
-    ) {
-    this.dataRes = [
-      {
-        name: 'Ca sáng',
-        start: '6:30',
-        end: '8:30',
-        detail: 'Ca sáng (6:30 - 8:30), nghỉ (7:30 - 7:45)'
-      },
-      {
-        name: 'Ca đêm',
-        start: '18:30',
-        end: '20:30',
-        detail: 'Ca đêm (19:30 - 20:30), nghỉ (19:45 - 20:00)'
-      },
-      {
-        name: 'Ca ngày',
-        start: '00:00',
-        end: '23:59',
-        detail: 'Ca ngày (6:30 - 8:30), nghỉ (7:30 - 7:45)'
-      },
-      {
-        name: 'Ca gãy',
-        start: '00:00',
-        end: '06:00 Hôm sau',
-        detail: 'Ca gãy (6:30 - 8:30), nghỉ (7:30 - 7:45)'
-      }
-    ]
-  }
+	filterField: FilterField<{
+		name: null;
+		description: null;
+	}>;
 
-  ngOnInit(): void {
-    console.log();
-  }
+	constructor(
+		private modalService: NgbModal,
+		private toastr: ToastrService,
+		private cdr: ChangeDetectorRef,
+		private sortService: SortService<IShiftConfig>,
+		private filterService: FilterService<IShiftConfig>,
+		private destroy$: DestroyService,
+		private shiftService: ShiftService
+	) {
+		this.dataSource = this.dataSourceTemp = [];
+		this.sorting = sortService.sorting;
+		this.filterField = new FilterField({
+			name: null,
+			description: null
+		});
+		this.searchFormControl = new FormControl();
+	}
 
-  updateShiftConfig(event: Event, item: any) {
-    console.log(item);
-  }
+	ngOnInit(): void {
+		this.getListShift();
 
-  deleteShiftConfig(event: Event, item: any) {
-    console.log(item);
-  }
+		this.searchFormControl.valueChanges
+			.pipe(debounceTime(500), takeUntil(this.destroy$))
+			.subscribe((value) => {
+				if (value.trim()) {
+					this.filterField.setFilterFieldValue(value.trim());
+				} else {
+					this.filterField.setFilterFieldValue(null);
+				}
 
-  createModal($event?: Event, data?: IDataTransfer): void {
-    if ($event) {
-      $event.stopPropagation();
-    }
-    const modalRef = this.modalService.open(ShiftWorkConfigModalComponent, {
-      backdrop: 'static',
-      size: 'lg'
-    });
+				this.dataSource = this.sortService.sort(
+					this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+				);
+				this.cdr.detectChanges();
+			});
+	}
 
-    modalRef.componentInstance.data = {
-      title: data ? 'Sửa ca' : 'Thêm ca',
-      product: data
-    };
+	getListShift() {
+		this.shiftService.getListShiftConfig().subscribe((res) => {
+			this.dataSource = this.dataSourceTemp = res.data;
+			this.dataSource = this.sortService.sort(
+				this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+			);
+			this.cdr.detectChanges();
+		});
+	}
 
-    modalRef.result.then((result) => {
-      if (result) {
-        console.log('done');
-      }
-    });
-  }
+	sort(column: string) {
+		this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
+	}
+
+	formatTime(hour: number, minute: number) {
+		return convertTimeToString(hour, minute);
+	}
+
+	deleteShiftConfig($event: Event, item: IShiftConfig) {
+		$event.stopPropagation();
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+			backdrop: 'static'
+		});
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn xoá ${item.name} ?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
+
+		modalRef.result.then((result) => {
+			if (result) {
+				this.shiftService.deleteShiftConfg(item.id).subscribe(
+					(res) => {
+						if (res.data) {
+							this.getListShift();
+						}
+					},
+					(err: IError) => {
+						this.checkError(err);
+					}
+				);
+			}
+		});
+	}
+
+	createModal($event?: Event, data?: IDataTransfer): void {
+		if ($event) {
+			$event.stopPropagation();
+		}
+		const modalRef = this.modalService.open(ShiftWorkConfigModalComponent, {
+			backdrop: 'static',
+			size: 'lg'
+		});
+
+		modalRef.componentInstance.data = {
+			title: data ? 'Sửa ca' : 'Thêm ca',
+			shiftConfig: data
+		};
+
+		modalRef.result.then((result) => {
+			if (result) {
+				console.log('done');
+			}
+		});
+	}
+
+	checkError(error: IError) {
+		this.toastr.error(error.code);
+	}
 }

@@ -150,6 +150,10 @@ export interface IEmployeeDetail {
 export class EmployeeService {
 	constructor(private http: HttpService) {}
 
+	getAllEmployees() {
+		return this.http.get<IEmployee[]>('employees/staff');
+	}
+
 	getEmployees(
 		page: number,
 		size: number,

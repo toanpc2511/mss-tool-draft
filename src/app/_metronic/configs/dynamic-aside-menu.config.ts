@@ -114,7 +114,7 @@ export const DynamicAsideMenuConfig = {
 					notChild: true
 				},
 				{
-					title: 'Lịch làm việc',
+					title: 'Lên lịch làm việc',
 					bullet: 'dot',
 					page: 'ca-lam-viec/lich-lam-viec',
 					notChild: true

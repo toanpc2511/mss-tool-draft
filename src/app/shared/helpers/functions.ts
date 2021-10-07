@@ -114,5 +114,9 @@ export const getMinutes = () => {
 }
 
 export const convertTimeToString = (hour: number, minute: number) => {
-  return  hour < 24 ? (`${hour}:${minute}`) : (`${hour - 24}:${minute} hôm sau`)
+  const a = hour < 10 ? `0${hour}` : hour;
+  const b = minute < 10 ? `0${minute}` : minute;
+  const c = hour -24;
+  const d = c < 10 ? `0${c}` : c;
+  return  hour < 24 ? (`${a}:${b}`) : (`${d}:${b} hôm sau`)
 }

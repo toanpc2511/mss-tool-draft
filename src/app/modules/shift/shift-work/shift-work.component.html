@@ -1,162 +1,129 @@
-<div class="row">
-	<div class="col-lg-3">
-		<!--begin::Card-->
-		<div class="card card-custom card-stretch">
-			<div class="card-header">
-				<div class="card-title">
-					<h3 class="card-label">External Events</h3>
-				</div>
-			</div>
-			<div class="card-body">
-				<div id="kt_calendar_external_events" class="fc-unthemed">
-					<div
-						class="
-							fc-draggable-handle
-							label
-							font-weight-bolder
-							label-lg label-primary label-inline
-							mb-5
-							cursor-move
-						"
-						data-color="fc-event-primary"
-					>
-						Meeting
-					</div>
-					<br />
-					<div
-						class="
-							fc-draggable-handle
-							label
-							font-weight-bolder
-							label-lg label-primary label-inline
-							mb-5
-							cursor-move
-						"
-						data-color="fc-event-primary"
-					>
-						Conference Call
-					</div>
-					<br /><br />
-					<div
-						class="
-							fc-draggable-handle
-							label
-							font-weight-bolder
-							label-lg label-success label-inline
-							mb-5
-							cursor-move
-						"
-						data-color="fc-event-success"
-					>
-						Dinner
-					</div>
-					<br />
-					<div
-						class="
-							fc-draggable-handle
-							label
-							font-weight-bolder
-							label-lg label-warning label-inline
-							mb-5
-							cursor-move
-						"
-						data-color="fc-event-warning"
-					>
-						Product Launch
-					</div>
-					<br />
-					<div
-						class="
-							fc-draggable-handle
-							label
-							font-weight-bolder
-							label-lg label-danger label-inline
-							cursor-move
-						"
-						data-color="fc-event-danger"
-					>
-						Reporting
-					</div>
-					<br />
-
-					<div class="separator separator-dashed my-10"></div>
-
-					<div
-						class="
-							fc-draggable-handle
-							label
-							font-weight-bolder
-							label-lg label-success label-inline
-							mb-5
-							cursor-move
-						"
-						data-color="fc-event-success"
-					>
-						Project Update
-					</div>
-					<br />
-					<div
-						class="
-							fc-draggable-handle
-							label
-							font-weight-bolder
-							label-lg label-info label-inline
-							mb-5
-							cursor-move
-						"
-						data-color="fc-event-info"
-					>
-						Staff Meeting
-					</div>
-					<br />
-					<div
-						class="
-							fc-draggable-handle
-							label
-							font-weight-bolder
-							label-lg label-dark label-inline
-							cursor-move
-						"
-						data-color="fc-event-dark"
-					>
-						Lunch
-					</div>
-					<br />
-
-					<div class="separator separator-dashed my-10"></div>
-					<div>
-						<label class="checkbox checkbox-primary">
-							<input type="checkbox" id="kt_calendar_external_events_remove" /> Remove after drop
-							<span></span>
-						</label>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--end::Card-->
+<div class="shift-wrapper">
+	<div class="header">
+		<app-tab
+			[valueKey]="'id'"
+			[displayKey]="'title'"
+			[tabs]="gasStationTabs"
+			[defaultActiveFirst]="true"
+			(tabChange)="gasStationTabChange($event)"
+		></app-tab>
 	</div>
-	<div class="col-lg-9">
-		<!--begin::Card-->
-		<div class="card card-custom card-stretch">
-			<div class="card-header">
-				<div class="card-title">
-					<h3 class="card-label">Ca làm việc</h3>
+	<div class="content">
+		<div>
+			<div class="w-100 d-flex">
+				<div class="w-15 d-inline-block h-100">
+					<!--begin::Card-->
+					<div class="card card-custom card-stretch">
+						<div class="card-header">
+							<div class="card-title">
+								<h3 class="card-label">Danh sách nhân viên</h3>
+							</div>
+						</div>
+						<div class="card-body my-4" style="padding: 1.3rem">
+							<app-employee
+								[employees]="employees"
+								(dataChange)="selectedEmployeeChange($event)"
+							></app-employee>
+						</div>
+					</div>
+					<!--end::Card-->
 				</div>
-				<div class="card-toolbar">
-					<a href="#" class="btn btn-light-primary font-weight-bold">
-						<span class="ki ki-plus"></span> Thêm lịch làm việc
-					</a>
+				<div class="w-85 d-inline-block h-100 pl-2">
+					<!--begin::Card-->
+					<div class="card card-custom card-stretch">
+						<div class="card-header justify-content-end">
+							<div class="card-toolbar">
+								<a class="btn btn-light-primary font-weight-bold">
+									<span class="ki ki-plus"></span> Thêm lịch làm việc
+								</a>
+							</div>
+						</div>
+						<div class="card-body">
+							<full-calendar
+								#calendar
+								defaultView="dayGridMonth"
+								[options]="calendarOptions"
+								class="shiftCalendar"
+							></full-calendar>
+						</div>
+					</div>
+					<!--end::Card-->
 				</div>
-			</div>
-			<div class="card-body">
-				<full-calendar
-					#calendar
-					defaultView="dayGridMonth"
-					[options]="calendarOptions"
-					class="shiftCalendar"
-				></full-calendar>
 			</div>
 		</div>
-		<!--end::Card-->
 	</div>
 </div>
+
+<ng-template #popoverTmpl let-event="event">
+	<div class="content">
+		<div class="content-header">
+			<div class="d-flex justify-content-end">
+				<a class="btn btn-icon btn-light btn-hover-primary btn-sm">
+					<span
+						[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+						cacheSVG="true"
+						class="svg-icon svg-icon-md svg-icon-primary"
+						[ngbTooltip]="'Sửa'"
+					>
+					</span>
+				</a>
+				<a class="mx-3 btn btn-icon btn-light btn-hover-danger btn-sm">
+					<span
+						[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+						cacheSVG="true"
+						class="svg-icon svg-icon-md svg-icon-danger"
+						[ngbTooltip]="'Xóa'"
+					>
+					</span>
+				</a>
+				<a
+					class="btn btn-icon btn-light btn-hover-secondary btn-sm"
+					(click)="closeShiftDetail(event)"
+				>
+					<span
+						[inlineSVG]="'./assets/media/svg/icons/General/Close.svg'"
+						cacheSVG="true"
+						class="svg-icon svg-icon-md svg-icon-danger"
+						[ngbTooltip]="'Đóng'"
+					>
+					</span>
+				</a>
+			</div>
+		</div>
+		<div class="content-body">
+			<ul>
+				<li>
+					<div class="d-flex mt-2">
+						<div class="w-5 mr-2">
+							<strong class="fa fa-circle text-danger"></strong>
+						</div>
+						<div>
+							<h6>{{ event.event.title }}</h6>
+							<p>{{ event.event.extendedProps.description }}</p>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="d-flex mt-2">
+						<div class="w-5 mr-2">
+							<strong class="fa fa-circle text-danger"></strong>
+						</div>
+						<div>
+							<h6>Cột 1, Cột 2</h6>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="d-flex mt-4">
+						<div class="w-5 mr-2">
+							<strong class="fa fa-user text-primary" style="font-size: 18px"></strong>
+						</div>
+						<div>
+							<h6>Nguyễn Văn A</h6>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</ng-template>

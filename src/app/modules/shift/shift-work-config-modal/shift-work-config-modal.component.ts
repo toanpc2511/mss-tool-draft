@@ -1,189 +1,241 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { DestroyService } from '../../../shared/services/destroy.service';
-import { convertTimeToString, getHours, getMinutes, IHour, IMinute } from '../../../shared/helpers/functions';
+import {
+	convertTimeToString,
+	getHours,
+	getMinutes,
+	IHour,
+	IMinute
+} from '../../../shared/helpers/functions';
 import { combineLatest, fromEvent, Observable, of } from 'rxjs';
 import { concatMap, debounceTime, startWith, takeUntil, tap } from 'rxjs/operators';
+import { IShiftConfig, ITime } from '../shift.service';
 
 @Component({
-  selector: 'app-shift-work-config-modal',
-  templateUrl: './shift-work-config-modal.component.html',
-  styleUrls: ['./shift-work-config-modal.component.scss'],
-  providers: [DestroyService, FormBuilder]
+	selector: 'app-shift-work-config-modal',
+	templateUrl: './shift-work-config-modal.component.html',
+	styleUrls: ['./shift-work-config-modal.component.scss'],
+	providers: [DestroyService, FormBuilder]
 })
 export class ShiftWorkConfigModalComponent implements OnInit {
-  @ViewChild('btnSave', { static: true }) btnSave: ElementRef;
-  @Input() data: IDataTransfer;
+	@ViewChild('btnSave', { static: true }) btnSave: ElementRef;
+	@Input() data: IDataTransfer;
 
-  shifts: Array<any> = [
-    {
-      id: 1,
-      name: 'Ca sáng'
-    },
-    {
-      id: 2,
-      name: 'Ca đêm'
-    },
-    {
-      id: 3,
-      name: 'Ca ngày'
-    },
-    {
-      id: 4,
-      name: 'Ca gãy'
-    },
-  ]
-  hours: Array<IHour> = [];
-  minutes: Array<IMinute> = [];
-  configForm: FormGroup;
-  timeBreakArray: FormArray;
-  timeStart: string;
-  timeEnd: string;
-  valueTimeBreak: string;
+	hours: Array<IHour> = [];
+	minutes: Array<IMinute> = [];
+	configForm: FormGroup;
+	timeBreakArray: FormArray;
+	timeStart: string;
+	timeEnd: string;
+	valueTimeBreak: string;
 
-  constructor(
-    public modal: NgbActiveModal,
-    private destroy$: DestroyService,
-    private cdr: ChangeDetectorRef,
-    private fb: FormBuilder
-  ) { }
+	constructor(
+		public modal: NgbActiveModal,
+		private destroy$: DestroyService,
+		private cdr: ChangeDetectorRef,
+		private fb: FormBuilder
+	) {}
 
-  ngOnInit(): void {
-    this.buildForm();
-    this.hours = getHours(48);
-    this.minutes = getMinutes();
+	ngOnInit(): void {
+		this.buildForm();
+		this.hours = getHours(48);
+		this.minutes = getMinutes();
 
-    this.combineShiftDetail();
+		this.combineShiftDetail();
 
-    this.onSubmit();
-  }
+		this.onSubmit();
+	}
 
-  buildForm() {
-    this.configForm = this.fb.group({
-      nameShift: ['', Validators.required],
-      hourStart: ['00'],
-      hourEnd: ['00'],
-      minutesStart: ['00'],
-      minutesEnd: ['00'],
-      timeBreak: this.fb.array([
-        this.fb.group({
-          hourStart: ['00'],
-          hourEnd: ['00'],
-          minutesStart: ['00'],
-          minutesEnd: ['00']
-        })
-      ]),
-      shiftDetail: ['']
-    })
+	buildForm() {
+		const dataTransfer = this.data.shiftConfig;
+		if (dataTransfer) {
+			this.configForm = this.fb.group({
+				nameShift: [dataTransfer.name],
+				startHour: [this.customConvert(dataTransfer.startHour)],
+				endHour: [this.customConvert(dataTransfer.endHour)],
+				startMinute: [this.customConvert(dataTransfer.startMinute)],
+				endMinute: [this.customConvert(dataTransfer.endMinute)],
+				offTimes: this.fb.array([
+					this.fb.group({
+						startHour: [''],
+						endHour: [''],
+						startMinute: [''],
+						endMinute: ['']
+					})
+				]),
+				shiftDetail: [dataTransfer.description]
+			});
 
-    this.timeBreakArray = this.configForm.get('timeBreak') as FormArray;
-    this.cdr.detectChanges();
-  }
+			this.timeBreakArray = this.configForm.get('offTimes') as FormArray;
 
-  combineShiftDetail() {
-    const nameShift$ = this.configForm
-      .get('nameShift')
-      .valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
+			this.data.shiftConfig.offTimes.forEach((time, i) => {
+				if (i >= 1) {
+					this.addItem();
+				}
 
-    const hourStart$ = this.configForm
-      .get('hourStart')
-      .valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
+				this.timeBreakArray
+					.at(i)
+					.get('startHour')
+					.patchValue(this.customConvert(dataTransfer.offTimes[i].startHour));
+				this.timeBreakArray
+					.at(i)
+					.get('startMinute')
+					.patchValue(this.customConvert(dataTransfer.offTimes[i].startMinute));
+				this.timeBreakArray
+					.at(i)
+					.get('endHour')
+					.patchValue(this.customConvert(dataTransfer.offTimes[i].endHour));
+				this.timeBreakArray
+					.at(i)
+					.get('endMinute')
+					.patchValue(this.customConvert(dataTransfer.offTimes[i].endMinute));
+			});
+		} else {
+			this.configForm = this.fb.group({
+				nameShift: [''],
+				startHour: ['00'],
+				endHour: ['00'],
+				startMinute: ['00'],
+				endMinute: ['00'],
+				offTimes: this.fb.array([
+					this.fb.group({
+						startHour: ['00'],
+						endHour: ['00'],
+						startMinute: ['00'],
+						endMinute: ['00']
+					})
+				]),
+				shiftDetail: ['']
+			});
 
-    const minuteStart$ = this.configForm
-      .get('minutesStart')
-      .valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
+			this.timeBreakArray = this.configForm.get('offTimes') as FormArray;
+		}
+		this.cdr.detectChanges();
+	}
 
-    const hourEnd$ = this.configForm
-      .get('hourEnd')
-      .valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
+	customConvert(a: number) {
+		return a < 10 ? `0${a}` : a;
+	}
 
-    const minuteEnd$ = this.configForm
-      .get('minutesEnd')
-      .valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
+	combineShiftDetail() {
+		const nameShift$ = this.configForm
+			.get('nameShift')
+			.valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
 
-    const timeBreak$ = this.configForm
-      .get('timeBreak')
-      .valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
+		const hourStart$ = this.configForm
+			.get('startHour')
+			.valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
 
-    combineLatest([nameShift$, hourStart$, minuteStart$, hourEnd$, minuteEnd$, timeBreak$])
-      .pipe(
-        debounceTime(300),
-        concatMap(([nameShift, hourStart, minuteStart, hourEnd, minuteEnd]) =>
-          of({
-            nameShift,
-            hourStart,
-            minuteStart,
-            hourEnd,
-            minuteEnd
-          })
-        ),
-        tap((data) => {
-          const name: string = this.configForm.get('nameShift').value;
-          const hourStart: number = this.configForm.get('hourStart').value;
-          const minutesStart: number = this.configForm.get('minutesStart').value;
-          const hourEnd: number = this.configForm.get('hourEnd').value;
-          const minutesEnd: number = this.configForm.get('minutesEnd').value;
-          const valueTimeBreak: string = this.getListTimeBreak(this.configForm.get('timeBreak').value);
+		const minuteStart$ = this.configForm
+			.get('startMinute')
+			.valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
 
-          this.timeStart = convertTimeToString(hourStart, minutesStart);
-          this.timeEnd = convertTimeToString(hourEnd, minutesEnd);
+		const hourEnd$ = this.configForm
+			.get('endHour')
+			.valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
 
-          const shiftDetail = `${name} ( ${this.timeStart} - ${this.timeEnd}), Nghỉ (${valueTimeBreak})`;
+		const minuteEnd$ = this.configForm
+			.get('endMinute')
+			.valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
 
-          for (const control in this.configForm.controls) {
-            this.configForm.controls[control].setErrors(null);
-          }
+		const timeBreak$ = this.configForm
+			.get('offTimes')
+			.valueChanges.pipe(startWith(''), takeUntil(this.destroy$)) as Observable<number>;
 
-          if (hourStart > hourEnd) {
-            this.configForm.get('hourStart').setErrors({existed: true});
-            this.configForm.get('hourEnd').setErrors({existed: true});
-          }
+		combineLatest([nameShift$, hourStart$, minuteStart$, hourEnd$, minuteEnd$, timeBreak$])
+			.pipe(
+				debounceTime(300),
+				concatMap(([nameShift, startHour, minuteStart, endHour, minuteEnd]) =>
+					of({
+						nameShift,
+						startHour,
+						minuteStart,
+						endHour,
+						minuteEnd
+					})
+				),
+				tap((data) => {
+					const name: string = this.configForm.get('nameShift').value;
+					const startHour = this.configForm.get('startHour').value;
+					const startMinute = this.configForm.get('startMinute').value;
+					const endHour = this.configForm.get('endHour').value;
+					const endMinute = this.configForm.get('endMinute').value;
+					const valueTimeBreak: string = this.getListTimeBreak(
+						this.configForm.get('offTimes').value
+					);
 
-          this.configForm.get('shiftDetail').patchValue(shiftDetail);
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-  }
+					this.timeStart = convertTimeToString(Number(startHour), Number(startMinute));
+					this.timeEnd = convertTimeToString(Number(endHour), Number(endMinute));
 
-  getListTimeBreak(data: any) {
-    return data.map((x) => `${convertTimeToString(x.hourStart, x.minutesStart)} - ${convertTimeToString(x.hourEnd, x.minutesEnd)}`).join(', ');
-  }
+					const shiftDetail = `${name} ( ${this.timeStart} - ${this.timeEnd}), Nghỉ (${valueTimeBreak})`;
 
-  addItem() {
-    this.timeBreakArray.push(
-      this.fb.group({
-        hourStart: ['00'],
-        hourEnd: ['00'],
-        minutesStart: ['00'],
-        minutesEnd: ['00']
-      })
-    );
-  }
+					for (const control in this.configForm.controls) {
+						this.configForm.controls[control].setErrors(null);
+					}
 
-  deleteItem(index: number): void {
-    this.timeBreakArray.removeAt(index);
-  }
+					if (startHour > endHour || (startHour === endHour && startMinute > endMinute)) {
+						this.configForm.get('startHour').setErrors({ existed: true });
+						this.configForm.get('endHour').setErrors({ existed: true });
+					}
 
-  onClose() {
-    this.modal.close();
-  }
+					if (name === '') {
+						this.configForm.get('nameShift').setErrors({ required: true });
+					}
 
-  onSubmit(): void {
-    fromEvent(this.btnSave.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.configForm.markAllAsTouched();
-        if (this.configForm.invalid) {
-          return;
-        }
-        console.log(this.configForm.getRawValue())
-      });
-  }
+					this.configForm.get('shiftDetail').patchValue(shiftDetail);
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	getListTimeBreak(data: Array<ITime>) {
+		return data
+			.map(
+				(x) =>
+					`${convertTimeToString(
+						Number(x.startHour),
+						Number(x.startMinute)
+					)} - ${convertTimeToString(Number(x.endHour), Number(x.endMinute))}`
+			)
+			.join(', ');
+	}
+
+	addItem() {
+		this.timeBreakArray.push(
+			this.fb.group({
+				startHour: ['00'],
+				endHour: ['00'],
+				startMinute: ['00'],
+				endMinute: ['00']
+			})
+		);
+	}
+
+	deleteItem(index: number): void {
+		this.timeBreakArray.removeAt(index);
+	}
+
+	onClose() {
+		this.modal.close();
+	}
+
+	onSubmit(): void {
+		fromEvent(this.btnSave.nativeElement, 'click')
+			.pipe(takeUntil(this.destroy$))
+			.subscribe(() => {
+				this.configForm.markAllAsTouched();
+				if (this.configForm.invalid) {
+					return;
+				}
+				console.log(this.configForm.getRawValue());
+			});
+	}
 }
 
 export interface IDataTransfer {
-  title: string;
-  shiftConfig?: any;
+	title: string;
+	shiftConfig?: IShiftConfig;
 }
