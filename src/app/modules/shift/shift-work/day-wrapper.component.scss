@@ -1,5 +1,6 @@
 .week-view-type .day-cell-custom,
 .month-view-type .day-cell-custom {
+    height: 100%;
     &:hover {
         background-color: #f3f6f9;
     }
@@ -30,7 +31,7 @@
 .week-view-type .day-cell-custom {
 	div.cell-custom {
 		display: flex;
-		justify-content: end;
+		justify-content: flex-end;
 		.warning-icon {
 			margin-right: 5px;
 		}
