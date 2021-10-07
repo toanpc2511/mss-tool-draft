@@ -47,14 +47,17 @@ export class EventWrapperComponent {
 @Component({
 	template: `
 		<div class="day-cell-custom">
-			<div
-				[ngbTooltip]="tooltipContent"
-				[tooltipClass]="'warning-tooltip'"
-				[placement]="['top', 'right', 'left', 'bottom']"
-				triggers="hover"
-				container="body"
-				class="warning-icon"
-			></div>
+			<div class="cell-custom">
+				<div
+					[ngbTooltip]="tooltipContent"
+					[tooltipClass]="'warning-tooltip'"
+					[ngClass]="{ month: !isWeekView, week: isWeekView }"
+					[placement]="['top', 'right', 'left', 'bottom']"
+					triggers="hover"
+					container="body"
+					class="warning-icon"
+				></div>
+			</div>
 			<ng-content></ng-content>
 		</div>
 	`,
@@ -63,6 +66,7 @@ export class EventWrapperComponent {
 })
 export class DayWrapperComponent {
 	tooltipContent: string;
+	isWeekView = false;
 	@ViewChild(NgbTooltip, { static: true }) tooltip: NgbTooltip;
 }
 
@@ -277,10 +281,30 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		},
 		views: {
 			dayGridMonth: {
-				titleFormat: { year: 'numeric', month: '2-digit' }
+				titleFormat: {
+					year: 'numeric',
+					month: '2-digit'
+				},
+				dayHeaderFormat: {
+					weekday: 'long'
+				},
+				dayMaxEventRows: 3,
+				dayMaxEvents: 2,
+				moreLinkText: 'ca khác',
+				moreLinkClick: this.showMore.bind(this),
+				moreLinkClassNames: 'show-more',
+				dayCellDidMount: this.dayCellRender.bind(this),
+				viewClassNames: 'month-view-type'
 			},
-			timeGridWeek: {
-				titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' }
+			dayGridWeek: {
+				titleFormat: { year: 'numeric', month: 'long', day: 'numeric' },
+				dayHeaderFormat: {
+					day: '2-digit',
+					month: 'short',
+					weekday: 'long'
+				},
+				dayCellDidMount: this.dayCellWeekRender.bind(this),
+				viewClassNames: 'week-view-type'
 			}
 		},
 		themeSystem: 'bootstrap',
@@ -290,11 +314,6 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		firstDay: 1,
 		dayCellClassNames: 'day',
 		eventClassNames: 'event',
-		dayMaxEventRows: 3,
-		dayMaxEvents: 2,
-		moreLinkText: 'ca khác',
-		moreLinkClick: this.showMore.bind(this),
-		moreLinkClassNames: 'show-more',
 		dayPopoverFormat: {
 			weekday: 'long',
 			day: '2-digit',
@@ -305,8 +324,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		eventDidMount: this.renderEventContainer.bind(this),
 		eventWillUnmount: this.destroyEventContainer.bind(this),
 		eventClick: this.popoverShowOrHide.bind(this),
-		dayHeaders: true,
-		dayCellDidMount: this.dayCellRender.bind(this)
+		dayCellWillUnmount: this.destroyDayCell.bind(this),
+		dayHeaders: true
 	};
 
 	@ViewChild('popoverTmpl', { static: true }) popoverTmpl: TemplateRef<any>;
@@ -370,18 +389,16 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		console.log($event);
 	}
 
-	renderTitleEvent(event: any) {}
-
 	renderEventContainer(event: any) {
 		const projectableNodes = Array.from(event.el.childNodes);
-		const compPopoverRef = this.eventContainerFactory.create(
+		const compWrapperRef = this.eventContainerFactory.create(
 			this.injector,
 			[projectableNodes],
 			event.el
 		);
-		compPopoverRef.instance.popoverTemplate = this.popoverTmpl;
-		this.appRef.attachView(compPopoverRef.hostView);
-		this.eventContainersMap.set(event.el, compPopoverRef);
+		compWrapperRef.instance.popoverTemplate = this.popoverTmpl;
+		this.appRef.attachView(compWrapperRef.hostView);
+		this.eventContainersMap.set(event.el, compWrapperRef);
 	}
 
 	destroyEventContainer(event: any) {
@@ -419,14 +436,14 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	dayCellRender(event) {
 		const projectableNodes = Array.from(event.el.childNodes);
 
-		const compPopoverRef = this.dayWrapperFactory.create(
+		const compWrapperRef = this.dayWrapperFactory.create(
 			this.injector,
 			[projectableNodes],
 			event.el
 		);
-		compPopoverRef.instance.tooltipContent = 'Trạm có ca chưa được gán nhân viên';
-		this.appRef.attachView(compPopoverRef.hostView);
-		this.dayWrappersMap.set(event.el, compPopoverRef);
+		compWrapperRef.instance.tooltipContent = 'Trạm có ca chưa được gán nhân viên';
+		this.appRef.attachView(compWrapperRef.hostView);
+		this.dayWrappersMap.set(event.el, compWrapperRef);
 	}
 
 	destroyDayCell(event) {
@@ -436,6 +453,20 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			dayWrapper.destroy();
 			this.dayWrappersMap.delete(event.el);
 		}
+	}
+
+	dayCellWeekRender(event) {
+		const projectableNodes = Array.from(event.el.childNodes);
+
+		const compWrapperRef = this.dayWrapperFactory.create(
+			this.injector,
+			[projectableNodes],
+			event.el
+		);
+		compWrapperRef.instance.tooltipContent = 'Trạm có ca chưa được gán nhân viên';
+		compWrapperRef.instance.isWeekView = true;
+		this.appRef.attachView(compWrapperRef.hostView);
+		this.dayWrappersMap.set(event.el, compWrapperRef);
 	}
 
   // toanpc
