@@ -10,16 +10,17 @@
           <div class="col-lg-12">
             <label class="form-label required">Ca làm việc</label>
             <select
+              (change)="shiftConfigChange($event)"
               class="form-control form-control-solid"
-              formControlName='nameCalender'
+              formControlName='shiftId'
             >
               <option [value]="''">Chọn ca làm việc</option>
               <option *ngFor='let item of dataShiftConfig' [value]='item.id'>{{item.name}}</option>
             </select>
             <app-validate
-              [control]="calenderForm.controls['nameCalender']"
+              [control]="calenderForm.controls['shiftId']"
               [error]="'required'"
-              [message]="'Chưa chọn ca làm việc'"
+              [message]="'Ca làm việc không được để trống'"
             ></app-validate>
           </div>
         </div>
@@ -27,45 +28,102 @@
         <div class="pt-5">
           <div class="body-card">
             <div class="table-responsive angular-bootstrap-table">
-              <form>
-                <table class="table table-vertical-center overflow-hidden" aria-label="">
-                  <thead class="thead-light">
-                  <tr>
-                    <th scope="">
-                      <label class="form-label">STT</label>
-                    </th>
-                    <th scope="">
-                      <label class="form-label required">Nhân viên</label>
-                    </th>
-                    <th scope="">
-                      <label class="form-label required">Cột</label>
-                    </th>
-                    <th scope="">
-                      <label class="form-label">Thời gian</label>
-                    </th>
-                    <th scope="">
-                      <label class="form-label">Xóa</label>
-                    </th>
-                  </tr>
-                  </thead>
+              <table class="table table-vertical-center overflow-hidden" aria-label="">
+                <thead class="thead-light">
+                <tr>
+                  <th scope="">
+                    <label class="form-label">STT</label>
+                  </th>
+                  <th scope="">
+                    <label class="form-label required">Nhân viên</label>
+                  </th>
+                  <th scope="">
+                    <label class="form-label required">Cột</label>
+                  </th>
+                  <th scope="">
+                    <label class="form-label">Thời gian</label>
+                  </th>
+                  <th scope="">
+                    <label class="form-label">Xóa</label>
+                  </th>
+                </tr>
+                </thead>
 
-                  <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
-                  </tbody>
+                <tbody>
+                <ng-container formArrayName="employee">
+                  <tr
+                    *ngFor="let itemFormGroup of assignFormArray.controls; let i = index"
+                  >
+                    <ng-container [formGroup]="itemFormGroup">
+                      <td class="text-center stt">{{i + 1}}</td>
+                      <td class="employee">
+                        <select
+                          class="form-control form-control-solid"
+                          formControlName='employeeId'
+                        >
+                          <option [value]="''">Chọn nhân viên</option>
+                          <option *ngFor='let item of dataShiftConfig' [value]='item.id'>{{item.name}}</option>
+                        </select>
+                      </td>
 
-                  <tfoot>
-                  <tr>
-                    <td>
-                      <a
-                        (click)="addItem()"
-                        class="btn btn-icon btn-light btn-hover-primary btn-sm"
-                      >
+                      <td class="pump-pole">
+                        <ng-select
+                          [placeholder]="'Chọn cột'"
+                          [multiple]="true"
+                          formControlName="pumpPoles"
+                          [closeOnSelect]="false"
+                          [isGroupDisplay]="true"
+                          [groupText]="'cột khác'"
+                          [minLengthGroup]="2"
+                        >
+                          <ng-option *ngFor="let pumpPoles of dataShiftConfig" [value]="pumpPoles.type"
+                          >{{ pumpPoles.name }}</ng-option
+                          >
+                        </ng-select>
+                      </td>
+                      <td class="shif-off">
+                        <ng-select
+                          [placeholder]="'Chọn thời gian nghỉ'"
+                          [multiple]="true"
+                          formControlName="shifOff"
+                          [closeOnSelect]="false"
+                          [isGroupDisplay]="true"
+                          [groupText]="'thời gian khác'"
+                          [minLengthGroup]="2"
+                        >
+                          <ng-option *ngFor="let item of listOffTime" [value]="item.id"
+                          >{{ formatTime(item.startHour, item.startMinute) }} - {{ formatTime(item.endHour, item.endMinute) }}</ng-option
+                          >
+                        </ng-select>
+                      </td>
+                      <td class='action'>
+                        <a
+                          *ngIf="i > 0 || assignFormArray.length >= 2"
+                          (click)="deleteItem(i)"
+                          class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                        >
+														<span
+                              [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                              cacheSVG="true"
+                              class="svg-icon svg-icon-md svg-icon-danger"
+                              [ngbTooltip]="'Xóa'"
+                            >
+														</span>
+                        </a>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </ng-container>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                  <td>
+                    <a
+                      *ngIf="assignFormArray.length < 10"
+                      (click)="addItem()"
+                      class="btn btn-icon btn-light btn-hover-primary btn-sm"
+                    >
 												<span
                           [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'"
                           cacheSVG="true"
@@ -73,14 +131,13 @@
                           [ngbTooltip]="'Thêm'"
                         >
 												</span>
-                      </a>
-                    </td>
+                    </a>
+                  </td>
 
-                    <td colspan="5"></td>
-                  </tr>
-                  </tfoot>
-                </table>
-              </form>
+                  <td colspan="5"></td>
+                </tr>
+                </tfoot>
+              </table>
             </div>
           </div>
         </div>
@@ -98,6 +155,7 @@
                 readonly
                 #startAt="ngbDatepicker"
                 formControlName='startAt'
+                [minDate]='minDate'
               />
               <div class="input-group-append">
                 <button
@@ -120,6 +178,7 @@
                 readonly
                 #endAt="ngbDatepicker"
                 formControlName='endAt'
+                [minDate]='minDate'
               />
               <div class="input-group-append">
                 <button
@@ -138,49 +197,17 @@
 
             <select
               class="form-control form-control-solid"
+              formControlName='type'
             >
-              <option [value]="''">Hàng tuần</option>
-              <option [value]="'1'">Hàng ngày</option>
-              <option [value]="'2'">Không lặp lại</option>
+              <option *ngFor='let item of typeLoop' [value]="item.type">{{item.name}}</option>
             </select>
           </div>
 
-          <div class='col-lg-6 list-check'>
-            <label class="check">
-              <input type="checkbox">
-              <span>T2</span>
+          <div class='col-lg-6 list-check' *ngIf='this.calenderForm.get("type").value === "WEEKLY"'>
+            <label class="check" *ngFor='let item of listDayOfWeek'>
+              <input type="checkbox" (click)='addDay(item.type)'>
+              <span>{{item.name}}</span>
             </label>
-
-            <label class="check">
-              <input type="checkbox">
-              <span>T3</span>
-            </label>
-
-            <label class="check">
-              <input type="checkbox">
-              <span>T4</span>
-            </label>
-
-            <label class="check">
-              <input type="checkbox">
-              <span>T5</span>
-            </label>
-
-            <label class="check">
-              <input type="checkbox">
-              <span>T6</span>
-            </label>
-
-            <label class="check">
-              <input type="checkbox">
-              <span>T7</span>
-            </label>
-
-            <label class="check">
-              <input type="checkbox">
-              <span>CN</span>
-            </label>
-
           </div>
         </div>
       </form>

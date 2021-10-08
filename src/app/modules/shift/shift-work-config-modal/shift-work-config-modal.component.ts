@@ -285,6 +285,9 @@ export class ShiftWorkConfigModalComponent implements OnInit {
     if (error.code === 'SUN-OIL-4739') {
       this.toastr.error('Tên ca làm việc trùng lặp');
     }
+    if (error.code === 'SUN-OIL-4738') {
+      this.toastr.error('Giờ bắt đầu nghỉ không được lớn hơn giờ kết thúc nghỉ');
+    }
   }
 }
 

@@ -237,4 +237,11 @@ export class ShiftService {
   deleteShiftConfg(id: number) {
     return this.http.delete(`shifts/${id}`);
   }
+
+  // danh sách thời gian nghỉ theo ca
+  getListOffTime(id: number) {
+    const params = new HttpParams()
+      .set('shift-id', id.toString())
+    return this.http.get('shifts-off-time', {params})
+  }
 }
