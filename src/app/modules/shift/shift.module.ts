@@ -17,18 +17,19 @@ import { DirectivesModule } from 'src/app/shared/directives/directives.module';
 import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
 import { EmployeeRoutingModule } from './shift-routing.module';
-import { DayWrapperComponent, EventWrapperComponent, ShiftWorkComponent } from './shift-work/shift-work.component';
+import {
+	DayWrapperComponent,
+	EventWrapperComponent,
+	ShiftWorkComponent
+} from './shift-work/shift-work.component';
 import { ShiftComponent } from './shift.component';
 import { EmployeeComponent } from './shift-work/employee/employee.component';
 import { CheckAllPipe } from './shift-work/employee/check-all.pipe';
 import { ShiftWorkConfigComponent } from './shift-work-config/shift-work-config.component';
 import { ShiftWorkConfigModalComponent } from './shift-work-config-modal/shift-work-config-modal.component';
-<<<<<<< HEAD
 import { PumpPoleDisplayPipe } from './shift-work/pump-pole-display.pipe';
 import { DateStringPipe } from './shift-work/date-string.pipe';
-=======
 import { CreateCalendarModalComponent } from './create-calendar-modal/create-calendar-modal.component';
->>>>>>> f439eb334bbe11a3115ce22b8c49ec056ff3ade5
 
 @NgModule({
 	declarations: [
@@ -38,14 +39,11 @@ import { CreateCalendarModalComponent } from './create-calendar-modal/create-cal
 		EmployeeComponent,
 		CheckAllPipe,
 		DayWrapperComponent,
-    ShiftWorkConfigComponent,
-    ShiftWorkConfigModalComponent,
-<<<<<<< HEAD
-    PumpPoleDisplayPipe,
-    DateStringPipe
-=======
-    CreateCalendarModalComponent
->>>>>>> f439eb334bbe11a3115ce22b8c49ec056ff3ade5
+		ShiftWorkConfigComponent,
+		ShiftWorkConfigModalComponent,
+		PumpPoleDisplayPipe,
+		DateStringPipe,
+		CreateCalendarModalComponent
 	],
 	imports: [
 		CommonModule,
@@ -65,6 +63,6 @@ import { CreateCalendarModalComponent } from './create-calendar-modal/create-cal
 		DirectivesModule,
 		FullCalendarModule,
 		NgbPopoverModule
-	],
+	]
 })
 export class ShiftModule {}

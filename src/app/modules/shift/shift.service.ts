@@ -86,31 +86,18 @@ export class ShiftService {
 		return this.http.get<Array<IShiftConfig>>(`shifts`);
 	}
 
+	// thêm cấu hình ca
+	createShiftConfig(shiftConfigData: IShiftConfig) {
+		return this.http.post(`shifts`, shiftConfigData);
+	}
+
+	// sửa cấu hình ca
+	updateShiftConfig(id: number, shiftConfigData: IShiftConfig) {
+		return this.http.put(`shifts/${id}`, shiftConfigData);
+	}
+
 	// xóa cấu hình ca
 	deleteShiftConfg(id: number) {
 		return this.http.delete(`shifts/${id}`);
 	}
-<<<<<<< HEAD
-=======
-
-  // ds cấu hình ca
-  getListShiftConfig() {
-    return this.http.get<Array<IShiftConfig>>(`shifts`);
-  }
-
-  // thêm cấu hình ca
-  createShiftConfig(shiftConfigData: IShiftConfig) {
-    return this.http.post(`shifts`, shiftConfigData);
-  }
-
-  // sửa cấu hình ca
-  updateShiftConfig(id: number, shiftConfigData: IShiftConfig) {
-    return this.http.put(`shifts/${id}`, shiftConfigData);
-  }
-
-  // xóa cấu hình ca
-  deleteShiftConfg(id: number) {
-    return this.http.delete(`shifts/${id}`);
-  }
->>>>>>> f439eb334bbe11a3115ce22b8c49ec056ff3ade5
 }
