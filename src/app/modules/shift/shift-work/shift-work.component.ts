@@ -20,7 +20,11 @@ import { ToastrService } from 'ngx-toastr';
 import { takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { ShiftService } from '../shift.service';
+<<<<<<< HEAD
 import { IEmployee } from './../shift.service';
+=======
+import { CreateCalendarModalComponent, IDataTransfer } from '../create-calendar-modal/create-calendar-modal.component';
+>>>>>>> f439eb334bbe11a3115ce22b8c49ec056ff3ade5
 
 // Event
 @Component({
@@ -365,4 +369,42 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			this.dayWrappersMap.delete(event.el);
 		}
 	}
+<<<<<<< HEAD
+=======
+
+	dayCellWeekRender(event) {
+		const projectableNodes = Array.from(event.el.childNodes);
+
+		const compWrapperRef = this.dayWrapperFactory.create(
+			this.injector,
+			[projectableNodes],
+			event.el
+		);
+		compWrapperRef.instance.tooltipContent = 'Trạm có ca chưa được gán nhân viên';
+		compWrapperRef.instance.isWeekView = true;
+		this.appRef.attachView(compWrapperRef.hostView);
+		this.dayWrappersMap.set(event.el, compWrapperRef);
+	}
+
+  // toanpc
+  createCalendarModal($event: Event) {
+    if ($event) {
+      $event.stopPropagation();
+    }
+    const modalRef = this.modalService.open(CreateCalendarModalComponent, {
+      backdrop: 'static',
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.data = {
+      title: 'Thêm lịch làm việc'
+    };
+
+    modalRef.result.then((result) => {
+      if (result) {
+        console.log('done');
+      }
+    });
+  }
+>>>>>>> f439eb334bbe11a3115ce22b8c49ec056ff3ade5
 }

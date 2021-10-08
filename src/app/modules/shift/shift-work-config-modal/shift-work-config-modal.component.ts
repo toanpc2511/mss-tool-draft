@@ -11,7 +11,9 @@ import {
 } from '../../../shared/helpers/functions';
 import { combineLatest, fromEvent, Observable, of } from 'rxjs';
 import { concatMap, debounceTime, startWith, takeUntil, tap } from 'rxjs/operators';
-import { IShiftConfig, ITime } from '../shift.service';
+import { IShiftConfig, ITime, ShiftService } from '../shift.service';
+import { IError } from '../../../shared/models/error.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 	selector: 'app-shift-work-config-modal',
@@ -35,14 +37,15 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 		public modal: NgbActiveModal,
 		private destroy$: DestroyService,
 		private cdr: ChangeDetectorRef,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+    private toastr: ToastrService,
+    private shiftService: ShiftService
 	) {}
 
 	ngOnInit(): void {
 		this.buildForm();
 		this.hours = getHours(48);
 		this.minutes = getMinutes();
-
 		this.combineShiftDetail();
 
 		this.onSubmit();
@@ -230,9 +233,59 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 				if (this.configForm.invalid) {
 					return;
 				}
-				console.log(this.configForm.getRawValue());
+
+        const shiftConfigData = this.configForm.getRawValue();
+        shiftConfigData.offTimes.map((x) => {
+          x.startHour = Number(x.startHour);
+          x.startMinute = Number(x.startMinute);
+          x.endHour = Number(x.endHour);
+          x.endMinute = Number(x.endMinute);
+        })
+        const req: any = {
+          name: shiftConfigData.nameShift,
+          description: shiftConfigData.shiftDetail,
+          startHour: Number(shiftConfigData.startHour),
+          startMinute: Number(shiftConfigData.startMinute),
+          endHour: Number(shiftConfigData.endHour),
+          endMinute: Number(shiftConfigData.endMinute),
+          offTimes: shiftConfigData.offTimes
+        };
+        console.log(req);
+        if (!this.data.shiftConfig) {
+          this.shiftService.createShiftConfig(req).subscribe(
+            () => {
+              this.modal.close(true);
+            },
+            (error: IError) => {
+              this.checkError(error);
+            }
+          );
+        } else {
+          this.shiftService
+            .updateShiftConfig(this.data.shiftConfig.id, req)
+            .subscribe(
+              () => {
+                this.modal.close(true);
+              },
+              (error: IError) => {
+                this.checkError(error);
+              }
+            );
+        }
 			});
 	}
+
+  checkError(error: IError) {
+    if (error.code === 'SUN-OIL-4740') {
+      this.toastr.error('Cấu hình giờ ca làm việc bị trùng lặp');
+    }
+    if (error.code === 'SUN-OIL-4741') {
+      this.toastr.error('Tên cấu hình ca không được để trống');
+    }
+    if (error.code === 'SUN-OIL-4739') {
+      this.toastr.error('Tên ca làm việc trùng lặp');
+    }
+  }
 }
 
 export interface IDataTransfer {

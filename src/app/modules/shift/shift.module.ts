@@ -23,8 +23,12 @@ import { EmployeeComponent } from './shift-work/employee/employee.component';
 import { CheckAllPipe } from './shift-work/employee/check-all.pipe';
 import { ShiftWorkConfigComponent } from './shift-work-config/shift-work-config.component';
 import { ShiftWorkConfigModalComponent } from './shift-work-config-modal/shift-work-config-modal.component';
+<<<<<<< HEAD
 import { PumpPoleDisplayPipe } from './shift-work/pump-pole-display.pipe';
 import { DateStringPipe } from './shift-work/date-string.pipe';
+=======
+import { CreateCalendarModalComponent } from './create-calendar-modal/create-calendar-modal.component';
+>>>>>>> f439eb334bbe11a3115ce22b8c49ec056ff3ade5
 
 @NgModule({
 	declarations: [
@@ -36,8 +40,12 @@ import { DateStringPipe } from './shift-work/date-string.pipe';
 		DayWrapperComponent,
     ShiftWorkConfigComponent,
     ShiftWorkConfigModalComponent,
+<<<<<<< HEAD
     PumpPoleDisplayPipe,
     DateStringPipe
+=======
+    CreateCalendarModalComponent
+>>>>>>> f439eb334bbe11a3115ce22b8c49ec056ff3ade5
 	],
 	imports: [
 		CommonModule,
