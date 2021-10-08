@@ -3,13 +3,13 @@ import { of } from 'rxjs';
 import { DataResponse } from '../models/data-response.model';
 
 export interface IHour {
-  hour: string;
-  valueHour: string;
+	hour: string;
+	valueHour: string;
 }
 
 export interface IMinute {
-  minute: string;
-  valueMinute: string;
+	minute: string;
+	valueMinute: string;
 }
 
 export const makeId = (length) => {
@@ -83,40 +83,69 @@ export const ofNull = () => {
 };
 
 export const getHours = (value: number) => {
-  let hour: any = [];
+	let hour: any = [];
 
-  for (let i = 0; i < value; i++) {
-    if (i < 24) {
-      hour = [...hour, {
-        hour: i < 10 ? `0${i}` : i.toString(),
-        valueHour: i < 10 ? `0${i} giờ` : `${i} giờ`
-      }]
-    } else {
-      hour = [...hour, {
-        hour: (i) < 10 ? `0${i}` : (i).toString(),
-        valueHour: (i - 24) < 10 ? `0${i-24} giờ hôm sau` : `${i - 24} giờ hôm sau`
-      }]
-    }
-  }
-  return hour;
-}
+	for (let i = 0; i < value; i++) {
+		if (i < 24) {
+			hour = [
+				...hour,
+				{
+					hour: i < 10 ? `0${i}` : i.toString(),
+					valueHour: i < 10 ? `0${i} giờ` : `${i} giờ`
+				}
+			];
+		} else {
+			hour = [
+				...hour,
+				{
+					hour: i < 10 ? `0${i}` : i.toString(),
+					valueHour: i - 24 < 10 ? `0${i - 24} giờ hôm sau` : `${i - 24} giờ hôm sau`
+				}
+			];
+		}
+	}
+	return hour;
+};
 
 export const getMinutes = () => {
-  let minutes: any = [];
+	let minutes: any = [];
 
-  for (let i = 0; i < 60; i=i+5) {
-    minutes = [...minutes, {
-      minute: i < 10 ? `0${i}` : i.toString(),
-      valueMinute: i < 10 ? `0${i} phút` : `${i} phút`
-    }]
-  }
-  return minutes
-}
+	for (let i = 0; i < 60; i = i + 5) {
+		minutes = [
+			...minutes,
+			{
+				minute: i < 10 ? `0${i}` : i.toString(),
+				valueMinute: i < 10 ? `0${i} phút` : `${i} phút`
+			}
+		];
+	}
+	return minutes;
+};
 
 export const convertTimeToString = (hour: number, minute: number) => {
-  const a = hour < 10 ? `0${hour}` : hour;
-  const b = minute < 10 ? `0${minute}` : minute;
-  const c = hour -24;
-  const d = c < 10 ? `0${c}` : c;
-  return  hour < 24 ? (`${a}:${b}`) : (`${d}:${b} hôm sau`)
-}
+	const a = hour < 10 ? `0${hour}` : hour;
+	const b = minute < 10 ? `0${minute}` : minute;
+	const c = hour - 24;
+	const d = c < 10 ? `0${c}` : c;
+	return hour < 24 ? `${a}:${b}` : `${d}:${b} hôm sau`;
+};
+
+export const getWeekDay = (moment: moment.Moment): string => {
+	const isoWeekDay = moment.isoWeekday();
+	switch (isoWeekDay) {
+		case 1:
+			return 'Thứ hai';
+		case 2:
+			return 'Thứ ba';
+		case 3:
+			return 'Thứ tư';
+		case 4:
+			return 'Thứ năm';
+		case 5:
+			return 'Thứ sáu';
+		case 6:
+			return 'Thứ bảy';
+		case 7:
+			return 'Chủ nhật';
+	}
+};

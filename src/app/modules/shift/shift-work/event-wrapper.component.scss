@@ -6,9 +6,20 @@
 
 	.content-body {
 		ul {
-            list-style: none;
+			list-style: none;
 			margin: 0;
 			padding: 0;
 		}
+	}
+}
+
+.event-container {
+	margin-left: 0.5rem;
+	strong {
+		color: #ffffff;
+		margin-right: 0.4rem;
+	}
+	span {
+		color: #ffffff;
 	}
 }

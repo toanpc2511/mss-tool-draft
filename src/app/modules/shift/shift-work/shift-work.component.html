@@ -10,7 +10,7 @@
 	</div>
 	<div class="content">
 		<div>
-			<div class="w-100 d-flex">
+			<div class="w-100 d-lg-flex">
 				<div class="w-15 d-inline-block h-100">
 					<!--begin::Card-->
 					<div class="card card-custom card-stretch">
@@ -33,6 +33,7 @@
 					<div class="card card-custom card-stretch">
 						<div class="card-header justify-content-end">
 							<div class="card-toolbar">
+								<a class="btn btn-light-danger font-weight-bold mr-3"> Xóa lịch làm việc </a>
 								<a class="btn btn-light-primary font-weight-bold" (click)='createCalendarModal($event)'>
 									<span class="ki ki-plus"></span> Thêm lịch làm việc
 								</a>
@@ -99,7 +100,10 @@
 						</div>
 						<div>
 							<h6>{{ event.event.title }}</h6>
-							<p>{{ event.event.extendedProps.description }}</p>
+							<p *ngFor="let ofTime of event.event.extendedProps.offTimes">
+								Thời gian nghỉ: {{ofTime.start + ' - ' + ofTime.end}}
+							</p>
+							<p>{{event.event.start |dateString}}</p>
 						</div>
 					</div>
 				</li>
@@ -109,7 +113,7 @@
 							<strong class="fa fa-circle text-danger"></strong>
 						</div>
 						<div>
-							<h6>Cột 1, Cột 2</h6>
+							<h6>{{event.event.extendedProps.pumpPoles |pumpPoleDisplay}}</h6>
 						</div>
 					</div>
 				</li>
@@ -119,7 +123,7 @@
 							<strong class="fa fa-user text-primary" style="font-size: 18px"></strong>
 						</div>
 						<div>
-							<h6>Nguyễn Văn A</h6>
+							<h6>{{event.event.extendedProps.employeeName}}</h6>
 						</div>
 					</div>
 				</li>
