@@ -35,4 +35,22 @@ table {
 			text-transform: none;
 		}
 	}
+
+  td {
+    &.name {
+      width: 20%;
+    }
+
+    &.start,
+    &.end {
+      width: 15%;
+    }
+
+    &.detail {
+      width: 40%;
+    }
+    &.action {
+      width: 20%;
+    }
+  }
 }

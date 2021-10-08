@@ -19,6 +19,7 @@ import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { ShiftService } from '../shift.service';
+import { CreateCalendarModalComponent, IDataTransfer } from '../create-calendar-modal/create-calendar-modal.component';
 
 // Event
 @Component({
@@ -467,4 +468,25 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		this.appRef.attachView(compWrapperRef.hostView);
 		this.dayWrappersMap.set(event.el, compWrapperRef);
 	}
+
+  // toanpc
+  createCalendarModal($event: Event) {
+    if ($event) {
+      $event.stopPropagation();
+    }
+    const modalRef = this.modalService.open(CreateCalendarModalComponent, {
+      backdrop: 'static',
+      size: 'lg'
+    });
+
+    modalRef.componentInstance.data = {
+      title: 'Thêm lịch làm việc'
+    };
+
+    modalRef.result.then((result) => {
+      if (result) {
+        console.log('done');
+      }
+    });
+  }
 }
