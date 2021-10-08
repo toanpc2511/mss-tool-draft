@@ -133,7 +133,7 @@ export class ShiftWorkConfigComponent implements OnInit {
 
 		modalRef.result.then((result) => {
 			if (result) {
-				console.log('done');
+        this.getListShift();
 			}
 		});
 	}

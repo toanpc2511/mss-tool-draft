@@ -5,63 +5,67 @@
   </div>
   <div class="modal-body">
     <div class="overlay overlay-block cursor-default modal-body">
-      <div class="form-group row">
-        <div class="col-lg-12">
-          <label class="form-label required">Ca làm việc</label>
-          <select
-            class="form-control form-control-solid"
-          >
-            <option [value]="''">Chọn loại ca làm việc</option>
-            <option [value]="'1'">Chọn loại ca làm việc</option>
-            <option [value]="'2'">Chọn loại ca làm việc</option>
-            <option [value]="'3'">Chọn loại ca làm việc</option>
-            <option [value]="'4'">Chọn loại ca làm việc</option>
-          </select>
+      <form class="form form-label-right" [formGroup]="calenderForm">
+        <div class="form-group row">
+          <div class="col-lg-12">
+            <label class="form-label required">Ca làm việc</label>
+            <select
+              class="form-control form-control-solid"
+              formControlName='nameCalender'
+            >
+              <option [value]="''">Chọn ca làm việc</option>
+              <option *ngFor='let item of dataShiftConfig' [value]='item.id'>{{item.name}}</option>
+            </select>
+            <app-validate
+              [control]="calenderForm.controls['nameCalender']"
+              [error]="'required'"
+              [message]="'Chưa chọn ca làm việc'"
+            ></app-validate>
+          </div>
         </div>
-      </div>
 
-      <div class="pt-5">
-        <div class="body-card">
-          <div class="table-responsive angular-bootstrap-table">
-            <form>
-              <table class="table table-vertical-center overflow-hidden" aria-label="">
-                <thead class="thead-light">
-                <tr>
-                  <th scope="">
-                    <label class="form-label">STT</label>
-                  </th>
-                  <th scope="">
-                    <label class="form-label required">Nhân viên</label>
-                  </th>
-                  <th scope="">
-                    <label class="form-label required">Cột</label>
-                  </th>
-                  <th scope="">
-                    <label class="form-label">Thời gian</label>
-                  </th>
-                  <th scope="">
-                    <label class="form-label">Xóa</label>
-                  </th>
-                </tr>
-                </thead>
+        <div class="pt-5">
+          <div class="body-card">
+            <div class="table-responsive angular-bootstrap-table">
+              <form>
+                <table class="table table-vertical-center overflow-hidden" aria-label="">
+                  <thead class="thead-light">
+                  <tr>
+                    <th scope="">
+                      <label class="form-label">STT</label>
+                    </th>
+                    <th scope="">
+                      <label class="form-label required">Nhân viên</label>
+                    </th>
+                    <th scope="">
+                      <label class="form-label required">Cột</label>
+                    </th>
+                    <th scope="">
+                      <label class="form-label">Thời gian</label>
+                    </th>
+                    <th scope="">
+                      <label class="form-label">Xóa</label>
+                    </th>
+                  </tr>
+                  </thead>
 
-                <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                </tr>
-                </tbody>
+                  <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                  </tbody>
 
-                <tfoot>
-                <tr>
-                  <td>
-                    <a
-                      (click)="addItem()"
-                      class="btn btn-icon btn-light btn-hover-primary btn-sm"
-                    >
+                  <tfoot>
+                  <tr>
+                    <td>
+                      <a
+                        (click)="addItem()"
+                        class="btn btn-icon btn-light btn-hover-primary btn-sm"
+                      >
 												<span
                           [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'"
                           cacheSVG="true"
@@ -69,113 +73,117 @@
                           [ngbTooltip]="'Thêm'"
                         >
 												</span>
-                    </a>
-                  </td>
+                      </a>
+                    </td>
 
-                  <td colspan="5"></td>
-                </tr>
-                </tfoot>
-              </table>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group row pt-5">
-        <div class="col-lg-6">
-          <label>Ngày bắt đầu</label>
-
-          <div class="input-group">
-            <input
-              class="form-control form-control-solid"
-              placeholder="DD/MM/YYYY"
-              ngbDatepicker
-              readonly
-              #startAt="ngbDatepicker"
-            />
-            <div class="input-group-append">
-              <button
-                class="btn btn-outline-secondary fa fa-calendar-alt"
-                (click)="startAt.toggle()"
-                type="button"
-              ></button>
+                    <td colspan="5"></td>
+                  </tr>
+                  </tfoot>
+                </table>
+              </form>
             </div>
           </div>
         </div>
 
-        <div class="col-lg-6">
-          <label>Ngày kết thúc</label>
 
-          <div class="input-group">
-            <input
-              class="form-control form-control-solid"
-              placeholder="DD/MM/YYYY"
-              ngbDatepicker
-              readonly
-              #endAt="ngbDatepicker"
-            />
-            <div class="input-group-append">
-              <button
-                class="btn btn-outline-secondary fa fa-calendar-alt"
-                (click)="endAt.toggle()"
-                type="button"
-              ></button>
+        <div class="form-group row pt-5">
+          <div class="col-lg-6">
+            <label>Ngày bắt đầu</label>
+
+            <div class="input-group">
+              <input
+                class="form-control form-control-solid"
+                placeholder="DD/MM/YYYY"
+                ngbDatepicker
+                readonly
+                #startAt="ngbDatepicker"
+                formControlName='startAt'
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary fa fa-calendar-alt"
+                  (click)="startAt.toggle()"
+                  type="button"
+                ></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <label>Ngày kết thúc</label>
+
+            <div class="input-group">
+              <input
+                class="form-control form-control-solid"
+                placeholder="DD/MM/YYYY"
+                ngbDatepicker
+                readonly
+                #endAt="ngbDatepicker"
+                formControlName='endAt'
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary fa fa-calendar-alt"
+                  (click)="endAt.toggle()"
+                  type="button"
+                ></button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="form-group row pt-3">
-        <div class="col-lg-6">
-          <label>Lặp lại</label>
+        <div class="form-group row pt-3">
+          <div class="col-lg-6">
+            <label>Lặp lại</label>
 
-          <select
-            class="form-control form-control-solid"
-          >
-            <option [value]="''">Hàng tuần</option>
-            <option [value]="'1'">Hàng ngày</option>
-            <option [value]="'2'">Không lặp lại</option>
-          </select>
+            <select
+              class="form-control form-control-solid"
+            >
+              <option [value]="''">Hàng tuần</option>
+              <option [value]="'1'">Hàng ngày</option>
+              <option [value]="'2'">Không lặp lại</option>
+            </select>
+          </div>
+
+          <div class='col-lg-6 list-check'>
+            <label class="check">
+              <input type="checkbox">
+              <span>T2</span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox">
+              <span>T3</span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox">
+              <span>T4</span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox">
+              <span>T5</span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox">
+              <span>T6</span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox">
+              <span>T7</span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox">
+              <span>CN</span>
+            </label>
+
+          </div>
         </div>
-
-        <div class='col-lg-6 list-check'>
-          <label class="check">
-            <input type="checkbox">
-            <span>T2</span>
-          </label>
-
-          <label class="check">
-            <input type="checkbox">
-            <span>T3</span>
-          </label>
-
-          <label class="check">
-            <input type="checkbox">
-            <span>T4</span>
-          </label>
-
-          <label class="check">
-            <input type="checkbox">
-            <span>T5</span>
-          </label>
-
-          <label class="check">
-            <input type="checkbox">
-            <span>T6</span>
-          </label>
-
-          <label class="check">
-            <input type="checkbox">
-            <span>T7</span>
-          </label>
-
-          <label class="check">
-            <input type="checkbox">
-            <span>CN</span>
-          </label>
-
-        </div>
-      </div>
+      </form>
     </div>
   </div>
   <div class="modal-footer">

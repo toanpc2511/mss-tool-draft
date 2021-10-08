@@ -470,7 +470,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 
   // toanpc
-  createCalendarModal($event: Event, data: IDataTransfer) {
+  createCalendarModal($event: Event) {
     if ($event) {
       $event.stopPropagation();
     }
@@ -480,8 +480,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
     });
 
     modalRef.componentInstance.data = {
-      title: 'Thêm lịch làm việc',
-      shiftConfig: data
+      title: 'Thêm lịch làm việc'
     };
 
     modalRef.result.then((result) => {
