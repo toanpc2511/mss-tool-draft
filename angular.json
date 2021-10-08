@@ -45,7 +45,8 @@
               "camelize",
               "ng2-trim-directive",
               "angular2-text-mask",
-              "file-saver"
+              "file-saver",
+              "moment-timezone"
             ],
             "index": "src/index.html",
             "main": "src/main.ts",

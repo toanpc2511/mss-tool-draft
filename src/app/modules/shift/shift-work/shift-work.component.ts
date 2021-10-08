@@ -1,4 +1,3 @@
-import { IEmployee } from './../shift.service';
 import {
 	AfterViewInit,
 	ApplicationRef,
@@ -6,6 +5,7 @@ import {
 	Component,
 	ComponentFactoryResolver,
 	ComponentRef,
+	ElementRef,
 	Injector,
 	OnInit,
 	TemplateRef,
@@ -13,12 +13,14 @@ import {
 	ViewEncapsulation
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { CalendarOptions, EventSourceInput, FullCalendarComponent } from '@fullcalendar/angular';
+import { CalendarOptions, EventInput, FullCalendarComponent } from '@fullcalendar/angular';
 import { NgbModal, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { ShiftService } from '../shift.service';
+import { IEmployee } from './../shift.service';
 
 // Event
 @Component({
@@ -31,7 +33,10 @@ import { ShiftService } from '../shift.service';
 			[placement]="['top', 'left', 'right', 'bottom']"
 			[autoClose]="'outside'"
 		>
-			<ng-content></ng-content>
+			<div class="event-container">
+				<strong class="fa fa-circle"></strong>
+				<span>{{ eventData.title }}</span>
+			</div>
 		</div>
 	`,
 	styleUrls: ['event-wrapper.component.scss'],
@@ -39,7 +44,9 @@ import { ShiftService } from '../shift.service';
 })
 export class EventWrapperComponent {
 	popoverTemplate: TemplateRef<any>;
+	eventData: EventInput;
 	@ViewChild(NgbPopover, { static: true }) popover: NgbPopover;
+	constructor(public elRef: ElementRef) {}
 }
 
 //Check không có nhân viên trong ca của cột
@@ -48,9 +55,9 @@ export class EventWrapperComponent {
 		<div class="day-cell-custom">
 			<div class="cell-custom">
 				<div
-					[ngbTooltip]="tooltipContent"
+					*ngIf="tooltipWarning"
+					[ngbTooltip]="tooltipWarning"
 					[tooltipClass]="'warning-tooltip'"
-					[ngClass]="{ month: !isWeekView, week: isWeekView }"
 					[placement]="['top', 'right', 'left', 'bottom']"
 					triggers="hover"
 					container="body"
@@ -64,8 +71,7 @@ export class EventWrapperComponent {
 	encapsulation: ViewEncapsulation.None
 })
 export class DayWrapperComponent {
-	tooltipContent: string;
-	isWeekView = false;
+	tooltipWarning: string;
 	@ViewChild(NgbTooltip, { static: true }) tooltip: NgbTooltip;
 }
 
@@ -79,187 +85,47 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	// Get calendar to use FullCalendar API
 	@ViewChild('calendar') calendarComponent: FullCalendarComponent;
 
-	todayDate = moment().startOf('day');
-	YM = this.todayDate.format('YYYY-MM');
-	YESTERDAY = this.todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
-	TODAY = this.todayDate.format('YYYY-MM-DD');
-	TOMORROW = this.todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
-
 	employees: IEmployee[] = [
 		{
 			id: 1,
 			code: 'Employee1',
-			department: null,
-			name: 'Employee 1',
-			positions: null,
-			station: []
+			name: 'Employee 1'
 		},
 		{
 			id: 2,
 			code: 'Employee2',
-			department: null,
-			name: 'Employee 2',
-			positions: null,
-			station: []
+			name: 'Employee 2'
 		},
 		{
 			id: 3,
 			code: 'Employee3',
-			department: null,
-			name: 'Employee 3',
-			positions: null,
-			station: []
+			name: 'Employee 3'
 		},
 		{
 			id: 4,
 			code: 'Employee4',
-			department: null,
-			name: 'Employee 4',
-			positions: null,
-			station: []
+			name: 'Employee 4'
 		},
 		{
 			id: 5,
 			code: 'Employee5',
-			department: null,
-			name: 'Employee 5',
-			positions: null,
-			station: []
+			name: 'Employee 5'
 		},
 		{
 			id: 6,
 			code: 'Employee6',
-			department: null,
-			name: 'Employee 6',
-			positions: null,
-			station: []
+			name: 'Employee 6'
 		},
 		{
 			id: 7,
 			code: 'Employee7',
-			department: null,
-			name: 'Employee 7',
-			positions: null,
-			station: []
+			name: 'Employee 7'
 		}
 	];
 
-	events: EventSourceInput = [
-		{
-			title: 'All Day Event',
-			start: this.YM + '-01',
-			description: 'Toto lorem ipsum dolor sit incid idunt ut',
-			className: 'fc-event-danger fc-event-solid-warning'
-		},
-		{
-			title: 'All Day Event',
-			start: this.YM + '-01',
-			description: 'Toto lorem ipsum dolor sit incid idunt ut',
-			className: 'fc-event-danger fc-event-solid-warning'
-		},
-		{
-			title: 'All Day Event',
-			start: this.YM + '-01',
-			description: 'Toto lorem ipsum dolor sit incid idunt ut',
-			className: 'fc-event-danger fc-event-solid-warning'
-		},
-		{
-			title: 'All Day Event',
-			start: this.YM + '-01',
-			description: 'Toto lorem ipsum dolor sit incid idunt ut',
-			className: 'fc-event-danger fc-event-solid-warning'
-		},
-		{
-			title: 'Reporting',
-			start: this.YM + '-1',
-			description: 'Lorem ipsum dolor incid idunt ut labore',
-			end: this.YM + '-14',
-			className: 'fc-event-success'
-		},
-		{
-			title: 'Company Trip',
-			start: this.YM + '-02',
-			description: 'Lorem ipsum dolor sit tempor incid',
-			end: this.YM + '-03',
-			className: 'fc-event-primary'
-		},
-		{
-			title: 'ICT Expo 2017 - Product Release',
-			start: this.YM + '-03',
-			description: 'Lorem ipsum dolor sit tempor inci',
-			end: this.YM + '-05',
-			className: 'fc-event-light fc-event-solid-primary'
-		},
-		{
-			title: 'Dinner',
-			start: this.YM + '-12',
-			description: 'Lorem ipsum dolor sit amet, conse ctetur',
-			end: this.YM + '-10'
-		},
-		{
-			id: '999',
-			title: 'Repeating Event',
-			start: this.YM + '-09',
-			description: 'Lorem ipsum dolor sit ncididunt ut labore',
-			className: 'fc-event-danger'
-		},
-		{
-			id: '999',
-			title: 'Repeating Event',
-			description: 'Lorem ipsum dolor sit amet, labore',
-			start: this.YM + '-16'
-		},
-		{
-			title: 'Conference',
-			start: this.YESTERDAY,
-			end: this.TOMORROW,
-			description: 'Lorem ipsum dolor eius mod tempor labore',
-			className: 'fc-event-primary'
-		},
-		{
-			title: 'Meeting',
-			start: this.TODAY,
-			end: this.TODAY,
-			description: 'Lorem ipsum dolor eiu idunt ut labore'
-		},
-		{
-			title: 'Lunch',
-			start: this.TODAY,
-			className: 'fc-event-info',
-			description: 'Lorem ipsum dolor sit amet, ut labore'
-		},
-		{
-			title: 'Meeting',
-			start: this.TODAY,
-			className: 'fc-event-warning',
-			description: 'Lorem ipsum conse ctetur adipi scing'
-		},
-		{
-			title: 'Happy Hour',
-			start: this.TODAY,
-			className: 'fc-event-info',
-			description: 'Lorem ipsum dolor sit amet, conse ctetur'
-		},
-		{
-			title: 'Dinner',
-			start: this.TOMORROW,
-			className: 'fc-event-solid-danger fc-event-light',
-			description: 'Lorem ipsum dolor sit ctetur adipi scing'
-		},
-		{
-			title: 'Birthday Party',
-			start: this.TOMORROW,
-			className: 'fc-event-warning',
-			description: 'Lorem ipsum dolor sit amet, scing'
-		},
-		{
-			title: 'Click for Google',
-			url: 'http://google.com/',
-			start: this.YM + '-28',
-			className: 'fc-event-solid-info fc-event-light',
-			description: 'Lorem ipsum dolor sit amet, labore'
-		}
-	];
+	calendars: EventInput[];
+	calendarsCountByDate: Map<string, number> = new Map();
+	totalPumpPoles = 0;
 
 	calendarOptions: CalendarOptions = {
 		headerToolbar: {
@@ -292,7 +158,6 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 				moreLinkText: 'ca khác',
 				moreLinkClick: this.showMore.bind(this),
 				moreLinkClassNames: 'show-more',
-				dayCellDidMount: this.dayCellRender.bind(this),
 				viewClassNames: 'month-view-type'
 			},
 			dayGridWeek: {
@@ -302,7 +167,6 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 					month: 'short',
 					weekday: 'long'
 				},
-				dayCellDidMount: this.dayCellWeekRender.bind(this),
 				viewClassNames: 'week-view-type'
 			}
 		},
@@ -323,8 +187,10 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		eventDidMount: this.renderEventContainer.bind(this),
 		eventWillUnmount: this.destroyEventContainer.bind(this),
 		eventClick: this.popoverShowOrHide.bind(this),
+		dayCellDidMount: this.dayCellRender.bind(this),
 		dayCellWillUnmount: this.destroyDayCell.bind(this),
-		dayHeaders: true
+		dayHeaders: true,
+		timeZone: 'Asia/ Ho_Chi_Minh'
 	};
 
 	@ViewChild('popoverTmpl', { static: true }) popoverTmpl: TemplateRef<any>;
@@ -367,7 +233,43 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		this.init();
 	}
 	ngAfterViewInit(): void {
-		this.calendarComponent.getApi().addEventSource(this.events);
+		this.calendarsCountByDate.clear();
+		this.shiftService
+			.getShiftWorks('2021-01-07', '2021-03-07', ['72', '73'], '5119')
+			.pipe(
+				tap((res) => {
+					this.calendars = [...res.data.calendarResponses].map((calendar): EventInput => {
+						const start = moment(calendar.start).format('YYYY-MM-DD');
+						const end = moment(calendar.end).format('YYYY-MM-DD');
+						const currentCount = this.calendarsCountByDate.get(start);
+						this.calendarsCountByDate.set(start, currentCount ? currentCount + 1 : 1);
+						if (start !== end) {
+							const currentCount = this.calendarsCountByDate.get(end);
+							this.calendarsCountByDate.set(end, currentCount ? currentCount + 1 : 1);
+						}
+						this.totalPumpPoles = res.data.totalPump;
+
+						return {
+							id: calendar.calendarId.toString(),
+							start: calendar.start,
+							end: calendar.end,
+							title: `${calendar.shiftName} - ${calendar.employeeName}`,
+							backgroundColor: calendar.backgroundColor,
+							color: '#ffffff',
+							extendedProps: {
+								employeeName: calendar.employeeName,
+								offTimes: calendar.offTimeResponses,
+								pumpPoles: calendar.pumpPoleResponses,
+								totalPump: res.data.totalPump
+							},
+							allDay: true
+						};
+					});
+					this.calendarComponent.getApi().addEventSource(this.calendars);
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
 	}
 
 	init() {}
@@ -396,6 +298,10 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			event.el
 		);
 		compWrapperRef.instance.popoverTemplate = this.popoverTmpl;
+		compWrapperRef.instance.eventData = event.event;
+		const eventRef = compWrapperRef.instance.elRef.nativeElement as HTMLElement;
+		eventRef.style.backgroundColor = event.event.backgroundColor;
+		eventRef.style.color = event.event.color;
 		this.appRef.attachView(compWrapperRef.hostView);
 		this.eventContainersMap.set(event.el, compWrapperRef);
 	}
@@ -433,6 +339,9 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 
 	dayCellRender(event) {
+		const currentRenderDate = moment(event.date).format('YYYY-MM-DD');
+		const totalEventCurrentDate = this.calendarsCountByDate.get(currentRenderDate);
+
 		const projectableNodes = Array.from(event.el.childNodes);
 
 		const compWrapperRef = this.dayWrapperFactory.create(
@@ -440,7 +349,10 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			[projectableNodes],
 			event.el
 		);
-		compWrapperRef.instance.tooltipContent = 'Trạm có ca chưa được gán nhân viên';
+
+		if (totalEventCurrentDate < this.totalPumpPoles) {
+			compWrapperRef.instance.tooltipWarning = 'Trạm có ca chưa được gán nhân viên';
+		}
 		this.appRef.attachView(compWrapperRef.hostView);
 		this.dayWrappersMap.set(event.el, compWrapperRef);
 	}
@@ -452,19 +364,5 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			dayWrapper.destroy();
 			this.dayWrappersMap.delete(event.el);
 		}
-	}
-
-	dayCellWeekRender(event) {
-		const projectableNodes = Array.from(event.el.childNodes);
-
-		const compWrapperRef = this.dayWrapperFactory.create(
-			this.injector,
-			[projectableNodes],
-			event.el
-		);
-		compWrapperRef.instance.tooltipContent = 'Trạm có ca chưa được gán nhân viên';
-		compWrapperRef.instance.isWeekView = true;
-		this.appRef.attachView(compWrapperRef.hostView);
-		this.dayWrappersMap.set(event.el, compWrapperRef);
 	}
 }
