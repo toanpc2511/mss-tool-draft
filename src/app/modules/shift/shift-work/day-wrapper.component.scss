@@ -1,9 +1,9 @@
 .week-view-type .day-cell-custom,
 .month-view-type .day-cell-custom {
-    height: 100%;
-    &:hover {
-        background-color: #f3f6f9;
-    }
+	height: 100%;
+	&:hover {
+		background-color: #f3f6f9;
+	}
 	div.cell-custom {
 		.warning-icon {
 			width: 1.5rem;
@@ -15,11 +15,18 @@
 			background-size: contain;
 		}
 	}
+
+	.fc-event-main,
+	.fc-daygrid-event-dot,
+	.fc-event-time,
+	.fc-event-title {
+		display: none;
+	}
 }
 
 .month-view-type .day-cell-custom {
 	div.cell-custom {
-        position: relative;
+		position: relative;
 		.warning-icon {
 			position: absolute;
 			top: 3px;

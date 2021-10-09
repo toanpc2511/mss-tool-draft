@@ -1,4 +1,8 @@
 :host ::ng-deep {
+	.fc-scroller {
+		overflow: hidden!important;
+		height: fit-content!important;
+	}
 	.fc-scrollgrid-sync-table {
 		tr {
 			height: 20%;
