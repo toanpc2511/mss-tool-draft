@@ -15,6 +15,7 @@
 							autocomplete="off"
 							formControlName="nameShift"
 							maxlength="99"
+              trim='blur'
 						/>
 						<app-validate
 							[control]="configForm.controls['nameShift']"
@@ -26,7 +27,7 @@
 
 				<div class="form-group row">
 					<div class="col-lg-6">
-						<label class="form-label">Thời gian bắt đầu</label>
+						<label class="form-label required">Thời gian bắt đầu</label>
 						<div class="input-group option-time">
 							<select
 								class="form-control form-control-lg form-control-solid text-center"
@@ -57,7 +58,7 @@
 					</div>
 
 					<div class="col-lg-6">
-						<label class="form-label">Thời gian kết thúc</label>
+						<label class="form-label required">Thời gian kết thúc</label>
 						<div class="input-group option-time">
 							<select
 								class="form-control form-control-lg form-control-solid text-center"
@@ -87,7 +88,7 @@
 
 				<div class="form-group row">
 					<div class="col-lg-12">
-						<label class="form-label">Thời gian nghỉ giữa giờ</label>
+						<label class="form-label required">Thời gian nghỉ giữa giờ</label>
 					</div>
 
 					<ng-container *ngFor="let itemForm of timeBreakArray.controls; let i = index">
@@ -98,6 +99,7 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="startHour"
 									>
+                    <option value=''>Chọn giờ</option>
 										<option *ngFor="let item of hours" [value]="item.hour">
 											{{item.valueHour}}
 										</option>
@@ -109,6 +111,7 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="startMinute"
 									>
+                    <option value=''>Chọn phút</option>
 										<option *ngFor="let item of minutes" [value]="item.minute">
 											{{item.valueMinute}}
 										</option>
@@ -122,6 +125,7 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="endHour"
 									>
+                    <option value=''>Chọn giờ</option>
 										<option *ngFor="let item of hours" [value]="item.hour">
 											{{item.valueHour}}
 										</option>
@@ -133,6 +137,7 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="endMinute"
 									>
+                    <option value=''>Chọn phút</option>
 										<option *ngFor="let item of minutes" [value]="item.minute">
 											{{item.valueMinute}}
 										</option>

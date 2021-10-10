@@ -31,19 +31,19 @@
               <table class="table table-vertical-center overflow-hidden" aria-label="">
                 <thead class="thead-light">
                 <tr>
-                  <th scope="">
+                  <th id="stt">
                     <label class="form-label">STT</label>
                   </th>
-                  <th scope="">
+                  <th id="employee">
                     <label class="form-label required">Nhân viên</label>
                   </th>
-                  <th scope="">
+                  <th id="pump">
                     <label class="form-label required">Cột</label>
                   </th>
-                  <th scope="">
-                    <label class="form-label">Thời gian</label>
+                  <th id="time">
+                    <label class="form-label">Thời gian nghỉ</label>
                   </th>
-                  <th scope="">
+                  <th id="action">
                     <label class="form-label">Xóa</label>
                   </th>
                 </tr>
@@ -61,7 +61,7 @@
                           class="form-control form-control-solid"
                           formControlName='employeeId'
                         >
-                          <option [value]="''">Chọn nhân viên</option>
+                          <option [value]="null">Chọn nhân viên</option>
                           <option *ngFor='let item of dataShiftConfig' [value]='item.id'>{{item.name}}</option>
                         </select>
                       </td>
@@ -205,7 +205,7 @@
 
           <div class='col-lg-6 list-check' *ngIf='this.calenderForm.get("type").value === "WEEKLY"'>
             <label class="check" *ngFor='let item of listDayOfWeek'>
-              <input type="checkbox" (click)='addDay(item.type)'>
+              <input type="checkbox" (click)='addDay()' name='dayOfWeek' [value]='item.type'>
               <span>{{item.name}}</span>
             </label>
           </div>

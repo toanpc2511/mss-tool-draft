@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import {
 	convertTimeToString,
@@ -104,10 +104,10 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 				endMinute: ['00'],
 				offTimes: this.fb.array([
 					this.fb.group({
-						startHour: ['00'],
-						endHour: ['00'],
-						startMinute: ['00'],
-						endMinute: ['00']
+						startHour: ['', Validators.required],
+						endHour: ['', Validators.required],
+						startMinute: ['', Validators.required],
+						endMinute: ['', Validators.required]
 					})
 				]),
 				shiftDetail: ['']
@@ -209,10 +209,10 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 	addItem() {
 		this.timeBreakArray.push(
 			this.fb.group({
-				startHour: ['00'],
-				endHour: ['00'],
-				startMinute: ['00'],
-				endMinute: ['00']
+				startHour: [''],
+				endHour: [''],
+				startMinute: [''],
+				endMinute: ['']
 			})
 		);
 	}

@@ -54,12 +54,12 @@ export class CreateCalendarModalComponent implements OnInit {
   ngOnInit(): void {
     this.shiftService.getListShiftConfig().subscribe((res) => {
       this.dataShiftConfig = res.data;
-      console.log(this.dataShiftConfig);
       this.cdr.detectChanges();
     });
 
     this.buildForm();
     this.initDate();
+    this.addDay();
     this.onSubmit();
   }
 
@@ -71,20 +71,24 @@ export class CreateCalendarModalComponent implements OnInit {
       type: ['NO_LOOP'],
       employee: this.fb.array([
         this.fb.group({
-          employeeId: ['', Validators.required],
+          employeeId: [null, Validators.required],
           pumpPoles: ['', Validators.required],
           shifOff: ['', Validators.required]
         })
-      ])
+      ]),
     })
 
     this.assignFormArray = this.calenderForm.get('employee') as FormArray;
     this.cdr.detectChanges();
   }
 
-  addDay(item: any) {
-    this.listDay.push(item);
-    console.log(this.listDay);
+  addDay() {
+    const checkboxes = document.querySelectorAll(`input[name="dayOfWeek"]:checked`);
+    const values = [];
+    checkboxes.forEach((checkbox) => {
+      values.push((checkbox as HTMLInputElement).value);
+    });
+    return values;
   }
 
   initDate() {
@@ -123,7 +127,7 @@ export class CreateCalendarModalComponent implements OnInit {
 
   onClose() {
     // this.modal.close();
-    console.log(this.assignFormArray.controls);
+    console.log(this.addDay());
   }
 
   deleteItem(index: number): void {
@@ -133,7 +137,7 @@ export class CreateCalendarModalComponent implements OnInit {
   addItem() {
     this.assignFormArray.push(
       this.fb.group({
-        employeeId: ['', Validators.required],
+        employeeId: [null, Validators.required],
         pumpPoles: ['', Validators.required],
         shifOff: ['', Validators.required]
       })
