@@ -38,8 +38,8 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 		private destroy$: DestroyService,
 		private cdr: ChangeDetectorRef,
 		private fb: FormBuilder,
-    private toastr: ToastrService,
-    private shiftService: ShiftService
+		private toastr: ToastrService,
+		private shiftService: ShiftService
 	) {}
 
 	ngOnInit(): void {
@@ -104,10 +104,10 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 				endMinute: ['00'],
 				offTimes: this.fb.array([
 					this.fb.group({
-						startHour: ['', Validators.required],
-						endHour: ['', Validators.required],
-						startMinute: ['', Validators.required],
-						endMinute: ['', Validators.required]
+						startHour: ['00'],
+						endHour: ['00'],
+						startMinute: ['00'],
+						endMinute: ['00']
 					})
 				]),
 				shiftDetail: ['']
@@ -209,10 +209,10 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 	addItem() {
 		this.timeBreakArray.push(
 			this.fb.group({
-				startHour: [''],
-				endHour: [''],
-				startMinute: [''],
-				endMinute: ['']
+				startHour: ['00'],
+				endHour: ['00'],
+				startMinute: ['00'],
+				endMinute: ['00']
 			})
 		);
 	}
@@ -234,61 +234,66 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 					return;
 				}
 
-        const shiftConfigData = this.configForm.getRawValue();
-        shiftConfigData.offTimes.map((x) => {
-          x.startHour = Number(x.startHour);
-          x.startMinute = Number(x.startMinute);
-          x.endHour = Number(x.endHour);
-          x.endMinute = Number(x.endMinute);
-        })
-        const req: any = {
-          name: shiftConfigData.nameShift,
-          description: shiftConfigData.shiftDetail,
-          startHour: Number(shiftConfigData.startHour),
-          startMinute: Number(shiftConfigData.startMinute),
-          endHour: Number(shiftConfigData.endHour),
-          endMinute: Number(shiftConfigData.endMinute),
-          offTimes: shiftConfigData.offTimes
-        };
-        console.log(req);
-        if (!this.data.shiftConfig) {
-          this.shiftService.createShiftConfig(req).subscribe(
-            () => {
-              this.modal.close(true);
-            },
-            (error: IError) => {
-              this.checkError(error);
-            }
-          );
-        } else {
-          this.shiftService
-            .updateShiftConfig(this.data.shiftConfig.id, req)
-            .subscribe(
-              () => {
-                this.modal.close(true);
-              },
-              (error: IError) => {
-                this.checkError(error);
-              }
-            );
-        }
+				const shiftConfigData = this.configForm.getRawValue();
+				shiftConfigData.offTimes.map((x) => {
+					x.startHour = Number(x.startHour);
+					x.startMinute = Number(x.startMinute);
+					x.endHour = Number(x.endHour);
+					x.endMinute = Number(x.endMinute);
+				});
+				const req: any = {
+					name: shiftConfigData.nameShift,
+					description: shiftConfigData.shiftDetail,
+					startHour: Number(shiftConfigData.startHour),
+					startMinute: Number(shiftConfigData.startMinute),
+					endHour: Number(shiftConfigData.endHour),
+					endMinute: Number(shiftConfigData.endMinute),
+					offTimes: shiftConfigData.offTimes
+				};
+				console.log(req);
+				if (!this.data.shiftConfig) {
+					this.shiftService.createShiftConfig(req).subscribe(
+						() => {
+							this.modal.close(true);
+						},
+						(error: IError) => {
+							this.checkError(error);
+						}
+					);
+				} else {
+					this.shiftService.updateShiftConfig(this.data.shiftConfig.id, req).subscribe(
+						() => {
+							this.modal.close(true);
+						},
+						(error: IError) => {
+							this.checkError(error);
+						}
+					);
+				}
 			});
 	}
 
-  checkError(error: IError) {
-    if (error.code === 'SUN-OIL-4740') {
-      this.toastr.error('Cấu hình giờ ca làm việc bị trùng lặp');
-    }
-    if (error.code === 'SUN-OIL-4741') {
-      this.toastr.error('Tên cấu hình ca không được để trống');
-    }
-    if (error.code === 'SUN-OIL-4739') {
-      this.toastr.error('Tên ca làm việc trùng lặp');
-    }
-    if (error.code === 'SUN-OIL-4738') {
-      this.toastr.error('Giờ bắt đầu nghỉ không được lớn hơn giờ kết thúc nghỉ');
-    }
-  }
+	checkError(error: IError) {
+		if (error.code === 'SUN-OIL-4740') {
+			this.toastr.error('Cấu hình giờ ca làm việc bị trùng lặp');
+		}
+		if (error.code === 'SUN-OIL-4741') {
+			this.toastr.error('Tên cấu hình ca không được để trống');
+		}
+		if (error.code === 'SUN-OIL-4739') {
+			this.configForm.get('nameShift').setErrors({ existed: true });
+		}
+		if (error.code === 'SUN-OIL-4738') {
+			this.toastr.error('Giờ bắt đầu nghỉ không được lớn hơn giờ kết thúc nghỉ');
+		}
+		if (error.code === 'SUN-OIL-4747') {
+			this.toastr.error('Giờ nghỉ không nằm trong khoảng giờ làm');
+		}
+		if (error.code === 'SUN-OIL-4737') {
+			this.configForm.get('startHour').setErrors({ startTime: true });
+			this.configForm.get('endHour').setErrors({ startTime: true });
+		}
+	}
 }
 
 export interface IDataTransfer {

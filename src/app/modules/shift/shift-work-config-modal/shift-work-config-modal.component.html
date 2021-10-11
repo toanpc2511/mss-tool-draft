@@ -15,12 +15,18 @@
 							autocomplete="off"
 							formControlName="nameShift"
 							maxlength="99"
-              trim='blur'
+							trim="blur"
 						/>
 						<app-validate
 							[control]="configForm.controls['nameShift']"
 							[error]="'required'"
 							[message]="'Tên ca không được để trống'"
+						></app-validate>
+
+						<app-validate
+							[control]="configForm.controls['nameShift']"
+							[error]="'existed'"
+							[message]="'Tên ca làm việc trùng lặp'"
 						></app-validate>
 					</div>
 				</div>
@@ -55,6 +61,12 @@
 							[error]="'existed'"
 							[message]="'Thời gian bắt đầu không lớn hơn thời gian kết thúc'"
 						></app-validate>
+
+						<app-validate
+							[control]="configForm.controls['startHour']"
+							[error]="'startTime'"
+							[message]="'Giờ vào làm không được nhỏ hơn hoặc bằng giờ tan làm'"
+						></app-validate>
 					</div>
 
 					<div class="col-lg-6">
@@ -83,6 +95,11 @@
 							[error]="'existed'"
 							[message]="'Thời gian bắt đầu không lớn hơn thời gian kết thúc'"
 						></app-validate>
+						<app-validate
+							[control]="configForm.controls['endHour']"
+							[error]="'startTime'"
+							[message]="'Giờ vào làm không được nhỏ hơn hoặc bằng giờ tan làm'"
+						></app-validate>
 					</div>
 				</div>
 
@@ -99,7 +116,7 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="startHour"
 									>
-                    <option value=''>Chọn giờ</option>
+										<option value="">Chọn giờ</option>
 										<option *ngFor="let item of hours" [value]="item.hour">
 											{{item.valueHour}}
 										</option>
@@ -111,7 +128,7 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="startMinute"
 									>
-                    <option value=''>Chọn phút</option>
+										<option value="">Chọn phút</option>
 										<option *ngFor="let item of minutes" [value]="item.minute">
 											{{item.valueMinute}}
 										</option>
@@ -125,7 +142,7 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="endHour"
 									>
-                    <option value=''>Chọn giờ</option>
+										<option value="">Chọn giờ</option>
 										<option *ngFor="let item of hours" [value]="item.hour">
 											{{item.valueHour}}
 										</option>
@@ -137,7 +154,7 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="endMinute"
 									>
-                    <option value=''>Chọn phút</option>
+										<option value="">Chọn phút</option>
 										<option *ngFor="let item of minutes" [value]="item.minute">
 											{{item.valueMinute}}
 										</option>

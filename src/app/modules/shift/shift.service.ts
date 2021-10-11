@@ -62,6 +62,18 @@ export interface ITime {
 	endMinute: number;
 }
 
+export interface IEmployeeByIdStation {
+  id: number;
+  name: string;
+  code: string;
+}
+
+export interface IInfoCalendarEmployee {
+  employeeId: number;
+  pumpPoles: [number];
+  shifOff: [number];
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -106,5 +118,17 @@ export class ShiftService {
     const params = new HttpParams()
       .set('shift-id', id.toString())
     return this.http.get('shifts-off-time', {params})
+  }
+
+  // thêm lịch làm vệc
+  createShiftOffTime(req) {
+    return this.http.post('calendars', req);
+  }
+
+  // Lấy ds nhân viên trạm theo id
+  getListEmployee(stationId) {
+    const params = new HttpParams()
+      .set('station-id', stationId)
+    return this.http.get<Array<IEmployeeByIdStation>>('gas-stations/station', {params});
   }
 }
