@@ -318,6 +318,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 				} else {
 					this.currentViewMode = this.calendarApi.view.type;
 				}
+				this.calendarApi.removeAllEventSources();
 				this.start = convertDateValueToServer(this.calendarApi.view.activeStart);
 				this.end = convertDateValueToServer(this.calendarApi.view.activeEnd);
 				this.getCalendarData(
