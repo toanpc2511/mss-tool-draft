@@ -1,7 +1,9 @@
+import { GasStationResponse } from './../gas-station/gas-station.service';
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { NumberLiteralType } from 'typescript';
+import { IEmployeeInput } from '../employee/employee.service';
 
 export type PumpPoleResponse = {
 	id: number;
@@ -69,10 +71,15 @@ export class ShiftService {
 	constructor(private http: HttpService) {}
 
 	getStationByAccount() {
-		return this.http.get<any[]>('gas-stations/address');
+		return this.http.get<GasStationResponse[]>('gas-stations/station-employee');
 	}
 
-	getShiftWorks(start: string, end: string, employeeIds: string[], stationId: string) {
+	getEmployeesByStation(stationId: string) {
+		const params = new HttpParams().set('station-id', stationId);
+		return this.http.get<IEmployee[]>(`gas-stations/station`, { params });
+	}
+
+	getShiftWorks(start: string, end: string, employeeIds: number[], stationId: string) {
 		const params = new HttpParams()
 			.set('employee-ids', employeeIds?.join(',') || '')
 			.set('time-start', start)
@@ -96,15 +103,14 @@ export class ShiftService {
 		return this.http.put(`shifts/${id}`, shiftConfigData);
 	}
 
-  // xóa cấu hình ca
-  deleteShiftConfg(id: number) {
-    return this.http.delete(`shifts/${id}`);
-  }
+	// xóa cấu hình ca
+	deleteShiftConfg(id: number) {
+		return this.http.delete(`shifts/${id}`);
+	}
 
-  // danh sách thời gian nghỉ theo ca
-  getListOffTime(id: number) {
-    const params = new HttpParams()
-      .set('shift-id', id.toString())
-    return this.http.get('shifts-off-time', {params})
-  }
+	// danh sách thời gian nghỉ theo ca
+	getListOffTime(id: number) {
+		const params = new HttpParams().set('shift-id', id.toString());
+		return this.http.get('shifts-off-time', { params });
+	}
 }

@@ -1,3 +1,9 @@
+import { GasStationResponse } from './../../gas-station/gas-station.service';
+import {
+	convertDateToDisplay,
+	convertDateToServer,
+	convertDateValueToServer
+} from './../../../shared/helpers/functions';
 import {
 	AfterViewInit,
 	ApplicationRef,
@@ -13,17 +19,22 @@ import {
 	ViewEncapsulation
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { CalendarOptions, EventInput, FullCalendarComponent } from '@fullcalendar/angular';
+import {
+	CalendarApi,
+	CalendarOptions,
+	EventInput,
+	FullCalendarComponent
+} from '@fullcalendar/angular';
 import { NgbModal, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap, finalize, filter } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import {
-	CreateCalendarModalComponent
-} from '../create-calendar-modal/create-calendar-modal.component';
+import { CreateCalendarModalComponent } from '../create-calendar-modal/create-calendar-modal.component';
 import { ShiftService } from '../shift.service';
 import { IEmployee } from './../shift.service';
+import { BehaviorSubject } from 'rxjs';
+import { EmployeeCheck } from './employee/employee.component';
 
 // Event
 @Component({
@@ -87,44 +98,19 @@ export class DayWrapperComponent {
 export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	// Get calendar to use FullCalendar API
 	@ViewChild('calendar') calendarComponent: FullCalendarComponent;
+	calendarApi: CalendarApi;
+	start: string;
+	end: string;
+	currentViewMode = 'dayGridMonth';
+	isLoadingEmployeeSubject = new BehaviorSubject<boolean>(true);
+	isLoadingEmployee$ = this.isLoadingEmployeeSubject.asObservable();
+	employees: IEmployee[] = [];
+	selectedEmployeeIds: number[];
 
-	employees: IEmployee[] = [
-		{
-			id: 1,
-			code: 'Employee1',
-			name: 'Employee 1'
-		},
-		{
-			id: 2,
-			code: 'Employee2',
-			name: 'Employee 2'
-		},
-		{
-			id: 3,
-			code: 'Employee3',
-			name: 'Employee 3'
-		},
-		{
-			id: 4,
-			code: 'Employee4',
-			name: 'Employee 4'
-		},
-		{
-			id: 5,
-			code: 'Employee5',
-			name: 'Employee 5'
-		},
-		{
-			id: 6,
-			code: 'Employee6',
-			name: 'Employee 6'
-		},
-		{
-			id: 7,
-			code: 'Employee7',
-			name: 'Employee 7'
-		}
-	];
+	isLoadingStationSubject = new BehaviorSubject<boolean>(true);
+	isLoadingStation$ = this.isLoadingStationSubject.asObservable();
+	gasStationTabs: GasStationResponse[] = [];
+	currentGasStationId: string;
 
 	calendars: EventInput[];
 	calendarsCountByDate: Map<string, number> = new Map();
@@ -192,6 +178,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		eventClick: this.popoverShowOrHide.bind(this),
 		dayCellDidMount: this.dayCellRender.bind(this),
 		dayCellWillUnmount: this.destroyDayCell.bind(this),
+		viewDidMount: this.viewDidMount.bind(this),
 		dayHeaders: true,
 		timeZone: 'Asia/ Ho_Chi_Minh'
 	};
@@ -203,25 +190,6 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	dayWrappersMap = new Map<any, ComponentRef<DayWrapperComponent>>();
 	dayWrapperFactory = this.resolver.resolveComponentFactory(DayWrapperComponent);
 
-	gasStationTabs = [
-		{
-			id: 1,
-			title: 'Station 1'
-		},
-		{
-			id: 2,
-			title: 'Station 2'
-		},
-		{
-			id: 3,
-			title: 'Station 3'
-		},
-		{
-			id: 4,
-			title: 'Station 4'
-		}
-	];
-
 	constructor(
 		private shiftService: ShiftService,
 		private cdr: ChangeDetectorRef,
@@ -232,13 +200,14 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		private resolver: ComponentFactoryResolver,
 		private injector: Injector,
 		private appRef: ApplicationRef
-	) {
-		this.init();
-	}
+	) {}
 	ngAfterViewInit(): void {
 		this.calendarsCountByDate.clear();
+	}
+
+	getCalendarData(start: string, end: string, employeeIds: number[], stationId: string) {
 		this.shiftService
-			.getShiftWorks('2021-01-07', '2021-03-07', ['72', '73'], '5119')
+			.getShiftWorks(start, end, employeeIds, stationId)
 			.pipe(
 				tap((res) => {
 					this.calendars = [...res.data.calendarResponses].map((calendar): EventInput => {
@@ -275,7 +244,46 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			.subscribe();
 	}
 
-	init() {}
+	getStations() {
+		this.shiftService
+			.getStationByAccount()
+			.pipe(
+				tap((res) => {
+					this.gasStationTabs = res.data;
+					this.cdr.detectChanges();
+				}),
+				finalize(() => this.isLoadingStationSubject.next(false)),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	getEmployees(stationId: string) {
+		this.shiftService
+			.getEmployeesByStation(stationId)
+			.pipe(
+				tap((res) => {
+					this.employees = res.data;
+					this.cdr.detectChanges();
+				}),
+				finalize(() => this.isLoadingEmployeeSubject.next(false)),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	init() {
+		this.getStations();
+		this.isLoadingStation$
+			.pipe(
+				filter((value) => !value),
+				tap(() => {
+					this.getEmployees(this.gasStationTabs[0].id.toString());
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
 
 	ngOnInit() {
 		this.init();
@@ -290,7 +298,36 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 
 	gasStationTabChange($event) {
-		console.log($event);
+		this.currentGasStationId = $event;
+		this.getCalendarData(this.start, this.end, this.selectedEmployeeIds, this.currentGasStationId);
+	}
+
+	viewDidMount(event: any) {
+		this.calendarApi = this.calendarComponent.getApi();
+		this.start = convertDateValueToServer(this.calendarApi.view.activeStart);
+		this.end = convertDateValueToServer(this.calendarApi.view.activeEnd);
+
+		const calendarBtns = document.querySelectorAll(
+			'.fc-next-button,.fc-prev-button,.fc-today-button,.fc-dayGridMonth-button,.fc-dayGridWeek-button'
+		);
+
+		calendarBtns.forEach((btn) =>
+			btn.addEventListener('click', () => {
+				if (this.calendarApi.view.type === this.currentViewMode) {
+					return;
+				} else {
+					this.currentViewMode = this.calendarApi.view.type;
+				}
+				this.start = convertDateValueToServer(this.calendarApi.view.activeStart);
+				this.end = convertDateValueToServer(this.calendarApi.view.activeEnd);
+				this.getCalendarData(
+					this.start,
+					this.end,
+					this.selectedEmployeeIds,
+					this.currentGasStationId
+				);
+			})
+		);
 	}
 
 	renderEventContainer(event: any) {
@@ -337,8 +374,17 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		}
 	}
 
-	selectedEmployeeChange($event) {
-		console.log($event);
+	selectedEmployeeChange($event: EmployeeCheck) {
+		this.calendarApi.removeAllEventSources();
+		if ($event.status === 'uncheckall') {
+			this.selectedEmployeeIds = null;
+			return;
+		} else if ($event.status === 'checkall') {
+			this.selectedEmployeeIds = [];
+		} else {
+			this.selectedEmployeeIds = $event.data;
+		}
+		this.getCalendarData(this.start, this.end, this.selectedEmployeeIds, this.currentGasStationId);
 	}
 
 	dayCellRender(event) {
