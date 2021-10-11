@@ -1,4 +1,3 @@
-import { FormatTimePipe } from './format-time.pipe';
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -17,7 +16,6 @@ import { ToastrService } from 'ngx-toastr';
 import { LIST_DAY_OF_WEEK, TYPE_LOOP } from '../../../shared/data-enum/list-status';
 import { convertDateToServer, convertTimeToString } from '../../../shared/helpers/functions';
 import { GasStationService, IPumpPole } from '../../gas-station/gas-station.service';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
 	selector: 'app-create-calendar-modal',
@@ -34,6 +32,7 @@ export class CreateCalendarModalComponent implements OnInit {
 	tomorrow: string;
 	typeLoop = TYPE_LOOP;
 	listDayOfWeek = LIST_DAY_OF_WEEK;
+	selectedDayOfWeek: { name: string; type: string }[] = [];
 	listOffTime;
 	gasStationId = 5119;
 	listPumpPole: Array<IPumpPole> = [];
@@ -57,8 +56,7 @@ export class CreateCalendarModalComponent implements OnInit {
 		private destroy$: DestroyService,
 		private cdr: ChangeDetectorRef,
 		private fb: FormBuilder,
-		private toastr: ToastrService,
-		private formatTimes: FormatTimePipe
+		private toastr: ToastrService
 	) {
 		this.tomorrow = moment().add(1, 'days').format('DD/MM/YYYY');
 	}
@@ -81,7 +79,6 @@ export class CreateCalendarModalComponent implements OnInit {
 
 		this.buildForm();
 		this.initDate();
-		this.addDay();
 		this.onSubmit();
 	}
 
@@ -104,13 +101,24 @@ export class CreateCalendarModalComponent implements OnInit {
 		this.cdr.detectChanges();
 	}
 
-	addDay() {
-		const checkboxes = document.querySelectorAll(`input[name="days"]:checked`);
-		const values = [];
-		checkboxes.forEach((checkbox) => {
-			values.push((checkbox as HTMLInputElement).value);
-		});
-		return values;
+	// addDay() {
+	// 	const checkboxes = document.querySelectorAll(`input[name="days"]:checked`);
+	// 	const values = [];
+	// 	checkboxes.forEach((checkbox) => {
+	// 		values.push((checkbox as HTMLInputElement).value);
+	// 	});
+	// 	return values;
+	// }
+
+	changeCheck({ name, type }: { name: string; type: string }) {
+		console.log(type);
+		
+		const idx = this.selectedDayOfWeek.findIndex((d) => d.type === type);
+		if (idx >= 0) {
+			this.selectedDayOfWeek = [...this.selectedDayOfWeek].filter((d, index) => index !== idx);
+		} else {
+			this.selectedDayOfWeek = [...this.selectedDayOfWeek, { name, type }];
+		}
 	}
 
 	initDate() {
@@ -155,7 +163,7 @@ export class CreateCalendarModalComponent implements OnInit {
 					type: this.calenderForm.get('type').value,
 					stationId: Number(this.gasStationId),
 					employee: employeeData,
-					days: this.addDay()
+					days: this.selectedDayOfWeek.map((d) => d.type)
 				};
 
 				this.calenderForm.get('type').value !== 'WEEKLY' ? delete req.days : req;
