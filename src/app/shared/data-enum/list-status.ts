@@ -31,3 +31,49 @@ export const LIST_STATUS_SEARCH = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE'
 }
+
+export const TYPE_LOOP = [
+  {
+    type: 'DONT_REPEAT',
+    name: 'Không lặp lại'
+  },
+  {
+    type: 'DAILY',
+    name: 'Hàng ngày'
+  },
+  {
+    type: 'WEEKLY',
+    name: 'Hàng tuần'
+  }
+];
+
+export const LIST_DAY_OF_WEEK = [
+  {
+    type: 'MONDAY',
+    name: 'T2'
+  },
+  {
+    type: 'TUESDAY',
+    name: 'T3'
+  },
+  {
+    type: 'WEDNESDAY',
+    name: 'T4'
+  },
+  {
+    type: 'THURSDAY',
+    name: 'T5'
+  },
+  {
+    type: 'FRIDAY',
+    name: 'T6'
+  },
+  {
+    type: 'SATURDAY',
+    name: 'T7'
+  },
+  {
+    type: 'SUNDAY',
+    name: 'CN'
+  },
+];

@@ -41,4 +41,22 @@ label.check input:checked+span {
   thead th {
     color: #1E1E1E !important;
   }
+  tr {
+    font-weight: 400;
+  }
+
+  td {
+    &.stt,
+    &.action {
+      width: 5%;
+    }
+    &.employee,
+    &.pump-pole,
+    &.shif-off {
+      width: 30%;
+    }
+  }
+}
+.ng-select.ng-select-opened .ng-select-container {
+  z-index: 9999 !important;
 }
