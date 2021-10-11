@@ -206,6 +206,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 
 	getCalendarData(start: string, end: string, employeeIds: number[], stationId: string) {
+		this.calendarApi.removeAllEventSources();
 		this.shiftService
 			.getShiftWorks(start, end, employeeIds, stationId)
 			.pipe(
@@ -313,12 +314,13 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 		calendarBtns.forEach((btn) =>
 			btn.addEventListener('click', () => {
-				if (this.calendarApi.view.type === this.currentViewMode) {
-					return;
-				} else {
-					this.currentViewMode = this.calendarApi.view.type;
+				if (btn.parentElement.childNodes.length < 3) {
+					if (this.calendarApi.view.type === this.currentViewMode) {
+						return;
+					} else {
+						this.currentViewMode = this.calendarApi.view.type;
+					}
 				}
-				this.calendarApi.removeAllEventSources();
 				this.start = convertDateValueToServer(this.calendarApi.view.activeStart);
 				this.end = convertDateValueToServer(this.calendarApi.view.activeEnd);
 				this.getCalendarData(
@@ -376,7 +378,6 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 
 	selectedEmployeeChange($event: EmployeeCheck) {
-		this.calendarApi.removeAllEventSources();
 		if ($event.status === 'uncheckall') {
 			this.selectedEmployeeIds = null;
 			return;
@@ -432,7 +433,12 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 		modalRef.result.then((result) => {
 			if (result) {
-				console.log('done');
+				this.getCalendarData(
+					this.start,
+					this.end,
+					this.selectedEmployeeIds,
+					this.currentGasStationId
+				);
 			}
 		});
 	}

@@ -218,7 +218,13 @@
 
 					<div class="col-lg-6 list-check" *ngIf='this.calenderForm.get("type").value === "WEEKLY"'>
 						<label class="check" *ngFor="let item of listDayOfWeek">
-							<input type="checkbox" (click)="addDay()" name="days" [value]="item.type" />
+							<input
+								type="checkbox"
+								(click)="changeCheck(item)"
+								name="days"
+								[value]="item.type"
+								[checked]="selectedDayOfWeek |isChecked: item.type"
+							/>
 							<span>{{item.name}}</span>
 						</label>
 					</div>

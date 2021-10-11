@@ -31,6 +31,7 @@ import { PumpPoleDisplayPipe } from './shift-work/pump-pole-display.pipe';
 import { DateStringPipe } from './shift-work/date-string.pipe';
 import { CreateCalendarModalComponent } from './create-calendar-modal/create-calendar-modal.component';
 import { FormatTimePipe } from './create-calendar-modal/format-time.pipe';
+import { IsCheckedPipe } from './create-calendar-modal/is-checked.pipe';
 
 @NgModule({
 	declarations: [
@@ -45,7 +46,8 @@ import { FormatTimePipe } from './create-calendar-modal/format-time.pipe';
 		PumpPoleDisplayPipe,
 		DateStringPipe,
 		CreateCalendarModalComponent,
-		FormatTimePipe
+		FormatTimePipe,
+		IsCheckedPipe
 	],
 	imports: [
 		CommonModule,

@@ -5,9 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 	name: 'formatTime'
 })
 export class FormatTimePipe implements PipeTransform {
-	transform(item: any, a: any): string {
-		console.log('format');
-
+	transform(item: any): string {
 		if (item) {
 			return `${convertTimeToString(item.startHour, item.startMinute)} - 
         ${convertTimeToString(item.endHour, item.endMinute)}`;
