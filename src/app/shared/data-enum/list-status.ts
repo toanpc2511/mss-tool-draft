@@ -34,7 +34,7 @@ export const LIST_STATUS_SEARCH = {
 
 export const TYPE_LOOP = [
   {
-    type: 'NO_LOOP',
+    type: 'DONT_REPEAT',
     name: 'Không lặp lại'
   },
   {
