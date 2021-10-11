@@ -1,8 +1,9 @@
 <div class="shift-wrapper">
 	<div class="header">
 		<app-tab
+			*ngIf="(isLoadingStation$ | async) === false"
 			[valueKey]="'id'"
-			[displayKey]="'title'"
+			[displayKey]="'name'"
 			[tabs]="gasStationTabs"
 			[defaultActiveFirst]="true"
 			(tabChange)="gasStationTabChange($event)"
@@ -21,8 +22,9 @@
 						</div>
 						<div class="card-body my-4" style="padding: 1.3rem">
 							<app-employee
+								*ngIf="(isLoadingEmployee$ | async) === false"
 								[employees]="employees"
-								(dataChange)="selectedEmployeeChange($event)"
+								(selectedEmployeeChange)="selectedEmployeeChange($event)"
 							></app-employee>
 						</div>
 					</div>
@@ -34,7 +36,10 @@
 						<div class="card-header justify-content-end">
 							<div class="card-toolbar">
 								<a class="btn btn-light-danger font-weight-bold mr-3"> Xóa lịch làm việc </a>
-								<a class="btn btn-light-primary font-weight-bold" (click)='createCalendarModal($event)'>
+								<a
+									class="btn btn-light-primary font-weight-bold"
+									(click)="createCalendarModal($event)"
+								>
 									<span class="ki ki-plus"></span> Thêm lịch làm việc
 								</a>
 							</div>

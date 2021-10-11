@@ -30,6 +30,7 @@ import { ShiftWorkConfigModalComponent } from './shift-work-config-modal/shift-w
 import { PumpPoleDisplayPipe } from './shift-work/pump-pole-display.pipe';
 import { DateStringPipe } from './shift-work/date-string.pipe';
 import { CreateCalendarModalComponent } from './create-calendar-modal/create-calendar-modal.component';
+import { FormatTimePipe } from './create-calendar-modal/format-time.pipe';
 
 @NgModule({
 	declarations: [
@@ -43,7 +44,8 @@ import { CreateCalendarModalComponent } from './create-calendar-modal/create-cal
 		ShiftWorkConfigModalComponent,
 		PumpPoleDisplayPipe,
 		DateStringPipe,
-		CreateCalendarModalComponent
+		CreateCalendarModalComponent,
+		FormatTimePipe
 	],
 	imports: [
 		CommonModule,

@@ -53,7 +53,7 @@ export const renameUniqueFileName = (originalFile: File, newName: string) => {
 };
 
 export const convertDateToServer = (value: string) => {
-	return value ? moment(value, 'DD/MM/YYYY').add(7, 'hours').format('YYYY-MM-DD') : null;
+	return value ? moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD') : null;
 };
 
 export const convertDateToDisplay = (value: string) => {
@@ -62,6 +62,10 @@ export const convertDateToDisplay = (value: string) => {
 
 export const convertIsoDateToValue = (isoDate: string) => {
 	return isoDate ? moment(isoDate, moment.defaultFormatUtc).format('DD/MM/YYYY') : null;
+};
+
+export const convertDateValueToServer = (value: Date) => {
+	return value ? moment(value).format('YYYY-MM-DD') : null;
 };
 
 export const formatMoney = (n): string | null => {

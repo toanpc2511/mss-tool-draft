@@ -104,8 +104,7 @@
 														[minLengthGroup]="2"
 													>
 														<ng-option *ngFor="let item of listOffTime" [value]="item.id"
-															>{{ formatTime(item.startHour, item.startMinute) }} - {{
-															formatTime(item.endHour, item.endMinute) }}</ng-option
+															>{{ item|formatTime }}</ng-option
 														>
 													</ng-select>
 													<app-validate

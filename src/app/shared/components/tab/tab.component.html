@@ -3,7 +3,7 @@
 		*ngFor="let tab of tabs"
 		class="btn tab-item font-weight-bold"
 		[class.active]="activeTabValue === tab[valueKey]"
-		(click)="onTabChange(tab.id)"
+		(click)="onTabChange(tab[valueKey])"
 	>
 		{{tab[displayKey]}}
 	</button>

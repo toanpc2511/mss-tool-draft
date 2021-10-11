@@ -15,7 +15,10 @@ export class TabComponent implements OnInit {
 	constructor() {}
 	ngOnInit(): void {
 		if (this.defaultActiveFirst) {
-			this.activeTabValue = this.tabs ? this.tabs[0][this.valueKey] : null;
+			this.activeTabValue = this.tabs?.length > 0 ? this.tabs[0][this.valueKey] : null;
+			if (this.activeTabValue) {
+				this.tabChange.emit(this.activeTabValue);
+			}
 		}
 	}
 

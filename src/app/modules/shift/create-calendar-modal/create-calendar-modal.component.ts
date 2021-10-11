@@ -1,3 +1,4 @@
+import { FormatTimePipe } from './format-time.pipe';
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -16,6 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 import { LIST_DAY_OF_WEEK, TYPE_LOOP } from '../../../shared/data-enum/list-status';
 import { convertDateToServer, convertTimeToString } from '../../../shared/helpers/functions';
 import { GasStationService, IPumpPole } from '../../gas-station/gas-station.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
 	selector: 'app-create-calendar-modal',
@@ -55,7 +57,8 @@ export class CreateCalendarModalComponent implements OnInit {
 		private destroy$: DestroyService,
 		private cdr: ChangeDetectorRef,
 		private fb: FormBuilder,
-		private toastr: ToastrService
+		private toastr: ToastrService,
+		private formatTimes: FormatTimePipe
 	) {
 		this.tomorrow = moment().add(1, 'days').format('DD/MM/YYYY');
 	}
@@ -128,6 +131,8 @@ export class CreateCalendarModalComponent implements OnInit {
 	}
 
 	formatTime(hour: number, minute: number) {
+		console.log('format');
+
 		return convertTimeToString(hour, minute);
 	}
 
