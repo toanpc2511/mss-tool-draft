@@ -69,6 +69,7 @@ export class EventWrapperComponent {
 		private destroy$: DestroyService
 	) {
 		this.modalActives$ = modalStack.activeInstances.pipe(takeUntil(this.destroy$));
+		this.modalActives$.subscribe(modal => console.log(modal))
 	}
 }
 
