@@ -10,6 +10,7 @@ export type PumpPoleResponse = {
 };
 
 export type OffTimeResponse = {
+  id: number;
 	start: string;
 	end: string;
 };
@@ -31,13 +32,10 @@ export interface ICalendarResponse {
 }
 
 export class ICalendarData {
-	id: number;
+  employeeId: number;
 	employeeName: string;
-	start: string;
-	end: string;
-	offTimeResponses: OffTimeResponse[];
-	pumpPoleResponses: PumpPoleResponse[];
-	totalPump: NumberLiteralType;
+	offTimes: OffTimeResponse[];
+	pumpPoles: PumpPoleResponse[];
 }
 export interface IEmployee {
 	id: number;
@@ -73,6 +71,13 @@ export interface IInfoCalendarEmployee {
 	employeeId: number;
 	pumpPoles: [number];
 	shifOff: [number];
+}
+
+export interface IDataEventCalendar {
+  id:string;
+  start: Date;
+  end: Date;
+  extendedProps: ICalendarData
 }
 
 @Injectable({
@@ -130,9 +135,15 @@ export class ShiftService {
 		return this.http.post('calendars', req);
 	}
 
-	// Lấy ds nhân viên trạm theo id
-	getListEmployee(stationId) {
-		const params = new HttpParams().set('station-id', stationId);
-		return this.http.get<Array<IEmployeeByIdStation>>('gas-stations/station', { params });
-	}
+  // Lấy ds nhân viên trạm theo id
+  getListEmployee(stationId) {
+    const params = new HttpParams()
+      .set('station-id', stationId)
+    return this.http.get<Array<IEmployeeByIdStation>>('gas-stations/station', {params});
+  }
+
+  // Sửa lịch làm việc của nhân viên
+  updateShiftOffTime(id: number, req) {
+    return this.http.put(`calendars/${id}`, req);
+  }
 }
