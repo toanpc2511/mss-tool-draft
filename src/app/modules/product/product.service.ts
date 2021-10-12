@@ -75,6 +75,10 @@ export class ProductService {
 		return this.http.get<IProduct[]>(`products/categories/${categoryId}`);
 	}
 
+	getListOilProduct() {
+		return this.http.get<IProduct[]>(`products/product-oils`);
+	}
+
 	deleteProduct(prodId: string | number) {
 		return this.http.delete(`products/${prodId}`);
 	}

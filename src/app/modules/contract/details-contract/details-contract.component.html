@@ -300,9 +300,6 @@
 								<label class="form-label">STT</label>
 							</th>
 							<th scope="">
-								<label class="form-label">Loại sản phẩm</label>
-							</th>
-							<th scope="">
 								<label class="form-label">Tên sản phẩm</label>
 							</th>
 							<th scope="">
@@ -326,7 +323,6 @@
 					<tbody>
 						<tr *ngFor="let prod of data?.product, let i = index">
 							<td>{{i + 1}}</td>
-							<td>{{prod.categoryResponse.name}}</td>
 							<td>{{prod.productResponse.name}}</td>
 							<td>{{prod.productResponse.unit}}</td>
 							<td class="text-right">{{prod.productResponse.amount}}</td>
@@ -340,7 +336,7 @@
 
 					<tfoot>
 						<tr class="py-3">
-							<td colspan="4"></td>
+							<td colspan="3"></td>
 							<td colspan="3" class="text-right"><strong>Tổng tiền thanh toán</strong></td>
 							<td colspan="1" class="text-right">
 								<strong>{{data?.totalPayment?.toLocaleString('en-US')}}</strong>
