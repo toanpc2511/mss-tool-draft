@@ -22,14 +22,12 @@ import {
 import { NgbModal, NgbModalRef, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, finalize, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, timer } from 'rxjs';
+import { delay, filter, finalize, skipUntil, takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { CreateCalendarModalComponent } from '../create-calendar-modal/create-calendar-modal.component';
 import { ICalendarData, IDataEventCalendar, ShiftService } from '../shift.service';
-import {
-	convertDateValueToServer
-} from './../../../shared/helpers/functions';
+import { convertDateValueToServer } from './../../../shared/helpers/functions';
 import { GasStationResponse } from './../../gas-station/gas-station.service';
 import { IEmployee } from './../shift.service';
 import { DetailWarningDialogComponent } from './detail-warning-dialog/detail-warning-dialog.component';
@@ -41,10 +39,10 @@ import { EmployeeCheck } from './employee/employee.component';
 		<div
 			[ngbPopover]="popoverTemplate"
 			[popoverClass]="'shift-detail-popover'"
-			triggers="manual"
+			triggers="focus"
 			container="body"
 			[placement]="['top', 'left', 'right', 'bottom']"
-			[autoClose]="(modalActives$ | async)?.length > 0 ? false : 'outside'"
+			[autoClose]="'outside'"
 		>
 			<div class="event-container">
 				<strong class="fa fa-circle"></strong>
@@ -61,16 +59,10 @@ import { EmployeeCheck } from './employee/employee.component';
 export class EventWrapperComponent {
 	popoverTemplate: TemplateRef<any>;
 	eventData: EventInput;
-	modalActives$: Observable<NgbModalRef[]>;
+	event: any;
+
 	@ViewChild(NgbPopover, { static: true }) popover: NgbPopover;
-	constructor(
-		public elRef: ElementRef,
-		public modalStack: NgbModal,
-		private destroy$: DestroyService
-	) {
-		this.modalActives$ = modalStack.activeInstances.pipe(takeUntil(this.destroy$));
-		this.modalActives$.subscribe(modal => console.log(modal))
-	}
+	constructor(public elRef: ElementRef) {}
 }
 
 //Check không có nhân viên trong ca của cột
@@ -250,7 +242,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 							backgroundColor: calendar.backgroundColor,
 							color: '#ffffff',
 							extendedProps: {
-                employeeId: calendar.employeeId,
+								employeeId: calendar.employeeId,
 								employeeName: calendar.employeeName,
 								offTimes: calendar.offTimeResponses,
 								pumpPoles: calendar.pumpPoleResponses,
@@ -451,19 +443,21 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 
 	// toanpc
-	createCalendarModal($event: Event, data?: IDataEventCalendar) {
-		if ($event) {
-			$event.stopPropagation();
+	createCalendarModal($event: any, data?: IDataEventCalendar) {
+		const eventContainer = this.eventContainersMap.get($event.el);
+		if (eventContainer) {
+			eventContainer.instance.popover.close();
 		}
+
 		const modalRef = this.modalService.open(CreateCalendarModalComponent, {
-      windowClass: 'custom-modal-z-1070',
+			windowClass: 'custom-modal-z-1070',
 			backdrop: 'static',
 			size: 'lg'
 		});
 
 		modalRef.componentInstance.data = {
 			title: data ? 'Sửa lịch làm việc' : 'Thêm  lịch làm việc',
-      dataEventCalendar: data
+			dataEventCalendar: data
 		};
 
 		modalRef.result.then((result) => {
@@ -474,6 +468,11 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 					this.selectedEmployeeIds,
 					this.currentGasStationId
 				);
+			}
+
+			//Reopen popoper when dialog close
+			if (eventContainer) {
+				eventContainer.instance.popover.open({ event: $event });
 			}
 		});
 	}
