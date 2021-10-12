@@ -116,7 +116,6 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="startHour"
 									>
-										<option value="">Chọn giờ</option>
 										<option *ngFor="let item of hours" [value]="item.hour">
 											{{item.valueHour}}
 										</option>
@@ -128,7 +127,6 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="startMinute"
 									>
-										<option value="">Chọn phút</option>
 										<option *ngFor="let item of minutes" [value]="item.minute">
 											{{item.valueMinute}}
 										</option>
@@ -142,7 +140,6 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="endHour"
 									>
-										<option value="">Chọn giờ</option>
 										<option *ngFor="let item of hours" [value]="item.hour">
 											{{item.valueHour}}
 										</option>
@@ -154,7 +151,6 @@
 										class="form-control form-control-lg form-control-solid text-center"
 										formControlName="endMinute"
 									>
-										<option value="">Chọn phút</option>
 										<option *ngFor="let item of minutes" [value]="item.minute">
 											{{item.valueMinute}}
 										</option>
