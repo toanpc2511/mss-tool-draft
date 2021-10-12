@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {
 	NgbDatepickerModule,
+	NgbModalModule,
 	NgbPopoverModule,
 	NgbProgressbarModule,
 	NgbTooltipModule

@@ -1,9 +1,3 @@
-import { GasStationResponse } from './../../gas-station/gas-station.service';
-import {
-	convertDateToDisplay,
-	convertDateToServer,
-	convertDateValueToServer
-} from './../../../shared/helpers/functions';
 import {
 	AfterViewInit,
 	ApplicationRef,
@@ -25,17 +19,21 @@ import {
 	EventInput,
 	FullCalendarComponent
 } from '@fullcalendar/angular';
-import { NgbModal, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { takeUntil, tap, finalize, filter } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter, finalize, takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { CreateCalendarModalComponent } from '../create-calendar-modal/create-calendar-modal.component';
 import { ShiftService } from '../shift.service';
+import {
+	convertDateValueToServer
+} from './../../../shared/helpers/functions';
+import { GasStationResponse } from './../../gas-station/gas-station.service';
 import { IEmployee } from './../shift.service';
-import { BehaviorSubject } from 'rxjs';
-import { EmployeeCheck } from './employee/employee.component';
 import { DetailWarningDialogComponent } from './detail-warning-dialog/detail-warning-dialog.component';
+import { EmployeeCheck } from './employee/employee.component';
 
 // Event
 @Component({
@@ -46,7 +44,7 @@ import { DetailWarningDialogComponent } from './detail-warning-dialog/detail-war
 			triggers="manual"
 			container="body"
 			[placement]="['top', 'left', 'right', 'bottom']"
-			[autoClose]="'outside'"
+			[autoClose]="(modalActives$ | async)?.length > 0 ? false : 'outside'"
 		>
 			<div class="event-container">
 				<strong class="fa fa-circle"></strong>
@@ -57,13 +55,21 @@ import { DetailWarningDialogComponent } from './detail-warning-dialog/detail-war
 		</div>
 	`,
 	styleUrls: ['event-wrapper.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	providers: [DestroyService]
 })
 export class EventWrapperComponent {
 	popoverTemplate: TemplateRef<any>;
 	eventData: EventInput;
+	modalActives$: Observable<NgbModalRef[]>;
 	@ViewChild(NgbPopover, { static: true }) popover: NgbPopover;
-	constructor(public elRef: ElementRef) {}
+	constructor(
+		public elRef: ElementRef,
+		public modalStack: NgbModal,
+		private destroy$: DestroyService
+	) {
+		this.modalActives$ = modalStack.activeInstances.pipe(takeUntil(this.destroy$));
+	}
 }
 
 //Check không có nhân viên trong ca của cột
@@ -71,7 +77,7 @@ export class EventWrapperComponent {
 	template: `
 		<div class="day-cell-custom">
 			<div class="cell-custom">
-				<div
+				<strong
 					(click)="showDetailWarning()"
 					*ngIf="tooltipWarning"
 					[ngbTooltip]="tooltipWarning"
@@ -79,8 +85,8 @@ export class EventWrapperComponent {
 					[placement]="['top', 'right', 'left', 'bottom']"
 					triggers="hover"
 					container="body"
-					class="warning-icon"
-				></div>
+					class="warning-icon fa fa-exclamation-triangle mt-1 text-danger"
+				></strong>
 			</div>
 			<ng-content></ng-content>
 		</div>
