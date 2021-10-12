@@ -116,7 +116,7 @@ export class ProductService {
 	}
 
 	getListOilProduct() {
-		return this.http.get<IProduct[]>(`products/products-oil`);
+		return this.http.get<IProduct[]>(`products/products-oils`);
 	}
 
 	deleteProduct(prodId: string | number) {

@@ -1,3 +1,4 @@
+import { LayoutService } from './../../../_metronic/core/services/layout.service';
 import {
 	AfterViewInit,
 	ApplicationRef,
@@ -173,7 +174,6 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			}
 		},
 		themeSystem: 'bootstrap',
-		// aspectRatio: 1.7,
 		fixedWeekCount: false,
 		allDaySlot: true,
 		firstDay: 1,
@@ -193,6 +193,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		dayCellWillUnmount: this.destroyDayCell.bind(this),
 		viewDidMount: this.viewDidMount.bind(this),
 		dayHeaders: true,
+		handleWindowResize: true,
 		timeZone: 'Asia/ Ho_Chi_Minh'
 	};
 
@@ -213,8 +214,13 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		private resolver: ComponentFactoryResolver,
 		private injector: Injector,
 		private appRef: ApplicationRef
-	) {}
+	) {
+	}
 	ngAfterViewInit(): void {
+		const toggleOffsetBar = document.getElementById('kt_aside_toggle');
+		toggleOffsetBar.addEventListener('click', () => {
+			this.calendarApi.updateSize();
+		})
 		this.warningDate.clear();
 	}
 

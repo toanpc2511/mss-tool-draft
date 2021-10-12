@@ -151,24 +151,9 @@
 @import '../../../../assets/sass/pages/wizard/wizard-3';
 
 .shift-wrapper {
-	.header {
-		padding-left: 30px;
-		width: 100%;
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
+	.header-tab {
+		padding: 10px;
+		padding-left: 25px;
 		background-color: #ffffff;
-		gap: 10px;
-		&.tab {
-			.tab-item {
-				width: 110px;
-				color: #80808f;
-				&.active,
-				&:hover {
-					color: #3699ff;
-					background: #f3f6f9;
-				}
-			}
-		}
 	}
 }

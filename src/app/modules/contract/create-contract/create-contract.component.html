@@ -442,7 +442,7 @@
 					<table class="table overflow-hidden table-vertical-center" aria-label="">
 						<thead class="thead-light">
 							<tr>
-								<th scope="">
+								<th scope="" class="text-left">
 									<label class="form-label">STT</label>
 								</th>
 								<th scope="">
@@ -454,16 +454,16 @@
 								<th scope="">
 									<label class="form-label required">Số lượng</label>
 								</th>
-								<th scope="">
+								<th scope="" class="text-right">
 									<label class="form-label">Đơn giá hiện tại (VND)</label>
 								</th>
-								<th scope="">
+								<th scope="" class="text-right">
 									<label class="form-label">Đơn giá chiết khấu (VND)</label>
 								</th>
-								<th scope="">
+								<th scope="" class="text-right">
 									<label class="form-label">Thành tiền</label>
 								</th>
-								<th scope="">
+								<th scope="" class="text-center">
 									<label class="form-label">Xóa</label>
 								</th>
 							</tr>
@@ -473,7 +473,7 @@
 							<ng-container formArrayName="products">
 								<tr *ngFor="let productInfoFromGroup of productFormArray.controls; let i = index">
 									<ng-container [formGroup]="productInfoFromGroup">
-										<td class="col1">{{i + 1}}</td>
+										<td class="col1 text-left">{{i + 1}}</td>
 										<td class="col2">
 											<select
 												(change)="productChanged($event, i)"
@@ -514,18 +514,18 @@
 											></app-validate>
 										</td>
 										<td
-											class="col5"
+											class="col5 text-right"
 											[textContent]="productInfoFromGroup.get('price').value | number | vnCurrency"
 										></td>
 										<td
-											class="col6"
+											class="col6 text-right"
 											[textContent]="productInfoFromGroup.get('discount').value | number | vnCurrency"
 										></td>
 										<td
-											class="col7"
+											class="col7 text-right"
 											[textContent]="productInfoFromGroup.get('totalMoney').value | number | vnCurrency"
 										></td>
-										<td class="col8">
+										<td class="col8 text-center">
 											<a
 												*ngIf="i > 0 || productFormArray.length >= 2"
 												(click)="deleteProduct(i)"
