@@ -446,9 +446,6 @@
 									<label class="form-label">STT</label>
 								</th>
 								<th scope="">
-									<label class="form-label required">Loại sản phẩm</label>
-								</th>
-								<th scope="">
 									<label class="form-label required">Tên sản phẩm</label>
 								</th>
 								<th scope="">
@@ -476,24 +473,7 @@
 							<ng-container formArrayName="products">
 								<tr *ngFor="let productInfoFromGroup of productFormArray.controls; let i = index">
 									<ng-container [formGroup]="productInfoFromGroup">
-										<td>{{i + 1}}</td>
-										<td>
-											<select
-												(change)="productTypeChanged($event, i)"
-												class="form-control form-control-sm"
-												formControlName="categoryProductId"
-											>
-												<option [value]="null">Chọn loại sản phẩm</option>
-												<option *ngFor="let prodType of productTypes" [value]="prodType.id">
-													{{prodType.name}}
-												</option>
-											</select>
-											<app-validate
-												[control]="productInfoFromGroup.get('categoryProductId')"
-												[error]="'required'"
-												[message]="'Loại sản phẩm được để trống'"
-											></app-validate>
-										</td>
+										<td class="col1">{{i + 1}}</td>
 										<td class="col2">
 											<select
 												(change)="productChanged($event, i)"
@@ -501,7 +481,7 @@
 												formControlName="productId"
 											>
 												<option [value]="null">Chọn sản phẩm</option>
-												<option *ngFor="let prod of products[i]" [value]="prod.id">
+												<option *ngFor="let prod of products" [value]="prod.id">
 													{{prod.name}}
 												</option>
 											</select>
@@ -582,7 +562,7 @@
 									</a>
 								</td>
 								<td colspan="4"></td>
-								<td class="font-weight-bold" colspan="2">Tổng tiền thanh toán</td>
+								<td class="font-weight-bold" colspan="1">Tổng tiền thanh toán</td>
 								<td class="font-weight-bold" [textContent]="getTotal() | number | vnCurrency"></td>
 								<td></td>
 							</tr>

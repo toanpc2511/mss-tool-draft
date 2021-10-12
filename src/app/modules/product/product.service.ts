@@ -115,6 +115,10 @@ export class ProductService {
 		return this.http.get<IProduct[]>(`products/category/${categoryId}`);
 	}
 
+	getListOilProduct() {
+		return this.http.get<IProduct[]>(`products/products-oil`);
+	}
+
 	deleteProduct(prodId: string | number) {
 		return this.http.delete(`products/${prodId}`);
 	}
@@ -168,6 +172,6 @@ export class ProductService {
 	}
 
 	getInfoProductOther(id: number) {
-    return this.http.get(`products/other/${id}`);
-  }
+		return this.http.get(`products/other/${id}`);
+	}
 }
