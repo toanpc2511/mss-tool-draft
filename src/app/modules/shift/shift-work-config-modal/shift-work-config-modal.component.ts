@@ -289,6 +289,9 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 		if (error.code === 'SUN-OIL-4747') {
 			this.toastr.error('Giờ nghỉ không nằm trong khoảng giờ làm');
 		}
+		if (error.code === 'SUN-OIL-4748') {
+			this.toastr.error('Ca làm việc đang có người làm');
+		}
 		if (error.code === 'SUN-OIL-4737') {
 			this.configForm.get('startHour').setErrors({ startTime: true });
 			this.configForm.get('endHour').setErrors({ startTime: true });

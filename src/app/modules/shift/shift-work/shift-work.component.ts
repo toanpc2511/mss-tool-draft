@@ -31,7 +31,7 @@ import { ToastrService } from 'ngx-toastr';
 import { takeUntil, tap, finalize, filter } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { CreateCalendarModalComponent } from '../create-calendar-modal/create-calendar-modal.component';
-import { ShiftService } from '../shift.service';
+import { ICalendarData, IDataEventCalendar, ShiftService } from '../shift.service';
 import { IEmployee } from './../shift.service';
 import { BehaviorSubject } from 'rxjs';
 import { EmployeeCheck } from './employee/employee.component';
@@ -230,6 +230,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 							backgroundColor: calendar.backgroundColor,
 							color: '#ffffff',
 							extendedProps: {
+                employeeId: calendar.employeeId,
 								employeeName: calendar.employeeName,
 								offTimes: calendar.offTimeResponses,
 								pumpPoles: calendar.pumpPoleResponses,
@@ -418,17 +419,19 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 
 	// toanpc
-	createCalendarModal($event: Event) {
+	createCalendarModal($event: Event, data?: IDataEventCalendar) {
 		if ($event) {
 			$event.stopPropagation();
 		}
 		const modalRef = this.modalService.open(CreateCalendarModalComponent, {
+      windowClass: 'custom-modal-z-1070',
 			backdrop: 'static',
 			size: 'lg'
 		});
 
 		modalRef.componentInstance.data = {
-			title: 'Thêm lịch làm việc'
+			title: data ? 'Sửa lịch làm việc' : 'Thêm  lịch làm việc',
+      dataEventCalendar: data
 		};
 
 		modalRef.result.then((result) => {

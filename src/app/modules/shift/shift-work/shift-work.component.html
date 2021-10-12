@@ -64,7 +64,9 @@
 	<div class="content">
 		<div class="content-header">
 			<div class="d-flex justify-content-end">
-				<a class="btn btn-icon btn-light btn-hover-primary btn-sm">
+				<a class="btn btn-icon btn-light btn-hover-primary btn-sm"
+           (click)='createCalendarModal($event, event.event)'
+        >
 					<span
 						[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
 						cacheSVG="true"
