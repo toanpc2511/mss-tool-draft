@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import {
-	IEmployeeByIdStation,
-	IInfoCalendarEmployee,
-	IShiftConfig,
-	ShiftService
+  IDataEventCalendar,
+  IEmployeeByIdStation,
+  IInfoCalendarEmployee,
+  IShiftConfig,
+  ShiftService
 } from '../shift.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DestroyService } from '../../../shared/services/destroy.service';
@@ -83,36 +84,45 @@ export class CreateCalendarModalComponent implements OnInit {
 	}
 
 	buildForm() {
-		this.calenderForm = this.fb.group({
-			shiftId: ['', Validators.required],
-			startDate: [],
-			endDate: [],
-			type: ['DONT_REPEAT'],
-			employee: this.fb.array([
-				this.fb.group({
-					employeeId: [null, Validators.required],
-					pumpPoles: ['', Validators.required],
-					shiftOffIds: ['', Validators.required]
-				})
-			])
-		});
+    if (this.data.dataEventCalendar) {
+      this.calenderForm = this.fb.group({
+        shiftId: ['', Validators.required],
+        startDate: [],
+        endDate: [],
+        employeeId: [this.data.dataEventCalendar.extendedProps.employeeId, Validators.required],
+        pumpPoles: [this.getListIdPumpPoles(), Validators.required],
+        shiftOffIds: [this.getListIdShiftOff(), Validators.required],
+        type: ['DONT_REPEAT'],
+      });
+    } else {
+      this.calenderForm = this.fb.group({
+        shiftId: ['', Validators.required],
+        startDate: [],
+        endDate: [],
+        type: ['DONT_REPEAT'],
+        employee: this.fb.array([
+          this.fb.group({
+            employeeId: [null, Validators.required],
+            pumpPoles: ['', Validators.required],
+            shiftOffIds: ['', Validators.required]
+          })
+        ])
+      });
 
-		this.assignFormArray = this.calenderForm.get('employee') as FormArray;
+      this.assignFormArray = this.calenderForm.get('employee') as FormArray;
+    }
 		this.cdr.detectChanges();
 	}
 
-	// addDay() {
-	// 	const checkboxes = document.querySelectorAll(`input[name="days"]:checked`);
-	// 	const values = [];
-	// 	checkboxes.forEach((checkbox) => {
-	// 		values.push((checkbox as HTMLInputElement).value);
-	// 	});
-	// 	return values;
-	// }
+  getListIdPumpPoles() {
+    return this.data.dataEventCalendar.extendedProps.pumpPoles.map(x => x.id)
+  }
+
+  getListIdShiftOff() {
+    return this.data.dataEventCalendar.extendedProps.offTimes?.map(x => x.id)
+  }
 
 	changeCheck({ name, type }: { name: string; type: string }) {
-		console.log(type);
-		
 		const idx = this.selectedDayOfWeek.findIndex((d) => d.type === type);
 		if (idx >= 0) {
 			this.selectedDayOfWeek = [...this.selectedDayOfWeek].filter((d, index) => index !== idx);
@@ -122,8 +132,13 @@ export class CreateCalendarModalComponent implements OnInit {
 	}
 
 	initDate() {
-		this.calenderForm.get('startDate').patchValue(this.tomorrow);
-		this.calenderForm.get('endDate').patchValue(this.tomorrow);
+    if (this.data.dataEventCalendar) {
+      this.calenderForm.get('startDate').patchValue(moment(this.data.dataEventCalendar.start).format('DD/MM/YYYY'));
+      this.calenderForm.get('endDate').patchValue(moment(this.data.dataEventCalendar.start).format('DD/MM/YYYY'));
+    } else {
+      this.calenderForm.get('startDate').patchValue(this.tomorrow);
+      this.calenderForm.get('endDate').patchValue(this.tomorrow);
+    }
 	}
 
 	getListOffTime() {
@@ -134,13 +149,15 @@ export class CreateCalendarModalComponent implements OnInit {
 	}
 
 	shiftConfigChange() {
-		this.assignFormArray.reset();
-		this.getListOffTime();
-	}
+    if (this.data.dataEventCalendar) {
+      this.calenderForm.get('shiftOffIds').patchValue('');
+    } else {
+      this.assignFormArray.reset();
+    }
+    this.getListOffTime();
+  }
 
 	formatTime(hour: number, minute: number) {
-		console.log('format');
-
 		return convertTimeToString(hour, minute);
 	}
 
@@ -152,37 +169,60 @@ export class CreateCalendarModalComponent implements OnInit {
 				if (this.calenderForm.invalid) {
 					return;
 				}
-				const employeeData: Array<IInfoCalendarEmployee> = (
-					this.calenderForm.value.employee as Array<IInfoCalendarEmployee>
-				).map((p) => ({ ...p, employeeId: Number(p.employeeId) }));
 
-				const req = {
-					shiftId: Number(this.calenderForm.get('shiftId').value),
-					startDate: convertDateToServer(this.calenderForm.get('startDate').value),
-					endDate: convertDateToServer(this.calenderForm.get('endDate').value),
-					type: this.calenderForm.get('type').value,
-					stationId: Number(this.gasStationId),
-					employee: employeeData,
-					days: this.selectedDayOfWeek.map((d) => d.type)
-				};
+        if (this.data.dataEventCalendar) {
+          const req = {
+            shiftId: Number(this.calenderForm.get('shiftId').value),
+            startDate: convertDateToServer(this.calenderForm.get('startDate').value),
+            endDate: convertDateToServer(this.calenderForm.get('endDate').value),
+            type: this.calenderForm.get('type').value,
+            stationId: Number(this.gasStationId),
+            employee: Number(this.calenderForm.get('employee').value),
+            days: this.selectedDayOfWeek.map((d) => d.type)
+          };
 
-				this.calenderForm.get('type').value !== 'WEEKLY' ? delete req.days : req;
+          this.calenderForm.get('type').value !== 'WEEKLY' ? delete req.days : req;
 
-				this.shiftService.createShiftOffTime(req).subscribe(
-					() => {
-						this.modal.close(true);
-					},
-					(error: IError) => {
-						this.checkError(error);
-					}
-				);
+          this.shiftService.createShiftOffTime(req).subscribe(
+            () => {
+              this.modal.close(true);
+            },
+            (error: IError) => {
+              this.checkError(error);
+            }
+          );
+        } else {
+          const employeeData: Array<IInfoCalendarEmployee> = (
+            this.calenderForm.value.employee as Array<IInfoCalendarEmployee>
+          ).map((p) => ({ ...p, employeeId: Number(p.employeeId) }));
 
-				console.log(req);
+          const req = {
+            shiftId: Number(this.calenderForm.get('shiftId').value),
+            startDate: convertDateToServer(this.calenderForm.get('startDate').value),
+            endDate: convertDateToServer(this.calenderForm.get('endDate').value),
+            type: this.calenderForm.get('type').value,
+            stationId: Number(this.gasStationId),
+            employee: employeeData,
+            days: this.selectedDayOfWeek.map((d) => d.type)
+          };
+
+          this.calenderForm.get('type').value !== 'WEEKLY' ? delete req.days : req;
+
+          this.shiftService.createShiftOffTime(req).subscribe(
+            () => {
+              this.modal.close(true);
+            },
+            (error: IError) => {
+              this.checkError(error);
+            }
+          );
+        }
 			});
 	}
 
 	onClose() {
-		this.modal.close();
+		// this.modal.close();
+    console.log(this.data.dataEventCalendar.extendedProps.employeeId);
 	}
 
 	deleteItem(index: number): void {
@@ -206,4 +246,5 @@ export class CreateCalendarModalComponent implements OnInit {
 
 export interface IDataTransfer {
 	title: string;
+  dataEventCalendar: IDataEventCalendar;
 }

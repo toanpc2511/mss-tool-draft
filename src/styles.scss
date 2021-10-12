@@ -372,3 +372,7 @@ app-paginator {
 
 // Utility
 @import './assets/sass/utility.scss';
+
+.custom-modal-z-1070 {
+  z-index: 1070;
+}

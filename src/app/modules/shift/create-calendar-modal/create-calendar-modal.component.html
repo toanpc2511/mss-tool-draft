@@ -7,7 +7,7 @@
 		<div class="overlay overlay-block cursor-default modal-body">
 			<form class="form form-label-right" [formGroup]="calenderForm">
 				<div class="form-group row">
-					<div class="col-lg-12">
+					<div [ngClass]='data.dataEventCalendar ? "col-lg-6" : "col-lg-12"'>
 						<label class="form-label required">Ca làm việc</label>
 						<select
 							(change)="shiftConfigChange()"
@@ -23,9 +23,74 @@
 							[message]="'Ca làm việc không được để trống'"
 						></app-validate>
 					</div>
+          <div class='col-lg-6' *ngIf='data.dataEventCalendar'>
+            <label class="form-label">Nhân viên</label>
+            <select
+              class="form-control form-control-solid"
+              formControlName="employeeId"
+            >
+              <option [value]="''">Chọn nhân viên</option>
+              <option *ngFor="let item of listEmployee" [value]="item.id">
+                {{item.code}} - {{item.name}}
+              </option>
+            </select>
+            <app-validate
+              [control]="calenderForm.get('employeeId')"
+              [error]="'required'"
+              [message]="'Nhân viên không được để trống'"
+            ></app-validate>
+          </div>
 				</div>
 
-				<div class="pt-5">
+        <div class="form-group row" *ngIf='data.dataEventCalendar'>
+          <div class='col-lg-6'>
+            <label class="form-label required">Cột</label>
+            <ng-select
+              appendTo="body"
+              [placeholder]="'Chọn cột'"
+              [multiple]="true"
+              [closeOnSelect]="false"
+              [isGroupDisplay]="true"
+              [groupText]="'cột khác'"
+              [minLengthGroup]="2"
+              formControlName='pumpPoles'
+            >
+              <ng-option *ngFor="let pumpPoles of listPumpPole" [value]="pumpPoles.id"
+              >{{ pumpPoles.name }}</ng-option
+              >
+            </ng-select>
+            <app-validate
+              [control]="calenderForm.get('pumpPoles')"
+              [error]="'required'"
+              [message]="'Cột không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class='col-lg-6'>
+            <label class="form-label required">Thời gian nghỉ</label>
+            <ng-select
+              appendTo="body"
+              [placeholder]="'Chọn thời gian nghỉ'"
+              [multiple]="true"
+              [closeOnSelect]="false"
+              [isGroupDisplay]="true"
+              [groupText]="'thời gian khác'"
+              [minLengthGroup]="2"
+              formControlName='shiftOffIds'
+            >
+              <ng-option *ngFor="let item of listOffTime" [value]="item.id"
+              >{{ item|formatTime }}</ng-option
+              >
+            </ng-select>
+            <app-validate
+              [control]="calenderForm.get('shiftOffIds')"
+              [error]="'required'"
+              [message]="'Thời gian nghỉ không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+
+				<div class="pt-5" *ngIf='!data.dataEventCalendar'>
 					<div class="body-card">
 						<div class="table-responsive angular-bootstrap-table">
 							<table class="table table-vertical-center overflow-hidden" aria-label="">
