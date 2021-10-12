@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {
 	NgbDatepickerModule,
+	NgbModalModule,
 	NgbPopoverModule,
 	NgbProgressbarModule,
 	NgbTooltipModule
@@ -32,6 +33,7 @@ import { DateStringPipe } from './shift-work/date-string.pipe';
 import { CreateCalendarModalComponent } from './create-calendar-modal/create-calendar-modal.component';
 import { FormatTimePipe } from './create-calendar-modal/format-time.pipe';
 import { IsCheckedPipe } from './create-calendar-modal/is-checked.pipe';
+import { DetailWarningDialogComponent } from './shift-work/detail-warning-dialog/detail-warning-dialog.component';
 
 @NgModule({
 	declarations: [
@@ -47,7 +49,8 @@ import { IsCheckedPipe } from './create-calendar-modal/is-checked.pipe';
 		DateStringPipe,
 		CreateCalendarModalComponent,
 		FormatTimePipe,
-		IsCheckedPipe
+		IsCheckedPipe,
+		DetailWarningDialogComponent
 	],
 	imports: [
 		CommonModule,

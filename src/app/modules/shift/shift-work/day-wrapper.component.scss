@@ -6,13 +6,8 @@
 	}
 	div.cell-custom {
 		.warning-icon {
-			width: 1.5rem;
-			height: 1.5rem;
+			font-size: 1.1rem;
 			z-index: 1;
-			background-image: url('../../../../assets/media/svg/icons/General/Error.svg');
-			background-position: center;
-			background-repeat: no-repeat;
-			background-size: contain;
 		}
 	}
 
@@ -33,6 +28,10 @@
 			right: 1.7rem;
 		}
 	}
+	.week-title,
+	.week-content {
+		display: none !important;
+	}
 }
 
 .week-view-type .day-cell-custom {
@@ -42,6 +41,19 @@
 		.warning-icon {
 			margin-right: 5px;
 		}
+	}
+	.month-title {
+		display: none !important;
+	}
+	.week-title {
+		font-weight: 400;
+		margin-bottom: 3px;
+	}
+
+	.week-title,
+	.week-content {
+		width: 100%;
+		display: inherit;
 	}
 }
 

@@ -26,9 +26,9 @@ export interface ICalendarResponse {
 		offTimeResponses: OffTimeResponse[];
 		pumpPoleResponses: PumpPoleResponse[];
 		shiftName: string;
+		checked: boolean;
 		shiftId: number;
 	}[];
-	totalPump: number;
 }
 
 export class ICalendarData {
@@ -62,15 +62,15 @@ export interface ITime {
 }
 
 export interface IEmployeeByIdStation {
-  id: number;
-  name: string;
-  code: string;
+	id: number;
+	name: string;
+	code: string;
 }
 
 export interface IInfoCalendarEmployee {
-  employeeId: number;
-  pumpPoles: [number];
-  shifOff: [number];
+	employeeId: number;
+	pumpPoles: [number];
+	shifOff: [number];
 }
 
 export interface IDataEventCalendar {
@@ -124,17 +124,16 @@ export class ShiftService {
 		return this.http.delete(`shifts/${id}`);
 	}
 
-  // danh sách thời gian nghỉ theo ca
-  getListOffTime(id: number) {
-    const params = new HttpParams()
-      .set('shift-id', id.toString())
-    return this.http.get('shifts-off-time', {params})
-  }
+	// danh sách thời gian nghỉ theo ca
+	getListOffTime(id: number) {
+		const params = new HttpParams().set('shift-id', id.toString());
+		return this.http.get('shifts-off-time', { params });
+	}
 
-  // thêm lịch làm vệc
-  createShiftOffTime(req) {
-    return this.http.post('calendars', req);
-  }
+	// thêm lịch làm vệc
+	createShiftOffTime(req) {
+		return this.http.post('calendars', req);
+	}
 
   // Lấy ds nhân viên trạm theo id
   getListEmployee(stationId) {
