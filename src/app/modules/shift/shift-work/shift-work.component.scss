@@ -1,7 +1,7 @@
 :host ::ng-deep {
 	.fc-scroller {
-		overflow: hidden!important;
-		height: fit-content!important;
+		overflow: hidden !important;
+		height: fit-content !important;
 	}
 	.fc-scrollgrid-sync-table {
 		tr {
@@ -51,7 +51,7 @@
 				margin-left: 0;
 				width: 100%;
 				height: 30px;
-				border: 1px solid #ecf0f3 !important;
+				border: 1px solid #ecf0f3;
 				border-radius: 5px;
 				display: flex;
 				align-items: center;
@@ -69,6 +69,20 @@
 				}
 			}
 		}
+
+		.fc-daygrid-event {
+			> div {
+				width: 90%;
+				span.month-title {
+					display: inline-flex;
+					width: 100%;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+			}
+		}
+
 		.fc-daygrid-event.fc-event-start {
 			margin-left: 0 !important;
 		}

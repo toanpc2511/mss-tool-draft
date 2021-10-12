@@ -33,6 +33,10 @@
 			right: 1.7rem;
 		}
 	}
+	.week-title,
+	.week-content {
+		display: none !important;
+	}
 }
 
 .week-view-type .day-cell-custom {
@@ -42,6 +46,19 @@
 		.warning-icon {
 			margin-right: 5px;
 		}
+	}
+	.month-title {
+		display: none !important;
+	}
+	.week-title {
+		font-weight: 400;
+		margin-bottom: 3px;
+	}
+
+	.week-title,
+	.week-content {
+		width: 100%;
+		display: inherit;
 	}
 }
 

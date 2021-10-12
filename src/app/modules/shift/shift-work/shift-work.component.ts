@@ -35,6 +35,7 @@ import { ShiftService } from '../shift.service';
 import { IEmployee } from './../shift.service';
 import { BehaviorSubject } from 'rxjs';
 import { EmployeeCheck } from './employee/employee.component';
+import { DetailWarningDialogComponent } from './detail-warning-dialog/detail-warning-dialog.component';
 
 // Event
 @Component({
@@ -49,7 +50,9 @@ import { EmployeeCheck } from './employee/employee.component';
 		>
 			<div class="event-container">
 				<strong class="fa fa-circle"></strong>
-				<span>{{ eventData.title }}</span>
+				<span class="month-title">{{ eventData.title }}</span>
+				<span class="week-title">{{ eventData.extendedProps.weekTitle }}</span>
+				<span class="week-content">{{ eventData.extendedProps.weekContent }}</span>
 			</div>
 		</div>
 	`,
@@ -69,6 +72,7 @@ export class EventWrapperComponent {
 		<div class="day-cell-custom">
 			<div class="cell-custom">
 				<div
+					(click)="showDetailWarning()"
 					*ngIf="tooltipWarning"
 					[ngbTooltip]="tooltipWarning"
 					[tooltipClass]="'warning-tooltip'"
@@ -86,7 +90,17 @@ export class EventWrapperComponent {
 })
 export class DayWrapperComponent {
 	tooltipWarning: string;
+	currentDate: string;
 	@ViewChild(NgbTooltip, { static: true }) tooltip: NgbTooltip;
+	constructor(private ngbModal: NgbModal) {}
+
+	showDetailWarning() {
+		const modalRef = this.ngbModal.open(DetailWarningDialogComponent, {
+			size: 'xs',
+			backdrop: 'static'
+		});
+		modalRef.componentInstance.currentDate = this.currentDate;
+	}
 }
 
 @Component({
@@ -113,7 +127,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	currentGasStationId: string;
 
 	calendars: EventInput[];
-	calendarsCountByDate: Map<string, number> = new Map();
+	warningDate: Map<string, boolean> = new Map();
 	totalPumpPoles = 0;
 
 	calendarOptions: CalendarOptions = {
@@ -202,11 +216,12 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		private appRef: ApplicationRef
 	) {}
 	ngAfterViewInit(): void {
-		this.calendarsCountByDate.clear();
+		this.warningDate.clear();
 	}
 
 	getCalendarData(start: string, end: string, employeeIds: number[], stationId: string) {
 		this.calendarApi.removeAllEventSources();
+		this.warningDate.clear();
 		this.shiftService
 			.getShiftWorks(start, end, employeeIds, stationId)
 			.pipe(
@@ -214,13 +229,11 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 					this.calendars = [...res.data.calendarResponses].map((calendar): EventInput => {
 						const start = moment(calendar.start).format('YYYY-MM-DD');
 						const end = moment(calendar.end).format('YYYY-MM-DD');
-						const currentCount = this.calendarsCountByDate.get(start);
-						this.calendarsCountByDate.set(start, currentCount ? currentCount + 1 : 1);
+
+						this.warningDate.set(start, !calendar.checked);
 						if (start !== end) {
-							const currentCount = this.calendarsCountByDate.get(end);
-							this.calendarsCountByDate.set(end, currentCount ? currentCount + 1 : 1);
+							this.warningDate.set(end, !calendar.checked);
 						}
-						this.totalPumpPoles = res.data.totalPump;
 
 						return {
 							id: calendar.calendarId.toString(),
@@ -233,12 +246,18 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 								employeeName: calendar.employeeName,
 								offTimes: calendar.offTimeResponses,
 								pumpPoles: calendar.pumpPoleResponses,
-								totalPump: res.data.totalPump
+								warning: calendar.checked,
+								weekTitle: calendar.shiftName,
+								weekContent: calendar.employeeName
 							},
 							allDay: true
 						};
 					});
-					this.calendarComponent.getApi().addEventSource(this.calendars);
+					this.calendarApi.addEventSource(this.calendars);
+
+					// Trick to fix re render daycell to validate day station
+					this.calendarApi.next();
+					this.calendarApi.prev();
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -321,6 +340,10 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 						this.currentViewMode = this.calendarApi.view.type;
 					}
 				}
+				if (btn.classList.contains('fc-dayGridWeek-button')) {
+					const firstDayOfMonth = moment(this.calendarApi.getDate()).add({ week: 2 }).toDate();
+					this.calendarApi.gotoDate(firstDayOfMonth);
+				}
 				this.start = convertDateValueToServer(this.calendarApi.view.activeStart);
 				this.end = convertDateValueToServer(this.calendarApi.view.activeEnd);
 				this.getCalendarData(
@@ -380,6 +403,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	selectedEmployeeChange($event: EmployeeCheck) {
 		if ($event.status === 'uncheckall') {
 			this.selectedEmployeeIds = null;
+			this.calendarApi.removeAllEventSources();
 			return;
 		} else if ($event.status === 'checkall') {
 			this.selectedEmployeeIds = [];
@@ -391,7 +415,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 	dayCellRender(event) {
 		const currentRenderDate = moment(event.date).format('YYYY-MM-DD');
-		const totalEventCurrentDate = this.calendarsCountByDate.get(currentRenderDate);
+		const isWarning = this.warningDate.get(currentRenderDate);
 
 		const projectableNodes = Array.from(event.el.childNodes);
 
@@ -401,8 +425,9 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			event.el
 		);
 
-		if (totalEventCurrentDate < this.totalPumpPoles) {
+		if (isWarning) {
 			compWrapperRef.instance.tooltipWarning = 'Trạm có ca chưa được gán nhân viên';
+			compWrapperRef.instance.currentDate = currentRenderDate;
 		}
 		this.appRef.attachView(compWrapperRef.hostView);
 		this.dayWrappersMap.set(event.el, compWrapperRef);
