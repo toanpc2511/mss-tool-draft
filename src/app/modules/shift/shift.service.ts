@@ -1,8 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
-import { NumberLiteralType } from 'typescript';
 import { GasStationResponse } from './../gas-station/gas-station.service';
+import { convertDateToServer } from '../../shared/helpers/functions';
 
 export type PumpPoleResponse = {
 	id: number;
@@ -10,10 +10,11 @@ export type PumpPoleResponse = {
 };
 
 export type OffTimeResponse = {
-  id: number;
+	id: number;
 	start: string;
 	end: string;
 };
+
 export interface ICalendarResponse {
 	calendarResponses: {
 		calendarId: number;
@@ -32,16 +33,19 @@ export interface ICalendarResponse {
 }
 
 export class ICalendarData {
-  employeeId: number;
+	shiftId: number;
+	employeeId: number;
 	employeeName: string;
 	offTimes: OffTimeResponse[];
 	pumpPoles: PumpPoleResponse[];
 }
+
 export interface IEmployee {
 	id: number;
 	code: string;
 	name: string;
 }
+
 export interface IShiftConfig {
 	id: number;
 	name: string;
@@ -74,10 +78,10 @@ export interface IInfoCalendarEmployee {
 }
 
 export interface IDataEventCalendar {
-  id:string;
-  start: Date;
-  end: Date;
-  extendedProps: ICalendarData
+	id: string;
+	start: Date;
+	end: Date;
+	extendedProps: ICalendarData;
 }
 
 @Injectable({
@@ -135,15 +139,28 @@ export class ShiftService {
 		return this.http.post('calendars', req);
 	}
 
-  // Lấy ds nhân viên trạm theo id
-  getListEmployee(stationId) {
-    const params = new HttpParams()
-      .set('station-id', stationId)
-    return this.http.get<Array<IEmployeeByIdStation>>('gas-stations/station', {params});
-  }
+	// Lấy ds nhân viên trạm theo id
+	getListEmployee(stationId) {
+		const params = new HttpParams().set('station-id', stationId);
+		return this.http.get<Array<IEmployeeByIdStation>>('gas-stations/station', { params });
+	}
 
-  // Sửa lịch làm việc của nhân viên
-  updateShiftOffTime(id: number, req) {
-    return this.http.put(`calendars/${id}`, req);
-  }
+	// Sửa lịch làm việc của nhân viên
+	updateShiftOffTime(id: number, req) {
+		return this.http.put(`calendars/${id}`, req);
+	}
+
+	// Xóa lịch làm việc của nhân viên
+	deleteCalendarOfEmployee(id: number) {
+		return this.http.delete(`calendars/${id}`);
+	}
+
+	// Xóa lịch trong khoảng thời gian
+	deleteCalendarAll(req: { timeStart: string; timeEnd: string; employeeIds: [number] }) {
+		const params = new HttpParams()
+			.set('time-start', convertDateToServer(req.timeStart))
+			.set('time-end', convertDateToServer(req.timeEnd))
+			.set('employee-ids', req.employeeIds.join(','));
+		return this.http.delete(`calendars`, { params });
+	}
 }

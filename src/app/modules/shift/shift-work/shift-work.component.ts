@@ -32,6 +32,10 @@ import { GasStationResponse } from './../../gas-station/gas-station.service';
 import { IEmployee } from './../shift.service';
 import { DetailWarningDialogComponent } from './detail-warning-dialog/detail-warning-dialog.component';
 import { EmployeeCheck } from './employee/employee.component';
+import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
+import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
+import { IError } from '../../../shared/models/error.model';
+import { DeleteCalendarAllComponent } from './delete-calendar-all/delete-calendar-all.component';
 
 // Event
 @Component({
@@ -91,6 +95,7 @@ export class DayWrapperComponent {
 	tooltipWarning: string;
 	currentDate: string;
 	@ViewChild(NgbTooltip, { static: true }) tooltip: NgbTooltip;
+
 	constructor(private ngbModal: NgbModal) {}
 
 	showDetailWarning() {
@@ -214,6 +219,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		private injector: Injector,
 		private appRef: ApplicationRef
 	) {}
+
 	ngAfterViewInit(): void {
 		this.warningDate.clear();
 	}
@@ -242,6 +248,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 							backgroundColor: calendar.backgroundColor,
 							color: '#ffffff',
 							extendedProps: {
+								shiftId: calendar.shiftId,
 								employeeId: calendar.employeeId,
 								employeeName: calendar.employeeName,
 								offTimes: calendar.offTimeResponses,
@@ -475,5 +482,67 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 				eventContainer.instance.popover.open({ event: $event });
 			}
 		});
+	}
+
+	deleteCalendarOfEmployee($event: Event, item: IDataEventCalendar) {
+		$event.stopPropagation();
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+			backdrop: 'static'
+		});
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn xoá lịch làm việc này ?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
+
+		modalRef.result.then((result) => {
+			if (result) {
+				this.shiftService.deleteCalendarOfEmployee(Number(item.id)).subscribe(
+					(res) => {
+						if (res.data) {
+							this.getCalendarData(
+								this.start,
+								this.end,
+								this.selectedEmployeeIds,
+								this.currentGasStationId
+							);
+						}
+					},
+					(err: IError) => {
+						this.checkError(err);
+					}
+				);
+			}
+		});
+	}
+
+	deleteCalendarAll($event: Event) {
+		if ($event) {
+			$event.stopPropagation();
+		}
+		const modalRef = this.modalService.open(DeleteCalendarAllComponent, {
+			backdrop: 'static',
+			size: 'lg'
+		});
+
+		modalRef.componentInstance.data = {
+			title: 'Xóa lịch làm việc'
+		};
+
+		modalRef.result.then((result) => {
+			if (result) {
+				this.getCalendarData(
+					this.start,
+					this.end,
+					this.selectedEmployeeIds,
+					this.currentGasStationId
+				);
+			}
+		});
+	}
+
+	checkError(error: IError) {
+		this.toastr.error(error.code);
 	}
 }

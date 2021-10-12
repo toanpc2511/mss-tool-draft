@@ -35,7 +35,12 @@
 					<div class="card card-custom card-stretch">
 						<div class="card-header justify-content-end">
 							<div class="card-toolbar">
-								<a class="btn btn-light-danger font-weight-bold mr-3"> Xóa lịch làm việc </a>
+								<a
+									class="btn btn-light-danger font-weight-bold mr-3"
+									(click)="deleteCalendarAll($event)"
+								>
+									Xóa lịch làm việc
+								</a>
 								<a
 									class="btn btn-light-primary font-weight-bold"
 									(click)="createCalendarModal($event)"
@@ -64,9 +69,10 @@
 	<div class="content">
 		<div class="content-header">
 			<div class="d-flex justify-content-end">
-				<a class="btn btn-icon btn-light btn-hover-primary btn-sm"
-           (click)='createCalendarModal(event, event.event)'
-        >
+				<a
+					class="btn btn-icon btn-light btn-hover-primary btn-sm"
+					(click)="createCalendarModal($event, event.event)"
+				>
 					<span
 						[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
 						cacheSVG="true"
@@ -75,7 +81,10 @@
 					>
 					</span>
 				</a>
-				<a class="mx-3 btn btn-icon btn-light btn-hover-danger btn-sm">
+				<a
+					class="mx-3 btn btn-icon btn-light btn-hover-danger btn-sm"
+					(click)="deleteCalendarOfEmployee($event, event.event)"
+				>
 					<span
 						[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
 						cacheSVG="true"
