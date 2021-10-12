@@ -22,11 +22,11 @@ import {
 import { NgbModal, NgbModalRef, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, finalize, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, timer } from 'rxjs';
+import { delay, filter, finalize, skipUntil, takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { CreateCalendarModalComponent } from '../create-calendar-modal/create-calendar-modal.component';
-import { IDataEventCalendar, ShiftService } from '../shift.service';
+import { ICalendarData, IDataEventCalendar, ShiftService } from '../shift.service';
 import { convertDateValueToServer } from './../../../shared/helpers/functions';
 import { GasStationResponse } from './../../gas-station/gas-station.service';
 import { IEmployee } from './../shift.service';
@@ -43,10 +43,10 @@ import { DeleteCalendarAllComponent } from './delete-calendar-all/delete-calenda
 		<div
 			[ngbPopover]="popoverTemplate"
 			[popoverClass]="'shift-detail-popover'"
-			triggers="manual"
+			triggers="focus"
 			container="body"
 			[placement]="['top', 'left', 'right', 'bottom']"
-			[autoClose]="(modalActives$ | async)?.length > 0 ? false : 'outside'"
+			[autoClose]="'outside'"
 		>
 			<div class="event-container">
 				<strong class="fa fa-circle"></strong>
@@ -63,16 +63,10 @@ import { DeleteCalendarAllComponent } from './delete-calendar-all/delete-calenda
 export class EventWrapperComponent {
 	popoverTemplate: TemplateRef<any>;
 	eventData: EventInput;
-	modalActives$: Observable<NgbModalRef[]>;
-	@ViewChild(NgbPopover, { static: true }) popover: NgbPopover;
+	event: any;
 
-	constructor(
-		public elRef: ElementRef,
-		public modalStack: NgbModal,
-		private destroy$: DestroyService
-	) {
-		this.modalActives$ = modalStack.activeInstances.pipe(takeUntil(this.destroy$));
-	}
+	@ViewChild(NgbPopover, { static: true }) popover: NgbPopover;
+	constructor(public elRef: ElementRef) {}
 }
 
 //Check không có nhân viên trong ca của cột
@@ -456,10 +450,12 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 
 	// toanpc
-	createCalendarModal($event: Event, data?: IDataEventCalendar) {
-		if ($event) {
-			$event.stopPropagation();
+	createCalendarModal($event: any, data?: IDataEventCalendar) {
+		const eventContainer = this.eventContainersMap.get($event.el);
+		if (eventContainer) {
+			eventContainer.instance.popover.close();
 		}
+
 		const modalRef = this.modalService.open(CreateCalendarModalComponent, {
 			windowClass: 'custom-modal-z-1070',
 			backdrop: 'static',
@@ -479,6 +475,11 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 					this.selectedEmployeeIds,
 					this.currentGasStationId
 				);
+			}
+
+			//Reopen popoper when dialog close
+			if (eventContainer) {
+				eventContainer.instance.popover.open({ event: $event });
 			}
 		});
 	}

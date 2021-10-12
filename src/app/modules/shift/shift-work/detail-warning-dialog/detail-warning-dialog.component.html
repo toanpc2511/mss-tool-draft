@@ -1,6 +1,6 @@
 <div class="modal-content">
 	<div class="modal-header">
-		<h4 class="modal-title" id="modal-title">{{ currentDate }}</h4>
+		<h4 class="modal-title" id="modal-title">{{ currentDate|date:'longDate' }}</h4>
 		<div class="close-icon" (click)="modal.close()"></div>
 	</div>
 	<div class="modal-body"></div>
