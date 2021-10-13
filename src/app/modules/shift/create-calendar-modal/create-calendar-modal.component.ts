@@ -214,7 +214,6 @@ export class CreateCalendarModalComponent implements OnInit {
 					};
 
 					this.calenderForm.get('type').value !== 'WEEKLY' ? delete req.days : req;
-					console.log(req);
 
 					this.shiftService.updateShiftOffTime(Number(this.data.dataEventCalendar.id), req).subscribe(
 					  () => {
