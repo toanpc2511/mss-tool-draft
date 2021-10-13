@@ -1,0 +1,12 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-title">{{ currentDate|date:'longDate' }}</h4>
+		<div class="close-icon" (click)="modal.close()"></div>
+	</div>
+	<div class="modal-body"></div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary btn-dialog" (click)="modal.close()">
+			Đóng
+		</button>
+	</div>
+</div>

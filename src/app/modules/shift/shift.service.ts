@@ -1,201 +1,166 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IFile } from 'src/app/shared/services/file.service';
 import { HttpService } from 'src/app/shared/services/http.service';
-import { SortState } from 'src/app/_metronic/shared/crud-table';
-import { GasStationResponse } from '../gas-station/gas-station.service';
+import { GasStationResponse } from './../gas-station/gas-station.service';
+import { convertDateToServer } from '../../shared/helpers/functions';
 
-export enum EMaritalStatus {
-	MARRIED = 'MARRIED',
-	UNMARRIED = 'UNMARRIED'
+export type PumpPoleResponse = {
+	id: number;
+	name: string;
+};
+
+export type OffTimeResponse = {
+	id: number;
+	start: string;
+	end: string;
+};
+
+export interface ICalendarResponse {
+	calendarResponses: {
+		calendarId: number;
+		employeeId: number;
+		employeeName: string;
+		backgroundColor: string;
+		color: string;
+		start: string;
+		end: string;
+    offTimes: OffTimeResponse[];
+		pumpPoleResponses: PumpPoleResponse[];
+		shiftName: string;
+		checked: boolean;
+		shiftId: number;
+	}[];
 }
 
-export enum ESex {
-	MALE = 'MALE',
-	FEMALE = 'FEMALE'
-}
-
-export enum EFace {
-	FRONT = 'FRONT',
-	BACK = 'BACK'
+export class ICalendarData {
+	shiftId: number;
+	employeeId: number;
+	employeeName: string;
+	offTimes: OffTimeResponse[];
+	pumpPoles: PumpPoleResponse[];
 }
 
 export interface IEmployee {
 	id: number;
 	code: string;
 	name: string;
-	station: GasStationResponse[];
-	department: IDepartment;
-	positions: IPosition;
 }
 
-export interface IDepartment {
+export interface IShiftConfig {
 	id: number;
-	code: string;
-	departmentType: string;
 	name: string;
 	type: string;
+	description: string;
+	startHour: number;
+	startMinute: number;
+	endHour: number;
+	endMinute: number;
+	offTimes: [ITime];
 }
 
-export interface IPosition {
+export interface ITime {
+	startHour: number;
+	startMinute: number;
+	endHour: number;
+	endMinute: number;
+}
+
+export interface IEmployeeByIdStation {
 	id: number;
+	name: string;
 	code: string;
-	name: string;
-	type: string;
 }
 
-export interface IImage {
-	id: number;
-	type: 'img';
-	url: string;
-	name: string;
-	face: EFace;
+export interface IInfoCalendarEmployee {
+	employeeId: number;
+	pumpPoles: [number];
+  shiftOffIds: [number];
 }
 
-export interface IEmployeeInput {
-	avatar: IImage;
-	name: string;
-	dateOfBirth: string;
-	sex: ESex;
-	phone: string;
-	email: string;
-	department: {
-		code: string;
-		departmentType: string;
-	};
-	positions: {
-		code: string;
-		departmentType: string;
-	};
-	stationId: string;
-	nation: string;
-	address: string;
-	religion: string;
-	identityCardNumber: string;
-	dateRange: string;
-	fullAddress: string;
-	supplyAddress: string;
-	province: {
-		id: number;
-		name: string;
-	};
-	district: {
-		id: number;
-		name: string;
-	};
-	ward: {
-		id: number;
-		name: string;
-	};
-	maritalStatus: EMaritalStatus;
-	credentialImages: IImage[];
-	attachmentRequests: number[];
-}
-
-export interface IEmployeeDetail {
-	id: number;
-	avatar: IImage;
-	code: string;
-	name: string;
-	dateOfBirth: string;
-	sex: ESex;
-	phone: string;
-	email: string;
-	department: {
-		id: number;
-		name: string;
-		type: string;
-		code: string;
-		departmentType: string;
-	};
-	positions: {
-		id: number;
-		name: string;
-		type: string;
-		code: string;
-		departmentType: string;
-	};
-	stationList: {
-		id: number;
-		name: string;
-	}[];
-	accountId: number;
-	nation: string;
-	religion: string;
-	address: string;
-	identityCardNumber: string;
-	dateRange: string;
-	fullAddress: string;
-	supplyAddress: string;
-	province: {
-		id: number;
-		name: string;
-	};
-	district: {
-		id: number;
-		name: string;
-	};
-	ward: {
-		id: number;
-		name: string;
-	};
-	maritalStatus: EMaritalStatus;
-	credentialImages: IImage[];
-	attachment: IFile[];
+export interface IDataEventCalendar {
+	id: string;
+	start: Date;
+	end: Date;
+	extendedProps: ICalendarData;
 }
 
 @Injectable({
 	providedIn: 'root'
 })
-export class EmployeeService {
+export class ShiftService {
 	constructor(private http: HttpService) {}
 
-	getEmployees(
-		page: number,
-		size: number,
-		searchDepartmentId: string,
-		searchPositionId: string,
-		searchText: string,
-		sortData: SortState
-	) {
+	getStationByAccount() {
+		return this.http.get<GasStationResponse[]>('gas-stations/station-employee');
+	}
+
+	getEmployeesByStation(stationId: string) {
+		const params = new HttpParams().set('station-id', stationId);
+		return this.http.get<IEmployee[]>(`gas-stations/station`, { params });
+	}
+
+	getShiftWorks(start: string, end: string, employeeIds: number[], stationId: string) {
 		const params = new HttpParams()
-			.set('page', page.toString())
-			.set('size', size.toString())
-			.set('department-id', searchDepartmentId)
-			.set('positions-id', searchPositionId)
-			.set('field-sort', sortData?.column || '')
-			.set('direction-sort', sortData?.direction || '')
-			.set('search-text', searchText || '')
-			.set('callApiType', 'background');
-		return this.http.get<IEmployee[]>('employees', { params });
+			.set('employee-ids', employeeIds?.join(',') || '')
+			.set('time-start', start)
+			.set('time-end', end)
+			.set('station-id', stationId);
+		return this.http.get<ICalendarResponse>('calendars', { params });
 	}
 
-	getAllStationAddress() {
-		return this.http.get<GasStationResponse[]>('gas-stations/address');
+	// ds cấu hình ca
+	getListShiftConfig() {
+		return this.http.get<Array<IShiftConfig>>(`shifts`);
 	}
 
-	getAllDepartment() {
-		return this.http.get<IDepartment[]>(`properties?type=DEPARTMENT`);
+	// thêm cấu hình ca
+	createShiftConfig(shiftConfigData: IShiftConfig) {
+		return this.http.post(`shifts`, shiftConfigData);
 	}
 
-	getPositionByDepartment(departmentType: string) {
-		const params = new HttpParams().set('type-department', departmentType);
-		return this.http.get<IDepartment[]>(`properties/department`, { params });
+	// sửa cấu hình ca
+	updateShiftConfig(id: number, shiftConfigData: IShiftConfig) {
+		return this.http.put(`shifts/${id}`, shiftConfigData);
 	}
 
-	getEmployeeById(employeeId: string) {
-		return this.http.get<IEmployeeDetail>(`employees/details/${employeeId}`);
+	// xóa cấu hình ca
+	deleteShiftConfg(id: number) {
+		return this.http.delete(`shifts/${id}`);
 	}
 
-	createEmployee(employeeData: IEmployeeInput) {
-		return this.http.post(`employees`, employeeData);
+	// danh sách thời gian nghỉ theo ca
+	getListOffTime(id: number) {
+		const params = new HttpParams().set('shift-id', id.toString());
+		return this.http.get('shifts-off-time', { params });
 	}
 
-	updateEmployee(id: string, employeeData: IEmployeeInput) {
-		return this.http.put(`employees/${id}`, employeeData);
+	// thêm lịch làm vệc
+	createShiftOffTime(req) {
+		return this.http.post('calendars', req);
 	}
 
-	deleteEmployee(id: number) {
-		return this.http.delete(`employees/${id}`);
+	// Lấy ds nhân viên trạm theo id
+	getListEmployee(stationId) {
+		const params = new HttpParams().set('station-id', stationId);
+		return this.http.get<Array<IEmployeeByIdStation>>('gas-stations/station', { params });
+	}
+
+	// Sửa lịch làm việc của nhân viên
+	updateShiftOffTime(id: number, req) {
+		return this.http.put(`calendars/${id}`, req);
+	}
+
+	// Xóa lịch làm việc của nhân viên
+	deleteCalendarOfEmployee(id: number) {
+		return this.http.delete(`calendars/${id}`);
+	}
+
+	// Xóa lịch trong khoảng thời gian
+	deleteCalendarAll(req: { timeStart: string; timeEnd: string; employeeIds: [number] }) {
+		const params = new HttpParams()
+			.set('time-start', convertDateToServer(req.timeStart))
+			.set('time-end', convertDateToServer(req.timeEnd))
+			.set('employee-ids', req.employeeIds.join(','));
+		return this.http.delete(`calendars`, { params });
 	}
 }

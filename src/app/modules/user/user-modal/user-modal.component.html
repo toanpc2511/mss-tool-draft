@@ -116,8 +116,13 @@
 			<form [formGroup]="userFormUpdate" class="form form-label-right" *ngIf="isUpdate">
 				<div class="form-group row">
 					<div class="col-lg-4">
-						<label class="form-label required">Chọn nhân viên</label>
-						<ng-select
+						<label class="form-label required">Nhân viên</label>
+						<input
+							class="form-control form-control-lg form-control-solid"
+							disabled
+							[value]="userNameAndCode"
+						/>
+						<!-- <ng-select
 							[multiple]="false"
 							formControlName="employeeId"
 							[closeOnSelect]="true"
@@ -137,7 +142,7 @@
 							[control]="userFormUpdate.controls['employeeId']"
 							[error]="'existed'"
 							[message]="'Nhân viên đã có tài khoản'"
-						></app-validate>
+						></app-validate> -->
 					</div>
 
 					<div class="col-lg-4">
@@ -167,7 +172,16 @@
 
 					<div class="col-lg-4">
 						<label class="form-label">Nhóm quyền</label>
-						<ng-select [multiple]="true" formControlName="roleIds" [closeOnSelect]="false">
+						<ng-select
+							[notFoundText]="'...'"
+							[placeholder]="'Chọn nhóm quyền'"
+							[multiple]="true"
+							formControlName="roleIds"
+							[closeOnSelect]="false"
+							[isGroupDisplay]="true"
+							[groupText]="'quyền khác'"
+							[minLengthGroup]="2"
+						>
 							<ng-option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</ng-option>
 						</ng-select>
 					</div>

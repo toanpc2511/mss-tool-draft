@@ -369,3 +369,10 @@ app-paginator {
 // .form-control.ng-invalid.ng-dirty {
 //   border: 1px solid #ee2d41;
 // }
+
+// Utility
+@import './assets/sass/utility.scss';
+
+.custom-modal-z-1070 {
+  z-index: 1070;
+}
