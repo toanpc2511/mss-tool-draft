@@ -30,7 +30,7 @@
 							<tr *ngFor="let shiftDetail of shiftData.shiftDetail">
 								<td style="border: none">{{shiftDetail.pumpoleName}}</td>
 								<td style="border: none" [class.text-danger]="!shiftDetail.calendar">
-									{{shiftDetail.calendar?.employeeId || 'Chưa có nhân viên trực'}}
+									{{shiftDetail.calendar?.employeeName || 'Chưa có nhân viên trực'}}
 								</td>
 							</tr>
 						</td>
