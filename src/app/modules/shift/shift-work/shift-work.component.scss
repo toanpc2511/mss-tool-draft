@@ -114,15 +114,23 @@
 			flex-direction: column;
 			.fc-daygrid-event-harness {
 				a {
+					border: none;
 					box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 				}
 			}
 		}
 
 		.day-cell-custom {
-			.warning-icon {
-				margin-top: 2px;
+			.cell-custom {
+				position: absolute;
+				right: 2rem;
+				top: 0.3rem;
 			}
+		}
+
+		.week-title,
+		.week-content {
+			display: none;
 		}
 	}
 
