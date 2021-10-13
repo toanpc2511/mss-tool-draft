@@ -3,7 +3,42 @@
 		<h4 class="modal-title" id="modal-title">{{ currentDate|date:'longDate' }}</h4>
 		<div class="close-icon" (click)="modal.close()"></div>
 	</div>
-	<div class="modal-body"></div>
+	<div class="modal-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table table-vertical-center overflow-hidden" aria-label="">
+				<thead class="thead-light">
+					<tr>
+						<th scope="">
+							<label class="form-label">STT</label>
+						</th>
+						<th scope="">
+							<label class="form-label">Tên ca</label>
+						</th>
+						<th scope="">
+							<label class="form-label">Thông tin ca làm việc</label>
+						</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr
+						*ngFor="let shiftData of shiftDatas, let i = index"
+					>
+						<td>{{i + 1}}</td>
+						<td>{{shiftData.shiftName}}</td>
+						<td style="padding: 0;">
+							<tr *ngFor="let shiftDetail of shiftData.shiftDetail">
+								<td style="border: none">{{shiftDetail.pumpoleName}}</td>
+								<td style="border: none" [class.text-danger]="!shiftDetail.calendar">
+									{{shiftDetail.calendar?.employeeId || 'Chưa có nhân viên trực'}}
+								</td>
+							</tr>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-outline-secondary btn-dialog" (click)="modal.close()">
 			Đóng
