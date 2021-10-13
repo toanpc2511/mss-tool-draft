@@ -14,7 +14,7 @@
 							class="form-control form-control-solid"
 							formControlName="shiftId"
 						>f
-							<option [value]="''">Chọn ca làm việc</option>
+							<option [value]="''" disabled>Chọn ca làm việc</option>
 							<option *ngFor="let item of dataShiftConfig" [value]="item.id">{{item.name}}</option>
 						</select>
 						<app-validate
@@ -225,7 +225,33 @@
 					</div>
 				</div>
 
-				<div class="form-group row pt-5">
+        <div class="form-group row pt-5">
+          <div class="col-lg-6">
+            <label>Lặp lại</label>
+
+            <select class="form-control form-control-solid"
+                    formControlName="type"
+                    (change)='changeTypeRepeat()'
+            >
+              <option *ngFor="let item of typeLoop" [value]="item.type">{{item.name}}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-6 list-check" *ngIf='this.calenderForm.get("type").value === "WEEKLY"'>
+            <label class="check" *ngFor="let item of listDayOfWeek">
+              <input
+                type="checkbox"
+                (click)="changeCheck(item)"
+                name="days"
+                [value]="item.type"
+                [checked]="selectedDayOfWeek |isChecked: item.type"
+              />
+              <span>{{item.name}}</span>
+            </label>
+          </div>
+        </div>
+
+				<div class="form-group row pt-3">
 					<div class="col-lg-6">
 						<label>Ngày bắt đầu</label>
 
@@ -271,32 +297,6 @@
 								></button>
 							</div>
 						</div>
-					</div>
-				</div>
-
-				<div class="form-group row pt-3">
-					<div class="col-lg-6">
-						<label>Lặp lại</label>
-
-						<select class="form-control form-control-solid"
-                    formControlName="type"
-                    (change)='changeTypeRepeat()'
-            >
-							<option *ngFor="let item of typeLoop" [value]="item.type">{{item.name}}</option>
-						</select>
-					</div>
-
-					<div class="col-lg-6 list-check" *ngIf='this.calenderForm.get("type").value === "WEEKLY"'>
-						<label class="check" *ngFor="let item of listDayOfWeek">
-							<input
-								type="checkbox"
-								(click)="changeCheck(item)"
-								name="days"
-								[value]="item.type"
-								[checked]="selectedDayOfWeek |isChecked: item.type"
-							/>
-							<span>{{item.name}}</span>
-						</label>
 					</div>
 				</div>
 			</form>

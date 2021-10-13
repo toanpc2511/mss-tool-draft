@@ -351,8 +351,14 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 					}
 				}
 				if (btn.classList.contains('fc-dayGridWeek-button')) {
-					const firstDayOfMonth = moment(this.calendarApi.getDate()).add({ week: 2 }).toDate();
+					const firstDayOfMonth = moment(this.calendarApi.getDate())
+						.startOf('month')
+						.add({ week: 2 })
+						.toDate();
 					this.calendarApi.gotoDate(firstDayOfMonth);
+				}
+				if (this.selectedEmployeeIds === null) {
+					return;
 				}
 				this.start = convertDateValueToServer(this.calendarApi.view.activeStart);
 				this.end = convertDateValueToServer(this.calendarApi.view.activeEnd);
@@ -412,8 +418,13 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 	selectedEmployeeChange($event: EmployeeCheck) {
 		if ($event.status === 'uncheckall') {
+			// Clear all data calendar
 			this.selectedEmployeeIds = null;
 			this.calendarApi.removeAllEventSources();
+			this.warningDate.clear();
+			// Trigger rerender day cell fullcalendar
+			this.calendarApi.next();
+			this.calendarApi.prev();
 			return;
 		} else if ($event.status === 'checkall') {
 			this.selectedEmployeeIds = [];
@@ -533,7 +544,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		});
 
 		modalRef.componentInstance.data = {
-			title: 'Xóa lịch làm việc'
+			title: 'Xóa lịch làm việc',
+      stationId: this.currentGasStationId
 		};
 
 		modalRef.result.then((result) => {

@@ -1,5 +1,12 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { NgbActiveModal, NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import {
 	IDataEventCalendar,
 	IEmployeeByIdStation,
@@ -11,14 +18,12 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import * as moment from 'moment';
 import { fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { LIST_DAY_OF_WEEK, TYPE_LOOP } from '../../../shared/data-enum/list-status';
 import { convertDateToServer, convertTimeToString } from '../../../shared/helpers/functions';
 import { GasStationService, IPumpPole } from '../../gas-station/gas-station.service';
-import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
-import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 
 @Component({
 	selector: 'app-create-calendar-modal',
@@ -58,8 +63,7 @@ export class CreateCalendarModalComponent implements OnInit {
 		private destroy$: DestroyService,
 		private cdr: ChangeDetectorRef,
 		private fb: FormBuilder,
-		private toastr: ToastrService,
-    private modalService: NgbModal
+		private toastr: ToastrService
 	) {
 		this.tomorrow = moment().add(1, 'days').format('DD/MM/YYYY');
 	}
@@ -89,7 +93,7 @@ export class CreateCalendarModalComponent implements OnInit {
 
 		this.buildForm();
 		this.initDate();
-		this.onSubmit();
+		this.onSubmit()
 	}
 
 	buildForm() {
@@ -119,6 +123,15 @@ export class CreateCalendarModalComponent implements OnInit {
 			});
 
 			this.assignFormArray = this.calenderForm.get('employee') as FormArray;
+
+      this.assignFormArray.valueChanges
+        .pipe(tap(() => {
+          if (this.calenderForm.get('shiftId').value === '') {
+            this.toastr.error('Bạn chưa chọn ca làm việc');
+            this.assignFormArray.reset();
+          }
+        }),takeUntil(this.destroy$))
+        .subscribe()
 		}
 		this.cdr.detectChanges();
 	}
@@ -165,22 +178,24 @@ export class CreateCalendarModalComponent implements OnInit {
     if (checkExisted) {
       this.toastr.error('Nhân viên này đã được thêm');
       this.assignFormArray.at(i).get('employeeId').patchValue(null);
-      return;
     }
   }
 
 	getListOffTime() {
-		this.shiftService.getListOffTime(this.calenderForm.get('shiftId').value).subscribe((res) => {
-			this.listOffTime = res.data;
-			this.cdr.detectChanges();
-		});
+    const   valueShiftId = this.calenderForm.get('shiftId').value;
+    if (valueShiftId !== '') {
+      this.shiftService.getListOffTime(this.calenderForm.get('shiftId').value).subscribe((res) => {
+        this.listOffTime = res.data;
+        this.cdr.detectChanges();
+      });
+    }
 	}
 
 	shiftConfigChange() {
 		if (this.data.dataEventCalendar) {
 			this.calenderForm.get('shiftOffIds').patchValue('');
 		} else {
-			this.calenderForm.get('employee').get('shiftOffIds').reset();
+      this.assignFormArray.reset();
 		}
 		this.getListOffTime();
 	}
@@ -214,7 +229,6 @@ export class CreateCalendarModalComponent implements OnInit {
 					};
 
 					this.calenderForm.get('type').value !== 'WEEKLY' ? delete req.days : req;
-					console.log(req);
 
 					this.shiftService.updateShiftOffTime(Number(this.data.dataEventCalendar.id), req).subscribe(
 					  () => {
@@ -290,10 +304,10 @@ export class CreateCalendarModalComponent implements OnInit {
 
 	checkError(error: IError) {
     if (error.code === '4890') {
-      this.toastr.error(error.code)
+      this.toastr.error('Nhân viên đã bị trùng')
     }
     if (error.code === '4889') {
-      this.toastr.error(error.code)
+      this.toastr.error('Thời gian nghỉ không hợp lệ')
     }
     if (error.code === '4874') {
       this.toastr.error('Thời gian bắt đầu hoặc kêt thúc không hợp lệ')
