@@ -26,7 +26,6 @@ export class DeleteCalendarAllComponent implements OnInit {
 	};
 
 	listEmployee: Array<IEmployeeByIdStation> = [];
-	gasStationId = 5119;
 	tomorrow: string;
 	formConfirmDelete: FormGroup;
 
@@ -42,7 +41,7 @@ export class DeleteCalendarAllComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.shiftService.getListEmployee(this.gasStationId).subscribe((res) => {
+		this.shiftService.getListEmployee(this.data.stationId).subscribe((res) => {
 			this.listEmployee = res.data;
 			this.cdr.detectChanges();
 		});
@@ -96,4 +95,5 @@ export class DeleteCalendarAllComponent implements OnInit {
 
 export interface IDataTransfer {
 	title: string;
+  stationId: number;
 }

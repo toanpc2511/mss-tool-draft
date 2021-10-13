@@ -74,7 +74,7 @@ export interface IEmployeeByIdStation {
 export interface IInfoCalendarEmployee {
 	employeeId: number;
 	pumpPoles: [number];
-	shifOff: [number];
+  shiftOffIds: [number];
 }
 
 export interface IDataEventCalendar {
