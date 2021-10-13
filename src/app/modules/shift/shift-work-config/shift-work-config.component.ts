@@ -123,7 +123,7 @@ export class ShiftWorkConfigComponent implements OnInit {
 		}
 		const modalRef = this.modalService.open(ShiftWorkConfigModalComponent, {
 			backdrop: 'static',
-			size: 'lg'
+			size: 'lg',
 		});
 
 		modalRef.componentInstance.data = {
@@ -139,6 +139,8 @@ export class ShiftWorkConfigComponent implements OnInit {
 	}
 
 	checkError(error: IError) {
-		this.toastr.error(error.code);
+    if (error.code === 'SUN-OIL-4748') {
+      this.toastr.error('Ca làm việc đang được gán lịch cho nhân viên');
+    }
 	}
 }

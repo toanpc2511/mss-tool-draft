@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import {
 	IDataEventCalendar,
@@ -11,7 +18,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import * as moment from 'moment';
 import { fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { LIST_DAY_OF_WEEK, TYPE_LOOP } from '../../../shared/data-enum/list-status';
@@ -35,7 +42,6 @@ export class CreateCalendarModalComponent implements OnInit {
 	listDayOfWeek = LIST_DAY_OF_WEEK;
 	selectedDayOfWeek: { name: string; type: string }[] = [];
 	listOffTime;
-	gasStationId = 5119;
 	listPumpPole: Array<IPumpPole> = [];
 	listEmployee: Array<IEmployeeByIdStation> = [];
 
@@ -68,24 +74,30 @@ export class CreateCalendarModalComponent implements OnInit {
 			this.cdr.detectChanges();
 		});
 
-		this.gasStationService.getPumpPolesByGasStation(this.gasStationId).subscribe((res) => {
+		this.gasStationService.getPumpPolesByGasStation(this.data.stationId).subscribe((res) => {
 			this.listPumpPole = res.data;
 			this.cdr.detectChanges();
 		});
 
-		this.shiftService.getListEmployee(this.gasStationId).subscribe((res) => {
+		this.shiftService.getListEmployee(this.data.stationId).subscribe((res) => {
 			this.listEmployee = res.data;
 			this.cdr.detectChanges();
 		});
 
+    if (this.data.dataEventCalendar) {
+      this.shiftService.getListOffTime(Number(this.data.dataEventCalendar.extendedProps.shiftId)).subscribe((res) => {
+        this.listOffTime = res.data;
+        this.cdr.detectChanges();
+      });
+    }
+
 		this.buildForm();
 		this.initDate();
-		this.onSubmit();
+		this.onSubmit()
 	}
 
 	buildForm() {
 		if (this.data.dataEventCalendar) {
-			console.log(this.data.dataEventCalendar.extendedProps.offTimes);
 			this.calenderForm = this.fb.group({
 				shiftId: [this.data.dataEventCalendar.extendedProps.shiftId, Validators.required],
 				startDate: [],
@@ -111,6 +123,15 @@ export class CreateCalendarModalComponent implements OnInit {
 			});
 
 			this.assignFormArray = this.calenderForm.get('employee') as FormArray;
+
+      this.assignFormArray.valueChanges
+        .pipe(tap(() => {
+          if (this.calenderForm.get('shiftId').value === '') {
+            this.toastr.error('Bạn chưa chọn ca làm việc');
+            this.assignFormArray.reset();
+          }
+        }),takeUntil(this.destroy$))
+        .subscribe()
 		}
 		this.cdr.detectChanges();
 	}
@@ -140,24 +161,41 @@ export class CreateCalendarModalComponent implements OnInit {
 			this.calenderForm
 				.get('endDate')
 				.patchValue(moment(this.data.dataEventCalendar.start).format('DD/MM/YYYY'));
+      this.calenderForm.get('endDate').disable({onlySelf: true, emitEvent: false});
 		} else {
 			this.calenderForm.get('startDate').patchValue(this.tomorrow);
 			this.calenderForm.get('endDate').patchValue(this.tomorrow);
+			this.calenderForm.get('endDate').disable({onlySelf: true, emitEvent: false});
 		}
 	}
 
+  changeEmployee($event, i: number) {
+    const employeeId = ($event.target as HTMLSelectElement).value;
+    const allEmployee = this.assignFormArray.value as Array<IInfoCalendarEmployee>;
+    const checkExisted = allEmployee.some(
+      (p, index) => p.employeeId && i !== index && Number(p.employeeId) === Number(employeeId)
+    );
+    if (checkExisted) {
+      this.toastr.error('Nhân viên này đã được thêm');
+      this.assignFormArray.at(i).get('employeeId').patchValue(null);
+    }
+  }
+
 	getListOffTime() {
-		this.shiftService.getListOffTime(this.calenderForm.get('shiftId').value).subscribe((res) => {
-			this.listOffTime = res.data;
-			this.cdr.detectChanges();
-		});
+    const   valueShiftId = this.calenderForm.get('shiftId').value;
+    if (valueShiftId !== '') {
+      this.shiftService.getListOffTime(this.calenderForm.get('shiftId').value).subscribe((res) => {
+        this.listOffTime = res.data;
+        this.cdr.detectChanges();
+      });
+    }
 	}
 
 	shiftConfigChange() {
 		if (this.data.dataEventCalendar) {
 			this.calenderForm.get('shiftOffIds').patchValue('');
 		} else {
-			this.assignFormArray.reset();
+      this.assignFormArray.reset();
 		}
 		this.getListOffTime();
 	}
@@ -181,9 +219,9 @@ export class CreateCalendarModalComponent implements OnInit {
 						startDate: convertDateToServer(this.calenderForm.get('startDate').value),
 						endDate: convertDateToServer(this.calenderForm.get('endDate').value),
 						type: this.calenderForm.get('type').value,
-						stationId: Number(this.gasStationId),
+						stationId: Number(this.data.stationId),
 						employee: {
-							employeeId: Number(this.calenderForm.get('employee').value),
+							employeeId: Number(this.calenderForm.get('employeeId').value),
 							pumpPoles: this.calenderForm.get('pumpPoles').value,
 							shiftOffIds: this.calenderForm.get('shiftOffIds').value
 						},
@@ -191,16 +229,15 @@ export class CreateCalendarModalComponent implements OnInit {
 					};
 
 					this.calenderForm.get('type').value !== 'WEEKLY' ? delete req.days : req;
-					console.log(req);
 
-					// this.shiftService.createShiftOffTime(req).subscribe(
-					//   () => {
-					//     this.modal.close(true);
-					//   },
-					//   (error: IError) => {
-					//     this.checkError(error);
-					//   }
-					// );
+					this.shiftService.updateShiftOffTime(Number(this.data.dataEventCalendar.id), req).subscribe(
+					  () => {
+					    this.modal.close(true);
+					  },
+					  (error: IError) => {
+					    this.checkError(error);
+					  }
+					);
 				} else {
 					const employeeData: Array<IInfoCalendarEmployee> = (
 						this.calenderForm.value.employee as Array<IInfoCalendarEmployee>
@@ -211,7 +248,7 @@ export class CreateCalendarModalComponent implements OnInit {
 						startDate: convertDateToServer(this.calenderForm.get('startDate').value),
 						endDate: convertDateToServer(this.calenderForm.get('endDate').value),
 						type: this.calenderForm.get('type').value,
-						stationId: Number(this.gasStationId),
+						stationId: Number(this.data.stationId),
 						employee: employeeData,
 						days: this.selectedDayOfWeek.map((d) => d.type)
 					};
@@ -248,12 +285,38 @@ export class CreateCalendarModalComponent implements OnInit {
 		);
 	}
 
+  changeTypeRepeat() {
+    const valueType = this.calenderForm.get('type').value;
+
+    if (valueType === 'DONT_REPEAT') {
+      this.calenderForm.get('endDate').disable({emitEvent: false});
+      this.calenderForm.get('endDate').patchValue(this.calenderForm.get('startDate').value);
+    } else {
+      this.calenderForm.get('endDate').enable({emitEvent: true});
+    }
+  }
+
+  changeStartDate() {
+    if (this.calenderForm.get('type').value === 'DONT_REPEAT') {
+      this.calenderForm.get('endDate').patchValue(this.calenderForm.get('startDate').value);
+    }
+  }
+
 	checkError(error: IError) {
-		this.toastr.error(error.code);
+    if (error.code === '4890') {
+      this.toastr.error('Nhân viên đã bị trùng')
+    }
+    if (error.code === '4889') {
+      this.toastr.error('Thời gian nghỉ không hợp lệ')
+    }
+    if (error.code === '4874') {
+      this.toastr.error('Thời gian bắt đầu hoặc kêt thúc không hợp lệ')
+    }
 	}
 }
 
 export interface IDataTransfer {
 	title: string;
 	dataEventCalendar: IDataEventCalendar;
+  stationId: number;
 }

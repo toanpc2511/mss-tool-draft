@@ -334,7 +334,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 								shiftId: calendar.shiftId,
 								employeeId: calendar.employeeId,
 								employeeName: calendar.employeeName,
-								offTimes: calendar.offTimeResponses,
+								offTimes: calendar.offTimes,
 								pumpPoles: calendar.pumpPoleResponses,
 								warning: calendar.checked,
 								weekTitle: calendar.shiftName,
@@ -559,7 +559,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 		modalRef.componentInstance.data = {
 			title: $event?.event ? 'Sửa lịch làm việc' : 'Thêm  lịch làm việc',
-			dataEventCalendar: $event?.event
+			dataEventCalendar: $event?.event,
+      stationId: this.currentGasStationId
 		};
 
 		modalRef.result.then((result) => {
@@ -582,6 +583,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	deleteCalendarOfEmployee($event: Event, item: IDataEventCalendar) {
 		$event.stopPropagation();
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+      windowClass: 'custom-modal-z-1070',
 			backdrop: 'static'
 		});
 		const data: IConfirmModalData = {
@@ -617,12 +619,14 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			$event.stopPropagation();
 		}
 		const modalRef = this.modalService.open(DeleteCalendarAllComponent, {
+      windowClass: 'custom-modal-z-1070',
 			backdrop: 'static',
 			size: 'lg'
 		});
 
 		modalRef.componentInstance.data = {
-			title: 'Xóa lịch làm việc'
+			title: 'Xóa lịch làm việc',
+      stationId: this.currentGasStationId
 		};
 
 		modalRef.result.then((result) => {
