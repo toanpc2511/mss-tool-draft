@@ -94,7 +94,6 @@ export class CreateCalendarModalComponent implements OnInit {
 
 	buildForm() {
 		if (this.data.dataEventCalendar) {
-			// console.log(this.data.dataEventCalendar.extendedProps);
 			this.calenderForm = this.fb.group({
 				shiftId: [this.data.dataEventCalendar.extendedProps.shiftId, Validators.required],
 				startDate: [],
@@ -149,11 +148,26 @@ export class CreateCalendarModalComponent implements OnInit {
 			this.calenderForm
 				.get('endDate')
 				.patchValue(moment(this.data.dataEventCalendar.start).format('DD/MM/YYYY'));
+      this.calenderForm.get('endDate').disable({onlySelf: true, emitEvent: false});
 		} else {
 			this.calenderForm.get('startDate').patchValue(this.tomorrow);
 			this.calenderForm.get('endDate').patchValue(this.tomorrow);
+			this.calenderForm.get('endDate').disable({onlySelf: true, emitEvent: false});
 		}
 	}
+
+  changeEmployee($event, i: number) {
+    const employeeId = ($event.target as HTMLSelectElement).value;
+    const allEmployee = this.assignFormArray.value as Array<IInfoCalendarEmployee>;
+    const checkExisted = allEmployee.some(
+      (p, index) => p.employeeId && i !== index && Number(p.employeeId) === Number(employeeId)
+    );
+    if (checkExisted) {
+      this.toastr.error('Nhân viên này đã được thêm');
+      this.assignFormArray.at(i).get('employeeId').patchValue(null);
+      return;
+    }
+  }
 
 	getListOffTime() {
 		this.shiftService.getListOffTime(this.calenderForm.get('shiftId').value).subscribe((res) => {
@@ -166,7 +180,7 @@ export class CreateCalendarModalComponent implements OnInit {
 		if (this.data.dataEventCalendar) {
 			this.calenderForm.get('shiftOffIds').patchValue('');
 		} else {
-			this.assignFormArray.reset();
+			this.calenderForm.get('employee').get('shiftOffIds').reset();
 		}
 		this.getListOffTime();
 	}
@@ -257,12 +271,32 @@ export class CreateCalendarModalComponent implements OnInit {
 		);
 	}
 
+  changeTypeRepeat() {
+    const valueType = this.calenderForm.get('type').value;
+
+    if (valueType === 'DONT_REPEAT') {
+      this.calenderForm.get('endDate').disable({emitEvent: false});
+      this.calenderForm.get('endDate').patchValue(this.calenderForm.get('startDate').value);
+    } else {
+      this.calenderForm.get('endDate').enable({emitEvent: true});
+    }
+  }
+
+  changeStartDate() {
+    if (this.calenderForm.get('type').value === 'DONT_REPEAT') {
+      this.calenderForm.get('endDate').patchValue(this.calenderForm.get('startDate').value);
+    }
+  }
+
 	checkError(error: IError) {
     if (error.code === '4890') {
       this.toastr.error(error.code)
     }
     if (error.code === '4889') {
       this.toastr.error(error.code)
+    }
+    if (error.code === '4874') {
+      this.toastr.error('Thời gian bắt đầu hoặc kêt thúc không hợp lệ')
     }
 	}
 }

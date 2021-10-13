@@ -491,6 +491,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	deleteCalendarOfEmployee($event: Event, item: IDataEventCalendar) {
 		$event.stopPropagation();
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+      windowClass: 'custom-modal-z-1070',
 			backdrop: 'static'
 		});
 		const data: IConfirmModalData = {
@@ -526,6 +527,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			$event.stopPropagation();
 		}
 		const modalRef = this.modalService.open(DeleteCalendarAllComponent, {
+      windowClass: 'custom-modal-z-1070',
 			backdrop: 'static',
 			size: 'lg'
 		});
