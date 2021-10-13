@@ -49,7 +49,6 @@ import { EmployeeCheck } from './employee/employee.component';
 			[autoClose]="'outside'"
 		>
 			<div class="event-container">
-				<strong class="fa fa-circle"></strong>
 				<span class="month-title">{{ eventData.title }}</span>
 				<span class="week-title">{{ eventData.extendedProps.weekTitle }}</span>
 				<span class="week-content">{{ eventData.extendedProps.weekContent }}</span>
