@@ -32,7 +32,7 @@ import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IError } from '../../../shared/models/error.model';
 import { DestroyService } from '../../../shared/services/destroy.service';
-import { IProduct, IProductType, ProductService } from '../../product/product.service';
+import { IProduct, ProductService } from '../../product/product.service';
 import {
 	ContractService,
 	EContractStatus,
@@ -61,9 +61,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	productFormArray: FormArray;
 	stationAddress: Array<IAddress> = [];
 	addressSelected: IAddress;
-
-	productTypes: Array<IProductType> = [];
-	products: Array<Array<IProduct>> = [];
+	products: Array<IProduct> = [];
 
 	transportMethods: Array<IProperties>;
 	contractTypes: Array<IProperties>;
@@ -108,15 +106,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 
 	ngOnInit(): void {
 		this.init();
-
-		this.productService
-			.getListProductType()
-			.pipe(takeUntil(this.destroy$))
-			.subscribe((res) => {
-				this.productTypes = res.data;
-				this.cdr.detectChanges();
-			});
-
 		this.activeRoute.params
 			.pipe(
 				pluck('id'),
@@ -181,9 +170,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			if (i >= 1) {
 				this.addProduct();
 			}
-			this.productFormArray.at(i).get('categoryProductId').patchValue(product.categoryResponse.id);
 			this.productFormArray.at(i).get('productId').patchValue(product.productResponse.id);
-			this.getListProduct(product.categoryResponse.id, i);
 			this.productFormArray.at(i).get('amount').patchValue(product.productResponse.amount);
 			this.patchInfoProduct(product.productResponse.id, i);
 		});
@@ -241,6 +228,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	init() {
 		this.buildInfoForm();
 		this.buildContractForm(EContractType.PREPAID_CONTRACT);
+		this.getListProduct();
 		this.buildProductForm();
 		this.getAllStationAddress();
 		this.getTransportMethods();
@@ -427,7 +415,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.productForm = this.fb.group({
 			products: this.fb.array([
 				this.fb.group({
-					categoryProductId: [null, Validators.required],
 					productId: [null, Validators.required],
 					unit: [null],
 					amount: [null, [Validators.required, Validators.min(1)]],
@@ -441,17 +428,12 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.cdr.detectChanges();
 	}
 
-	productTypeChanged($event: Event, index: number) {
-		const value = ($event.target as HTMLSelectElement).value;
-		this.getListProduct(value, index);
-	}
-
-	getListProduct(categoryId, index: number) {
+	getListProduct() {
 		this.productService
-			.getListProduct(Number(categoryId))
+			.getListOilProduct()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
-				this.products[index] = res.data;
+				this.products = res.data;
 				this.cdr.detectChanges();
 			});
 	}
@@ -462,6 +444,10 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	}
 
 	patchInfoProduct(productId: string | number, i: number) {
+		if (this.infoForm.invalid) {
+			this.toastr.error('Vui lòng nhập đầy đủ thông tin khách hàng trước');
+			this.productFormArray.at(i).get('productId').patchValue(null);
+		}
 		const allProduct = this.productFormArray.value as Array<IProductInfo>;
 		const checkExisted = allProduct.some(
 			(p, index) => p.productId && i !== index && Number(p.productId) === Number(productId)
@@ -605,7 +591,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	addProduct() {
 		this.productFormArray.push(
 			this.fb.group({
-				categoryProductId: [null, Validators.required],
 				productId: [null, Validators.required],
 				unit: [null],
 				amount: [null, [Validators.required, Validators.min(1)]],

@@ -1,5 +1,5 @@
 <div class="shift-wrapper">
-	<div class="header">
+	<div class="header-tab">
 		<app-tab
 			*ngIf="(isLoadingStation$ | async) === false"
 			[valueKey]="'id'"
@@ -71,7 +71,7 @@
 			<div class="d-flex justify-content-end">
 				<a
 					class="btn btn-icon btn-light btn-hover-primary btn-sm"
-					(click)="createCalendarModal($event, event.event)"
+					(click)="createCalendarModal(event)"
 				>
 					<span
 						[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"

@@ -19,23 +19,23 @@ import {
 	EventInput,
 	FullCalendarComponent
 } from '@fullcalendar/angular';
-import { NgbModal, NgbModalRef, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject, Observable, Subject, timer } from 'rxjs';
-import { delay, filter, finalize, skipUntil, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { filter, finalize, takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { CreateCalendarModalComponent } from '../create-calendar-modal/create-calendar-modal.component';
-import { ICalendarData, IDataEventCalendar, ShiftService } from '../shift.service';
-import { convertDateValueToServer } from './../../../shared/helpers/functions';
-import { GasStationResponse } from './../../gas-station/gas-station.service';
-import { IEmployee } from './../shift.service';
-import { DetailWarningDialogComponent } from './detail-warning-dialog/detail-warning-dialog.component';
-import { EmployeeCheck } from './employee/employee.component';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 import { IError } from '../../../shared/models/error.model';
+import { CreateCalendarModalComponent } from '../create-calendar-modal/create-calendar-modal.component';
+import { IDataEventCalendar, ShiftService } from '../shift.service';
+import { convertDateValueToServer } from './../../../shared/helpers/functions';
+import { GasStationResponse } from './../../gas-station/gas-station.service';
+import { IEmployee } from './../shift.service';
 import { DeleteCalendarAllComponent } from './delete-calendar-all/delete-calendar-all.component';
+import { DetailWarningDialogComponent } from './detail-warning-dialog/detail-warning-dialog.component';
+import { EmployeeCheck } from './employee/employee.component';
 
 // Event
 @Component({
@@ -178,7 +178,6 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			}
 		},
 		themeSystem: 'bootstrap',
-		// aspectRatio: 1.7,
 		fixedWeekCount: false,
 		allDaySlot: true,
 		firstDay: 1,
@@ -198,6 +197,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		dayCellWillUnmount: this.destroyDayCell.bind(this),
 		viewDidMount: this.viewDidMount.bind(this),
 		dayHeaders: true,
+		handleWindowResize: true,
 		timeZone: 'Asia/ Ho_Chi_Minh'
 	};
 
@@ -219,8 +219,11 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		private injector: Injector,
 		private appRef: ApplicationRef
 	) {}
-
 	ngAfterViewInit(): void {
+		const toggleOffsetBar = document.getElementById('kt_aside_toggle');
+		toggleOffsetBar.addEventListener('click', () => {
+			this.calendarApi.updateSize();
+		});
 		this.warningDate.clear();
 	}
 
@@ -450,7 +453,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 
 	// toanpc
-	createCalendarModal($event: any, data?: IDataEventCalendar) {
+	createCalendarModal($event?: { el: any; event: IDataEventCalendar }) {
 		const eventContainer = this.eventContainersMap.get($event.el);
 		if (eventContainer) {
 			eventContainer.instance.popover.close();
@@ -463,8 +466,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		});
 
 		modalRef.componentInstance.data = {
-			title: data ? 'Sửa lịch làm việc' : 'Thêm  lịch làm việc',
-			dataEventCalendar: data,
+			title: $event?.event ? 'Sửa lịch làm việc' : 'Thêm  lịch làm việc',
+			dataEventCalendar: $event?.event,
       stationId: this.currentGasStationId
 		};
 
