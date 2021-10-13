@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
 	IDataEventCalendar,
 	IEmployeeByIdStation,
@@ -17,6 +17,8 @@ import { ToastrService } from 'ngx-toastr';
 import { LIST_DAY_OF_WEEK, TYPE_LOOP } from '../../../shared/data-enum/list-status';
 import { convertDateToServer, convertTimeToString } from '../../../shared/helpers/functions';
 import { GasStationService, IPumpPole } from '../../gas-station/gas-station.service';
+import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
+import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 
 @Component({
 	selector: 'app-create-calendar-modal',
@@ -35,7 +37,6 @@ export class CreateCalendarModalComponent implements OnInit {
 	listDayOfWeek = LIST_DAY_OF_WEEK;
 	selectedDayOfWeek: { name: string; type: string }[] = [];
 	listOffTime;
-	gasStationId = 5119;
 	listPumpPole: Array<IPumpPole> = [];
 	listEmployee: Array<IEmployeeByIdStation> = [];
 
@@ -57,7 +58,8 @@ export class CreateCalendarModalComponent implements OnInit {
 		private destroy$: DestroyService,
 		private cdr: ChangeDetectorRef,
 		private fb: FormBuilder,
-		private toastr: ToastrService
+		private toastr: ToastrService,
+    private modalService: NgbModal
 	) {
 		this.tomorrow = moment().add(1, 'days').format('DD/MM/YYYY');
 	}
@@ -68,15 +70,22 @@ export class CreateCalendarModalComponent implements OnInit {
 			this.cdr.detectChanges();
 		});
 
-		this.gasStationService.getPumpPolesByGasStation(this.gasStationId).subscribe((res) => {
+		this.gasStationService.getPumpPolesByGasStation(this.data.stationId).subscribe((res) => {
 			this.listPumpPole = res.data;
 			this.cdr.detectChanges();
 		});
 
-		this.shiftService.getListEmployee(this.gasStationId).subscribe((res) => {
+		this.shiftService.getListEmployee(this.data.stationId).subscribe((res) => {
 			this.listEmployee = res.data;
 			this.cdr.detectChanges();
 		});
+
+    if (this.data.dataEventCalendar) {
+      this.shiftService.getListOffTime(Number(this.data.dataEventCalendar.extendedProps.shiftId)).subscribe((res) => {
+        this.listOffTime = res.data;
+        this.cdr.detectChanges();
+      });
+    }
 
 		this.buildForm();
 		this.initDate();
@@ -85,7 +94,7 @@ export class CreateCalendarModalComponent implements OnInit {
 
 	buildForm() {
 		if (this.data.dataEventCalendar) {
-			console.log(this.data.dataEventCalendar.extendedProps.offTimes);
+			// console.log(this.data.dataEventCalendar.extendedProps);
 			this.calenderForm = this.fb.group({
 				shiftId: [this.data.dataEventCalendar.extendedProps.shiftId, Validators.required],
 				startDate: [],
@@ -181,9 +190,9 @@ export class CreateCalendarModalComponent implements OnInit {
 						startDate: convertDateToServer(this.calenderForm.get('startDate').value),
 						endDate: convertDateToServer(this.calenderForm.get('endDate').value),
 						type: this.calenderForm.get('type').value,
-						stationId: Number(this.gasStationId),
+						stationId: Number(this.data.stationId),
 						employee: {
-							employeeId: Number(this.calenderForm.get('employee').value),
+							employeeId: Number(this.calenderForm.get('employeeId').value),
 							pumpPoles: this.calenderForm.get('pumpPoles').value,
 							shiftOffIds: this.calenderForm.get('shiftOffIds').value
 						},
@@ -193,14 +202,14 @@ export class CreateCalendarModalComponent implements OnInit {
 					this.calenderForm.get('type').value !== 'WEEKLY' ? delete req.days : req;
 					console.log(req);
 
-					// this.shiftService.createShiftOffTime(req).subscribe(
-					//   () => {
-					//     this.modal.close(true);
-					//   },
-					//   (error: IError) => {
-					//     this.checkError(error);
-					//   }
-					// );
+					this.shiftService.updateShiftOffTime(Number(this.data.dataEventCalendar.id), req).subscribe(
+					  () => {
+					    this.modal.close(true);
+					  },
+					  (error: IError) => {
+					    this.checkError(error);
+					  }
+					);
 				} else {
 					const employeeData: Array<IInfoCalendarEmployee> = (
 						this.calenderForm.value.employee as Array<IInfoCalendarEmployee>
@@ -211,7 +220,7 @@ export class CreateCalendarModalComponent implements OnInit {
 						startDate: convertDateToServer(this.calenderForm.get('startDate').value),
 						endDate: convertDateToServer(this.calenderForm.get('endDate').value),
 						type: this.calenderForm.get('type').value,
-						stationId: Number(this.gasStationId),
+						stationId: Number(this.data.stationId),
 						employee: employeeData,
 						days: this.selectedDayOfWeek.map((d) => d.type)
 					};
@@ -249,11 +258,17 @@ export class CreateCalendarModalComponent implements OnInit {
 	}
 
 	checkError(error: IError) {
-		this.toastr.error(error.code);
+    if (error.code === '4890') {
+      this.toastr.error(error.code)
+    }
+    if (error.code === '4889') {
+      this.toastr.error(error.code)
+    }
 	}
 }
 
 export interface IDataTransfer {
 	title: string;
 	dataEventCalendar: IDataEventCalendar;
+  stationId: number;
 }

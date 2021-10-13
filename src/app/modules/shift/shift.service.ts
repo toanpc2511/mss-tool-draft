@@ -24,7 +24,7 @@ export interface ICalendarResponse {
 		color: string;
 		start: string;
 		end: string;
-		offTimeResponses: OffTimeResponse[];
+    offTimes: OffTimeResponse[];
 		pumpPoleResponses: PumpPoleResponse[];
 		shiftName: string;
 		checked: boolean;

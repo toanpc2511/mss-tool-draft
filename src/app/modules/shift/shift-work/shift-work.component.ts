@@ -251,7 +251,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 								shiftId: calendar.shiftId,
 								employeeId: calendar.employeeId,
 								employeeName: calendar.employeeName,
-								offTimes: calendar.offTimeResponses,
+								offTimes: calendar.offTimes,
 								pumpPoles: calendar.pumpPoleResponses,
 								warning: calendar.checked,
 								weekTitle: calendar.shiftName,
@@ -464,7 +464,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 		modalRef.componentInstance.data = {
 			title: data ? 'Sửa lịch làm việc' : 'Thêm  lịch làm việc',
-			dataEventCalendar: data
+			dataEventCalendar: data,
+      stationId: this.currentGasStationId
 		};
 
 		modalRef.result.then((result) => {
