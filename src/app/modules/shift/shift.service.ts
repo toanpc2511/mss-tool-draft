@@ -99,6 +99,11 @@ export class ShiftService {
 		return this.http.get<IEmployee[]>(`gas-stations/station`, { params });
 	}
 
+	getShiftWorksByDate(stationId: string, time: string) {
+		const params = new HttpParams().set('station-id', stationId).set('time', time);
+		return this.http.get<ICalendarResponse[]>(`calendars/employees/stations`, { params });
+	}
+
 	getShiftWorks(start: string, end: string, employeeIds: number[], stationId: string) {
 		const params = new HttpParams()
 			.set('employee-ids', employeeIds?.join(',') || '')

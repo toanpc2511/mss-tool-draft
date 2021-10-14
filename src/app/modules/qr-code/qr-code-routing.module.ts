@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { QrCodeComponent } from './qr-code.component'
+import { QrCodeProductOtherComponent } from './qr-code-product-other/qr-code-product-other.component';
+import { QrCodePumpHosesComponent } from './qr-code-pump-hoses/qr-code-pump-hoses.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'danh-sach',
+    redirectTo: 'qr-code',
     pathMatch: 'full'
   },
   {
-    path: 'danh-sach',
-    children: [
-      {
-        path: '',
-        component: QrCodeComponent
-      }
-    ]
+    path: 'qr-san-pham',
+    component: QrCodeProductOtherComponent,
+  },
+  {
+    path: 'qr-voi',
+    component: QrCodePumpHosesComponent,
   }
 ];
 

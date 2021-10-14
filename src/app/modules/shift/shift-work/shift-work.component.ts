@@ -24,6 +24,7 @@ import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, zip } from 'rxjs';
 import { filter, finalize, map, takeUntil, tap } from 'rxjs/operators';
+import { globalTimeZone } from 'src/app/shared/app-constants';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
@@ -117,11 +118,11 @@ export class DayWrapperComponent implements OnInit {
 	) {}
 	ngOnInit(): void {
 		const calendars$ = this.shiftService
-			.getShiftWorks(this.currentDate, this.currentDate, [], this.stationId)
+			.getShiftWorksByDate(this.stationId, this.currentDate)
 			.pipe(map((res) => res.data));
 
 		const pumpole$ = this.stationService
-			.getPumpPolesByGasStation(this.stationId)
+			.getPumpPolesActiveByGasStation(this.stationId)
 			.pipe(map((res) => res.data));
 
 		const shiftConfig$ = this.shiftService.getListShiftConfig().pipe(map((res) => res.data));
@@ -278,7 +279,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		viewDidMount: this.viewDidMount.bind(this),
 		dayHeaders: true,
 		handleWindowResize: true,
-		timeZone: 'Asia/ Ho_Chi_Minh'
+		timeZone: globalTimeZone,
+		nextDayThreshold: '00:00:00'
 	};
 
 	@ViewChild('popoverTmpl', { static: true }) popoverTmpl: TemplateRef<any>;
@@ -325,8 +327,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 						return {
 							id: calendar.calendarId.toString(),
-							start: calendar.start,
-							end: calendar.end,
+							start: moment(calendar.start).format('YYYY-MM-DD HH:MM:SS'),
+							end: moment(calendar.end).add({ hour: 24 }).format('YYYY-MM-DD HH:MM:SS'),
 							title: `${calendar.shiftName} - ${calendar.employeeName}`,
 							backgroundColor: calendar.backgroundColor,
 							color: '#ffffff',
@@ -562,7 +564,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		modalRef.componentInstance.data = {
 			title: $event?.event ? 'Sửa lịch làm việc' : 'Thêm  lịch làm việc',
 			dataEventCalendar: $event?.event,
-      stationId: this.currentGasStationId
+			stationId: this.currentGasStationId
 		};
 
 		modalRef.result.then((result) => {
@@ -585,7 +587,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	deleteCalendarOfEmployee($event: Event, item: IDataEventCalendar) {
 		$event.stopPropagation();
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-      windowClass: 'custom-modal-z-1070',
+			windowClass: 'custom-modal-z-1070',
 			backdrop: 'static'
 		});
 		const data: IConfirmModalData = {
@@ -621,14 +623,14 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			$event.stopPropagation();
 		}
 		const modalRef = this.modalService.open(DeleteCalendarAllComponent, {
-      windowClass: 'custom-modal-z-1070',
+			windowClass: 'custom-modal-z-1070',
 			backdrop: 'static',
 			size: 'lg'
 		});
 
 		modalRef.componentInstance.data = {
 			title: 'Xóa lịch làm việc',
-      stationId: this.currentGasStationId
+			stationId: this.currentGasStationId
 		};
 
 		modalRef.result.then((result) => {
