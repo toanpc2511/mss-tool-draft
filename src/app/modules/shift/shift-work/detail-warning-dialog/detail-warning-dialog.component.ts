@@ -7,12 +7,8 @@ import { ShiftData } from '../shift-work.component';
 	templateUrl: './detail-warning-dialog.component.html',
 	styleUrls: ['./detail-warning-dialog.component.scss']
 })
-export class DetailWarningDialogComponent implements OnInit {
+export class DetailWarningDialogComponent {
 	@Input() shiftDatas: ShiftData[];
 	@Input() currentDate: string;
 	constructor(public modal: NgbActiveModal) {}
-
-	ngOnInit(): void {
-		console.log(this.shiftDatas);
-	}
 }
