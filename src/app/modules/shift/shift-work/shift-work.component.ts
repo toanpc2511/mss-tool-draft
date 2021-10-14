@@ -409,6 +409,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 	gasStationTabChange($event) {
 		this.currentGasStationId = $event;
+		this.selectedEmployeeIds = [];
+		this.getEmployees(this.currentGasStationId);
 		this.getCalendarData(this.start, this.end, this.selectedEmployeeIds, this.currentGasStationId);
 	}
 

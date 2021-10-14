@@ -27,14 +27,14 @@ class EmployeeCheckBox implements IEmployee {
 	styleUrls: ['./employee.component.scss'],
 	providers: [CheckAllPipe]
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnChanges {
 	@Input() employees: IEmployee[];
 	@Output() selectedEmployeeChange = new EventEmitter<EmployeeCheck>();
 	employeesDisplay: EmployeeCheckBox[];
 
 	constructor(private cdr: ChangeDetectorRef, private checkAllPipe: CheckAllPipe) {}
 
-	ngOnInit(): void {
+	ngOnChanges(): void {
 		this.employeesDisplay = [...this.employees].map((employee) => ({
 			...employee,
 			isChecked: true
