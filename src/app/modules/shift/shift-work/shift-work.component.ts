@@ -118,11 +118,11 @@ export class DayWrapperComponent implements OnInit {
 	) {}
 	ngOnInit(): void {
 		const calendars$ = this.shiftService
-			.getShiftWorks(this.currentDate, this.currentDate, [], this.stationId)
+			.getShiftWorksByDate(this.stationId, this.currentDate)
 			.pipe(map((res) => res.data));
 
 		const pumpole$ = this.stationService
-			.getPumpPolesByGasStation(this.stationId)
+			.getPumpPolesActiveByGasStation(this.stationId)
 			.pipe(map((res) => res.data));
 
 		const shiftConfig$ = this.shiftService.getListShiftConfig().pipe(map((res) => res.data));
