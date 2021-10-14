@@ -102,7 +102,6 @@ export class ListUserComponent implements OnInit {
 	}
 
 	deleteUser(user: IUser): void {
-		console.log(user);
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
 			backdrop: 'static'
 		});

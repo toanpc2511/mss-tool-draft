@@ -405,7 +405,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					payPlanDate4: [null],
 					payPlanDate5: [null]
 				});
-				this.contractForm.get('effectEndDate').valueChanges.subscribe(console.log);
 				break;
 		}
 		this.switchType(type);
