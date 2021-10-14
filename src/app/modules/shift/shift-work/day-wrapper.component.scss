@@ -44,6 +44,9 @@
 	}
 	.month-title {
 		display: none !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 	}
 	.week-title {
 		font-weight: 400;
@@ -54,6 +57,9 @@
 	.week-content {
 		width: 100%;
 		display: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 	}
 }
 
