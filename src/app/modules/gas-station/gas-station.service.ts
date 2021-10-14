@@ -316,4 +316,14 @@ export class GasStationService {
 			step4: { isValid: false }
 		});
 	}
+
+
+  getPumpPolesActiveByGasStation(gasStationId: string | number) {
+    const params = new HttpParams({
+      fromString: `station-id=${gasStationId}`
+    });
+    return this.http.get<Array<IPumpPole>>(`pump-poles/stations`, {
+      params
+    });
+  }
 }
