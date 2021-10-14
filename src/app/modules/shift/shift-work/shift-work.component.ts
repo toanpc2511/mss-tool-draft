@@ -22,8 +22,8 @@ import {
 import { NgbModal, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject } from 'rxjs';
-import { filter, finalize, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, zip } from 'rxjs';
+import { filter, finalize, map, takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
@@ -31,8 +31,12 @@ import { IError } from '../../../shared/models/error.model';
 import { CreateCalendarModalComponent } from '../create-calendar-modal/create-calendar-modal.component';
 import { IDataEventCalendar, ShiftService } from '../shift.service';
 import { convertDateValueToServer } from './../../../shared/helpers/functions';
-import { GasStationResponse } from './../../gas-station/gas-station.service';
-import { IEmployee } from './../shift.service';
+import {
+	GasStationResponse,
+	GasStationService,
+	IPumpPole
+} from './../../gas-station/gas-station.service';
+import { ICalendarResponse, IEmployee, IShiftConfig } from './../shift.service';
 import { DeleteCalendarAllComponent } from './delete-calendar-all/delete-calendar-all.component';
 import { DetailWarningDialogComponent } from './detail-warning-dialog/detail-warning-dialog.component';
 import { EmployeeCheck } from './employee/employee.component';
@@ -69,6 +73,12 @@ export class EventWrapperComponent {
 }
 
 //Check không có nhân viên trong ca của cột
+export type ShiftData = {
+	shiftId: number;
+	shiftName: string;
+	shiftColor: string;
+	shiftDetail: { pumpoleName: string; calendar: ICalendarResponse }[];
+};
 @Component({
 	template: `
 		<div class="day-cell-custom">
@@ -88,21 +98,92 @@ export class EventWrapperComponent {
 		</div>
 	`,
 	styleUrls: ['day-wrapper.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	providers: [DestroyService]
 })
-export class DayWrapperComponent {
+export class DayWrapperComponent implements OnInit {
 	tooltipWarning: string;
 	currentDate: string;
+	stationId: string;
 	@ViewChild(NgbTooltip, { static: true }) tooltip: NgbTooltip;
 
-	constructor(private ngbModal: NgbModal) {}
+	data$: Observable<[ICalendarResponse[], IPumpPole[], IShiftConfig[]]>;
+
+	constructor(
+		private ngbModal: NgbModal,
+		private shiftService: ShiftService,
+		private stationService: GasStationService,
+		private destroy$: DestroyService
+	) {}
+	ngOnInit(): void {
+		const calendars$ = this.shiftService
+			.getShiftWorks(this.currentDate, this.currentDate, [], this.stationId)
+			.pipe(map((res) => res.data));
+
+		const pumpole$ = this.stationService
+			.getPumpPolesByGasStation(this.stationId)
+			.pipe(map((res) => res.data));
+
+		const shiftConfig$ = this.shiftService.getListShiftConfig().pipe(map((res) => res.data));
+
+		this.data$ = zip(calendars$, pumpole$, shiftConfig$);
+	}
 
 	showDetailWarning() {
-		const modalRef = this.ngbModal.open(DetailWarningDialogComponent, {
-			size: 'xs',
-			backdrop: 'static'
-		});
-		modalRef.componentInstance.currentDate = this.currentDate;
+		this.data$
+			.pipe(
+				tap((data) => {
+					const shiftDatas = this.generateShiftOfDateData(data);
+					const modalRef = this.ngbModal.open(DetailWarningDialogComponent, {
+						size: 'lg',
+						backdrop: 'static'
+					});
+					modalRef.componentInstance.shiftDatas = shiftDatas;
+					modalRef.componentInstance.currentDate = this.currentDate;
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	generateShiftOfDateData([calendars, pumpoles, shiftConfigs]: [
+		ICalendarResponse[],
+		IPumpPole[],
+		IShiftConfig[]
+	]): ShiftData[] {
+		let data: ShiftData[] = [];
+		for (const shiftConfig of shiftConfigs) {
+			for (const pumpole of pumpoles) {
+				const calendar = calendars?.find(
+					(shift) =>
+						shift.shiftId === shiftConfig.id &&
+						shift.pumpPoleResponses.some((pump) => pump.id === pumpole.id)
+				);
+				const index = data.findIndex((d) => d.shiftId === shiftConfig.id);
+				if (index >= 0) {
+					data[index] = {
+						...data[index],
+						shiftDetail: [...data[index].shiftDetail, { pumpoleName: pumpole.name, calendar }]
+					};
+				} else {
+					data = [
+						...data,
+						{
+							shiftId: shiftConfig.id,
+							shiftName: shiftConfig.name,
+							shiftColor: shiftConfig.codeColor,
+							shiftDetail: [
+								{
+									pumpoleName: pumpole.name,
+									calendar
+								}
+							]
+						}
+					];
+				}
+			}
+		}
+		return data;
 	}
 }
 
@@ -209,6 +290,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 	constructor(
 		private shiftService: ShiftService,
+		private stationService: GasStationService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private modalService: NgbModal,
@@ -223,7 +305,6 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		toggleOffsetBar.addEventListener('click', () => {
 			this.calendarApi.updateSize();
 		});
-		this.warningDate.clear();
 	}
 
 	getCalendarData(start: string, end: string, employeeIds: number[], stationId: string) {
@@ -233,7 +314,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 			.getShiftWorks(start, end, employeeIds, stationId)
 			.pipe(
 				tap((res) => {
-					this.calendars = [...res.data.calendarResponses].map((calendar): EventInput => {
+					this.calendars = [...res.data].map((calendar): EventInput => {
 						const start = moment(calendar.start).format('YYYY-MM-DD');
 						const end = moment(calendar.end).format('YYYY-MM-DD');
 
@@ -328,6 +409,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 	gasStationTabChange($event) {
 		this.currentGasStationId = $event;
+		this.selectedEmployeeIds = [];
+		this.getEmployees(this.currentGasStationId);
 		this.getCalendarData(this.start, this.end, this.selectedEmployeeIds, this.currentGasStationId);
 	}
 
@@ -448,6 +531,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		if (isWarning) {
 			compWrapperRef.instance.tooltipWarning = 'Trạm có ca chưa được gán nhân viên';
 			compWrapperRef.instance.currentDate = currentRenderDate;
+			compWrapperRef.instance.stationId = this.currentGasStationId;
 		}
 		this.appRef.attachView(compWrapperRef.hostView);
 		this.dayWrappersMap.set(event.el, compWrapperRef);

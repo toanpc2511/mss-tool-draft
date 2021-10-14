@@ -35,6 +35,7 @@ import { FormatTimePipe } from './create-calendar-modal/format-time.pipe';
 import { IsCheckedPipe } from './create-calendar-modal/is-checked.pipe';
 import { DetailWarningDialogComponent } from './shift-work/detail-warning-dialog/detail-warning-dialog.component';
 import { DeleteCalendarAllComponent } from './shift-work/delete-calendar-all/delete-calendar-all.component';
+import { DisplayTimePipe } from './shift-work/display-time.pipe';
 
 @NgModule({
 	declarations: [
@@ -52,7 +53,8 @@ import { DeleteCalendarAllComponent } from './shift-work/delete-calendar-all/del
 		FormatTimePipe,
 		IsCheckedPipe,
 		DetailWarningDialogComponent,
-		DeleteCalendarAllComponent
+		DeleteCalendarAllComponent,
+		DisplayTimePipe
 	],
 	imports: [
 		CommonModule,

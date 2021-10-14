@@ -16,20 +16,18 @@ export type OffTimeResponse = {
 };
 
 export interface ICalendarResponse {
-	calendarResponses: {
-		calendarId: number;
-		employeeId: number;
-		employeeName: string;
-		backgroundColor: string;
-		color: string;
-		start: string;
-		end: string;
-    offTimes: OffTimeResponse[];
-		pumpPoleResponses: PumpPoleResponse[];
-		shiftName: string;
-		checked: boolean;
-		shiftId: number;
-	}[];
+	calendarId: number;
+	employeeId: number;
+	employeeName: string;
+	backgroundColor: string;
+	color: string;
+	start: string;
+	end: string;
+	offTimes: OffTimeResponse[];
+	pumpPoleResponses: PumpPoleResponse[];
+	shiftName: string;
+	checked: boolean;
+	shiftId: number;
 }
 
 export class ICalendarData {
@@ -50,12 +48,14 @@ export interface IShiftConfig {
 	id: number;
 	name: string;
 	type: string;
+	color: string;
 	description: string;
 	startHour: number;
 	startMinute: number;
 	endHour: number;
 	endMinute: number;
 	offTimes: [ITime];
+	codeColor: string;
 }
 
 export interface ITime {
@@ -74,7 +74,7 @@ export interface IEmployeeByIdStation {
 export interface IInfoCalendarEmployee {
 	employeeId: number;
 	pumpPoles: [number];
-  shiftOffIds: [number];
+	shiftOffIds: [number];
 }
 
 export interface IDataEventCalendar {
@@ -105,7 +105,7 @@ export class ShiftService {
 			.set('time-start', start)
 			.set('time-end', end)
 			.set('station-id', stationId);
-		return this.http.get<ICalendarResponse>('calendars', { params });
+		return this.http.get<ICalendarResponse[]>('calendars', { params });
 	}
 
 	// ds cấu hình ca
