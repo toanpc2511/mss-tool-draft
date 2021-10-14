@@ -15,7 +15,5 @@ export class ProductModel {
 		public unit: string = '',
 		public valueAddedTax: number = 0,
 		public vat: number = 0
-	) {
-		console.log(1);
-	}
+	) {}
 }
