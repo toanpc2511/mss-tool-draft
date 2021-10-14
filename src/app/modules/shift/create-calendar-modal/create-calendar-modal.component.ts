@@ -74,7 +74,7 @@ export class CreateCalendarModalComponent implements OnInit {
 			this.cdr.detectChanges();
 		});
 
-		this.gasStationService.getPumpPolesByGasStation(this.data.stationId).subscribe((res) => {
+		this.gasStationService.getPumpPolesActiveByGasStation(this.data.stationId).subscribe((res) => {
 			this.listPumpPole = res.data;
 			this.cdr.detectChanges();
 		});
@@ -303,13 +303,13 @@ export class CreateCalendarModalComponent implements OnInit {
   }
 
 	checkError(error: IError) {
-    if (error.code === '4890') {
+    if (error.code === 'SUN-OIL-4890') {
       this.toastr.error('Nhân viên đã bị trùng')
     }
-    if (error.code === '4889') {
+    if (error.code === 'SUN-OIL-4889') {
       this.toastr.error('Thời gian nghỉ không hợp lệ')
     }
-    if (error.code === '4874') {
+    if (error.code === 'SUN-OIL-4874') {
       this.toastr.error('Thời gian bắt đầu hoặc kêt thúc không hợp lệ')
     }
 	}
