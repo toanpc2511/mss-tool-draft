@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { EArea, EStatus } from 'src/app/shared/data-enum/enums';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
+import { PumpPoleResponse } from '../shift/shift.service';
 
 export class StepData {
 	currentStep: number;
@@ -200,18 +201,12 @@ export class GasStationService {
 	}
 
 	getDistrictsByProvince(provinceId: number) {
-		const params = new HttpParams().set(
-			'province-id',
-			provinceId.toString()
-		);
+		const params = new HttpParams().set('province-id', provinceId.toString());
 		return this.http.get<Array<IDistrict>>(`districts`, { params });
 	}
 
 	getWardsByDistrict(districtId: number) {
-		const params = new HttpParams().set(
-			'district-id',
-			districtId.toString()
-		);
+		const params = new HttpParams().set('district-id', districtId.toString());
 		return this.http.get<Array<IWard>>(`wards`, { params });
 	}
 
@@ -317,13 +312,17 @@ export class GasStationService {
 		});
 	}
 
+	getPumpPolesActiveByGasStation(gasStationId: string | number) {
+		const params = new HttpParams({
+			fromString: `station-id=${gasStationId}`
+		});
+		return this.http.get<Array<IPumpPole>>(`pump-poles/stations`, {
+			params
+		});
+	}
 
-  getPumpPolesActiveByGasStation(gasStationId: string | number) {
-    const params = new HttpParams({
-      fromString: `station-id=${gasStationId}`
-    });
-    return this.http.get<Array<IPumpPole>>(`pump-poles/stations`, {
-      params
-    });
-  }
+	getPumpolesActive(stationId: string) {
+		const params = new HttpParams().set('station-id', stationId);
+		return this.http.get<PumpPoleResponse[]>('pump-poles/stations', { params });
+	}
 }
