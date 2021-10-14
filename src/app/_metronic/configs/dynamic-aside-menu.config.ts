@@ -65,13 +65,27 @@ export const DynamicAsideMenuConfig = {
 			page: '/hop-dong',
 			bullet: 'dot'
 		},
-		{
-			title: 'Quản lý QR code',
-			root: true,
-			bullet: 'dot',
-			page: '/qrcode',
-			icon: 'fas fa-qrcode'
-		},
+    {
+      title: 'Quản lý QR code',
+      root: true,
+      bullet: 'dot',
+      page: '/qr-code',
+      icon: 'fas fa-qrcode',
+      submenu: [
+        {
+          title: 'Qr code sản phẩm',
+          bullet: 'dot',
+          page: 'qr-code/qr-san-pham',
+          notChild: true
+        },
+        {
+          title: 'Qr code vòi bơm',
+          bullet: 'dot',
+          page: 'qr-code/qr-voi',
+          notChild: true
+        }
+      ]
+    },
 		{
 			title: 'Báo cáo',
 			root: true,

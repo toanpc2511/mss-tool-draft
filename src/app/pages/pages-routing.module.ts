@@ -73,6 +73,10 @@ const routes: Routes = [
 				loadChildren: () =>
 					import('../modules/transaction/transaction.module').then((m) => m.TransactionModule)
 			},
+      {
+        path: 'qr-code',
+        loadChildren: () => import('../modules/qr-code/qr-code.module').then((m) => m.QrCodeModule)
+      },
 			{
 				path: '',
 				redirectTo: '/dashboard',
