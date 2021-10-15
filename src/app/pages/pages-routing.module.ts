@@ -37,6 +37,11 @@ const routes: Routes = [
 					import('../modules/contract/contract.module').then((m) => m.ContractModule)
 			},
 			{
+				path: 'qr-code',
+				loadChildren: () =>
+					import('../modules/qr-code/qr-code.module').then((m) => m.QrCodeModule)
+			},
+			{
 				path: 'khach-hang',
 				loadChildren: () =>
 					import('../modules/customer-management/customer-management.module').then(
