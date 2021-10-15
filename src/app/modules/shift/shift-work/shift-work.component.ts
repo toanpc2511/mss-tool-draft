@@ -327,8 +327,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 
 						return {
 							id: calendar.calendarId.toString(),
-							start: moment(calendar.start).format('YYYY-MM-DD HH:MM:SS'),
-							end: moment(calendar.end).add({ hour: 24 }).format('YYYY-MM-DD HH:MM:SS'),
+							start: moment(calendar.start).format('YYYY-MM-DD HH:mm:ss'),
+							end: moment(calendar.end).add({ hour: 24 }).format('YYYY-MM-DD HH:mm:ss'),
 							title: `${calendar.shiftName} - ${calendar.employeeName}`,
 							backgroundColor: calendar.backgroundColor,
 							color: '#ffffff',
@@ -341,8 +341,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 								warning: calendar.checked,
 								weekTitle: calendar.shiftName,
 								weekContent: calendar.employeeName,
-								start: moment(calendar.start).format('YYYY-MM-DD HH:MM:SS'),
-								end: moment(calendar.end).format('YYYY-MM-DD HH:MM:SS'),
+								start: moment(calendar.start).format('YYYY-MM-DD HH:mm:ss'),
+								end: moment(calendar.end).format('YYYY-MM-DD HH:mm:ss'),
 							},
 							allDay: true
 						};

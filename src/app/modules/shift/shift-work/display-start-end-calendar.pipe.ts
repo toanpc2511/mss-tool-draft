@@ -10,8 +10,8 @@ export class DisplayStartEndCalendarPipe implements PipeTransform {
 		const momentEnd = moment(end);
 		const isNextDay = !momentStart.isSame(momentEnd, 'day');
 		if (isNextDay) {
-			return `(${momentStart.format('HH:MM')} - ${momentEnd.format('HH:MM')} hôm sau)`;
+			return `(${momentStart.format('HH:mm')} - ${momentEnd.format('HH:mm')} hôm sau)`;
 		}
-		return `(${momentStart.format('HH:MM')} - ${momentEnd.format('HH:MM')})`;
+		return `(${momentStart.format('HH:mm')} - ${momentEnd.format('HH:mm')})`;
 	}
 }
