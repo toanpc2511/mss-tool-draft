@@ -122,7 +122,7 @@ export class DayWrapperComponent implements OnInit {
 			.pipe(map((res) => res.data));
 
 		const pumpole$ = this.stationService
-			.getPumpPolesActiveByGasStation(this.stationId)
+			.getPumpPolesByGasStation(this.stationId)
 			.pipe(map((res) => res.data));
 
 		const shiftConfig$ = this.shiftService.getListShiftConfig().pipe(map((res) => res.data));
