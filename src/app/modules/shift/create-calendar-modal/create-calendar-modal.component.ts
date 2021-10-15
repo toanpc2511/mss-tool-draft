@@ -320,6 +320,9 @@ export class CreateCalendarModalComponent implements OnInit {
     if (error.code === 'SUN-OIL-4899') {
       this.toastr.error('Lịch làm việc đã tồn tại')
     }
+    if (error.code === 'SUN-OIL-4873') {
+      this.toastr.error('Vui lòng chọn ca lớn hơn giờ hiện tại')
+    }
 	}
 }
 
