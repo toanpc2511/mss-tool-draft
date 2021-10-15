@@ -8,6 +8,6 @@ const currentDate = moment();
 })
 export class IsFeatureDatePipe implements PipeTransform {
 	transform(value: Date): boolean {
-		return moment(value).isSameOrAfter(currentDate, 'day');
+		return moment(value).isAfter(currentDate);
 	}
 }
