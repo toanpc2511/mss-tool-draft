@@ -117,7 +117,7 @@
 							<strong class="fa fa-circle text-danger"></strong>
 						</div>
 						<div>
-							<h6>{{ event.event.title }}</h6>
+							<h6>{{ event.event.title }} {{event.event.extendedProps|displayStartEndCalendar}}</h6>
 							<p *ngFor="let ofTime of event.event.extendedProps.offTimes">
 								Thời gian nghỉ: {{(ofTime.start |displayTime) + ' - ' + (ofTime.end |displayTime:
 								ofTime.typeEnd)}}

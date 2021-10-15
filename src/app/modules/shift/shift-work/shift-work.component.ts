@@ -340,7 +340,9 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 								pumpPoles: calendar.pumpPoleResponses,
 								warning: calendar.checked,
 								weekTitle: calendar.shiftName,
-								weekContent: calendar.employeeName
+								weekContent: calendar.employeeName,
+								start: moment(calendar.start).format('YYYY-MM-DD HH:MM:SS'),
+								end: moment(calendar.end).format('YYYY-MM-DD HH:MM:SS'),
 							},
 							allDay: true
 						};
