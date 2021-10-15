@@ -37,7 +37,7 @@ export class CreateCalendarModalComponent implements OnInit {
 
 	dataShiftConfig: Array<IShiftConfig> = [];
 	calenderForm: FormGroup;
-	tomorrow: string;
+	today: string;
 	typeLoop = TYPE_LOOP;
 	listDayOfWeek = LIST_DAY_OF_WEEK;
 	selectedDayOfWeek: { name: string; type: string }[] = [];
@@ -47,7 +47,7 @@ export class CreateCalendarModalComponent implements OnInit {
 
 	currentDate = new Date();
 	minDate: NgbDateStruct = {
-		day: this.currentDate.getDate() + 1,
+		day: this.currentDate.getDate(),
 		month: this.currentDate.getMonth() + 1,
 		year: this.currentDate.getFullYear()
 	};
@@ -65,7 +65,7 @@ export class CreateCalendarModalComponent implements OnInit {
 		private fb: FormBuilder,
 		private toastr: ToastrService
 	) {
-		this.tomorrow = moment().add(1, 'days').format('DD/MM/YYYY');
+		this.today = moment().format('DD/MM/YYYY');
 	}
 
 	ngOnInit(): void {
@@ -74,7 +74,7 @@ export class CreateCalendarModalComponent implements OnInit {
 			this.cdr.detectChanges();
 		});
 
-		this.gasStationService.getPumpPolesActiveByGasStation(this.data.stationId).subscribe((res) => {
+		this.gasStationService.getPumpPolesByGasStation(this.data.stationId).subscribe((res) => {
 			this.listPumpPole = res.data;
 			this.cdr.detectChanges();
 		});
@@ -163,8 +163,8 @@ export class CreateCalendarModalComponent implements OnInit {
 				.patchValue(moment(this.data.dataEventCalendar.start).format('DD/MM/YYYY'));
       this.calenderForm.get('endDate').disable({onlySelf: true, emitEvent: false});
 		} else {
-			this.calenderForm.get('startDate').patchValue(this.tomorrow);
-			this.calenderForm.get('endDate').patchValue(this.tomorrow);
+			this.calenderForm.get('startDate').patchValue(this.today);
+			this.calenderForm.get('endDate').patchValue(this.today);
 			this.calenderForm.get('endDate').disable({onlySelf: true, emitEvent: false});
 		}
 	}
@@ -212,6 +212,11 @@ export class CreateCalendarModalComponent implements OnInit {
 				if (this.calenderForm.invalid) {
 					return;
 				}
+
+        if (this.selectedDayOfWeek.length < 1 && this.calenderForm.get("type").value === "WEEKLY") {
+          this.toastr.error('Vui lòng chọn thứ để lặp lại')
+          return;
+        }
 
 				if (this.data.dataEventCalendar) {
 					const req = {
@@ -311,6 +316,9 @@ export class CreateCalendarModalComponent implements OnInit {
     }
     if (error.code === 'SUN-OIL-4874') {
       this.toastr.error('Thời gian bắt đầu hoặc kêt thúc không hợp lệ')
+    }
+    if (error.code === 'SUN-OIL-4899') {
+      this.toastr.error('Lịch làm việc đã tồn tại')
     }
 	}
 }

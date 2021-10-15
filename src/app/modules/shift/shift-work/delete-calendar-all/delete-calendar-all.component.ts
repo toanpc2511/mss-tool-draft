@@ -20,13 +20,13 @@ export class DeleteCalendarAllComponent implements OnInit {
 
 	currentDate = new Date();
 	minDate: NgbDateStruct = {
-		day: this.currentDate.getDate() + 1,
+		day: this.currentDate.getDate(),
 		month: this.currentDate.getMonth() + 1,
 		year: this.currentDate.getFullYear()
 	};
 
 	listEmployee: Array<IEmployeeByIdStation> = [];
-	tomorrow: string;
+	today: string;
 	formConfirmDelete: FormGroup;
 
 	constructor(
@@ -37,7 +37,7 @@ export class DeleteCalendarAllComponent implements OnInit {
 		private toastr: ToastrService,
 		private shiftService: ShiftService
 	) {
-		this.tomorrow = moment().add(1, 'days').format('DD/MM/YYYY');
+		this.today = moment().format('DD/MM/YYYY');
 	}
 
 	ngOnInit(): void {
@@ -52,8 +52,8 @@ export class DeleteCalendarAllComponent implements OnInit {
 	}
 
 	initDate() {
-		this.formConfirmDelete.get('timeStart').patchValue(this.tomorrow);
-		this.formConfirmDelete.get('timeEnd').patchValue(this.tomorrow);
+		this.formConfirmDelete.get('timeStart').patchValue(this.today);
+		this.formConfirmDelete.get('timeEnd').patchValue(this.today);
 	}
 
 	buildForm() {
@@ -90,7 +90,7 @@ export class DeleteCalendarAllComponent implements OnInit {
 
 	checkError(error: IError) {
     if (error.code === 'SUN-OIL-4874') {
-      this.toastr.error('Không được phép xoá lịch làm việc trong quá khứ')
+      this.toastr.error('Ngày bắt đầu hoặc ngày kết thúc không hợp lệ')
     }
       if (error.code === 'SUN-OIL-4960') {
       this.toastr.error('Nhân viên chưa có lịch làm việc')
