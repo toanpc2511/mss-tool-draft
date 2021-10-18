@@ -1,0 +1,122 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Tìm kiếm lịch sử chốt ca</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="searchForm" class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Tên trạm</label>
+          <select class="form-control form-control-solid" formControlName="station">
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Ca làm việc</label>
+          <select class="form-control form-control-solid" formControlName="shift">
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Từ ngày</label>
+
+          <div class="input-group">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              readonly
+              #startAt="ngbDatepicker"
+              formControlName="startAt"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="startAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Đến ngày</label>
+
+          <div class="input-group">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              readonly
+              #endAt="ngbDatepicker"
+              formControlName="endAt"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="endAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="form-group row pt-3">
+      <button type="button" class="btn btn-primary btn-def" (click)="onSearch()">
+        <em class="fas fa-search"></em> Tìm kiếm
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách lịch sử chốt ca</h3>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <th scope="">Tên trạm</th>
+        <th scope="">Tên ca</th>
+        <th scope="">Thời gian bắt đầu</th>
+        <th scope="">Thời gian kết thúc</th>
+        <th scope="">Status</th>
+        <th scope="">Tác động</th>
+        </thead>
+
+        <tbody>
+        <tr *ngFor='let item of dataSource'>
+          <td>{{item.stationName}}</td>
+          <td>{{item.shiftName}}</td>
+          <td>{{item.timeStart}}</td>
+          <td>{{item.timeEnd}}</td>
+          <td>{{item.status}}</td>
+        </tr>
+        </tbody>
+
+
+        <tfoot *ngIf="dataSource?.length === 0">
+        <tr>
+          <td colspan="13" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

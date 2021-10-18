@@ -36,6 +36,7 @@ import {
 } from './shift-work/shift-work.component';
 import { ShiftComponent } from './shift.component';
 import { DisplayStartEndCalendarPipe } from './shift-work/display-start-end-calendar.pipe';
+import { ShiftClosingHistoryComponent } from './shift-closing-history/shift-closing-history.component';
 
 @NgModule({
 	declarations: [
@@ -56,7 +57,8 @@ import { DisplayStartEndCalendarPipe } from './shift-work/display-start-end-cale
 		DeleteCalendarAllComponent,
 		DisplayTimePipe,
 		IsFeatureDatePipe,
-		DisplayStartEndCalendarPipe
+		DisplayStartEndCalendarPipe,
+		ShiftClosingHistoryComponent
 	],
 	imports: [
 		CommonModule,

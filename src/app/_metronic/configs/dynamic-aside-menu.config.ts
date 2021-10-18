@@ -138,6 +138,12 @@ export const DynamicAsideMenuConfig = {
 					bullet: 'dot',
 					page: 'ca-lam-viec/doi-ca',
 					notChild: true
+				},
+				{
+					title: 'Lịch sử chốt ca',
+					bullet: 'dot',
+					page: 'ca-lam-viec/lich-su-chot-ca',
+					notChild: true
 				}
 			]
 		},

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ShiftWorkComponent } from './shift-work/shift-work.component';
 import { ShiftWorkConfigComponent } from './shift-work-config/shift-work-config.component';
+import { ShiftClosingHistoryComponent } from './shift-closing-history/shift-closing-history.component';
 
 const routes: Routes = [
 	{
@@ -16,6 +17,10 @@ const routes: Routes = [
 	{
 		path: 'cauhinh-ca',
 		component: ShiftWorkConfigComponent
+	},
+	{
+		path: 'lich-su-chot-ca',
+		component: ShiftClosingHistoryComponent
 	}
 ];
 
