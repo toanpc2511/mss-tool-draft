@@ -296,6 +296,7 @@
 					<tbody>
 						<tr *ngFor="let prod of data?.product, let i = index">
 							<td>{{i + 1}}</td>
+							<td>{{prod.productResponse.name}}</td>
 							<td>{{prod.productResponse.unit}}</td>
 							<td class='text-right'>{{prod.productResponse.amount}}</td>
 							<td class="text-right">{{prod.productResponse.price.toLocaleString('en-US')}}</td>
