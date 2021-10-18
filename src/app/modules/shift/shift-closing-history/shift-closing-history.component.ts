@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { LIST_STATUS } from '../../../shared/data-enum/list-status';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IDataTransfer, ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
 
 @Component({
   selector: 'app-shift-closing-history',
@@ -16,7 +18,8 @@ export class ShiftClosingHistoryComponent implements OnInit {
   listStatus = LIST_STATUS;
 
   constructor(
-    private fb : FormBuilder
+    private fb : FormBuilder,
+    private modalService: NgbModal,
   ) {
     this.today = moment().format('DD/MM/YYYY');
     this.dataSource = [
@@ -29,7 +32,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
         status: 'ACTIVE'
       },
       {
-        id: 1,
+        id: 2,
         stationName: 'SunOil',
         shiftName: 'Ca đêm',
         timeStart: '10/10/2022',
@@ -59,5 +62,30 @@ export class ShiftClosingHistoryComponent implements OnInit {
   }
 
   onSearch() {}
+
+  viewDetail() {
+    console.log('aaaaaa');
+  }
+
+  modalConfirm($event?: Event, data?: IDataTransfer): void {
+    if ($event) {
+      $event.stopPropagation();
+    }
+    const modalRef = this.modalService.open(ModalConfirmComponent, {
+      backdrop: 'static',
+      size: 'lg',
+    });
+
+    modalRef.componentInstance.data = {
+      title: 'Xác nhận yêu cầu chốt ca',
+      id: data
+    };
+
+    modalRef.result.then((result) => {
+      if (result) {
+        console.log('thành công');
+      }
+    });
+  }
 
 }

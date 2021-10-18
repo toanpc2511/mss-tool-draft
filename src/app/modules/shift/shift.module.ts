@@ -37,6 +37,7 @@ import {
 import { ShiftComponent } from './shift.component';
 import { DisplayStartEndCalendarPipe } from './shift-work/display-start-end-calendar.pipe';
 import { ShiftClosingHistoryComponent } from './shift-closing-history/shift-closing-history.component';
+import { ModalConfirmComponent } from './shift-closing-history/modal-confirm/modal-confirm.component';
 
 @NgModule({
 	declarations: [
@@ -58,7 +59,8 @@ import { ShiftClosingHistoryComponent } from './shift-closing-history/shift-clos
 		DisplayTimePipe,
 		IsFeatureDatePipe,
 		DisplayStartEndCalendarPipe,
-		ShiftClosingHistoryComponent
+		ShiftClosingHistoryComponent,
+		ModalConfirmComponent
 	],
 	imports: [
 		CommonModule,

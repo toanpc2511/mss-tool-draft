@@ -101,12 +101,26 @@
         </thead>
 
         <tbody>
-        <tr *ngFor='let item of dataSource'>
+        <tr *ngFor='let item of dataSource' (click)='viewDetail()'>
           <td>{{item.stationName}}</td>
           <td>{{item.shiftName}}</td>
           <td>{{item.timeStart}}</td>
           <td>{{item.timeEnd}}</td>
           <td>{{item.status}}</td>
+          <td class="text-center action">
+            <a
+              (click)="modalConfirm($event, item.id)"
+              class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+            >
+								<span
+                  [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Sửa'"
+                >
+								</span>
+            </a>
+          </td>
         </tr>
         </tbody>
 
