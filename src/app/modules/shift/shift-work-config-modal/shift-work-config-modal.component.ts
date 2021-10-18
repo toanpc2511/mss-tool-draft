@@ -296,6 +296,10 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 			this.configForm.get('startHour').setErrors({ startTime: true });
 			this.configForm.get('endHour').setErrors({ startTime: true });
 		}
+
+    if (error.code === 'SUN-OIL-4748') {
+      this.toastr.error('Ca làm việc đang được gán lịch cho nhân viên');
+    }
 	}
 }
 
