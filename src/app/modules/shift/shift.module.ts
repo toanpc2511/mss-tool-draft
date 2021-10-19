@@ -1,3 +1,4 @@
+import { ShiftChangeDetailComponent } from './shift-change-detail/shift-change-detail.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -36,6 +37,7 @@ import {
 } from './shift-work/shift-work.component';
 import { ShiftComponent } from './shift.component';
 import { DisplayStartEndCalendarPipe } from './shift-work/display-start-end-calendar.pipe';
+import { ShiftChangeComponent } from './shift-change/shift-change.component';
 
 @NgModule({
 	declarations: [
@@ -43,6 +45,8 @@ import { DisplayStartEndCalendarPipe } from './shift-work/display-start-end-cale
 		ShiftWorkComponent,
 		EventWrapperComponent,
 		EmployeeComponent,
+		ShiftChangeComponent,
+		ShiftChangeDetailComponent,
 		CheckAllPipe,
 		DayWrapperComponent,
 		ShiftWorkConfigComponent,

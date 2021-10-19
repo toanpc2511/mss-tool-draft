@@ -4,6 +4,12 @@ import { HttpService } from 'src/app/shared/services/http.service';
 import { GasStationResponse } from './../gas-station/gas-station.service';
 import { convertDateToServer } from '../../shared/helpers/functions';
 
+export enum EShiftChangRequestStatus {
+	APPROVE = 'APPROVE',
+	WAITING = 'WAITING',
+	REJECT = 'REJECT'
+}
+
 export type PumpPoleResponse = {
 	id: number;
 	name: string;
@@ -82,6 +88,11 @@ export interface IDataEventCalendar {
 	start: Date;
 	end: Date;
 	extendedProps: ICalendarData;
+}
+
+export interface IShiftRequestChange {
+	id: string;
+	status: EShiftChangRequestStatus;
 }
 
 @Injectable({
