@@ -1,118 +1,80 @@
 <div class="card card-custom gutter-b mt-1">
 	<div class="card-header">
-		<div class="card-title">
-			<h3 class="card-label">Danh sách yêu cầu đổi ca</h3>
-		</div>
-
-		<div class="card-toolbar row">
-			<div class="search-form">
-				<em class="flaticon-search"></em>
-				<input
-					type="text"
-					name="searchText"
-					placeholder="Search..."
-					class="form-control"
-					[formControl]="searchFormControl"
-				/>
-			</div>
-			<button type="button" class="btn btn-primary" (click)="createModal()">Thêm mới</button>
+		<div class="title-card font-weight-bold">
+			<label class="card-label">Chi tiết yêu cầu</label>
 		</div>
 	</div>
 	<div class="card-body">
-		<div class="table-responsive angular-bootstrap-table">
-			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
-				<thead>
-					<th scope="">
-						Người yêu cầu
-						<app-sort-icon
-							column="name"
-							[activeColumn]="sorting.column"
-							[activeDirection]="sorting.direction"
-							(sort)="sort($event)"
-						></app-sort-icon>
-					</th>
-					<th scope="">Trạm</th>
-					<th scope="">Ngày cần đổi</th>
-					<th scope="">
-						Ca yêu cầu đổi
-						<app-sort-icon
-							column="description"
-							[activeColumn]="sorting.column"
-							[activeDirection]="sorting.direction"
-							(sort)="sort($event)"
-						></app-sort-icon>
-					</th>
-					<th scope="">Lý do đổi</th>
-					<th scope="">Ngày tạo đơn</th>
-					<th class="text-center" scope="">Trạng thái</th>
-				</thead>
-				<tbody>
-					<tr *ngFor="let item of dataSource">
-						<td class="name">
-							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
-								{{ item.name }}
-							</p>
-						</td>
-
-						<td class="start">
-							<p
-								class="cursor-pointer text-ellipsis"
-								placement="top"
-								[ngbTooltip]="formatTime(item.startHour, item.startMinute)"
-							>
-								{{ formatTime(item.startHour, item.startMinute) }}
-							</p>
-						</td>
-
-						<td class="end">
-							<p
-								class="cursor-pointer text-ellipsis"
-								placement="top"
-								[ngbTooltip]="formatTime(item.endHour, item.endMinute)"
-							>
-								{{ formatTime(item.endHour, item.endMinute) }}
-							</p>
-						</td>
-
-						<td class="detail">
-							<p
-								class="cursor-pointer text-ellipsis"
-								placement="top"
-								[ngbTooltip]="item.description"
-							>
-								{{ item.description }}
-							</p>
-						</td>
-
-						<td class="text-center action">
-							<a
-								(click)="createModal($event, item)"
-								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-							>
-								<span
-									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
-									cacheSVG="true"
-									class="svg-icon svg-icon-md svg-icon-primary"
-									[ngbTooltip]="'Sửa'"
-								>
-								</span>
-							</a>
-							<a
-								(click)="deleteShiftConfig($event, item)"
-								class="btn btn-icon btn-light btn-hover-danger btn-sm"
-							>
-								<span
-									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
-									cacheSVG="true"
-									class="svg-icon svg-icon-md svg-icon-danger"
-									[ngbTooltip]="'Xóa'"
-								>
-								</span>
-							</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+		<table aria-label="">
+			<tbody>
+				<tr>
+					<td class="column-1">Nhân viên xin đổi ca</td>
+					<td>Nguyễn Văn Quang</td>
+					<td class="column-2">Ngày muốn đổi</td>
+					<td>13/11/1997</td>
+				</tr>
+				<tr>
+					<td class="column-1">Ngày đổi</td>
+					<td>13/11/1997</td>
+					<td class="column-2">Ca muốn đổi</td>
+					<td>Ca đêm</td>
+				</tr>
+				<tr>
+					<td class="column-1">Ca đổi</td>
+					<td>Ca sáng</td>
+					<td class="column-2">Nhân viên đổi ca</td>
+					<td>Hà Vũ Linh</td>
+				</tr>
+				<tr>
+					<td class="column-1">Lý do đổi ca</td>
+					<td>Thích thì đổi</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="w-100 d-flex justify-content-center pb-10 mt-10">
+		<button type="button" class="btn btn-outline-primary mr-3" (click)="openRejectRequestModal()">
+			Từ chối
+		</button>
+		<button type="button" class="btn btn-primary mr-3" (click)="openApproveRequestModal()">
+			Phê duyệt
+		</button>
 	</div>
 </div>
+
+<ng-template #approveRequest>
+	<div class="modal-header">
+		<h4 class="modal-title">Bạn có chắc chắn muốn duyệt yêu cầu ?</h4>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary" (click)="activeModal.close(false)">
+			Hủy
+		</button>
+		<button type="button" class="btn btn-primary" (click)="activeModal.close(true)">
+			Xác nhận
+		</button>
+	</div>
+</ng-template>
+
+<ng-template #rejectRequest>
+	<div class="modal-header">
+		<h4 class="modal-title">Từ chối yêu cầu đổi ca</h4>
+	</div>
+	<div class="modal-body">
+		<div class="w-100">
+			<label class="form-label required">Nhập lý do từ chối</label>
+			<input [formControl]="reasonControl" class="form-control form-control-solid" trim="blur"/>
+			<app-validate
+				[control]="reasonControl"
+				[error]="'required'"
+				[message]="'Lý do từ chối không được để trống'"
+			></app-validate>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary" (click)="activeModal.close(false)">
+			Hủy
+		</button>
+		<button type="button" class="btn btn-primary" (click)="activeModal.close(true)">Từ chối</button>
+	</div>
+</ng-template>

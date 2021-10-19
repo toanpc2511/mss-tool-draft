@@ -1,58 +1,116 @@
 <div class="card card-custom gutter-b mt-1">
 	<div class="card-header">
-		<div class="card-title">
+		<div class="card-title w-100">
 			<h3 class="card-label">Danh sách yêu cầu đổi ca</h3>
 		</div>
 
-		<div class="card-toolbar row">
-			<div class="search-form">
-				<em class="flaticon-search"></em>
-				<input
-					type="text"
-					name="searchText"
-					placeholder="Search..."
-					class="form-control"
-					[formControl]="searchFormControl"
-				/>
+		<form class="row form-group w-100 my-10">
+			<div class="col-lg-4 d-flex align-items-center">
+				<label class="w-20 mb-0">Loại yêu cầu</label>
+				<select class="w-60 form-control form-control-solid">
+					<option [value]="''">Tất cả</option>
+					<option [value]="''">Đổi ca</option>
+					<option [value]="''">Thay ca</option>
+				</select>
 			</div>
-		</div>
+			<div class="col-lg-4 d-flex align-items-center">
+				<label class="w-20 mb-0">Trạng thái</label>
+				<select class="w-60 form-control form-control-solid">
+					<option [value]="''">Tất cả</option>
+					<option [value]="''">Chờ phê duyệt</option>
+					<option [value]="''">Đã từ chối</option>
+					<option [value]="''">Đã phê duyệt</option>
+				</select>
+			</div>
+			<div class="col-lg-3">
+				<div class="search-form">
+					<em class="flaticon-search"></em>
+					<input
+						type="text"
+						name="searchText"
+						placeholder="Search..."
+						class="form-control"
+						[formControl]="searchFormControl"
+					/>
+				</div>
+			</div>
+		</form>
 	</div>
 	<div class="card-body">
 		<div class="table-responsive angular-bootstrap-table">
 			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
 				<thead>
-					<th scope="">Người yêu cầu</th>
-					<th scope="">Trạm</th>
-					<th scope="">Ngày cần đổi</th>
+					<th scope="">
+						Người yêu cầu
+						<app-sort-icon
+							column="name"
+							[activeColumn]="sorting?.column"
+							[activeDirection]="sorting?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">Loại yêu cầu</th>
+					<th scope="">
+						Trạm
+						<app-sort-icon
+							column="station"
+							[activeColumn]="sorting?.column"
+							[activeDirection]="sorting?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Ngày cần đổi
+						<app-sort-icon
+							column="date"
+							[activeColumn]="sorting?.column"
+							[activeDirection]="sorting?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
 					<th scope="">Ca yêu cầu đổi</th>
 					<th scope="">Lý do đổi</th>
-					<th scope="">Ngày tạo đơn</th>
+					<th scope="">
+						Ngày tạo đơn
+						<app-sort-icon
+							column="createAt"
+							[activeColumn]="sorting?.column"
+							[activeDirection]="sorting?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
 					<th scope="">Trạng thái</th>
 				</thead>
 				<tbody>
-					<tr *ngFor="let item of dataSource">
+					<tr *ngFor="let item of dataSource" (click)="gotoDetail(item.id)">
 						<td class="name">
-							<p class="cursor-pointer text-ellipsis"></p>
+							<p class="cursor-pointer text-ellipsis">{{item.name}}</p>
+						</td>
+
+						<td class="type">
+							<p class="cursor-pointer text-ellipsis">
+								{{item.type === eShiftChangRequestType.CHANGE ? 'Đổi ca': 'Thay ca'}}
+							</p>
 						</td>
 
 						<td class="station">
-							<p class="cursor-pointer text-ellipsis"></p>
+							<p class="cursor-pointer text-ellipsis">{{item.station}}</p>
 						</td>
 
 						<td class="date">
-							<p class="cursor-pointer text-ellipsis"></p>
+							<p class="cursor-pointer text-ellipsis">{{item.date}}</p>
 						</td>
 
 						<td class="shift">
-							<p class="cursor-pointer text-ellipsis"></p>
+							<p class="cursor-pointer text-ellipsis">{{item.shiftRequest}}</p>
 						</td>
 
 						<td class="reason">
-							<p class="cursor-pointer text-ellipsis"></p>
+							<p class="cursor-pointer text-ellipsis">{{item.reason}}</p>
 						</td>
 
 						<td class="create-at">
-							<p class="cursor-pointer text-ellipsis"></p>
+							<p class="cursor-pointer text-ellipsis">{{item.createAt}}</p>
 						</td>
 
 						<td class="status">
@@ -66,10 +124,10 @@
 								<ng-container *ngSwitchCase="eShiftChangRequestStatus.APPROVE"
 									>Đã duyệt</ng-container
 								>
-								<ng-container *ngSwitchCase="eShiftChangRequestStatus.APPROVE"
+								<ng-container *ngSwitchCase="eShiftChangRequestStatus.REJECT"
 									>Đã từ chối</ng-container
 								>
-								<ng-container *ngSwitchCase="eShiftChangRequestStatus.APPROVE"
+								<ng-container *ngSwitchCase="eShiftChangRequestStatus.WAITING"
 									>Chờ phê duyệt</ng-container
 								>
 							</span>

@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { convertTimeToString } from '../../../shared/helpers/functions';
 import {
 	EShiftChangRequestStatus,
+	EShiftChangRequestType,
 	IShiftConfig,
 	IShiftRequestChange,
 	ShiftService
@@ -21,6 +22,7 @@ import { SortService } from '../../../shared/services/sort.service';
 import { FilterService } from '../../../shared/services/filter.service';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { DestroyService } from '../../../shared/services/destroy.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-shift-change',
@@ -29,17 +31,12 @@ import { DestroyService } from '../../../shared/services/destroy.service';
 	providers: [SortService, FilterService, DestroyService]
 })
 export class ShiftChangeComponent implements OnInit {
+	eShiftChangRequestType = EShiftChangRequestType;
 	eShiftChangRequestStatus = EShiftChangRequestStatus;
 
 	searchFormControl: FormControl;
-	dataSource: Array<IShiftRequestChange>;
-	dataSourceTemp: Array<IShiftRequestChange>;
+	dataSource: Array<IShiftRequestChange> = [];
 	sorting: SortState;
-
-	filterField: FilterField<{
-		name: null;
-		description: null;
-	}>;
 
 	constructor(
 		private modalService: NgbModal,
@@ -48,28 +45,22 @@ export class ShiftChangeComponent implements OnInit {
 		private sortService: SortService<IShiftConfig>,
 		private filterService: FilterService<IShiftConfig>,
 		private destroy$: DestroyService,
-		private shiftService: ShiftService
+		private shiftService: ShiftService,
+		private router: Router
 	) {
-		this.dataSource = this.dataSourceTemp = [];
-		this.sorting = sortService.sorting;
-		this.filterField = new FilterField({
-			name: null,
-			description: null
-		});
+		this.sorting = null;
 		this.searchFormControl = new FormControl();
 	}
 
 	ngOnInit(): void {
-		// this.getListShift();
+		this.getListShiftRequestChange();
 
 		this.searchFormControl.valueChanges
 			.pipe(debounceTime(500), takeUntil(this.destroy$))
 			.subscribe((value) => {
-				if (value.trim()) {
-					this.filterField.setFilterFieldValue(value.trim());
-				} else {
-					this.filterField.setFilterFieldValue(null);
-				}
+				// if (value.trim()) {
+				// } else {
+				// }
 
 				// this.dataSource = this.sortService.sort(
 				// 	this.filterService.filter(this.dataSourceTemp, this.filterField.field)
@@ -79,17 +70,24 @@ export class ShiftChangeComponent implements OnInit {
 	}
 
 	getListShiftRequestChange() {
-		// this.shiftService.getListShiftConfig().subscribe((res) => {
-		// 	this.dataSource = this.dataSourceTemp = res.data;
-		// 	this.dataSource = this.sortService.sort(
-		// 		this.filterService.filter(this.dataSourceTemp, this.filterField.field)
-		// 	);
-		// 	this.cdr.detectChanges();
-		// });
+		this.shiftService.getShiftRequestChangeList('', null).subscribe((res) => {
+			console.log(res);
+
+			this.dataSource = res.data;
+			this.cdr.detectChanges();
+		});
 	}
 
 	sort(column: string) {
-		// this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
+		if (this.sorting && this.sorting.column === column) {
+			if (this.sorting.direction === 'ASC') {
+				this.sorting = { column, direction: 'DESC' };
+			} else {
+				this.sorting = null;
+			}
+		} else {
+			this.sorting = { column, direction: 'ASC' };
+		}
 	}
 
 	formatTime(hour: number, minute: number) {
@@ -149,5 +147,9 @@ export class ShiftChangeComponent implements OnInit {
 		if (error.code === 'SUN-OIL-4748') {
 			this.toastr.error('Ca làm việc đang được gán lịch cho nhân viên');
 		}
+	}
+
+	gotoDetail(id: string) {
+		this.router.navigate([`ca-lam-viec/chi-tiet-doi-ca/${id}`]);
 	}
 }
