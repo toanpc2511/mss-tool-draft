@@ -1,0 +1,47 @@
+.card-toolbar {
+	gap: 50px;
+
+	button {
+		width: 110px;
+	}
+}
+
+.card.card-custom {
+	.card-body,
+	.card-header {
+		border: 0;
+	}
+
+	.card-body {
+		padding-top: 1rem;
+	}
+
+	.card-header {
+		margin-top: 2rem;
+	}
+}
+
+table {
+	min-width: 1024px;
+
+	th,
+	td {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	thead {
+		th {
+			text-transform: none;
+		}
+	}
+
+  td {
+    &.name {
+      width: 100px;
+    }
+    &.status {
+      width: 150px;
+    }
+  }
+}

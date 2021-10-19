@@ -70,7 +70,7 @@
 		<div class="content-header">
 			<div class="d-flex justify-content-end">
 				<a
-					*ngIf="event.event.start |isFeatureDate"
+					*ngIf="event.event.extendedProps.start |isFeatureDate"
 					class="btn btn-icon btn-light btn-hover-primary btn-sm"
 					(click)="createCalendarModal(event)"
 				>
@@ -83,7 +83,7 @@
 					</span>
 				</a>
 				<a
-					*ngIf="event.event.start |isFeatureDate"
+					*ngIf="event.event.extendedProps.start |isFeatureDate"
 					class="mx-3 btn btn-icon btn-light btn-hover-danger btn-sm"
 					(click)="deleteCalendarOfEmployee($event, event.event)"
 				>
