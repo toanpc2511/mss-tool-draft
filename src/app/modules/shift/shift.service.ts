@@ -1,8 +1,16 @@
+import { DataResponse } from './../../shared/models/data-response.model';
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { GasStationResponse } from './../gas-station/gas-station.service';
 import { convertDateToServer } from '../../shared/helpers/functions';
+import { of } from 'rxjs';
+import * as moment from 'moment';
+
+export enum EShiftChangRequestType {
+	CHANGE = 'CHANGE',
+	REPLACE = 'REPLACE'
+}
 
 export enum EShiftChangRequestStatus {
 	APPROVE = 'APPROVE',
@@ -90,8 +98,17 @@ export interface IDataEventCalendar {
 	extendedProps: ICalendarData;
 }
 
+// Đổi ca/thay ca
+
 export interface IShiftRequestChange {
 	id: string;
+	name: string;
+	type: EShiftChangRequestType;
+	station: string;
+	date: string;
+	shiftRequest: string;
+	reason: string;
+	createAt: string;
 	status: EShiftChangRequestStatus;
 }
 
@@ -178,5 +195,55 @@ export class ShiftService {
 			.set('time-end', convertDateToServer(req.timeEnd))
 			.set('employee-ids', req.employeeIds.join(','));
 		return this.http.delete(`calendars`, { params });
+	}
+
+	/*	
+		Đổi ca/thay ca	
+	*/
+	getShiftRequestChangeList(type: string, status: EShiftChangRequestStatus) {
+		const params = new HttpParams().set('type', type).set('status', status);
+		let data: IShiftRequestChange[] = [];
+		for (let i = 0; i < 50; i++) {
+			data = [
+				...data,
+				{
+					id: i.toString(),
+					name: `Nhân viên ${i}`,
+					type: i < 15 ? EShiftChangRequestType.CHANGE : EShiftChangRequestType.REPLACE,
+					station: `Trạm ${i}`,
+					date: moment().format('DD/MM/YYYY'),
+					shiftRequest: `Ca ${i}`,
+					reason: `Thích đổi ${i}`,
+					createAt: moment().format('DD/MM/YYYY'),
+					status:
+						i < 10
+							? EShiftChangRequestStatus.APPROVE
+							: i < 20
+							? EShiftChangRequestStatus.REJECT
+							: EShiftChangRequestStatus.WAITING
+				}
+			];
+		}
+		console.log(data);
+		
+		return of<DataResponse<IShiftRequestChange[]>>({
+			data,
+			meta: {
+				total: 50
+			}
+		});
+		return this.http.get<IShiftRequestChange[]>(`shift-request-change`, { params });
+	}
+
+	getDetailShiftRequestChange(id: string) {
+		return this.http.get(`shift-request-change/${id}`);
+	}
+
+	approveShiftRequestChange(id: string) {
+		return this.http.put(`shift-request-change/${id}`, null);
+	}
+
+	rejectShiftRequestChange(id: string) {
+		return this.http.put(`shift-request-change/${id}`, null);
 	}
 }
