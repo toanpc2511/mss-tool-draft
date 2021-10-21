@@ -147,7 +147,7 @@ export interface IOtherRevenue {
 export interface IValueSearchLockShift {
   startAt: string,
   endAt: string,
-  shiftId: number,
+  shiftName: string,
   stationName: string
 }
 
@@ -286,7 +286,7 @@ export class ShiftService {
       .set('size', size.toString())
       .set('start-at', convertDateToServer(dataReq.startAt))
       .set('end-at', convertDateToServer(dataReq.endAt))
-      .set('shift-id', dataReq.shiftId.toString())
+      .set('shift-name', dataReq.shiftName)
       .set('station-name', dataReq.stationName)
     return this.http.get<Array<ILockShift>>('lock-shifts/filter', {params})
   }
