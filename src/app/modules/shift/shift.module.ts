@@ -38,6 +38,12 @@ import { ShiftComponent } from './shift.component';
 import { DisplayStartEndCalendarPipe } from './shift-work/display-start-end-calendar.pipe';
 import { ShiftClosingHistoryComponent } from './shift-closing-history/shift-closing-history.component';
 import { ModalConfirmComponent } from './shift-closing-history/modal-confirm/modal-confirm.component';
+import { DetailShiftClosingHistoryComponent } from './shift-closing-history/detail-shift-closing-history/detail-shift-closing-history.component';
+import { FuelRevenueDetailComponent } from './shift-closing-history/detail-shift-closing-history/fuel-revenue-detail/fuel-revenue-detail.component';
+import { OtherRevenueDetailComponent } from './shift-closing-history/detail-shift-closing-history/other-revenue-detail/other-revenue-detail.component';
+import { PromotionDetailComponent } from './shift-closing-history/detail-shift-closing-history/promotion-detail/promotion-detail.component';
+import { TotalRevenueComponent } from './shift-closing-history/detail-shift-closing-history/total-revenue/total-revenue.component';
+import { CustomShiftPipe } from './shift.pipe';
 
 @NgModule({
 	declarations: [
@@ -60,7 +66,13 @@ import { ModalConfirmComponent } from './shift-closing-history/modal-confirm/mod
 		IsFeatureDatePipe,
 		DisplayStartEndCalendarPipe,
 		ShiftClosingHistoryComponent,
-		ModalConfirmComponent
+		ModalConfirmComponent,
+		DetailShiftClosingHistoryComponent,
+		FuelRevenueDetailComponent,
+		OtherRevenueDetailComponent,
+		PromotionDetailComponent,
+		TotalRevenueComponent,
+    CustomShiftPipe
 	],
 	imports: [
 		CommonModule,

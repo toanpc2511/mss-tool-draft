@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
-import { LIST_STATUS } from '../../../shared/data-enum/list-status';
+import { LIST_STATUS_SHIFT_CLOSING } from '../../../shared/data-enum/list-status';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDataTransfer, ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
+import { Router } from '@angular/router';
+import { ILockShift, IShiftConfig, ShiftService } from '../shift.service';
+import { GasStationResponse } from '../../gas-station/gas-station.service';
+import { convertTimeToString } from '../../../shared/helpers/functions';
+import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 
 @Component({
   selector: 'app-shift-closing-history',
@@ -14,43 +19,49 @@ import { IDataTransfer, ModalConfirmComponent } from './modal-confirm/modal-conf
 export class ShiftClosingHistoryComponent implements OnInit {
   searchForm: FormGroup;
   today: string;
-  dataSource;
-  listStatus = LIST_STATUS;
+  dataSource: ILockShift[] = [];
+  listStatus = LIST_STATUS_SHIFT_CLOSING;
+  listStations: GasStationResponse[] = [];
+  listShifts: IShiftConfig[] = [];
+  paginatorState = new PaginatorState();
 
   constructor(
     private fb : FormBuilder,
     private modalService: NgbModal,
+    private router: Router,
+    private shiftService : ShiftService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.today = moment().format('DD/MM/YYYY');
-    this.dataSource = [
-      {
-        id: 1,
-        stationName: 'SunOil',
-        shiftName: 'Ca đêm',
-        timeStart: '10/10/2022',
-        timeEnd: '10/10/2022',
-        status: 'ACTIVE'
-      },
-      {
-        id: 2,
-        stationName: 'SunOil',
-        shiftName: 'Ca đêm',
-        timeStart: '10/10/2022',
-        timeEnd: '10/10/2022',
-        status: 'ACTIVE'
-      }
-    ]
+
+    this.paginatorState.page = 1;
+    this.paginatorState.pageSize = 10;
+    this.paginatorState.pageSizes = [5, 10, 15, 20];
+    this.paginatorState.total = 0;
   }
 
   ngOnInit(): void {
     this.buildForm();
     this.initDate();
+
+    this.shiftService.getStationByAccount()
+      .subscribe((res) => {
+        this.listStations = res.data;
+        this.cdr.detectChanges();
+      })
+
+    this.shiftService.getListShiftConfig()
+      .subscribe((res) => {
+        this.listShifts = res.data;
+        this.cdr.detectChanges();
+      })
+    this.onSearch();
   }
 
   buildForm() {
     this.searchForm = this.fb.group({
-      station: [''],
-      shift: [''],
+      stationName: [''],
+      shiftId: [''],
       startAt: [],
       endAt: []
     })
@@ -61,10 +72,31 @@ export class ShiftClosingHistoryComponent implements OnInit {
     this.searchForm.get('endAt').patchValue(this.today);
   }
 
-  onSearch() {}
+  onSearch() {
+    this.shiftService.getListLockShift(
+      this.paginatorState.page,
+      this.paginatorState.pageSize,
+      this.searchForm.value
+    )
+      .subscribe((res) => {
+        this.dataSource = res.data;
+        this.paginatorState.recalculatePaginator(res.meta.total);
+        this.cdr.detectChanges();
+      })
+  }
 
-  viewDetail() {
-    console.log('aaaaaa');
+  formatTime(hour: number, minute: number) {
+    return convertTimeToString(hour, minute);
+  }
+
+  pagingChange($event: IPaginatorState) {
+    this.paginatorState = $event as PaginatorState;
+    this.onSearch();
+  }
+
+
+  viewDetail(id: number) {
+    this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${id}`]);
   }
 
   modalConfirm($event?: Event, data?: IDataTransfer): void {
@@ -80,12 +112,6 @@ export class ShiftClosingHistoryComponent implements OnInit {
       title: 'Xác nhận yêu cầu chốt ca',
       id: data
     };
-
-    modalRef.result.then((result) => {
-      if (result) {
-        console.log('thành công');
-      }
-    });
   }
 
 }

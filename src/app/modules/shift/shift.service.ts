@@ -1,8 +1,25 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
-import { GasStationResponse } from './../gas-station/gas-station.service';
+import { GasStationResponse } from '../gas-station/gas-station.service';
 import { convertDateToServer } from '../../shared/helpers/functions';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+export class StepData {
+  currentStep: number;
+  step1: {
+    isValid: boolean;
+  };
+  step2: {
+    isValid: boolean;
+  };
+  step3: {
+    isValid: boolean;
+  };
+  step4: {
+    isValid: boolean;
+  };
+}
 
 export type PumpPoleResponse = {
 	id: number;
@@ -84,11 +101,58 @@ export interface IDataEventCalendar {
 	extendedProps: ICalendarData;
 }
 
+export interface IOtherRevenue {
+  exportQuantity: number,
+  finalInventory: number,
+  headInventory: number,
+  id: number,
+  importQuantity: number,
+  lockShiftId: number,
+  price: number,
+  productId: number,
+  productName: string,
+  total: number,
+  totalMoney: number,
+  unit: string
+}
+
+export interface IValueSearchLockShift {
+  startAt: string,
+  endAt: string,
+  shiftId: number,
+  stationName: string
+}
+
+export interface ILockShift {
+  endHour: number,
+  endMinute: number,
+  id: number,
+  shiftId: number,
+  shiftName: string,
+  startHour: number,
+  startMinute: number,
+  stationName: string,
+  status: string,
+  timeEnd: string,
+  timeStart: string
+}
+
 @Injectable({
 	providedIn: 'root'
 })
 export class ShiftService {
-	constructor(private http: HttpService) {}
+  private stepDataSubject: BehaviorSubject<StepData>;
+  stepData$: Observable<StepData>;
+	constructor(private http: HttpService) {
+    this.stepDataSubject = new BehaviorSubject<StepData>({
+      currentStep: 1,
+      step1: { isValid: false },
+      step2: { isValid: false },
+      step3: { isValid: false },
+      step4: { isValid: false }
+    });
+    this.stepData$ = this.stepDataSubject.asObservable();
+  }
 
 	getStationByAccount() {
 		return this.http.get<GasStationResponse[]>('gas-stations/station-employee');
@@ -168,4 +232,46 @@ export class ShiftService {
 			.set('employee-ids', req.employeeIds.join(','));
 		return this.http.delete(`calendars`, { params });
 	}
+
+  setStepData(stepData: StepData) {
+    this.stepDataSubject.next(stepData);
+  }
+
+  getStepDataValue(): StepData {
+    return this.stepDataSubject.value;
+  }
+
+  resetCreateData() {
+    this.stepDataSubject.next({
+      currentStep: 1,
+      step1: { isValid: false },
+      step2: { isValid: false },
+      step3: { isValid: false },
+      step4: { isValid: false }
+    });
+  }
+
+  // Lấy ds lịch sử chốt ca
+  getListLockShift(page: number, size: number, dataReq: IValueSearchLockShift) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('start-at', convertDateToServer(dataReq.startAt))
+      .set('end-at', convertDateToServer(dataReq.endAt))
+      .set('shift-id', dataReq.shiftId.toString())
+      .set('station-name', dataReq.stationName)
+    return this.http.get<Array<ILockShift>>('lock-shifts/filter', {params})
+  }
+
+  // Lấy ds doanh thu hàng hóa
+  getOtherProductRevenue(id: number) {
+    const params = new HttpParams().set('lock-shift-id', id.toString());
+    return this.http.get<Array<IOtherRevenue>>('other-product-revenue', { params });
+  }
+
+  // Sửa doanh thu hàng hóa khác
+  updateOtherProductRevenue(dataReq: {lockShiftId: number, productRevenueRequests: [ {otherProductRevenueId: number, importQuantity: number, exportQuantity:  number}]}) {
+    return this.http.put(`other-product-revenue`, {dataReq});
+  }
+
 }

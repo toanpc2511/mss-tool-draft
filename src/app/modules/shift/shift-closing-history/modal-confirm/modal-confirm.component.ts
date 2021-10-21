@@ -5,6 +5,7 @@ import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IError } from '../../../../shared/models/error.model';
 import { DestroyService } from '../../../../shared/services/destroy.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modal-confirm',
@@ -20,6 +21,7 @@ export class ModalConfirmComponent implements OnInit {
   constructor(
     public modal: NgbActiveModal,
     private destroy$: DestroyService,
+    private router: Router,
   ) {
     this.dataSource = [
       {
@@ -49,7 +51,8 @@ export class ModalConfirmComponent implements OnInit {
     fromEvent(this.btnSave.nativeElement, 'click')
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        console.log('Submited');
+        this.modal.close();
+        this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${this.data.id}`]);
       });
   }
 

@@ -9,19 +9,17 @@
       <div class="form-group row">
         <div class="col-lg-6">
           <label>Tên trạm</label>
-          <select class="form-control form-control-solid" formControlName="station">
+          <select class="form-control form-control-solid" formControlName="stationName">
             <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
+            <option *ngFor='let item of listStations' [value]='item.name'>{{item.name}}</option>
           </select>
         </div>
 
         <div class="col-lg-6">
           <label>Ca làm việc</label>
-          <select class="form-control form-control-solid" formControlName="shift">
+          <select class="form-control form-control-solid" formControlName="shiftId">
             <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
+            <option *ngFor='let item of listShifts' [value]='item.id'>{{item.name}}</option>
           </select>
         </div>
       </div>
@@ -96,34 +94,70 @@
         <th scope="">Tên ca</th>
         <th scope="">Thời gian bắt đầu</th>
         <th scope="">Thời gian kết thúc</th>
-        <th scope="">Status</th>
-        <th scope="">Tác động</th>
+        <th scope="">Trạng thái</th>
+        <th scope="" class='text-center'>Tác động</th>
         </thead>
 
         <tbody>
-        <tr *ngFor='let item of dataSource' (click)='viewDetail()'>
-          <td>{{item.stationName}}</td>
-          <td>{{item.shiftName}}</td>
-          <td>{{item.timeStart}}</td>
-          <td>{{item.timeEnd}}</td>
-          <td>{{item.status}}</td>
-          <td class="text-center action">
-            <a
-              (click)="modalConfirm($event, item.id)"
-              class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+        <tr *ngFor='let item of dataSource' (click)='viewDetail(item.id)'>
+          <td class="station-name">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.stationName"
             >
-								<span
-                  [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
-                  cacheSVG="true"
-                  class="svg-icon svg-icon-md svg-icon-primary"
-                  [ngbTooltip]="'Sửa'"
-                >
-								</span>
-            </a>
+              {{ item.stationName }}
+            </p>
+          </td>
+          <td class="shift-name">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.shiftName"
+            >
+              {{ item.shiftName }}
+            </p>
+          </td>
+          <td class="time-start">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.timeStart | date: 'dd/MM/yyyy' + ' - ' + formatTime(item.startHour, item.startMinute)"
+            >
+              {{item.timeStart | date: 'dd/MM/yyyy'}} - {{ formatTime(item.startHour, item.startMinute) }}
+            </p>
+          </td>
+          <td class="time-end">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.timeEnd | date: 'dd/MM/yyyy' + ' - ' + formatTime(item.endHour, item.endMinute)"
+            >
+              {{item.timeEnd | date: 'dd/MM/yyyy'}} - {{ formatTime(item.endHour, item.endMinute) }}
+            </p>
+          </td>
+          <td class="status">
+							<span
+                class="label label-lg label-inline"
+                [class.label-light-success]="item.status === listStatus.OPEN"
+                [class.label-light-danger]="item.status === listStatus.CLOSE"
+                [class.label-light-warning]="item.status === listStatus.PENDING"
+              >
+								<ng-container *ngIf="item.status === listStatus.OPEN">Mở</ng-container>
+								<ng-container *ngIf="item.status === listStatus.CLOSE">Đóng</ng-container>
+								<ng-container *ngIf="item.status === listStatus.PENDING">Chờ chốt ca</ng-container>
+							</span>
+          </td>
+          <td class="text-center action">
+            <button type="button" class="btn btn-primary"
+                    *ngIf='item.status === "OPEN"'
+                    (click)="modalConfirm($event, item.id)"
+            >
+              Yêu cầu chốt ca
+            </button>
           </td>
         </tr>
         </tbody>
-
 
         <tfoot *ngIf="dataSource?.length === 0">
         <tr>
@@ -132,5 +166,6 @@
         </tfoot>
       </table>
     </div>
+    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
   </div>
 </div>

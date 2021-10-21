@@ -77,3 +77,9 @@ export const LIST_DAY_OF_WEEK = [
     name: 'CN'
   },
 ];
+
+export const LIST_STATUS_SHIFT_CLOSING = {
+  OPEN: 'OPEN',
+  CLOSE: 'CLOSE',
+  PENDING: 'PENDING'
+}

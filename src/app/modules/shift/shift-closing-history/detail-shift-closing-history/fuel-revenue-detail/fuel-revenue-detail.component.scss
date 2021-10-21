@@ -1,0 +1,22 @@
+.card-header {
+  padding: 0 15px !important;
+  border-bottom: none;
+
+  .title {
+    text-transform: uppercase;
+    color: #4674EB;
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+.card-body {
+  padding: 0 2.25rem !important;
+
+  .table {
+    min-width: 2048px;
+    th {
+      text-transform: none;
+    }
+  }
+}

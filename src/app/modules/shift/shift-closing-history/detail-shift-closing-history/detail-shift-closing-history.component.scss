@@ -1,0 +1,30 @@
+@import '../../../../../assets/sass/pages/wizard/wizard-3';
+
+.detail-shift-closing-wrapper {
+  a {
+    &.can-active:hover {
+      .wizard-title {
+        color: #3699ff;
+      }
+
+      .wizard-bar {
+        background-color: #3699ff !important;
+      }
+    }
+
+    &.active {
+      .wizard-title {
+        color: #3699ff;
+      }
+
+      .wizard-bar {
+        background-color: #3699ff !important;
+      }
+    }
+  }
+
+  .card-body {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
