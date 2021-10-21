@@ -21,27 +21,75 @@
     <div class="table-responsive angular-bootstrap-table">
       <table class="table table-head-custom table-vertical-center overflow-hidden">
         <thead>
-        <th class="id text-right" scope="">ID</th>
-        <th class="category" scope="">Nhóm sản phẩm</th>
-        <th class="name" scope="">Tên sản phẩm</th>
-        <th class="number text-right" scope="">Giá bán</th>
-        <th class="unit" scope="">Đơn vị</th>
-        <th class="vat text-right" scope="">VAT (%)</th>
+        <th class="id" scope="">ID</th>
+        <th class="category" scope="">
+          Nhóm sản phẩm
+          <app-sort-icon
+            column="categoryName"
+            [activeColumn]="sortData?.fieldSort"
+            [activeDirection]="sortData?.directionSort"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th class="name" scope="">
+          Tên sản phẩm
+          <app-sort-icon
+            column="productName"
+            [activeColumn]="sortData?.fieldSort"
+            [activeDirection]="sortData?.directionSort"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th class="price text-right" scope="">
+          Giá bán
+          <app-sort-icon
+            column="price"
+            [activeColumn]="sortData?.fieldSort"
+            [activeDirection]="sortData?.directionSort"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th class="unit" scope="">
+          Đơn vị
+          <app-sort-icon
+            column="unit"
+            [activeColumn]="sortData?.fieldSort"
+            [activeDirection]="sortData?.directionSort"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
+        <th class="vat text-right" scope="">
+          VAT (%)
+          <app-sort-icon
+            column="valueAddedTax"
+            [activeColumn]="sortData?.fieldSort"
+            [activeDirection]="sortData?.directionSort"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
         <th class="qr-code text-center" scope="">QR Code</th>
-        <th class="status" scope="">Trạng thái</th>
+        <th class="status" scope="">
+          Trạng thái
+          <app-sort-icon
+            column="status"
+            [activeColumn]="sortData?.fieldSort"
+            [activeDirection]="sortData?.directionSort"
+            (sort)="sort($event)"
+          ></app-sort-icon>
+        </th>
         <th class="action text-center" scope="">Tác động</th>
         </thead>
 
         <tbody>
         <tr *ngFor='let item of dataRes'>
-          <td class="id text-right">
+          <td class="id">
             <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.id">
               {{ item.id }}
             </p>
           </td>
-          <td class="product-type">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.productType">
-              {{ item.productType }}
+          <td class="category-name">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.categoryName">
+              {{ item.categoryName }}
             </p>
           </td>
           <td class="product-name">
@@ -49,7 +97,6 @@
               {{ item.productName }}
             </p>
           </td>
-
           <td class="price text-right">
             <p
               class="cursor-pointer text-ellipsis"
@@ -65,8 +112,8 @@
             </p>
           </td>
           <td class="vat text-right">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.vat">
-              {{ item.vat }}
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.valueAddedTax +'%'">
+              {{ item.valueAddedTax }} %
             </p>
           </td>
           <td class="qr-code">
@@ -95,6 +142,7 @@
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-primary"
                   [ngbTooltip]="'Tải QR Code'"
+                  (click)='downloadFile(item)'
                 >
 								</span>
             </a>
@@ -124,6 +172,6 @@
       </table>
     </div>
 
-    <!-- <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator> -->
+     <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
   </div>
 </div>

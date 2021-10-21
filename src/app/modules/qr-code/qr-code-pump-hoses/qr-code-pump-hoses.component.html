@@ -52,7 +52,7 @@
         <th class="pump-house" scope="">
           Vòi
           <app-sort-icon
-            column="hole"
+            column="hose"
             [activeColumn]="sorting.column"
             [activeDirection]="sorting.direction"
             (sort)="sort($event)"
@@ -107,8 +107,8 @@
             </p>
           </td>
           <td class="pump-house">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.hole">
-              {{ item.hole }}
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.hose">
+              {{ item.hose }}
             </p>
           </td>
           <td class="fuel">
@@ -151,6 +151,7 @@
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-primary"
                   [ngbTooltip]="'Tải QR Code'"
+                  (click)='downloadFile(item.image.id, item.image.url)'
                 >
 								</span>
             </a>
@@ -179,7 +180,5 @@
         </tfoot>
       </table>
     </div>
-
-    <!-- <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator> -->
   </div>
 </div>
