@@ -8,6 +8,8 @@ import { DestroyService } from '../../../shared/services/destroy.service';
 import { IProduct } from '../../product/product.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { IQrPumpHose, QrCodeService } from '../qr-code.service';
+import { FileService } from '../../../shared/services/file.service';
 
 @Component({
   selector: 'app-qr-code-pump-hoses',
@@ -38,106 +40,9 @@ export class QrCodePumpHosesComponent implements OnInit {
     private filterService: FilterService<IProduct>,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
+    private fileService: FileService,
+    private qrCodeService: QrCodeService
   ) {
-    this.dataSource = this.dataSourceTemp = [
-      {
-        id: 3,
-        station: 'Trạm xăng Sunoil',
-        pole: 'Thanh Hóa',
-        hole: 'Cột 3',
-        price: 12340000000,
-        nameFuel: 'Xăng Ron 95',
-        qrCode: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-        image: {
-          id: 2,
-          url: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-          typeMedia: ''
-        },
-        unit: "Lít",
-        status: 'INACTIVE'
-      },
-      {
-        id: 4,
-        station: 'Trạm xăng Sunoil 9',
-        pole: 'Thanh Hóa',
-        hole: 'Cột 3',
-        price: 12340000000,
-        nameFuel: 'Xăng Ron 95',
-        qrCode: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-        image: {
-          id: 2,
-          url: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-          typeMedia: ''
-        },
-        unit: "Lít",
-        status: 'ACTIVE'
-      },
-      {
-        id: 2,
-        station: 'Trạm xăng Sunoil 7',
-        pole: 'Thanh Hóa',
-        hole: 'Cột 3',
-        price: 12340000000,
-        nameFuel: 'Xăng Ron 95',
-        qrCode: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-        image: {
-          id: 2,
-          url: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-          typeMedia: ''
-        },
-        unit: "Lít",
-        status: 'INACTIVE'
-      },
-      {
-        id: 6,
-        station: 'Trạm xăng Sunoil 2',
-        pole: 'Thanh Hóa',
-        hole: 'Cột 3',
-        price: 12340000000,
-        nameFuel: 'Xăng Ron 95',
-        qrCode: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-        image: {
-          id: 2,
-          url: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-          typeMedia: ''
-        },
-        unit: "Lít",
-        status: 'INACTIVE'
-      },
-      {
-        id: 8,
-        station: 'Trạm xăng Sunoil 3',
-        pole: 'Thanh Hóa',
-        hole: 'Cột 3',
-        price: 12340000000,
-        nameFuel: 'Xăng Ron 95',
-        qrCode: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-        image: {
-          id: 2,
-          url: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-          typeMedia: ''
-        },
-        unit: "Lít",
-        status: 'ACTIVE'
-      },
-      {
-        id: 3,
-        station: 'Trạm xăng Sunoil 5',
-        pole: 'Thanh Hóa',
-        hole: 'Cột 3',
-        price: 12340000000,
-        nameFuel: 'Xăng Ron 95',
-        qrCode: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-        image: {
-          id: 2,
-          url: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-          typeMedia: ''
-        },
-        unit: "Lít",
-        status: 'ACTIVE'
-      }
-    ];
-
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
       station: null,
@@ -150,6 +55,8 @@ export class QrCodePumpHosesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getListQrCodePumlHose();
+
     this.searchForm.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))
       .subscribe((value) => {
@@ -166,14 +73,27 @@ export class QrCodePumpHosesComponent implements OnInit {
       });
   }
 
-  viewQrCode(content, item: any) {
+  getListQrCodePumlHose() {
+    this.qrCodeService.getListQrCodePumlHose()
+      .subscribe((res) => {
+        this.dataSource = this.dataSourceTemp = res.data;
+        console.log(this.dataSource);
+        this.cdr.detectChanges();
+      })
+  }
+
+  viewQrCode(content, item: IQrPumpHose) {
     this.modalService.open(content, { size: 'md' });
 
     this.nameProduct = item.nameFuel;
-    this.image = item.qrCode;
+    this.image = item.image.url;
   }
 
   sort(column: string) {
     this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
+  }
+
+  downloadFile(fileId: string, fileName: string) {
+    return this.fileService.downloadFile(fileId, fileName);
   }
 }

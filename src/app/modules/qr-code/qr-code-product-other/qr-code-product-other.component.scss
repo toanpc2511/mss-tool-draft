@@ -27,57 +27,40 @@
 table {
   min-width: 1024px;
 
-  th,
-  td {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
   thead {
     th {
       text-transform: none;
+      &.price {
+        padding-right: 47px;
+      }
     }
   }
 
-  .number {
-    padding-right: 24px;
-  }
-  th, td {
+  td {
     &.id {
-      width: 70px;
+      min-width: 60px;
     }
-    &.product-type,
+    &.category-name,
     &.product-name {
-      min-width: 150px;
-      max-width: 250px;
-      p {
-        padding-right: 25px;
-      }
+      min-width: 170px;
+      max-width: 220px;
     }
-    &.price {
-      padding-left: 15px;
-      max-width: 120px;
-      p {
-        padding-right: 24px;
-      }
-    }
+    &.price,
     &.unit {
-      min-width: 100px;
+      min-width: 80px;
+      max-width: 130px;
+      padding-right: 70px;
     }
     &.vat {
-      min-width: 100px;
+      min-width: 80px;
+      max-width: 130px;
       padding-right: 35px;
     }
     &.qr-code {
-      min-width: 80px;
-    }
-    &.status {
-      min-width: 150px;
-      max-width: 170px;
-    }
-    &.action {
       min-width: 100px;
+      max-width: 150px;
     }
   }
+
 }
 

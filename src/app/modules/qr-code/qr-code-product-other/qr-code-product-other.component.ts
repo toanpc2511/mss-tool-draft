@@ -2,6 +2,10 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../shared/services/destroy.service';
+import { QrCodeService } from '../qr-code.service';
+import { ISortData } from '../../contract/contract.service';
+import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
+import { FileService } from '../../../shared/services/file.service';
 
 @Component({
   selector: 'app-qr-code-product-other',
@@ -14,58 +18,61 @@ export class QrCodeProductOtherComponent implements OnInit {
   listStatus = LIST_STATUS;
   nameProduct: string;
   image: string;
+  sortData: ISortData;
+  paginatorState = new PaginatorState();
 
   constructor(
     private modalService: NgbModal,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
+    private qrCodeService: QrCodeService,
+    private fileService: FileService,
   ) {
-    this.dataRes = [
-      {
-        id: 1,
-        productType: "Nhóm sản phẩm nhiên liệu",
-        productName: "Xăng Ron 95",
-        price: 15000,
-        vat: 15,
-        unit: "Lít",
-        qrCode: 'https://chart.googleapis.com/chart?cht=qr&chl=TTC%20Solution&chs=180x180&choe=UTF-8&chld=L|2',
-        status: 'ACTIVE'
-      },
-      {
-        id: 1,
-        productType: "Nhóm sản phẩm nhiên liệu",
-        productName: "Xăng Ron 95",
-        price: 1500000000,
-        vat: 15,
-        unit: "Lít",
-        qrCode: "https://chart.googleapis.com/chart?cht=qr&chl=ToanPC%20_%20VipPro&chs=250x250&choe=UTF-8&chld=L|2",
-        status: 'INACTIVE'
-      },
-      {
-        id: 2,
-        productType: "Nhóm sản phẩm khác nhiên liệuNhóm sản phẩm khác nhiên liệu",
-        productName: "Bánh gạo Bánh gạo Bánh gạo Bánh gạo Bánh gạo Bánh gạo ",
-        price: 1602000000000,
-        vat: 85,
-        unit: "Gói Bánh gạo ",
-        qrCode: "https://chart.googleapis.com/chart?cht=qr&chl=ToanPC%20_%20VipPro&chs=250x250&choe=UTF-8&chld=L|2",
-        status: 'ACTIVE'
-      },
-      {
-        id: 3,
-        productType: "Nhóm sản phẩm nhiên liệu",
-        productName: "Xăng A95 II",
-        price: 15000,
-        vat: 15,
-        unit: "Lít",
-        qrCode: "https://chart.googleapis.com/chart?cht=qr&chl=ToanPC%20_%20VipPro&chs=250x250&choe=UTF-8&chld=L|2",
-        status: 'ACTIVE'
-      }
-    ];
+    this.init();
+  }
+
+  init() {
+    this.paginatorState.page = 1;
+    this.paginatorState.pageSize = 10;
+    this.paginatorState.pageSizes = [5, 10, 15, 20];
+    this.paginatorState.total = 0;
+    this.sortData = null;
   }
 
   ngOnInit(): void {
-    console.log('a');
+    this.getListQrCodeProductOther();
+  }
+
+  getListQrCodeProductOther() {
+    this.qrCodeService.getListQrCodeProductOther(
+      this.paginatorState.page,
+      this.paginatorState.pageSize,
+      this.sortData
+    )
+      .subscribe((res) => {
+        this.dataRes = res.data;
+        console.log(this.dataRes[0]);
+        this.paginatorState.recalculatePaginator(res.meta.total);
+        this.cdr.detectChanges();
+      })
+  }
+
+  pagingChange($event: IPaginatorState) {
+    this.paginatorState = $event as PaginatorState;
+    this.getListQrCodeProductOther();
+  }
+
+  sort(column: string) {
+    if (this.sortData && this.sortData.fieldSort === column) {
+      if (this.sortData.directionSort === 'ASC') {
+        this.sortData = { fieldSort: column, directionSort: 'DESC' };
+      } else {
+        this.sortData = null;
+      }
+    } else {
+      this.sortData = { fieldSort: column, directionSort: 'ASC' };
+    }
+    this.getListQrCodeProductOther();
   }
 
   viewQrCode(content, item: any) {
@@ -73,5 +80,11 @@ export class QrCodeProductOtherComponent implements OnInit {
 
     this.nameProduct = item.productName;
     this.image = item.qrCode;
+  }
+
+  downloadFile(item) {
+    const fileId = item.qrCodeProduct.qrCodeImage.id;
+    const fileName = item.qrCodeProduct.qrCodeImage.url;
+    return this.fileService.downloadFile(fileId, fileName);
   }
 }
