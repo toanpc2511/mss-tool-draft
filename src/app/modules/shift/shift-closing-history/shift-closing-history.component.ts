@@ -61,7 +61,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
   buildForm() {
     this.searchForm = this.fb.group({
       stationName: [''],
-      shiftId: [''],
+      shiftName: [''],
       startAt: [],
       endAt: []
     })
