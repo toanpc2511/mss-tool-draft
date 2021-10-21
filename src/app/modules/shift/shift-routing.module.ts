@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ShiftWorkComponent } from './shift-work/shift-work.component';
 import { ShiftWorkConfigComponent } from './shift-work-config/shift-work-config.component';
+import { ShiftClosingHistoryComponent } from './shift-closing-history/shift-closing-history.component';
+import { DetailShiftClosingHistoryComponent } from './shift-closing-history/detail-shift-closing-history/detail-shift-closing-history.component';
 import { ShiftChangeComponent } from './shift-change/shift-change.component';
 import { ShiftChangeDetailComponent } from './shift-change-detail/shift-change-detail.component';
 
@@ -26,6 +28,19 @@ const routes: Routes = [
 	{
 		path: 'chi-tiet-doi-ca/:id',
 		component: ShiftChangeDetailComponent
+	},
+	{
+		path: 'lich-su-chot-ca',
+    children: [
+      {
+        path: '',
+        component: ShiftClosingHistoryComponent
+      },
+      {
+        path: 'chi-tiet/:lockShiftId',
+        component: DetailShiftClosingHistoryComponent
+      }
+    ]
 	}
 ];
 

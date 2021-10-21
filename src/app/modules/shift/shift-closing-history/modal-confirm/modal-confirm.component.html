@@ -1,0 +1,47 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+    <div class="close-icon" (click)="modal.close()"></div>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 250px">
+      <p class='pt-5'>
+        <strong>
+          Ca làm việc còn <span class='number-order'>{{dataSource.length}} đơn hàng</span> chưa hoàn thành, bạn có chắc muốn chốt ca không?
+        </strong>
+      </p>
+
+      <p class='py-3 text-danger'>
+        <strong>
+          Chốt ca sẽ hủy toàn bộ các đơn hàng này.
+        </strong>
+      </p>
+
+      <div class="table-responsive angular-bootstrap-table">
+        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+          <thead>
+          <th scope="">Mã đơn hàng</th>
+          <th scope="">Cột bơm</th>
+          <th scope="">Vòi bơm</th>
+          <th scope="">Trạng thái</th>
+          </thead>
+
+          <tbody>
+          <tr *ngFor='let item of dataSource'>
+            <td>{{item.code}}</td>
+            <td>{{item.pumpPole}}</td>
+            <td>{{item.pumpHole}}</td>
+            <td>{{item.status}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-confirm-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-primary btn-confirm-dialog" #btnSave>Xác nhận</button>
+  </div>
+</div>
