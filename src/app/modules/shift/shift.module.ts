@@ -1,3 +1,4 @@
+import { ShiftChangeDetailComponent } from './shift-change-detail/shift-change-detail.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -36,6 +37,7 @@ import {
 } from './shift-work/shift-work.component';
 import { ShiftComponent } from './shift.component';
 import { DisplayStartEndCalendarPipe } from './shift-work/display-start-end-calendar.pipe';
+import { ShiftChangeComponent } from './shift-change/shift-change.component';
 import { ShiftClosingHistoryComponent } from './shift-closing-history/shift-closing-history.component';
 import { ModalConfirmComponent } from './shift-closing-history/modal-confirm/modal-confirm.component';
 import { DetailShiftClosingHistoryComponent } from './shift-closing-history/detail-shift-closing-history/detail-shift-closing-history.component';
@@ -51,6 +53,8 @@ import { CustomShiftPipe } from './shift.pipe';
 		ShiftWorkComponent,
 		EventWrapperComponent,
 		EmployeeComponent,
+		ShiftChangeComponent,
+		ShiftChangeDetailComponent,
 		CheckAllPipe,
 		DayWrapperComponent,
 		ShiftWorkConfigComponent,

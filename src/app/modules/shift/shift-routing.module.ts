@@ -4,6 +4,8 @@ import { ShiftWorkComponent } from './shift-work/shift-work.component';
 import { ShiftWorkConfigComponent } from './shift-work-config/shift-work-config.component';
 import { ShiftClosingHistoryComponent } from './shift-closing-history/shift-closing-history.component';
 import { DetailShiftClosingHistoryComponent } from './shift-closing-history/detail-shift-closing-history/detail-shift-closing-history.component';
+import { ShiftChangeComponent } from './shift-change/shift-change.component';
+import { ShiftChangeDetailComponent } from './shift-change-detail/shift-change-detail.component';
 
 const routes: Routes = [
 	{
@@ -18,6 +20,14 @@ const routes: Routes = [
 	{
 		path: 'cauhinh-ca',
 		component: ShiftWorkConfigComponent
+	},
+	{
+		path: 'doi-ca',
+		component: ShiftChangeComponent
+	},
+	{
+		path: 'chi-tiet-doi-ca/:id',
+		component: ShiftChangeDetailComponent
 	},
 	{
 		path: 'lich-su-chot-ca',
