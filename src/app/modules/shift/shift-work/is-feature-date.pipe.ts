@@ -6,7 +6,7 @@ import * as moment from 'moment';
 })
 export class IsFeatureDatePipe implements PipeTransform {
 	transform(value: Date): boolean {
-		const currentDate = moment().add({hour: 7});
+		const currentDate = moment();
 		return moment(value).isAfter(currentDate);
 	}
 }
