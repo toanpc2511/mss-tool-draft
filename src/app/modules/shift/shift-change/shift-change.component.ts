@@ -1,15 +1,21 @@
+import { takeUntil, concatMap, debounceTime } from 'rxjs/operators';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
+import { convertTimeToString } from '../../../shared/helpers/functions';
+import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
+import { IError } from '../../../shared/models/error.model';
+import { DestroyService } from '../../../shared/services/destroy.service';
+import { FilterService } from '../../../shared/services/filter.service';
+import { SortService } from '../../../shared/services/sort.service';
+import { SortState } from '../../../_metronic/shared/crud-table';
 import {
 	IDataTransfer,
 	ShiftWorkConfigModalComponent
 } from '../shift-work-config-modal/shift-work-config-modal.component';
-import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
-import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
-import { IError } from '../../../shared/models/error.model';
-import { ToastrService } from 'ngx-toastr';
-import { convertTimeToString } from '../../../shared/helpers/functions';
 import {
 	EShiftChangRequestStatus,
 	EShiftChangRequestType,
@@ -17,12 +23,11 @@ import {
 	IShiftRequestChange,
 	ShiftService
 } from '../shift.service';
-import { FilterField, SortState } from '../../../_metronic/shared/crud-table';
-import { SortService } from '../../../shared/services/sort.service';
-import { FilterService } from '../../../shared/services/filter.service';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { DestroyService } from '../../../shared/services/destroy.service';
-import { Router } from '@angular/router';
+import {
+	PaginatorState,
+	IPaginatorState
+} from './../../../_metronic/shared/crud-table/models/paginator.model';
+import { of } from 'rxjs';
 
 @Component({
 	selector: 'app-shift-change',
@@ -34,9 +39,10 @@ export class ShiftChangeComponent implements OnInit {
 	eShiftChangRequestType = EShiftChangRequestType;
 	eShiftChangRequestStatus = EShiftChangRequestStatus;
 
-	searchFormControl: FormControl;
+	paginatorState = new PaginatorState();
 	dataSource: Array<IShiftRequestChange> = [];
 	sorting: SortState;
+	searchFormGroup: FormGroup;
 
 	constructor(
 		private modalService: NgbModal,
@@ -46,36 +52,60 @@ export class ShiftChangeComponent implements OnInit {
 		private filterService: FilterService<IShiftConfig>,
 		private destroy$: DestroyService,
 		private shiftService: ShiftService,
-		private router: Router
+		private router: Router,
+		private fb: FormBuilder
 	) {
+		this.init();
+	}
+
+	init() {
+		this.paginatorState.page = 1;
+		this.paginatorState.pageSize = 15;
+		this.paginatorState.pageSizes = [5, 10, 15, 20];
+		this.paginatorState.total = 0;
 		this.sorting = null;
-		this.searchFormControl = new FormControl();
 	}
 
 	ngOnInit(): void {
+		this.searchFormGroup = this.fb.group({
+			type: [''],
+			status: [''],
+			searchText: ['']
+		});
+
+		this.searchFormGroup.valueChanges
+			.pipe(
+				debounceTime(400),
+				concatMap(() => {
+					this.getListShiftRequestChange();
+					return of();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+
 		this.getListShiftRequestChange();
-
-		this.searchFormControl.valueChanges
-			.pipe(debounceTime(500), takeUntil(this.destroy$))
-			.subscribe((value) => {
-				// if (value.trim()) {
-				// } else {
-				// }
-
-				// this.dataSource = this.sortService.sort(
-				// 	this.filterService.filter(this.dataSourceTemp, this.filterField.field)
-				// );
-				this.cdr.detectChanges();
-			});
 	}
 
 	getListShiftRequestChange() {
-		this.shiftService.getShiftRequestChangeList('', null).subscribe((res) => {
-			console.log(res);
+		const searchData: { type: string; status: string; searchText: string } =
+			this.searchFormGroup.getRawValue();
+		console.log(searchData, this.searchFormGroup.getRawValue());
+		
 
-			this.dataSource = res.data;
-			this.cdr.detectChanges();
-		});
+		this.shiftService
+			.getShiftRequestChangeList(
+				searchData.status || '',
+				searchData.type || '',
+				this.sorting?.column || '',
+				this.sorting?.direction || '',
+				searchData.searchText || '',
+				this.paginatorState.page,
+				this.paginatorState.pageSize
+			)
+			.subscribe((res) => {
+				this.checkRes(res);
+			});
 	}
 
 	sort(column: string) {
@@ -88,6 +118,7 @@ export class ShiftChangeComponent implements OnInit {
 		} else {
 			this.sorting = { column, direction: 'ASC' };
 		}
+		this.getListShiftRequestChange();
 	}
 
 	formatTime(hour: number, minute: number) {
@@ -143,6 +174,12 @@ export class ShiftChangeComponent implements OnInit {
 		});
 	}
 
+	checkRes(res) {
+		this.dataSource = res.data;
+		this.paginatorState.recalculatePaginator(res.meta.total);
+		this.cdr.detectChanges();
+	}
+
 	checkError(error: IError) {
 		if (error.code === 'SUN-OIL-4748') {
 			this.toastr.error('Ca làm việc đang được gán lịch cho nhân viên');
@@ -151,5 +188,10 @@ export class ShiftChangeComponent implements OnInit {
 
 	gotoDetail(id: string) {
 		this.router.navigate([`ca-lam-viec/chi-tiet-doi-ca/${id}`]);
+	}
+
+	pagingChange($event: IPaginatorState) {
+		this.paginatorState = $event as PaginatorState;
+		this.getListShiftRequestChange();
 	}
 }

@@ -36,13 +36,21 @@ table {
 		}
 	}
 
-  td {
-	width: 200px;
-    &.name {
-      width: 150px;
-    }
-    &.status {
-      width: 150px;
-    }
-  }
+	td {
+		min-width: 150px;
+		&.name {
+			max-width: 200px;
+		}
+		&.station {
+			max-width: 200px;
+		}
+		&.date,
+		&.create-at,
+		&.shift {
+			max-width: 200px;
+		}
+		&.reason {
+			max-width: 250px;
+		}
+	}
 }
