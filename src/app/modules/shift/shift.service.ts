@@ -336,10 +336,10 @@ export class ShiftService {
 	}
 
 	approveShiftRequestChange(id: string) {
-		return this.http.put(`swap-shifts/${id}`, null);
+		return this.http.put(`swap-shifts/status/${id}`, { status: EShiftChangRequestStatus.SWAPPED });
 	}
 
 	rejectShiftRequestChange(id: string) {
-		return this.http.put(`swap-shifts/${id}`, null);
+		return this.http.put(`swap-shifts/status/${id}`, { status: EShiftChangRequestStatus.REJECTED });
 	}
 }

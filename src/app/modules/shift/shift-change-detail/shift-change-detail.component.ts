@@ -1,9 +1,16 @@
-import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+	AfterViewInit,
+	Component,
+	OnInit,
+	TemplateRef,
+	ViewChild,
+	ChangeDetectorRef
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { filter, pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, pluck, switchMap, takeUntil, tap, catchError } from 'rxjs/operators';
 import { IError } from '../../../shared/models/error.model';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { FilterService } from '../../../shared/services/filter.service';
@@ -12,6 +19,7 @@ import { ShiftService } from '../shift.service';
 import { TValidators } from './../../../shared/validators';
 import { SubheaderService } from './../../../_metronic/partials/layout/subheader/_services/subheader.service';
 import { IShiftRequestChange } from './../shift.service';
+import { of } from 'rxjs';
 
 @Component({
 	selector: 'app-shift-change-detail',
@@ -36,7 +44,8 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 		private shiftService: ShiftService,
 		private subheader: SubheaderService,
 		private activatedRoute: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private cdr: ChangeDetectorRef
 	) {
 		this.modalService.activeInstances
 			.pipe(
@@ -53,6 +62,7 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 				switchMap((id: string) => this.shiftService.getDetailShiftRequestChange(id)),
 				tap((res) => {
 					this.shiftChangeRequestData = res.data;
+					this.cdr.detectChanges();
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -82,12 +92,14 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 	}
 
 	checkError(error: IError) {
-		if (error.code === 'SUN-OIL-4748') {
-			this.toastr.error('Ca làm việc đang được gán lịch cho nhân viên');
+		if (error.code === 'SUN-OIL-4893') {
+			this.toastr.error('Lịch/ca làm việc không tồn tại');
 		}
 	}
 
 	openRejectRequestModal() {
+		this.reasonControl.reset();
+
 		const modalRef = this.modalService.open(this.rejectRequest, {
 			size: 'xs',
 			backdrop: 'static'
@@ -97,13 +109,17 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 			.pipe(
 				filter((res) => res),
 				switchMap(() => {
-					return this.shiftService.approveShiftRequestChange(this.shiftChangeRequestData.id);
+					return this.shiftService.rejectShiftRequestChange(this.shiftChangeRequestData.id);
 				}),
 				tap((res) => {
 					if (res.data) {
-						this.toastr.success('Đã phê duyệt yêu cầu thay ca/đổi ca!');
+						this.toastr.success('Đã từ chối yêu cầu thay ca/đổi ca!');
 					}
 					this.router.navigate['/ca-lam-viec/doi-ca'];
+				}),
+				catchError((error: IError) => {
+					this.checkError(error);
+					return of();
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -120,13 +136,17 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 			.pipe(
 				filter((res) => res),
 				switchMap(() => {
-					return this.shiftService.rejectShiftRequestChange(this.shiftChangeRequestData.id);
+					return this.shiftService.approveShiftRequestChange(this.shiftChangeRequestData.id);
 				}),
 				tap((res) => {
 					if (res.data) {
-						this.toastr.success('Đã từ chối yêu cầu thay ca/đổi ca!');
+						this.toastr.success('Đã phê duyệt yêu cầu thay ca/đổi ca!');
 					}
 					this.router.navigate['/ca-lam-viec/doi-ca'];
+				}),
+				catchError((error: IError) => {
+					this.checkError(error);
+					return of();
 				}),
 				takeUntil(this.destroy$)
 			)

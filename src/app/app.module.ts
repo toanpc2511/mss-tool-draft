@@ -67,7 +67,7 @@ function appInitializer(authService: AuthService, router: Router) {
 		ToastrModule.forRoot({
 			closeButton: true,
 			progressBar: true,
-			timeOut: 3000,
+			timeOut: 3500,
 			maxOpened: 4,
 			positionClass: 'toast-bottom-right',
 			preventDuplicates: true
