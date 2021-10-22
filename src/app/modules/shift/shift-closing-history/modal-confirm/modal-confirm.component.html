@@ -1,14 +1,12 @@
-<div class="modal-content">
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
-    <div class="close-icon" (click)="modal.close()"></div>
+<div class='modal-content'>
+  <div class='modal-header'>
+    <h4 class='modal-title' id='modal-title'>{{ data.title }}</h4>
+    <div class='close-icon' (click)='modal.close()'></div>
   </div>
-  <div class="modal-body">
-    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 250px">
+  <div class='modal-body'>
+    <div class='overlay overlay-block cursor-default modal-body' style='min-height: 250px'>
       <p class='pt-5'>
-        <strong>
-          Ca làm việc còn <span class='number-order'>{{dataSource.length}} đơn hàng</span> chưa hoàn thành, bạn có chắc muốn chốt ca không?
-        </strong>
+        Ca làm việc còn <strong>{{dataSource.length}} đơn hàng</strong> chưa hoàn thành, bạn có chắc muốn chốt ca không?
       </p>
 
       <p class='py-3 text-danger'>
@@ -17,31 +15,53 @@
         </strong>
       </p>
 
-      <div class="table-responsive angular-bootstrap-table">
-        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+      <div class='table-responsive angular-bootstrap-table'>
+        <table class='table table-head-custom table-vertical-center overflow-hidden' aria-label=''>
           <thead>
-          <th scope="">Mã đơn hàng</th>
-          <th scope="">Cột bơm</th>
-          <th scope="">Vòi bơm</th>
-          <th scope="">Trạng thái</th>
+          <th scope=''>Mã đơn hàng</th>
+          <th scope=''>Cột bơm</th>
+          <th scope=''>Vòi bơm</th>
+          <th scope=''>Trạng thái</th>
           </thead>
 
           <tbody>
           <tr *ngFor='let item of dataSource'>
-            <td>{{item.code}}</td>
+            <td>{{item.id}}</td>
             <td>{{item.pumpPole}}</td>
-            <td>{{item.pumpHole}}</td>
+            <td>{{item.pumpHose}}</td>
             <td>{{item.status}}</td>
           </tr>
           </tbody>
         </table>
       </div>
+
+      <form [formGroup]='resonForm' class='form form-label-right'>
+        <div class='form-group row'>
+          <div class='col-lg-12'>
+            <label class='form-label required'>Lý do hủy</label>
+            <input
+              type='text'
+              class='form-control form-control-solid'
+              placeholder='Nhập lý do hủy'
+              autocomplete='off'
+              maxlength='300'
+              formControlName='reason'
+              trim='blur'
+            />
+            <app-validate
+              [control]="resonForm.controls['reason']"
+              [error]="'required'"
+              [message]="'Lý do từ hủy không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary btn-confirm-dialog" (click)="onClose()">
+  <div class='modal-footer'>
+    <button type='button' class='btn btn-outline-secondary btn-confirm-dialog' (click)='onClose()'>
       Hủy
     </button>
-    <button type="button" ngbAutofocus class="btn btn-primary btn-confirm-dialog" #btnSave>Xác nhận</button>
+    <button type='button' ngbAutofocus class='btn btn-primary btn-confirm-dialog' #btnSave>Xác nhận</button>
   </div>
 </div>

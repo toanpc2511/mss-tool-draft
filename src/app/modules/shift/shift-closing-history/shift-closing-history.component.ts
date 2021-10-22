@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { LIST_STATUS_SHIFT_CLOSING } from '../../../shared/data-enum/list-status';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { IDataTransfer, ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
+import { ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
 import { Router } from '@angular/router';
-import { ILockShift, IShiftConfig, ShiftService } from '../shift.service';
+import { ILockShift, IOrderOfShift, IShiftConfig, ShiftService } from '../shift.service';
 import { GasStationResponse } from '../../gas-station/gas-station.service';
 import { convertTimeToString } from '../../../shared/helpers/functions';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
@@ -24,6 +24,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
   listStations: GasStationResponse[] = [];
   listShifts: IShiftConfig[] = [];
   paginatorState = new PaginatorState();
+  listOrder: IOrderOfShift[] = [];
 
   constructor(
     private fb : FormBuilder,
@@ -73,6 +74,14 @@ export class ShiftClosingHistoryComponent implements OnInit {
   }
 
   onSearch() {
+    const timeStart = new Date(moment(this.searchForm.get('startAt').value,'DD/MM/YYYY').format('MM/DD/YYYY'));
+    const timeEnd = new Date(moment(this.searchForm.get('endAt').value,'DD/MM/YYYY').format('MM/DD/YYYY'));
+
+    if (timeStart > timeEnd) {
+      this.searchForm.get('endAt').setErrors({ errorDate: true });
+      return
+    }
+
     this.shiftService.getListLockShift(
       this.paginatorState.page,
       this.paginatorState.pageSize,
@@ -99,19 +108,30 @@ export class ShiftClosingHistoryComponent implements OnInit {
     this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${id}`]);
   }
 
-  modalConfirm($event?: Event, data?: IDataTransfer): void {
+  modalConfirm($event?: Event, data?: ILockShift): void {
     if ($event) {
       $event.stopPropagation();
     }
-    const modalRef = this.modalService.open(ModalConfirmComponent, {
-      backdrop: 'static',
-      size: 'lg',
-    });
+    this.shiftService.getOrdersOfShift(data.shiftId)
+      .subscribe((res) => {
+        this.listOrder = res.data;
+        this.cdr.detectChanges();
 
-    modalRef.componentInstance.data = {
-      title: 'Xác nhận yêu cầu chốt ca',
-      id: data
-    };
+        if (this.listOrder.length > 0) {
+          const modalRef = this.modalService.open(ModalConfirmComponent, {
+            backdrop: 'static',
+            size: 'lg',
+          });
+
+          modalRef.componentInstance.data = {
+            title: 'Xác nhận yêu cầu chốt ca',
+            order: this.listOrder,
+            lockShiftInfo: data
+          };
+        } else {
+          this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`]);
+        }
+      })
   }
 
 }
