@@ -9,25 +9,25 @@
 			<tbody>
 				<tr>
 					<td class="column-1">Nhân viên xin đổi ca</td>
-					<td>{{shiftChangeRequestData.employeeNameFrom}}</td>
+					<td>{{shiftChangeRequestData?.employeeNameFrom}}</td>
 					<td class="column-2">Ngày muốn đổi</td>
-					<td>{{shiftChangeRequestData.dateFrom | date: 'dd/MM/yyyy'}}</td>
+					<td>{{shiftChangeRequestData?.dateFrom | date: 'dd/MM/yyyy'}}</td>
 				</tr>
 				<tr>
 					<td class="column-1">Ngày đổi</td>
-					<td>{{shiftChangeRequestData.dateTo | date: 'dd/MM/yyyy'}}</td>
+					<td>{{shiftChangeRequestData?.dateTo | date: 'dd/MM/yyyy'}}</td>
 					<td class="column-2">Ca muốn đổi</td>
-					<td>{{shiftChangeRequestData.shiftNameTo}}</td>
+					<td>{{shiftChangeRequestData?.shiftNameTo}}</td>
 				</tr>
 				<tr>
 					<td class="column-1">Ca đổi</td>
-					<td>{{shiftChangeRequestData.shiftName}}</td>
+					<td>{{shiftChangeRequestData?.shiftName}}</td>
 					<td class="column-2">Nhân viên đổi ca</td>
-					<td>{{shiftChangeRequestData.employeeNameTo}}</td>
+					<td>{{shiftChangeRequestData?.employeeNameTo}}</td>
 				</tr>
 				<tr>
 					<td class="column-1">Lý do đổi ca</td>
-					<td>{{shiftChangeRequestData.content}}</td>
+					<td>{{shiftChangeRequestData?.content}}</td>
 				</tr>
 			</tbody>
 		</table>
