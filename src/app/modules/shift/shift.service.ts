@@ -1,11 +1,10 @@
-import { DataResponse } from './../../shared/models/data-response.model';
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpService } from 'src/app/shared/services/http.service';
-import { GasStationResponse } from '../gas-station/gas-station.service';
 import { convertDateToServer } from '../../shared/helpers/functions';
-import { of } from 'rxjs';
-import * as moment from 'moment';
+import { GasStationResponse } from '../gas-station/gas-station.service';
+import { SortDirection } from './../../_metronic/shared/crud-table/models/sort.model';
 
 export enum EShiftChangRequestType {
 	CHANGE = 'CHANGE',
@@ -13,26 +12,25 @@ export enum EShiftChangRequestType {
 }
 
 export enum EShiftChangRequestStatus {
-	APPROVE = 'APPROVE',
+	SWAPPED = 'SWAPPED',
 	WAITING = 'WAITING',
-	REJECT = 'REJECT'
+	REJECTED = 'REJECTED'
 }
-import { BehaviorSubject, Observable } from 'rxjs';
 
 export class StepData {
-  currentStep: number;
-  step1: {
-    isValid: boolean;
-  };
-  step2: {
-    isValid: boolean;
-  };
-  step3: {
-    isValid: boolean;
-  };
-  step4: {
-    isValid: boolean;
-  };
+	currentStep: number;
+	step1: {
+		isValid: boolean;
+	};
+	step2: {
+		isValid: boolean;
+	};
+	step3: {
+		isValid: boolean;
+	};
+	step4: {
+		isValid: boolean;
+	};
 }
 
 export type PumpPoleResponse = {
@@ -119,68 +117,71 @@ export interface IDataEventCalendar {
 
 export interface IShiftRequestChange {
 	id: string;
-	name: string;
+	employeeNameFrom: string;
+	employeeNameTo: string;
 	type: EShiftChangRequestType;
-	station: string;
-	date: string;
-	shiftRequest: string;
-	reason: string;
-	createAt: string;
+	stationName: string;
+	shiftName: string;
+	shiftNameTo: string;
+	content: string;
+	dateFrom: string;
+	dateTo: string;
 	status: EShiftChangRequestStatus;
+	createAt: string;
 }
 
 export interface IOtherRevenue {
-  exportQuantity: number,
-  finalInventory: number,
-  headInventory: number,
-  id: number,
-  importQuantity: number,
-  lockShiftId: number,
-  price: number,
-  productId: number,
-  productName: string,
-  total: number,
-  totalMoney: number,
-  unit: string
+	exportQuantity: number;
+	finalInventory: number;
+	headInventory: number;
+	id: number;
+	importQuantity: number;
+	lockShiftId: number;
+	price: number;
+	productId: number;
+	productName: string;
+	total: number;
+	totalMoney: number;
+	unit: string;
 }
 
 export interface IValueSearchLockShift {
-  startAt: string,
-  endAt: string,
-  shiftName: string,
-  stationName: string
+	startAt: string;
+	endAt: string;
+	shiftName: string;
+	stationName: string;
 }
 
 export interface ILockShift {
-  endHour: number,
-  endMinute: number,
-  id: number,
-  shiftId: number,
-  shiftName: string,
-  startHour: number,
-  startMinute: number,
-  stationName: string,
-  status: string,
-  timeEnd: string,
-  timeStart: string
+	endHour: number;
+	endMinute: number;
+	id: number;
+	shiftId: number;
+	shiftName: string;
+	startHour: number;
+	startMinute: number;
+	stationName: string;
+	status: string;
+	timeEnd: string;
+	timeStart: string;
 }
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ShiftService {
-  private stepDataSubject: BehaviorSubject<StepData>;
-  stepData$: Observable<StepData>;
+	private stepDataSubject: BehaviorSubject<StepData>;
+	stepData$: Observable<StepData>;
 	constructor(private http: HttpService) {
-    this.stepDataSubject = new BehaviorSubject<StepData>({
-      currentStep: 1,
-      step1: { isValid: false },
-      step2: { isValid: false },
-      step3: { isValid: false },
-      step4: { isValid: false }
-    });
-    this.stepData$ = this.stepDataSubject.asObservable();
-  }
+		this.stepDataSubject = new BehaviorSubject<StepData>({
+			currentStep: 1,
+			step1: { isValid: false },
+			step2: { isValid: false },
+			step3: { isValid: false },
+			step4: { isValid: false }
+		});
+		this.stepData$ = this.stepDataSubject.asObservable();
+	}
 
 	getStationByAccount() {
 		return this.http.get<GasStationResponse[]>('gas-stations/station-employee');
@@ -261,95 +262,84 @@ export class ShiftService {
 		return this.http.delete(`calendars`, { params });
 	}
 
-  setStepData(stepData: StepData) {
-    this.stepDataSubject.next(stepData);
-  }
+	setStepData(stepData: StepData) {
+		this.stepDataSubject.next(stepData);
+	}
 
-  getStepDataValue(): StepData {
-    return this.stepDataSubject.value;
-  }
+	getStepDataValue(): StepData {
+		return this.stepDataSubject.value;
+	}
 
-  resetCreateData() {
-    this.stepDataSubject.next({
-      currentStep: 1,
-      step1: { isValid: false },
-      step2: { isValid: false },
-      step3: { isValid: false },
-      step4: { isValid: false }
-    });
-  }
+	resetCreateData() {
+		this.stepDataSubject.next({
+			currentStep: 1,
+			step1: { isValid: false },
+			step2: { isValid: false },
+			step3: { isValid: false },
+			step4: { isValid: false }
+		});
+	}
 
-  // Lấy ds lịch sử chốt ca
-  getListLockShift(page: number, size: number, dataReq: IValueSearchLockShift) {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString())
-      .set('start-at', convertDateToServer(dataReq.startAt))
-      .set('end-at', convertDateToServer(dataReq.endAt))
-      .set('shift-name', dataReq.shiftName)
-      .set('station-name', dataReq.stationName)
-    return this.http.get<Array<ILockShift>>('lock-shifts/filter', {params})
-  }
+	// Lấy ds lịch sử chốt ca
+	getListLockShift(page: number, size: number, dataReq: IValueSearchLockShift) {
+		const params = new HttpParams()
+			.set('page', page.toString())
+			.set('size', size.toString())
+			.set('start-at', convertDateToServer(dataReq.startAt))
+			.set('end-at', convertDateToServer(dataReq.endAt))
+			.set('shift-name', dataReq.shiftName)
+			.set('station-name', dataReq.stationName);
+		return this.http.get<Array<ILockShift>>('lock-shifts/filter', { params });
+	}
 
-  // Lấy ds doanh thu hàng hóa
-  getOtherProductRevenue(id: number) {
-    const params = new HttpParams().set('lock-shift-id', id.toString());
-    return this.http.get<Array<IOtherRevenue>>('other-product-revenue', { params });
-  }
+	// Lấy ds doanh thu hàng hóa
+	getOtherProductRevenue(id: number) {
+		const params = new HttpParams().set('lock-shift-id', id.toString());
+		return this.http.get<Array<IOtherRevenue>>('other-product-revenue', { params });
+	}
 
-  // Sửa doanh thu hàng hóa khác
-  updateOtherProductRevenue(dataReq: {lockShiftId: number, productRevenueRequests: [ {otherProductRevenueId: number, importQuantity: number, exportQuantity:  number}]}) {
-    return this.http.put(`other-product-revenue`, {dataReq});
-  }
-
+	// Sửa doanh thu hàng hóa khác
+	updateOtherProductRevenue(dataReq: {
+		lockShiftId: number;
+		productRevenueRequests: [
+			{ otherProductRevenueId: number; importQuantity: number; exportQuantity: number }
+		];
+	}) {
+		return this.http.put(`other-product-revenue`, { dataReq });
+	}
 
 	/*
 		Đổi ca/thay ca
 	*/
-	getShiftRequestChangeList(type: string, status: EShiftChangRequestStatus) {
-		const params = new HttpParams().set('type', type).set('status', status);
-		let data: IShiftRequestChange[] = [];
-		for (let i = 0; i < 50; i++) {
-			data = [
-				...data,
-				{
-					id: i.toString(),
-					name: `Nhân viên ${i}`,
-					type: i < 15 ? EShiftChangRequestType.CHANGE : EShiftChangRequestType.REPLACE,
-					station: `Trạm ${i}`,
-					date: moment().format('DD/MM/YYYY'),
-					shiftRequest: `Ca ${i}`,
-					reason: `Thích đổi ${i}`,
-					createAt: moment().format('DD/MM/YYYY'),
-					status:
-						i < 10
-							? EShiftChangRequestStatus.APPROVE
-							: i < 20
-							? EShiftChangRequestStatus.REJECT
-							: EShiftChangRequestStatus.WAITING
-				}
-			];
-		}
-		console.log(data);
-
-		return of<DataResponse<IShiftRequestChange[]>>({
-			data,
-			meta: {
-				total: 50
-			}
-		});
-		return this.http.get<IShiftRequestChange[]>(`shift-request-change`, { params });
+	getShiftRequestChangeList(
+		status: string,
+		type: string,
+		sortColumn: string,
+		sortDirection: SortDirection,
+		searchText: string,
+		page: number,
+		size: number
+	) {
+		const params = new HttpParams()
+			.set('status', status)
+			.set('type', type)
+			.set('field-sort', sortColumn)
+			.set('direction-sort', sortDirection)
+			.set('search-text', searchText)
+			.set('page', page.toString())
+			.set('size', size.toString());
+		return this.http.get<IShiftRequestChange[]>(`swap-shifts`, { params });
 	}
 
 	getDetailShiftRequestChange(id: string) {
-		return this.http.get(`shift-request-change/${id}`);
+		return this.http.get<IShiftRequestChange>(`swap-shifts/${id}`);
 	}
 
 	approveShiftRequestChange(id: string) {
-		return this.http.put(`shift-request-change/${id}`, null);
+		return this.http.put(`swap-shifts/${id}`, null);
 	}
 
 	rejectShiftRequestChange(id: string) {
-		return this.http.put(`shift-request-change/${id}`, null);
+		return this.http.put(`swap-shifts/${id}`, null);
 	}
 }
