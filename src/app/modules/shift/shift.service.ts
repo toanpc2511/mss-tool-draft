@@ -165,6 +165,13 @@ export interface ILockShift {
   timeStart: string
 }
 
+export interface IOrderOfShift {
+  id: number,
+  pumpHose: string,
+  pumpPole: string,
+  status: string
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -291,15 +298,36 @@ export class ShiftService {
     return this.http.get<Array<ILockShift>>('lock-shifts/filter', {params})
   }
 
+  // lấy ds giao dịch của ca
+  getOrdersOfShift(id: number) {
+    const params = new HttpParams()
+      .set('shift-id', id.toString())
+    return this.http.get<Array<IOrderOfShift>>('orders/shift-order', {params})
+  }
+
   // Lấy ds doanh thu hàng hóa
-  getOtherProductRevenue(id: number) {
-    const params = new HttpParams().set('lock-shift-id', id.toString());
+  getOtherProductRevenue(id: number, page: number, size: number) {
+    const params = new HttpParams()
+      .set('lock-shift-id', id.toString())
+      .set('page', page.toString())
+      .set('size', size.toString());
     return this.http.get<Array<IOtherRevenue>>('other-product-revenue', { params });
   }
 
   // Sửa doanh thu hàng hóa khác
-  updateOtherProductRevenue(dataReq: {lockShiftId: number, productRevenueRequests: [ {otherProductRevenueId: number, importQuantity: number, exportQuantity:  number}]}) {
-    return this.http.put(`other-product-revenue`, {dataReq});
+  updateOtherProductRevenue(dataReq) {
+    return this.http.put(`other-product-revenue`, dataReq);
+  }
+
+  // Lấy ds báo cáo khuyến mãi
+  getPromotionalRevenue(id: number) {
+    const params = new HttpParams().set('lock-shift-id', id.toString());
+    return this.http.get('promotional-revenue', {params});
+  }
+
+  // Hủy đơn hàng của ca
+  rejectOrderOfShift(dataReq: {content: string, id: number, shiftId: number}) {
+    return this.http.post('lock-shifts/order-shift', dataReq);
   }
 
 

@@ -67,6 +67,11 @@
               ></button>
             </div>
           </div>
+          <app-validate
+            [control]="searchForm.get('endAt')"
+            [error]="'errorDate'"
+            [message]="'Thời gian đến ngày không lớn hơn thời gian từ ngày'"
+          ></app-validate>
         </div>
       </div>
     </form>
@@ -99,7 +104,8 @@
         </thead>
 
         <tbody>
-        <tr *ngFor='let item of dataSource' (click)='viewDetail(item.id)'>
+<!--        (click)='viewDetail(item.id)'-->
+        <tr *ngFor='let item of dataSource'>
           <td class="station-name">
             <p
               class="cursor-pointer text-ellipsis"
@@ -151,7 +157,7 @@
           <td class="text-center action">
             <button type="button" class="btn btn-primary"
                     *ngIf='item.status === "OPEN"'
-                    (click)="modalConfirm($event, item.id)"
+                    (click)="modalConfirm($event, item)"
             >
               Yêu cầu chốt ca
             </button>

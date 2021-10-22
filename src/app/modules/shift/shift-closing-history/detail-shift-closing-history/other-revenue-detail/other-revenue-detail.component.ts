@@ -7,6 +7,7 @@ import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { convertMoney } from '../../../../../shared/helpers/functions';
 import { IError } from '../../../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
+import { IPaginatorState, PaginatorState } from '../../../../../_metronic/shared/crud-table';
 
 @Component({
   selector: 'app-other-revenue-detail',
@@ -16,9 +17,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class OtherRevenueDetailComponent implements OnInit {
   lockShiftId: number;
-  totalMoney: number;
   dataSource: FormArray = new FormArray([]);
   dataSourceTemp: FormArray = new FormArray([]);
+  paginatorState = new PaginatorState();
 
   constructor(
     private shiftService: ShiftService,
@@ -28,7 +29,10 @@ export class OtherRevenueDetailComponent implements OnInit {
     private toastr: ToastrService,
     private fb: FormBuilder
   ) {
-    this.totalMoney = 0;
+    this.paginatorState.page = 1;
+    this.paginatorState.pageSize = 10;
+    this.paginatorState.pageSizes = [5, 10, 15, 20];
+    this.paginatorState.total = 0;
   }
 
   ngOnInit(): void {
@@ -36,10 +40,19 @@ export class OtherRevenueDetailComponent implements OnInit {
       this.lockShiftId = res.lockShiftId;
     });
 
-    this.shiftService.getOtherProductRevenue(this.lockShiftId)
+    this.getOtherProductRevenue();
+  }
+
+  getOtherProductRevenue() {
+    this.shiftService.getOtherProductRevenue(
+      this.lockShiftId,
+      this.paginatorState.page,
+      this.paginatorState.pageSize
+    )
       .pipe(
         tap((res) => {
           this.dataSource = this.dataSourceTemp = this.convertToFormArray(res.data);
+          this.paginatorState.recalculatePaginator(res.meta.total);
           this.cdr.detectChanges();
         }),
         takeUntil(this.destroy$)
@@ -47,20 +60,25 @@ export class OtherRevenueDetailComponent implements OnInit {
       .subscribe();
   }
 
+  pagingChange($event: IPaginatorState) {
+    this.paginatorState = $event as PaginatorState;
+    this.getOtherProductRevenue();
+  }
+
   convertToFormArray(data: IOtherRevenue[]): FormArray {
     const controls = data.map((d) => {
       return this.fb.group({
-        exportQuantity: ['', Validators.required],
-        finalInventory: [0],
+        exportQuantity: [d.exportQuantity, Validators.required],
+        finalInventory: [d.finalInventory],
         headInventory: [d.headInventory],
         id: [d.id],
-        importQuantity: ['', Validators.required],
+        importQuantity: [d.importQuantity, Validators.required],
         lockShiftId: [d.lockShiftId],
         price: [d.price],
         productId: [d.productId],
         productName: [d.productName],
         total: [d.total],
-        totalMoney: [0],
+        totalMoney: [d.totalMoney],
         unit: [d.unit]
       });
     });
@@ -84,10 +102,6 @@ export class OtherRevenueDetailComponent implements OnInit {
       .at(index)
       .get('totalMoney')
       .patchValue(totalMoney);
-
-    this.dataSource.value.map((x) => {
-      this.totalMoney += x.total;
-    });
   }
 
   onSubmit() {
