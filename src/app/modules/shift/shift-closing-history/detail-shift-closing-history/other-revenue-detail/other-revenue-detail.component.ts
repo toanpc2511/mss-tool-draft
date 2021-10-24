@@ -36,7 +36,7 @@ export class OtherRevenueDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activeRoute.params.subscribe((res) => {
+    this.activeRoute.params.subscribe((res)  => {
       this.lockShiftId = res.lockShiftId;
     });
 
@@ -135,7 +135,9 @@ export class OtherRevenueDetailComponent implements OnInit {
   }
 
   checkError(error: IError) {
-    this.toastr.error(error.code);
+    if (error.code === 'SUN-OIL-4761') {
+      this.toastr.error('Không được sửa ca làm việc không phải trạng thái chờ phê duyệt')
+    }
   }
 
 }
