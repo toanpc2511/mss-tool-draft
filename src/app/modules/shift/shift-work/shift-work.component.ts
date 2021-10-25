@@ -342,7 +342,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 								weekTitle: calendar.shiftName,
 								weekContent: calendar.employeeName,
 								start: moment(calendar.start).format('YYYY-MM-DD HH:mm:ss'),
-								end: moment(calendar.end).format('YYYY-MM-DD HH:mm:ss'),
+								end: moment(calendar.end).format('YYYY-MM-DD HH:mm:ss')
 							},
 							allDay: true
 						};
@@ -439,7 +439,7 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 				if (btn.classList.contains('fc-dayGridWeek-button')) {
 					const firstDayOfMonth = moment(this.calendarApi.getDate())
 						.startOf('month')
-						.add({ week: 2 })
+						.add({ day: moment(new Date()).get('date') })
 						.toDate();
 					this.calendarApi.gotoDate(firstDayOfMonth);
 				}

@@ -1,6 +1,8 @@
+import { IMenuConfigItem } from './../../../../_metronic/configs/menu-config';
+import { UserModel, AuthService } from './../../../../modules/auth/services/auth.service';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LayoutService, DynamicAsideMenuService } from '../../../../_metronic/core';
 
@@ -10,7 +12,8 @@ import { LayoutService, DynamicAsideMenuService } from '../../../../_metronic/co
   styleUrls: ['./aside-dynamic.component.scss']
 })
 export class AsideDynamicComponent implements OnInit, OnDestroy {
-  menuConfig: any;
+  currentUser$: Observable<UserModel>;
+  menuConfig: {items: IMenuConfigItem[]};
   subscriptions: Subscription[] = [];
 
   disableAsideSelfDisplay: boolean;
@@ -30,8 +33,11 @@ export class AsideDynamicComponent implements OnInit, OnDestroy {
     private layout: LayoutService,
     private router: Router,
     private menu: DynamicAsideMenuService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
+  ) {
+    this.currentUser$ = authService.currentUser$;
+  }
 
   ngOnInit(): void {
     // load view settings
