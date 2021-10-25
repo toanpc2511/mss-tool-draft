@@ -170,7 +170,23 @@ export interface IOrderOfShift {
   id: number,
   pumpHose: string,
   pumpPole: string,
-  status: string
+  status: string,
+  code: string
+}
+
+export interface IPromotionalRevenue {
+  actualInventoryQuantity: number,
+  compensateQuantity: number,
+  exportQuantity: number,
+  finalInventory: number,
+  hasChip: boolean,
+  headInventory: number,
+  id: number,
+  importQuantity: number,
+  lockShiftId: number,
+  productId: number,
+  productName: string,
+  unit: string
 }
 
 @Injectable({
@@ -323,7 +339,12 @@ export class ShiftService {
   // Lấy ds báo cáo khuyến mãi
   getPromotionalRevenue(id: number) {
     const params = new HttpParams().set('lock-shift-id', id.toString());
-    return this.http.get('promotional-revenue', {params});
+    return this.http.get<Array<IPromotionalRevenue>>('promotional-revenue', {params});
+  }
+
+  // Sửa báo cáo khuyến mãi
+  updatePromotionalRevenue(dataReq) {
+    return this.http.put(`promotional-revenue`, dataReq);
   }
 
   // Hủy đơn hàng của ca

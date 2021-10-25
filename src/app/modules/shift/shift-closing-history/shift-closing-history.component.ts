@@ -111,8 +111,8 @@ export class ShiftClosingHistoryComponent implements OnInit {
   }
 
 
-  viewDetail(id: number) {
-    this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${id}`]);
+  viewDetail(id: number, status: string) {
+    this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${id}`], {queryParams: {status: status}});
   }
 
   modalConfirm($event?: Event, data?: ILockShift): void {
@@ -136,7 +136,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
             lockShiftInfo: data
           };
         } else {
-          this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`]);
+          this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`],{queryParams: {status: data.status}});
         }
       })
   }

@@ -17,9 +17,12 @@ import { IPaginatorState, PaginatorState } from '../../../../../_metronic/shared
 })
 export class OtherRevenueDetailComponent implements OnInit {
   lockShiftId: number;
-  dataSource: FormArray = new FormArray([]);
+  dataSourceForm: FormArray = new FormArray([]);
   dataSourceTemp: FormArray = new FormArray([]);
   paginatorState = new PaginatorState();
+  statusLockShift: string;
+  dataSource
+
 
   constructor(
     private shiftService: ShiftService,
@@ -40,6 +43,10 @@ export class OtherRevenueDetailComponent implements OnInit {
       this.lockShiftId = res.lockShiftId;
     });
 
+    this.activeRoute.queryParams.subscribe((x) => {
+      this.statusLockShift = x.status;
+    })
+
     this.getOtherProductRevenue();
   }
 
@@ -51,7 +58,12 @@ export class OtherRevenueDetailComponent implements OnInit {
     )
       .pipe(
         tap((res) => {
-          this.dataSource = this.dataSourceTemp = this.convertToFormArray(res.data);
+          if (this.statusLockShift === 'OPEN') {
+            this.dataSource = res.data;
+            console.log(this.dataSource);
+          } else  {
+            this.dataSourceForm = this.dataSourceTemp = this.convertToFormArray(res.data);
+          }
           this.paginatorState.recalculatePaginator(res.meta.total);
           this.cdr.detectChanges();
         }),
@@ -86,10 +98,10 @@ export class OtherRevenueDetailComponent implements OnInit {
   }
 
   countFinalInventory(index: number) {
-    const valueExport: number = convertMoney(this.dataSource.at(index).get('exportQuantity').value.toString());
-    const valueImport: number = convertMoney(this.dataSource.at(index).get('importQuantity').value.toString());
-    const valueHeadInventory: number = convertMoney(this.dataSource.at(index).get('headInventory').value.toString());
-    const price: number = convertMoney(this.dataSource.at(index).get('price').value.toString());
+    const valueExport: number = convertMoney(this.dataSourceForm.at(index).get('exportQuantity').value.toString());
+    const valueImport: number = convertMoney(this.dataSourceForm.at(index).get('importQuantity').value.toString());
+    const valueHeadInventory: number = convertMoney(this.dataSourceForm.at(index).get('headInventory').value.toString());
+    const price: number = convertMoney(this.dataSourceForm.at(index).get('price').value.toString());
     const totalFinalInventory = valueHeadInventory + valueImport - valueExport;
     const totalMoney = valueExport * price;
 
@@ -105,15 +117,15 @@ export class OtherRevenueDetailComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dataSource = this.dataSourceTemp;
-    this.dataSource.markAllAsTouched();
-    if (this.dataSource.invalid) {
+    this.dataSourceForm = this.dataSourceTemp;
+    this.dataSourceForm.markAllAsTouched();
+    if (this.dataSourceForm.invalid) {
       return null;
     }
 
     const dataReq = {
       lockShiftId: this.lockShiftId,
-      productRevenueRequests: this.dataSource.value.map((d) => ({
+      productRevenueRequests: this.dataSourceForm.value.map((d) => ({
         otherProductRevenueId: d.id,
         importQuantity: convertMoney(d.importQuantity.toString()),
         exportQuantity: convertMoney(d.exportQuantity.toString())
@@ -137,6 +149,9 @@ export class OtherRevenueDetailComponent implements OnInit {
   checkError(error: IError) {
     if (error.code === 'SUN-OIL-4761') {
       this.toastr.error('Không được sửa ca làm việc không phải trạng thái chờ phê duyệt')
+    }
+    if (error.code === 'SUN-OIL-4894') {
+      this.toastr.error('Không tồn tại ca cần chốt.')
     }
   }
 
