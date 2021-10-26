@@ -1,3 +1,4 @@
+import { EAuthorize } from 'src/app/modules/auth/services/authorizes';
 import { IMenuConfigItem } from './menu-config';
 
 export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
@@ -28,13 +29,12 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 							title: 'Thêm trạm',
 							bullet: 'dot',
 							page: 'tram-xang/danh-sach/them-tram',
-							permissionKey: ''
+							permissionKey: EAuthorize.CREATE_GAS_STATION_BUTTON
 						}
 					],
-					permissionKey: ''
+					permissionKey: EAuthorize.MENU_GAS_STAION_MANAGEMENT
 				}
 			],
-			permissionKey: ''
 		},
 		{
 			title: 'Quản lý sản phẩm',
@@ -48,21 +48,21 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					bullet: 'dot',
 					page: 'san-pham/nhom-san-pham',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_CATEGORY_SCREEN
 				},
 				{
 					title: 'Sản phẩm nhiên liệu',
 					bullet: 'dot',
 					page: 'san-pham/san-pham-nhien-lieu',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_OIL_LIST_SCREEN
 				},
 				{
 					title: 'Sản phẩm khác',
 					bullet: 'dot',
 					page: 'san-pham/san-pham-khac',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_OTHER_PRODUCT_SCREEN
 				}
 			],
 			permissionKey: ''
@@ -73,7 +73,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			root: true,
 			page: '/hop-dong',
 			bullet: 'dot',
-			permissionKey: ''
+			permissionKey: EAuthorize.VIEW_CONTRACT_LIST_SCREEN
 		},
 		{
 			title: 'Quản lý QR code',
@@ -87,17 +87,16 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					bullet: 'dot',
 					page: 'qr-code/qr-san-pham',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_PRODUCT_QR_LIST_SCREEN
 				},
 				{
 					title: 'Qr code vòi bơm',
 					bullet: 'dot',
 					page: 'qr-code/qr-voi',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_PUMP_POLE_QR_LIST_SCREEN
 				}
 			],
-			permissionKey: ''
 		},
 		{
 			title: 'Báo cáo',
@@ -113,7 +112,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			bullet: 'dot',
 			page: '/nhan-vien',
 			icon: 'fas fa-user',
-			permissionKey: ''
+			permissionKey: EAuthorize.VIEW_EMPLOYEE_LIST_SCREEN
 		},
 		{
 			title: 'Quản lý tài khoản',
@@ -121,7 +120,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			bullet: 'dot',
 			page: '/tai-khoan',
 			icon: 'fas fa-user-shield',
-			permissionKey: ''
+			permissionKey: EAuthorize.VIEW_ACCOUNT_LIST_SCREEN
 		},
 		{
 			title: 'Quản lý phân quyền',
@@ -129,7 +128,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			bullet: 'dot',
 			page: '/phan-quyen',
 			icon: 'fas fa-lock',
-			permissionKey: ''
+			permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
 		},
 		{
 			title: 'Quản lý ca làm việc',
@@ -143,21 +142,21 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					bullet: 'dot',
 					page: 'ca-lam-viec/cauhinh-ca',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_SHIFT_CONFIG_SCREEN
 				},
 				{
 					title: 'Lên lịch làm việc',
 					bullet: 'dot',
 					page: 'ca-lam-viec/lich-lam-viec',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_CALENDAR_SCREEN
 				},
 				{
 					title: 'Đổi ca',
 					bullet: 'dot',
 					page: 'ca-lam-viec/doi-ca',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_SWAP_SHIFT_SCREEN
 				},
 				{
 					title: 'Lịch sử chốt ca',
@@ -167,7 +166,6 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					permissionKey: ''
 				}
 			],
-			permissionKey: ''
 		},
 		{
 			title: 'Quản lý khách hàng',
@@ -175,7 +173,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			bullet: 'dot',
 			page: '/khach-hang',
 			icon: 'fas fa-users',
-			permissionKey: ''
+			permissionKey: EAuthorize.VIEW_DRIVER_LIST_SCREEN
 		},
 		{
 			title: 'Quản lý cấu hình',
@@ -189,31 +187,30 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					bullet: 'dot',
 					page: 'cau-hinh/tich-diem',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
 				},
 				{
 					title: 'Cấu hình chiết khấu',
 					bullet: 'dot',
 					page: 'cau-hinh/chiet-khau',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_DISCOUNT_LIST_SCREEN
 				},
 				{
 					title: 'Cấu hình hạng',
 					bullet: 'dot',
 					page: 'cau-hinh/hang',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_RANK_LIST_SCREEN
 				},
 				{
 					title: 'Cấu hình khuyến mãi',
 					bullet: 'dot',
 					page: 'cau-hinh/khuyen-mai',
 					notChild: true,
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_PROMOTION_LIST_SCREEN
 				}
 			],
-			permissionKey: ''
 		},
 		{
 			title: 'Quản lý kho',
@@ -229,7 +226,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			bullet: 'dot',
 			page: '/lich-su-giao-dich',
 			icon: 'fas fa-history',
-			permissionKey: ''
+			permissionKey: EAuthorize.VIEW_TRANSACTION_HISTORY_MENU
 		}
 	]
 };

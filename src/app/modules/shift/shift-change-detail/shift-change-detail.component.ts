@@ -18,7 +18,7 @@ import { SortService } from '../../../shared/services/sort.service';
 import { ShiftService } from '../shift.service';
 import { TValidators } from './../../../shared/validators';
 import { SubheaderService } from './../../../_metronic/partials/layout/subheader/_services/subheader.service';
-import { IShiftRequestChange } from './../shift.service';
+import { IShiftRequestChange, EShiftChangRequestStatus } from './../shift.service';
 import { of } from 'rxjs';
 
 @Component({
@@ -31,6 +31,7 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 	@ViewChild('approveRequest') approveRequest: TemplateRef<any>;
 	@ViewChild('rejectRequest') rejectRequest: TemplateRef<any>;
 
+	eShiftChangeRequestStatus = EShiftChangRequestStatus;
 	shiftChangeRequestData: IShiftRequestChange;
 
 	activeModal: NgbActiveModal;
@@ -92,7 +93,7 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 	}
 
 	checkError(error: IError) {
-		if (error.code === 'SUN-OIL-4893') {
+		if (error.code === 'SUN-OIL-4893' || error.code === 'SUN-OIL-4909') {
 			this.toastr.error('Lịch/ca làm việc không tồn tại');
 		}
 	}
@@ -115,7 +116,7 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 					if (res.data) {
 						this.toastr.success('Đã từ chối yêu cầu thay ca/đổi ca!');
 					}
-					this.router.navigate['/ca-lam-viec/doi-ca'];
+					this.goBack();
 				}),
 				catchError((error: IError) => {
 					this.checkError(error);
@@ -142,7 +143,7 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 					if (res.data) {
 						this.toastr.success('Đã phê duyệt yêu cầu thay ca/đổi ca!');
 					}
-					this.router.navigate['/ca-lam-viec/doi-ca'];
+					this.goBack();
 				}),
 				catchError((error: IError) => {
 					this.checkError(error);
@@ -151,5 +152,9 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 				takeUntil(this.destroy$)
 			)
 			.subscribe();
+	}
+
+	goBack() {
+		this.router.navigate(['/ca-lam-viec/doi-ca']);
 	}
 }
