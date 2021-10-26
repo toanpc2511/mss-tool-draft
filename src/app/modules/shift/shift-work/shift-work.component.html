@@ -119,7 +119,7 @@
 						<div>
 							<h6>{{ event.event.title }} {{event.event.extendedProps|displayStartEndCalendar}}</h6>
 							<p *ngFor="let ofTime of event.event.extendedProps.offTimes">
-								Thời gian nghỉ: {{(ofTime.start |displayTime) + ' - ' + (ofTime.end |displayTime:
+								Thời gian nghỉ: {{(ofTime.start |displayTime: ofTime.typeStart) + ' - ' + (ofTime.end |displayTime:
 								ofTime.typeEnd)}}
 							</p>
 							<p>{{event.event.start |dateString}}</p>
