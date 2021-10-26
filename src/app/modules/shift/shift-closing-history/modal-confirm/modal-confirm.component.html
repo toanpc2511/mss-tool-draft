@@ -97,6 +97,6 @@
     <button type='button' class='btn btn-outline-secondary btn-confirm-dialog' (click)='onClose()'>
       Hủy
     </button>
-    <button type='button' ngbAutofocus class='btn btn-primary btn-confirm-dialog' #btnSave>Xác nhận</button>
+    <button type='button' [disabled]='isDisable' class='btn btn-primary btn-confirm-dialog' #btnSave>Xác nhận</button>
   </div>
 </div>

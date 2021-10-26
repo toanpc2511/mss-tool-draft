@@ -20,7 +20,7 @@
           <th scope="" class='text-right'>Thành tiền</th>
           </thead>
 
-          <ng-container *ngIf='statusLockShift !== "OPEN"'>
+          <ng-container *ngIf='statusLockShift !== "CLOSE"'>
             <tbody>
             <tr *ngFor="let item of dataSourceForm.controls; let i = index" [formGroup]="item">
               <td class="name">
@@ -116,7 +116,7 @@
             </tfoot>
           </ng-container>
 
-          <ng-container *ngIf='statusLockShift === "OPEN"'>
+          <ng-container *ngIf='statusLockShift === "CLOSE"'>
             <tbody>
             <tr *ngFor="let item of dataSource; let i = index">
               <td class="name">
@@ -195,7 +195,7 @@
             </tbody>
 
             <tfoot>
-            <tr  *ngIf="dataSourceForm?.length === 0">
+            <tr  *ngIf="dataSource?.length === 0">
               <td colspan="13" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
             </tr>
             </tfoot>
@@ -214,7 +214,7 @@
     </button>
 
     <button
-      *ngIf='statusLockShift !== "OPEN"'
+      *ngIf='statusLockShift !== "CLOSE"'
       class="m-2 btn btn-primary font-weight-bold"
       (click)='onSubmit()'
     >

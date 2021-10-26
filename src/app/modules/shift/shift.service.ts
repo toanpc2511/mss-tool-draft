@@ -160,6 +160,7 @@ export interface ILockShift {
 	shiftName: string;
 	startHour: number;
 	startMinute: number;
+  stationId: number;
 	stationName: string;
 	status: string;
 	timeEnd: string;
@@ -316,9 +317,10 @@ export class ShiftService {
 	}
 
   // lấy ds giao dịch của ca
-  getOrdersOfShift(id: number) {
+  getOrdersOfShift(shiftId: number, lockShiftId: number) {
     const params = new HttpParams()
-      .set('shift-id', id.toString())
+      .set('shift-id', shiftId.toString())
+      .set('lock-shift-id', lockShiftId.toString());
     return this.http.get<Array<IOrderOfShift>>('orders/shift-order', {params})
   }
 
@@ -350,6 +352,15 @@ export class ShiftService {
   // Hủy đơn hàng của ca
   rejectOrderOfShift(dataReq: {content: string, id: number, shiftId: number}) {
     return this.http.post('lock-shifts/order-shift', dataReq);
+  }
+
+  // Lấy ds lịch làm việc theo ca
+  getCalendarEmployeeInfos(shiftId: number, stationId: number, time: string) {
+    const  params = new HttpParams()
+      .set('shift-id', shiftId.toString())
+      .set('station-id', stationId.toString())
+      .set('time', time)
+    return this.http.get('calendars/employees/infos', {params});
   }
 
 	/*

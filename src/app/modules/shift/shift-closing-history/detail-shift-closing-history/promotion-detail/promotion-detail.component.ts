@@ -42,12 +42,13 @@ export class PromotionDetailComponent implements OnInit {
     this.shiftService.getPromotionalRevenue(this.lockShiftId)
       .pipe(
         tap((res) => {
-          if (this.statusLockShift !== 'OPEN') {
+          if (this.statusLockShift === 'CLOSE') {
             this.dataSource = res.data;
+            this.cdr.detectChanges();
           } else {
             this.dataSourceForm = this.dataSourceTemp = this.convertToFormArray(res.data);
+            this.cdr.detectChanges();
           }
-          this.cdr.detectChanges();
         }),
         takeUntil(this.destroy$)
       )

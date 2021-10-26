@@ -58,14 +58,14 @@ export class OtherRevenueDetailComponent implements OnInit {
     )
       .pipe(
         tap((res) => {
-          if (this.statusLockShift === 'OPEN') {
+          if (this.statusLockShift === 'CLOSE') {
             this.dataSource = res.data;
-            console.log(this.dataSource);
+            this.cdr.detectChanges();
           } else  {
             this.dataSourceForm = this.dataSourceTemp = this.convertToFormArray(res.data);
+            this.paginatorState.recalculatePaginator(res.meta.total);
+            this.cdr.detectChanges();
           }
-          this.paginatorState.recalculatePaginator(res.meta.total);
-          this.cdr.detectChanges();
         }),
         takeUntil(this.destroy$)
       )

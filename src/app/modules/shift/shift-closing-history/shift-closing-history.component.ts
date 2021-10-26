@@ -119,7 +119,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
     if ($event) {
       $event.stopPropagation();
     }
-    this.shiftService.getOrdersOfShift(data.shiftId)
+    this.shiftService.getOrdersOfShift(data.shiftId, data.id)
       .subscribe((res) => {
         this.listOrder = res.data;
         this.cdr.detectChanges();
@@ -136,7 +136,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
             lockShiftInfo: data
           };
         } else {
-          this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`],{queryParams: {status: data.status}});
+          this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`],{queryParams: {status: data.status, stationId: data.stationId}});
         }
       })
   }

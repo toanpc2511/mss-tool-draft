@@ -185,7 +185,39 @@
             </td>
           </tr>
           </tbody>
+
+          <tfoot>
+          <tr>
+            <td colspan='3' class='text-right'>Tổng</td>
+            <td class="text-right">
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="revenue.toLocaleString('en-US')"
+              >
+                {{ revenue.toLocaleString('en-US') }}
+              </p>
+            </td>
+          </tr>
+          </tfoot>
         </table>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-4 d-flex align-items-center">
+          <label class="checkbox checkbox-lg mr-2">
+            <input
+              type="checkbox"
+              id="proceeds"
+              (input)='changeCheckProceed()'
+              [formControl]="proceeds"/>
+            <span (click)="$event.stopPropagation()"></span>
+          </label>
+
+          <label class="m-0" for="proceeds">
+            <strong>Đã thu tiền từ nhân viên</strong>
+          </label>
+        </div>
       </div>
     </div>
   </div>
@@ -193,12 +225,15 @@
   <div class="py-5 w-100 d-flex justify-content-center">
     <button
       class="m-2 btn btn-primary font-weight-bold"
+      (click)='printReport()'
     >
-      Tiếp theo
+      In báo cáo chốt ca
     </button>
 
     <button
       class="m-2 btn btn-primary font-weight-bold"
+      [disabled]='hideButton'
+      (click)='createModal()'
     >
       Xác nhận
     </button>
