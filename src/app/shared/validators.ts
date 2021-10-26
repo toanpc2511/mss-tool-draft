@@ -1,9 +1,12 @@
+import { NO_EMIT_EVENT } from './app-constants';
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { formatMoney } from './helpers/functions';
 
+const longtitudePattern = /^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$/;
+const latitudePattern = /^(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,18})?|180(?:\.0{1,18})?)$/;
 export class TValidators extends Validators {
 	static patternNotWhiteSpace =
 		(regex: RegExp) =>
@@ -51,4 +54,30 @@ export class TValidators extends Validators {
 			}
 			return null;
 		};
+
+	static noWhiteSpace = (control: FormControl): ValidationErrors | null => {
+		const value = control?.value as string;
+		if (value?.includes(' ')) {
+			control.patchValue(value.split(' ').join(''), NO_EMIT_EVENT);
+		}
+		return null;
+	};
+
+	static coordinates = (control: FormControl): ValidationErrors | null => {
+		const value = control?.value as string;
+		if (value) {
+			const coordinates = value?.split(',') || null;
+			if (
+				!coordinates ||
+				coordinates.length !== 2 ||
+				coordinates[0].length === 0 ||
+				coordinates[1].length === 0 ||
+				!longtitudePattern.test(coordinates[0]) ||
+				!latitudePattern.test(coordinates[1])
+			) {
+				return { coordinates: true };
+			}
+		}
+		return null;
+	};
 }

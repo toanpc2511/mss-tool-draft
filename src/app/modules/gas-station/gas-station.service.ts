@@ -34,6 +34,10 @@ export interface GasStationResponse {
 	fullAddress: string;
 	areaType: EArea;
 	status: EStatus;
+	lat: string;
+	lon: string;
+	chip: boolean;
+	phone: string;
 }
 
 export interface CreateStation {
@@ -45,6 +49,10 @@ export interface CreateStation {
 	address: string;
 	fullAddress: string;
 	areaType: EArea;
+	lat: string;
+	lon: string;
+	chip: boolean;
+	phone: string;
 	status: EStatus;
 }
 // end gas station
