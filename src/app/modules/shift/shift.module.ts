@@ -46,6 +46,7 @@ import { OtherRevenueDetailComponent } from './shift-closing-history/detail-shif
 import { PromotionDetailComponent } from './shift-closing-history/detail-shift-closing-history/promotion-detail/promotion-detail.component';
 import { TotalRevenueComponent } from './shift-closing-history/detail-shift-closing-history/total-revenue/total-revenue.component';
 import { CustomShiftPipe } from './shift.pipe';
+import { ModalConfirmLockShiftComponent } from './shift-closing-history/detail-shift-closing-history/total-revenue/modal-confirm-lock-shift/modal-confirm-lock-shift.component';
 
 @NgModule({
 	declarations: [
@@ -76,7 +77,8 @@ import { CustomShiftPipe } from './shift.pipe';
 		OtherRevenueDetailComponent,
 		PromotionDetailComponent,
 		TotalRevenueComponent,
-    CustomShiftPipe
+    CustomShiftPipe,
+    ModalConfirmLockShiftComponent
 	],
 	imports: [
 		CommonModule,

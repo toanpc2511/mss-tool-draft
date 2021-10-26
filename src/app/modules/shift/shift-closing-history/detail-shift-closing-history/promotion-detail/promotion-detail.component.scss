@@ -17,6 +17,34 @@
     min-width: 1024px;
     th {
       text-transform: none;
+      &.head-inventory,
+      &.final-inventory,
+      &.compensate-quantity {
+        padding-right: 45px;
+      }
+    }
+
+    td {
+      &.name {
+        min-width: 100px;
+        max-width: 140px;
+      }
+      &.unit {
+        min-width: 70px;
+        max-width: 100px;
+      }
+      &.head-inventory,
+      &.final-inventory,
+      &.compensate-quantity {
+        min-width: 60px;
+        max-width: 100px;
+        padding-right: 45px;
+      }
+      &.import-quantity,
+      &.export-quantity,
+      &.actual-inventory-quantity {
+        max-width: 135px;
+      }
     }
   }
 }

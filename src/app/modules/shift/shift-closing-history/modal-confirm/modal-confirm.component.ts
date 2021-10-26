@@ -8,6 +8,7 @@ import { DestroyService } from '../../../../shared/services/destroy.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { LIST_STATUS_ORDER } from '../../../../shared/data-enum/list-status';
 
 @Component({
   selector: 'app-modal-confirm',
@@ -20,6 +21,8 @@ export class ModalConfirmComponent implements OnInit {
   @Input() data: IDataTransfer;
   dataSource;
   resonForm: FormGroup;
+  listStatus = LIST_STATUS_ORDER;
+  isDisable = false;
 
   constructor(
     public modal: NgbActiveModal,
@@ -32,6 +35,12 @@ export class ModalConfirmComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSource = this.data.order;
+
+    this.dataSource.map((x) => {
+      if (x.status === 'WAIT_FOR_PAY') {
+        return this.isDisable = true;
+      }
+    })
     this.buildform();
     this.onSubmit();
   }

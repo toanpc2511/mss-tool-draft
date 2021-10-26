@@ -9,6 +9,8 @@ import { ILockShift, IOrderOfShift, IShiftConfig, ShiftService } from '../shift.
 import { GasStationResponse } from '../../gas-station/gas-station.service';
 import { convertTimeToString } from '../../../shared/helpers/functions';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
+import { IError } from '../../../shared/models/error.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-shift-closing-history',
@@ -32,6 +34,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
     private router: Router,
     private shiftService : ShiftService,
     private cdr: ChangeDetectorRef,
+    private toastr: ToastrService,
   ) {
     this.today = moment().format('DD/MM/YYYY');
 
@@ -78,8 +81,12 @@ export class ShiftClosingHistoryComponent implements OnInit {
     const timeEnd = new Date(moment(this.searchForm.get('endAt').value,'DD/MM/YYYY').format('MM/DD/YYYY'));
 
     if (timeStart > timeEnd) {
-      this.searchForm.get('endAt').setErrors({ errorDate: true });
+      this.searchForm.get('startAt').setErrors({ errorDateStart: true });
+      this.searchForm.get('endAt').setErrors({ errorDateEnd: true });
       return
+    } else {
+      this.searchForm.get('startAt').setErrors(null);
+      this.searchForm.get('endAt').setErrors(null);
     }
 
     this.shiftService.getListLockShift(
@@ -104,15 +111,15 @@ export class ShiftClosingHistoryComponent implements OnInit {
   }
 
 
-  viewDetail(id: number) {
-    this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${id}`]);
+  viewDetail(id: number, status: string) {
+    this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${id}`], {queryParams: {status: status}});
   }
 
   modalConfirm($event?: Event, data?: ILockShift): void {
     if ($event) {
       $event.stopPropagation();
     }
-    this.shiftService.getOrdersOfShift(data.shiftId)
+    this.shiftService.getOrdersOfShift(data.shiftId, data.id)
       .subscribe((res) => {
         this.listOrder = res.data;
         this.cdr.detectChanges();
@@ -129,9 +136,15 @@ export class ShiftClosingHistoryComponent implements OnInit {
             lockShiftInfo: data
           };
         } else {
-          this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`]);
+          this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`],{queryParams: {status: data.status, stationId: data.stationId}});
         }
       })
+  }
+
+  checkError(error: IError) {
+    if (error.code === 'SUN-OIL-4874') {
+      this.toastr.error('Ngày bắt đầu/kết thúc không hợp lệ');
+    }
   }
 
 }

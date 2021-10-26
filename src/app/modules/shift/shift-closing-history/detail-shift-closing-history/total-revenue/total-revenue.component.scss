@@ -1,0 +1,35 @@
+.card-header {
+  padding: 0 15px !important;
+  border-bottom: none;
+
+  .title {
+    text-transform: uppercase;
+    color: #4674EB;
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+.card-body {
+  padding: 0 2.25rem !important;
+
+  .table {
+    min-width: 1024px;
+    th {
+      text-transform: none;
+    }
+
+    .line-custom {
+      padding-top: 40px;
+    }
+
+    td {
+      &.name,
+      &.unit,
+      &.quantity,
+      &.revenue {
+        width: 25%;
+      }
+    }
+  }
+}
