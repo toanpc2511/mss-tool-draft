@@ -4,7 +4,7 @@
 			<label class="card-label">Chi tiết yêu cầu</label>
 		</div>
 	</div>
-	<div class="card-body">
+	<div class="card-body overflow-auto">
 		<table aria-label="">
 			<tbody>
 				<tr>
@@ -33,11 +33,29 @@
 		</table>
 	</div>
 	<div class="w-100 d-flex justify-content-center pb-10 mt-10">
-		<button type="button" class="btn btn-outline-primary mr-3" (click)="openRejectRequestModal()">
+		<button
+			type="button"
+			class="btn btn-outline-primary mr-3"
+			(click)="openRejectRequestModal()"
+			*ngIf="shiftChangeRequestData.status === eShiftChangeRequestStatus.WAITING"
+		>
 			Từ chối
 		</button>
-		<button type="button" class="btn btn-primary mr-3" (click)="openApproveRequestModal()">
+		<button
+			type="button"
+			class="btn btn-primary mr-3"
+			(click)="openApproveRequestModal()"
+			*ngIf="shiftChangeRequestData.status === eShiftChangeRequestStatus.WAITING"
+		>
 			Phê duyệt
+		</button>
+		<button
+			type="button"
+			class="btn btn-outline-secondary mr-3"
+			(click)="goBack()"
+			*ngIf="shiftChangeRequestData.status !== eShiftChangeRequestStatus.WAITING"
+		>
+			Quay lại
 		</button>
 	</div>
 </div>
@@ -63,7 +81,7 @@
 	<div class="modal-body">
 		<div class="w-100">
 			<label class="form-label required">Nhập lý do từ chối</label>
-			<input [formControl]="reasonControl" class="form-control form-control-solid" trim="blur"/>
+			<input [formControl]="reasonControl" class="form-control form-control-solid" trim="blur" />
 			<app-validate
 				[control]="reasonControl"
 				[error]="'required'"

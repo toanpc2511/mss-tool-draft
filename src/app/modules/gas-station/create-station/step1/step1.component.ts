@@ -1,3 +1,4 @@
+import { NO_EMIT_EVENT } from './../../../../shared/app-constants';
 import {
 	ChangeDetectorRef,
 	Component,
@@ -167,6 +168,12 @@ export class Step1Component implements OnInit, OnChanges {
 			this.isUpdate = true;
 			setTimeout(() => {
 				this.stationForm.patchValue(this.step1Data);
+				const coordinates =
+					this.step1Data.lat && this.step1Data.lon
+						? [this.step1Data.lat, this.step1Data.lon].join(',')
+						: '';
+				this.stationForm.get('coordinates').patchValue(coordinates, NO_EMIT_EVENT);
+				this.cdr.detectChanges();
 			});
 		}
 	}
@@ -184,7 +191,10 @@ export class Step1Component implements OnInit, OnChanges {
 			address: [''],
 			fullAddress: [null],
 			areaType: [null],
+			coordinates: [null, [TValidators.noWhiteSpace, TValidators.coordinates]],
 			areaDisplay: [null],
+			phone: [null, [TValidators.required]],
+			chip: [false],
 			status: [this.listStatus.ACTIVE]
 		});
 	}
@@ -195,8 +205,10 @@ export class Step1Component implements OnInit, OnChanges {
 		if (this.stationForm.invalid) {
 			return;
 		}
-		const value = { ...this.stationForm.value };
-		delete value.areaDisplay;
+		const coordinates = (this.stationForm.value.coordinates as string).split(',');
+		const lat = coordinates[0];
+		const lon = coordinates[1];
+		const value = { ...this.stationForm.value, lat, lon };
 
 		if (!this.isUpdate) {
 			this.gasStationService.createStation(value).subscribe(

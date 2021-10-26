@@ -9,5 +9,5 @@ export interface IMenuConfigItem {
 	submenu?: IMenuConfigItem[];
     section? : boolean;
     separator? :boolean;
-    permissionKey: string;
+    permissionKey?: string;
 }

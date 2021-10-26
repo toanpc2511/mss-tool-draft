@@ -1,3 +1,4 @@
+import { DirectivesModule } from './../../shared/directives/directives.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -48,7 +49,8 @@ import { ListStationComponent } from './list-station/list-station.component';
     ReactiveFormsModule,
     SharedComponentsModule,
     PipesModule,
-    InputTrimModule
+    InputTrimModule,
+    DirectivesModule
   ]
 })
 export class GasStationModule {}
