@@ -111,8 +111,8 @@ export class ShiftClosingHistoryComponent implements OnInit {
   }
 
 
-  viewDetail(id: number, status: string) {
-    this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${id}`], {queryParams: {status: status}});
+  viewDetail(id: number, status: string, stationId: number) {
+    this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${id}`], {queryParams: {status: status, stationId: stationId}});
   }
 
   modalConfirm($event?: Event, data?: ILockShift): void {

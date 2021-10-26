@@ -109,7 +109,7 @@
         </thead>
 
         <tbody>
-        <tr *ngFor='let item of dataSource' (click)='viewDetail(item.id, item.status)'>
+        <tr *ngFor='let item of dataSource' (click)='viewDetail(item.id, item.status, item.stationId)'>
           <td class="station-name">
             <p
               class="cursor-pointer text-ellipsis"
