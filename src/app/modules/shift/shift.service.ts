@@ -128,6 +128,7 @@ export interface IShiftRequestChange {
 	dateTo: string;
 	status: EShiftChangRequestStatus;
 	createAt: string;
+	reason: string;
 }
 
 export interface IOtherRevenue {
