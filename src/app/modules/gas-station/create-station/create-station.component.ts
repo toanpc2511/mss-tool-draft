@@ -2,6 +2,7 @@
 /* eslint-disable no-case-declarations */
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { cloneDeep } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Observable, of } from 'rxjs';
 import { filter, map, pluck, switchMap, takeUntil } from 'rxjs/operators';
@@ -190,10 +191,11 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
 			return;
 		}
 		const nextStep = $event.currentStep + 1;
-		const currentStepData = this.gasStationService.getStepDataValue();
+		const currentStepData = cloneDeep(this.gasStationService.getStepDataValue());
+		
 		switch ($event.currentStep) {
 			case 1:
-				currentStepData.step1.data = $event.step1?.data || currentStepData.step1.data;
+				currentStepData.step1.data = $event.step1.data;
 				this.gasStationUpdateData = currentStepData.step1.data;
 				currentStepData.step1.isValid = $event.step1.isValid;
 				break;
@@ -210,3 +212,4 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
 		this.gasStationService.setStepData({ ...currentStepData, currentStep: nextStep });
 	}
 }
+
