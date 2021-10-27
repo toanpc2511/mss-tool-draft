@@ -10,7 +10,7 @@ const isDisaled = true;
 export class CanShowMenuPipe implements PipeTransform {
 	transform(currentUser: UserModel, permissionKey: string): boolean {
 		const permissions = currentUser.actions;
-		return permissions.includes(permissionKey) || isDisaled;
+		return permissions?.includes(permissionKey) || isDisaled;
 	}
 }
 
@@ -20,6 +20,6 @@ export class CanShowMenuPipe implements PipeTransform {
 export class CanShowParrentMenuPipe implements PipeTransform {
 	transform(currentUser: UserModel, submenu: IMenuConfigItem[]): boolean {
 		const permissions = currentUser.actions;
-		return submenu.some((sm) => permissions.includes(sm.permissionKey)) || isDisaled;
+		return submenu.some((sm) => permissions?.includes(sm.permissionKey)) || isDisaled;
 	}
 }
