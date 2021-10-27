@@ -69,7 +69,7 @@ export class AuthorizeGuard implements CanActivate {
 			}
 		}
 
-		if (currentUser.actions.includes(menuItemByRoute?.permissionKey)) {
+		if (currentUser.actions?.includes(menuItemByRoute?.permissionKey)) {
 			return true;
 		}
 		if(!this.isDisaled) {
