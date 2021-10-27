@@ -42,40 +42,40 @@ export class AuthorizeGuard implements CanActivate {
 	constructor(private authService: AuthService, private router: Router) {}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-		const currentUser = this.authService.getCurrentUserValue();
-		let menuItemByRoute: IMenuConfigItem;
+		// const currentUser = this.authService.getCurrentUserValue();
+		// let menuItemByRoute: IMenuConfigItem;
 
-		// Remove params, query params from url
-		const urlPart = state.url.split('/');
-		const originUrlPart =
-			isNumber(urlPart[urlPart.length - 1]) || urlPart[urlPart.length - 1].includes('?')
-				? [...urlPart]
-				: [...urlPart];
-		const originUrl = originUrlPart.join('/');
+		// // Remove params, query params from url
+		// const urlPart = state.url.split('/');
+		// const originUrlPart =
+		// 	isNumber(urlPart[urlPart.length - 1]) || urlPart[urlPart.length - 1].includes('?')
+		// 		? [...urlPart]
+		// 		: [...urlPart];
+		// const originUrl = originUrlPart.join('/');
 
-		for (const menuItem of DynamicAsideMenuConfig.items) {
-			if (menuItem.submenu?.length > 0) {
-				for (const submenuItem of menuItem.submenu) {
-					if (submenuItem.page === state.url) {
-						menuItemByRoute = submenuItem;
-						break;
-					}
-				}
-			} else {
-				if (menuItem.page === state.url) {
-					menuItemByRoute = menuItem;
-					break;
-				}
-			}
-		}
+		// for (const menuItem of DynamicAsideMenuConfig.items) {
+		// 	if (menuItem.submenu?.length > 0) {
+		// 		for (const submenuItem of menuItem.submenu) {
+		// 			if (submenuItem.page === state.url) {
+		// 				menuItemByRoute = submenuItem;
+		// 				break;
+		// 			}
+		// 		}
+		// 	} else {
+		// 		if (menuItem.page === state.url) {
+		// 			menuItemByRoute = menuItem;
+		// 			break;
+		// 		}
+		// 	}
+		// }
 
-		if (currentUser.actions?.includes(menuItemByRoute?.permissionKey)) {
-			return true;
-		}
-		if(!this.isDisaled) {
-			this.router.navigate(['/error/404']);
-			return false;
-		}
+		// if (currentUser.actions?.includes(menuItemByRoute?.permissionKey)) {
+		// 	return true;
+		// }
+		// if(!this.isDisaled) {
+		// 	this.router.navigate(['/error/404']);
+		// 	return false;
+		// }
 		return true;
 	}
 }
