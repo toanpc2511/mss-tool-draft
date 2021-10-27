@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { convertDateToServer } from '../../shared/helpers/functions';
-import { GasStationResponse } from '../gas-station/gas-station.service';
-import { SortDirection } from './../../_metronic/shared/crud-table/models/sort.model';
+import { GasStationResponse, IPumpPole } from '../gas-station/gas-station.service';
+import { SortDirection } from '../../_metronic/shared/crud-table';
 
 export enum EShiftChangRequestType {
 	CHANGE = 'CHANGE',
@@ -190,6 +190,31 @@ export interface IPromotionalRevenue {
   unit: string
 }
 
+export interface IOffTimes {
+  end: string,
+  id: number,
+  start: string,
+  typeEnd: string,
+  typeStart: string
+}
+
+export  interface ICalendarEmployeeInfos {
+  shiftId: number,
+  shiftName: string,
+  start: string,
+  stationAddress: string,
+  stationId: number,
+  stationName: string,
+  background_color: string,
+  calendar_id: number,
+  checked: boolean,
+  employee_id: number,
+  employee_name: string,
+  end: string,
+  offTimes: [IOffTimes],
+  pumpPoleResponses: [IPumpPole]
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -360,7 +385,7 @@ export class ShiftService {
       .set('shift-id', shiftId.toString())
       .set('station-id', stationId.toString())
       .set('time', time)
-    return this.http.get('calendars/employees/infos', {params});
+    return this.http.get<Array<ICalendarEmployeeInfos>>('calendars/employees/infos', {params});
   }
 
 	/*
