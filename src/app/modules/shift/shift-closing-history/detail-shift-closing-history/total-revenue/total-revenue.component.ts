@@ -22,6 +22,7 @@ export class TotalRevenueComponent implements OnInit {
   proceeds: FormControl;
   hideButton = true;
   stationId: number;
+  lockShiftId: number;
 
   constructor(
     private modalService: NgbModal,
@@ -54,6 +55,9 @@ export class TotalRevenueComponent implements OnInit {
   ngOnInit(): void {
     this.proceeds.setValue(false);
 
+    this.activeRoute.params.subscribe((res)  => {
+      this.lockShiftId = res.lockShiftId;
+    });
 
     this.activeRoute.queryParams.subscribe((x) => {
       this.stationId = x.stationId;
@@ -64,7 +68,7 @@ export class TotalRevenueComponent implements OnInit {
     this.hideButton = !this.hideButton;
   }
 
-  createModal($event?: Event, data?: IDataTransfer): void {
+  createModal($event: Event): void {
     if ($event) {
       $event.stopPropagation();
     }
@@ -75,14 +79,9 @@ export class TotalRevenueComponent implements OnInit {
 
     modalRef.componentInstance.data = {
       title: 'Xác nhận',
-      stationId: this.stationId
+      stationId: this.stationId,
+      lockShiftOldId: this.lockShiftId
     };
-
-    modalRef.result.then((result) => {
-      if (result) {
-        console.log('done');
-      }
-    });
   }
 
   printReport() {

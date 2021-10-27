@@ -3,12 +3,13 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../../../../shared/services/destroy.service';
 import { Router } from '@angular/router';
-import { IShiftConfig, ShiftService } from '../../../../shift.service';
+import { IOffTimes, IShiftConfig, ShiftService } from '../../../../shift.service';
 import { ToastrService } from 'ngx-toastr';
 import { fromEvent } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { IError } from '../../../../../../shared/models/error.model';
 import * as moment from 'moment';
+import { IPumpPole } from '../../../../../gas-station/gas-station.service';
 
 @Component({
   selector: 'app-modal-confirm-lock-shift',
@@ -21,10 +22,10 @@ export class ModalConfirmLockShiftComponent implements OnInit {
   @Input() data: IDataTransfer;
   listShifts: IShiftConfig[] = [];
   confirmForm: FormGroup;
-  shiftId: number;
   today: string;
   dataSource: FormArray = new FormArray([]);
   dataSourceTemp: FormArray = new FormArray([]);
+  isShiftLead = false;
 
   constructor(
     public modal: NgbActiveModal,
@@ -70,10 +71,10 @@ export class ModalConfirmLockShiftComponent implements OnInit {
   convertToFormArray(data): FormArray {
     const controls = data.map((d) => {
       return this.fb.group({
-        employeeName: [d.employeeName],
+        name: [d.employeeName],
+        id: [d.employeeId],
         pumpPole: [this.getListPumpPole(d.pumpPoleResponses)],
-        offTimes: [this.getListTime(d.offTimes)],
-        shiftLead: ['']
+        offTimes: [this.getListTime(d.offTimes)]
       });
     });
 
@@ -88,23 +89,46 @@ export class ModalConfirmLockShiftComponent implements OnInit {
     fromEvent(this.btnSave.nativeElement, 'click')
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        this.dataSource = this.dataSourceTemp;
-        this.dataSource.getRawValue().map((x) => {
-          console.log(x);
+        this.confirmForm.markAllAsTouched();
+        if (this.confirmForm.invalid) {
+          return;
+        }
+
+        this.dataSource.value.map((x) => {
+          delete x.pumpPole;
+          delete x.offTimes;
+          x.id = Number(x.id);
         })
+
+        const dataReq = {
+          lockShiftOldId: Number(this.data.lockShiftOldId),
+          shiftId: Number(this.confirmForm.get('shiftId').value),
+          stationId: Number(this.data.stationId),
+          oldShiftEmployee: [],
+          newShiftEmployee: this.dataSource.value
+        }
+        console.log(dataReq);
+
       });
+  }
+
+  changeShiftLead(index: number) {
+    this.dataSource.value.map((x) => {
+      x.shiftLead = this.isShiftLead
+    })
+    this.dataSource.value[index].shiftLead = true;
   }
 
   checkError(error: IError) {
     this.toastr.error(error.code);
   }
 
-  getListPumpPole(data) {
+  getListPumpPole(data: IPumpPole[]) {
     return data.map((x) => x.name).join(', ')
   }
 
-  getListTime(data) {
-    return data.map((x) => `${x.start} - ${x.end}`).join(', ')
+  getListTime(data: IOffTimes[]) {
+    return data.map((x) => `${x.start} ${x.typeStart === 'TO_DAY' ? '' : 'hôm sau'} - ${x.end} ${x.typeEnd === 'TO_DAY' ? '' : 'hôm sau'}`).join(', ')
   }
 
 }
@@ -112,4 +136,5 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 export interface IDataTransfer {
   title: string;
   stationId: number;
+  lockShiftOldId: number;
 }

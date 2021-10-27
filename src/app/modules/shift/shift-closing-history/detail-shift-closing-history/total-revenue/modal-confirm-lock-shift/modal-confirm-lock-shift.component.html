@@ -55,9 +55,9 @@
               <p
                 class="cursor-pointer text-ellipsis"
                 placement="top"
-                [ngbTooltip]="item.get('employeeName').value"
+                [ngbTooltip]="item.get('name').value"
               >
-                {{ item.get('employeeName').value}}
+                {{ item.get('name').value}}
               </p>
             </td>
             <td class="pump-pole text-color-custom">
@@ -79,7 +79,7 @@
               </p>
             </td>
             <td class='text-center'>
-              <input type="radio" [value]='item.get("shiftLead")' name='shiftLead' formControlName='shiftLead'>
+              <input type="radio" name='shiftLead' [value]='isShiftLead' (change)='changeShiftLead(i)'>
             </td>
           </tr>
           </tbody>
@@ -97,6 +97,6 @@
     <button type='button' class='btn btn-outline-secondary btn-confirm-dialog' (click)='onClose()'>
       Hủy
     </button>
-    <button type='button' class='btn btn-primary btn-confirm-dialog' #btnSave>Xác nhận</button>
+    <button [disabled]='dataSource.value <= 0' type='button' class='btn btn-primary btn-confirm-dialog' #btnSave>Xác nhận</button>
   </div>
 </div>
