@@ -34,7 +34,7 @@ export class AsideDynamicComponent implements OnInit, OnDestroy {
     private router: Router,
     private menu: DynamicAsideMenuService,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService
+    authService: AuthService
   ) {
     this.currentUser$ = authService.currentUser$;
   }

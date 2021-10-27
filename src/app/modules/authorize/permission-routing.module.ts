@@ -11,7 +11,7 @@ const routes: Routes = [
 	},
 	{
 		path: 'danh-sach',
-		component: ListPermissionComponent
+		component: ListPermissionComponent,
 	},
 	{
 		path: 'them-nhom-quyen',

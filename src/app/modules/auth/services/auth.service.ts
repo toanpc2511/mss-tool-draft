@@ -22,6 +22,7 @@ export interface UserModel {
     updatedAt: Date;
     username: string;
   };
+  actions: string[];
   changePassword: boolean;
   token: string;
 }
