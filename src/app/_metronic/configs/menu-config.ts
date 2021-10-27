@@ -5,7 +5,6 @@ export interface IMenuConfigItem {
 	page?: string;
 	translate?: string;
 	bullet?: string;
-	notChild?: boolean;
 	submenu?: IMenuConfigItem[];
     section? : boolean;
     separator? :boolean;

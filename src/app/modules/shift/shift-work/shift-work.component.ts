@@ -50,7 +50,7 @@ import { EmployeeCheck } from './employee/employee.component';
 			[popoverClass]="'shift-detail-popover'"
 			triggers="focus"
 			container="body"
-			[placement]="['top', 'left', 'right', 'bottom']"
+			[placement]="['top', 'top-right', 'left']"
 			[autoClose]="'outside'"
 		>
 			<div class="event-container">
@@ -89,7 +89,7 @@ export type ShiftData = {
 					*ngIf="tooltipWarning"
 					[ngbTooltip]="tooltipWarning"
 					[tooltipClass]="'warning-tooltip'"
-					[placement]="['top', 'right', 'left', 'bottom']"
+					[placement]="['top', 'right']"
 					triggers="hover"
 					container="body"
 					class="warning-icon fa fa-exclamation-triangle mt-1 text-danger"
