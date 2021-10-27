@@ -165,6 +165,8 @@ export class Step1Component implements OnInit, OnChanges {
 			this.stationForm = this.initForm();
 		}
 		if (this.step1Data) {
+			console.log(this.step1Data);
+			
 			this.isUpdate = true;
 			setTimeout(() => {
 				this.stationForm.patchValue(this.step1Data);
@@ -216,7 +218,7 @@ export class Step1Component implements OnInit, OnChanges {
 					if (res.data) {
 						this.stepSubmitted.next({
 							currentStep: 1,
-							step1: { data: this.stationForm.value as CreateStation, isValid: true }
+							step1: { data: value, isValid: true }
 						});
 						this.gasStationService.gasStationId = res.data.id;
 						this.gasStationService.gasStationStatus = res.data.status;
@@ -232,7 +234,7 @@ export class Step1Component implements OnInit, OnChanges {
 					if (res.data) {
 						this.stepSubmitted.next({
 							currentStep: 1,
-							step1: { data: this.stationForm.value as CreateStation, isValid: true }
+							step1: { data: value, isValid: true }
 						});
 						this.gasStationService.gasStationStatus = res.data.status;
 					}
