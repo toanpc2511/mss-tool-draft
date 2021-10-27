@@ -17,6 +17,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			icon: 'fa fa-gas-pump',
 			root: true,
 			bullet: 'dot',
+			page: '/tram-xang',
 			submenu: [
 				{
 					title: 'Danh sách trạm',
@@ -31,6 +32,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			icon: 'fas fa-cubes',
 			root: true,
 			bullet: 'dot',
+			page: '/san-pham',
 			submenu: [
 				{
 					title: 'Quản lý nhóm sản phẩm',
@@ -68,6 +70,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			root: true,
 			bullet: 'dot',
 			icon: 'fas fa-qrcode',
+			page: '/qr-code',
 			submenu: [
 				{
 					title: 'Qr code sản phẩm',
@@ -122,6 +125,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			root: true,
 			bullet: 'dot',
 			icon: 'fas fa-calendar-check',
+			page: '/qr-code',
 			submenu: [
 				{
 					title: 'Cấu hình ca',
@@ -138,7 +142,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					permissionKey: EAuthorize.VIEW_CALENDAR_SCREEN
 				},
 				{
-					title: 'Đổi ca',
+					title: 'Danh sách yêu cầu đổi ca',
 					bullet: 'dot',
 					page: '/ca-lam-viec/doi-ca',
 
@@ -166,6 +170,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			icon: 'fas fa-hand-holding-usd',
 			root: true,
 			bullet: 'dot',
+			page: '/qr-code',
 			submenu: [
 				{
 					title: 'Cấu hình tích điểm',
