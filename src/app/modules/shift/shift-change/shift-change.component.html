@@ -6,7 +6,7 @@
 
 		<form class="row form-group w-100 my-10" [formGroup]="searchFormGroup">
 			<div class="col-lg-4 d-flex align-items-center">
-				<label class="w-20 mb-0">Loại yêu cầu</label>
+				<label class="w-20 mb-0 pr-3">Loại yêu cầu</label>
 				<select class="w-60 form-control form-control-solid" formControlName="type">
 					<option [value]="''">Tất cả</option>
 					<option [value]="eShiftChangRequestType.CHANGE">Đổi ca</option>
@@ -14,7 +14,7 @@
 				</select>
 			</div>
 			<div class="col-lg-4 d-flex align-items-center">
-				<label class="w-20 mb-0">Trạng thái</label>
+				<label class="w-20 mb-0 pr-3">Trạng thái</label>
 				<select class="w-60 form-control form-control-solid" formControlName="status">
 					<option [value]="''">Tất cả</option>
 					<option [value]="eShiftChangRequestStatus.WAITING">Chờ phê duyệt</option>

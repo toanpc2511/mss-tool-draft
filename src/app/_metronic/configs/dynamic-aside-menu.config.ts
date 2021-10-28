@@ -10,7 +10,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			page: '/dashboard',
 			translate: 'MENU.DASHBOARD',
 			bullet: 'dot',
-			permissionKey: ''
+			permissionKey: EAuthorize.DASH_BOARD
 		},
 		{
 			title: 'Quản lý trạm xăng',

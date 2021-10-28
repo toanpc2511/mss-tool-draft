@@ -1,4 +1,5 @@
 export enum EAuthorize {
+	DASH_BOARD = 'dashboard',
 	MENU_GAS_STAION_MANAGEMENT = 'menu_gas_staion_management',
 	CREATE_GAS_STATION_BUTTON = 'create_gas_station_button',
 	UPDATE_GAS_STATION_BUTTON = 'update_gas_station_button',
