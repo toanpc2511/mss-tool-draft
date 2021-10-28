@@ -7,7 +7,7 @@ import { GasStationResponse, IPumpPole } from '../gas-station/gas-station.servic
 import { SortDirection } from '../../_metronic/shared/crud-table';
 
 export enum EShiftChangRequestType {
-	CHANGE = 'CHANGE',
+	CHANGE = 'SWAP',
 	REPLACE = 'REPLACE'
 }
 
@@ -129,6 +129,10 @@ export interface IShiftRequestChange {
 	status: EShiftChangRequestStatus;
 	createAt: string;
 	reason: string;
+	startTime: string;
+	typeStart: 'TODAY' | 'THE_NEXT_DAY';
+	endTime: string;
+	typeEnd: 'TODAY' | 'THE_NEXT_DAY';
 }
 
 export interface IOtherRevenue {

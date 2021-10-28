@@ -42,7 +42,7 @@
 				</tr>
 				<tr>
 					<td class="column-1">Ngày trực</td>
-					<td>{{shiftChangeRequestData?.dateTo | date: 'dd/MM/yyyy'}}</td>
+					<td>{{shiftChangeRequestData?.dateFrom | date: 'dd/MM/yyyy'}}</td>
 				</tr>
 				<tr>
 					<td class="column-2">Ca trực</td>
@@ -50,7 +50,10 @@
 				</tr>
 				<tr>
 					<td class="column-1">Thời gian muốn thay</td>
-					<td>{{shiftChangeRequestData?.dateTo | date: 'dd/MM/yyyy'}}</td>
+					<td>
+						{{shiftChangeRequestData?.startTime |displayTime: shiftChangeRequestData?.typeStart}} -
+						{{shiftChangeRequestData?.endTime |displayTime: shiftChangeRequestData?.typeEnd}}
+					</td>
 				</tr>
 				<tr>
 					<td class="column-1">Lý do yêu cầu</td>
