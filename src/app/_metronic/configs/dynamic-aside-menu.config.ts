@@ -125,7 +125,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			root: true,
 			bullet: 'dot',
 			icon: 'fas fa-calendar-check',
-			page: '/qr-code',
+			page: '/ca-lam-viec',
 			submenu: [
 				{
 					title: 'Cấu hình ca',
