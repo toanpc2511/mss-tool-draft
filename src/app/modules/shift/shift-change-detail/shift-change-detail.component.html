@@ -115,7 +115,12 @@
 	<div class="modal-body">
 		<div class="w-100">
 			<label class="form-label required">Nhập lý do từ chối</label>
-			<input [formControl]="reasonControl" class="form-control form-control-solid" trim="blur" />
+			<input
+				[formControl]="reasonControl"
+				class="form-control form-control-solid"
+				trim="blur"
+				maxlength="255"
+			/>
 			<app-validate
 				[control]="reasonControl"
 				[error]="'required'"
@@ -127,6 +132,8 @@
 		<button type="button" class="btn btn-outline-secondary" (click)="activeModal.close(false)">
 			Hủy
 		</button>
-		<button type="button" class="btn btn-primary" (click)="activeModal.close(true)">Từ chối</button>
+		<button type="button" class="btn btn-primary" (click)="rejectRequestShiftChange()">
+			Từ chối
+		</button>
 	</div>
 </ng-template>

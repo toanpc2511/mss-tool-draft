@@ -18,7 +18,11 @@ import { SortService } from '../../../shared/services/sort.service';
 import { ShiftService } from '../shift.service';
 import { TValidators } from './../../../shared/validators';
 import { SubheaderService } from './../../../_metronic/partials/layout/subheader/_services/subheader.service';
-import { IShiftRequestChange, EShiftChangRequestStatus, EShiftChangRequestType } from './../shift.service';
+import {
+	IShiftRequestChange,
+	EShiftChangRequestStatus,
+	EShiftChangRequestType
+} from './../shift.service';
 import { of } from 'rxjs';
 
 @Component({
@@ -32,7 +36,7 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 	@ViewChild('rejectRequest') rejectRequest: TemplateRef<any>;
 
 	eShiftChangeRequestStatus = EShiftChangRequestStatus;
-	eShiftChangRequestType = EShiftChangRequestType
+	eShiftChangRequestType = EShiftChangRequestType;
 	shiftChangeRequestData: IShiftRequestChange;
 
 	activeModal: NgbActiveModal;
@@ -65,7 +69,7 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 				tap((res) => {
 					this.shiftChangeRequestData = res.data;
 					console.log(this.shiftChangeRequestData);
-					
+
 					this.cdr.detectChanges();
 				}),
 				takeUntil(this.destroy$)
@@ -113,7 +117,10 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 			.pipe(
 				filter((res) => res),
 				switchMap(() => {
-					return this.shiftService.rejectShiftRequestChange(this.shiftChangeRequestData.id);
+					return this.shiftService.rejectShiftRequestChange(
+						this.shiftChangeRequestData.id,
+						this.reasonControl.value
+					);
 				}),
 				tap((res) => {
 					if (res.data) {
@@ -159,5 +166,13 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 
 	goBack() {
 		this.router.navigate(['/ca-lam-viec/doi-ca']);
+	}
+
+	rejectRequestShiftChange() {
+		this.reasonControl.markAsTouched();
+		if(this.reasonControl.invalid) {
+			return;
+		}
+		this.activeModal.close(true)
 	}
 }
