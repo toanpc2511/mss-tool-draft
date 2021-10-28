@@ -42,9 +42,10 @@ table {
   .number {
     padding-right: 24px;
   }
-  th, td {
+  td {
     &.id {
-      width: 70px;
+      min-width: 100px;
+      max-width: 130px;
     }
 
     &.station,
@@ -53,12 +54,15 @@ table {
     &.fuel {
       min-width: 150px;
       max-width: 170px;
+      p {
+        padding-right: 15px;
+      }
     }
     &.price {
-      padding-left: 15px;
+      min-width: 110px;
       max-width: 120px;
       p {
-        padding-right: 24px;
+        padding-right: 35px;
       }
     }
     &.qr-code {

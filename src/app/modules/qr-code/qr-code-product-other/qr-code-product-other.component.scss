@@ -30,9 +30,6 @@ table {
   thead {
     th {
       text-transform: none;
-      &.price {
-        padding-right: 47px;
-      }
     }
   }
 
@@ -45,19 +42,27 @@ table {
       min-width: 170px;
       max-width: 220px;
     }
-    &.price,
-    &.unit {
-      min-width: 80px;
-      max-width: 130px;
-      padding-right: 70px;
-    }
-    &.vat {
-      min-width: 80px;
+    &.price {
+      min-width: 100px;
       max-width: 130px;
       padding-right: 35px;
     }
-    &.qr-code {
+    &.unit {
       min-width: 100px;
+      max-width: 130px;
+    }
+    &.vat {
+      min-width: 100px;
+      max-width: 130px;
+      padding-right: 35px;
+    }
+    &.qr-code,
+    &.action {
+      min-width: 100px;
+      max-width: 150px;
+    }
+    &.status {
+      min-width: 120px;
       max-width: 150px;
     }
   }
