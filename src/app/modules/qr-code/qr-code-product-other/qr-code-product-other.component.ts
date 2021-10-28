@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../shared/services/destroy.service';
-import { QrCodeService } from '../qr-code.service';
+import { IQrProductOther, QrCodeService } from '../qr-code.service';
 import { ISortData } from '../../contract/contract.service';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { FileService } from '../../../shared/services/file.service';
@@ -51,7 +51,6 @@ export class QrCodeProductOtherComponent implements OnInit {
     )
       .subscribe((res) => {
         this.dataRes = res.data;
-        console.log(this.dataRes[0]);
         this.paginatorState.recalculatePaginator(res.meta.total);
         this.cdr.detectChanges();
       })
@@ -75,11 +74,11 @@ export class QrCodeProductOtherComponent implements OnInit {
     this.getListQrCodeProductOther();
   }
 
-  viewQrCode(content, item: any) {
+  viewQrCode(content, item: IQrProductOther) {
     this.modalService.open(content, { size: 'md' });
 
     this.nameProduct = item.productName;
-    this.image = item.qrCode;
+    this.image = item.qrCodeProduct.qrCodeImage.url;
   }
 
   downloadFile(item) {

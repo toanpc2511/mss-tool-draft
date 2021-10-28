@@ -77,7 +77,6 @@ export class QrCodePumpHosesComponent implements OnInit {
     this.qrCodeService.getListQrCodePumlHose()
       .subscribe((res) => {
         this.dataSource = this.dataSourceTemp = res.data;
-        console.log(this.dataSource);
         this.cdr.detectChanges();
       })
   }

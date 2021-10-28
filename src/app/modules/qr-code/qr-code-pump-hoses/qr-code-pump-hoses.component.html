@@ -23,7 +23,7 @@
       <table class="table table-head-custom table-vertical-center overflow-hidden">
         <thead>
         <th class="id" scope="">
-          ID
+          Mã
           <app-sort-icon
             column="id"
             [activeColumn]="sorting.column"
@@ -92,8 +92,8 @@
         <tbody>
         <tr *ngFor='let item of dataSource'>
           <td class="id">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.id">
-              {{ item.id }}
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
+              {{ item.code }}
             </p>
           </td>
           <td class="station">
@@ -159,7 +159,7 @@
 
           <ng-template #content let-c='close' let-d='dismiss'>
             <div class='modal-header'>
-              <h4 class='modal-title'>QR Code: {{item.nameFuel}}</h4>
+              <h4 class='modal-title'>QR Code: {{item.hose}}</h4>
               <div class="close-icon" (click)="d('Cross click')"></div>
             </div>
             <div class='modal-body'>

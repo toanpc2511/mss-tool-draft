@@ -7,6 +7,7 @@ export interface IQrProductOther {
   categoryId: number,
   categoryName: string,
   id: number,
+  code: string,
   price: number,
   productName: string,
   status: string,
