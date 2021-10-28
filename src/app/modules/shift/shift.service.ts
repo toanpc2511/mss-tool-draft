@@ -128,6 +128,7 @@ export interface IShiftRequestChange {
 	dateTo: string;
 	status: EShiftChangRequestStatus;
 	createAt: string;
+	reason: string;
 }
 
 export interface IOtherRevenue {
@@ -160,7 +161,7 @@ export interface ILockShift {
 	shiftName: string;
 	startHour: number;
 	startMinute: number;
-  stationId: number;
+	stationId: number;
 	stationName: string;
 	status: string;
 	timeEnd: string;
@@ -168,51 +169,51 @@ export interface ILockShift {
 }
 
 export interface IOrderOfShift {
-  id: number,
-  pumpHose: string,
-  pumpPole: string,
-  status: string,
-  code: string
+	id: number;
+	pumpHose: string;
+	pumpPole: string;
+	status: string;
+	code: string;
 }
 
 export interface IPromotionalRevenue {
-  actualInventoryQuantity: number,
-  compensateQuantity: number,
-  exportQuantity: number,
-  finalInventory: number,
-  hasChip: boolean,
-  headInventory: number,
-  id: number,
-  importQuantity: number,
-  lockShiftId: number,
-  productId: number,
-  productName: string,
-  unit: string
+	actualInventoryQuantity: number;
+	compensateQuantity: number;
+	exportQuantity: number;
+	finalInventory: number;
+	hasChip: boolean;
+	headInventory: number;
+	id: number;
+	importQuantity: number;
+	lockShiftId: number;
+	productId: number;
+	productName: string;
+	unit: string;
 }
 
 export interface IOffTimes {
-  end: string,
-  id: number,
-  start: string,
-  typeEnd: string,
-  typeStart: string
+	end: string;
+	id: number;
+	start: string;
+	typeEnd: string;
+	typeStart: string;
 }
 
-export  interface ICalendarEmployeeInfos {
-  shiftId: number,
-  shiftName: string,
-  start: string,
-  stationAddress: string,
-  stationId: number,
-  stationName: string,
-  background_color: string,
-  calendar_id: number,
-  checked: boolean,
-  employee_id: number,
-  employee_name: string,
-  end: string,
-  offTimes: [IOffTimes],
-  pumpPoleResponses: [IPumpPole]
+export interface ICalendarEmployeeInfos {
+	shiftId: number;
+	shiftName: string;
+	start: string;
+	stationAddress: string;
+	stationId: number;
+	stationName: string;
+	background_color: string;
+	calendar_id: number;
+	checked: boolean;
+	employee_id: number;
+	employee_name: string;
+	end: string;
+	offTimes: [IOffTimes];
+	pumpPoleResponses: [IPumpPole];
 }
 
 @Injectable({
@@ -341,52 +342,52 @@ export class ShiftService {
 		return this.http.get<Array<ILockShift>>('lock-shifts/filter', { params });
 	}
 
-  // lấy ds giao dịch của ca
-  getOrdersOfShift(shiftId: number, lockShiftId: number) {
-    const params = new HttpParams()
-      .set('shift-id', shiftId.toString())
-      .set('lock-shift-id', lockShiftId.toString());
-    return this.http.get<Array<IOrderOfShift>>('orders/shift-order', {params})
-  }
+	// lấy ds giao dịch của ca
+	getOrdersOfShift(shiftId: number, lockShiftId: number) {
+		const params = new HttpParams()
+			.set('shift-id', shiftId.toString())
+			.set('lock-shift-id', lockShiftId.toString());
+		return this.http.get<Array<IOrderOfShift>>('orders/shift-order', { params });
+	}
 
-  // Lấy ds doanh thu hàng hóa
-  getOtherProductRevenue(id: number, page: number, size: number) {
-    const params = new HttpParams()
-      .set('lock-shift-id', id.toString())
-      .set('page', page.toString())
-      .set('size', size.toString());
-    return this.http.get<Array<IOtherRevenue>>('other-product-revenue', { params });
-  }
+	// Lấy ds doanh thu hàng hóa
+	getOtherProductRevenue(id: number, page: number, size: number) {
+		const params = new HttpParams()
+			.set('lock-shift-id', id.toString())
+			.set('page', page.toString())
+			.set('size', size.toString());
+		return this.http.get<Array<IOtherRevenue>>('other-product-revenue', { params });
+	}
 
-  // Sửa doanh thu hàng hóa khác
-  updateOtherProductRevenue(dataReq) {
-    return this.http.put(`other-product-revenue`, dataReq);
-  }
+	// Sửa doanh thu hàng hóa khác
+	updateOtherProductRevenue(dataReq) {
+		return this.http.put(`other-product-revenue`, dataReq);
+	}
 
-  // Lấy ds báo cáo khuyến mãi
-  getPromotionalRevenue(id: number) {
-    const params = new HttpParams().set('lock-shift-id', id.toString());
-    return this.http.get<Array<IPromotionalRevenue>>('promotional-revenue', {params});
-  }
+	// Lấy ds báo cáo khuyến mãi
+	getPromotionalRevenue(id: number) {
+		const params = new HttpParams().set('lock-shift-id', id.toString());
+		return this.http.get<Array<IPromotionalRevenue>>('promotional-revenue', { params });
+	}
 
-  // Sửa báo cáo khuyến mãi
-  updatePromotionalRevenue(dataReq) {
-    return this.http.put(`promotional-revenue`, dataReq);
-  }
+	// Sửa báo cáo khuyến mãi
+	updatePromotionalRevenue(dataReq) {
+		return this.http.put(`promotional-revenue`, dataReq);
+	}
 
-  // Hủy đơn hàng của ca
-  rejectOrderOfShift(dataReq: {content: string, id: number, shiftId: number}) {
-    return this.http.post('lock-shifts/order-shift', dataReq);
-  }
+	// Hủy đơn hàng của ca
+	rejectOrderOfShift(dataReq: { content: string; id: number; shiftId: number }) {
+		return this.http.post('lock-shifts/order-shift', dataReq);
+	}
 
-  // Lấy ds lịch làm việc theo ca
-  getCalendarEmployeeInfos(shiftId: number, stationId: number, time: string) {
-    const  params = new HttpParams()
-      .set('shift-id', shiftId.toString())
-      .set('station-id', stationId.toString())
-      .set('time', time)
-    return this.http.get<Array<ICalendarEmployeeInfos>>('calendars/employees/infos', {params});
-  }
+	// Lấy ds lịch làm việc theo ca
+	getCalendarEmployeeInfos(shiftId: number, stationId: number, time: string) {
+		const params = new HttpParams()
+			.set('shift-id', shiftId.toString())
+			.set('station-id', stationId.toString())
+			.set('time', time);
+		return this.http.get<Array<ICalendarEmployeeInfos>>('calendars/employees/infos', { params });
+	}
 
 	/*
 		Đổi ca/thay ca
@@ -419,7 +420,10 @@ export class ShiftService {
 		return this.http.put(`swap-shifts/status/${id}`, { status: EShiftChangRequestStatus.SWAPPED });
 	}
 
-	rejectShiftRequestChange(id: string) {
-		return this.http.put(`swap-shifts/status/${id}`, { status: EShiftChangRequestStatus.REJECTED });
+	rejectShiftRequestChange(id: string, reason: string) {
+		return this.http.put(`swap-shifts/status/${id}`, {
+			status: EShiftChangRequestStatus.REJECTED,
+			reason
+		});
 	}
 }

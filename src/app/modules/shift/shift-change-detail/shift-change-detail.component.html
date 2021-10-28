@@ -5,7 +5,7 @@
 		</div>
 	</div>
 	<div class="card-body overflow-auto">
-		<table aria-label="">
+		<table aria-label="" *ngIf="shiftChangeRequestData?.type === eShiftChangRequestType.CHANGE">
 			<tbody>
 				<tr>
 					<td class="column-1">Nhân viên xin đổi ca</td>
@@ -31,13 +31,47 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<table aria-label="" *ngIf="shiftChangeRequestData?.type === eShiftChangRequestType.REPLACE">
+			<tbody>
+				<tr>
+					<td class="column-1">Nhân viên xin thay ca</td>
+					<td>{{shiftChangeRequestData?.employeeNameFrom}}</td>
+					<td class="column-2">Nhân viên thay ca</td>
+					<td>{{shiftChangeRequestData?.employeeNameTo}}</td>
+				</tr>
+				<tr>
+					<td class="column-1">Ngày trực</td>
+					<td>{{shiftChangeRequestData?.dateTo | date: 'dd/MM/yyyy'}}</td>
+				</tr>
+				<tr>
+					<td class="column-2">Ca trực</td>
+					<td>{{shiftChangeRequestData?.shiftNameTo}}</td>
+				</tr>
+				<tr>
+					<td class="column-1">Thời gian muốn thay</td>
+					<td>{{shiftChangeRequestData?.dateTo | date: 'dd/MM/yyyy'}}</td>
+				</tr>
+				<tr>
+					<td class="column-1">Lý do yêu cầu</td>
+					<td>{{shiftChangeRequestData?.content}}</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h5
+			class="text-danger mt-5"
+			*ngIf="shiftChangeRequestData?.status	 === eShiftChangeRequestStatus.REJECTED"
+		>
+			Lý do từ chối: {{shiftChangeRequestData?.reason}}
+		</h5>
 	</div>
 	<div class="w-100 d-flex justify-content-center pb-10 mt-10">
 		<button
 			type="button"
 			class="btn btn-outline-primary mr-3"
 			(click)="openRejectRequestModal()"
-			*ngIf="shiftChangeRequestData.status === eShiftChangeRequestStatus.WAITING"
+			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING"
 		>
 			Từ chối
 		</button>
@@ -45,7 +79,7 @@
 			type="button"
 			class="btn btn-primary mr-3"
 			(click)="openApproveRequestModal()"
-			*ngIf="shiftChangeRequestData.status === eShiftChangeRequestStatus.WAITING"
+			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING"
 		>
 			Phê duyệt
 		</button>
@@ -53,7 +87,7 @@
 			type="button"
 			class="btn btn-outline-secondary mr-3"
 			(click)="goBack()"
-			*ngIf="shiftChangeRequestData.status !== eShiftChangeRequestStatus.WAITING"
+			*ngIf="shiftChangeRequestData?.status !== eShiftChangeRequestStatus.WAITING"
 		>
 			Quay lại
 		</button>
@@ -81,7 +115,12 @@
 	<div class="modal-body">
 		<div class="w-100">
 			<label class="form-label required">Nhập lý do từ chối</label>
-			<input [formControl]="reasonControl" class="form-control form-control-solid" trim="blur" />
+			<input
+				[formControl]="reasonControl"
+				class="form-control form-control-solid"
+				trim="blur"
+				maxlength="255"
+			/>
 			<app-validate
 				[control]="reasonControl"
 				[error]="'required'"
@@ -93,6 +132,8 @@
 		<button type="button" class="btn btn-outline-secondary" (click)="activeModal.close(false)">
 			Hủy
 		</button>
-		<button type="button" class="btn btn-primary" (click)="activeModal.close(true)">Từ chối</button>
+		<button type="button" class="btn btn-primary" (click)="rejectRequestShiftChange()">
+			Từ chối
+		</button>
 	</div>
 </ng-template>

@@ -85,7 +85,7 @@
 			data-menu-toggle="hover"
 			[ngClass]="{ 'menu-item-open': isMenuItemActive(item.page) }"
 			routerLinkActive="menu-item-open"
-			*ngIf="(currentUser$ |async|canShowMenu: item.permissionKey)"
+			*ngIf="(currentUser$ |async|canShowParrentMenu: item.submenu)"
 		>
 			<a
 				class="menu-link menu-toggle"
@@ -121,7 +121,7 @@
 <!-- begin::2 Level -->
 <ng-template #menu2LevelTemplate let-item="item">
 	<!-- begin::if don't have submenu -->
-	<ng-container *ngIf="!item.submenu && (currentUser$ |async|canShowMenu: item.permissionKey)">
+	<ng-container *ngIf="currentUser$ |async|canShowMenu: item.permissionKey">
 		<li
 			class="menu-item"
 			routerLinkActive="menu-item-active"
@@ -137,63 +137,8 @@
 		</li>
 	</ng-container>
 	<!-- end::if don't have submenu -->
-
-	<!-- begin::if has submenu -->
-	<ng-container *ngIf="item.submenu">
-		<li
-			class="menu-item menu-item-submenu"
-			aria-haspopup="true"
-			data-menu-toggle="hover"
-			[ngClass]="{ 'menu-item-open': isMenuItemActive(item.page) }"
-			routerLinkActive="menu-item-open"
-			*ngIf="(currentUser$ |async|canShowMenu: item.permissionKey)"
-		>
-			<a
-				class="menu-link menu-toggle"
-				[ngClass]="{ 'active ': isMenuItemActive(item.page) }"
-				[routerLink]="item.page"
-				routerLinkActive="active"
-			>
-				<i class="menu-bullet menu-bullet-dot">
-					<span></span>
-				</i>
-				<span class="menu-text" [translate]="item.translate">{{ item.title }}</span>
-				<i *ngIf="!item.notChild" class="menu-arrow"></i>
-			</a>
-			<div class="menu-submenu" *ngIf="!item.notChild">
-				<i class="menu-arrow"></i>
-				<ul class="menu-subnav">
-					<!-- submenu-->
-					<ng-container
-						*ngFor="let sub of item.submenu"
-						[ngTemplateOutlet]="menu3LevelTemplate"
-						[ngTemplateOutletContext]="{ item: sub }"
-					></ng-container>
-				</ul>
-			</div>
-		</li>
-	</ng-container>
-	<!-- end::if has submenu -->
 </ng-template>
 <!-- end::2 Level -->
-
-<!-- begin::3 Level -->
-<ng-template #menu3LevelTemplate let-item="item">
-	<li
-		class="menu-item"
-		aria-haspopup="true"
-		routerLinkActive="menu-item-active"
-		*ngIf="(currentUser$ |async|canShowMenu: item.permissionKey)"
-	>
-		<a class="menu-link" [routerLink]="item.page" routerLinkActive="active">
-			<i class="menu-bullet menu-bullet-dot">
-				<span></span>
-			</i>
-			<span class="menu-text" [translate]="item.translate">{{ item.title }}</span>
-		</a>
-	</li>
-</ng-template>
-<!-- end::3 Level -->
 
 <!-- begin::Separator -->
 <ng-template #menuItemSeparatorTemplate>
