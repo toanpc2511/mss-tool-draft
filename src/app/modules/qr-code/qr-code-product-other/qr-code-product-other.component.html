@@ -21,7 +21,7 @@
     <div class="table-responsive angular-bootstrap-table">
       <table class="table table-head-custom table-vertical-center overflow-hidden">
         <thead>
-        <th class="id" scope="">ID</th>
+        <th class="id" scope="">Mã</th>
         <th class="category" scope="">
           Nhóm sản phẩm
           <app-sort-icon
@@ -83,8 +83,8 @@
         <tbody>
         <tr *ngFor='let item of dataRes'>
           <td class="id">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.id">
-              {{ item.id }}
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
+              {{ item.code }}
             </p>
           </td>
           <td class="category-name">
@@ -112,8 +112,8 @@
             </p>
           </td>
           <td class="vat text-right">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.valueAddedTax +'%'">
-              {{ item.valueAddedTax }} %
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.valueAddedTax || '--'">
+              {{ item.valueAddedTax || '--' }}
             </p>
           </td>
           <td class="qr-code">
