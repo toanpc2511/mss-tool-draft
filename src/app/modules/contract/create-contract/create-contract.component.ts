@@ -12,6 +12,7 @@ import {
 	debounceTime,
 	finalize,
 	pluck,
+	skipUntil,
 	switchMap,
 	take,
 	takeUntil,
@@ -363,19 +364,20 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 								this.resetInfoForm();
 								this.checkError(err);
 								return of(err);
-							})
+							}),
 						);
 					}
 					this.resetInfoForm();
 					return of(null);
 				}),
+				tap(res => {
+					if (res?.data) {
+						this.patchValueInfoForm(res.data);
+					}
+				}),
 				takeUntil(this.destroy$)
 			)
-			.subscribe((res) => {
-				if (res?.data) {
-					this.patchValueInfoForm(res.data);
-				}
-			});
+			.subscribe();
 	}
 
 	buildContractForm(type: EContractType) {
