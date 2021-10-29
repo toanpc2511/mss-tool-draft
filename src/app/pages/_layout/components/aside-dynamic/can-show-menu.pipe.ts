@@ -2,9 +2,6 @@ import { EAuthorize } from './../../../../modules/auth/services/authorizes';
 import { IMenuConfigItem } from './../../../../_metronic/configs/menu-config';
 import { Pipe, PipeTransform } from '@angular/core';
 import { UserModel } from 'src/app/modules/auth/services/auth.service';
-
-const isDisaled = true;
-
 @Pipe({
 	name: 'canShowMenu'
 })
@@ -14,7 +11,7 @@ export class CanShowMenuPipe implements PipeTransform {
 		if(permissionKey === EAuthorize.DASH_BOARD) {
 			return true;
 		}
-		return permissions?.includes(permissionKey) || isDisaled;
+		return permissions?.includes(permissionKey);
 	}
 }
 
@@ -24,6 +21,6 @@ export class CanShowMenuPipe implements PipeTransform {
 export class CanShowParrentMenuPipe implements PipeTransform {
 	transform(currentUser: UserModel, submenu: IMenuConfigItem[]): boolean {
 		const permissions = currentUser.actions;
-		return submenu.some((sm) => permissions?.includes(sm.permissionKey)) || isDisaled;
+		return submenu.some((sm) => permissions?.includes(sm.permissionKey));
 	}
 }

@@ -27,14 +27,16 @@ export class AuthGuard implements CanActivate {
 }
 
 type SpecialUrl = {
-	url: string,
+	url: string;
 	permissionKey: EAuthorize;
-}
+};
 
-const SPECIAL_URL: SpecialUrl[] = [{
-	url: '',
-	permissionKey: EAuthorize.VIEW_CONTRACT_DETAIL_BUTTON
-}]
+const SPECIAL_URL: SpecialUrl[] = [
+	{
+		url: '/hop-dong/danh-sach/chi-tiet',
+		permissionKey: EAuthorize.VIEW_CONTRACT_DETAIL_BUTTON
+	},
+];
 
 @Injectable({ providedIn: 'root' })
 export class AuthorizeGuard implements CanActivate {
@@ -44,14 +46,6 @@ export class AuthorizeGuard implements CanActivate {
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		// const currentUser = this.authService.getCurrentUserValue();
 		// let menuItemByRoute: IMenuConfigItem;
-
-		// // Remove params, query params from url
-		// const urlPart = state.url.split('/');
-		// const originUrlPart =
-		// 	isNumber(urlPart[urlPart.length - 1]) || urlPart[urlPart.length - 1].includes('?')
-		// 		? [...urlPart]
-		// 		: [...urlPart];
-		// const originUrl = originUrlPart.join('/');
 
 		// for (const menuItem of DynamicAsideMenuConfig.items) {
 		// 	if (menuItem.submenu?.length > 0) {
@@ -76,6 +70,9 @@ export class AuthorizeGuard implements CanActivate {
 		// 	this.router.navigate(['/error/404']);
 		// 	return false;
 		// }
+
+		// // Remove params, query params from url
+		console.log(state.url);
 		return true;
 	}
 }
