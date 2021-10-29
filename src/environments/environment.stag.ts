@@ -1,5 +1,5 @@
 export const environment = {
-	production: true,
+	production: false,
 	appVersion: '1.0.0',
 	apiUrl: 'https://sunoil-management.firecloud.live/management',
 	apiUrlRoot: 'https://sunoil-management.firecloud.live'

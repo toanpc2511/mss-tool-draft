@@ -13,9 +13,9 @@ export class DevComponent implements OnInit {
 	currentActions: string[] = [];
 	permisionKey = '';
 	constructor(private authService: AuthService, private router: Router) {
-		// if (!isDevMode()) {
-		// 	this.router.navigate(['']);
-		// }
+		if (!isDevMode()) {
+			this.router.navigate(['']);
+		}
 		this.currentToken = authService.getCurrentUserValue().token;
 	}
 	ngOnInit(): void {
@@ -49,7 +49,10 @@ export class DevComponent implements OnInit {
 	}
 
 	updateUserPermission() {
-		const newUserValue: UserModel = {...this.authService.getCurrentUserValue(), actions: this.currentActions};
+		const newUserValue: UserModel = {
+			...this.authService.getCurrentUserValue(),
+			actions: this.currentActions
+		};
 		this.authService.setCurrentUserValue(newUserValue);
 	}
 }

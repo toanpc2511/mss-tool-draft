@@ -1,6 +1,6 @@
-import { isDevMode, NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard, AuthorizeGuard } from './modules/auth/services/auth.guard';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './modules/auth/services/auth.guard';
 import { DevComponent } from './modules/dev/dev.component';
 
 export const routes: Routes = [
