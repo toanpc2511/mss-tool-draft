@@ -210,6 +210,11 @@
 						[error]="'required'"
 						[message]="'Số diện thoại không được để trống'"
 					></app-validate>
+					<app-validate
+						[control]="stationForm.controls['phone']"
+						[error]="'invalid'"
+						[message]="'Số diện thoại không đúng định dạng'"
+					></app-validate>
 				</div>
 			</div>
 
