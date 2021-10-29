@@ -208,8 +208,8 @@ export class Step1Component implements OnInit, OnChanges {
 			return;
 		}
 		const coordinates = (this.stationForm.value?.coordinates as string)?.split(',') || '';
-		const lat = coordinates[0] || '';
-		const lon = coordinates[1] || '';
+		const lat = coordinates[0] || null;
+		const lon = coordinates[1] || null;
 		const value = { ...this.stationForm.value, lat, lon };
 
 		if (!this.isUpdate) {
