@@ -420,14 +420,18 @@ export class ShiftService {
 		return this.http.get<IShiftRequestChange>(`swap-shifts/${id}`);
 	}
 
-	approveShiftRequestChange(id: string) {
-		return this.http.put(`swap-shifts/status/${id}`, { status: EShiftChangRequestStatus.SWAPPED });
+	approveShiftRequestChange(id: string, type: EShiftChangRequestType) {
+		return this.http.put(`swap-shifts/status/${id}`, {
+			status: EShiftChangRequestStatus.SWAPPED,
+			type
+		});
 	}
 
-	rejectShiftRequestChange(id: string, reason: string) {
+	rejectShiftRequestChange(id: string, reason: string, type: EShiftChangRequestType) {
 		return this.http.put(`swap-shifts/status/${id}`, {
 			status: EShiftChangRequestStatus.REJECTED,
-			reason
+			reason,
+			type
 		});
 	}
 }

@@ -20,7 +20,6 @@
 								(keydown.space)="$event.preventDefault()"
 								maxlength="12"
 								numbersOnly
-								[numberformControl]="infoForm.controls['phone']"
 							/>
 							<em *ngIf="!isUpdate" class="fa fa-times" (click)="deleteNumberPhone()"></em>
 						</div>
@@ -500,7 +499,6 @@
 												formControlName="amount"
 												maxlength="6"
 												numbersOnly
-												[numberformControl]="productInfoFromGroup.get('amount')"
 											/>
 											<app-validate
 												[control]="productInfoFromGroup.get('amount')"
