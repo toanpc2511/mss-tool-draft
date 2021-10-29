@@ -1,11 +1,19 @@
+import { registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import localeViExtra from '@angular/common/locales/extra/vi';
+import localeVi from '@angular/common/locales/vi';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { TextMaskModule } from 'angular2-text-mask';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { ClipboardModule } from 'ngx-clipboard';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
@@ -15,21 +23,14 @@ import { finalize } from 'rxjs/operators';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/services/auth.service';
+import { DevComponent } from './modules/dev/dev.component';
 import { NgSelectModule } from './shared/components/ng-select/public-api';
+import { CustomAdapter, CustomDateParserFormatter } from './shared/helpers/datepicker-adapter';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
 
-import { registerLocaleData } from '@angular/common';
-import localeVi from '@angular/common/locales/vi';
-import localeViExtra from '@angular/common/locales/extra/vi';
-import { CustomAdapter, CustomDateParserFormatter } from './shared/helpers/datepicker-adapter';
-import { TextMaskModule } from 'angular2-text-mask';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import bootstrapPlugin from '@fullcalendar/bootstrap';
-import timeGridPlugin from '@fullcalendar/timegrid';
 
 registerLocaleData(localeVi, 'vi', localeViExtra);
 
@@ -52,7 +53,7 @@ function appInitializer(authService: AuthService, router: Router) {
 }
 
 @NgModule({
-	declarations: [AppComponent],
+	declarations: [AppComponent, DevComponent],
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,
@@ -76,7 +77,7 @@ function appInitializer(authService: AuthService, router: Router) {
 		NgSelectModule,
 		FormsModule,
 		TextMaskModule,
-		FullCalendarModule
+		FullCalendarModule,
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'vi' },

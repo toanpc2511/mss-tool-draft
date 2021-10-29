@@ -153,7 +153,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					bullet: 'dot',
 					page: '/ca-lam-viec/lich-su-chot-ca',
 
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_HISTORY_REVENUE_SHIFT
 				}
 			]
 		},

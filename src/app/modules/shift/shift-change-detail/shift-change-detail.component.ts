@@ -1,3 +1,4 @@
+import { ConfirmDeleteComponent } from './../../../shared/components/confirm-delete/confirm-delete.component';
 import {
 	AfterViewInit,
 	Component,
@@ -24,6 +25,7 @@ import {
 	EShiftChangRequestType
 } from './../shift.service';
 import { of } from 'rxjs';
+import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 
 @Component({
 	selector: 'app-shift-change-detail',
@@ -106,6 +108,8 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 	checkError(error: IError) {
 		if (error.code === 'SUN-OIL-4893' || error.code === 'SUN-OIL-4909') {
 			this.toastr.error('Lịch/ca làm việc không tồn tại');
+		} else {
+			this.toastr.error(`${error.code} - ${error.message}`);
 		}
 	}
 
@@ -143,10 +147,16 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 	}
 
 	openApproveRequestModal() {
-		const modalRef = this.modalService.open(this.approveRequest, {
-			size: 'xs',
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
 			backdrop: 'static'
 		});
+
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn duyệt yêu cầu ?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
 
 		modalRef.closed
 			.pipe(
