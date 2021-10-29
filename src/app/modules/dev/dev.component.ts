@@ -39,7 +39,7 @@ export class DevComponent implements OnInit {
 	}
 
 	addPermission() {
-		this.currentActions = [...this.currentActions, this.permisionKey];
+		this.currentActions = [...this.currentActions].concat(this.permisionKey.split(','));
 		this.updateUserPermission();
 	}
 
