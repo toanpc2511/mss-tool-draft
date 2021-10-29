@@ -82,11 +82,6 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 	}
 
 	setBreadcumb() {
-		const subBreadcump = {
-			title: 'Chi tiết yêu cầu đổi ca',
-			linkText: 'Chi tiết yêu cầu đổi ca',
-			linkPath: null
-		};
 		setTimeout(() => {
 			this.subheader.setBreadcrumbs([
 				{
@@ -94,7 +89,16 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 					linkText: 'Quản lý ca làm việc',
 					linkPath: '/ca-lam-viec'
 				},
-				subBreadcump
+				{
+					title: 'Danh sách yêu cầu đổi ca',
+					linkText: 'Danh sách yêu cầu đổi ca',
+					linkPath: '/ca-lam-viec/doi-ca'
+				},
+				{
+					title: 'Chi tiết yêu cầu đổi ca',
+					linkText: 'Chi tiết yêu cầu đổi ca',
+					linkPath: null
+				}
 			]);
 		}, 1);
 	}
@@ -170,9 +174,9 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 
 	rejectRequestShiftChange() {
 		this.reasonControl.markAsTouched();
-		if(this.reasonControl.invalid) {
+		if (this.reasonControl.invalid) {
 			return;
 		}
-		this.activeModal.close(true)
+		this.activeModal.close(true);
 	}
 }

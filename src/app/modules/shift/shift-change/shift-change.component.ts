@@ -187,7 +187,7 @@ export class ShiftChangeComponent implements OnInit {
 	}
 
 	gotoDetail(id: string) {
-		this.router.navigate([`ca-lam-viec/chi-tiet-doi-ca/${id}`]);
+		this.router.navigate([`/ca-lam-viec/doi-ca/chi-tiet-doi-ca/${id}`]);
 	}
 
 	pagingChange($event: IPaginatorState) {
