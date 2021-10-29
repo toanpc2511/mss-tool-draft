@@ -6,6 +6,7 @@ import { ShiftClosingHistoryComponent } from './shift-closing-history/shift-clos
 import { DetailShiftClosingHistoryComponent } from './shift-closing-history/detail-shift-closing-history/detail-shift-closing-history.component';
 import { ShiftChangeComponent } from './shift-change/shift-change.component';
 import { ShiftChangeDetailComponent } from './shift-change-detail/shift-change-detail.component';
+import { ListLayoutComponent } from 'src/app/shared/components/list-layout/list-layout.component';
 
 const routes: Routes = [
 	{
@@ -23,24 +24,31 @@ const routes: Routes = [
 	},
 	{
 		path: 'doi-ca',
-		component: ShiftChangeComponent
+		component: ListLayoutComponent,
+		children: [
+			{
+				path: '',
+				component: ShiftChangeComponent
+			},
+			{
+				path: 'chi-tiet-doi-ca/:id',
+				component: ShiftChangeDetailComponent
+			}
+		]
 	},
-	{
-		path: 'chi-tiet-doi-ca/:id',
-		component: ShiftChangeDetailComponent
-	},
+
 	{
 		path: 'lich-su-chot-ca',
-    children: [
-      {
-        path: '',
-        component: ShiftClosingHistoryComponent
-      },
-      {
-        path: 'chi-tiet/:lockShiftId',
-        component: DetailShiftClosingHistoryComponent
-      }
-    ]
+		children: [
+			{
+				path: '',
+				component: ShiftClosingHistoryComponent
+			},
+			{
+				path: 'chi-tiet/:lockShiftId',
+				component: DetailShiftClosingHistoryComponent
+			}
+		]
 	}
 ];
 

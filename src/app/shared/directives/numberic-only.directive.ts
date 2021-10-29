@@ -1,19 +1,18 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Directive, ElementRef, HostListener } from '@angular/core';
+import { NgControl } from '@angular/forms';
 
 @Directive({
 	// eslint-disable-next-line @angular-eslint/directive-selector
 	selector: 'input[numbersOnly]'
 })
 export class NumberDirective {
-	@Input() numberformControl: FormControl;
-	constructor(private _el: ElementRef) {}
+	constructor(private _el: ElementRef, private control: NgControl) {}
 
-	@HostListener('input', ['$event']) onInputChange(event) {
+	@HostListener('input', ['$event']) onInputChange(event: Event) {
 		const initalValue = this._el.nativeElement.value;
-		this.numberformControl.patchValue(initalValue.replace(/[^0-9]*/g, ''));
+		this.control.control.patchValue(initalValue.replace(/[^0-9]*/g, ''));
 		if (initalValue !== this._el.nativeElement.value) {
-			event.stopPropagation();
+			event.stopImmediatePropagation();
 		}
 	}
 }

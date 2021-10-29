@@ -1,3 +1,4 @@
+import { ConfirmDeleteComponent } from './../../../shared/components/confirm-delete/confirm-delete.component';
 import {
 	AfterViewInit,
 	Component,
@@ -24,6 +25,7 @@ import {
 	EShiftChangRequestType
 } from './../shift.service';
 import { of } from 'rxjs';
+import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 
 @Component({
 	selector: 'app-shift-change-detail',
@@ -82,11 +84,6 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 	}
 
 	setBreadcumb() {
-		const subBreadcump = {
-			title: 'Chi tiết yêu cầu đổi ca',
-			linkText: 'Chi tiết yêu cầu đổi ca',
-			linkPath: null
-		};
 		setTimeout(() => {
 			this.subheader.setBreadcrumbs([
 				{
@@ -94,7 +91,16 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 					linkText: 'Quản lý ca làm việc',
 					linkPath: '/ca-lam-viec'
 				},
-				subBreadcump
+				{
+					title: 'Danh sách yêu cầu đổi ca',
+					linkText: 'Danh sách yêu cầu đổi ca',
+					linkPath: '/ca-lam-viec/doi-ca'
+				},
+				{
+					title: 'Chi tiết yêu cầu đổi ca',
+					linkText: 'Chi tiết yêu cầu đổi ca',
+					linkPath: null
+				}
 			]);
 		}, 1);
 	}
@@ -102,6 +108,8 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 	checkError(error: IError) {
 		if (error.code === 'SUN-OIL-4893' || error.code === 'SUN-OIL-4909') {
 			this.toastr.error('Lịch/ca làm việc không tồn tại');
+		} else {
+			this.toastr.error(`${error.code} - ${error.message}`);
 		}
 	}
 
@@ -119,7 +127,8 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 				switchMap(() => {
 					return this.shiftService.rejectShiftRequestChange(
 						this.shiftChangeRequestData.id,
-						this.reasonControl.value
+						this.reasonControl.value,
+						this.shiftChangeRequestData.type
 					);
 				}),
 				tap((res) => {
@@ -138,16 +147,22 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 	}
 
 	openApproveRequestModal() {
-		const modalRef = this.modalService.open(this.approveRequest, {
-			size: 'xs',
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
 			backdrop: 'static'
 		});
+
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn duyệt yêu cầu ?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
 
 		modalRef.closed
 			.pipe(
 				filter((res) => res),
 				switchMap(() => {
-					return this.shiftService.approveShiftRequestChange(this.shiftChangeRequestData.id);
+					return this.shiftService.approveShiftRequestChange(this.shiftChangeRequestData.id, this.shiftChangeRequestData.type);
 				}),
 				tap((res) => {
 					if (res.data) {
@@ -170,9 +185,9 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 
 	rejectRequestShiftChange() {
 		this.reasonControl.markAsTouched();
-		if(this.reasonControl.invalid) {
+		if (this.reasonControl.invalid) {
 			return;
 		}
-		this.activeModal.close(true)
+		this.activeModal.close(true);
 	}
 }

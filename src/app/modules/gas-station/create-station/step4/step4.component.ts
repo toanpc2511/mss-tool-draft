@@ -93,7 +93,7 @@ export class Step4Component implements OnInit {
       .getPumpHosesByGasStation(this.gasStationService.gasStationId)
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        if (res?.data?.length > 0) {
+        if (res?.data) {
           this.dataSource = this.dataSourceTemp = this.initDatasource(res.data);
           // Set data after filter and apply current sorting
           this.dataSource = this.sortService.sort(

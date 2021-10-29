@@ -70,19 +70,19 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			root: true,
 			bullet: 'dot',
 			icon: 'fas fa-qrcode',
-			page: '/qr-code',
+			page: '/quan-ly-qr-code',
 			submenu: [
 				{
 					title: 'Qr code sản phẩm',
 					bullet: 'dot',
-					page: '/qr-code/qr-san-pham',
+					page: '/quan-ly-qr-code/qr-san-pham',
 
 					permissionKey: EAuthorize.VIEW_PRODUCT_QR_LIST_SCREEN
 				},
 				{
 					title: 'Qr code vòi bơm',
 					bullet: 'dot',
-					page: '/qr-code/qr-voi',
+					page: '/quan-ly-qr-code/qr-voi',
 
 					permissionKey: EAuthorize.VIEW_PUMP_POLE_QR_LIST_SCREEN
 				}
@@ -153,7 +153,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					bullet: 'dot',
 					page: '/ca-lam-viec/lich-su-chot-ca',
 
-					permissionKey: ''
+					permissionKey: EAuthorize.VIEW_HISTORY_REVENUE_SHIFT
 				}
 			]
 		},
@@ -170,7 +170,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			icon: 'fas fa-hand-holding-usd',
 			root: true,
 			bullet: 'dot',
-			page: '/qr-code',
+			page: '/cau-hinh',
 			submenu: [
 				{
 					title: 'Cấu hình tích điểm',
