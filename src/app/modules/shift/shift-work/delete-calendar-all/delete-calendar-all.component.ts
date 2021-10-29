@@ -92,8 +92,11 @@ export class DeleteCalendarAllComponent implements OnInit {
     if (error.code === 'SUN-OIL-4874') {
       this.toastr.error('Ngày bắt đầu hoặc ngày kết thúc không hợp lệ')
     }
-      if (error.code === 'SUN-OIL-4960') {
+    if (error.code === 'SUN-OIL-4960') {
       this.toastr.error('Nhân viên chưa có lịch làm việc')
+    }
+    if (error.code === 'SUN-OIL-4918') {
+      this.toastr.error('Không được xoá lịch làm việc trong quá khứ')
     }
 	}
 }

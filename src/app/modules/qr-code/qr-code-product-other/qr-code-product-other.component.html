@@ -84,7 +84,7 @@
         <tr *ngFor='let item of dataRes'>
           <td class="id">
             <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
-              {{ item.code }}
+              {{ item.qrCodeProduct.qrCode }}
             </p>
           </td>
           <td class="category-name">

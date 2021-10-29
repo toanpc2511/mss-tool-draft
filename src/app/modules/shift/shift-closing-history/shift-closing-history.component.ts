@@ -112,6 +112,12 @@ export class ShiftClosingHistoryComponent implements OnInit {
 
 
   viewDetail(id: number, status: string, stationId: number) {
+    if (status === 'OPEN') {
+      return;
+    }
+    this.shiftService.lockShiftId = id;
+    this.shiftService.statusLockShift = status;
+    this.shiftService.stationId = stationId;
     this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${id}`], {queryParams: {status: status, stationId: stationId}});
   }
 
@@ -136,7 +142,18 @@ export class ShiftClosingHistoryComponent implements OnInit {
             lockShiftInfo: data
           };
         } else {
-          this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`],{queryParams: {status: data.status, stationId: data.stationId}});
+          const dataReq = {
+            lockShiftId: data.id
+          }
+          this.shiftService.createFuelProductRevenue(dataReq)
+            .subscribe(
+              (res) => {
+                if (res.data) {
+                  this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`],{queryParams: {status: data.status, stationId: data.stationId}});
+                }
+              },
+              (err: IError) => this.checkError(err)
+            );
         }
       })
   }
@@ -144,6 +161,9 @@ export class ShiftClosingHistoryComponent implements OnInit {
   checkError(error: IError) {
     if (error.code === 'SUN-OIL-4874') {
       this.toastr.error('Ngày bắt đầu/kết thúc không hợp lệ');
+    }
+    if (error.code === 'SUN-OIL-4894') {
+      this.toastr.error('Không tồn tại ca cần chốt.');
     }
   }
 

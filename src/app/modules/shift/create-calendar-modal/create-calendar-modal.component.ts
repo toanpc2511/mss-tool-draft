@@ -103,7 +103,7 @@ export class CreateCalendarModalComponent implements OnInit {
 				startDate: [],
 				endDate: [],
 				employeeId: [this.data.dataEventCalendar.extendedProps.employeeId, Validators.required],
-				pumpPoles: [this.getListIdPumpPoles(), Validators.required],
+				pumpPoles: [this.getListIdPumpPoles()],
 				shiftOffIds: [this.getListIdShiftOff(), Validators.required],
 				type: ['DONT_REPEAT']
 			});
@@ -116,7 +116,7 @@ export class CreateCalendarModalComponent implements OnInit {
 				employee: this.fb.array([
 					this.fb.group({
 						employeeId: [null, Validators.required],
-						pumpPoles: ['', Validators.required],
+						pumpPoles: [''],
 						shiftOffIds: ['', Validators.required]
 					})
 				])
@@ -284,7 +284,7 @@ export class CreateCalendarModalComponent implements OnInit {
 		this.assignFormArray.push(
 			this.fb.group({
 				employeeId: [null, Validators.required],
-				pumpPoles: ['', Validators.required],
+				pumpPoles: [''],
 				shiftOffIds: ['', Validators.required]
 			})
 		);

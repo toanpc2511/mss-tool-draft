@@ -44,7 +44,7 @@
 
         <div class="form-group row" *ngIf='data.dataEventCalendar'>
           <div class='col-lg-6'>
-            <label class="form-label required">Cột</label>
+            <label class="form-label">Cột</label>
             <ng-select
               appendTo="body"
               [placeholder]="'Chọn cột'"
@@ -59,11 +59,6 @@
               >{{ pumpPoles.name }}</ng-option
               >
             </ng-select>
-            <app-validate
-              [control]="calenderForm.get('pumpPoles')"
-              [error]="'required'"
-              [message]="'Cột không được để trống'"
-            ></app-validate>
           </div>
 
           <div class='col-lg-6'>
@@ -103,7 +98,7 @@
 											<label class="form-label required">Nhân viên</label>
 										</th>
 										<th id="pump">
-											<label class="form-label required">Cột</label>
+											<label class="form-label">Cột</label>
 										</th>
 										<th id="time">
 											<label class="form-label required">Thời gian nghỉ</label>

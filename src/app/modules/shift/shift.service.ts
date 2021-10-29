@@ -224,6 +224,10 @@ export interface ICalendarEmployeeInfos {
 	providedIn: 'root'
 })
 export class ShiftService {
+  lockShiftId: number;
+  stationId: number;
+  statusLockShift: string;
+
 	private stepDataSubject: BehaviorSubject<StepData>;
 	stepData$: Observable<StepData>;
 	constructor(private http: HttpService) {
@@ -353,6 +357,16 @@ export class ShiftService {
 			.set('lock-shift-id', lockShiftId.toString());
 		return this.http.get<Array<IOrderOfShift>>('orders/shift-order', { params });
 	}
+
+  // Tạo ds doanh thu sản phẩm nhiên liệu
+  createFuelProductRevenue(req) {
+    return this.http.post('product-revenue', req);
+  }
+
+  // Lấy ds doanh thu nhiên liệu
+  getFuelProductRevenue(id: number) {
+    return this.http.get(`product-revenue/${id}`)
+  }
 
 	// Lấy ds doanh thu hàng hóa
 	getOtherProductRevenue(id: number, page: number, size: number) {
