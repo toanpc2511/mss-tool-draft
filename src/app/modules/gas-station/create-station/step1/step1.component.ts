@@ -166,7 +166,7 @@ export class Step1Component implements OnInit, OnChanges {
 		}
 		if (this.step1Data) {
 			console.log(this.step1Data);
-			
+
 			this.isUpdate = true;
 			setTimeout(() => {
 				this.stationForm.patchValue(this.step1Data);
@@ -207,9 +207,9 @@ export class Step1Component implements OnInit, OnChanges {
 		if (this.stationForm.invalid) {
 			return;
 		}
-		const coordinates = (this.stationForm.value.coordinates as string).split(',');
-		const lat = coordinates[0];
-		const lon = coordinates[1];
+		const coordinates = (this.stationForm.value?.coordinates as string)?.split(',') || '';
+		const lat = coordinates[0] || '';
+		const lon = coordinates[1] || '';
 		const value = { ...this.stationForm.value, lat, lon };
 
 		if (!this.isUpdate) {
