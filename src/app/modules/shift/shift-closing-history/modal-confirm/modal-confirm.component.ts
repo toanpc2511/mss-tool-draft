@@ -73,7 +73,18 @@ export class ModalConfirmComponent implements OnInit {
         this.shiftService.rejectOrderOfShift(dataReq).subscribe(
           () => {
             this.modal.close();
-            this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${this.data.order.id}`]);
+            const req = {
+              lockShiftId: this.data.lockShiftInfo.id
+            }
+            this.shiftService.createFuelProductRevenue(req)
+              .subscribe(
+                (res) => {
+                  if (res.data) {
+                    this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${this.data.lockShiftInfo.id}`],{queryParams: {status: this.data.lockShiftInfo.status, stationId: this.data.lockShiftInfo.stationId}});
+                  }
+                },
+                (err: IError) => this.checkError(err)
+              );
           },
           (error: IError) => this.checkError(error)
         )
@@ -83,7 +94,6 @@ export class ModalConfirmComponent implements OnInit {
   checkError(error: IError) {
     this.toastr.error(error.code);
   }
-
 }
 
 export interface IDataTransfer {

@@ -648,6 +648,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 	}
 
 	checkError(error: IError) {
-		this.toastr.error(error.code);
+    if (error.code === 'SUN-OIL-4918') {
+      this.toastr.error('Không được xoá lịch làm việc trong quá khứ')
+    }
 	}
 }
