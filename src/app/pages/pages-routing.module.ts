@@ -45,7 +45,7 @@ const routes: Routes = [
 				canActivate: [AuthorizeGuard]
 			},
 			{
-				path: 'qr-code',
+				path: 'quan-ly-qr-code',
 				loadChildren: () => import('../modules/qr-code/qr-code.module').then((m) => m.QrCodeModule),
 				canActivate: [AuthorizeGuard]
 			},
