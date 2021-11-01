@@ -7,7 +7,7 @@ import { UserModel } from 'src/app/modules/auth/services/auth.service';
 })
 export class CanShowMenuPipe implements PipeTransform {
 	transform(currentUser: UserModel, permissionKey: string): boolean {
-		const permissions = currentUser.actions;
+		const permissions = currentUser?.actions || [];
 		if(permissionKey === EAuthorize.DASH_BOARD) {
 			return true;
 		}
@@ -20,7 +20,7 @@ export class CanShowMenuPipe implements PipeTransform {
 })
 export class CanShowParrentMenuPipe implements PipeTransform {
 	transform(currentUser: UserModel, submenu: IMenuConfigItem[]): boolean {
-		const permissions = currentUser.actions;
+		const permissions = currentUser?.actions || [];
 		return submenu.some((sm) => permissions?.includes(sm.permissionKey));
 	}
 }

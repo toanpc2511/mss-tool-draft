@@ -159,7 +159,7 @@
 			</div>
 
 			<div class="col-lg-12 py-5 row align-items-center">
-				<label class="form-label col-lg-2">Tọa độ</label>
+				<label class="form-label required col-lg-2">Tọa độ</label>
 				<div class="col-lg-4">
 					<input
 						type="text"
@@ -170,6 +170,11 @@
 						trim="blur"
 						(keydown.space)="$event.preventDefault()"
 					/>
+					<app-validate
+						[control]="stationForm.controls['coordinates']"
+						[error]="'required'"
+						[message]="'Tọa độ trạm xăng không được để trống'"
+					></app-validate>
 					<app-validate
 						[control]="stationForm.controls['coordinates']"
 						[error]="'coordinates'"

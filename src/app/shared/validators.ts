@@ -55,14 +55,6 @@ export class TValidators extends Validators {
 			return null;
 		};
 
-	static noWhiteSpace = (control: FormControl): ValidationErrors | null => {
-		const value = control?.value as string;
-		if (value?.includes(' ')) {
-			control.patchValue(value.split(' ').join(''), NO_EMIT_EVENT);
-		}
-		return null;
-	};
-
 	static coordinates = (control: FormControl): ValidationErrors | null => {
 		const value = control?.value as string;
 		if (value) {
