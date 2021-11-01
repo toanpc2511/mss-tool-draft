@@ -1,6 +1,10 @@
 <div class="d-flex justify-content-center">
 	<h3 class="text-center m-5">Development mode</h3>
-	<button [routerLink]="['']" class="btn btn-danger" style="position: absolute; right: 1rem; top: 0.5rem">
+	<button
+		[routerLink]="['']"
+		class="btn btn-danger"
+		style="position: absolute; right: 1rem; top: 0.5rem"
+	>
 		Back to dashboard
 	</button>
 </div>
@@ -25,13 +29,15 @@
 				><em class="fa fa-times text-danger" (click)="removePermission(action)"></em>
 			</li>
 		</ul>
-		<ul style="max-height: 300px; width: 50%; overflow: auto" class="text-warning">
-			<li>view_history_revenue_shift</li>
-		</ul>
+		<button class="btn btn-outline-danger m-2" (click)="clearPermission()">
+			Clear all permission
+		</button>
 		<input
 			(input)="inputPermissionKey($event)"
 			placeholder="Permission key"
 			class="form-control w-50"
-		/><button class="btn btn-primary m-2" (click)="addPermission()">Add</button>
+		/>
+		<button class="btn btn-primary m-2" (click)="addPermission()">Add</button>
+		<button class="btn btn-outline-primary m-2" (click)="addFullPermission()">Add full permission</button>
 	</div>
 </div>
