@@ -217,6 +217,11 @@
 					></app-validate>
 					<app-validate
 						[control]="stationForm.controls['phone']"
+						[error]="'phone'"
+						[message]="'Số diện thoại không đúng định dạng'"
+					></app-validate>
+					<app-validate
+						[control]="stationForm.controls['phone']"
 						[error]="'invalid'"
 						[message]="'Số diện thoại không đúng định dạng'"
 					></app-validate>
