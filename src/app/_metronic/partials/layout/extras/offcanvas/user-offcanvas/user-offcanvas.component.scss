@@ -1,3 +1,9 @@
 .navi .navi-item .navi-link .navi-text {
     flex-grow: unset;
 }
+
+.btn-hover-primary:hover {
+  .text-muted {
+    color: #fff !important;
+  }
+}
