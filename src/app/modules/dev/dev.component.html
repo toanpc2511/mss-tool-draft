@@ -29,15 +29,17 @@
 				><em class="fa fa-times text-danger" (click)="removePermission(action)"></em>
 			</li>
 		</ul>
-		<button class="btn btn-outline-danger m-2" (click)="clearPermission()">
-			Clear all permission
-		</button>
+		<ul>
+			<button class="btn btn-outline-primary m-2" (click)="addFullPermission()">Add full permission</button>
+			<button class="btn btn-outline-danger m-2" (click)="clearPermission()">
+				Clear all permission
+			</button>
+		</ul>
 		<input
 			(input)="inputPermissionKey($event)"
 			placeholder="Permission key"
 			class="form-control w-50"
 		/>
 		<button class="btn btn-primary m-2" (click)="addPermission()">Add</button>
-		<button class="btn btn-outline-primary m-2" (click)="addFullPermission()">Add full permission</button>
 	</div>
 </div>
