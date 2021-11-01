@@ -16,10 +16,10 @@ export class DevComponent implements OnInit {
 		if (!isDevMode()) {
 			this.router.navigate(['']);
 		}
-		this.currentToken = authService.getCurrentUserValue().token;
+		this.currentToken = authService.getCurrentUserValue()?.token;
 	}
 	ngOnInit(): void {
-		this.currentActions = this.authService.getCurrentUserValue().actions || [];
+		this.currentActions = this.authService.getCurrentUserValue()?.actions || [];
 	}
 
 	inputToken($event) {
