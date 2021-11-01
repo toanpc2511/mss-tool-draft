@@ -6,12 +6,8 @@ import { PermissionModalComponent } from './permission-modal/permission-modal.co
 const routes: Routes = [
 	{
 		path: '',
-		redirectTo: 'danh-sach',
-		pathMatch: 'full'
-	},
-	{
-		path: 'danh-sach',
 		component: ListPermissionComponent,
+		pathMatch: 'full'
 	},
 	{
 		path: 'them-nhom-quyen',

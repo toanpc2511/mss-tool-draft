@@ -1,3 +1,4 @@
+// Cập nhật mới nhất ngày 01/11/2021
 export enum EAuthorize {
 	DASH_BOARD = 'dashboard',
 	MENU_GAS_STAION_MANAGEMENT = 'menu_gas_staion_management',

@@ -342,7 +342,8 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 								weekTitle: calendar.shiftName,
 								weekContent: calendar.employeeName,
 								start: moment(calendar.start).format('YYYY-MM-DD HH:mm:ss'),
-								end: moment(calendar.end).format('YYYY-MM-DD HH:mm:ss')
+								end: moment(calendar.end).format('YYYY-MM-DD HH:mm:ss'),
+								calendarChangedResponses: calendar.calendarChangedResponses
 							},
 							allDay: true
 						};

@@ -44,6 +44,13 @@ export type OffTimeResponse = {
 	end: string;
 };
 
+export interface ICalendarChanged {
+	employeeNameTo: string;
+	endTime: string;
+	startTime: string;
+	typeEnd: 'THE_NEXT_DAY' | 'TODAY';
+	typeStart: 'THE_NEXT_DAY' | 'TODAY';
+}
 export interface ICalendarResponse {
 	calendarId: number;
 	employeeId: number;
@@ -57,6 +64,7 @@ export interface ICalendarResponse {
 	shiftName: string;
 	checked: boolean;
 	shiftId: number;
+	calendarChangedResponses: ICalendarChanged[];
 }
 
 export class ICalendarData {
@@ -224,9 +232,9 @@ export interface ICalendarEmployeeInfos {
 	providedIn: 'root'
 })
 export class ShiftService {
-  lockShiftId: number;
-  stationId: number;
-  statusLockShift: string;
+	lockShiftId: number;
+	stationId: number;
+	statusLockShift: string;
 
 	private stepDataSubject: BehaviorSubject<StepData>;
 	stepData$: Observable<StepData>;
@@ -358,15 +366,15 @@ export class ShiftService {
 		return this.http.get<Array<IOrderOfShift>>('orders/shift-order', { params });
 	}
 
-  // Tạo ds doanh thu sản phẩm nhiên liệu
-  createFuelProductRevenue(req) {
-    return this.http.post('product-revenue', req);
-  }
+	// Tạo ds doanh thu sản phẩm nhiên liệu
+	createFuelProductRevenue(req) {
+		return this.http.post('product-revenue', req);
+	}
 
-  // Lấy ds doanh thu nhiên liệu
-  getFuelProductRevenue(id: number) {
-    return this.http.get(`product-revenue/${id}`)
-  }
+	// Lấy ds doanh thu nhiên liệu
+	getFuelProductRevenue(id: number) {
+		return this.http.get(`product-revenue/${id}`);
+	}
 
 	// Lấy ds doanh thu hàng hóa
 	getOtherProductRevenue(id: number, page: number, size: number) {
