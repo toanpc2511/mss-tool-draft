@@ -5,6 +5,9 @@
     <ng-container *ngIf="user$ | async as user">
       <!--begin::User-->
       <div class="topbar-item">
+        <div *ngIf="isDevMode">
+          <button [routerLink]="['dev']" class="btn text-white">Develop mode</button>
+        </div>
         <div
           class="
             btn btn-icon btn-icon-mobile
