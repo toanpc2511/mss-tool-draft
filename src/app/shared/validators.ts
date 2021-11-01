@@ -7,6 +7,7 @@ import { formatMoney } from './helpers/functions';
 
 const longtitudePattern = /^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$/;
 const latitudePattern = /^(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,18})?|180(?:\.0{1,18})?)$/;
+const phonePattern = /^([\\+84|84|0]+(3|5|7|8|9))+([0-9]{8})$/;
 export class TValidators extends Validators {
 	static patternNotWhiteSpace =
 		(regex: RegExp) =>
@@ -69,6 +70,17 @@ export class TValidators extends Validators {
 			) {
 				return { coordinates: true };
 			}
+		}
+		return null;
+	};
+
+	static phone = (control: FormControl): ValidationErrors | null => {
+		const value = control.value || '';
+		if (!value.trim()) {
+			return { required: true };
+		}
+		if (!phonePattern.test(value)) {
+			return { phone: true };
 		}
 		return null;
 	};
