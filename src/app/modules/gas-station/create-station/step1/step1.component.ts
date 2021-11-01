@@ -195,7 +195,7 @@ export class Step1Component implements OnInit, OnChanges {
 			areaType: [null],
 			coordinates: [null, [TValidators.required, TValidators.coordinates]],
 			areaDisplay: [null],
-			phone: [null, [TValidators.required]],
+			phone: [null, [TValidators.phone, TValidators.required]],
 			chip: [false],
 			status: [this.listStatus.ACTIVE]
 		});
