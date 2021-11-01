@@ -50,12 +50,13 @@ export class QrCodeService {
     private http: HttpService
   ) { }
 
-  getListQrCodeProductOther(page: number, size: number, sortData: ISortData) {
+  getListQrCodeProductOther(page: number, size: number, searchText: string, sortData: ISortData) {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
+      .set('search-text', searchText || '');
     return this.http.get<Array<IQrProductOther>>('qrs/products/others', {params});
   }
 

@@ -12,6 +12,7 @@
           name="searchText"
           placeholder="Search..."
           class="form-control"
+          [formControl]="searchFormControl"
         />
       </div>
     </div>
@@ -21,20 +22,16 @@
     <div class="table-responsive angular-bootstrap-table">
       <table class="table table-head-custom table-vertical-center overflow-hidden">
         <thead>
-        <th class="id" scope="">Mã</th>
+        <th class="id" scope="">
+          Mã
+        </th>
         <th class="category" scope="">
           Nhóm sản phẩm
-          <app-sort-icon
-            column="categoryName"
-            [activeColumn]="sortData?.fieldSort"
-            [activeDirection]="sortData?.directionSort"
-            (sort)="sort($event)"
-          ></app-sort-icon>
         </th>
         <th class="name" scope="">
           Tên sản phẩm
           <app-sort-icon
-            column="productName"
+            column="name"
             [activeColumn]="sortData?.fieldSort"
             [activeDirection]="sortData?.directionSort"
             (sort)="sort($event)"
@@ -172,6 +169,6 @@
       </table>
     </div>
 
-     <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
   </div>
 </div>

@@ -6,6 +6,8 @@ import { IQrProductOther, QrCodeService } from '../qr-code.service';
 import { ISortData } from '../../contract/contract.service';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { FileService } from '../../../shared/services/file.service';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-qr-code-product-other',
@@ -20,6 +22,7 @@ export class QrCodeProductOtherComponent implements OnInit {
   image: string;
   sortData: ISortData;
   paginatorState = new PaginatorState();
+  searchFormControl: FormControl = new FormControl();
 
   constructor(
     private modalService: NgbModal,
@@ -41,12 +44,32 @@ export class QrCodeProductOtherComponent implements OnInit {
 
   ngOnInit(): void {
     this.getListQrCodeProductOther();
+    this.searchFormControl.valueChanges
+      .pipe(
+        debounceTime(400),
+        switchMap(() => {
+          return this.qrCodeService.getListQrCodeProductOther(
+            this.paginatorState.page,
+            this.paginatorState.pageSize,
+            this.searchFormControl.value,
+            this.sortData
+          );
+        }),
+        tap((res) => {
+          this.dataRes = res.data;
+          this.paginatorState.recalculatePaginator(res.meta.total);
+          this.cdr.detectChanges();
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   getListQrCodeProductOther() {
     this.qrCodeService.getListQrCodeProductOther(
       this.paginatorState.page,
       this.paginatorState.pageSize,
+      this.searchFormControl.value,
       this.sortData
     )
       .subscribe((res) => {
