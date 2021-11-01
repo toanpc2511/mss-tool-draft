@@ -41,6 +41,10 @@ function appInitializer(authService: AuthService, router: Router) {
 		return new Promise((resolve) => {
 			authService.getLoggedUser().subscribe(
 				(currentUser) => {
+					if(!currentUser) {
+						authService.clearData();
+						resolve(false);
+					}
 					if (currentUser?.changePassword) {
 						router.navigate(['/auth/first-login']);
 					}

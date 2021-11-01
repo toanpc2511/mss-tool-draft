@@ -38,7 +38,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 					this.router.navigate(['/']);
 				}
 
-				if (err.status === 401) {
+				if (err.status === 401 && this.authService.getCurrentUserValue()) {
 					if (
 						errors.code === 'SUN-OIL-4812' ||
 						errors.code === 'SUN-OIL-4823' ||
