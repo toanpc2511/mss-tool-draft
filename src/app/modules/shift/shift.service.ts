@@ -444,7 +444,7 @@ export class ShiftService {
 
 	approveShiftRequestChange(id: string, type: EShiftChangRequestType) {
 		return this.http.put(`swap-shifts/status/${id}`, {
-			status: EShiftChangRequestStatus.SWAPPED,
+			status: type === EShiftChangRequestType.CHANGE ? 'SWAPPED' : 'REPLACED',
 			type
 		});
 	}
