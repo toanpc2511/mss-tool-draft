@@ -16,7 +16,7 @@
           [formControl]="searchFormControl"
         />
       </div>
-      <button type="button" class="btn btn-primary" (click)="createModal()">Thêm mới</button>
+      <button type="button" class="btn btn-primary" (click)="createModal()" *ngIf="eAuthorize.CREATE_OIL_BUTTON">Thêm mới</button>
     </div>
   </div>
 
@@ -156,6 +156,7 @@
           <td class="text-center action">
             <a
               class="btn btn-icon btn-light btn-hover-primary btn-sm"
+              *ngIf="eAuthorize.SETUP_PRICE_BUTTON|canUseFeature"
             >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Settings-1.svg'"
@@ -168,6 +169,7 @@
             <a
               (click)="createModal($event, item)"
               class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              *ngIf="eAuthorize.UPDATE_OIL_BUTTON|canUseFeature"
             >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -180,6 +182,7 @@
             <a
               (click)="deleteProduct($event, item)"
               class="btn btn-icon btn-light btn-hover-danger btn-sm"
+              *ngIf="eAuthorize.DELETE_OIL_BUTTON|canUseFeature"
             >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
