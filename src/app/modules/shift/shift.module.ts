@@ -4,7 +4,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {
-	NgbDatepickerModule, NgbPopoverModule,
+	NgbDatepickerModule,
+	NgbPopoverModule,
 	NgbProgressbarModule,
 	NgbTooltipModule
 } from '@ng-bootstrap/ng-bootstrap';
@@ -22,21 +23,24 @@ import { IsCheckedPipe } from './create-calendar-modal/is-checked.pipe';
 import { EmployeeRoutingModule } from './shift-routing.module';
 import { ShiftWorkConfigModalComponent } from './shift-work-config-modal/shift-work-config-modal.component';
 import { ShiftWorkConfigComponent } from './shift-work-config/shift-work-config.component';
-import { DateStringPipe } from './shift-work/date-string.pipe';
+import {
+	DateStringPipe,
+	DisplayStartEndCalendarPipe,
+	DisplayTimePipe,
+	IsFeatureDatePipe,
+	PumpPoleDisplayPipe,
+	ShiftChangeDetailPipe
+} from './shift-work/shift.pipe';
 import { DeleteCalendarAllComponent } from './shift-work/delete-calendar-all/delete-calendar-all.component';
 import { DetailWarningDialogComponent } from './shift-work/detail-warning-dialog/detail-warning-dialog.component';
-import { DisplayTimePipe } from './shift-work/display-time.pipe';
 import { CheckAllPipe } from './shift-work/employee/check-all.pipe';
 import { EmployeeComponent } from './shift-work/employee/employee.component';
-import { IsFeatureDatePipe } from './shift-work/is-feature-date.pipe';
-import { PumpPoleDisplayPipe } from './shift-work/pump-pole-display.pipe';
 import {
 	DayWrapperComponent,
 	EventWrapperComponent,
 	ShiftWorkComponent
 } from './shift-work/shift-work.component';
 import { ShiftComponent } from './shift.component';
-import { DisplayStartEndCalendarPipe } from './shift-work/display-start-end-calendar.pipe';
 import { ShiftChangeComponent } from './shift-change/shift-change.component';
 import { ShiftClosingHistoryComponent } from './shift-closing-history/shift-closing-history.component';
 import { ModalConfirmComponent } from './shift-closing-history/modal-confirm/modal-confirm.component';
@@ -77,8 +81,9 @@ import { ModalConfirmLockShiftComponent } from './shift-closing-history/detail-s
 		OtherRevenueDetailComponent,
 		PromotionDetailComponent,
 		TotalRevenueComponent,
-    CustomShiftPipe,
-    ModalConfirmLockShiftComponent
+		CustomShiftPipe,
+		ModalConfirmLockShiftComponent,
+		ShiftChangeDetailPipe
 	],
 	imports: [
 		CommonModule,

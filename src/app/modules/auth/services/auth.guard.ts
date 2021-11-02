@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
 				return false;
 			}
 		}
-		this.authService.logout();
+		this.authService.logout().subscribe();
 		return false;
 	}
 }
@@ -36,43 +36,92 @@ const SPECIAL_URL: SpecialUrl[] = [
 		url: '/hop-dong/danh-sach/chi-tiet',
 		permissionKey: EAuthorize.VIEW_CONTRACT_DETAIL_BUTTON
 	},
+	{ url: '/hop-dong/danh-sach/sua-hop-dong', permissionKey: EAuthorize.UPDATE_CONTRACT_BUTTON },
+	{
+		url: '/tram-xang/danh-sach/sua-tram',
+		permissionKey: EAuthorize.UPDATE_GAS_STATION_BUTTON
+	},
+	{
+		url: '/nhan-vien/danh-sach/chi-tiet',
+		permissionKey: EAuthorize.VIEW_EMPLOYEE_DETAIL_SCREEN
+	},
+	{
+		url: '/nhan-vien/danh-sach/sua-nhan-vien',
+		permissionKey: EAuthorize.UPDATE_EMPLOYEE_BUTTON
+	},
+	{
+		url: '/phan-quyen/them-nhom-quyen',
+		permissionKey: EAuthorize.CREATE_ROLE_BUTTON
+	},
+	{
+		url: '/phan-quyen/sua-nhom-quyen',
+		permissionKey: EAuthorize.UPDATE_ROLE_BUTTON
+	},
+	{
+		url: '/ca-lam-viec/doi-ca/chi-tiet-doi-ca',
+		permissionKey: EAuthorize.VIEW_SWAP_SHIFT_SCREEN
+	},
+	{
+		url: '/ca-lam-viec/lich-su-chot-ca/chi-tiet',
+		permissionKey: EAuthorize.VIEW_SWAP_SHIFT_SCREEN
+	},
+	{
+		url: '/khach-hang/danh-sach/chi-tiet',
+		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+	}
 ];
 
 @Injectable({ providedIn: 'root' })
 export class AuthorizeGuard implements CanActivate {
-	isDisaled = true;
 	constructor(private authService: AuthService, private router: Router) {}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-		// const currentUser = this.authService.getCurrentUserValue();
-		// let menuItemByRoute: IMenuConfigItem;
-
-		// for (const menuItem of DynamicAsideMenuConfig.items) {
-		// 	if (menuItem.submenu?.length > 0) {
-		// 		for (const submenuItem of menuItem.submenu) {
-		// 			if (submenuItem.page === state.url) {
-		// 				menuItemByRoute = submenuItem;
-		// 				break;
-		// 			}
-		// 		}
-		// 	} else {
-		// 		if (menuItem.page === state.url) {
-		// 			menuItemByRoute = menuItem;
-		// 			break;
-		// 		}
-		// 	}
-		// }
-
-		// if (currentUser.actions?.includes(menuItemByRoute?.permissionKey)) {
-		// 	return true;
-		// }
-		// if(!this.isDisaled) {
-		// 	this.router.navigate(['/error/404']);
-		// 	return false;
-		// }
-
-		// // Remove params, query params from url
+		if (state.url === '/dashboard') {
+			return true;
+		}
+		const currentUser = this.authService.getCurrentUserValue();
+		const actions = currentUser.actions || [];
+		const indexOfSpecialUrl = SPECIAL_URL.findIndex((su) => state.url.includes(su.url));
 		console.log(state.url);
-		return true;
+		if (indexOfSpecialUrl >= 0) {
+			console.log(
+				`SPECIAL URL: ${SPECIAL_URL[indexOfSpecialUrl].url} - KEY: ${SPECIAL_URL[indexOfSpecialUrl].permissionKey}`
+			);
+		}
+		if (
+			indexOfSpecialUrl >= 0 &&
+			actions.some((a) => a === SPECIAL_URL[indexOfSpecialUrl].permissionKey)
+		) {
+			return true;
+		}
+
+		for (const menuItem of DynamicAsideMenuConfig.items) {
+			if (menuItem.submenu?.length > 0) {
+				for (const submenuItem of menuItem.submenu) {
+					const check = this.checkPermission(submenuItem, state, actions);
+					if (check) {
+						return true;
+					}
+				}
+			} else {
+				const check = this.checkPermission(menuItem, state, actions);
+				if (check) {
+					return true;
+				}
+			}
+		}
+		this.router.navigate(['/error/error-authorize']);
+		return false;
+	}
+
+	checkPermission(
+		menuItem: IMenuConfigItem,
+		state: RouterStateSnapshot,
+		actions: string[]
+	): boolean {
+		if (menuItem.page === state.url && menuItem && actions.includes(menuItem?.permissionKey)) {
+			return true;
+		}
+		return false;
 	}
 }

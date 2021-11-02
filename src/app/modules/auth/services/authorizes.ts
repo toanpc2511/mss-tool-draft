@@ -1,3 +1,4 @@
+// Cập nhật mới nhất ngày 01/11/2021
 export enum EAuthorize {
 	DASH_BOARD = 'dashboard',
 	MENU_GAS_STAION_MANAGEMENT = 'menu_gas_staion_management',
@@ -8,13 +9,17 @@ export enum EAuthorize {
 	CREATE_GAS_FIELD_BUTTON = 'create_gas_field_button',
 	UPDATE_GAS_FIELD_BUTTON = 'update_gas_field_button',
 	DELETE_GAS_FIELD_BUTTON = 'delete_gas_field_button',
-	VIEW_PUMP_HOLE_SCREEN = 'view_pump_hole_screen',
+	VIEW_PUMP_POLE_SCREEN = 'view_pump_pole_screen',
 	CREATE_PUMP_HOLE_BUTTON = 'create_pump_hole_button',
 	UPDATE_PUMP_HOLE_BUTTON = 'update_pump_hole_button',
 	DELETE_PUMP_HOLE_BUTTON = 'delete_pump_hole_button',
 	CREATE_PUMP_POLE_BUTTON = 'create_pump_pole_button',
 	UPDATE_PUMP_POLE_BUTTON = 'update_pump_pole_button',
 	DELETE_PUMP_POLE_BUTTON = 'delete_pump_pole_button',
+	VIEW_PUMP_HOSE_SCREEN = 'view_pump_hose_screen',
+	CREATE_PUMP_HOSE_BUTTON = 'create_pump_hose_button',
+	UPDATE_PUMP_HOSE_BUTTON='update_pump_hose_button',
+	DELETE_PUMP_HOSE_BUTTON='delete_pump_hose_button',
 	VIEW_CATEGORY_SCREEN = 'view_category_screen',
 	CREATE_CATEGORY_BUTTON = 'create_category_button',
 	UPDATE_CATEGORY_BUTTON = 'update_category_button',

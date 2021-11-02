@@ -1,5 +1,5 @@
 <div class="card card-custom">
-  <div class="card-header">
+  <div class="card-header" *ngIf="eAuthorize.VIEW_PUMP_POLE_SCREEN |canUseFeature">
     <div class="card-title">
       <h3 class="card-label">Danh sách cột</h3>
     </div>
@@ -15,10 +15,10 @@
           [formControl]="searchFormControl"
         />
       </div>
-      <button type="button" class="btn btn-primary" (click)="create()">Thêm mới</button>
+      <button type="button" class="btn btn-primary" (click)="create()" *ngIf="eAuthorize.CREATE_PUMP_POLE_BUTTON|canUseFeature">Thêm mới</button>
     </div>
   </div>
-  <div class="card-body">
+  <div class="card-body" *ngIf="eAuthorize.VIEW_PUMP_POLE_SCREEN |canUseFeature">
     <div class="table-responsive angular-bootstrap-table">
       <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
@@ -99,6 +99,7 @@
                 (click)="update(pumpPole)"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 [ngbTooltip]="'Sửa'"
+                *ngIf="eAuthorize.UPDATE_PUMP_POLE_BUTTON|canUseFeature"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -111,6 +112,7 @@
                 (click)="delete(pumpPole)"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
                 [ngbTooltip]="'Xóa'"
+                *ngIf="eAuthorize.DELETE_PUMP_POLE_BUTTON|canUseFeature"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"

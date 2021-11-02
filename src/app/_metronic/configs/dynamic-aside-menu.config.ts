@@ -116,7 +116,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			title: 'Quản lý phân quyền',
 			root: true,
 			bullet: 'dot',
-			page: '/phan-quyen/danh-sach',
+			page: '/phan-quyen',
 			icon: 'fas fa-lock',
 			permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
 		},
