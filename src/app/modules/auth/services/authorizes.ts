@@ -9,7 +9,7 @@ export enum EAuthorize {
 	CREATE_GAS_FIELD_BUTTON = 'create_gas_field_button',
 	UPDATE_GAS_FIELD_BUTTON = 'update_gas_field_button',
 	DELETE_GAS_FIELD_BUTTON = 'delete_gas_field_button',
-	VIEW_PUMP_HOLE_SCREEN = 'view_pump_hole_screen',
+	VIEW_PUMP_POLE_SCREEN = 'view_pump_pole_screen',
 	CREATE_PUMP_HOLE_BUTTON = 'create_pump_hole_button',
 	UPDATE_PUMP_HOLE_BUTTON = 'update_pump_hole_button',
 	DELETE_PUMP_HOLE_BUTTON = 'delete_pump_hole_button',
