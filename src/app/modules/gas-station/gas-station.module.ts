@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { DirectivesModule } from './../../shared/directives/directives.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -50,7 +51,8 @@ import { ListStationComponent } from './list-station/list-station.component';
     SharedComponentsModule,
     PipesModule,
     InputTrimModule,
-    DirectivesModule
+    DirectivesModule,
+    AuthModule
   ]
 })
 export class GasStationModule {}

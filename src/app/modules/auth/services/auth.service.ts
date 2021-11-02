@@ -6,6 +6,7 @@ import { finalize, map, mapTo, tap, switchMap } from 'rxjs/operators';
 import { storageUtils } from 'src/app/shared/helpers/storage';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
+import { EAuthorize } from './authorizes';
 
 export enum UserStatus {
 	ACTIVE = 'ACTIVE',
@@ -102,5 +103,13 @@ export class AuthService {
 		this.router.navigate(['/auth/login'], {
 			queryParams: {}
 		});
+	}
+
+	canUseFeature(featurePermissionKey: EAuthorize) {
+		const actions = this.currentUserSubject.value?.actions || [];
+		if(actions.includes(featurePermissionKey)) {
+			return true;
+		}
+		return false;
 	}
 }

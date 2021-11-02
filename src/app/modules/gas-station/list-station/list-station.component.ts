@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { of, throwError } from 'rxjs';
 import { catchError, debounceTime, takeUntil } from 'rxjs/operators';
+import { BaseComponent } from 'src/app/shared/components/base/base.component';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
@@ -24,7 +25,7 @@ import { GasStationResponse, GasStationService } from '../gas-station.service';
 	templateUrl: 'list-station.component.html',
 	providers: [SortService, FilterService, DestroyService]
 })
-export class ListStationComponent implements OnInit {
+export class ListStationComponent extends BaseComponent implements OnInit {
 	dataSource: Array<GasStationResponse>;
 	dataSourceTemp: Array<GasStationResponse>;
 	sorting: SortState;
@@ -46,6 +47,7 @@ export class ListStationComponent implements OnInit {
 		private modalService: NgbModal,
 		private toastr: ToastrService
 	) {
+		super();
 		this.dataSource = this.dataSourceTemp = [];
 		this.sorting = sortService.sorting;
 		this.filterField = new FilterField({
