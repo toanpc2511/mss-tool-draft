@@ -14,7 +14,8 @@ export enum EShiftChangRequestType {
 export enum EShiftChangRequestStatus {
 	SWAPPED = 'SWAPPED',
 	WAITING = 'WAITING',
-	REJECTED = 'REJECTED'
+	REJECTED = 'REJECTED',
+	REPLACED = 'REPLACED'
 }
 
 export class StepData {
