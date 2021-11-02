@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +20,7 @@ import { CreateGasBinComponent } from './create-gas-bin/create-gas-bin.component
   styleUrls: ['./step2.component.scss'],
   providers: [SortService, FilterService, DestroyService]
 })
-export class Step2Component implements OnInit {
+export class Step2Component extends BaseComponent implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
   dataSource: GasBinResponse[] = [];
   dataSourceTemp: GasBinResponse[] = [];
@@ -38,6 +39,7 @@ export class Step2Component implements OnInit {
     private gasStationService: GasStationService,
     private toastr: ToastrService
   ) {
+    super();
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
       code: null,

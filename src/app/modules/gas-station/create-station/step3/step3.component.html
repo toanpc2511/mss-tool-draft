@@ -15,7 +15,7 @@
           [formControl]="searchFormControl"
         />
       </div>
-      <button type="button" class="btn btn-primary" (click)="create()">Thêm mới</button>
+      <button type="button" class="btn btn-primary" (click)="create()" *ngIf="eAuthorize.CREATE_PUMP_POLE_BUTTON|canUseFeature">Thêm mới</button>
     </div>
   </div>
   <div class="card-body">
@@ -99,6 +99,7 @@
                 (click)="update(pumpPole)"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 [ngbTooltip]="'Sửa'"
+                *ngIf="eAuthorize.UPDATE_PUMP_HOLE_BUTTON|canUseFeature"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -111,6 +112,7 @@
                 (click)="delete(pumpPole)"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
                 [ngbTooltip]="'Xóa'"
+                *ngIf="eAuthorize.DELETE_PUMP_HOLE_BUTTON|canUseFeature"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"

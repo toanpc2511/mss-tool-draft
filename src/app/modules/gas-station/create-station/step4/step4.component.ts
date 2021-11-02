@@ -1,3 +1,4 @@
+import { BaseComponent } from 'src/app/shared/components/base/base.component';
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +20,7 @@ import { PumpHoseModalComponent } from './pump-hose-modal/pump-hose-modal.compon
   styleUrls: ['./step4.component.scss'],
   providers: [FilterService, SortService, DestroyService]
 })
-export class Step4Component implements OnInit {
+export class Step4Component extends BaseComponent implements OnInit {
   @Output() stepSubmitted: EventEmitter<any>;
   dataSource: Array<IPumpHose>;
   dataSourceTemp: Array<IPumpHose>;
@@ -44,6 +45,7 @@ export class Step4Component implements OnInit {
     private gasStationService: GasStationService,
     private toastr: ToastrService
   ) {
+    super();
     this.stepSubmitted = new EventEmitter();
     this.dataSource = this.dataSourceTemp = [];
     this.sorting = sortService.sorting;

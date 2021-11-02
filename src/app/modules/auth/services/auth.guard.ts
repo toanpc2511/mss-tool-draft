@@ -59,7 +59,7 @@ const SPECIAL_URL: SpecialUrl[] = [
 	},
 	{
 		url: '/ca-lam-viec/doi-ca/chi-tiet-doi-ca',
-		permissionKey: null // Chưa bổ sung
+		permissionKey: EAuthorize.VIEW_SWAP_SHIFT_SCREEN
 	},
 	{
 		url: '/ca-lam-viec/lich-su-chot-ca/chi-tiet',
