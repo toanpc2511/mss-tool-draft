@@ -1,3 +1,4 @@
+import { BaseComponent } from 'src/app/shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -22,7 +23,7 @@ import { IProductType, ProductService } from '../product.service';
   providers: [SortService, FilterService, DestroyService]
 })
 
-export class ProductTypeComponent implements OnInit {
+export class ProductTypeComponent extends BaseComponent implements OnInit {
   searchFormControl: FormControl;
   listStatus = LIST_STATUS;
   dataSource: Array<IProductType>;
@@ -45,6 +46,7 @@ export class ProductTypeComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
   ) {
+    super();
     this.dataSource = this.dataSourceTemp = [];
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({

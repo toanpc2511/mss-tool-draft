@@ -1,3 +1,4 @@
+import { BaseComponent } from 'src/app/shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LIST_STATUS_QR, LIST_STATUS_SEARCH } from '../../../shared/data-enum/list-status';
@@ -23,7 +24,7 @@ import { SortService } from '../../../shared/services/sort.service';
 	styleUrls: ['./list-product-other.component.scss'],
 	providers: [SortService, DestroyService, FormBuilder]
 })
-export class ListProductOtherComponent implements OnInit {
+export class ListProductOtherComponent extends BaseComponent implements OnInit {
 	searchForm: FormGroup;
 	listStatus = LIST_STATUS_SEARCH;
 	listStatusQr = LIST_STATUS_QR;
@@ -41,6 +42,7 @@ export class ListProductOtherComponent implements OnInit {
 		private destroy$: DestroyService,
 		private modalService: NgbModal
 	) {
+		super();
 		this.init();
 	}
 
