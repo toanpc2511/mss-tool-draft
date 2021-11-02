@@ -74,6 +74,7 @@ export class QrCodeProductOtherComponent implements OnInit {
     )
       .subscribe((res) => {
         this.dataRes = res.data;
+        console.log(this.dataRes);
         this.paginatorState.recalculatePaginator(res.meta.total);
         this.cdr.detectChanges();
       })

@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../../../../shared/services/destroy.service';
 import { Router } from '@angular/router';
-import { IOffTimes, IShiftConfig, ShiftService } from '../../../../shift.service';
+import { IEmployeeMoneyRevenues, IOffTimes, IShiftConfig, ShiftService } from '../../../../shift.service';
 import { ToastrService } from 'ngx-toastr';
 import { fromEvent } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -108,6 +108,7 @@ export class ModalConfirmLockShiftComponent implements OnInit {
           newShiftEmployee: this.dataSource.value
         }
         console.log(dataReq);
+        console.log(this.data.listEmployee);
 
       });
   }
@@ -137,4 +138,5 @@ export interface IDataTransfer {
   title: string;
   stationId: number;
   lockShiftOldId: number;
+  listEmployee: [IEmployeeMoneyRevenues];
 }

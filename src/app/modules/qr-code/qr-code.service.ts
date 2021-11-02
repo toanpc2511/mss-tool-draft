@@ -57,7 +57,7 @@ export class QrCodeService {
       .set('field-sort', sortData?.fieldSort || '')
       .set('direction-sort', sortData?.directionSort || '')
       .set('search-text', searchText || '');
-    return this.http.get<Array<IQrProductOther>>('qrs/products/others', {params});
+    return this.http.get<Array<IQrProductOther>>('products/filters/others', {params});
   }
 
   getListQrCodePumlHose() {

@@ -77,7 +77,7 @@ export class DeleteCalendarAllComponent implements OnInit {
 					return;
 				}
 
-				this.shiftService.deleteCalendarAll(this.formConfirmDelete.value).subscribe(
+				this.shiftService.deleteCalendarAll(this.formConfirmDelete.value, this.data.stationId).subscribe(
 					() => {
 						this.modal.close(true);
 					},

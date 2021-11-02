@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
   IDataTransfer,
@@ -7,6 +7,8 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntil, tap } from 'rxjs/operators';
+import { ITotalMoneyRevenue, ShiftService } from '../../../shift.service';
 
 @Component({
   selector: 'app-total-revenue',
@@ -15,41 +17,20 @@ import { ActivatedRoute } from '@angular/router';
   providers: [DestroyService]
 })
 export class TotalRevenueComponent implements OnInit {
-  listTotalRevenue;
-  revenue = 34567890000;
-  total = 10000;
-
   proceeds: FormControl;
   hideButton = true;
   stationId: number;
   lockShiftId: number;
+  dataRep: ITotalMoneyRevenue;
 
   constructor(
     private modalService: NgbModal,
     private destroy$: DestroyService,
     private activeRoute: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
+    private shiftService: ShiftService
     ) {
     this.proceeds = new FormControl();
-    this.listTotalRevenue = [
-      {
-        productName: 'abc',
-        unit: 'Chiếc',
-        quantity: 567890100,
-        revenue: 4567000
-      },
-      {
-        productName: '56789iuythjaff dfdss ',
-        unit: 'Lon',
-        quantity: 234234200,
-        revenue: 77000
-      },
-      {
-        productName: 'weqweqf erwer ',
-        unit: 'Chiếc',
-        quantity: 32000,
-        revenue: 4567000
-      }
-    ]
   }
 
   ngOnInit(): void {
@@ -62,6 +43,20 @@ export class TotalRevenueComponent implements OnInit {
     this.activeRoute.queryParams.subscribe((x) => {
       this.stationId = x.stationId;
     })
+    this.getTotalMoneyRevenue();
+  }
+
+  getTotalMoneyRevenue() {
+    this.shiftService.getTotalMoneyRevenue(this.lockShiftId)
+      .pipe(
+        tap((res) => {
+          this.dataRep = res.data;
+          console.log(this.dataRep);
+          this.cdr.detectChanges();
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   changeCheckProceed() {
@@ -80,7 +75,8 @@ export class TotalRevenueComponent implements OnInit {
     modalRef.componentInstance.data = {
       title: 'Xác nhận',
       stationId: this.stationId,
-      lockShiftOldId: this.lockShiftId
+      lockShiftOldId: this.lockShiftId,
+      listEmployee: this.dataRep?.employeeMoneyRevenues
     };
   }
 
