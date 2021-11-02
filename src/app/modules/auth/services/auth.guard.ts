@@ -20,8 +20,6 @@ export class AuthGuard implements CanActivate {
 				this.router.navigate(['/auth/first-login']);
 				return false;
 			}
-		} else {
-			this.authService.clearData();
 		}
 		this.authService.logout().subscribe();
 		return false;
@@ -50,6 +48,10 @@ const SPECIAL_URL: SpecialUrl[] = [
 	{
 		url: '/nhan-vien/danh-sach/sua-nhan-vien',
 		permissionKey: EAuthorize.UPDATE_EMPLOYEE_BUTTON
+	},
+	{
+		url: '/phan-quyen/them-nhom-quyen',
+		permissionKey: EAuthorize.CREATE_ROLE_BUTTON
 	},
 	{
 		url: '/phan-quyen/sua-nhom-quyen',

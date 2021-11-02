@@ -43,7 +43,6 @@ function appInitializer(authService: AuthService, router: Router) {
 				(currentUser) => {
 					if(!currentUser) {
 						authService.clearData();
-						resolve(false);
 					}
 					if (currentUser?.changePassword) {
 						router.navigate(['/auth/first-login']);
