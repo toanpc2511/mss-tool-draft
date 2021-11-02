@@ -69,9 +69,9 @@ export class PumpPoleDisplayPipe implements PipeTransform {
 export class ShiftChangeDetailPipe implements PipeTransform {
 	transform(calendarChanges: ICalendarChanged[]): string {
 		console.log(calendarChanges);
-		
+
 		if (calendarChanges?.length > 0) {
-			return `(${calendarChanges
+			const shiftChangeText = calendarChanges
 				.map((c) => {
 					const startTime = `${c.startTime.substr(0, 5)} ${
 						c.typeStart === 'THE_NEXT_DAY' ? 'hôm sau' : ''
@@ -81,9 +81,11 @@ export class ShiftChangeDetailPipe implements PipeTransform {
 						c.typeEnd === 'THE_NEXT_DAY' ? 'hôm sau' : ''
 					}`;
 
-					return `${c.employeeNameTo} làm thay ${startTime} - ${endTime}`;
+					return `${c.employeeNameTo} làm thay ${startTime}- ${endTime}`;
 				})
-				.join(',')})`;
+				.join(', ')
+				?.replace(' ,', ',');
+			return `(${shiftChangeText})`;
 		}
 		return '';
 	}
