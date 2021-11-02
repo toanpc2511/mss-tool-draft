@@ -27,9 +27,10 @@ export class QrCodePumpHosesComponent implements OnInit {
   searchForm: FormControl;
 
   filterField: FilterField<{
+    code: null;
     station: null;
     pole: null;
-    hole: null;
+    hose: null;
     price: null;
     nameFuel: null;
   }>;
@@ -45,9 +46,10 @@ export class QrCodePumpHosesComponent implements OnInit {
   ) {
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
+      code: null,
       station: null,
       pole: null,
-      hole: null,
+      hose: null,
       price: null,
       nameFuel: null
     });

@@ -11,6 +11,15 @@
     th {
       text-transform: none;
     }
+    td {
+      &.stt,
+      &.employee-name,
+      &.pump-pole,
+      &.time {
+        min-width: 100px;
+        max-width: 120px;
+      }
+    }
   }
   .text-color-custom {
     color: #6993FF;

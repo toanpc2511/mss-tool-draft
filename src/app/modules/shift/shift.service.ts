@@ -220,6 +220,66 @@ export interface ICalendarEmployeeInfos {
 	pumpPoleResponses: [IPumpPole];
 }
 
+export interface IFuelRevenue {
+  code: string;
+  electronicEnd: number;
+  electronicStart: number;
+  employeeName: string;
+  gaugeEnd: number;
+  gaugeStart: number;
+  id: number;
+  limitMoney: number;
+  lockShiftId: number;
+  productName: string;
+  provisionalMoney: number;
+  quantityElectronic: number;
+  quantityGauge: number;
+  quantityTransaction: number;
+  shiftId: number;
+  shiftName: string;
+  stationId: number;
+  stationName: string;
+  timeEnd: string;
+  timeStart: string;
+  totalCashPaid: number;
+  totalLimitMoney: number;
+  totalLiter: number;
+  totalMoney: number;
+  totalPoint: number;
+  totalPoints: number;
+  totalPrice: number;
+  totalProvisionalMoney: number;
+  cashMoney: number;
+  price: number;
+}
+
+export interface ITotalMoneyRevenue {
+  cashMoneyRevenue: number;
+  limitMoneyRevenue: number;
+  otherProductRevenue: number;
+  pointRevenue: number;
+  provisionalMoneyRevenue: number;
+  totalLiter: number;
+  totalProvisionalRevenue: number;
+  employeeMoneyRevenues: [IEmployeeMoneyRevenues];
+  productRevenueResponses: [IProductRevenue];
+}
+
+export interface IEmployeeMoneyRevenues {
+  id: number;
+  name: string;
+  moneyFromFuel: number;
+  moneyFromOtherProduct: number;
+  totalEmployeeMoney: number;
+}
+
+export interface IProductRevenue {
+  productName:string;
+  quantityTransaction: number;
+  totalMoney: number;
+  unit: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -312,11 +372,12 @@ export class ShiftService {
 	}
 
 	// Xóa lịch trong khoảng thời gian
-	deleteCalendarAll(req: { timeStart: string; timeEnd: string; employeeIds: [number] }) {
+	deleteCalendarAll(req: { timeStart: string; timeEnd: string; employeeIds: [number] }, stationId: number) {
 		const params = new HttpParams()
 			.set('time-start', convertDateToServer(req.timeStart))
 			.set('time-end', convertDateToServer(req.timeEnd))
-			.set('employee-ids', req.employeeIds.join(','));
+			.set('employee-ids', req.employeeIds.join(','))
+			.set('station-id', stationId.toString());
 		return this.http.delete(`calendars`, { params });
 	}
 
@@ -365,7 +426,12 @@ export class ShiftService {
 
   // Lấy ds doanh thu nhiên liệu
   getFuelProductRevenue(id: number) {
-    return this.http.get(`product-revenue/${id}`)
+    return this.http.get<Array<IFuelRevenue>>(`product-revenue/${id}`)
+  }
+
+  // Sửa doanh thu nhiên liệu
+  updateFuelProductRevenue(id:number, dataReq) {
+    return this.http.put(`product-revenue/${id}`, dataReq)
   }
 
 	// Lấy ds doanh thu hàng hóa
@@ -406,6 +472,11 @@ export class ShiftService {
 			.set('time', time);
 		return this.http.get<Array<ICalendarEmployeeInfos>>('calendars/employees/infos', { params });
 	}
+
+  // Lấy danh sách tổng tiền mặt
+  getTotalMoneyRevenue(id: number) {
+    return this.http.get<ITotalMoneyRevenue>(`product-revenue/total-money/${id}`);
+  }
 
 	/*
 		Đổi ca/thay ca

@@ -24,6 +24,12 @@
         <thead>
         <th class="id" scope="">
           Mã
+          <app-sort-icon
+            column="code"
+            [activeColumn]="sortData?.fieldSort"
+            [activeDirection]="sortData?.directionSort"
+            (sort)="sort($event)"
+          ></app-sort-icon>
         </th>
         <th class="category" scope="">
           Nhóm sản phẩm
