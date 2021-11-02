@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { isDevMode, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './modules/auth/services/auth.guard';
 import { DevComponent } from './modules/dev/dev.component';
@@ -17,9 +17,12 @@ export const routes: Routes = [
 		canActivate: [AuthGuard],
 		loadChildren: () => import('./pages/layout.module').then((m) => m.LayoutModule)
 	},
-	{ path: 'dev', component: DevComponent },
 	{ path: '**', redirectTo: 'error/404' }
 ];
+
+if (isDevMode()) {
+	routes.push({ path: 'dev', component: DevComponent });
+}
 
 @NgModule({
 	imports: [RouterModule.forRoot(routes)],

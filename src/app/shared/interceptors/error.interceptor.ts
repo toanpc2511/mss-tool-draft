@@ -38,7 +38,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 					this.router.navigate(['/']);
 				}
 
-				if (err.status === 401) {
+				if (err.status === 401 && this.authService.getCurrentUserValue()) {
 					if (
 						errors.code === 'SUN-OIL-4812' ||
 						errors.code === 'SUN-OIL-4823' ||
@@ -54,7 +54,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 					if (errors.code === 'SUN-OIL-4008') {
 						this.toastr.error('Bạn cần đăng nhập lại để truy cập nội dung này');
 					}
-					this.authService.logout();
+					this.authService.logout().subscribe();
 				}
 
 				const error = err.error.error;

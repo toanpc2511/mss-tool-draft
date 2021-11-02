@@ -26,7 +26,6 @@ export class UserOffcanvasComponent implements OnInit {
 	}
 
 	logout() {
-		this.auth.logout();
-		document.location.reload();
+		this.auth.logout().subscribe();
 	}
 }
