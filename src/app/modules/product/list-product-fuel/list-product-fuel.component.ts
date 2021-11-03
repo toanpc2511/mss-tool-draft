@@ -1,3 +1,4 @@
+import { BaseComponent } from 'src/app/shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +24,7 @@ import { IProduct, ProductService } from '../product.service';
   styleUrls: ['./list-product-fuel.component.scss'],
   providers: [SortService, FilterService, DestroyService]
 })
-export class ListProductFuelComponent implements OnInit {
+export class ListProductFuelComponent extends BaseComponent implements OnInit {
   searchFormControl: FormControl;
   listStatus = LIST_STATUS;
   dataSource: Array<IProduct>;
@@ -56,6 +57,7 @@ export class ListProductFuelComponent implements OnInit {
     private modalService: NgbModal,
     private toastr: ToastrService
   ) {
+    super();
     this.dataSource = this.dataSourceTemp = [];
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({

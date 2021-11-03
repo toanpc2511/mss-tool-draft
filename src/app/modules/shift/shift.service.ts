@@ -14,7 +14,8 @@ export enum EShiftChangRequestType {
 export enum EShiftChangRequestStatus {
 	SWAPPED = 'SWAPPED',
 	WAITING = 'WAITING',
-	REJECTED = 'REJECTED'
+	REJECTED = 'REJECTED',
+	REPLACED = 'REPLACED'
 }
 
 export class StepData {
@@ -125,6 +126,7 @@ export interface IDataEventCalendar {
 
 export interface IShiftRequestChange {
 	id: string;
+	codeEmployeeFrom: string;
 	employeeNameFrom: string;
 	employeeNameTo: string;
 	type: EShiftChangRequestType;
