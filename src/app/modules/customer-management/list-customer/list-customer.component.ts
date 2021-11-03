@@ -1,3 +1,5 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
+import { AuthService } from './../../auth/services/auth.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
@@ -12,7 +14,7 @@ import { DestroyService } from '../../../shared/services/destroy.service';
 	styleUrls: ['./list-customer.component.scss'],
 	providers: [DestroyService]
 })
-export class ListCustomerComponent implements OnInit {
+export class ListCustomerComponent extends BaseComponent implements OnInit {
 	searchFormControl: FormControl = new FormControl();
 	sortData: ISortData;
 	paginatorState = new PaginatorState();
@@ -22,8 +24,10 @@ export class ListCustomerComponent implements OnInit {
 		private router: Router,
 		private customerManagementService: CustomerManagementService,
 		private cdr: ChangeDetectorRef,
-		private destroy$: DestroyService
+		private destroy$: DestroyService,
+		private authService: AuthService
 	) {
+		super();
 		this.init();
 	}
 
@@ -77,6 +81,10 @@ export class ListCustomerComponent implements OnInit {
 	}
 
 	async viewDetalCustomer($event: Event, item: ICustomers) {
+		const canView = this.authService.getCurrentUserValue()?.actions?.includes(this.eAuthorize.VIEW_DRIVER_DETAIL_SCREEN);
+		if(!canView) {
+			return;
+		}
 		await this.router.navigate([`/khach-hang/danh-sach/chi-tiet/${item.id}`]);
 	}
 

@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -42,7 +43,8 @@ import { DirectivesModule } from '../../shared/directives/directives.module';
     SharedComponentsModule,
     PipesModule,
     InputTrimModule,
-    DirectivesModule
+    DirectivesModule,
+    AuthModule
   ]
 })
 export class CustomerManagementModule {}

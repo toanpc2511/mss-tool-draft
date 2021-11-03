@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IPaginatorState, PaginatorState } from '../../../../_metronic/shared/crud-table';
 import { FormControl } from '@angular/forms';
@@ -13,7 +14,7 @@ import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
   styleUrls: ['./info-vehicle.component.scss'],
   providers: [DestroyService]
 })
-export class InfoVehicleComponent implements OnInit {
+export class InfoVehicleComponent extends BaseComponent implements OnInit {
   searchFormControl: FormControl = new FormControl();
   sortData: ISortData;
   paginatorState = new PaginatorState();
@@ -31,6 +32,7 @@ export class InfoVehicleComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private destroy$: DestroyService
   ) {
+    super();
     this.init();
   }
 

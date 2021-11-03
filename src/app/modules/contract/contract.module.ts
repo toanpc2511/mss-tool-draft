@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -35,7 +36,8 @@ import { RejectContractModalComponent } from './details-contract/reject-contract
 		NgbDatepickerModule,
 		TextMaskModule,
 		PipesModule,
-		NgbProgressbarModule
+		NgbProgressbarModule,
+		AuthModule
 	]
 })
 export class ContractModule {}

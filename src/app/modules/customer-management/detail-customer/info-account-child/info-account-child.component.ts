@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CustomerManagementService, IAccountChild, ISortData } from '../../customer-management.service';
@@ -12,7 +13,7 @@ import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
   styleUrls: ['./info-account-child.component.scss'],
   providers: [DestroyService]
 })
-export class InfoAccountChildComponent implements OnInit {
+export class InfoAccountChildComponent extends BaseComponent implements OnInit {
   searchFormControl: FormControl = new FormControl();
   sortData: ISortData;
   paginatorState = new PaginatorState();
@@ -27,6 +28,7 @@ export class InfoAccountChildComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private destroy$: DestroyService
   ) {
+    super();
     this.init();
   }
 

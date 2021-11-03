@@ -1,3 +1,5 @@
+import { AuthService } from './../../auth/services/auth.service';
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -21,7 +23,7 @@ import { IConfirmModalData } from '../../../shared/models/confirm-delete.interfa
 	styleUrls: ['./list-contract.component.scss'],
 	providers: [DestroyService]
 })
-export class ListContractComponent implements OnInit {
+export class ListContractComponent extends BaseComponent implements OnInit {
 	eContractType = EContractType;
 	contractStatus = EContractStatus;
 	searchFormControl: FormControl = new FormControl();
@@ -35,8 +37,10 @@ export class ListContractComponent implements OnInit {
 		private contractService: ContractService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
-		private toastr: ToastrService
+		private toastr: ToastrService,
+		private authService: AuthService
 	) {
+		super();
 		this.init();
 	}
 
@@ -98,6 +102,10 @@ export class ListContractComponent implements OnInit {
 	}
 
 	viewDetalContract(item: IContract): void {
+		const canView = this.authService.getCurrentUserValue()?.actions?.includes(this.eAuthorize.VIEW_CONTRACT_DETAIL_BUTTON);
+		if(!canView) {
+			return;
+		}
 		this.router.navigate([`/hop-dong/danh-sach/chi-tiet/${item.id}`]);
 	}
 
