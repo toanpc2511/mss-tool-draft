@@ -18,22 +18,6 @@ export enum EShiftChangRequestStatus {
 	REPLACED = 'REPLACED'
 }
 
-export class StepData {
-	currentStep: number;
-	step1: {
-		isValid: boolean;
-	};
-	step2: {
-		isValid: boolean;
-	};
-	step3: {
-		isValid: boolean;
-	};
-	step4: {
-		isValid: boolean;
-	};
-}
-
 export type PumpPoleResponse = {
 	id: number;
 	name: string;
@@ -126,8 +110,9 @@ export interface IDataEventCalendar {
 
 export interface IShiftRequestChange {
 	id: string;
-	codeEmployeeFrom: string;
+	employeeCodeFrom: string;
 	employeeNameFrom: string;
+	employeeCodeTo: string;
 	employeeNameTo: string;
 	type: EShiftChangRequestType;
 	stationName: string;
@@ -231,63 +216,63 @@ export interface ICalendarEmployeeInfos {
 }
 
 export interface IFuelRevenue {
-  code: string;
-  electronicEnd: number;
-  electronicStart: number;
-  employeeName: string;
-  gaugeEnd: number;
-  gaugeStart: number;
-  id: number;
-  limitMoney: number;
-  lockShiftId: number;
-  productName: string;
-  provisionalMoney: number;
-  quantityElectronic: number;
-  quantityGauge: number;
-  quantityTransaction: number;
-  shiftId: number;
-  shiftName: string;
-  stationId: number;
-  stationName: string;
-  timeEnd: string;
-  timeStart: string;
-  totalCashPaid: number;
-  totalLimitMoney: number;
-  totalLiter: number;
-  totalMoney: number;
-  totalPoint: number;
-  totalPoints: number;
-  totalPrice: number;
-  totalProvisionalMoney: number;
-  cashMoney: number;
-  price: number;
+	code: string;
+	electronicEnd: number;
+	electronicStart: number;
+	employeeName: string;
+	gaugeEnd: number;
+	gaugeStart: number;
+	id: number;
+	limitMoney: number;
+	lockShiftId: number;
+	productName: string;
+	provisionalMoney: number;
+	quantityElectronic: number;
+	quantityGauge: number;
+	quantityTransaction: number;
+	shiftId: number;
+	shiftName: string;
+	stationId: number;
+	stationName: string;
+	timeEnd: string;
+	timeStart: string;
+	totalCashPaid: number;
+	totalLimitMoney: number;
+	totalLiter: number;
+	totalMoney: number;
+	totalPoint: number;
+	totalPoints: number;
+	totalPrice: number;
+	totalProvisionalMoney: number;
+	cashMoney: number;
+	price: number;
 }
 
 export interface ITotalMoneyRevenue {
-  cashMoneyRevenue: number;
-  limitMoneyRevenue: number;
-  otherProductRevenue: number;
-  pointRevenue: number;
-  provisionalMoneyRevenue: number;
-  totalLiter: number;
-  totalProvisionalRevenue: number;
-  employeeMoneyRevenues: [IEmployeeMoneyRevenues];
-  productRevenueResponses: [IProductRevenue];
+	cashMoneyRevenue: number;
+	limitMoneyRevenue: number;
+	otherProductRevenue: number;
+	pointRevenue: number;
+	provisionalMoneyRevenue: number;
+	totalLiter: number;
+	totalProvisionalRevenue: number;
+	employeeMoneyRevenues: [IEmployeeMoneyRevenues];
+	productRevenueResponses: [IProductRevenue];
 }
 
 export interface IEmployeeMoneyRevenues {
-  id: number;
-  name: string;
-  moneyFromFuel: number;
-  moneyFromOtherProduct: number;
-  totalEmployeeMoney: number;
+	id: number;
+	name: string;
+	moneyFromFuel: number;
+	moneyFromOtherProduct: number;
+	totalEmployeeMoney: number;
 }
 
 export interface IProductRevenue {
-  productName:string;
-  quantityTransaction: number;
-  totalMoney: number;
-  unit: string;
+	productName: string;
+	quantityTransaction: number;
+	totalMoney: number;
+	unit: string;
 }
 
 @Injectable({
@@ -298,17 +283,11 @@ export class ShiftService {
 	stationId: number;
 	statusLockShift: string;
 
-	private stepDataSubject: BehaviorSubject<StepData>;
-	stepData$: Observable<StepData>;
+	private currentStepSubject: BehaviorSubject<number>;
+	currentStep$: Observable<number>;
 	constructor(private http: HttpService) {
-		this.stepDataSubject = new BehaviorSubject<StepData>({
-			currentStep: 1,
-			step1: { isValid: false },
-			step2: { isValid: false },
-			step3: { isValid: false },
-			step4: { isValid: false }
-		});
-		this.stepData$ = this.stepDataSubject.asObservable();
+		this.currentStepSubject = new BehaviorSubject<number>(1);
+		this.currentStep$ = this.currentStepSubject.asObservable();
 	}
 
 	getStationByAccount() {
@@ -382,7 +361,10 @@ export class ShiftService {
 	}
 
 	// Xóa lịch trong khoảng thời gian
-	deleteCalendarAll(req: { timeStart: string; timeEnd: string; employeeIds: [number] }, stationId: number) {
+	deleteCalendarAll(
+		req: { timeStart: string; timeEnd: string; employeeIds: [number] },
+		stationId: number
+	) {
 		const params = new HttpParams()
 			.set('time-start', convertDateToServer(req.timeStart))
 			.set('time-end', convertDateToServer(req.timeEnd))
@@ -391,22 +373,18 @@ export class ShiftService {
 		return this.http.delete(`calendars`, { params });
 	}
 
-	setStepData(stepData: StepData) {
-		this.stepDataSubject.next(stepData);
+	setCurrentStep(step: number) {
+		if(step > this.currentStepSubject.value) {
+			this.currentStepSubject.next(step);
+		}
 	}
 
-	getStepDataValue(): StepData {
-		return this.stepDataSubject.value;
+	getCurrentStepValue() {
+		return this.currentStepSubject.value;
 	}
 
 	resetCreateData() {
-		this.stepDataSubject.next({
-			currentStep: 1,
-			step1: { isValid: false },
-			step2: { isValid: false },
-			step3: { isValid: false },
-			step4: { isValid: false }
-		});
+		this.currentStepSubject.next(1);
 	}
 
 	// Lấy ds lịch sử chốt ca
@@ -434,15 +412,15 @@ export class ShiftService {
 		return this.http.post('product-revenue', req);
 	}
 
-  // Lấy ds doanh thu nhiên liệu
-  getFuelProductRevenue(id: number) {
-    return this.http.get<Array<IFuelRevenue>>(`product-revenue/${id}`)
-  }
+	// Lấy ds doanh thu nhiên liệu
+	getFuelProductRevenue(id: number) {
+		return this.http.get<Array<IFuelRevenue>>(`product-revenue/${id}`);
+	}
 
-  // Sửa doanh thu nhiên liệu
-  updateFuelProductRevenue(id:number, dataReq) {
-    return this.http.put(`product-revenue/${id}`, dataReq)
-  }
+	// Sửa doanh thu nhiên liệu
+	updateFuelProductRevenue(id: number, dataReq) {
+		return this.http.put(`product-revenue/${id}`, dataReq);
+	}
 
 	// Lấy ds doanh thu hàng hóa
 	getOtherProductRevenue(id: number, page: number, size: number) {
@@ -483,10 +461,10 @@ export class ShiftService {
 		return this.http.get<Array<ICalendarEmployeeInfos>>('calendars/employees/infos', { params });
 	}
 
-  // Lấy danh sách tổng tiền mặt
-  getTotalMoneyRevenue(id: number) {
-    return this.http.get<ITotalMoneyRevenue>(`product-revenue/total-money/${id}`);
-  }
+	// Lấy danh sách tổng tiền mặt
+	getTotalMoneyRevenue(id: number) {
+		return this.http.get<ITotalMoneyRevenue>(`product-revenue/total-money/${id}`);
+	}
 
 	/*
 		Đổi ca/thay ca
