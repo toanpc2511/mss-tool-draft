@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CustomerManagementService, IContract, ISortData } from '../../customer-management.service';
@@ -14,7 +15,7 @@ import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 	styleUrls: ['./info-contract.component.scss'],
 	providers: [DestroyService]
 })
-export class InfoContractComponent implements OnInit {
+export class InfoContractComponent extends BaseComponent implements OnInit {
 	searchFormControl: FormControl = new FormControl();
 	sortData: ISortData;
 	paginatorState = new PaginatorState();
@@ -29,6 +30,7 @@ export class InfoContractComponent implements OnInit {
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService
 	) {
+		super();
 		this.init();
 	}
 

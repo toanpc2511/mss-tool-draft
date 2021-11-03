@@ -174,7 +174,7 @@
 		</div>
 	</div>
 
-	<div class="pb-10 w-100 d-flex justify-content-center">
+	<div class="pb-10 w-100 d-flex justify-content-center" *ngIf="eAuthorize.UPDATE_DRIVER_INFO_BUTTON|canUseFeature">
 		<button
 			class="m-2 btn btn-primary font-weight-bold"
 			[disabled]="btnSubmit"

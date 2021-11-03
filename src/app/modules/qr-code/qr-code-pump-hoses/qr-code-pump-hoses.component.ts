@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +18,7 @@ import { FileService } from '../../../shared/services/file.service';
   styleUrls: ['./qr-code-pump-hoses.component.scss'],
   providers: [SortService, FilterService, DestroyService]
 })
-export class QrCodePumpHosesComponent implements OnInit {
+export class QrCodePumpHosesComponent extends BaseComponent implements OnInit {
   listStatus = LIST_STATUS;
   nameProduct: string;
   image: string;
@@ -44,6 +45,7 @@ export class QrCodePumpHosesComponent implements OnInit {
     private fileService: FileService,
     private qrCodeService: QrCodeService
   ) {
+    super();
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
       code: null,

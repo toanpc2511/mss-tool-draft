@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -26,7 +27,8 @@ import { QrCodePumpHosesComponent } from './qr-code-pump-hoses/qr-code-pump-hose
     FormsModule,
     SharedComponentsModule,
     ReactiveFormsModule,
-    InputTrimModule
+    InputTrimModule,
+    AuthModule
   ]
 })
 export class QrCodeModule {}

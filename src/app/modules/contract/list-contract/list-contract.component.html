@@ -15,7 +15,14 @@
 					[formControl]="searchFormControl"
 				/>
 			</div>
-			<button type="button" class="btn btn-primary" (click)="createContract()">Thêm mới</button>
+			<button
+				type="button"
+				class="btn btn-primary"
+				(click)="createContract()"
+				*ngIf="eAuthorize.CREATE_CONTRACT_BUTTON|canUseFeature"
+			>
+				Thêm mới
+			</button>
 		</div>
 	</div>
 	<div class="card-body">
@@ -134,7 +141,7 @@
 						</td>
 						<td class="text-center action">
 							<a
-								*ngIf="item.status === contractStatus.DRAFT"
+								*ngIf="item.status === contractStatus.DRAFT && (eAuthorize.UPDATE_CONTRACT_BUTTON|canUseFeature)"
 								(click)="updateContract($event,item.id)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 								[ngbTooltip]="'Sửa'"
@@ -147,7 +154,7 @@
 								</span>
 							</a>
 							<a
-								*ngIf="item.status === contractStatus.DRAFT"
+								*ngIf="item.status === contractStatus.DRAFT && (eAuthorize.DELETE_CONTRACT_BUTTON|canUseFeature)"
 								(click)="deleteContract($event, item)"
 								class="btn btn-icon btn-light btn-hover-danger btn-sm"
 								[ngbTooltip]="'Xóa'"
