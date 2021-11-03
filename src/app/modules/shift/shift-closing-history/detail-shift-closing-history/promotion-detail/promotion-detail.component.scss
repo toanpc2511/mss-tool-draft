@@ -1,50 +1,50 @@
 .card-header {
-  padding: 0 15px !important;
-  border-bottom: none;
+	padding: 0 15px !important;
+	border-bottom: none;
 
-  .title {
-    text-transform: uppercase;
-    color: #4674EB;
-    font-weight: 500;
-    font-size: 14px;
-  }
+	.title {
+		text-transform: uppercase;
+		color: #4674eb;
+		font-weight: 500;
+		font-size: 14px;
+	}
 }
 
 .card-body {
-  padding: 0 2.25rem !important;
+	padding: 0 2.25rem !important;
 
-  .table {
-    min-width: 1024px;
-    th {
-      text-transform: none;
-      &.head-inventory,
-      &.final-inventory,
-      &.compensate-quantity {
-        padding-right: 45px;
-      }
-    }
+	.table {
+		min-width: 1024px;
+		th {
+			text-transform: none;
+			&.head-inventory,
+			&.final-inventory,
+			&.compensate-quantity {
+				padding-right: 45px;
+			}
+		}
 
-    td {
-      &.name {
-        min-width: 100px;
-        max-width: 140px;
-      }
-      &.unit {
-        min-width: 70px;
-        max-width: 100px;
-      }
-      &.head-inventory,
-      &.final-inventory,
-      &.compensate-quantity {
-        min-width: 60px;
-        max-width: 100px;
-        padding-right: 45px;
-      }
-      &.import-quantity,
-      &.export-quantity,
-      &.actual-inventory-quantity {
-        max-width: 135px;
-      }
-    }
-  }
+		td {
+			&.name {
+				min-width: 100px;
+				max-width: 140px;
+			}
+			&.unit {
+				min-width: 70px;
+				max-width: 100px;
+			}
+			&.head-inventory,
+			&.final-inventory,
+			&.compensate-quantity {
+				min-width: 60px;
+				max-width: 100px;
+				padding-right: 45px;
+			}
+			&.import-quantity,
+			&.export-quantity,
+			&.actual-inventory-quantity {
+				max-width: 135px;
+			}
+		}
+	}
 }

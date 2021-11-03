@@ -1,102 +1,108 @@
-<div class='modal-content'>
-  <div class='modal-header'>
-    <h4 class='modal-title' id='modal-title'>{{ data.title }}</h4>
-    <div class='close-icon' (click)='modal.close()'></div>
-  </div>
-  <div class='modal-body'>
-    <div class='overlay overlay-block cursor-default modal-body' style='min-height: 250px'>
-      <p class='pt-5'>
-        Ca làm việc còn <strong>{{dataSource.length}} đơn hàng</strong> chưa hoàn thành, bạn có chắc muốn chốt ca không?
-      </p>
+<div class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+		<div class="close-icon" (click)="modal.close()"></div>
+	</div>
+	<div class="modal-body">
+		<div class="overlay overlay-block cursor-default modal-body" style="min-height: 250px">
+			<p class="pt-5">
+				Ca làm việc còn <strong>{{dataSource.length}} đơn hàng</strong> chưa hoàn thành, bạn có chắc
+				muốn chốt ca không?
+			</p>
 
-      <p class='py-3 text-danger'>
-        <strong>
-          Chốt ca sẽ hủy toàn bộ các đơn hàng này.
-        </strong>
-      </p>
+			<p class="py-3 text-danger">
+				<strong> Chốt ca sẽ hủy toàn bộ các đơn hàng này. </strong>
+			</p>
 
-      <div class='table-responsive angular-bootstrap-table'>
-        <table class='table table-head-custom table-vertical-center overflow-hidden' aria-label=''>
-          <thead>
-          <th scope=''>Mã đơn hàng</th>
-          <th scope=''>Cột bơm</th>
-          <th scope=''>Vòi bơm</th>
-          <th scope=''>Trạng thái</th>
-          </thead>
+			<div class="table-responsive angular-bootstrap-table">
+				<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+					<thead>
+						<th scope="">Mã đơn hàng</th>
+						<th scope="">Cột bơm</th>
+						<th scope="">Vòi bơm</th>
+						<th scope="">Trạng thái</th>
+					</thead>
 
-          <tbody>
-          <tr *ngFor='let item of dataSource'>
-            <td class='code'>
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.code"
-              >
-                {{ item.code }}
-              </p>
-            </td>
-            <td class='pump-pole'>
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.pumpPole"
-              >
-                {{ item.pumpPole }}
-              </p>
-            </td>
-            <td class='pump-hose'>
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.pumpHose"
-              >
-                {{ item.pumpHose }}
-              </p>
-            </td>
-            <td class="status">
-							<span
-                class="label label-lg label-inline label-light-primary"
-              >
-								<ng-container *ngIf="item.status === listStatus.NEW">Mới</ng-container>
-								<ng-container *ngIf="item.status === listStatus.PROCESSING">Chờ xử lý</ng-container>
-								<ng-container *ngIf="item.status === listStatus.FINISH_PROCESSING">Xử lý xong</ng-container>
-								<ng-container *ngIf="item.status === listStatus.WAIT_FOR_PAY">Chờ thanh toán</ng-container>
-								<ng-container *ngIf="item.status === listStatus.CANCEL">Hủy bỏ</ng-container>
-								<ng-container *ngIf="item.status === listStatus.DONE">Xong</ng-container>
-							</span>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+					<tbody>
+						<tr *ngFor="let item of dataSource">
+							<td class="code">
+								<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
+									{{ item.code }}
+								</p>
+							</td>
+							<td class="pump-pole">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.pumpPole"
+								>
+									{{ item.pumpPole }}
+								</p>
+							</td>
+							<td class="pump-hose">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.pumpHose"
+								>
+									{{ item.pumpHose }}
+								</p>
+							</td>
+							<td class="status">
+								<span class="label label-lg label-inline label-light-primary">
+									<ng-container *ngIf="item.status === listStatus.NEW">Mới</ng-container>
+									<ng-container *ngIf="item.status === listStatus.PROCESSING"
+										>Chờ xử lý</ng-container
+									>
+									<ng-container *ngIf="item.status === listStatus.FINISH_PROCESSING"
+										>Xử lý xong</ng-container
+									>
+									<ng-container *ngIf="item.status === listStatus.WAIT_FOR_PAY"
+										>Chờ thanh toán</ng-container
+									>
+									<ng-container *ngIf="item.status === listStatus.CANCEL">Hủy bỏ</ng-container>
+									<ng-container *ngIf="item.status === listStatus.DONE">Xong</ng-container>
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 
-      <form [formGroup]='resonForm' class='form form-label-right'>
-        <div class='form-group row'>
-          <div class='col-lg-12'>
-            <label class='form-label required'>Lý do hủy</label>
-            <input
-              type='text'
-              class='form-control form-control-solid'
-              placeholder='Nhập lý do hủy'
-              autocomplete='off'
-              maxlength='299'
-              formControlName='reason'
-              trim='blur'
-            />
-            <app-validate
-              [control]="resonForm.controls['reason']"
-              [error]="'required'"
-              [message]="'Lý do từ hủy không được để trống'"
-            ></app-validate>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class='modal-footer'>
-    <button type='button' class='btn btn-outline-secondary btn-confirm-dialog' (click)='onClose()'>
-      Hủy
-    </button>
-    <button type='button' [disabled]='isDisable' class='btn btn-primary btn-confirm-dialog' #btnSave>Xác nhận</button>
-  </div>
+			<form [formGroup]="resonForm" class="form form-label-right">
+				<div class="form-group row">
+					<div class="col-lg-12">
+						<label class="form-label required">Lý do hủy</label>
+						<input
+							type="text"
+							class="form-control form-control-solid"
+							placeholder="Nhập lý do hủy"
+							autocomplete="off"
+							maxlength="299"
+							formControlName="reason"
+							trim="blur"
+						/>
+						<app-validate
+							[control]="resonForm.controls['reason']"
+							[error]="'required'"
+							[message]="'Lý do từ hủy không được để trống'"
+						></app-validate>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary btn-confirm-dialog" (click)="onClose()">
+			Hủy
+		</button>
+		<button
+			type="button"
+			[disabled]="isDisable"
+			class="btn btn-primary btn-confirm-dialog"
+			#btnSave
+		>
+			Xác nhận
+		</button>
+	</div>
 </div>

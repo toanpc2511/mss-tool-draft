@@ -1,38 +1,38 @@
 .card-header {
-  padding: 0 15px !important;
-  border-bottom: none;
+	padding: 0 15px !important;
+	border-bottom: none;
 
-  .title {
-    text-transform: uppercase;
-    color: #4674EB;
-    font-weight: 500;
-    font-size: 14px;
-  }
+	.title {
+		text-transform: uppercase;
+		color: #4674eb;
+		font-weight: 500;
+		font-size: 14px;
+	}
 }
 
 .card-body {
-  padding: 0 2.25rem !important;
+	padding: 0 2.25rem !important;
 
-  .table {
-    min-width: 900px;
-    th {
-      text-transform: none;
-    }
+	.table {
+		min-width: 900px;
+		th {
+			text-transform: none;
+		}
 
-    .line-custom {
-      padding-top: 40px;
-    }
-    .padding-left-12 {
-      padding-left: 12% !important;
-    }
+		.line-custom {
+			padding-top: 40px;
+		}
+		.padding-left-12 {
+			padding-left: 12% !important;
+		}
 
-    td {
-      &.name,
-      &.unit,
-      &.quantity,
-      &.revenue {
-        width: 25%;
-      }
-    }
-  }
+		td {
+			&.name,
+			&.unit,
+			&.quantity,
+			&.revenue {
+				width: 25%;
+			}
+		}
+	}
 }

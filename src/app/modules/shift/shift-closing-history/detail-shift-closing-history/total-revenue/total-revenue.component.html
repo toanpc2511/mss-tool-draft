@@ -1,257 +1,249 @@
 <div class="mt-3 card card-custom gutter-b">
-  <div class="revenue-detail">
-    <div class="card-header">
-      <div class="card-title pt-5">
-        <h3 class="title">Tổng doanh thu</h3>
-      </div>
-    </div>
+	<div class="revenue-detail">
+		<div class="card-header">
+			<div class="card-title pt-5">
+				<h3 class="title">Tổng doanh thu</h3>
+			</div>
+		</div>
 
-    <div class="card-body">
-      <div class="table-responsive angular-bootstrap-table">
-        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
-          <thead>
-          <th scope="">Tên sản phẩm</th>
-          <th scope="" class='padding-left-12'>Đơn vị</th>
-          <th scope="" class='text-right'>Số lượng bán</th>
-          <th scope="" class='text-right'>Doanh thu</th>
-          </thead>
+		<div class="card-body">
+			<div class="table-responsive angular-bootstrap-table">
+				<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+					<thead>
+						<th scope="">Tên sản phẩm</th>
+						<th scope="" class="padding-left-12">Đơn vị</th>
+						<th scope="" class="text-right">Số lượng bán</th>
+						<th scope="" class="text-right">Doanh thu</th>
+					</thead>
 
-          <tbody>
-          <tr *ngFor="let item of dataRep?.productRevenueResponses; let i = index">
-            <td class="name">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.productName"
-              >
-                {{ item.productName }}
-              </p>
-            </td>
-            <td class="unit padding-left-12">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.unit"
-              >
-                {{ item.unit }}
-              </p>
-            </td>
-            <td class="quantity text-right">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.totalMoney?.toLocaleString('en-US')"
-              >
-                {{ item.totalMoney?.toLocaleString('en-US') }}
-              </p>
-            </td>
-            <td class="revenue text-right">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.quantityTransaction?.toLocaleString('en-US')"
-              >
-                {{ item.quantityTransaction?.toLocaleString('en-US') }}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td colspan='3'>Tổng doanh thu tạm tính</td>
-            <td class='text-right'>
-              <p
-                class="text-ellipsis"
-                placement="top"
-                [ngbTooltip]="dataRep?.totalProvisionalRevenue?.toLocaleString('en-US')"
-              >
-                {{ dataRep?.totalProvisionalRevenue?.toLocaleString('en-US') }}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td colspan='2' class='line-custom'>Doanh thu từ hạn mức nhiên liệu (tạm tính)</td>
-            <td class='text-right line-custom'>
-              <p
-                class="text-ellipsis"
-                placement="top"
-                [ngbTooltip]="dataRep?.totalLiter?.toLocaleString('en-US')"
-              >
-                {{ dataRep?.totalLiter?.toLocaleString('en-US') }}
-              </p>
-            </td>
-            <td class='text-right line-custom'>
-              <p
-                class="text-ellipsis"
-                placement="top"
-                [ngbTooltip]="dataRep?.provisionalMoneyRevenue?.toLocaleString('en-US')"
-              >
-                {{ dataRep?.provisionalMoneyRevenue?.toLocaleString('en-US') }}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td colspan='3'>Doanh thu từ hạn mức tiền</td>
-            <td class='text-right'>
-              <p
-                class="text-ellipsis"
-                placement="top"
-                [ngbTooltip]="dataRep?.limitMoneyRevenue?.toLocaleString('en-US')"
-              >
-                {{ dataRep?.limitMoneyRevenue?.toLocaleString('en-US') }}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td colspan='3'>Doanh thu từ điểm</td>
-            <td class='text-right'>
-              <p
-                class="text-ellipsis"
-                placement="top"
-                [ngbTooltip]="dataRep?.pointRevenue?.toLocaleString('en-US')"
-              >
-                {{ dataRep?.pointRevenue?.toLocaleString('en-US') }}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td colspan='3'>Doanh thu từ tiền mặt</td>
-            <td class='text-right'>
-              <p
-                class="text-ellipsis"
-                placement="top"
-                [ngbTooltip]="dataRep?.cashMoneyRevenue?.toLocaleString('en-US')"
-              >
-                {{ dataRep?.cashMoneyRevenue?.toLocaleString('en-US') }}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td colspan='3'>Doanh thu từ hàng hóa khác</td>
-            <td class='text-right'>
-              <p
-                class="text-ellipsis"
-                placement="top"
-                [ngbTooltip]="dataRep?.otherProductRevenue?.toLocaleString('en-US')"
-              >
-                {{ dataRep?.otherProductRevenue?.toLocaleString('en-US') }}
-              </p>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+					<tbody>
+						<tr *ngFor="let item of dataRep?.productRevenueResponses; let i = index">
+							<td class="name">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.productName"
+								>
+									{{ item.productName }}
+								</p>
+							</td>
+							<td class="unit padding-left-12">
+								<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.unit">
+									{{ item.unit }}
+								</p>
+							</td>
+							<td class="quantity text-right">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.totalMoney?.toLocaleString('en-US')"
+								>
+									{{ item.totalMoney?.toLocaleString('en-US') }}
+								</p>
+							</td>
+							<td class="revenue text-right">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.quantityTransaction?.toLocaleString('en-US')"
+								>
+									{{ item.quantityTransaction?.toLocaleString('en-US') }}
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">Tổng doanh thu tạm tính</td>
+							<td class="text-right">
+								<p
+									class="text-ellipsis"
+									placement="top"
+									[ngbTooltip]="dataRep?.totalProvisionalRevenue?.toLocaleString('en-US')"
+								>
+									{{ dataRep?.totalProvisionalRevenue?.toLocaleString('en-US') }}
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="line-custom">Doanh thu từ hạn mức nhiên liệu (tạm tính)</td>
+							<td class="text-right line-custom">
+								<p
+									class="text-ellipsis"
+									placement="top"
+									[ngbTooltip]="dataRep?.totalLiter?.toLocaleString('en-US')"
+								>
+									{{ dataRep?.totalLiter?.toLocaleString('en-US') }}
+								</p>
+							</td>
+							<td class="text-right line-custom">
+								<p
+									class="text-ellipsis"
+									placement="top"
+									[ngbTooltip]="dataRep?.provisionalMoneyRevenue?.toLocaleString('en-US')"
+								>
+									{{ dataRep?.provisionalMoneyRevenue?.toLocaleString('en-US') }}
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">Doanh thu từ hạn mức tiền</td>
+							<td class="text-right">
+								<p
+									class="text-ellipsis"
+									placement="top"
+									[ngbTooltip]="dataRep?.limitMoneyRevenue?.toLocaleString('en-US')"
+								>
+									{{ dataRep?.limitMoneyRevenue?.toLocaleString('en-US') }}
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">Doanh thu từ điểm</td>
+							<td class="text-right">
+								<p
+									class="text-ellipsis"
+									placement="top"
+									[ngbTooltip]="dataRep?.pointRevenue?.toLocaleString('en-US')"
+								>
+									{{ dataRep?.pointRevenue?.toLocaleString('en-US') }}
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">Doanh thu từ tiền mặt</td>
+							<td class="text-right">
+								<p
+									class="text-ellipsis"
+									placement="top"
+									[ngbTooltip]="dataRep?.cashMoneyRevenue?.toLocaleString('en-US')"
+								>
+									{{ dataRep?.cashMoneyRevenue?.toLocaleString('en-US') }}
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">Doanh thu từ hàng hóa khác</td>
+							<td class="text-right">
+								<p
+									class="text-ellipsis"
+									placement="top"
+									[ngbTooltip]="dataRep?.otherProductRevenue?.toLocaleString('en-US')"
+								>
+									{{ dataRep?.otherProductRevenue?.toLocaleString('en-US') }}
+								</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="mt-3 card card-custom gutter-b">
-  <div class="revenue-detail">
-    <div class="card-header">
-      <div class="card-title pt-5">
-        <h3 class="title">Tiền mặt thu từ nhân viên</h3>
-      </div>
-    </div>
+	<div class="revenue-detail">
+		<div class="card-header">
+			<div class="card-title pt-5">
+				<h3 class="title">Tiền mặt thu từ nhân viên</h3>
+			</div>
+		</div>
 
-    <div class="card-body">
-      <div class="table-responsive angular-bootstrap-table">
-        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
-          <thead>
-          <th scope="">Nhân viên</th>
-          <th scope="" class='text-right'>Tiền mặt thu được từ nhân viên</th>
-          <th scope="" class='text-right'>Tiền mặt thu từ hàng hóa khác</th>
-          <th scope="" class='text-right'>Tổng tiền thu từ nhân viên</th>
-          </thead>
+		<div class="card-body">
+			<div class="table-responsive angular-bootstrap-table">
+				<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+					<thead>
+						<th scope="">Nhân viên</th>
+						<th scope="" class="text-right">Tiền mặt thu được từ nhân viên</th>
+						<th scope="" class="text-right">Tiền mặt thu từ hàng hóa khác</th>
+						<th scope="" class="text-right">Tổng tiền thu từ nhân viên</th>
+					</thead>
 
-          <tbody>
-          <tr *ngFor="let item of dataRep?.employeeMoneyRevenues; let i = index">
-            <td class="name">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.name"
-              >
-                {{ item.name }}
-              </p>
-            </td>
-            <td class="quantity text-right">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.moneyFromFuel?.toLocaleString('en-US')"
-              >
-                {{ item.moneyFromFuel?.toLocaleString('en-US') || '--' }}
-              </p>
-            </td>
-            <td class="quantity text-right">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.moneyFromOtherProduct?.toLocaleString('en-US')"
-              >
-                {{ item.moneyFromOtherProduct?.toLocaleString('en-US') || '--' }}
-              </p>
-            </td>
-            <td class="revenue text-right">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.totalEmployeeMoney?.toLocaleString('en-US')"
-              >
-                {{ item.totalEmployeeMoney?.toLocaleString('en-US') }}
-              </p>
-            </td>
-          </tr>
-          </tbody>
+					<tbody>
+						<tr *ngFor="let item of dataRep?.employeeMoneyRevenues; let i = index">
+							<td class="name">
+								<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
+									{{ item.name }}
+								</p>
+							</td>
+							<td class="quantity text-right">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.moneyFromFuel?.toLocaleString('en-US')"
+								>
+									{{ item.moneyFromFuel?.toLocaleString('en-US') || '--' }}
+								</p>
+							</td>
+							<td class="quantity text-right">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.moneyFromOtherProduct?.toLocaleString('en-US')"
+								>
+									{{ item.moneyFromOtherProduct?.toLocaleString('en-US') || '--' }}
+								</p>
+							</td>
+							<td class="revenue text-right">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="item.totalEmployeeMoney?.toLocaleString('en-US')"
+								>
+									{{ item.totalEmployeeMoney?.toLocaleString('en-US') }}
+								</p>
+							</td>
+						</tr>
+					</tbody>
 
-          <tfoot>
-          <tr>
-            <td colspan='3' class='text-right'>Tổng</td>
-            <td class="text-right">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="dataRep?.cashMoneyRevenue.toLocaleString('en-US')"
-              >
-                {{ dataRep?.cashMoneyRevenue.toLocaleString('en-US') }}
-              </p>
-            </td>
-          </tr>
-          </tfoot>
-        </table>
-      </div>
+					<tfoot>
+						<tr>
+							<td colspan="3" class="text-right">Tổng</td>
+							<td class="text-right">
+								<p
+									class="cursor-pointer text-ellipsis"
+									placement="top"
+									[ngbTooltip]="dataRep?.cashMoneyRevenue.toLocaleString('en-US')"
+								>
+									{{ dataRep?.cashMoneyRevenue.toLocaleString('en-US') }}
+								</p>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
 
-      <div class="form-group row mt-3">
-        <div class="col-lg-4 d-flex align-items-center">
-          <label class="checkbox checkbox-lg mr-2">
-            <input
-              type="checkbox"
-              id="proceeds"
-              (input)='changeCheckProceed()'
-              [formControl]="proceeds"/>
-            <span (click)="$event.stopPropagation()"></span>
-          </label>
+			<div
+        class="form-group row mt-3"
+        *ngIf='statusLockShift !== "CLOSE"'
+      >
+				<div class="col-lg-4 d-flex align-items-center">
+					<label class="checkbox checkbox-lg mr-2">
+						<input
+							type="checkbox"
+							id="proceeds"
+							(input)="changeCheckProceed()"
+							[formControl]="proceeds"
+						/>
+						<span (click)="$event.stopPropagation()"></span>
+					</label>
 
-          <label class="m-0" for="proceeds">
-            Đã thu tiền từ nhân viên
-          </label>
-        </div>
-      </div>
-    </div>
-  </div>
+					<label class="m-0" for="proceeds"> Đã thu tiền từ nhân viên </label>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <div class="py-5 w-100 d-flex justify-content-center">
-    <button
-      class="m-2 btn btn-primary font-weight-bold"
-      (click)='printReport()'
-    >
-      In báo cáo chốt ca
-    </button>
+	<div class="py-5 w-100 d-flex justify-content-center">
+		<button class="m-2 btn btn-primary font-weight-bold" (click)="printReport()">
+			In báo cáo chốt ca
+		</button>
 
-    <button
-      class="m-2 btn btn-primary font-weight-bold"
-      [disabled]='hideButton'
-      (click)='createModal($event)'
-    >
-      Xác nhận
-    </button>
-  </div>
+		<button
+			class="m-2 btn btn-primary font-weight-bold"
+			[disabled]="hideButton"
+			(click)="createModal($event)"
+      *ngIf='statusLockShift !== "CLOSE"'
+		>
+			Xác nhận
+		</button>
+	</div>
 </div>

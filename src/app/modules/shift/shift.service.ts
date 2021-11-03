@@ -216,36 +216,37 @@ export interface ICalendarEmployeeInfos {
 }
 
 export interface IFuelRevenue {
-	code: string;
-	electronicEnd: number;
-	electronicStart: number;
-	employeeName: string;
-	gaugeEnd: number;
-	gaugeStart: number;
-	id: number;
-	limitMoney: number;
-	lockShiftId: number;
-	productName: string;
-	provisionalMoney: number;
-	quantityElectronic: number;
-	quantityGauge: number;
-	quantityTransaction: number;
-	shiftId: number;
-	shiftName: string;
-	stationId: number;
-	stationName: string;
-	timeEnd: string;
-	timeStart: string;
-	totalCashPaid: number;
-	totalLimitMoney: number;
-	totalLiter: number;
-	totalMoney: number;
-	totalPoint: number;
-	totalPoints: number;
-	totalPrice: number;
-	totalProvisionalMoney: number;
-	cashMoney: number;
-	price: number;
+  code: string;
+  electronicEnd: number;
+  electronicStart: number;
+  employeeName: string;
+  gaugeEnd: number;
+  gaugeStart: number;
+  id: number;
+  limitMoney: number;
+  lockShiftId: number;
+  productName: string;
+  provisionalMoney: number;
+  quantityElectronic: number;
+  quantityGauge: number;
+  quantityTransaction: number;
+  shiftId: number;
+  shiftName: string;
+  stationId: number;
+  stationName: string;
+  timeEnd: string;
+  timeStart: string;
+  totalCashPaid: number;
+  totalLimitMoney: number;
+  totalLiter: number;
+  totalMoney: number;
+  totalPoint: number;
+  totalPoints: number;
+  totalPrice: number;
+  totalProvisionalMoney: number;
+  cashMoney: number;
+  price: number;
+  chip: boolean;
 }
 
 export interface ITotalMoneyRevenue {
@@ -465,6 +466,11 @@ export class ShiftService {
 	getTotalMoneyRevenue(id: number) {
 		return this.http.get<ITotalMoneyRevenue>(`product-revenue/total-money/${id}`);
 	}
+
+  // Xác nhận chốt ca
+  confirmLockShift(dataReq) {
+    return this.http.post('lock-shifts', dataReq);
+  }
 
 	/*
 		Đổi ca/thay ca

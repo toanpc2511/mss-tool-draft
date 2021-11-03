@@ -19,6 +19,7 @@ export class DetailShiftClosingHistoryComponent implements OnInit, AfterViewInit
 	step = 1;
 	lockShiftId: number;
 	statusLockShift: string;
+  stationId: number;
 
 	constructor(
 		private subheader: SubheaderService,
@@ -34,6 +35,7 @@ export class DetailShiftClosingHistoryComponent implements OnInit, AfterViewInit
 			switchMap((queryParams) => {
 				this.lockShiftId = queryParams.lockShiftId;
 				this.statusLockShift = queryParams.statusLockShift;
+        this.stationId = queryParams.stationId;
 				return forkJoin([
 					this.shiftService.getOtherProductRevenue(this.lockShiftId, 1, 20),
 					this.shiftService.getPromotionalRevenue(this.lockShiftId)

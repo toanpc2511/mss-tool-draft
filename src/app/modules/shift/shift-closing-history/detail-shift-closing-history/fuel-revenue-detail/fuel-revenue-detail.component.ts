@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CreateStation } from '../../../../gas-station/gas-station.service';
 import { IFuelRevenue, ShiftService } from '../../../shift.service';
 import { ActivatedRoute } from '@angular/router';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
@@ -10,166 +9,192 @@ import { convertMoney } from '../../../../../shared/helpers/functions';
 import { IError } from '../../../../../shared/models/error.model';
 
 @Component({
-  selector: 'app-fuel-revenue-detail',
-  templateUrl: './fuel-revenue-detail.component.html',
-  styleUrls: ['./fuel-revenue-detail.component.scss'],
-  providers: [DestroyService, FormBuilder]
+	selector: 'app-fuel-revenue-detail',
+	templateUrl: './fuel-revenue-detail.component.html',
+	styleUrls: ['./fuel-revenue-detail.component.scss'],
+	providers: [DestroyService, FormBuilder]
 })
 export class FuelRevenueDetailComponent implements OnInit {
-  @Output() stepSubmitted = new EventEmitter();
-  lockShiftId: number;
-  statusLockShift: string;
-  dataSource: IFuelRevenue[] = [];
-  dataSourceForm: FormArray = new FormArray([]);
-  dataSourceTemp: FormArray = new FormArray([]);
-  dataItem: IFuelRevenue;
+	@Output() stepSubmitted = new EventEmitter();
+	lockShiftId: number;
+	statusLockShift: string;
+	dataSource: IFuelRevenue[] = [];
+	dataSourceForm: FormArray = new FormArray([]);
+	dataSourceTemp: FormArray = new FormArray([]);
+	dataItem: IFuelRevenue;
+	sumCashMoney: number;
 
-  constructor(
-    private shiftService: ShiftService,
-    private activeRoute: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
-    private destroy$: DestroyService,
-    private toastr: ToastrService,
-    private fb: FormBuilder
-  ) {}
+	constructor(
+		private shiftService: ShiftService,
+		private activeRoute: ActivatedRoute,
+		private cdr: ChangeDetectorRef,
+		private destroy$: DestroyService,
+		private toastr: ToastrService,
+		private fb: FormBuilder
+	) {}
 
-  ngOnInit(): void {
-    this.activeRoute.params.subscribe((res)  => {
-      this.lockShiftId = res.lockShiftId;
-    });
+	ngOnInit(): void {
+		this.activeRoute.params.subscribe((res) => {
+			this.lockShiftId = res.lockShiftId;
+		});
 
-    this.activeRoute.queryParams.subscribe((x) => {
-      this.statusLockShift = x.status;
-    })
+		this.activeRoute.queryParams.subscribe((x) => {
+			this.statusLockShift = x.status;
+		});
 
-    this.getFuelProductRevenue();
-  }
+		this.getFuelProductRevenue();
+	}
 
-  getFuelProductRevenue() {
-    this.shiftService.getFuelProductRevenue(this.lockShiftId)
-      .pipe(
-        tap((res) => {
-          if (this.statusLockShift === 'CLOSE') {
-            this.dataSource = res.data;
-            this.cdr.detectChanges();
-          } else  {
-            this.dataSourceForm = this.dataSourceTemp = this.convertToFormArray(res.data);
-            this.dataItem = this.dataSourceForm?.controls[0].value;
-            this.cdr.detectChanges();
-          }
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-  }
+	getFuelProductRevenue() {
+		this.shiftService
+			.getFuelProductRevenue(this.lockShiftId)
+			.pipe(
+				tap((res) => {
+					if (this.statusLockShift === 'CLOSE') {
+						this.dataSource = res.data;
+						this.dataItem = this.dataSource[0];
+						this.cdr.detectChanges();
+					} else {
+						this.dataSourceForm = this.dataSourceTemp = this.convertToFormArray(res.data);
+						this.dataItem = this.dataSourceForm?.controls[0].value;
+						this.cdr.detectChanges();
+					}
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
 
-  convertToFormArray(data): FormArray {
-    const controls = data.map((d: IFuelRevenue) => {
-      return this.fb.group({
-        code: [d.code],
-        electronicEnd: [d.electronicEnd, Validators.required],
-        electronicStart: [d.electronicStart],
-        employeeName: [d.employeeName],
-        gaugeEnd: [d.gaugeEnd, Validators.required],
-        gaugeStart: [d.gaugeStart],
-        id: [d.id],
-        limitMoney: [d.limitMoney],
-        lockShiftId: [d.lockShiftId],
-        productName: [d.productName],
-        provisionalMoney: [d.provisionalMoney],
-        quantityElectronic: [d.quantityElectronic],
-        quantityGauge: [d.quantityGauge],
-        quantityTransaction: [d.quantityTransaction],
-        shiftId: [d.shiftId],
-        shiftName: [d.shiftName],
-        stationId: [d.stationId],
-        stationName: [d.stationName],
-        timeEnd: [d.timeEnd],
-        timeStart: [d.timeStart],
-        totalCashPaid: [d.totalCashPaid],
-        totalLimitMoney: [d.totalLimitMoney],
-        totalLiter: [d.totalLiter],
-        totalMoney: [d.totalMoney],
-        totalPoint: [d.totalPoint],
-        totalPoints: [d.totalPoints],
-        totalPrice: [d.totalPrice],
-        totalProvisionalMoney: [d.totalProvisionalMoney],
-        cashMoney: [d.cashMoney],
-        price: [d.price]
-      });
-    });
-    return this.fb.array(controls);
-  }
+	convertToFormArray(data): FormArray {
+		const controls = data.map((d: IFuelRevenue) => {
+			return this.fb.group({
+				chip: [d.chip],
+				code: [d.code],
+				electronicEnd: [{ value: d.electronicEnd, disabled: d.chip }, Validators.required],
+				electronicStart: [d.electronicStart],
+				employeeName: [d.employeeName],
+				gaugeEnd: [{ value: d.gaugeEnd, disabled: d.chip }, Validators.required],
+				gaugeStart: [d.gaugeStart],
+				id: [d.id],
+				limitMoney: [d.limitMoney],
+				lockShiftId: [d.lockShiftId],
+				productName: [d.productName],
+				provisionalMoney: [d.provisionalMoney],
+				quantityElectronic: [d.quantityElectronic],
+				quantityGauge: [d.quantityGauge],
+				quantityTransaction: [d.quantityTransaction],
+				shiftId: [d.shiftId],
+				shiftName: [d.shiftName],
+				stationId: [d.stationId],
+				stationName: [d.stationName],
+				timeEnd: [d.timeEnd],
+				timeStart: [d.timeStart],
+				totalCashPaid: [d.totalCashPaid],
+				totalLimitMoney: [d.totalLimitMoney],
+				totalLiter: [d.totalLiter],
+				totalMoney: [d.totalMoney],
+				totalPoint: [d.totalPoint],
+				totalPoints: [d.totalPoints],
+				totalPrice: [d.totalPrice],
+				totalProvisionalMoney: [d.totalProvisionalMoney],
+				cashMoney: [d.cashMoney],
+				price: [d.price]
+			});
+		});
+		return this.fb.array(controls);
+	}
 
-  changeValue(index: number, isChip: boolean) {
-    const gaugeStart: number = convertMoney(this.dataSourceForm.at(index).get('gaugeStart').value.toString());
-    const gaugeEnd: number = convertMoney(this.dataSourceForm.at(index).get('gaugeEnd').value.toString());
-    const quantityGauge = gaugeEnd - gaugeStart;
+	changeValue(index: number, isChip: boolean) {
+		const gaugeStart: number = convertMoney(
+			this.dataSourceForm.at(index).get('gaugeStart').value.toString()
+		);
+		const gaugeEnd: number = convertMoney(
+			this.dataSourceForm.at(index).get('gaugeEnd').value.toString()
+		);
+		const quantityGauge = gaugeEnd - gaugeStart;
 
-    const electronicEnd: number = convertMoney(this.dataSourceForm.at(index).get('electronicEnd').value.toString());
-    const electronicStart: number = convertMoney(this.dataSourceForm.at(index).get('electronicStart').value.toString());
-    const quantityElectronic = electronicEnd - electronicStart;
+		const electronicEnd: number = convertMoney(
+			this.dataSourceForm.at(index).get('electronicEnd').value.toString()
+		);
+		const electronicStart: number = convertMoney(
+			this.dataSourceForm.at(index).get('electronicStart').value.toString()
+		);
+		const quantityElectronic = electronicEnd - electronicStart;
 
+		this.dataSourceTemp.at(index).get('quantityGauge').patchValue(quantityGauge);
 
-    this.dataSourceTemp
-      .at(index)
-      .get('quantityGauge')
-      .patchValue(quantityGauge);
+		this.dataSourceTemp.at(index).get('quantityElectronic').patchValue(quantityElectronic);
 
-    this.dataSourceTemp
-      .at(index)
-      .get('quantityElectronic')
-      .patchValue(quantityElectronic);
+		if (!isChip) {
+			const price: number = convertMoney(
+				this.dataSourceForm.at(index).get('price').value.toString()
+			);
+			const totalMoney = price * quantityElectronic;
 
-    if (isChip) {
-      const price: number = convertMoney(this.dataSourceForm.at(index).get('price').value.toString() || '100');
-      this.dataSourceTemp
-        .at(index)
-        .get('quantityTransaction')
-        .patchValue(quantityElectronic);
+			const provisionalMoney: number = convertMoney(
+				this.dataSourceForm.at(index).get('provisionalMoney').value.toString()
+			);
+			11;
+			const limitMoney: number = convertMoney(
+				this.dataSourceForm.at(index).get('limitMoney').value.toString()
+			);
+			12;
+			const totalPoint: number = convertMoney(
+				this.dataSourceForm.at(index).get('totalPoint').value.toString()
+			);
+			14;
+			const cashMoney: number = totalMoney - provisionalMoney - limitMoney - totalPoint;
 
-      this.dataSourceTemp
-        .at(index)
-        .get('totalMoney')
-        .patchValue(price * quantityElectronic);
-    }
-  }
+			this.dataSourceTemp.at(index).get('quantityTransaction').patchValue(quantityElectronic);
 
-  onSubmit() {
-    this.dataSourceForm = this.dataSourceTemp;
-    this.dataSourceForm.markAllAsTouched();
-    if (this.dataSourceForm.invalid) {
-      return null;
-    }
+			this.dataSourceTemp.at(index).get('totalMoney').patchValue(totalMoney);
 
-    const dataReq = {
-      lockShiftId: this.lockShiftId,
-      request: this.dataSourceForm.value.map((d) => ({
-        code: d.code,
-        gaugeEnd: convertMoney(d.gaugeEnd.toString()),
-        electronicEnd: convertMoney(d.electronicEnd.toString())
-      }))
-    }
+			this.dataSourceTemp.at(index).get('cashMoney').patchValue(cashMoney);
 
-    this.shiftService.updateFuelProductRevenue(this.lockShiftId, dataReq)
-      .subscribe(
-        (res) => {
-          this.checkRes(res);
-        },
-        (error: IError) => this.checkError(error)
-      )
+			this.sumCashMoney = 0;
+			for (let i = 0; i < this.dataSourceForm.value.length; i++) {
+				this.sumCashMoney += this.dataSourceForm.value[i].cashMoney;
+			}
+		}
+	}
+
+	onSubmit() {
+		this.dataSourceForm = this.dataSourceTemp;
+		this.dataSourceForm.markAllAsTouched();
+		if (this.dataSourceForm.invalid) {
+			return null;
+		}
+
+		const dataReq = this.dataSourceForm.value.map((d) => ({
+			code: d.code,
+			gaugeEnd: convertMoney(d.gaugeEnd.toString()),
+			electronicEnd: convertMoney(d.electronicEnd.toString())
+		}));
+
+		this.shiftService.updateFuelProductRevenue(this.lockShiftId, dataReq).subscribe(
+			(res) => {
+				this.checkRes(res);
+			},
+			(error: IError) => this.checkError(error)
+		);
+	}
+
+  nextStep() {
+    this.shiftService.setCurrentStep(2);
+    this.stepSubmitted.emit();
   }
 
   checkRes(res) {
     if (res.data) {
       this.toastr.success('Lưu thông tin thành công');
-      this.shiftService.setCurrentStep(1);
+      this.shiftService.setCurrentStep(2);
       this.stepSubmitted.emit();
     }
   }
 
-  checkError(error: IError) {
-    this.toastr.error(error.code);
-  }
-
+	checkError(error: IError) {
+		if (error.code === 'SUN-OIL-4894') {
+			this.toastr.error('Không tồn tại ca cần chốt.');
+		}
+	}
 }
