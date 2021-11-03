@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IPromotionalRevenue, ShiftService } from '../../../shift.service';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -15,6 +15,7 @@ import { IError } from '../../../../../shared/models/error.model';
   providers: [DestroyService]
 })
 export class PromotionDetailComponent implements OnInit {
+  @Output() stepSubmitted = new EventEmitter();
   lockShiftId: number;
   dataSourceForm: FormArray = new FormArray([]);
   dataSourceTemp: FormArray = new FormArray([]);
@@ -123,6 +124,8 @@ export class PromotionDetailComponent implements OnInit {
   checkRes(res) {
     if (res.data) {
       this.toastr.success('Lưu thông tin thành công');
+      this.shiftService.setCurrentStep(3);
+      this.stepSubmitted.emit();
     }
   }
 

@@ -17,7 +17,6 @@ import { IError } from '../../../../../shared/models/error.model';
 })
 export class FuelRevenueDetailComponent implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
-  @Input() step1Data: CreateStation;
   lockShiftId: number;
   statusLockShift: string;
   dataSource: IFuelRevenue[] = [];
@@ -164,6 +163,8 @@ export class FuelRevenueDetailComponent implements OnInit {
   checkRes(res) {
     if (res.data) {
       this.toastr.success('Lưu thông tin thành công');
+      this.shiftService.setCurrentStep(1);
+      this.stepSubmitted.emit();
     }
   }
 
