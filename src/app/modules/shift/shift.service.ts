@@ -126,7 +126,7 @@ export interface IDataEventCalendar {
 
 export interface IShiftRequestChange {
 	id: string;
-	employeeCodeFrom: string;
+	codeEmployeeFrom: string;
 	employeeNameFrom: string;
 	employeeNameTo: string;
 	type: EShiftChangRequestType;
