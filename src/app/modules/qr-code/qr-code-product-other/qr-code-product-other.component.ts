@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { LIST_STATUS } from 'src/app/shared/data-enum/list-status';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +16,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./qr-code-product-other.component.scss'],
   providers: [DestroyService]
 })
-export class QrCodeProductOtherComponent implements OnInit {
+export class QrCodeProductOtherComponent extends BaseComponent implements OnInit {
   dataRes;
   listStatus = LIST_STATUS;
   nameProduct: string;
@@ -31,6 +32,7 @@ export class QrCodeProductOtherComponent implements OnInit {
     private qrCodeService: QrCodeService,
     private fileService: FileService,
   ) {
+    super();
     this.init();
   }
 

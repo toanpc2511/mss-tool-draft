@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +18,7 @@ import { SubheaderService } from 'src/app/_metronic/partials/layout';
   styleUrls: ['./details-contract.component.scss'],
   providers: [DestroyService]
 })
-export class DetailsContractComponent implements OnInit, AfterViewInit {
+export class DetailsContractComponent extends BaseComponent implements OnInit, AfterViewInit {
   eContractStatus = EContractStatus;
   data;
   dataDetail;
@@ -34,6 +35,7 @@ export class DetailsContractComponent implements OnInit, AfterViewInit {
     private activeRoute: ActivatedRoute,
     private subheader: SubheaderService,
   ) {
+    super();
   }
 
   setBreadcumb() {

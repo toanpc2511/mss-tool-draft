@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -21,7 +22,7 @@ import { ISortData, IUser, UserService } from '../user.service';
 	styleUrls: ['./list-user.component.scss'],
 	providers: [DestroyService]
 })
-export class ListUserComponent implements OnInit {
+export class ListUserComponent extends BaseComponent implements OnInit {
 	searchFormControl: FormControl = new FormControl();
 	sortData: ISortData;
 	status = LIST_STATUS;
@@ -35,6 +36,7 @@ export class ListUserComponent implements OnInit {
 		private modalService: NgbModal,
 		private toastr: ToastrService
 	) {
+		super();
 		this.init();
 	}
 

@@ -351,10 +351,10 @@
     <button *ngIf='data?.status !== "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="goToListContract()">
       Quay lại
     </button>
-    <button *ngIf='data?.status === "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="refuseContract($event, data)">
+    <button *ngIf='data?.status === "WAITING_ACCEPT" && (eAuthorize.REJECT_CONTRACT_BUTTION|canUseFeature)' type="button" class="btn btn-outline-primary mr-3" (click)="refuseContract($event, data)">
       Từ chối
     </button>
-    <button *ngIf='data?.status === "WAITING_ACCEPT"' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
+    <button *ngIf='data?.status === "WAITING_ACCEPT" && (eAuthorize.ACCEPT_CONTRACT_BUTTON|canUseFeature)' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
       Phê duyệt
     </button>
 	</div>

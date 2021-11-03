@@ -139,6 +139,7 @@
           <td class="action text-center">
             <a
               class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              *ngIf="eAuthorize.DOWNLOAD_PRODUCT_QR_BUTTON|canUseFeature"
             >
 								<span
                   [inlineSVG]="'./assets/media/svg/icons/Files/Download.svg'"

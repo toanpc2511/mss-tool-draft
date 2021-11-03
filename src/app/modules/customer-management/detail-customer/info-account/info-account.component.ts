@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
 	LIST_STATUS_CUSTOMER,
@@ -24,7 +25,7 @@ import { ToastrService } from 'ngx-toastr';
 	templateUrl: './info-account.component.html',
 	styleUrls: ['./info-account.component.scss']
 })
-export class InfoAccountComponent implements OnInit {
+export class InfoAccountComponent extends BaseComponent implements OnInit {
 	isReadonly: boolean;
 	numberPhone: string;
 
@@ -46,6 +47,7 @@ export class InfoAccountComponent implements OnInit {
 		private destroy$: DestroyService,
 		private toastr: ToastrService
 	) {
+		super();
 		this.isReadonly = true;
 		this.btnSubmit = true;
 	}
