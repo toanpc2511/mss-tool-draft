@@ -579,11 +579,6 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 					this.currentGasStationId
 				);
 			}
-
-			//Reopen popoper when dialog close
-			if (eventContainer) {
-				eventContainer.instance.popover.open({ event: $event });
-			}
 		});
 	}
 

@@ -85,7 +85,7 @@ export class ShiftChangeDetailPipe implements PipeTransform {
 				})
 				.join(', ')
 				?.replace(' ,', ',');
-			return `(${shiftChangeText})`;
+			return ` (${shiftChangeText})`;
 		}
 		return '';
 	}
