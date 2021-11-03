@@ -250,7 +250,6 @@ export class ShiftWorkConfigModalComponent implements OnInit {
 					endMinute: Number(shiftConfigData.endMinute),
 					offTimes: shiftConfigData.offTimes
 				};
-				console.log(req);
 				if (!this.data.shiftConfig) {
 					this.shiftService.createShiftConfig(req).subscribe(
 						() => {

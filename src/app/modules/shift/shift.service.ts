@@ -259,6 +259,7 @@ export interface IFuelRevenue {
   totalProvisionalMoney: number;
   cashMoney: number;
   price: number;
+  chip: boolean;
 }
 
 export interface ITotalMoneyRevenue {
@@ -484,6 +485,11 @@ export class ShiftService {
   // Lấy danh sách tổng tiền mặt
   getTotalMoneyRevenue(id: number) {
     return this.http.get<ITotalMoneyRevenue>(`product-revenue/total-money/${id}`);
+  }
+
+  // Xác nhận chốt ca
+  confirmLockShift(dataReq) {
+    return this.http.post('lock-shifts', dataReq);
   }
 
 	/*
