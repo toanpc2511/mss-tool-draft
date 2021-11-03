@@ -109,7 +109,7 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 		if (error.code === 'SUN-OIL-4893' || error.code === 'SUN-OIL-4909') {
 			this.toastr.error('Lịch/ca làm việc không tồn tại');
 		} else if(error.code === 'SUN-OIL-4901') {
-			this.toastr.error(`${this.shiftChangeRequestData.codeEmployeeFrom} - ${this.shiftChangeRequestData.employeeNameFrom} đã tạo yêu cầu thay ca/đổi ca quá 5 lần/tháng`)
+			this.toastr.error(`${this.shiftChangeRequestData.employeeCodeFrom} - ${this.shiftChangeRequestData.employeeNameFrom} đã tạo yêu cầu thay ca/đổi ca quá 5 lần/tháng`)
 		} else {
 			this.toastr.error(`${error.code} - ${error.message}`);
 		}

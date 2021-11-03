@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IPromotionalRevenue, ShiftService } from '../../../shift.service';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -15,11 +15,12 @@ import { IError } from '../../../../../shared/models/error.model';
 	providers: [DestroyService]
 })
 export class PromotionDetailComponent implements OnInit {
-	lockShiftId: number;
-	dataSourceForm: FormArray = new FormArray([]);
-	dataSourceTemp: FormArray = new FormArray([]);
-	statusLockShift: string;
-	dataSource: IPromotionalRevenue[] = [];
+  @Output() stepSubmitted = new EventEmitter();
+  lockShiftId: number;
+  dataSourceForm: FormArray = new FormArray([]);
+  dataSourceTemp: FormArray = new FormArray([]);
+  statusLockShift: string;
+  dataSource: IPromotionalRevenue[] = [];
 
 	constructor(
 		private shiftService: ShiftService,
@@ -125,11 +126,18 @@ export class PromotionDetailComponent implements OnInit {
 		);
 	}
 
-	checkRes(res) {
-		if (res.data) {
-			this.toastr.success('Lưu thông tin thành công');
-		}
-	}
+  nextStep() {
+    this.shiftService.setCurrentStep(4);
+    this.stepSubmitted.emit();
+  }
+
+  checkRes(res) {
+    if (res.data) {
+      this.toastr.success('Lưu thông tin thành công');
+      this.shiftService.setCurrentStep(4);
+      this.stepSubmitted.emit();
+    }
+  }
 
 	checkError(error: IError) {
 		if (error.code === 'SUN-OIL-4761') {

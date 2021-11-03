@@ -7,8 +7,9 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntil, tap } from 'rxjs/operators';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ITotalMoneyRevenue, ShiftService } from '../../../shift.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
 	selector: 'app-total-revenue',
@@ -22,6 +23,7 @@ export class TotalRevenueComponent implements OnInit {
 	stationId: number;
 	lockShiftId: number;
 	dataRep: ITotalMoneyRevenue;
+  statusLockShift: string;
 
 	constructor(
 		private modalService: NgbModal,
@@ -43,6 +45,10 @@ export class TotalRevenueComponent implements OnInit {
 		this.activeRoute.queryParams.subscribe((x) => {
 			this.stationId = x.stationId;
 		});
+
+    this.activeRoute.queryParams.subscribe((x) => {
+      this.statusLockShift = x.status;
+    });
 		this.getTotalMoneyRevenue();
 	}
 

@@ -5,10 +5,9 @@
 				<div class="wizard-nav mb-1 mb-lg-5">
 					<div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
 						<a
-							[class.can-active]="stepData$ | async | canActiveStep: 1"
-							[class.active]="(stepData$ | async).currentStep === 1"
+							[class.active]="step === 1"
 							(click)="gotoStep(1)"
-							class="wizard-step"
+							class="wizard-step can-active"
 							href="javascript:;"
 						>
 							<div class="wizard-label">
@@ -18,8 +17,8 @@
 						</a>
 						<a
 							(click)="gotoStep(2)"
-							[class.can-active]="stepData$ | async | canActiveStep: 2"
-							[class.active]="(stepData$ | async).currentStep === 2"
+							[class.can-active]="currentStep$ | async | canActiveStep: 2"
+							[class.active]="step === 2"
 							class="wizard-step"
 							href="javascript:;"
 						>
@@ -30,8 +29,8 @@
 						</a>
 						<a
 							(click)="gotoStep(3)"
-							[class.can-active]="stepData$ | async | canActiveStep: 3"
-							[class.active]="(stepData$ | async).currentStep === 3"
+							[class.can-active]="currentStep$ | async | canActiveStep: 3"
+							[class.active]="step === 3"
 							class="wizard-step"
 							href="javascript:;"
 						>
@@ -42,8 +41,8 @@
 						</a>
 						<a
 							(click)="gotoStep(4)"
-							[class.can-active]="stepData$ | async | canActiveStep: 4"
-							[class.active]="(stepData$ | async).currentStep === 4"
+							[class.can-active]="currentStep$ | async | canActiveStep: 4"
+							[class.active]="step === 4"
 							class="wizard-step"
 							href="javascript:;"
 						>
@@ -59,15 +58,18 @@
 			<div class="row justify-content-center w-100">
 				<div class="col-xl-12">
 					<app-fuel-revenue-detail
-						*ngIf="(stepData$ | async).currentStep === 1"
+						(stepSubmitted)="gotoStep(2)"
+						*ngIf="step === 1"
 					></app-fuel-revenue-detail>
 					<app-other-revenue-detail
-						*ngIf="(stepData$ | async).currentStep === 2"
+						(stepSubmitted)="gotoStep(3)"
+						*ngIf="step === 2"
 					></app-other-revenue-detail>
 					<app-promotion-detail
-						*ngIf="(stepData$ | async).currentStep === 3"
+						(stepSubmitted)="gotoStep(4)"
+						*ngIf="step === 3"
 					></app-promotion-detail>
-					<app-total-revenue *ngIf="(stepData$ | async).currentStep === 4"></app-total-revenue>
+					<app-total-revenue *ngIf="step === 4"></app-total-revenue>
 				</div>
 			</div>
 		</div>

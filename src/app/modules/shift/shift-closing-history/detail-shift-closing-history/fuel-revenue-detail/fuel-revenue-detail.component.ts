@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CreateStation } from '../../../../gas-station/gas-station.service';
 import { IFuelRevenue, ShiftService } from '../../../shift.service';
 import { ActivatedRoute } from '@angular/router';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
@@ -17,7 +16,6 @@ import { IError } from '../../../../../shared/models/error.model';
 })
 export class FuelRevenueDetailComponent implements OnInit {
 	@Output() stepSubmitted = new EventEmitter();
-	@Input() step1Data: CreateStation;
 	lockShiftId: number;
 	statusLockShift: string;
 	dataSource: IFuelRevenue[] = [];
@@ -181,11 +179,18 @@ export class FuelRevenueDetailComponent implements OnInit {
 		);
 	}
 
-	checkRes(res) {
-		if (res.data) {
-			this.toastr.success('Lưu thông tin thành công');
-		}
-	}
+  nextStep() {
+    this.shiftService.setCurrentStep(2);
+    this.stepSubmitted.emit();
+  }
+
+  checkRes(res) {
+    if (res.data) {
+      this.toastr.success('Lưu thông tin thành công');
+      this.shiftService.setCurrentStep(2);
+      this.stepSubmitted.emit();
+    }
+  }
 
 	checkError(error: IError) {
 		if (error.code === 'SUN-OIL-4894') {

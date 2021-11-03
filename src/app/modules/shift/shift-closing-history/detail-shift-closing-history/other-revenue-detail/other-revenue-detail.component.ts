@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IOtherRevenue, ShiftService } from '../../../shift.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
@@ -16,12 +16,13 @@ import { IPaginatorState, PaginatorState } from '../../../../../_metronic/shared
 	providers: [FormBuilder, DestroyService]
 })
 export class OtherRevenueDetailComponent implements OnInit {
-	lockShiftId: number;
-	dataSourceForm: FormArray = new FormArray([]);
-	dataSourceTemp: FormArray = new FormArray([]);
-	paginatorState = new PaginatorState();
-	statusLockShift: string;
-	dataSource;
+  @Output() stepSubmitted = new EventEmitter();
+  lockShiftId: number;
+  dataSourceForm: FormArray = new FormArray([]);
+  dataSourceTemp: FormArray = new FormArray([]);
+  paginatorState = new PaginatorState();
+  statusLockShift: string;
+  dataSource
 
 	constructor(
 		private shiftService: ShiftService,
@@ -140,11 +141,18 @@ export class OtherRevenueDetailComponent implements OnInit {
 		);
 	}
 
-	checkRes(res) {
-		if (res.data) {
-			this.toastr.success('Lưu thông tin thành công');
-		}
-	}
+  nextStep() {
+    this.shiftService.setCurrentStep(3);
+    this.stepSubmitted.emit();
+  }
+
+  checkRes(res) {
+    if (res.data) {
+      this.toastr.success('Lưu thông tin thành công');
+      this.shiftService.setCurrentStep(3);
+      this.stepSubmitted.emit();
+    }
+  }
 
 	checkError(error: IError) {
 		if (error.code === 'SUN-OIL-4761') {

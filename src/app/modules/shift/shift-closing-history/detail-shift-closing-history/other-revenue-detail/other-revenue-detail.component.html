@@ -203,7 +203,13 @@
 	</div>
 
 	<div class="py-5 w-100 d-flex justify-content-center">
-		<button class="m-2 btn btn-primary font-weight-bold">Tiếp theo</button>
+		<button
+      *ngIf='statusLockShift === "CLOSE"'
+      class="m-2 btn btn-primary font-weight-bold"
+      (click)='nextStep()'
+    >
+      Tiếp theo
+    </button>
 
 		<button
 			*ngIf='statusLockShift !== "CLOSE"'
