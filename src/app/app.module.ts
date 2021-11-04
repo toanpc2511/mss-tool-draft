@@ -11,7 +11,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
-import { finalize } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/services/auth.service';
@@ -31,11 +31,21 @@ import { DevModule } from './modules/dev/dev.module';
 registerLocaleData(localeVi, 'vi', localeViExtra);
 
 function appInitializer(authService: AuthService, router: Router) {
-  return () => {
-    return new Promise((resolve) => {
-      authService.getLoggedUser().subscribe().add(resolve);
-    });
-  };
+	return () => {
+		return new Promise((resolve) => {
+			authService
+				.getLoggedUser()
+				.pipe(
+					tap((currentUser) => {
+						if (!currentUser) {
+							authService.clearData();
+						}
+						resolve(true);
+					})
+				)
+				.subscribe();
+		});
+	};
 }
 
 @NgModule({
