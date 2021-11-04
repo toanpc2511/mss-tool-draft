@@ -14,21 +14,32 @@ export enum UserStatus {
 	LOCK = 'LOCK'
 }
 export interface UserModel {
-	driverAuth: {
-		createdAt: string;
-		updatedAt: string;
-		profile: {
-			id: 1;
-			name: string;
-			address: string;
-			avatar: string;
-		};
-		phone: string;
-		driverId: string;
-		role: string;
-		type: string;
-	};
-	token: string;
+  driverAuth: {
+    createdAt: string;
+    updatedAt: string;
+    profile: IProfile;
+    phone: string;
+    driverId: string;
+    role: string;
+    type: string;
+  };
+  token: string;
+}
+
+export interface IProfile {
+  name: string;
+  dateOfBirth: string;
+  idCard: string;
+  address: string;
+  avatar: [
+    {
+      face: string;
+      id: number;
+      name: string;
+      type: string;
+      url: string;
+    }
+  ]
 }
 
 @Injectable({
@@ -76,15 +87,19 @@ export class AuthService {
 		this.currentUserSubject.next(user);
 	}
 
-	login(username: string, password: string) {
-		this.setIsLoadingValue(true);
-		return this.http
-			.post<UserModel>('accounts/login', {
-				phone: username,
-				password
-			})
-			.pipe(finalize(() => this.setIsLoadingValue(false)));
-	}
+  getProfile() {
+    return this.http.get('profiles/infos');
+  }
+
+  login(username: string, password: string) {
+    this.setIsLoadingValue(true);
+    return this.http
+      .post<UserModel>('accounts/login', {
+        phone: username,
+        password
+      })
+      .pipe(finalize(() => this.setIsLoadingValue(false)));
+  }
 
 	logout() {
 		return this.http.post(`auth/logout`, {}).pipe(finalize(() => this.clearData()));
