@@ -15,7 +15,7 @@
 					[formControl]="searchFormControl"
 				/>
 			</div>
-			<button type="button" class="btn btn-primary" (click)="createModal()">Thêm mới</button>
+			<button type="button" class="btn btn-primary" (click)="createModal()" *ngIf="eAuthorize.CREATE_PROMOTION_BUTTON|canUseFeature">Thêm mới</button>
 		</div>
 	</div>
 	<div class="card-body">
@@ -80,6 +80,7 @@
 							<a
 								(click)="createModal($event, item)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								*ngIf="eAuthorize.UPDATE_PROMOTION_BUTTON|canUseFeature"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -92,6 +93,7 @@
 							<a
 								(click)="deleteConfig($event, item)"
 								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+								*ngIf="eAuthorize.DELETE_PROMOTION_BUTTON|canUseFeature"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"

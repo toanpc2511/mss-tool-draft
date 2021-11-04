@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -37,7 +38,8 @@ import { PromotionConfigModalComponent } from './promotion-config-modal/promotio
     ReactiveFormsModule,
     InputTrimModule,
     DirectivesModule,
-    PipesModule
+    PipesModule,
+    AuthModule
   ]
 })
 export class ConfigurationManagementModule {}
