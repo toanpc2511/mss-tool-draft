@@ -22,10 +22,29 @@ export interface UserModel {
 		status: UserStatus;
 		updatedAt: Date;
 		username: string;
+    profile: IProfile;
 	};
 	actions: string[];
 	changePassword: boolean;
 	token: string;
+}
+
+export interface IProfile {
+  name: string;
+  dateOfBirth: string;
+  idCard: string;
+  address: string;
+  phone: string;
+  code: string;
+  email: string;
+  avatar:
+    {
+      face: string;
+      id: number;
+      name: string;
+      type: string;
+      url: string;
+    }
 }
 
 @Injectable({
@@ -107,6 +126,10 @@ export class AuthService {
 			queryParams: {}
 		});
 	}
+
+  getProfileInfo() {
+    return this.http.get('profiles');
+  }
 
 	canUseFeature(featurePermissionKey: EAuthorize) {
 		const actions = this.currentUserSubject.value?.actions || [];
