@@ -129,7 +129,7 @@
 			>
 				Hủy
 			</button>
-			<button type="button" class="btn btn-primary btn-dialog" (click)="onSubmit()">Lưu</button>
+			<button type="button" class="btn btn-primary btn-dialog" (click)="onSubmit()" *ngIf="eAuthorize.UPDATE_DISCOUNT_BUTTON|canUseFeature">Lưu</button>
 		</div>
 	</div>
 </div>

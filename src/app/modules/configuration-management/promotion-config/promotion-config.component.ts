@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FilterField, SortState } from '../../../_metronic/shared/crud-table';
@@ -24,7 +25,7 @@ import {
 	styleUrls: ['./promotion-config.component.scss'],
 	providers: [SortService, FilterService, DestroyService]
 })
-export class PromotionConfigComponent implements OnInit {
+export class PromotionConfigComponent extends BaseComponent implements OnInit {
 	searchFormControl: FormControl;
 	dataSource: Array<IConfigPromotion>;
 	dataSourceTemp: Array<IConfigPromotion>;
@@ -46,6 +47,7 @@ export class PromotionConfigComponent implements OnInit {
 		private modalService: NgbModal,
 		private toastr: ToastrService
 	) {
+		super();
 		this.dataSource = this.dataSourceTemp = [];
 		this.sorting = sortService.sorting;
 		this.filterField = new FilterField({

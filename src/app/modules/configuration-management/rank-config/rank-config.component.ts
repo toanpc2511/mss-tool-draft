@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 	styleUrls: ['./rank-config.component.scss'],
 	providers: [DestroyService, FormBuilder]
 })
-export class RankConfigComponent implements OnInit {
+export class RankConfigComponent extends BaseComponent implements OnInit {
 	permissionForm: FormGroup;
 	moduleAccordion: NgbAccordion;
 	groupAccordions: Array<NgbAccordion>;
@@ -29,7 +30,9 @@ export class RankConfigComponent implements OnInit {
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private toastr: ToastrService
-	) {}
+	) {
+		super();
+	}
 
 	ngOnInit(): void {
 		this.getListRank();
