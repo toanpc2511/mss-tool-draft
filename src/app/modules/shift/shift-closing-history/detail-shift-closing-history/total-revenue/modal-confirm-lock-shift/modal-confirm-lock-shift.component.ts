@@ -117,7 +117,8 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 					shiftId: Number(this.confirmForm.get('shiftId').value),
 					stationId: Number(this.data.stationId),
 					oldShiftEmployee: this.data.listEmployee,
-					newShiftEmployee: this.dataSource.value
+					newShiftEmployee: this.dataSource.value,
+          calendarId: ''
 				};
 
 				this.shiftService.confirmLockShift(dataReq).subscribe((res) => {

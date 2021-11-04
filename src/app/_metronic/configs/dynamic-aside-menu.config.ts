@@ -217,6 +217,14 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			page: '/lich-su-giao-dich/danh-sach',
 			icon: 'fas fa-history',
 			permissionKey: EAuthorize.VIEW_TRANSACTION_HISTORY_MENU
-		}
+		},
+    {
+      title: 'Lịch sử sử dụng điểm',
+      root: true,
+      bullet: 'dot',
+      page: '/lich-su-su-dung-diem/danh-sach',
+      icon: 'fas fa-business-time',
+      permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
+    }
 	]
 };
