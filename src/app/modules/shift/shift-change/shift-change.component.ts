@@ -69,7 +69,7 @@ export class ShiftChangeComponent implements OnInit {
 	ngOnInit(): void {
 		this.searchFormGroup = this.fb.group({
 			type: [''],
-			status: [''],
+			status: [this.eShiftChangRequestStatus.WAITING],
 			searchText: ['']
 		});
 
