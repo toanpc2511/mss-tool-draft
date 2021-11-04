@@ -205,11 +205,11 @@ export interface ICalendarEmployeeInfos {
 	stationAddress: string;
 	stationId: number;
 	stationName: string;
-	background_color: string;
-	calendar_id: number;
+	backgroundColor: string;
+	calendarId: number;
 	checked: boolean;
-	employee_id: number;
-	employee_name: string;
+	employeeId: number;
+	employeeName: string;
 	end: string;
 	offTimes: [IOffTimes];
 	pumpPoleResponses: [IPumpPole];

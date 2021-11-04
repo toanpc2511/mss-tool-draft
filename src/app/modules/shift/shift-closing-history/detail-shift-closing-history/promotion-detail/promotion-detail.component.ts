@@ -32,13 +32,12 @@ export class PromotionDetailComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		this.activeRoute.params.subscribe((res) => {
-			this.lockShiftId = res.lockShiftId;
-		});
-
-		this.activeRoute.queryParams.subscribe((x) => {
-			this.statusLockShift = x.status;
-		});
+    this.activeRoute.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((queryParams) => {
+        this.lockShiftId = queryParams.lockShiftId;
+        this.statusLockShift = queryParams.status;
+      })
 
 		this.shiftService
 			.getPromotionalRevenue(this.lockShiftId)

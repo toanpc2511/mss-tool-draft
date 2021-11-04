@@ -1,15 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
-	IDataTransfer,
 	ModalConfirmLockShiftComponent
 } from './modal-confirm-lock-shift/modal-confirm-lock-shift.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { ITotalMoneyRevenue, ShiftService } from '../../../shift.service';
-import { forkJoin } from 'rxjs';
 
 @Component({
 	selector: 'app-total-revenue',
@@ -38,17 +36,14 @@ export class TotalRevenueComponent implements OnInit {
 	ngOnInit(): void {
 		this.proceeds.setValue(false);
 
-		this.activeRoute.params.subscribe((res) => {
-			this.lockShiftId = res.lockShiftId;
-		});
+    this.activeRoute.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((queryParams) => {
+        this.lockShiftId = queryParams.lockShiftId;
+        this.stationId = queryParams.stationId;
+        this.statusLockShift = queryParams.status;
+      })
 
-		this.activeRoute.queryParams.subscribe((x) => {
-			this.stationId = x.stationId;
-		});
-
-    this.activeRoute.queryParams.subscribe((x) => {
-      this.statusLockShift = x.status;
-    });
 		this.getTotalMoneyRevenue();
 	}
 
