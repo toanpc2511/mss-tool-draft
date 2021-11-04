@@ -81,7 +81,7 @@
 			<button type="button" class="btn btn-outline-secondary btn-dialog mr-6" (click)="cancel()">
 				Hủy
 			</button>
-			<button type="button" class="btn btn-primary btn-dialog" (click)="onSubmit()">Lưu</button>
+			<button type="button" class="btn btn-primary btn-dialog" (click)="onSubmit()" *ngIf="eAuthorize.UPDATE_RANK_BUTTON|canUseFeature">Lưu</button>
 		</div>
 	</div>
 </div>

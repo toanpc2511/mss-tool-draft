@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { AuthService } from '../services/auth.service';
+import { AuthService, UserModel } from '../services/auth.service';
 
 @Component({
 	selector: 'app-login',
@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
 	returnUrl: string;
 	isLoading$: Observable<boolean>;
 	isShowPasswordStatus = false;
+  profileInfo;
 
 	constructor(
 		private fb: FormBuilder,
@@ -74,7 +75,8 @@ export class LoginComponent implements OnInit {
 			.subscribe(
 				(res) => {
 					if (res.data) {
-						this.authService.setCurrentUserValue(res.data);
+            this.authService.setCurrentUserValue(res.data);
+            this.getProfileInfo(res.data);
 						if (!res.data.changePassword) {
 							this.router.navigate([this.returnUrl]);
 						} else {
@@ -89,6 +91,27 @@ export class LoginComponent implements OnInit {
 				}
 			);
 	}
+
+  getProfileInfo(dataUser: UserModel) {
+    this.authService.getProfileInfo()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.profileInfo = res.data;
+
+        dataUser.accountAuth.profile = {
+          name: this.profileInfo.name,
+          dateOfBirth: this.profileInfo.dateOfBirth,
+          idCard: this.profileInfo.idCard,
+          address: this.profileInfo.address,
+          avatar: this.profileInfo.avatar,
+          phone: this.profileInfo.phone,
+          code: this.profileInfo.code,
+          email: this.profileInfo.email
+        };
+
+        this.authService.setCurrentUserValue(dataUser);
+      })
+  }
 
 	changeShowPasswordStatus() {
 		this.isShowPasswordStatus = !this.isShowPasswordStatus;

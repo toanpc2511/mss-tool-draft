@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { ConfigurationManagementService, IRankStock } from '../configuration-management.service';
@@ -17,7 +18,7 @@ import { convertMoney } from '../../../shared/helpers/functions';
 	styleUrls: ['./points-config.component.scss'],
 	providers: [DestroyService, SortService, FilterService]
 })
-export class PointsConfigComponent implements OnInit {
+export class PointsConfigComponent extends BaseComponent implements OnInit {
 	searchFormControl = new FormControl();
 	dataSource: FormArray = new FormArray([]);
 	dataSourceTemp: FormArray = new FormArray([]);
@@ -38,6 +39,7 @@ export class PointsConfigComponent implements OnInit {
 		private toastr: ToastrService,
 		private destroy$: DestroyService
 	) {
+		super();
 		this.sorting = sortService.sorting;
 	}
 
