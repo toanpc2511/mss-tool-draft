@@ -16,7 +16,7 @@
             autocomplete="off"
             maxlength="199"
             trim="blur"
-            formControlName='code'
+            formControlName='orderCode'
             (keydown.space)="$event.preventDefault()"
           />
         </div>
@@ -43,7 +43,7 @@
             autocomplete="off"
             maxlength="199"
             trim="blur"
-            formControlName='employeeName'
+            formControlName='userName'
           />
         </div>
       </div>
@@ -95,7 +95,7 @@
 
         <div class="col-lg-4">
           <label>Hình thức thanh toán</label>
-          <select class="form-control form-control-solid" formControlName="payMethod">
+          <select class="form-control form-control-solid" formControlName="paymentMethod">
             <option [value]="''">Tất cả</option>
             <option *ngFor="let item of paymentMethods" [value]="item.code">{{ item.name }}</option>
           </select>
@@ -113,7 +113,7 @@
 
         <div class="col-lg-4">
           <label>Loại nhiên liệu</label>
-          <select class="form-control form-control-solid" formControlName="product">
+          <select class="form-control form-control-solid" formControlName="productName">
             <option [value]="''">Tất cả</option>
             <option *ngFor="let item of dataProduct" [value]="item.name">{{item.name}}</option>
           </select>

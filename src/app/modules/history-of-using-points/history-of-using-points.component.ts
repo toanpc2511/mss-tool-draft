@@ -2,13 +2,19 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProduct, ProductService } from '../product/product.service';
-import { IPaymentMethod, IStationEployee } from '../transaction/transaction.service';
 import { DestroyService } from '../../shared/services/destroy.service';
 import { FileService } from '../../shared/services/file.service';
 import * as moment from 'moment';
 import { IPaginatorState, PaginatorState } from '../../_metronic/shared/crud-table';
 import { takeUntil } from 'rxjs/operators';
-import { HistoryUsingPointsService } from './history-of-using-points.service';
+import {
+  HistoryUsingPointsService,
+  IFilterUsingPoint,
+  IPaymentMethod,
+  IStationEployee
+} from './history-of-using-points.service';
+import { convertDateToServer } from '../../shared/helpers/functions';
+import { IFilterTransaction } from '../transaction/transaction.service';
 
 @Component({
   selector: 'app-history-of-using-points',
@@ -99,14 +105,14 @@ export class HistoryOfUsingPointsComponent implements OnInit {
 
   buildForm() {
     this.searchForm = this.fb.group({
-      code: [''],
+      orderCode: [''],
       phone: [''],
-      employeeName: [''],
+      userName: [''],
       startAt: [''],
       endAt: [''],
-      payMethod: [''],
+      paymentMethod: [''],
       stationName: [''],
-      product: ['']
+      productName: ['']
     })
   }
 
@@ -116,6 +122,18 @@ export class HistoryOfUsingPointsComponent implements OnInit {
   }
 
   onSearch() {
+    console.log(this.searchForm.value);
+
+    const filterData: IFilterUsingPoint = this.getFilterData();
+  }
+
+  getFilterData() {
+    const filterFormData: IFilterUsingPoint = this.searchForm.value;
+    return {
+      ...filterFormData,
+      startAt: convertDateToServer(filterFormData.startAt),
+      endAt: convertDateToServer(filterFormData.endAt)
+    };
   }
 
   onReset() {

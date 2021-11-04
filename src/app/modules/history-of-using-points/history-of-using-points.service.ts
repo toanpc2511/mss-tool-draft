@@ -34,47 +34,16 @@ export interface IFilterTransaction {
   startAt: string;
   endAt: string;
 }
-export interface ITransaction {
-  accumulationPointReceive: number;
-  accumulationPointUse: number;
-  actualityMoney: number;
-  billMoney: number;
-  cashLimit: number;
-  cashPaid: number;
-  code: string;
-  createdAt: string;
-  imageNumberVariableReal: string;
-  imageSpeedometer: string;
-  nameDriver: string;
-  codeEmployee: string;
-  nameEmployee: string;
-  numberLiters: number;
-  numberVariable: [string];
-  numberVariableReal: string;
-  orderTotalResponse: {
-    totalPaymentLimitOil: number;
-    totalAccumulationPointUse: number;
-    totalCashPaid: number;
-    totalActualityLiters: number;
-    totalOrder: number;
-    totalPaymentLimitMoney: number;
-  };
-  paymentLimit: number;
-  paymentMethodName: string;
+
+export interface IFilterUsingPoint {
+  endAt: string;
+  orderCode: string;
+  paymentMethod: string;
   phone: string;
-  price: number;
   productName: string;
-  promotions: string;
-  pumpPole: string;
-  pumpHose: string;
-  speedometer: number;
+  startAt: string;
   stationName: string;
-  takeReceipt: boolean;
-  totalNumberLiters: number;
-  validLicensePlate: boolean;
-  actualityLiters: number;
-  paymentLimitMoney: number;
-  paymentLimitOil: number;
+  userName: string;
 }
 
 @Injectable({
@@ -119,7 +88,7 @@ export class HistoryUsingPointsService {
       .set('end-at', data.endAt)
       .set('user-name', data.userName);
 
-    return this.http.get<Array<ITransaction>>('orders/filters', { params });
+    return this.http.get('orders/filters', { params });
   }
 
   // Xuất file excel
