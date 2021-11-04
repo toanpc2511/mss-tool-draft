@@ -30,6 +30,7 @@ import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
+import { HistoryOfUsingPointsComponent } from './modules/history-of-using-points/history-of-using-points.component';
 
 
 registerLocaleData(localeVi, 'vi', localeViExtra);
@@ -56,7 +57,7 @@ function appInitializer(authService: AuthService, router: Router) {
 }
 
 @NgModule({
-	declarations: [AppComponent, DevComponent],
+	declarations: [AppComponent, DevComponent, HistoryOfUsingPointsComponent],
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,
