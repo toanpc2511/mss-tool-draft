@@ -17,18 +17,29 @@ export interface UserModel {
   driverAuth: {
     createdAt: string;
     updatedAt: string;
-    profile: {
-      id: 1;
-      name: string;
-      address: string;
-      avatar: string;
-    };
+    profile: IProfile;
     phone: string;
     driverId: string;
     role: string;
     type: string;
   };
   token: string;
+}
+
+export interface IProfile {
+  name: string;
+  dateOfBirth: string;
+  idCard: string;
+  address: string;
+  avatar: [
+    {
+      face: string;
+      id: number;
+      name: string;
+      type: string;
+      url: string;
+    }
+  ]
 }
 
 @Injectable({
@@ -76,6 +87,10 @@ export class AuthService {
   setCurrentUserValue(user: UserModel) {
     storageUtils.set('currentUser', user);
     this.currentUserSubject.next(user);
+  }
+
+  getProfile() {
+    return this.http.get('profiles/infos');
   }
 
   login(username: string, password: string) {

@@ -15,10 +15,11 @@
 					<div
 						class="symbol-label"
 						style="background-image: url('./assets/media/users/300_21.jpg')"
+            [ngStyle]="{ 'background-image': 'url(' + _user.driverAuth?.profile.avatar[0].url + ')'}"
 					></div>
 				</div>
 				<div class="d-flex flex-column">
-					<a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">
+					<a class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">
 						{{ _user.driverAuth?.profile?.name || _user.driverAuth?.phone}}
 					</a>
 					<div class="navi mt-2">
@@ -36,19 +37,27 @@
 			<div class="navi navi-spacer-x-0 p-0">
         <div class='row py-3'>
           <div class='col-lg-5'>Họ tên</div>
-          <div class='col-lg-7'>Đỗ Nguyệt Hà</div>
+          <div class='col-lg-7'>
+            <strong>{{ _user.driverAuth?.profile.name }}</strong>
+          </div>
         </div>
         <div class='row py-3'>
           <div class='col-lg-5'>Ngày sinh</div>
-          <div class='col-lg-7'>16/03/1996</div>
+          <div class='col-lg-7'>
+            <strong>{{ _user.driverAuth?.profile.dateOfBirth | date: 'dd/MM/yyyy' }}</strong>
+          </div>
         </div>
         <div class='row py-3'>
           <div class='col-lg-5'>CMND/CCCD</div>
-          <div class='col-lg-7'>0947283472243</div>
+          <div class='col-lg-7'>
+            <strong>{{ _user.driverAuth?.profile.idCard }}</strong>
+          </div>
         </div>
         <div class='row py-3'>
           <div class='col-lg-5'>Địa chỉ</div>
-          <div class='col-lg-7'>31 Nguyễn Quốc Trị, Khu đô thị Nam Trung Yên, Cầu Giấy, Hà Nội</div>
+          <div class='col-lg-7'>
+            <strong>{{ _user.driverAuth?.profile.address }}</strong>
+          </div>
         </div>
 			</div>
 

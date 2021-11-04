@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { AuthService } from '../services/auth.service';
+import { AuthService, IProfile, UserModel } from '../services/auth.service';
+import { IUser } from '../../user/user.service';
 
 @Component({
 	selector: 'app-login',
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
 	returnUrl: string;
 	isLoading$: Observable<boolean>;
 	isShowPasswordStatus = false;
+  infoProfile;
 
 	constructor(
 		private fb: FormBuilder,
@@ -64,6 +66,7 @@ export class LoginComponent implements OnInit {
 				(res) => {
 					if (res.data) {
 						this.authService.setCurrentUserValue(res.data);
+            this.getViewProfile(res.data);
 						this.router.navigate([this.returnUrl]);
 					} else {
 						this.hasError = true;
@@ -79,6 +82,26 @@ export class LoginComponent implements OnInit {
 				}
 			);
 	}
+
+  getViewProfile(dataUser: UserModel) {
+    this.authService.getProfile()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.infoProfile = res.data;
+
+        const dataProfile = {
+          name: this.infoProfile.name,
+          dateOfBirth: this.infoProfile.dateOfBirth,
+          idCard: this.infoProfile.idCard,
+          address: this.infoProfile.address,
+          avatar: this.infoProfile.avatar
+        }
+
+        dataUser.driverAuth.profile = dataProfile;
+
+        this.authService.setCurrentUserValue(dataUser);
+      })
+  }
 
 	checkError(error: IError) {
 		console.error(error);
