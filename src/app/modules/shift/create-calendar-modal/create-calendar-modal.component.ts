@@ -309,7 +309,7 @@ export class CreateCalendarModalComponent implements OnInit {
 
 	checkError(error: IError) {
     if (error.code === 'SUN-OIL-4890') {
-      this.toastr.error('Nhân viên đã bị trùng')
+      this.toastr.error('Nhân viên đã bị trùng hoặc đã có lịch làm việc')
     }
     if (error.code === 'SUN-OIL-4889') {
       this.toastr.error('Thời gian nghỉ không hợp lệ')

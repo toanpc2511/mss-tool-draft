@@ -1,15 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
-	IDataTransfer,
 	ModalConfirmLockShiftComponent
 } from './modal-confirm-lock-shift/modal-confirm-lock-shift.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { ITotalMoneyRevenue, ShiftService } from '../../../shift.service';
-import { forkJoin } from 'rxjs';
 
 @Component({
 	selector: 'app-total-revenue',
@@ -22,6 +20,7 @@ export class TotalRevenueComponent implements OnInit {
 	hideButton = true;
 	stationId: number;
 	lockShiftId: number;
+  shiftId: number;
 	dataRep: ITotalMoneyRevenue;
   statusLockShift: string;
 
@@ -38,17 +37,15 @@ export class TotalRevenueComponent implements OnInit {
 	ngOnInit(): void {
 		this.proceeds.setValue(false);
 
-		this.activeRoute.params.subscribe((res) => {
-			this.lockShiftId = res.lockShiftId;
-		});
-
-		this.activeRoute.queryParams.subscribe((x) => {
-			this.stationId = x.stationId;
-		});
+    this.activeRoute.params.subscribe((res) => {
+      this.lockShiftId = res.lockShiftId;
+    });
 
     this.activeRoute.queryParams.subscribe((x) => {
-      this.statusLockShift = x.status;
+      this.stationId = x.stationId;
+      this.shiftId = x.shiftId;
     });
+
 		this.getTotalMoneyRevenue();
 	}
 
@@ -81,6 +78,7 @@ export class TotalRevenueComponent implements OnInit {
 		modalRef.componentInstance.data = {
 			title: 'Xác nhận',
 			stationId: this.stationId,
+      shiftId: this.shiftId,
 			lockShiftOldId: this.lockShiftId,
 			listEmployee: this.dataRep?.employeeMoneyRevenues
 		};

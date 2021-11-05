@@ -67,7 +67,6 @@ export class ModalConfirmComponent implements OnInit {
 				const dataReq = {
 					content: this.resonForm.get('reason').value,
 					id: this.data.lockShiftInfo.id,
-					shiftId: this.data.lockShiftInfo.shiftId
 				};
 
 				this.shiftService.rejectOrderOfShift(dataReq).subscribe(
