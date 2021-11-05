@@ -319,6 +319,15 @@ export class ShiftService {
 		return this.http.get<Array<IShiftConfig>>(`shifts`);
 	}
 
+  // ds cấu hình ca tiếp theo
+  getListShiftConfigNext(shiftId: number, stationId: number, time: string) {
+    const params = new HttpParams()
+      .set('shift-id', shiftId.toString())
+      .set('station-id', stationId.toString())
+      .set('time', time)
+    return this.http.get<Array<IShiftConfig>>(`shifts/days`, {params});
+  }
+
 	// thêm cấu hình ca
 	createShiftConfig(shiftConfigData: IShiftConfig) {
 		return this.http.post(`shifts`, shiftConfigData);
@@ -401,9 +410,8 @@ export class ShiftService {
 	}
 
 	// lấy ds giao dịch của ca
-	getOrdersOfShift(shiftId: number, lockShiftId: number) {
+	getOrdersOfShift(lockShiftId: number) {
 		const params = new HttpParams()
-			.set('shift-id', shiftId.toString())
 			.set('lock-shift-id', lockShiftId.toString());
 		return this.http.get<Array<IOrderOfShift>>('orders/shift-order', { params });
 	}
@@ -449,7 +457,7 @@ export class ShiftService {
 	}
 
 	// Hủy đơn hàng của ca
-	rejectOrderOfShift(dataReq: { content: string; id: number; shiftId: number }) {
+	rejectOrderOfShift(dataReq: { content: string; id: number }) {
 		return this.http.post('lock-shifts/order-shift', dataReq);
 	}
 

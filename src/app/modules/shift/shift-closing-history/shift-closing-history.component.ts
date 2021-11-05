@@ -113,15 +113,15 @@ export class ShiftClosingHistoryComponent implements OnInit {
 		this.onSearch();
 	}
 
-	viewDetail(id: number, status: string, stationId: number) {
+	viewDetail(item: ILockShift) {
 		if (status === 'OPEN') {
 			return;
 		}
-		this.shiftService.lockShiftId = id;
+		this.shiftService.lockShiftId = item.id;
 		this.shiftService.statusLockShift = status;
-		this.shiftService.stationId = stationId;
-		this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${id}`], {
-			queryParams: { status: status, stationId: stationId }
+		this.shiftService.stationId = item.stationId;
+		this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${item.id}`], {
+			queryParams: { status: status, stationId: item.stationId, shiftId: item.shiftId }
 		});
 	}
 
@@ -129,7 +129,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
 		if ($event) {
 			$event.stopPropagation();
 		}
-		this.shiftService.getOrdersOfShift(data.shiftId, data.id).subscribe((res) => {
+		this.shiftService.getOrdersOfShift(data.id).subscribe((res) => {
 			this.listOrder = res.data;
 			this.cdr.detectChanges();
 
@@ -152,7 +152,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
 					(res) => {
 						if (res.data) {
 							this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`], {
-								queryParams: { status: data.status, stationId: data.stationId }
+								queryParams: { status: data.status, stationId: data.stationId, shiftId: data.shiftId }
 							});
 						}
 					},

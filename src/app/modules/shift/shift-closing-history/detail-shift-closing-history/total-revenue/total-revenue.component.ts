@@ -20,6 +20,7 @@ export class TotalRevenueComponent implements OnInit {
 	hideButton = true;
 	stationId: number;
 	lockShiftId: number;
+  shiftId: number;
 	dataRep: ITotalMoneyRevenue;
   statusLockShift: string;
 
@@ -36,13 +37,14 @@ export class TotalRevenueComponent implements OnInit {
 	ngOnInit(): void {
 		this.proceeds.setValue(false);
 
-    this.activeRoute.params
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((queryParams) => {
-        this.lockShiftId = queryParams.lockShiftId;
-        this.stationId = queryParams.stationId;
-        this.statusLockShift = queryParams.status;
-      })
+    this.activeRoute.params.subscribe((res) => {
+      this.lockShiftId = res.lockShiftId;
+    });
+
+    this.activeRoute.queryParams.subscribe((x) => {
+      this.stationId = x.stationId;
+      this.shiftId = x.shiftId;
+    });
 
 		this.getTotalMoneyRevenue();
 	}
@@ -76,6 +78,7 @@ export class TotalRevenueComponent implements OnInit {
 		modalRef.componentInstance.data = {
 			title: 'Xác nhận',
 			stationId: this.stationId,
+      shiftId: this.shiftId,
 			lockShiftOldId: this.lockShiftId,
 			listEmployee: this.dataRep?.employeeMoneyRevenues
 		};

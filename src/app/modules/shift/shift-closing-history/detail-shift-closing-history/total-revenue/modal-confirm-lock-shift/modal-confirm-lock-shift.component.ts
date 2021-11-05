@@ -45,7 +45,7 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.shiftService.getListShiftConfig().subscribe((res) => {
+		this.shiftService.getListShiftConfigNext(this.data.shiftId, this.data.stationId, this.today).subscribe((res) => {
 			this.listShifts = res.data;
 			this.cdr.detectChanges();
 		});
@@ -160,6 +160,7 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 export interface IDataTransfer {
 	title: string;
 	stationId: number;
+  shiftId: number;
 	lockShiftOldId: number;
 	listEmployee: [IEmployeeMoneyRevenues];
 }
