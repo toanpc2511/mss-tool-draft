@@ -39,11 +39,15 @@ export class OtherRevenueDetailComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.activeRoute.params.subscribe((res) => {
+		this.activeRoute.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
 			this.lockShiftId = res.lockShiftId;
 		});
 
-		this.activeRoute.queryParams.subscribe((x) => {
+		this.activeRoute.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((x) => {
 			this.statusLockShift = x.status;
 		});
 

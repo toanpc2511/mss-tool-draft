@@ -480,6 +480,13 @@ export class ShiftService {
     return this.http.post('lock-shifts', dataReq);
   }
 
+  // in báo cáo chốt ca
+  exportFileExcel(lockShiftId: number) {
+    const params = new HttpParams()
+      .set('lock-shift-id', lockShiftId.toString());
+    return this.http.getFileUrl<string>('excel-exporters/total-revenues', {params});
+  }
+
 	/*
 		Đổi ca/thay ca
 	*/
