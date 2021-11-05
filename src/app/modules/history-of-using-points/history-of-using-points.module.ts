@@ -12,22 +12,20 @@ import { HistoryOfUsingPointsRoutingModule } from './history-of-using-points-rou
 import { DirectivesModule } from '../../shared/directives/directives.module';
 
 @NgModule({
-  declarations: [
-    HistoryOfUsingPointsComponent
-  ],
-  imports: [
-    HistoryOfUsingPointsRoutingModule,
-    CommonModule,
-    NgbTooltipModule,
-    InlineSVGModule,
-    CRUDTableModule,
-    FormsModule,
-    SharedComponentsModule,
-    ReactiveFormsModule,
-    InputTrimModule,
-    AuthModule,
-    NgbDatepickerModule,
-    DirectivesModule
-  ]
+	declarations: [HistoryOfUsingPointsComponent],
+	imports: [
+		HistoryOfUsingPointsRoutingModule,
+		CommonModule,
+		NgbTooltipModule,
+		InlineSVGModule,
+		CRUDTableModule,
+		FormsModule,
+		SharedComponentsModule,
+		ReactiveFormsModule,
+		InputTrimModule,
+		AuthModule,
+		NgbDatepickerModule,
+		DirectivesModule
+	]
 })
 export class HistoryOfUsingPointsModule {}
