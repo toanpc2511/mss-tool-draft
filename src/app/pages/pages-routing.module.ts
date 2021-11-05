@@ -27,7 +27,11 @@ const routes: Routes = [
 			{
 				path: 'lich-su-giao-dich',
 				loadChildren: () => import('../modules/transaction/transaction.module').then((m) => m.TransactionModule)
-			  },
+      },
+			{
+        path: 'lich-su-su-dung-diem',
+        loadChildren: () => import('../modules/using-points/using-points.module').then((m) => m.UsingPointsModule)
+      },
 			{
 				path: '',
 				redirectTo: '/dashboard',

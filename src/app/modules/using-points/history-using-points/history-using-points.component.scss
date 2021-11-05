@@ -1,0 +1,47 @@
+.card-header {
+	border-bottom: 0;
+}
+
+.card-body {
+	padding-top: 0 !important;
+}
+
+.search-result {
+	padding: 0 1em;
+	line-height: 35px;
+	background: #e3f1ff;
+	.card-toolbar {
+		gap: 50px;
+	}
+}
+
+.item {
+	padding-right: 35px;
+	line-height: 35px;
+}
+
+.fa-circle {
+	color: #ff0000;
+	padding-right: 12px;
+	font-size: 8px;
+}
+
+.btn-def {
+	min-width: 110px;
+}
+
+table {
+	min-width: 1024px;
+
+	th,
+	td {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	thead {
+		th {
+			text-transform: none;
+		}
+	}
+}
