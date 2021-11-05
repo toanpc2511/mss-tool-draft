@@ -121,7 +121,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
 		this.shiftService.statusLockShift = status;
 		this.shiftService.stationId = item.stationId;
 		this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${item.id}`], {
-			queryParams: { status: status, stationId: item.stationId, shiftId: item.shiftId }
+			queryParams: { status: item.status, stationId: item.stationId, shiftId: item.shiftId }
 		});
 	}
 

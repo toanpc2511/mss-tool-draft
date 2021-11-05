@@ -8,6 +8,8 @@ import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntil, tap } from 'rxjs/operators';
 import { ITotalMoneyRevenue, ShiftService } from '../../../shift.service';
+import { IFilterUsingPoint } from '../../../../history-of-using-points/history-of-using-points.service';
+import { FileService } from '../../../../../shared/services/file.service';
 
 @Component({
 	selector: 'app-total-revenue',
@@ -29,7 +31,8 @@ export class TotalRevenueComponent implements OnInit {
 		private destroy$: DestroyService,
 		private activeRoute: ActivatedRoute,
 		private cdr: ChangeDetectorRef,
-		private shiftService: ShiftService
+		private shiftService: ShiftService,
+    private fileService: FileService
 	) {
 		this.proceeds = new FormControl();
 	}
@@ -84,7 +87,18 @@ export class TotalRevenueComponent implements OnInit {
 		};
 	}
 
-	printReport() {
-		console.log(this.proceeds.value);
-	}
+  exportFileExcel() {
+    this.shiftService
+      .exportFileExcel(this.lockShiftId)
+      .pipe(
+        tap((res) => {
+          if (res) {
+            console.log(res.data);
+            this.fileService.downloadFromUrl(res.data);
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
 }
