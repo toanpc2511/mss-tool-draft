@@ -23,6 +23,7 @@ export class FuelRevenueDetailComponent implements OnInit {
 	dataSourceTemp: FormArray = new FormArray([]);
 	dataItem: IFuelRevenue;
 	sumCashMoney: number;
+  sumTotalMoney: number;
 
 	constructor(
 		private shiftService: ShiftService,
@@ -76,7 +77,7 @@ export class FuelRevenueDetailComponent implements OnInit {
 				electronicEnd: [{ value: d.electronicEnd, disabled: d.chip }, Validators.required],
 				electronicStart: [d.electronicStart],
 				employeeName: [d.employeeName],
-				gaugeEnd: [{ value: d.gaugeEnd, disabled: d.chip }, Validators.required],
+				gaugeEnd: [ d.gaugeEnd, Validators.required],
 				gaugeStart: [d.gaugeStart],
 				id: [d.id],
 				limitMoney: [d.limitMoney],
@@ -137,15 +138,12 @@ export class FuelRevenueDetailComponent implements OnInit {
 			const provisionalMoney: number = convertMoney(
 				this.dataSourceForm.at(index).get('provisionalMoney').value.toString()
 			);
-			11;
 			const limitMoney: number = convertMoney(
 				this.dataSourceForm.at(index).get('limitMoney').value.toString()
 			);
-			12;
 			const totalPoint: number = convertMoney(
 				this.dataSourceForm.at(index).get('totalPoint').value.toString()
 			);
-			14;
 			const cashMoney: number = totalMoney - provisionalMoney - limitMoney - totalPoint;
 
 			this.dataSourceTemp.at(index).get('quantityTransaction').patchValue(quantityElectronic);
@@ -155,8 +153,10 @@ export class FuelRevenueDetailComponent implements OnInit {
 			this.dataSourceTemp.at(index).get('cashMoney').patchValue(cashMoney);
 
 			this.sumCashMoney = 0;
+			this.sumTotalMoney = 0;
 			for (let i = 0; i < this.dataSourceForm.value.length; i++) {
 				this.sumCashMoney += this.dataSourceForm.value[i].cashMoney;
+				this.sumTotalMoney += this.dataSourceForm.value[i].totalMoney;
 			}
 		}
 	}
