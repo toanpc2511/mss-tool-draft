@@ -114,7 +114,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
 	}
 
 	viewDetail(item: ILockShift) {
-		if (status === 'OPEN') {
+		if (item.status === 'OPEN') {
 			return;
 		}
 		this.shiftService.lockShiftId = item.id;
