@@ -170,8 +170,8 @@ export class FuelRevenueDetailComponent implements OnInit {
 
 		const dataReq = this.dataSourceForm.value.map((d) => ({
 			code: d.code,
-			gaugeEnd: convertMoney(d.gaugeEnd.toString()),
-			electronicEnd: convertMoney(d.electronicEnd.toString())
+			gaugeEnd: convertMoney(d.gaugeEnd?.toString()),
+			electronicEnd: convertMoney(d.electronicEnd?.toString())
 		}));
 
 		this.shiftService.updateFuelProductRevenue(this.lockShiftId, dataReq).subscribe(
