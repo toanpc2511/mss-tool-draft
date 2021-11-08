@@ -1,9 +1,10 @@
-import { takeUntil, concatMap, debounceTime } from 'rxjs/operators';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { of } from 'rxjs';
+import { concatMap, debounceTime, takeUntil } from 'rxjs/operators';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { convertTimeToString } from '../../../shared/helpers/functions';
 import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
@@ -13,10 +14,6 @@ import { FilterService } from '../../../shared/services/filter.service';
 import { SortService } from '../../../shared/services/sort.service';
 import { SortState } from '../../../_metronic/shared/crud-table';
 import {
-	IDataTransfer,
-	ShiftWorkConfigModalComponent
-} from '../shift-work-config-modal/shift-work-config-modal.component';
-import {
 	EShiftChangRequestStatus,
 	EShiftChangRequestType,
 	IShiftConfig,
@@ -24,10 +21,8 @@ import {
 	ShiftService
 } from '../shift.service';
 import {
-	PaginatorState,
-	IPaginatorState
+	IPaginatorState, PaginatorState
 } from './../../../_metronic/shared/crud-table/models/paginator.model';
-import { of } from 'rxjs';
 
 @Component({
 	selector: 'app-shift-change',
@@ -149,27 +144,6 @@ export class ShiftChangeComponent implements OnInit {
 						this.checkError(err);
 					}
 				);
-			}
-		});
-	}
-
-	createModal($event?: Event, data?: IDataTransfer): void {
-		if ($event) {
-			$event.stopPropagation();
-		}
-		const modalRef = this.modalService.open(ShiftWorkConfigModalComponent, {
-			backdrop: 'static',
-			size: 'lg'
-		});
-
-		modalRef.componentInstance.data = {
-			title: data ? 'Sửa ca' : 'Thêm ca',
-			shiftConfig: data
-		};
-
-		modalRef.result.then((result) => {
-			if (result) {
-				// this.getListShift();
 			}
 		});
 	}

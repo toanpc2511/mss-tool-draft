@@ -130,7 +130,8 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 					return this.shiftService.rejectShiftRequestChange(
 						this.shiftChangeRequestData.id,
 						this.reasonControl.value,
-						this.shiftChangeRequestData.type
+						this.shiftChangeRequestData.type,
+						this.shiftChangeRequestData.employeeCodeFrom
 					);
 				}),
 				tap((res) => {
@@ -164,7 +165,7 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 			.pipe(
 				filter((res) => res),
 				switchMap(() => {
-					return this.shiftService.approveShiftRequestChange(this.shiftChangeRequestData.id, this.shiftChangeRequestData.type);
+					return this.shiftService.approveShiftRequestChange(this.shiftChangeRequestData.id, this.shiftChangeRequestData.type, this.shiftChangeRequestData.employeeCodeFrom);
 				}),
 				tap((res) => {
 					if (res.data) {

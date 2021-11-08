@@ -140,7 +140,7 @@
                 [ngbTooltip]="'Sửa'"
                 (click)="update(item)"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-                *ngIf="eAuthorize.UPDATE_PUMP_HOLE_BUTTON |canUseFeature"
+                *ngIf="eAuthorize.UPDATE_GAS_FIELD_BUTTON |canUseFeature"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -153,7 +153,7 @@
                 (click)="deleteGasBin(item)"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
                 [ngbTooltip]="'Xóa'"
-                *ngIf="eAuthorize.DELETE_PUMP_HOLE_BUTTON |canUseFeature"
+                *ngIf="eAuthorize.DELETE_GAS_FIELD_BUTTON |canUseFeature"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
