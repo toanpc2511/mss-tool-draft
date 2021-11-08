@@ -208,7 +208,15 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			bullet: 'dot',
 			page: '/kho',
 			icon: 'fas fa-warehouse',
-			permissionKey: ''
+      submenu: [
+        {
+          title: 'Danh sách yêu cầu đặt hàng',
+          bullet: 'dot',
+          page: '/kho/yeu-cau-dat-hang',
+
+          permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+        },
+      ]
 		},
 		{
 			title: 'Lịch sử giao dịch',
