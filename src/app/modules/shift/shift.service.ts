@@ -514,18 +514,20 @@ export class ShiftService {
 		return this.http.get<IShiftRequestChange>(`swap-shifts/${id}`);
 	}
 
-	approveShiftRequestChange(id: string, type: EShiftChangRequestType) {
+	approveShiftRequestChange(id: string, type: EShiftChangRequestType, employeeCodeFrom: string) {
 		return this.http.put(`swap-shifts/status/${id}`, {
 			status: type === EShiftChangRequestType.CHANGE ? 'SWAPPED' : 'REPLACED',
-			type
+			type,
+			employeeCodeFrom
 		});
 	}
 
-	rejectShiftRequestChange(id: string, reason: string, type: EShiftChangRequestType) {
+	rejectShiftRequestChange(id: string, reason: string, type: EShiftChangRequestType, employeeCodeFrom: string) {
 		return this.http.put(`swap-shifts/status/${id}`, {
 			status: EShiftChangRequestStatus.REJECTED,
 			reason,
-			type
+			type,
+			employeeCodeFrom
 		});
 	}
 }
