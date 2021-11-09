@@ -72,6 +72,7 @@
 										placeholder="Nhập số lượng xuất"
 										decimal-mask
 										maxlength="13"
+                    (input)="totalScore(i)"
 									/>
 									<app-validate
 										[control]="item.get('exportQuantity')"

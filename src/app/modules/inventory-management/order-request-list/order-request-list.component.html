@@ -9,20 +9,19 @@
       <div class="form-group row">
         <div class="col-lg-6">
           <label>Tên trạm</label>
-          <select class="form-control form-control-solid w-75" formControlName='stationName'>
+          <select class="form-control form-control-solid w-75" formControlName='stationId'>
             <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
+            <option *ngFor="let item of stationEmployee" [value]="item.id">{{item.name}}</option>
           </select>
         </div>
 
         <div class="col-lg-6">
           <label>Người yêu cầu</label>
-          <select class="form-control form-control-solid w-75" formControlName='nguoiYeuCau'>
+          <select class="form-control form-control-solid w-75" formControlName="employeeId">
             <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
+            <option *ngFor="let item of listEmployees" [value]="item.id">
+              {{ item.code }} - {{item.name}}
+            </option>
           </select>
         </div>
       </div>
@@ -38,7 +37,7 @@
               ngbDatepicker
               readonly
               #startAt="ngbDatepicker"
-              formControlName='startAt'
+              formControlName='expectedDate'
             />
             <div class="input-group-append">
               <button
@@ -60,7 +59,7 @@
               ngbDatepicker
               readonly
               #endAt="ngbDatepicker"
-              formControlName='endAt'
+              formControlName='approvalDate'
             />
             <div class="input-group-append">
               <button
@@ -78,8 +77,10 @@
           <label>Trạng thái</label>
           <select class="form-control form-control-solid w-75" formControlName='status'>
             <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
+            <option [value]="listStatus.WAIT_CONFIRM">Chờ xác nhận</option>
+            <option [value]="listStatus.APPROVE">Đã phê duyệt</option>
+            <option [value]="listStatus.CONFIRM">Đã xác nhận</option>
+            <option [value]="listStatus.REFUSE">Đã từ chối</option>
           </select>
         </div>
       </div>
@@ -119,9 +120,111 @@
           <th scope=''>Người duyệt</th>
           <th scope=''>Ngày duyệt</th>
           <th scope=''>Trạng thái</th>
-          <th scope=''>Tác động</th>
+          <th scope='' class='text-center'>Tác động</th>
         </tr>
         </thead>
+
+        <tbody>
+        <tr *ngFor='let item of dataSource'>
+          <td class='code'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.code"
+            >
+              {{ item.code }}
+            </p>
+          </td>
+          <td class='station-name'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.stationName"
+            >
+              {{ item.stationName }}
+            </p>
+          </td>
+          <td class='employee-request'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.employeeRequest"
+            >
+              {{ item.employeeRequest }}
+            </p>
+          </td>
+          <td class='request-date'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.requestDate | date: 'dd/MM/yyyy'"
+            >
+              {{ item.requestDate | date: 'dd/MM/yyyy' }}
+            </p>
+          </td>
+          <td class='employee-approve'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.employeeApprove"
+            >
+              {{ item.employeeApprove }}
+            </p>
+          </td>
+          <td class='approve-date'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.approveDate | date: 'dd/MM/yyyy'"
+            >
+              {{ item.approveDate | date: 'dd/MM/yyyy' }}
+            </p>
+          </td>
+          <td class="status">
+							<span
+                class="label label-lg label-inline"
+                [class.label-light-warning]="item.status === listStatus.WAIT_CONFIRM"
+                [class.label-light-primary]="item.status === listStatus.APPROVE"
+                [class.label-light-success]="item.status === listStatus.CONFIRM"
+                [class.label-light-danger]="item.status === listStatus.REFUSE"
+              >
+								<ng-container *ngIf="item.status === listStatus.WAIT_CONFIRM">Chờ xác nhận</ng-container>
+								<ng-container *ngIf="item.status === listStatus.APPROVE">Đã phê duyệt</ng-container>
+								<ng-container *ngIf="item.status === listStatus.CONFIRM">Đã xác nhận</ng-container>
+								<ng-container *ngIf="item.status === listStatus.REFUSE">Đã từ chối</ng-container>
+							</span>
+          </td>
+
+          <td class="text-center action">
+            <a
+              *ngIf="item.status === listStatus.WAIT_CONFIRM"
+              (click)="updateOrderRequest($event,item.id)"
+              class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+              [ngbTooltip]="'Sửa'"
+            >
+								<span
+                  [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                >
+								</span>
+            </a>
+            <a
+              *ngIf="item.status === item.WAIT_CONFIRM"
+              (click)="deleteOrderRequest($event, item)"
+              class="btn btn-icon btn-light btn-hover-danger btn-sm"
+              [ngbTooltip]="'Xóa'"
+            >
+								<span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-danger"
+                >
+								</span>
+            </a>
+          </td>
+        </tr>
+        </tbody>
 
         <tfoot *ngIf="dataSource?.length === 0">
         <tr>
