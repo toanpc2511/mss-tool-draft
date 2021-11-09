@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ConfirmDeleteComponent } from './../../../shared/components/confirm-delete/confirm-delete.component';
 import {
 	AfterViewInit,
@@ -33,7 +34,7 @@ import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interfac
 	styleUrls: ['./shift-change-detail.component.scss'],
 	providers: [SortService, FilterService, DestroyService, NgbActiveModal]
 })
-export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
+export class ShiftChangeDetailComponent extends BaseComponent implements OnInit, AfterViewInit {
 	@ViewChild('approveRequest') approveRequest: TemplateRef<any>;
 	@ViewChild('rejectRequest') rejectRequest: TemplateRef<any>;
 
@@ -55,6 +56,7 @@ export class ShiftChangeDetailComponent implements OnInit, AfterViewInit {
 		private router: Router,
 		private cdr: ChangeDetectorRef
 	) {
+		super();
 		this.modalService.activeInstances
 			.pipe(
 				tap((modalRefs) => (this.activeModal = modalRefs[0])),

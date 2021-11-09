@@ -34,7 +34,12 @@
 					/>
 				</div>
 
-				<button type="button" class="btn btn-primary" (click)="openEmployeeModal($event)">
+				<button
+					type="button"
+					class="btn btn-primary"
+					(click)="openEmployeeModal($event)"
+					*ngIf="eAuthorize.CREATE_EMPLOYEE_BUTTON|canUseFeature"
+				>
 					Thêm mới
 				</button>
 			</div>
@@ -92,7 +97,10 @@
 					<th class="text-center" scope="">Tác động</th>
 				</thead>
 				<tbody>
-					<tr *ngFor="let item of dataSource" (click)="viewDetailEmployee(item.id)">
+					<tr
+						*ngFor="let item of dataSource"
+						(click)="viewDetailEmployee(item.id)"
+					>
 						<td class="code">
 							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
 								{{ item.code }}
@@ -150,6 +158,7 @@
 							<a
 								(click)="openEmployeeModal($event, item.id)"
 								class="mx-3 btn btn-icon btn-light btn-hover-primary btn-sm"
+								*ngIf="eAuthorize.UPDATE_EMPLOYEE_BUTTON|canUseFeature"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -162,6 +171,7 @@
 							<a
 								(click)="deleteEmployee($event, item)"
 								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+								*ngIf="eAuthorize.DELETE_EMPLOYEE_BUTTON|canUseFeature"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"

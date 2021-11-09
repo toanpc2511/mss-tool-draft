@@ -1,3 +1,5 @@
+import { AuthService } from './../../auth/services/auth.service';
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -30,7 +32,7 @@ import {
 	styleUrls: ['./shift-change.component.scss'],
 	providers: [SortService, FilterService, DestroyService]
 })
-export class ShiftChangeComponent implements OnInit {
+export class ShiftChangeComponent extends BaseComponent implements OnInit {
 	eShiftChangRequestType = EShiftChangRequestType;
 	eShiftChangRequestStatus = EShiftChangRequestStatus;
 
@@ -48,8 +50,10 @@ export class ShiftChangeComponent implements OnInit {
 		private destroy$: DestroyService,
 		private shiftService: ShiftService,
 		private router: Router,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+		private authService: AuthService
 	) {
+		super();
 		this.init();
 	}
 
@@ -161,6 +165,10 @@ export class ShiftChangeComponent implements OnInit {
 	}
 
 	gotoDetail(id: string) {
+		// Phân quyền xem chi tiết
+		if(!this.currentActions.includes(this.eAuthorize.VIEW_SWAP_SHIFT_SCREEN)) {
+			return;
+		}
 		this.router.navigate([`/ca-lam-viec/doi-ca/chi-tiet-doi-ca/${id}`]);
 	}
 

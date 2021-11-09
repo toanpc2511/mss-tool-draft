@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -37,7 +38,8 @@ import { ListEmployeeComponent } from './list-employee/list-employee.component';
 		TextMaskModule,
 		PipesModule,
 		NgbProgressbarModule,
-		DirectivesModule
+		DirectivesModule,
+		AuthModule
 	]
 })
 export class EmployeeModule {}

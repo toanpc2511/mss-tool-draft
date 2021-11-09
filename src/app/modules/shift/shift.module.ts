@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { ShiftChangeDetailComponent } from './shift-change-detail/shift-change-detail.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -102,7 +103,8 @@ import { ModalConfirmLockShiftComponent } from './shift-closing-history/detail-s
 		NgbProgressbarModule,
 		DirectivesModule,
 		FullCalendarModule,
-		NgbPopoverModule
+		NgbPopoverModule,
+		AuthModule
 	]
 })
 export class ShiftModule {}

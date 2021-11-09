@@ -84,6 +84,7 @@ export enum EAuthorize {
 	VIEW_SWAP_SHIFT_SCREEN = 'view_swap_shift_screen',
 	REJECT_SWAP_SHIFT_BUTTON = 'reject_swap_shift_button',
 	ACCEPT_SWAP_SHIFT_BUTTON = 'accept_swap_shift_button',
+	VIEW_LOCK_SHIFT_LIST_SCREEN = 'view_lock_shift_list_screen',
 	VIEW_HISTORY_REVENUE_SHIFT = 'view_history_revenue_shift',
 	VIEW_REVENUE_OIL_DETAIL_SCREEN = 'view_revenue_oil_detail_screen',
 	VIEW_REVENUE_OTHER_PRODUCT_DETAIL_SCREEN = 'view_revenue_other_product_detail_screen',
