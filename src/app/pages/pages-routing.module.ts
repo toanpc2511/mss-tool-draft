@@ -2,6 +2,8 @@ import { AuthorizeGuard } from './../modules/auth/services/auth.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './_layout/layout.component';
+import { HistoryOfUsingPointsModule } from '../modules/history-of-using-points/history-of-using-points.module';
+import { InventoryManagementModule } from '../modules/inventory-management/inventory-management.module';
 
 const routes: Routes = [
 	{
@@ -98,6 +100,18 @@ const routes: Routes = [
 				loadChildren: () => import('../modules/qr-code/qr-code.module').then((m) => m.QrCodeModule),
 				canActivate: [AuthorizeGuard]
 			},
+      {
+        path: 'lich-su-su-dung-diem',
+        loadChildren: () =>
+          import('../modules/history-of-using-points/history-of-using-points.module').then((m) => m.HistoryOfUsingPointsModule),
+        canActivate: [AuthorizeGuard]
+      },
+      {
+        path: 'kho',
+        loadChildren: () =>
+          import('../modules/inventory-management/inventory-management.module').then((m) => m.InventoryManagementModule),
+        canActivate: [AuthorizeGuard]
+      },
 			{
 				path: '',
 				redirectTo: '/dashboard',

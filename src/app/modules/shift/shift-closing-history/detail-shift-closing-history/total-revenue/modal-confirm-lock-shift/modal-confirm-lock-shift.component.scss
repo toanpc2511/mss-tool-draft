@@ -1,27 +1,32 @@
 .card-header {
-  border-bottom: 0;
+	border-bottom: 0;
 }
 
 .card-body {
-  padding-top: 0 !important;
+	padding-top: 0 !important;
 }
 
 .table {
-  thead {
-    th {
-      text-transform: none;
-    }
-    td {
-      &.stt,
-      &.employee-name,
-      &.pump-pole,
-      &.time {
-        min-width: 100px;
-        max-width: 120px;
-      }
-    }
-  }
-  .text-color-custom {
-    color: #6993FF;
-  }
+	thead {
+		th {
+			text-transform: none;
+		}
+	}
+
+	td {
+		&.stt {
+			min-width: 50px;
+			max-width: 80px;
+		}
+
+		&.employee-name,
+		&.pump-pole,
+		&.time {
+			min-width: 100px;
+			max-width: 170px;
+		}
+	}
+	.text-color-custom {
+		color: #6993ff;
+	}
 }

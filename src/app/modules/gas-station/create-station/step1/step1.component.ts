@@ -174,7 +174,7 @@ export class Step1Component implements OnInit, OnChanges {
 					this.step1Data.lat && this.step1Data.lon
 						? [this.step1Data.lat, this.step1Data.lon].join(',')
 						: '';
-				this.stationForm.get('coordinates').patchValue(coordinates, NO_EMIT_EVENT);
+				this.stationForm.get('coordinates').patchValue(coordinates);
 				this.cdr.detectChanges();
 			});
 		}

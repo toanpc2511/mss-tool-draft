@@ -205,47 +205,48 @@ export interface ICalendarEmployeeInfos {
 	stationAddress: string;
 	stationId: number;
 	stationName: string;
-	background_color: string;
-	calendar_id: number;
+	backgroundColor: string;
+	calendarId: number;
 	checked: boolean;
-	employee_id: number;
-	employee_name: string;
+	employeeId: number;
+	employeeName: string;
 	end: string;
 	offTimes: [IOffTimes];
 	pumpPoleResponses: [IPumpPole];
 }
 
 export interface IFuelRevenue {
-	code: string;
-	electronicEnd: number;
-	electronicStart: number;
-	employeeName: string;
-	gaugeEnd: number;
-	gaugeStart: number;
-	id: number;
-	limitMoney: number;
-	lockShiftId: number;
-	productName: string;
-	provisionalMoney: number;
-	quantityElectronic: number;
-	quantityGauge: number;
-	quantityTransaction: number;
-	shiftId: number;
-	shiftName: string;
-	stationId: number;
-	stationName: string;
-	timeEnd: string;
-	timeStart: string;
-	totalCashPaid: number;
-	totalLimitMoney: number;
-	totalLiter: number;
-	totalMoney: number;
-	totalPoint: number;
-	totalPoints: number;
-	totalPrice: number;
-	totalProvisionalMoney: number;
-	cashMoney: number;
-	price: number;
+  code: string;
+  electronicEnd: number;
+  electronicStart: number;
+  employeeName: string;
+  gaugeEnd: number;
+  gaugeStart: number;
+  id: number;
+  limitMoney: number;
+  lockShiftId: number;
+  productName: string;
+  provisionalMoney: number;
+  quantityElectronic: number;
+  quantityGauge: number;
+  quantityTransaction: number;
+  shiftId: number;
+  shiftName: string;
+  stationId: number;
+  stationName: string;
+  timeEnd: string;
+  timeStart: string;
+  totalCashPaid: number;
+  totalLimitMoney: number;
+  totalLiter: number;
+  totalMoney: number;
+  totalPoint: number;
+  totalPoints: number;
+  totalPrice: number;
+  totalProvisionalMoney: number;
+  cashMoney: number;
+  price: number;
+  chip: boolean;
 }
 
 export interface ITotalMoneyRevenue {
@@ -317,6 +318,15 @@ export class ShiftService {
 	getListShiftConfig() {
 		return this.http.get<Array<IShiftConfig>>(`shifts`);
 	}
+
+  // ds cấu hình ca tiếp theo
+  getListShiftConfigNext(shiftId: number, stationId: number, time: string) {
+    const params = new HttpParams()
+      .set('shift-id', shiftId.toString())
+      .set('station-id', stationId.toString())
+      .set('time', time)
+    return this.http.get<Array<IShiftConfig>>(`shifts/days`, {params});
+  }
 
 	// thêm cấu hình ca
 	createShiftConfig(shiftConfigData: IShiftConfig) {
@@ -400,9 +410,8 @@ export class ShiftService {
 	}
 
 	// lấy ds giao dịch của ca
-	getOrdersOfShift(shiftId: number, lockShiftId: number) {
+	getOrdersOfShift(lockShiftId: number) {
 		const params = new HttpParams()
-			.set('shift-id', shiftId.toString())
 			.set('lock-shift-id', lockShiftId.toString());
 		return this.http.get<Array<IOrderOfShift>>('orders/shift-order', { params });
 	}
@@ -448,7 +457,7 @@ export class ShiftService {
 	}
 
 	// Hủy đơn hàng của ca
-	rejectOrderOfShift(dataReq: { content: string; id: number; shiftId: number }) {
+	rejectOrderOfShift(dataReq: { content: string; id: number }) {
 		return this.http.post('lock-shifts/order-shift', dataReq);
 	}
 
@@ -465,6 +474,18 @@ export class ShiftService {
 	getTotalMoneyRevenue(id: number) {
 		return this.http.get<ITotalMoneyRevenue>(`product-revenue/total-money/${id}`);
 	}
+
+  // Xác nhận chốt ca
+  confirmLockShift(dataReq) {
+    return this.http.post('lock-shifts', dataReq);
+  }
+
+  // in báo cáo chốt ca
+  exportFileExcel(lockShiftId: number) {
+    const params = new HttpParams()
+      .set('lock-shift-id', lockShiftId.toString());
+    return this.http.getFileUrl<string>('excel-exporters/total-revenues', {params});
+  }
 
 	/*
 		Đổi ca/thay ca

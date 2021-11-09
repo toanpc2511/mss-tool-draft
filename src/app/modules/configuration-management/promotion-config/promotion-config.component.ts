@@ -136,8 +136,7 @@ export class PromotionConfigComponent extends BaseComponent implements OnInit {
 	}
 
 	getListPromotions(item: IConfigPromotion) {
-		const valuePromotion = item.promotionProducts
-			?.map((x) => `${x.quantity.toLocaleString('en-US')} ${x.productName}`)
+		const valuePromotion = item.promotionProducts?.map((x) => `${x.quantity?.toLocaleString('en-US')} ${x.productName}`)
 			.join(' + ');
 		item.listPromotion = valuePromotion;
 		return valuePromotion;

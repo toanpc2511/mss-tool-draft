@@ -58,15 +58,15 @@
 			<div class="row justify-content-center w-100">
 				<div class="col-xl-12">
 					<app-fuel-revenue-detail
-						(stepSubmitted)="gotoStep(1)"
+						(stepSubmitted)="gotoStep(2)"
 						*ngIf="step === 1"
 					></app-fuel-revenue-detail>
 					<app-other-revenue-detail
-						(stepSubmitted)="gotoStep(2)"
+						(stepSubmitted)="gotoStep(3)"
 						*ngIf="step === 2"
 					></app-other-revenue-detail>
 					<app-promotion-detail
-						(stepSubmitted)="gotoStep(3)"
+						(stepSubmitted)="gotoStep(4)"
 						*ngIf="step === 3"
 					></app-promotion-detail>
 					<app-total-revenue *ngIf="step === 4"></app-total-revenue>

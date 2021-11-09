@@ -1,529 +1,564 @@
 <div class="mt-1 card card-custom gutter-b">
-  <div class="shift-info">
-    <div class="card-header">
-      <div class="card-title pt-3">
-        <h3 class="title">Thông tin ca</h3>
-      </div>
-    </div>
+	<div class="shift-info">
+		<div class="card-header">
+			<div class="card-title pt-3">
+				<h3 class="title">Thông tin ca</h3>
+			</div>
+		</div>
 
-    <div class="card-body">
-      <div class="form-group row">
-        <div class="col-lg-6 row">
-          <div class='col-lg-3'>
-            <label class="form-label">Trạm</label>
-          </div>
-          <div class='col-lg-9'>
-            <label>
-              <strong>{{dataItem?.stationName}}</strong>
-            </label>
-          </div>
-        </div>
+		<div class="card-body">
+			<div class="form-group row">
+				<div class="col-lg-6 row">
+					<div class="col-lg-3">
+						<label class="form-label">Trạm</label>
+					</div>
+					<div class="col-lg-9">
+						<label>
+							<strong>{{dataItem?.stationName}}</strong>
+						</label>
+					</div>
+				</div>
 
-        <div class="col-lg-6 row">
-          <div class='col-lg-3'>
-            <label class="form-label">Thời gian</label>
-          </div>
-          <div class='col-lg-9'>
-            <label>
-              <strong>{{dataItem?.timeStart | date: 'dd/MM/yyyy HH:MM' }}</strong> - <strong>{{dataItem?.timeEnd | date: 'dd/MM/yyyy HH:MM'}}</strong>
-            </label>
-          </div>
-        </div>
-      </div>
+				<div class="col-lg-6 row">
+					<div class="col-lg-3">
+						<label class="form-label">Thời gian</label>
+					</div>
+					<div class="col-lg-9">
+						<label>
+							<strong>{{dataItem?.timeStart | date: 'dd/MM/yyyy HH:mm' }}</strong> -
+							<strong>{{dataItem?.timeEnd | date: 'dd/MM/yyyy HH:mm'}}</strong>
+						</label>
+					</div>
+				</div>
+			</div>
 
-      <div class="form-group row">
-        <div class="col-lg-6 row">
-          <div class='col-lg-3'>
-            <label class="form-label">Tên ca</label>
-          </div>
-          <div class='col-lg-9'>
-            <label>
-              <strong>{{dataItem?.shiftName}}</strong>
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+			<div class="form-group row">
+				<div class="col-lg-6 row">
+					<div class="col-lg-3">
+						<label class="form-label">Tên ca</label>
+					</div>
+					<div class="col-lg-9">
+						<label>
+							<strong>{{dataItem?.shiftName}}</strong>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <div class="revenue-detail">
-    <div class="card-header">
-      <div class="card-title pt-3">
-        <h3 class="title">Chi tiết doanh thu</h3>
-      </div>
-    </div>
+	<div class="revenue-detail">
+		<div class="card-header">
+			<div class="card-title pt-3">
+				<h3 class="title">Chi tiết doanh thu</h3>
+			</div>
+		</div>
 
-    <div class="card-body">
-      <div class="table-responsive angular-bootstrap-table">
-        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
-          <thead>
-          <tr>
-            <th rowspan="3" scope='' class="align-bottom">Mã vòi</th>
-            <th rowspan="3" scope='' class="align-bottom">Nhiên liệu</th>
-            <th rowspan="3" scope='' class="align-bottom">Nhân viên</th>
-            <th rowspan="3" scope='' class="align-bottom text-right number-p-15">Số máy cơ đầu</th>
-            <th rowspan="3" scope='' class="align-bottom text-right number-p-15">Số máy cơ cuối</th>
-            <th rowspan="3" scope='' class="align-bottom text-right number-p-15">Lượng xuất cơ</th>
-            <th rowspan="3" scope='' class="align-bottom text-right number-p-15">Số điện tử đầu ca</th>
-            <th rowspan="3" scope='' class="align-bottom text-right number-p-15">Số điện tử cuối ca</th>
-            <th rowspan="3" scope='' class="align-bottom text-right number-p-15">Lượng xuất điện</th>
-            <th rowspan="3" scope='' class="align-bottom text-right number-p-15">Lượng xuất theo giao dịch</th>
-            <th rowspan="3" scope='' class="align-bottom text-right number-p-15">Đơn giá</th>
-            <th rowspan="3" scope='' class="align-bottom text-right number-p-15">Tổng tiền</th>
-            <th colspan="5" scope='' class="text-center p-0">Doanh thu trong ca</th>
-          </tr>
-          <tr>
-            <th colspan='2' scope='' class="text-center p-0">Hạn mức nhiên liệu</th>
-            <th rowspan='2' scope='' class="align-bottom text-right number-p-15">Hạn mức tiền</th>
-            <th rowspan='2' scope='' class="align-bottom text-right number-p-15">Tiền mặt</th>
-            <th rowspan='2' scope='' class="align-bottom text-right number-p-15">Điểm</th>
-          </tr>
-          <tr>
-            <th scope='' class="text-right number-p-15">Số lít</th>
-            <th scope='' class="text-right number-p-15">Tiền tạm tính</th>
-          </tr>
-          </thead>
+		<div class="card-body">
+			<div class="table-responsive angular-bootstrap-table">
+				<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+					<thead>
+						<tr>
+							<th rowspan="3" scope="" class="code align-bottom">Mã vòi</th>
+							<th rowspan="3" scope="" class="product-name align-bottom">Nhiên liệu</th>
+							<th rowspan="3" scope="" class="employee-name align-bottom">Nhân viên</th>
+							<th rowspan="3" scope="" class="gauge-start align-bottom text-right number-p-15">
+								Số máy cơ đầu
+							</th>
+							<th rowspan="3" scope="" class="gauge-end align-bottom text-right number-p-15">
+								Số máy cơ cuối
+							</th>
+							<th rowspan="3" scope="" class="quantity-gauge align-bottom text-right number-p-15">
+								Lượng xuất cơ
+							</th>
+							<th rowspan="3" scope="" class="electronic-start align-bottom text-right number-p-15">
+								Số điện tử đầu ca
+							</th>
+							<th rowspan="3" scope="" class="electronic-end align-bottom text-right number-p-15">
+								Số điện tử cuối ca
+							</th>
+							<th rowspan="3" scope="" class="quantity-electronic align-bottom text-right number-p-15">
+								Lượng xuất điện
+							</th>
+							<th rowspan="3" scope="" class="quantity-transaction align-bottom text-right number-p-15">
+								Lượng xuất theo giao dịch
+							</th>
+							<th rowspan="3" scope="" class="price align-bottom text-right number-p-15">Đơn giá</th>
+							<th rowspan="3" scope="" class="total-money align-bottom text-right number-p-15">Tổng tiền</th>
+							<th colspan="5" scope="" class="text-center p-0">Doanh thu trong ca</th>
+						</tr>
+						<tr>
+							<th colspan="2" scope="" class="text-center p-0">Hạn mức nhiên liệu</th>
+							<th rowspan="2" scope="" class="limit-money align-bottom text-right number-p-15">Hạn mức tiền</th>
+							<th rowspan="2" scope="" class="cash-money align-bottom text-right number-p-15">Tiền mặt</th>
+							<th rowspan="2" scope="" class="total-point align-bottom text-right number-p-15">Điểm</th>
+						</tr>
+						<tr>
+							<th scope="" class="total-liter text-right number-p-15">Số lít</th>
+							<th scope="" class="total-money text-right number-p-15">Tiền tạm tính</th>
+						</tr>
+					</thead>
 
-          <ng-container *ngIf='statusLockShift !== "CLOSE"'>
-            <tbody>
-            <tr *ngFor="let item of dataSourceForm.controls; let i = index" [formGroup]="item">
-              <td class="code">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('code').value"
-                >
-                  {{ item.get('code').value }}
-                </p>
-              </td>
-              <td class="product-name">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('productName').value"
-                >
-                  {{ item.get('productName').value }}
-                </p>
-              </td>
-              <td class="employee-name">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('employeeName').value"
-                >
-                  {{ item.get('employeeName').value }}
-                </p>
-              </td>
-              <td class="gauge-start text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('gaugeStart').value"
-                >
-                  {{ item.get('gaugeStart').value }}
-                </p>
-              </td>
-              <td class="gauge-end text-right">
-                <input
-                  class="form-control"
-                  formControlName="gaugeEnd"
-                  placeholder="Nhập số máy cơ cuối"
-                  decimal-mask
-                  maxlength="13"
-                  (input)='changeValue(i, true)'
-                />
-                <app-validate
-                  [control]="item.get('gaugeEnd')"
-                  [error]="'required'"
-                  [message]="'Số máy cơ cuối không được để trống'"
-                ></app-validate>
-              </td>
-              <td class="quantity-gauge text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('quantityGauge').value"
-                >
-                  {{ item.get('quantityGauge').value }}
-                </p>
-              </td>
-              <td class="electronic-start text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('electronicStart').value"
-                >
-                  {{ item.get('electronicStart').value }}
-                </p>
-              </td>
-              <td class="electronic-end text-right">
-                <input
-                  class="form-control"
-                  formControlName="electronicEnd"
-                  placeholder="Nhập số điện tử cuối ca"
-                  decimal-mask
-                  maxlength="13"
-                  (input)='changeValue(i, true)'
-                />
-                <app-validate
-                  [control]="item.get('electronicEnd')"
-                  [error]="'required'"
-                  [message]="'Số điện tử cuối ca không được để trống'"
-                ></app-validate>
-              </td>
-              <td class="quantity-electronic text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('quantityElectronic').value"
-                >
-                  {{ item.get('quantityElectronic').value }}
-                </p>
-              </td>
-              <td class="quantity-transaction text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('quantityTransaction').value"
-                >
-                  {{ item.get('quantityTransaction').value }}
-                </p>
-              </td>
-              <td class="price text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('price').value"
-                >
-                  {{ item.get('price').value }}
-                </p>
-              </td>
-              <td class="total-money text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('totalMoney').value"
-                >
-                  {{ item.get('totalMoney').value }}
-                </p>
-              </td>
-              <td class="total-liter text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('totalLiter').value"
-                >
-                  {{ item.get('totalLiter').value }}
-                </p>
-              </td>
-              <td class="provisional-money text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('provisionalMoney').value"
-                >
-                  {{ item.get('provisionalMoney').value }}
-                </p>
-              </td>
-              <td class="limit-money text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('limitMoney').value"
-                >
-                  {{ item.get('limitMoney').value }}
-                </p>
-              </td>
-              <td class="cash-money text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('cashMoney').value"
-                >
-                  {{ item.get('cashMoney').value }}
-                </p>
-              </td>
-              <td class="total-point text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('totalPoint').value"
-                >
-                  {{ item.get('totalPoint').value }}
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td colspan='10'></td>
-              <td class='text-right'>Tổng</td>
-              <td class='total-money text-right'>
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="dataItem?.totalMoney"
-                >
-                  {{ dataItem?.totalMoney }}
-                </p>
-              </td>
-              <td colspan='2' class='total-provisional-money text-right'>
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="dataItem?.totalProvisionalMoney"
-                >
-                  {{ dataItem?.totalProvisionalMoney }}
-                </p>
-              </td>
-              <td class='total-limit-money text-right'>
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="dataItem?.totalLimitMoney"
-                >
-                  {{ dataItem?.totalLimitMoney }}
-                </p>
-              </td>
-              <td class='total-cash-paid text-right'>
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="dataItem?.totalCashPaid"
-                >
-                  {{ dataItem?.totalCashPaid }}
-                </p>
-              </td>
-              <td class='total-point text-right'>
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="dataItem?.totalPoints"
-                >
-                  {{ dataItem?.totalPoints }}
-                </p>
-              </td>
-            </tr>
-            </tbody>
-          </ng-container>
+					<ng-container *ngIf='statusLockShift !== "CLOSE"'>
+						<tbody>
+							<tr *ngFor="let item of dataSourceForm.controls; let i = index" [formGroup]="item">
+								<td class="code">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('code').value"
+									>
+										{{ item.get('code').value }}
+									</p>
+								</td>
+								<td class="product-name">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('productName').value"
+									>
+										{{ item.get('productName').value }}
+									</p>
+								</td>
+								<td class="employee-name">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('employeeName').value"
+									>
+										{{ item.get('employeeName').value }}
+									</p>
+								</td>
+								<td class="gauge-start text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('gaugeStart').value| number| vnCurrency"
+									>
+										{{ item.get('gaugeStart').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="gauge-end text-right">
+									<input
+										class="form-control"
+										formControlName="gaugeEnd"
+										placeholder="Nhập số máy cơ cuối"
+										decimal-mask
+										maxlength="13"
+										(input)='changeValue(i, item.get("chip").value)'
+									/>
+									<app-validate
+										[control]="item.get('gaugeEnd')"
+										[error]="'required'"
+										[message]="'Số máy cơ cuối không được để trống'"
+									></app-validate>
+								</td>
+								<td class="quantity-gauge text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('quantityGauge').value| number| vnCurrency"
+									>
+										{{ item.get('quantityGauge').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="electronic-start text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('electronicStart').value| number| vnCurrency"
+									>
+										{{ item.get('electronicStart').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="electronic-end text-right">
+									<input
+										class="form-control"
+										formControlName="electronicEnd"
+										placeholder="Nhập số điện tử cuối ca"
+										decimal-mask
+										maxlength="13"
+										(input)='changeValue(i, item.get("chip").value)'
+									/>
+									<app-validate
+										[control]="item.get('electronicEnd')"
+										[error]="'required'"
+										[message]="'Số điện tử cuối ca không được để trống'"
+									></app-validate>
+								</td>
+								<td class="quantity-electronic text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('quantityElectronic').value| number| vnCurrency"
+									>
+										{{ item.get('quantityElectronic').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="quantity-transaction text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('quantityTransaction').value| number| vnCurrency"
+									>
+										{{ item.get('quantityTransaction').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="price text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('price').value| number| vnCurrency"
+									>
+										{{ item.get('price').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="total-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('totalMoney').value| number| vnCurrency"
+									>
+										{{ item.get('totalMoney').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="total-liter text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('totalLiter').value| number| vnCurrency"
+									>
+										{{ item.get('totalLiter').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="provisional-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('provisionalMoney').value| number| vnCurrency"
+									>
+										{{ item.get('provisionalMoney').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="limit-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('limitMoney').value| number| vnCurrency"
+									>
+										{{ item.get('limitMoney').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="cash-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('cashMoney').value| number| vnCurrency"
+									>
+										{{ item.get('cashMoney').value| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="total-point text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.get('totalPoint').value| number| vnCurrency"
+									>
+										{{ item.get('totalPoint').value| number| vnCurrency }}
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="10"></td>
+								<td class="text-right">Tổng</td>
+								<td class="total-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="dataItem?.totalMoney| number| vnCurrency"
+										*ngIf="dataItem?.chip"
+									>
+										{{ dataItem?.totalMoney| number| vnCurrency }}
+									</p>
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="sumTotalMoney| number| vnCurrency"
+										*ngIf="!dataItem?.chip"
+									>
+										{{ sumTotalMoney| number| vnCurrency }}
+									</p>
+								</td>
+								<td colspan="2" class="total-provisional-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="dataItem?.totalProvisionalMoney| number| vnCurrency"
+									>
+										{{ dataItem?.totalProvisionalMoney| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="total-limit-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="dataItem?.totalLimitMoney || '0' | number| vnCurrency "
+									>
+										{{ dataItem?.totalLimitMoney || '0' | number| vnCurrency}}
+									</p>
+								</td>
+								<td class="total-cash-paid text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+                    *ngIf="dataItem?.chip"
+										[ngbTooltip]="dataItem?.totalCashPaid| number| vnCurrency"
+									>
+										{{ dataItem?.totalCashPaid| number| vnCurrency }}
+									</p>
 
-          <ng-container *ngIf='statusLockShift === "CLOSE"'>
-            <tbody>
-            <tr *ngFor="let item of dataSourceForm.controls; let i = index" [formGroup]="item">
-              <td class="code">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('code').value"
-                >
-                  {{ item.get('code').value }} - 1
-                </p>
-              </td>
-              <td class="product-name">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('productName').value"
-                >
-                  {{ item.get('productName').value }} - 2
-                </p>
-              </td>
-              <td class="employee-name">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('employeeName').value"
-                >
-                  {{ item.get('employeeName').value }} - 3
-                </p>
-              </td>
-              <td class="gauge-start text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('gaugeStart').value"
-                >
-                  {{ item.get('gaugeStart').value }} - 4
-                </p>
-              </td>
-              <td class="gauge-end  text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('gaugeEnd').value"
-                >
-                  {{ item.get('gaugeEnd').value }} - 5
-                </p>
-              </td>
-              <td class="quantity-gauge text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('quantityGauge').value"
-                >
-                  {{ item.get('quantityGauge').value }} - 6
-                </p>
-              </td>
-              <td class="electronic-start text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('electronicStart').value"
-                >
-                  {{ item.get('electronicStart').value }} - 7
-                </p>
-              </td>
-              <td class="electronic-end text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('electronicEnd').value"
-                >
-                  {{ item.get('electronicEnd').value }} - 8
-                </p>
-              </td>
-              <td class="quantity-electronic text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('quantityElectronic').value"
-                >
-                  {{ item.get('quantityElectronic').value }} - 9
-                </p>
-              </td>
-              <td class="quantity-transaction text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('quantityTransaction').value"
-                >
-                  {{ item.get('quantityTransaction').value }} - 10
-                </p>
-              </td>
-              <td class="price text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('price').value"
-                >
-                  {{ item.get('price').value }} - 11
-                </p>
-              </td>
-              <td class="total-money text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('totalMoney').value"
-                >
-                  {{ item.get('totalMoney').value }} - 12
-                </p>
-              </td>
-              <td class="total-liter text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('totalLiter').value"
-                >
-                  {{ item.get('totalLiter').value }} - 13
-                </p>
-              </td>
-              <td class="provisional-money text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('provisionalMoney').value"
-                >
-                  {{ item.get('provisionalMoney').value }} - 14
-                </p>
-              </td>
-              <td class="limit-money text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('limitMoney').value"
-                >
-                  {{ item.get('limitMoney').value }} - 15
-                </p>
-              </td>
-              <td class="cash-money text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('cashMoney').value"
-                >
-                  {{ item.get('cashMoney').value }} - 16
-                </p>
-              </td>
-              <td class="total-point text-right">
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="item.get('totalPoint').value"
-                >
-                  {{ item.get('totalPoint').value }} - 17
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td colspan='10'></td>
-              <td class='text-right'>Tổng</td>
-              <td class='total-money text-right'>
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="dataItem?.totalMoney"
-                >
-                  {{ dataItem?.totalMoney }} - 1
-                </p>
-              </td>
-              <td colspan='2' class='total-provisional-money text-right'>
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="dataItem?.totalProvisionalMoney"
-                >
-                  {{ dataItem?.totalProvisionalMoney }} -2
-                </p>
-              </td>
-              <td class='total-limit-money text-right'>
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="dataItem?.totalLimitMoney"
-                >
-                  {{ dataItem?.totalLimitMoney }} -3
-                </p>
-              </td>
-              <td class='total-cash-paid text-right'>
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="dataItem?.totalCashPaid"
-                >
-                  {{ dataItem?.totalCashPaid }} -4
-                </p>
-              </td>
-              <td class='total-point text-right'>
-                <p
-                  class="cursor-pointer text-ellipsis"
-                  placement="top"
-                  [ngbTooltip]="dataItem?.totalPoints"
-                >
-                  {{ dataItem?.totalPoints }} -5
-                </p>
-              </td>
-            </tr>
-            </tbody>
-          </ng-container>
-        </table>
-      </div>
-    </div>
-  </div>
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [ngbTooltip]="sumCashMoney| number| vnCurrency"
+                    *ngIf="!dataItem?.chip"
+                  >
+                    {{ sumCashMoney| number| vnCurrency }}
+                  </p>
+								</td>
+								<td class="total-point text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="dataItem?.totalPoints| number| vnCurrency"
+									>
+										{{ dataItem?.totalPoints| number| vnCurrency }}
+									</p>
+								</td>
+							</tr>
+						</tbody>
+					</ng-container>
 
-  <div class="py-5 w-100 d-flex justify-content-center">
+					<ng-container *ngIf='statusLockShift === "CLOSE"'>
+						<tbody>
+							<tr *ngFor="let item of dataSource; let i = index">
+								<td class="code">
+									<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
+										{{ item.code }}
+									</p>
+								</td>
+								<td class="product-name">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.productName"
+									>
+										{{ item.productName }}
+									</p>
+								</td>
+								<td class="employee-name">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.employeeName"
+									>
+										{{ item.employeeName }}
+									</p>
+								</td>
+								<td class="gauge-start text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.gaugeStart| number| vnCurrency"
+									>
+										{{ item.gaugeStart| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="gauge-end text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.gaugeEnd| number| vnCurrency"
+									>
+										{{ item.gaugeEnd| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="quantity-gauge text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.quantityGauge| number| vnCurrency"
+									>
+										{{ item.quantityGauge| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="electronic-start text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.electronicStart| number| vnCurrency"
+									>
+										{{ item.electronicStart| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="electronic-end text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.electronicEnd| number| vnCurrency"
+									>
+										{{ item.electronicEnd| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="quantity-electronic text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.quantityElectronic| number| vnCurrency"
+									>
+										{{ item.quantityElectronic| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="quantity-transaction text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.quantityTransaction| number| vnCurrency"
+									>
+										{{ item.quantityTransaction| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="price text-right">
+									<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.price| number| vnCurrency">
+										{{ item.price| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="total-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.totalMoney| number| vnCurrency"
+									>
+										{{ item.totalMoney| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="total-liter text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.totalLiter| number| vnCurrency"
+									>
+										{{ item.totalLiter| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="provisional-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.provisionalMoney| number| vnCurrency"
+									>
+										{{ item.provisionalMoney| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="limit-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.limitMoney| number| vnCurrency"
+									>
+										{{ item.limitMoney| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="cash-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.cashMoney| number| vnCurrency"
+									>
+										{{ item.cashMoney| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="total-point text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="item.totalPoint| number| vnCurrency"
+									>
+										{{ item.totalPoint| number| vnCurrency }}
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="10"></td>
+								<td class="text-right">Tổng</td>
+								<td class="total-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="dataItem?.totalMoney| number| vnCurrency"
+									>
+										{{ dataItem?.totalMoney| number| vnCurrency }}
+									</p>
+								</td>
+								<td colspan="2" class="total-provisional-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="dataItem?.totalProvisionalMoney| number| vnCurrency"
+									>
+										{{ dataItem?.totalProvisionalMoney| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="total-limit-money text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="dataItem?.totalLimitMoney| number| vnCurrency"
+									>
+										{{ dataItem?.totalLimitMoney| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="total-cash-paid text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="dataItem?.totalCashPaid| number| vnCurrency"
+									>
+										{{ dataItem?.totalCashPaid| number| vnCurrency }}
+									</p>
+								</td>
+								<td class="total-point text-right">
+									<p
+										class="cursor-pointer text-ellipsis"
+										placement="top"
+										[ngbTooltip]="dataItem?.totalPoints| number| vnCurrency"
+									>
+										{{ dataItem?.totalPoints| number| vnCurrency }}
+									</p>
+								</td>
+							</tr>
+						</tbody>
+					</ng-container>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="py-5 w-100 d-flex justify-content-center">
     <button
+      *ngIf='statusLockShift === "CLOSE"'
       class="m-2 btn btn-primary font-weight-bold"
-      (click)='onSubmit()'
+      (click)='nextStep()'
+    >
+      Tiếp theo
+    </button>
+
+    <button
+      *ngIf='statusLockShift !== "CLOSE"'
+      class="m-2 btn btn-primary font-weight-bold"
+      (click)="onSubmit()"
     >
       Xác nhận
     </button>
-  </div>
+	</div>
 </div>
