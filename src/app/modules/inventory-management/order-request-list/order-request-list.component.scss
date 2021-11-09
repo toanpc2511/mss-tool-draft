@@ -32,4 +32,29 @@ table {
       }
     }
   }
+
+  td {
+    p {
+      padding-right: 15px;
+    }
+    &.code {
+      min-width: 120px;
+      max-width: 150px;
+    }
+    &.station-name,
+    &.employee-request,
+    &.employee-approve {
+      min-width: 200px;
+      max-width: 230px;
+    }
+    &.request-date,
+    &.approve-date,
+    &.status{
+      min-width: 170px;
+      max-width: 200px;
+    }
+    &.action {
+      min-width: 120px;
+    }
+  }
 }
