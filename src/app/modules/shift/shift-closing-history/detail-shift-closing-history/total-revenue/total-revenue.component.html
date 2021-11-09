@@ -245,5 +245,13 @@
 		>
 			Xác nhận
 		</button>
+
+		<button
+			class="m-2 btn btn-primary font-weight-bold"
+			(click)="backHome()"
+      *ngIf='statusLockShift === "CLOSE"'
+		>
+			Quay lại
+		</button>
 	</div>
 </div>

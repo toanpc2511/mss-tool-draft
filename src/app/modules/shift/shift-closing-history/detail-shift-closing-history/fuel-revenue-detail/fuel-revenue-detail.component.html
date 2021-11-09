@@ -275,10 +275,10 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalMoney| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalPrice| number| vnCurrency"
 										*ngIf="dataItem?.chip"
 									>
-										{{ dataItem?.totalMoney| number| vnCurrency }}
+										{{ dataItem?.totalPrice| number| vnCurrency }}
 									</p>
 									<p
 										class="cursor-pointer text-ellipsis"
@@ -495,9 +495,9 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalMoney| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalPrice| number| vnCurrency"
 									>
-										{{ dataItem?.totalMoney| number| vnCurrency }}
+										{{ dataItem?.totalPrice| number| vnCurrency }}
 									</p>
 								</td>
 								<td colspan="2" class="total-provisional-money text-right">

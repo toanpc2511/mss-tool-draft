@@ -5,10 +5,9 @@ import {
 } from './modal-confirm-lock-shift/modal-confirm-lock-shift.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil, tap } from 'rxjs/operators';
 import { ITotalMoneyRevenue, ShiftService } from '../../../shift.service';
-import { IFilterUsingPoint } from '../../../../history-of-using-points/history-of-using-points.service';
 import { FileService } from '../../../../../shared/services/file.service';
 
 @Component({
@@ -32,6 +31,7 @@ export class TotalRevenueComponent implements OnInit {
 		private activeRoute: ActivatedRoute,
 		private cdr: ChangeDetectorRef,
 		private shiftService: ShiftService,
+		private router: Router,
     private fileService: FileService
 	) {
 		this.proceeds = new FormControl();
@@ -47,6 +47,7 @@ export class TotalRevenueComponent implements OnInit {
     this.activeRoute.queryParams.subscribe((x) => {
       this.stationId = x.stationId;
       this.shiftId = x.shiftId;
+			this.statusLockShift = x.status;
     });
 
 		this.getTotalMoneyRevenue();
@@ -101,4 +102,8 @@ export class TotalRevenueComponent implements OnInit {
       )
       .subscribe();
   }
+
+	backHome() {
+		this.router.navigate([`/ca-lam-viec/lich-su-chot-ca`]);
+	}
 }
