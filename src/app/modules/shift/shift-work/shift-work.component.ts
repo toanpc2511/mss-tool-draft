@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import {
 	AfterViewInit,
 	ApplicationRef,
@@ -194,7 +195,7 @@ export class DayWrapperComponent implements OnInit {
 	styleUrls: ['./shift-work.component.scss'],
 	providers: [DestroyService]
 })
-export class ShiftWorkComponent implements OnInit, AfterViewInit {
+export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterViewInit {
 	// Get calendar to use FullCalendar API
 	@ViewChild('calendar') calendarComponent: FullCalendarComponent;
 	calendarApi: CalendarApi;
@@ -301,7 +302,9 @@ export class ShiftWorkComponent implements OnInit, AfterViewInit {
 		private resolver: ComponentFactoryResolver,
 		private injector: Injector,
 		private appRef: ApplicationRef
-	) {}
+	) {
+		super();
+	}
 	ngAfterViewInit(): void {
 		const toggleOffsetBar = document.getElementById('kt_aside_toggle');
 		toggleOffsetBar.addEventListener('click', () => {

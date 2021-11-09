@@ -1,3 +1,5 @@
+import { AuthService } from './../../auth/services/auth.service';
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -22,7 +24,7 @@ import { EmployeeService, IDepartment, IEmployee, IPosition } from '../employee.
 	styleUrls: ['./list-employee.component.scss'],
 	providers: [DestroyService]
 })
-export class ListEmployeeComponent implements OnInit {
+export class ListEmployeeComponent extends BaseComponent implements OnInit {
 	searchFormControl: FormControl = new FormControl();
 	sortData: SortState;
 	status = LIST_STATUS;
@@ -40,8 +42,10 @@ export class ListEmployeeComponent implements OnInit {
 		private destroy$: DestroyService,
 		private modalService: NgbModal,
 		private router: Router,
-		private toastr: ToastrService
+		private toastr: ToastrService,
+		private authService: AuthService
 	) {
+		super();
 		this.init();
 	}
 
@@ -179,6 +183,10 @@ export class ListEmployeeComponent implements OnInit {
 	}
 
 	viewDetailEmployee(employeeId: number) {
+		// Phân quyền xem chi tiết
+		if(!this.currentActions.includes(this.eAuthorize.VIEW_EMPLOYEE_DETAIL_SCREEN)) {
+			return;
+		} 
 		this.router.navigate([`/nhan-vien/danh-sach/chi-tiet/${employeeId}`]);
 	}
 

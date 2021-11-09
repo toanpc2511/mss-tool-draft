@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -29,7 +30,7 @@ import { FileService } from 'src/app/shared/services/file.service';
 	styleUrls: ['./transaction-history.component.scss'],
 	providers: [DestroyService]
 })
-export class TransactionHistoryComponent implements OnInit {
+export class TransactionHistoryComponent extends BaseComponent implements OnInit {
 	dataProduct: Array<IProduct> = [];
 	paymentMethods: Array<IPaymentMethod> = [];
 	stationEmployee: Array<IStationEployee> = [];
@@ -61,6 +62,7 @@ export class TransactionHistoryComponent implements OnInit {
 		private fb: FormBuilder,
 		private fileService: FileService
 	) {
+		super();
 		this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
 		this.today = moment().format('DD/MM/YYYY');
 		this.init();
@@ -238,6 +240,9 @@ export class TransactionHistoryComponent implements OnInit {
 	}
 
 	viewModal($event?: Event, data?: IDataTransfer): void {
+		if(!this.currentActions.includes(this.eAuthorize.VIEW_TRANSACTION_HISTORY_DETAIL_BUTTON)) {
+			return;
+		}
 		if ($event) {
 			$event.stopPropagation();
 		}

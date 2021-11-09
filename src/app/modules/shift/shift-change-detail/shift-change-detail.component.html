@@ -9,7 +9,10 @@
 			<tbody>
 				<tr>
 					<td class="column-1">Nhân viên xin đổi ca</td>
-					<td>{{shiftChangeRequestData?.employeeCodeFrom}} - {{shiftChangeRequestData?.employeeNameFrom}}</td>
+					<td>
+						{{shiftChangeRequestData?.employeeCodeFrom}} -
+						{{shiftChangeRequestData?.employeeNameFrom}}
+					</td>
 					<td class="column-2">Ngày muốn đổi</td>
 					<td>{{shiftChangeRequestData?.dateTo | date: 'dd/MM/yyyy'}}</td>
 				</tr>
@@ -23,7 +26,9 @@
 					<td class="column-1">Ca đổi</td>
 					<td>{{shiftChangeRequestData?.shiftName}}</td>
 					<td class="column-2">Nhân viên đổi ca</td>
-					<td>{{shiftChangeRequestData?.employeeCodeTo}} - {{shiftChangeRequestData?.employeeNameTo}}</td>
+					<td>
+						{{shiftChangeRequestData?.employeeCodeTo}} - {{shiftChangeRequestData?.employeeNameTo}}
+					</td>
 				</tr>
 				<tr>
 					<td class="column-1">Lý do đổi ca</td>
@@ -36,9 +41,14 @@
 			<tbody>
 				<tr>
 					<td class="column-1">Nhân viên xin thay ca</td>
-					<td>{{shiftChangeRequestData?.employeeCodeFrom}} - {{shiftChangeRequestData?.employeeNameFrom}}</td>
+					<td>
+						{{shiftChangeRequestData?.employeeCodeFrom}} -
+						{{shiftChangeRequestData?.employeeNameFrom}}
+					</td>
 					<td class="column-2">Nhân viên thay ca</td>
-					<td>{{shiftChangeRequestData?.employeeCodeTo}} - {{shiftChangeRequestData?.employeeNameTo}}</td>
+					<td>
+						{{shiftChangeRequestData?.employeeCodeTo}} - {{shiftChangeRequestData?.employeeNameTo}}
+					</td>
 				</tr>
 				<tr>
 					<td class="column-1">Ngày trực</td>
@@ -74,7 +84,7 @@
 			type="button"
 			class="btn btn-outline-primary mr-3"
 			(click)="openRejectRequestModal()"
-			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING"
+			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING && (eAuthorize.REJECT_SWAP_SHIFT_BUTTON|canUseFeature)"
 		>
 			Từ chối
 		</button>
@@ -82,7 +92,7 @@
 			type="button"
 			class="btn btn-primary mr-3"
 			(click)="openApproveRequestModal()"
-			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING"
+			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING && (eAuthorize.ACCEPT_SWAP_SHIFT_BUTTON|canUseFeature)"
 		>
 			Phê duyệt
 		</button>
