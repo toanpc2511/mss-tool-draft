@@ -1,3 +1,5 @@
+import { BaseComponent } from 'src/app/shared/components/base/base.component';
+import { AuthService } from './../../auth/services/auth.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
@@ -18,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 	styleUrls: ['./shift-closing-history.component.scss'],
 	providers: [FormBuilder]
 })
-export class ShiftClosingHistoryComponent implements OnInit {
+export class ShiftClosingHistoryComponent extends BaseComponent implements OnInit {
 	searchForm: FormGroup;
 	today: string;
 	dataSource: ILockShift[] = [];
@@ -36,6 +38,7 @@ export class ShiftClosingHistoryComponent implements OnInit {
 		private cdr: ChangeDetectorRef,
 		private toastr: ToastrService
 	) {
+    super();
 		this.today = moment().format('DD/MM/YYYY');
 
 		this.paginatorState.page = 1;

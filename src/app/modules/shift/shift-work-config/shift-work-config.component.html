@@ -15,7 +15,14 @@
 					[formControl]="searchFormControl"
 				/>
 			</div>
-			<button type="button" class="btn btn-primary" (click)="createModal()">Thêm mới</button>
+			<button
+				type="button"
+				class="btn btn-primary"
+				(click)="createModal()"
+				*ngIf="eAuthorize.CREATE_SHIFT_CONFIG_BUTTON|canUseFeature"
+			>
+				Thêm mới
+			</button>
 		</div>
 	</div>
 	<div class="card-body">
@@ -86,6 +93,7 @@
 							<a
 								(click)="createModal($event, item)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								*ngIf="eAuthorize.UPDATE_SHIFT_CONFIG_BUTTON|canUseFeature"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -98,6 +106,7 @@
 							<a
 								(click)="deleteShiftConfig($event, item)"
 								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+								*ngIf="eAuthorize.DELETE_SHIFT_CONFIG_BUTTON|canUseFeature"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"

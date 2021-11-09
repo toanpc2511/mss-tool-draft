@@ -61,6 +61,9 @@ export class FuelRevenueDetailComponent implements OnInit {
 					} else {
 						this.dataSourceForm = this.dataSourceTemp = this.convertToFormArray(res.data);
 						this.dataItem = this.dataSourceForm?.controls[0].value;
+
+            this.sumTotalMoney = this.dataSourceForm?.controls[0].value.totalPrice;
+            this.sumCashMoney = this.dataSourceForm?.controls[0].value.totalCashPaid;
 						this.cdr.detectChanges();
 					}
 				}),
