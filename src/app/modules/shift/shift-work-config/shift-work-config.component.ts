@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +24,7 @@ import { DestroyService } from '../../../shared/services/destroy.service';
 	styleUrls: ['./shift-work-config.component.scss'],
 	providers: [SortService, FilterService, DestroyService]
 })
-export class ShiftWorkConfigComponent implements OnInit {
+export class ShiftWorkConfigComponent extends BaseComponent implements OnInit {
 	searchFormControl: FormControl;
 	dataSource: Array<IShiftConfig>;
 	dataSourceTemp: Array<IShiftConfig>;
@@ -43,6 +44,7 @@ export class ShiftWorkConfigComponent implements OnInit {
 		private destroy$: DestroyService,
 		private shiftService: ShiftService
 	) {
+		super();
 		this.dataSource = this.dataSourceTemp = [];
 		this.sorting = sortService.sorting;
 		this.filterField = new FilterField({

@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -38,7 +39,8 @@ import { NgSelectModule } from 'src/app/shared/components/ng-select/public-api';
 		ReactiveFormsModule,
 		InputTrimModule,
 		DirectivesModule,
-		PipesModule
+		PipesModule,
+		AuthModule
 	]
 })
 export class TransactionModule {}

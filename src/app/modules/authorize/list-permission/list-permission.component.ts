@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,7 +21,7 @@ import { PermissionService } from '../permission.service';
 	styleUrls: ['./list-permission.component.scss'],
 	providers: [SortService, FilterService, DestroyService]
 })
-export class ListPermissionComponent implements OnInit {
+export class ListPermissionComponent extends BaseComponent implements OnInit {
 	searchFormControl: FormControl = new FormControl();
 	dataSource: Array<IRole> = [];
 	dataSourceTemp: Array<IRole> = [];
@@ -37,6 +38,7 @@ export class ListPermissionComponent implements OnInit {
 		private router: Router,
 		private toastr: ToastrService
 	) {
+		super();
 		this.sorting = sortService.sorting;
 	}
 

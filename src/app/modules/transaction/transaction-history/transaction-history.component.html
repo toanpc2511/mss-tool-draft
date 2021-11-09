@@ -171,7 +171,7 @@
 		</div>
 
 		<div class="card-toolbar row" *ngIf="totalRecord > 0">
-			<a (click)="exportFileExcel()">
+			<a (click)="exportFileExcel()" *ngIf="eAuthorize.EXPORT_FILE_TRANSATION_HISTORY_BUTTON|canUseFeature">
 				<button type="button" class="btn btn-primary btn-def">Xuất file</button>
 			</a>
 		</div>

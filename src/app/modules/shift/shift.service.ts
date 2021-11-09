@@ -110,6 +110,7 @@ export interface IDataEventCalendar {
 
 export interface IShiftRequestChange {
 	id: string;
+	employeeIdFrom: string;
 	employeeCodeFrom: string;
 	employeeNameFrom: string;
 	employeeCodeTo: string;
@@ -514,20 +515,20 @@ export class ShiftService {
 		return this.http.get<IShiftRequestChange>(`swap-shifts/${id}`);
 	}
 
-	approveShiftRequestChange(id: string, type: EShiftChangRequestType, employeeCodeFrom: string) {
+	approveShiftRequestChange(id: string, type: EShiftChangRequestType, employeeIdFrom: string) {
 		return this.http.put(`swap-shifts/status/${id}`, {
 			status: type === EShiftChangRequestType.CHANGE ? 'SWAPPED' : 'REPLACED',
 			type,
-			employeeCodeFrom
+			employeeIdCreate: employeeIdFrom
 		});
 	}
 
-	rejectShiftRequestChange(id: string, reason: string, type: EShiftChangRequestType, employeeCodeFrom: string) {
+	rejectShiftRequestChange(id: string, reason: string, type: EShiftChangRequestType, employeeIdFrom: string) {
 		return this.http.put(`swap-shifts/status/${id}`, {
 			status: EShiftChangRequestStatus.REJECTED,
 			reason,
 			type,
-			employeeCodeFrom
+			employeeIdCreate: employeeIdFrom
 		});
 	}
 }

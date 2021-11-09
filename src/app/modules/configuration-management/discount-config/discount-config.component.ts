@@ -115,7 +115,7 @@ export class DiscountConfigComponent extends BaseComponent implements OnInit {
 			.updateDiscountConfig({
 				discountRequests: this.dataSource.getRawValue().map((d) => ({
 					id: d.id,
-					discount: Number(d.discount)
+					discount: convertMoney(d.discount)
 				}))
 			})
 			.subscribe(
