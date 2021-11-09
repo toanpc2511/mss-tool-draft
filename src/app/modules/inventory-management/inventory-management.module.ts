@@ -16,9 +16,11 @@ import { NgSelectModule } from 'src/app/shared/components/ng-select/public-api';
 import { InventoryManagementRoutingModule } from './inventory-management-routing.module';
 import { InventoryManagementComponent } from './inventory-management.component';
 import { OrderRequestListComponent } from './order-request-list/order-request-list.component';
+import { OrderDetailsComponent } from './order-request-list/order-details/order-details.component';
+import { CreateOrderComponent } from './order-request-list/create-order/create-order.component';
 
 @NgModule({
-  declarations: [InventoryManagementComponent, OrderRequestListComponent],
+  declarations: [InventoryManagementComponent, OrderRequestListComponent, OrderDetailsComponent, CreateOrderComponent],
   imports: [
     CommonModule,
     InventoryManagementRoutingModule,

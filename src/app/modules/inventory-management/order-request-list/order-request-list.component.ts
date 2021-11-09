@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { InventoryManagementService } from '../inventory-management.service';
 import * as moment from 'moment';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-request-list',
@@ -19,7 +20,8 @@ export class OrderRequestListComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private inventoryManagementService: InventoryManagementService
+    private inventoryManagementService: InventoryManagementService,
+    private router: Router,
   ) {
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
@@ -54,6 +56,9 @@ export class OrderRequestListComponent implements OnInit {
     this.searchForm.get('endAt').patchValue(this.today);
   }
 
+  createOrder() {
+    this.router.navigate(['/kho/yeu-cau-dat-hang/them-moi']);
+  }
 
   onSearch() {}
 
@@ -65,7 +70,5 @@ export class OrderRequestListComponent implements OnInit {
     this.paginatorState = $event as PaginatorState;
     this.onSearch();
   }
-
-  createModal() {}
 
 }
