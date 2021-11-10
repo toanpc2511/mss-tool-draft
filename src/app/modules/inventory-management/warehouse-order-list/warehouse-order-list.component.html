@@ -133,36 +133,36 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.employeeRequest"
+								[ngbTooltip]="item.senderName"
 							>
-								{{ item.employeeRequest }}
+								{{ item.senderName }}
 							</p>
 						</td>
 						<td class="request-date">
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.requestDate | date: 'dd/MM/yyyy'"
+								[ngbTooltip]="item.submitDate | date: 'dd/MM/yyyy'"
 							>
-								{{ item.requestDate | date: 'dd/MM/yyyy' }}
+								{{ item.submitDate | date: 'dd/MM/yyyy' }}
 							</p>
 						</td>
 						<td class="employee-approve">
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.employeeApprove"
+								[ngbTooltip]="item.acceptorName"
 							>
-								{{ item.employeeApprove }}
+								{{ item.acceptorName }}
 							</p>
 						</td>
 						<td class="approve-date">
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.approveDate | date: 'dd/MM/yyyy'"
+								[ngbTooltip]="item.approvalDate | date: 'dd/MM/yyyy'"
 							>
-								{{ item.approveDate | date: 'dd/MM/yyyy' }}
+								{{ item.approvalDate | date: 'dd/MM/yyyy' }}
 							</p>
 						</td>
 						<td class="status">
