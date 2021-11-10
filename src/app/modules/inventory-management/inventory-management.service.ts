@@ -41,7 +41,31 @@ export interface IFilterWarehouseOrder {
 
 export interface IWarehouseOrderRequest {
 	id: string;
-  status: EWarehouseOrderStatus;
+	acceptorName: string;
+	approvalDate: string;
+	capacity: number;
+	code: string;
+	driver: {
+		id: string;
+		name: string;
+	};
+	freightCharges: number;
+	importRequestId: number;
+	internalCar: true;
+	licensePlates: string;
+	orderForm: 'SUPPLIER' | '';
+	paymentMethod: 'MONEY';
+	senderName: string;
+	stationName: string;
+	storeExport: {
+		id: string;
+		name: string;
+		address: string;
+	};
+	submitDate: string;
+	transportCost: number;
+	vehicleCostMethod: 'MONEY';
+	status: EWarehouseOrderStatus;
 }
 
 @Injectable({
@@ -90,6 +114,6 @@ export class InventoryManagementService {
 			.set('employee-id', data.employeeId.toString())
 			.set('date-from', data.dateFrom)
 			.set('date-to', data.dateTo);
-		return this.http.get<IWarehouseOrderRequest>('warehouse_orders/filters', { params });
+		return this.http.get<IWarehouseOrderRequest[]>('warehouse_orders/filters', { params });
 	}
 }

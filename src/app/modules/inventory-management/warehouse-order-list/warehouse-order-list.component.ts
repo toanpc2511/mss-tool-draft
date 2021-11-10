@@ -13,7 +13,7 @@ import { convertDateToServer } from '../../../shared/helpers/functions';
 import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { LIST_STATUS_ORDER_REQUEST } from '../../../shared/data-enum/list-status';
-import { IEmployees, InventoryManagementService, IFilterTransaction, IFilterWarehouseOrder, EWarehouseOrderStatus } from '../inventory-management.service';
+import { IEmployees, InventoryManagementService, IFilterTransaction, IFilterWarehouseOrder, EWarehouseOrderStatus, IWarehouseOrderRequest } from '../inventory-management.service';
 
 @Component({
   selector: 'app-warehouse-order-list',
@@ -26,7 +26,7 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
   firstDayOfMonth: string;
   paginatorState = new PaginatorState();
   searchForm: FormGroup;
-  dataSource;
+  dataSource: IWarehouseOrderRequest[];
   stationEmployee: Array<IStationEployee> = [];
   listEmployees: Array<IEmployees> = [];
   eStatus = EWarehouseOrderStatus;
