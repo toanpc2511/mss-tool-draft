@@ -9,7 +9,7 @@ import { DestroyService } from '../../../shared/services/destroy.service';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { GasStationResponse, GasStationService } from '../../gas-station/gas-station.service';
 import { IProduct, ProductService } from '../../product/product.service';
-import { IFilterUsingPoints, IPaymentMethod, UsingPointsService } from '../using-points.service';
+import { IFilterUsingPoints, IHistoryUsingPoint, IPaymentMethod, UsingPointsService } from '../using-points.service';
 
 @Component({
 	selector: 'app-history-using-points',
@@ -26,7 +26,7 @@ export class HistoryUsingPointsComponent implements OnInit {
 	firstDayOfMonth: string;
 
 	paginatorState = new PaginatorState();
-	dataSource;
+	dataSource: IHistoryUsingPoint[] = [];
 
 	searchForm: FormGroup;
 	totalLiters: number;
@@ -36,6 +36,8 @@ export class HistoryUsingPointsComponent implements OnInit {
 	totalPaymentMoney: number;
 	totalRecord: number;
 	categoryId = 0;
+  totalAccumulationPointUse: number;
+  totalAccumulationPointReceive: number;
 
 	constructor(
 		private modalService: NgbModal,
@@ -79,9 +81,9 @@ export class HistoryUsingPointsComponent implements OnInit {
 	buildForm() {
 		this.searchForm = this.fb.group({
 			orderCode: [''],
-			product: [''],
-			station: [''],
-			payMethod: [''],
+      productName: [''],
+      stationName: [''],
+      paymentMethod: [''],
 			phone: [''],
 			userName: [''],
 			endAt: [],
@@ -134,9 +136,28 @@ export class HistoryUsingPointsComponent implements OnInit {
 	}
 
 	onSearch() {
-		const filterData: IFilterUsingPoints = this.getFilterData();
+    const filterData: IFilterUsingPoints = this.getFilterData();
 
-		console.log(filterData);
+    this.usingPointsService
+      .searchHistoryUsingPoints(this.paginatorState.page, this.paginatorState.pageSize, filterData)
+      .subscribe((res) => {
+        if (res.data) {
+          this.dataSource = res.data;
+          if (this.dataSource.length > 0) {
+            this.totalRecord = this.dataSource[0].total;
+            this.totalAccumulationPointUse = this.dataSource[0].totalAccumulationPointUse;
+            this.totalAccumulationPointReceive = this.dataSource[0].totalAccumulationPointReceive;
+          } else {
+            this.totalRecord = 0;
+            this.totalAccumulationPointUse = 0;
+            this.totalAccumulationPointReceive = 0;
+          }
+
+          this.totalRecord = res.meta.total;
+          this.paginatorState.recalculatePaginator(res.meta.total);
+          this.cdr.detectChanges();
+        }
+      });
 	}
 
 	exportFileExcel() {

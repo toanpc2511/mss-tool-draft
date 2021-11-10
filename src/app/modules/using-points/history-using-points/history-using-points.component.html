@@ -23,7 +23,7 @@
 
 				<div class="col-lg-4">
 					<label>Loại nhiên liệu</label>
-					<select class="form-control form-control-solid" formControlName="product">
+					<select class="form-control form-control-solid" formControlName="productName">
 						<option [value]="''">Tất cả</option>
 						<option *ngFor="let item of dataProduct" [value]="item.name">{{item.name}}</option>
 					</select>
@@ -31,7 +31,7 @@
 
 				<div class="col-lg-4">
 					<label>Trạm</label>
-					<select class="form-control form-control-solid" formControlName="station">
+					<select class="form-control form-control-solid" formControlName="stationName">
 						<option [value]="''">Tất cả</option>
 						<option *ngFor="let item of stations" [value]="item.name">{{item.name}}</option>
 					</select>
@@ -95,7 +95,7 @@
 
 				<div class="col-lg-4">
 					<label>Hình thức thanh toán</label>
-					<select class="form-control form-control-solid" formControlName="payMethod">
+					<select class="form-control form-control-solid" formControlName="paymentMethod">
 						<option [value]="''">Tất cả</option>
 						<option *ngFor="let item of paymentMethods" [value]="item.code">{{ item.name }}</option>
 					</select>
@@ -139,15 +139,15 @@
 		</div>
 
 		<div class="form-group row search-result">
-			<p class="item">Tổng số <strong>{{totalRecord}} giao dịch</strong></p>
-			<p class="item">
-				<em class="fas fa-circle"></em>Tổng điểm tích:
-				<strong>{{totalLiters?.toLocaleString("en-US")}}</strong>
-			</p>
-			<p class="item">
-				<em class="fas fa-circle"></em>Tổng điểm tiêu:
-				<strong>{{totalMoney?.toLocaleString("en-US")}}</strong>
-			</p>
+      <p class="item">Tổng số <strong>{{totalRecord}} giao dịch</strong></p>
+      <p class="item">
+        <em class="fas fa-circle"></em>Tổng điểm tích:
+        <strong>{{totalAccumulationPointReceive?.toLocaleString("en-US")}} </strong>
+      </p>
+      <p class="item">
+        <em class="fas fa-circle"></em>Tổng điểm tiêu:
+        <strong>{{totalAccumulationPointUse?.toLocaleString("en-US")}}</strong>
+      </p>
 		</div>
 	</div>
 </div>
@@ -169,16 +169,90 @@
 		<div class="table-responsive angular-bootstrap-table">
 			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
 				<thead>
-					<th scope="">Mã đơn hàng</th>
-					<th scope="">Thời gian</th>
-					<th scope="">Trạm</th>
-					<th scope="">SĐT tài xế</th>
-					<th scope="">Tên tài xế</th>
-					<th scope="">Loại nhiên liệu</th>
-					<th scope="">Hình thức thanh toán</th>
-					<th scope="">Điểm tích</th>
-					<th scope="">Điểm tiêu</th>
+					<th scope="" class='oder-code'>Mã đơn hàng</th>
+					<th scope="" class='created-at'>Thời gian</th>
+					<th scope="" class='station-name'>Trạm</th>
+					<th scope="" class='phone'>SĐT tài xế</th>
+					<th scope="" class='name-driver'>Tên tài xế</th>
+					<th scope="" class='product-name'>Loại nhiên liệu</th>
+					<th scope="" class='payment-method-name'>Hình thức thanh toán</th>
+					<th scope="" class='accumulation-point-receive text-right'>Điểm tích</th>
+					<th scope="" class='accumulation-point-use text-right'>Điểm tiêu</th>
 				</thead>
+
+        <tbody>
+        <tr *ngFor="let item of dataSource">
+          <td class="oder-code">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.oderCode">
+              {{ item.oderCode }}
+            </p>
+          </td>
+          <td class="created-at">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.createdAt">
+              {{ item.createdAt }}
+            </p>
+          </td>
+          <td class="station-name">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.stationName"
+            >
+              {{ item.stationName }}
+            </p>
+          </td>
+          <td class="phone">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.phone">
+              {{ item.phone }}
+            </p>
+          </td>
+          <td class="name-driver">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.nameDriver"
+            >
+              {{ item.nameDriver }}
+            </p>
+          </td>
+          <td class="product-name">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.productName"
+            >
+              {{ item.productName }}
+            </p>
+          </td>
+          <td class="payment-method-name">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.paymentMethodName"
+            >
+              {{ item.paymentMethodName }}
+            </p>
+          </td>
+          <td class="accumulation-point-receive text-right">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.accumulationPointReceive.toLocaleString('en-US')"
+            >
+              {{ item.accumulationPointReceive.toLocaleString('en-US') }}
+            </p>
+          </td>
+          <td class="accumulation-point-use text-right">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.accumulationPointUse.toLocaleString('en-US')"
+            >
+              {{ item.accumulationPointUse.toLocaleString('en-US') }}
+            </p>
+          </td>
+        </tr>
+        </tbody>
 
 				<tfoot *ngIf="dataSource?.length === 0">
 					<tr>
