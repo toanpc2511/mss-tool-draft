@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
@@ -12,7 +13,7 @@ import { convertDateToServer } from '../../../shared/helpers/functions';
 import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { LIST_STATUS_ORDER_REQUEST } from '../../../shared/data-enum/list-status';
-import { IEmployees, InventoryManagementService, IFilterTransaction, IFilterWarehouseOrder } from '../inventory-management.service';
+import { IEmployees, InventoryManagementService, IFilterTransaction, IFilterWarehouseOrder, EWarehouseOrderStatus } from '../inventory-management.service';
 
 @Component({
   selector: 'app-warehouse-order-list',
@@ -20,7 +21,7 @@ import { IEmployees, InventoryManagementService, IFilterTransaction, IFilterWare
   styleUrls: ['./warehouse-order-list.component.scss'],
   providers: [FormBuilder, DestroyService]
 })
-export class WareHouseOrderListComponent implements OnInit {
+export class WareHouseOrderListComponent extends BaseComponent implements OnInit {
   today: string;
   firstDayOfMonth: string;
   paginatorState = new PaginatorState();
@@ -28,7 +29,7 @@ export class WareHouseOrderListComponent implements OnInit {
   dataSource;
   stationEmployee: Array<IStationEployee> = [];
   listEmployees: Array<IEmployees> = [];
-  listStatus = LIST_STATUS_ORDER_REQUEST;
+  eStatus = EWarehouseOrderStatus;
 
   constructor(
     private fb: FormBuilder,
@@ -38,6 +39,7 @@ export class WareHouseOrderListComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
   ) {
+    super();
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
     this.init();
@@ -73,8 +75,8 @@ export class WareHouseOrderListComponent implements OnInit {
   }
 
   initDate() {
-    this.searchForm.get('expectedDate').patchValue(this.firstDayOfMonth);
-    this.searchForm.get('approvalDate').patchValue(this.today);
+    this.searchForm.get('dateFrom').patchValue(this.firstDayOfMonth);
+    this.searchForm.get('dateTo').patchValue(this.today);
   }
 
   getStationEmployee() {
