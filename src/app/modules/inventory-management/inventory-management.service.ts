@@ -24,6 +24,14 @@ export interface IFilterTransaction {
   approvalDate: string;
 }
 
+export interface IFilterWarehouseOrder {
+  status: string;
+  stationId: number;
+  employeeId: number;
+  dateFrom: string;
+  dateTo: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -61,4 +69,17 @@ export class InventoryManagementService {
     return this.http.get('import-request/filters', { params });
   }
 
+  // Danh sách yêu cầu đặt kho
+  searchWarehouseOrderRequest(page: number, size: number, data: IFilterWarehouseOrder) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('status', data.status)
+      .set('station-id', data.stationId.toString())
+      .set('employee-id', data.employeeId.toString())
+      .set('date-from', data.dateFrom)
+      .set('date-to', data.dateTo);
+
+    return this.http.get('warehouse_orders/filters', { params });
+  }
 }
