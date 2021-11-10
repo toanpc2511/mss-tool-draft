@@ -173,18 +173,18 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.finalInventory.toLocaleString('en-US')"
+										[ngbTooltip]="item.price.toLocaleString('en-US')"
 									>
-										{{ item.finalInventory.toLocaleString('en-US') }}
+										{{ item.price.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.finalInventory.toLocaleString('en-US')"
+										[ngbTooltip]="item.totalMoney.toLocaleString('en-US')"
 									>
-										{{ item.finalInventory.toLocaleString('en-US') }}
+										{{ item.totalMoney.toLocaleString('en-US') }}
 									</p>
 								</td>
 							</tr>
@@ -198,7 +198,6 @@
 					</ng-container>
 				</table>
 			</div>
-			<app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
 		</div>
 	</div>
 

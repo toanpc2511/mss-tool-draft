@@ -38,8 +38,6 @@ export class TotalRevenueComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.proceeds.setValue(false);
-
     this.activeRoute.params.subscribe((res) => {
       this.lockShiftId = res.lockShiftId;
     });
@@ -48,6 +46,13 @@ export class TotalRevenueComponent implements OnInit {
       this.stationId = x.stationId;
       this.shiftId = x.shiftId;
 			this.statusLockShift = x.status;
+
+			if (this.statusLockShift === "CLOSE") {
+				this.proceeds.setValue(true);
+				this.proceeds.disable({onlySelf: false, emitEvent: false});
+			} else {
+				this.proceeds.setValue(false);
+			}
     });
 
 		this.getTotalMoneyRevenue();
