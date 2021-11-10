@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,9 +19,11 @@ import { InventoryManagementComponent } from './inventory-management.component';
 import { OrderRequestListComponent } from './order-request-list/order-request-list.component';
 import { OrderDetailsComponent } from './order-request-list/order-details/order-details.component';
 import { CreateOrderComponent } from './order-request-list/create-order/create-order.component';
+import { WareHouseOrderListComponent } from './warehouse-order-list/warehouse-order-list.component';
+import { WareHouseOrderDetailComponent } from './warehouse-order-list/warehouse-order-detail/warehouse-order-detail.component';
 
 @NgModule({
-  declarations: [InventoryManagementComponent, OrderRequestListComponent, OrderDetailsComponent, CreateOrderComponent],
+  declarations: [InventoryManagementComponent, OrderRequestListComponent, OrderDetailsComponent, CreateOrderComponent, WareHouseOrderListComponent, WareHouseOrderDetailComponent],
   imports: [
     CommonModule,
     InventoryManagementRoutingModule,
@@ -35,7 +38,8 @@ import { CreateOrderComponent } from './order-request-list/create-order/create-o
     ReactiveFormsModule,
     InputTrimModule,
     DirectivesModule,
-    PipesModule
+    PipesModule,
+    AuthModule
   ]
 })
 export class InventoryManagementModule {}

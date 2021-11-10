@@ -78,10 +78,22 @@
 			</form>
 		</div>
 		<div class="row justify-content-center w-100">
-			<button type="button" class="btn btn-outline-secondary btn-dialog mr-6" (click)="cancel()">
+			<button
+				type="button"
+				class="btn btn-outline-secondary btn-dialog mr-6"
+				(click)="cancel()"
+				*ngIf="eAuthorize.UPDATE_RANK_BUTTON|canUseFeature"
+			>
 				Hủy
 			</button>
-			<button type="button" class="btn btn-primary btn-dialog" (click)="onSubmit()" *ngIf="eAuthorize.UPDATE_RANK_BUTTON|canUseFeature">Lưu</button>
+			<button
+				type="button"
+				class="btn btn-primary btn-dialog"
+				(click)="onSubmit()"
+				*ngIf="eAuthorize.UPDATE_RANK_BUTTON|canUseFeature"
+			>
+				Lưu
+			</button>
 		</div>
 	</div>
 </div>

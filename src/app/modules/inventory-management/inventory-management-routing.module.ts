@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { OrderRequestListComponent } from './order-request-list/order-request-list.component';
 import { OrderDetailsComponent } from './order-request-list/order-details/order-details.component';
 import { CreateOrderComponent } from './order-request-list/create-order/create-order.component';
+import { WareHouseOrderListComponent } from './warehouse-order-list/warehouse-order-list.component';
+import { WareHouseOrderDetailComponent } from './warehouse-order-list/warehouse-order-detail/warehouse-order-detail.component';
 
 const routes: Routes = [
   {
@@ -34,7 +36,16 @@ const routes: Routes = [
   },
   {
     path: 'don-dat-kho',
-    component: OrderRequestListComponent,
+    children: [
+      {
+        path: '',
+        component: WareHouseOrderListComponent,
+      },
+      {
+        path: 'chi-tiet/:id',
+        component: WareHouseOrderDetailComponent,
+      }
+    ]
   }
 ];
 
