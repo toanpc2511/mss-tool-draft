@@ -17,14 +17,31 @@ export interface IEmployees {
 }
 
 export interface IFilterUsingPoints {
-	orderCode: string;
-	product: string;
-	station: string;
-	payMethod: string;
-	phone: string;
-	startAt: string;
-	endAt: string;
-	userName: string;
+  orderCode: string;
+  startAt: string;
+  endAt: string;
+  stationName: string;
+  userName: string;
+  phone: string;
+  paymentMethod: string;
+  productName: string;
+}
+
+export interface IHistoryUsingPoint {
+  accumulationPointReceive: number;
+  accumulationPointUse: number;
+  createdAt: string;
+  nameDriver: string;
+  oderCode: string;
+  oderId: number;
+  paymentMethod: string;
+  paymentMethodName: string;
+  phone: string;
+  productName: string;
+  stationName: string;
+  total: number;
+  totalAccumulationPointReceive: number;
+  totalAccumulationPointUse: number;
 }
 
 @Injectable({
@@ -39,32 +56,32 @@ export class UsingPointsService {
 	}
 
 	// Tìm kiếm giao dịch
-	searchTransaction(page: number, size: number, data: IFilterUsingPoints) {
-		const params = new HttpParams()
-			.set('page', page.toString())
-			.set('size', size.toString())
-			.set('order-code', data.orderCode)
-			.set('product-name', data.product)
-			.set('station-name', data.station)
-			.set('payment-method', data.payMethod)
-			.set('phone', data.phone)
-			.set('start-at', data.startAt)
-			.set('end-at', data.endAt)
-			.set('user-name', data.userName);
-		return this.http.get('order/filters-enterprises', { params });
-	}
+  searchHistoryUsingPoints(page: number, size: number, data: IFilterUsingPoints) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('order-code', data.orderCode)
+      .set('phone', data.phone)
+      .set('start-at', data.startAt)
+      .set('end-at', data.endAt)
+      .set('payment-method', data.paymentMethod)
+      .set('product-name', data.productName)
+      .set('station-name', data.stationName)
+      .set('user-name', data.userName);
+		return this.http.get<Array<IHistoryUsingPoint>>('payments/methods/histories/accumulate/driver', { params });
+  }
 
 	exportFileExcel(data: IFilterUsingPoints) {
 		const params = new HttpParams()
-			.set('order-code', data.orderCode)
-			.set('product-name', data.product)
-			.set('station-name', data.station)
-			.set('payment-method', data.payMethod)
-			.set('phone-driver', data.phone)
-			.set('start-at', data.startAt)
-			.set('end-at', data.endAt)
-			.set('user-name', data.userName);
-		return this.http.getFileUrl<string>(`order/filters-enterprises/excels`, {
+      .set('order-code', data.orderCode)
+      .set('phone', data.phone)
+      .set('start-at', data.startAt)
+      .set('end-at', data.endAt)
+      .set('payment-method', data.paymentMethod)
+      .set('product-name', data.productName)
+      .set('station-name', data.stationName)
+      .set('user-name', data.userName);
+		return this.http.getFileUrl<string>(`payments/methods/histories/accumulate/driver/excel`, {
 			params
 		});
 	}
