@@ -68,6 +68,18 @@ export interface IWarehouseOrderRequest {
 	status: EWarehouseOrderStatus;
 }
 
+export interface IGasFuel {
+  capacity: string;
+  code: string;
+  description: null
+  height: string;
+  id: number;
+  length: string;
+  name: string;
+  productId: number;
+  status: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -116,4 +128,18 @@ export class InventoryManagementService {
 			.set('date-to', data.dateTo);
 		return this.http.get<IWarehouseOrderRequest[]>('warehouse_orders/filters', { params });
 	}
+  // Lấy ds bồn theo trạm và loại nhiên liệu
+  getListGasFuel(productId: number | string, gasStationId: number | string) {
+    const params = new HttpParams()
+      .set('product-id', productId.toString())
+      .set('gas-station-id', gasStationId.toString());
+
+    return this.http.get<Array<IGasFuel>>('gas-fields/station-product', {params})
+  }
+
+  // tạo yêu cầu đặt hàng
+  createOrderRequest(dataReq) {
+    return this.http.post('import-request', dataReq);
+  }
+
 }

@@ -142,7 +142,7 @@
 			<p class="item">Tổng số <strong>{{totalRecord}} giao dịch</strong></p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Tổng lít:
-				<strong>{{totalLiters | number| vnCurrency}} L</strong>
+				<strong>{{totalLiters.toLocaleString("en-US")}} L</strong>
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Tiền mặt:
@@ -275,9 +275,9 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.actualityLiters || '0' | number| vnCurrency"
+								[ngbTooltip]="item.actualityLiters.toLocaleString('en-US') || 0"
 							>
-								{{ item.actualityLiters || '0' | number| vnCurrency}}
+								{{ item.actualityLiters.toLocaleString('en-US') || 0}}
 							</p>
 						</td>
 

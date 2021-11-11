@@ -34,13 +34,12 @@
 			&.head-inventory,
 			&.final-inventory,
 			&.price,
-			&.total-money {
-				min-width: 80px;
-				max-width: 110px;
-			}
+			&.total-money,
 			&.import-quantity,
 			&.export-quantity {
+        min-width: 100px;
 				max-width: 135px;
+
 			}
 		}
 	}
