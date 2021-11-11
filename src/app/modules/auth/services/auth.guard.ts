@@ -32,6 +32,7 @@ type SpecialUrl = {
 };
 
 const SPECIAL_URL: SpecialUrl[] = [
+	{ url: '/hop-dong/danh-sach/them-hop-dong', permissionKey: EAuthorize.CREATE_CONTRACT_BUTTON },
 	{
 		url: '/hop-dong/danh-sach/chi-tiet',
 		permissionKey: EAuthorize.VIEW_CONTRACT_DETAIL_BUTTON
@@ -40,6 +41,10 @@ const SPECIAL_URL: SpecialUrl[] = [
 	{
 		url: '/tram-xang/danh-sach/sua-tram',
 		permissionKey: EAuthorize.UPDATE_GAS_STATION_BUTTON
+	},
+	{
+		url: '/nhan-vien/danh-sach/them-moi',
+		permissionKey: EAuthorize.CREATE_EMPLOYEE_BUTTON
 	},
 	{
 		url: '/nhan-vien/danh-sach/chi-tiet',

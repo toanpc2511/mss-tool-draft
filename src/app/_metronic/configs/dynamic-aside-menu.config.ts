@@ -208,15 +208,20 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			bullet: 'dot',
 			page: '/kho',
 			icon: 'fas fa-warehouse',
-      submenu: [
-        {
-          title: 'Danh sách yêu cầu đặt hàng',
-          bullet: 'dot',
-          page: '/kho/yeu-cau-dat-hang',
-
-          permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
-        },
-      ]
+			submenu: [
+				{
+					title: 'Danh sách yêu cầu đặt hàng',
+					bullet: 'dot',
+					page: '/kho/yeu-cau-dat-hang',
+					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+				},
+				{
+					title: 'Danh sách yêu cầu đặt kho',
+					bullet: 'dot',
+					page: '/kho/don-dat-kho',
+					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+				}
+			]
 		},
 		{
 			title: 'Lịch sử giao dịch',
@@ -226,13 +231,13 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			icon: 'fas fa-history',
 			permissionKey: EAuthorize.VIEW_TRANSACTION_HISTORY_MENU
 		},
-    {
-      title: 'Lịch sử sử dụng điểm',
-      root: true,
-      bullet: 'dot',
-      page: '/lich-su-su-dung-diem/danh-sach',
-      icon: 'fas fa-business-time',
-      permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
-    }
+		{
+			title: 'Lịch sử sử dụng điểm',
+			root: true,
+			bullet: 'dot',
+			page: '/lich-su-su-dung-diem/danh-sach',
+			icon: 'fas fa-business-time',
+			permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
+		}
 	]
 };
