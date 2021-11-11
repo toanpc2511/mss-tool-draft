@@ -5,15 +5,20 @@
     </div>
   </div>
   <div class="card-body">
-    <form class="form form-label-right">
+    <form class="form form-label-right" [formGroup]='requestForm'>
       <div class="form-group row">
         <div class="col-lg-6">
-          <label>Trạm</label>
-          <select class="form-control form-control-solid w-75">
-            <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
+          <label class="form-label required">Trạm</label>
+          <select class="form-control form-control-solid w-75" formControlName='stationId'>
+            <option [value]="''">Chọn trạm</option>
+            <option *ngFor="let item of stationEmployee" [value]="item.id">{{item.name}}</option>
           </select>
+
+          <app-validate
+            [control]="requestForm.controls['stationId']"
+            [error]="'required'"
+            [message]="'Trạm không được để trống'"
+          ></app-validate>
         </div>
 
         <div class="col-lg-6">
@@ -21,22 +26,25 @@
           <input
             type="text"
             class="form-control form-control-solid w-75"
-            placeholder="Chọn trạm"
+            placeholder="Địa chỉ trạm"
+            formControlName='fullAddress'
           />
         </div>
       </div>
 
       <div class="form-group row">
         <div class="col-lg-6">
-          <label>Ngày dự kiến nhập hàng</label>
+          <label class='form-label required'>Ngày dự kiến nhập hàng</label>
 
           <div class="input-group w-75">
             <input
               class="form-control form-control-solid"
-              placeholder="DD/MM/YYYY"
+              placeholder="Chọn ngày dự kiến nhập hàng"
               ngbDatepicker
               readonly
               #startAt="ngbDatepicker"
+              formControlName='expectedDate'
+              [minDate]="minDate"
             />
             <div class="input-group-append">
               <button
@@ -46,6 +54,11 @@
               ></button>
             </div>
           </div>
+          <app-validate
+            [control]="requestForm.controls['expectedDate']"
+            [error]="'required'"
+            [message]="'Ngày dự kiến nhập hàng không được để trống'"
+          ></app-validate>
         </div>
       </div>
     </form>
@@ -60,18 +73,139 @@
 
   <div class="card-body">
     <div class="table-responsive angular-bootstrap-table">
-      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
-        <thead>
-        <tr>
-          <th scope=''>STT</th>
-          <th scope=''>Tên sản phẩm</th>
-          <th scope=''>Đơn vị</th>
-          <th scope=''>Bồn</th>
-          <th scope=''>Lượng đề xuất</th>
-          <th scope=''>Xóa</th>
-        </tr>
-        </thead>
-      </table>
+      <form [formGroup]="productForm">
+        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+          <thead>
+          <tr>
+            <th scope=''>STT</th>
+            <th scope='' class='form-label required'>Tên sản phẩm</th>
+            <th scope=''>Đơn vị</th>
+            <th scope='' class='form-label required'>Bồn</th>
+            <th scope='' class='form-label required'>Lượng đề xuất</th>
+            <th scope=''>Xóa</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <ng-container formArrayName='products'>
+            <tr
+              *ngFor="let productInfoFromGroup of productFormArray.controls; let i = index"
+            >
+              <ng-container [formGroup]="productInfoFromGroup">
+                <td class="text-center">{{i + 1}}</td>
+                <td>
+                  <select
+                    (change)="productChanged($event, i)"
+                    class="form-control form-control-sm w-75"
+                    formControlName="productId"
+                  >
+                    <option [value]="''">Chọn sản phẩm nhiên liệu</option>
+                    <option
+                      *ngFor="let prodType of productFuels"
+                      [value]="prodType.id"
+                    >
+                      {{prodType.name}}
+                    </option>
+                  </select>
+                  <app-validate
+                    [control]="productInfoFromGroup.get('productId')"
+                    [error]="'required'"
+                    [message]="'Sản phẩm được để trống'"
+                  ></app-validate>
+                </td>
+                <td
+                  class=""
+                  [textContent]="productInfoFromGroup.get('unit').value"
+                ></td>
+                <td>
+                  <select
+                    class="form-control form-control-sm w-75"
+                    formControlName="gasFieldId"
+                  >
+                    <option [value]="''">Chọn bồn</option>
+                    <option
+                      *ngFor="let item of listGasField"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </option>
+                  </select>
+                  <app-validate
+                    [control]="productInfoFromGroup.get('gasFieldId')"
+                    [error]="'required'"
+                    [message]="'Bồn không được để trống'"
+                  ></app-validate>
+                </td>
+                <td>
+                  <input
+                    placeholder="Nhập số lượng đề xuất"
+                    class="form-control form-control-sm w-75"
+                    formControlName="amountActually"
+                    maxlength="13"
+                    decimal-mask
+                  />
+                  <app-validate
+                    [control]="productInfoFromGroup.get('amountActually')"
+                    [error]="'required'"
+                    [message]="'Số lượng để xuất không được để trống'"
+                  ></app-validate>
+                  <app-validate
+                    [control]="productInfoFromGroup.get('amountActually')"
+                    [error]="'min'"
+                    [message]="'Số lượng đề xuất phải lớn hơn 0'"
+                  ></app-validate>
+                </td>
+                <td>
+                  <a
+                    *ngIf="i > 0 || productFormArray.length >= 2"
+                    (click)="deleteItem(i)"
+                    class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                  >
+                    <span
+                      [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                      cacheSVG="true"
+                      class="svg-icon svg-icon-md svg-icon-danger"
+                      [ngbTooltip]="'Xóa'"
+                    >
+                    </span>
+                  </a>
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+          </tbody>
+
+          <tfoot>
+          <tr>
+            <td class="text-center">
+              <a
+                (click)="addItem()"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm"
+              >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Thêm'"
+                >
+                </span>
+              </a>
+            </td>
+
+            <td colspan="5"></td>
+          </tr>
+          </tfoot>
+        </table>
+      </form>
     </div>
+  </div>
+
+  <div class="py-10 w-100 d-flex justify-content-center">
+    <button
+      class="m-2 btn btn-primary font-weight-bold"
+      (click)="onSubmit()"
+    >
+      Gửi yêu cầu
+    </button>
   </div>
 </div>

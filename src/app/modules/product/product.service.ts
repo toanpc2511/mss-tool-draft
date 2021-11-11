@@ -13,6 +13,20 @@ export interface IProductInfo {
 	status: string;
 }
 
+export interface IInfoProduct {
+  categoryId: number;
+  code: string;
+  description: string;
+  entryPrice: number;
+  id: number;
+  name: string;
+  price: number;
+  qrCode: string;
+  status: string;
+  tax: number;
+  unit: string;
+}
+
 export interface IProduct {
 	id: number;
 	code: string;
@@ -172,6 +186,6 @@ export class ProductService {
 	}
 
 	getInfoProductOther(id: number) {
-		return this.http.get(`products/other/${id}`);
+		return this.http.get<IInfoProduct>(`products/other/${id}`);
 	}
 }

@@ -226,9 +226,9 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('totalLiter').value| number| vnCurrency"
+										[ngbTooltip]="item.get('totalLiter').value.toLocaleString('en-US')"
 									>
-										{{ item.get('totalLiter').value| number| vnCurrency }}
+										{{ item.get('totalLiter').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="provisional-money text-right">
