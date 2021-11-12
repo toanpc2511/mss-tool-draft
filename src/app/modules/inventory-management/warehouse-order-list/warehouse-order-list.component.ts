@@ -70,8 +70,8 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 		this.searchForm = this.fb.group({
 			stationId: [''],
 			employeeId: [''],
-			dateFrom: [''],
-			dateTo: [''],
+			dateFrom: [null],
+			dateTo: [null],
 			status: ['']
 		});
 	}
@@ -129,6 +129,9 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 	}
 
 	onSearch() {
+		if (this.searchForm.invalid) {
+			return;
+		}
 		const filterData: IFilterWarehouseOrder = this.getFilterData();
 
 		this.inventoryManagementService
