@@ -1,3 +1,4 @@
+import { TransactionService } from './../../transaction/transaction.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,153 +11,167 @@ import { IError } from '../../../shared/models/error.model';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { IStationEployee } from '../../history-of-using-points/history-of-using-points.service';
-import { EWarehouseOrderStatus, IEmployees, IFilterWarehouseOrder, InventoryManagementService, IWarehouseOrderRequest } from '../inventory-management.service';
+import {
+	EWarehouseOrderStatus,
+	IEmployees,
+	IFilterWarehouseOrder,
+	InventoryManagementService,
+	IWarehouseOrderRequest
+} from '../inventory-management.service';
 import { BaseComponent } from './../../../shared/components/base/base.component';
 
 @Component({
-  selector: 'app-warehouse-order-list',
-  templateUrl: './warehouse-order-list.component.html',
-  styleUrls: ['./warehouse-order-list.component.scss'],
-  providers: [FormBuilder, DestroyService]
+	selector: 'app-warehouse-order-list',
+	templateUrl: './warehouse-order-list.component.html',
+	styleUrls: ['./warehouse-order-list.component.scss'],
+	providers: [FormBuilder, DestroyService]
 })
 export class WareHouseOrderListComponent extends BaseComponent implements OnInit {
-  today: string;
-  firstDayOfMonth: string;
-  paginatorState = new PaginatorState();
-  searchForm: FormGroup;
-  dataSource: IWarehouseOrderRequest[];
-  stationEmployee: Array<IStationEployee> = [];
-  listEmployees: Array<IEmployees> = [];
-  eStatus = EWarehouseOrderStatus;
+	today: string;
+	firstDayOfMonth: string;
+	paginatorState = new PaginatorState();
+	searchForm: FormGroup;
+	dataSource: IWarehouseOrderRequest[];
+	stationEmployee: Array<IStationEployee> = [];
+	listEmployees: Array<IEmployees> = [];
+	eStatus = EWarehouseOrderStatus;
 
-  constructor(
-    private fb: FormBuilder,
-    private inventoryManagementService: InventoryManagementService,
-    private router: Router,
-    private destroy$: DestroyService,
-    private cdr: ChangeDetectorRef,
-    private toastr: ToastrService,
-  ) {
-    super();
-    this.init();
-  }
-  init() {
-    this.paginatorState.page = 1;
-    this.paginatorState.pageSize = 10;
-    this.paginatorState.pageSizes = [5, 10, 15, 20];
-    this.paginatorState.total = 0;
+	constructor(
+		private fb: FormBuilder,
+		private inventoryManagementService: InventoryManagementService,
+		private router: Router,
+		private destroy$: DestroyService,
+		private cdr: ChangeDetectorRef,
+		private toastr: ToastrService,
+		private transactionService: TransactionService
+	) {
+		super();
+		this.init();
+	}
+	init() {
+		this.paginatorState.page = 1;
+		this.paginatorState.pageSize = 10;
+		this.paginatorState.pageSizes = [5, 10, 15, 20];
+		this.paginatorState.total = 0;
 
-    this.dataSource = [];
-  }
+		this.dataSource = [];
+	}
 
-  ngOnInit(): void {
-    this.buildForm();
-    this.getStationEmployee();
-    this.getAllEmployee();
-    this.onSearch();
+	ngOnInit(): void {
+		this.buildForm();
+		this.getStationEmployee();
+		this.getAllEmployee();
+		this.onSearch();
 
-    this.handleStationChange();
-  }
+		this.handleStationChange();
+	}
 
-  buildForm() {
-    this.searchForm = this.fb.group({
-      stationId: [''],
-      employeeId: [''],
-      dateFrom: [''],
-      dateTo: [''],
-      status: ['']
-    })
-  }
+	buildForm() {
+		this.searchForm = this.fb.group({
+			stationId: [''],
+			employeeId: [''],
+			dateFrom: [''],
+			dateTo: [''],
+			status: ['']
+		});
+	}
 
-  getStationEmployee() {
-    this.inventoryManagementService
-      .getStationEmployee()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.stationEmployee = res.data;
-        this.cdr.detectChanges();
-      });
-  }
+	getStationEmployee() {
+		this.inventoryManagementService
+			.getStationEmployee()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((res) => {
+				this.stationEmployee = res.data;
+				this.cdr.detectChanges();
+			});
+	}
 
-  getAllEmployee() {
-    this.inventoryManagementService
-      .getAllEmployee()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.listEmployees = res.data;
-        this.cdr.detectChanges();
-      });
-  }
+	getAllEmployee() {
+		this.inventoryManagementService
+			.getAllEmployee()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((res) => {
+				this.listEmployees = res.data;
+				this.cdr.detectChanges();
+			});
+	}
 
-  handleStationChange() {
-    this.searchForm
-      .get('stationId')
-      .valueChanges.pipe(
-      concatMap((stationName: string) => {
-        this.listEmployees = [];
-        this.searchForm.get('employeeId').reset('', NO_EMIT_EVENT);
-        if (stationName) {
-          return this.inventoryManagementService.getEmployeeStation(stationName);
-        }
-        return this.inventoryManagementService.getAllEmployee();
-      }),
-      tap((res: any) => {
-        this.listEmployees = res.data;
-        this.cdr.detectChanges();
-      }),
-      takeUntil(this.destroy$)
-    )
-      .subscribe();
-  }
+	handleStationChange() {
+		this.searchForm
+			.get('stationId')
+			.valueChanges.pipe(
+				concatMap((stationId: string) => {
+					const stationName =
+						this.stationEmployee.find((s) => s.id === Number(stationId))?.name || '';
+					this.listEmployees = [];
+					this.searchForm.get('employeeId').reset('', NO_EMIT_EVENT);
+					if (stationName) {
+						return this.transactionService.getEmployeeStation(stationName);
+					}
+					return this.inventoryManagementService.getAllEmployee();
+				}),
+				tap((res: any) => {
+					this.listEmployees = res.data;
+					this.cdr.detectChanges();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
 
-  getFilterData(): IFilterWarehouseOrder {
-    const filterFormData: IFilterWarehouseOrder = this.searchForm.value;
-    return {
-      ...filterFormData,
-      dateFrom: convertDateToServer(filterFormData.dateFrom) || '',
-      dateTo: convertDateToServer(filterFormData.dateTo) || ''
-    };
-  }
+	getFilterData(): IFilterWarehouseOrder {
+		const filterFormData: IFilterWarehouseOrder = this.searchForm.value;
+		return {
+			...filterFormData,
+			dateFrom: convertDateToServer(filterFormData.dateFrom) || '',
+			dateTo: convertDateToServer(filterFormData.dateTo) || ''
+		};
+	}
 
-  onSearch() {
-    const filterData: IFilterWarehouseOrder = this.getFilterData();
+	onSearch() {
+		const filterData: IFilterWarehouseOrder = this.getFilterData();
 
-    this.inventoryManagementService
-      .searchWarehouseOrderRequest(this.paginatorState.page, this.paginatorState.pageSize, filterData)
-      .subscribe((res) => {
-        if (res.data) {
-          console.log(res.data);
-          
-          this.dataSource = res.data;
+		this.inventoryManagementService
+			.searchWarehouseOrderRequest(
+				this.paginatorState.page,
+				this.paginatorState.pageSize,
+				filterData
+			)
+			.subscribe(
+				(res) => {
+					if (res.data) {
+						console.log(res.data);
 
-          this.paginatorState.recalculatePaginator(res.meta.total);
-          this.cdr.detectChanges();
-        }
-      },
-        (err: IError) => {
-          this.checkError(err);
-        });
-  }
+						this.dataSource = res.data;
 
-  updateOrderRequest($event: Event, id: number) {
-    console.log(id);
-  }
+						this.paginatorState.recalculatePaginator(res.meta.total);
+						this.cdr.detectChanges();
+					}
+				},
+				(err: IError) => {
+					this.checkError(err);
+				}
+			);
+	}
 
-  deleteOrderRequest($event: Event, item) {
-    console.log(item);
-  }
+	updateOrderRequest($event: Event, id: number) {
+		console.log(id);
+	}
 
-  onReset() {
-    this.ngOnInit();
-  }
+	deleteOrderRequest($event: Event, item) {
+		console.log(item);
+	}
 
-  pagingChange($event: IPaginatorState) {
-    this.paginatorState = $event as PaginatorState;
-    this.onSearch();
-  }
+	onReset() {
+		this.ngOnInit();
+	}
 
-  checkError(error: IError) {
-    this.toastr.error(error.code);
-  }
+	pagingChange($event: IPaginatorState) {
+		this.paginatorState = $event as PaginatorState;
+		this.onSearch();
+	}
 
+	checkError(error: IError) {
+		this.toastr.error(error.code);
+	}
 }
