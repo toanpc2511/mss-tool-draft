@@ -97,7 +97,7 @@
                   <select
                     (change)="productChanged($event, i)"
                     class="form-control form-control-sm w-75"
-                    formControlName="productId"
+                    formControlName="id"
                   >
                     <option [value]="''">Chọn sản phẩm nhiên liệu</option>
                     <option
@@ -108,7 +108,7 @@
                     </option>
                   </select>
                   <app-validate
-                    [control]="productInfoFromGroup.get('productId')"
+                    [control]="productInfoFromGroup.get('id')"
                     [error]="'required'"
                     [message]="'Sản phẩm được để trống'"
                   ></app-validate>
@@ -124,7 +124,7 @@
                   >
                     <option [value]="''">Chọn bồn</option>
                     <option
-                      *ngFor="let item of listGasField"
+                      *ngFor="let item of products[i]"
                       [value]="item.id"
                     >
                       {{item.name}}

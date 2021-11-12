@@ -83,7 +83,7 @@
           <th scope='' class=''>Tên sản phẩm</th>
           <th scope='' class=''>Đơn vị</th>
           <th scope='' class=''>Bồn</th>
-          <th scope='' class=''>Lượng đề xuất</th>
+          <th scope='' class='text-right'>Lượng đề xuất</th>
         </tr>
         </thead>
 
@@ -108,22 +108,22 @@
               {{ item.unit }}
             </p>
           </td>
-          <td class='unit'>
+          <td class='gas-field-name'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.unit"
+              [ngbTooltip]="item.gasFieldOut.name"
             >
-              {{ item.unit }}
+              {{ item.gasFieldOut.name }}
             </p>
           </td>
-          <td class='unit'>
+          <td class='amount-actually text-right'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.unit"
+              [ngbTooltip]="item.amountActually.toLocaleString('en-US')"
             >
-              {{ item.unit }}
+              {{ item.amountActually.toLocaleString('en-US') }}
             </p>
           </td>
         </tr>
@@ -141,18 +141,21 @@
 
   <div class="py-10 w-100 d-flex justify-content-center">
     <button
+      *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM'
       (click)="openRejectOrderRequestModal()"
       class="btn btn-outline-danger mr-3 button"
     >
       Từ chối
     </button>
     <button
+      *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM'
     (click)="openApproveRequestModal()"
       class="btn btn-primary mr-3 button"
     >
       Xác nhận
     </button>
     <button
+      *ngIf='dataSource?.status !== listStatus.WAIT_CONFIRM'
       class="btn btn-outline-primary mr-3 button"
       (click)="onClose()"
     >
