@@ -141,20 +141,52 @@
 
   <div class="py-10 w-100 d-flex justify-content-center">
     <button
-      class="btn btn-outline-primary mr-3 button"
+      (click)="openRejectOrderRequestModal()"
+      class="btn btn-outline-danger mr-3 button"
     >
       Từ chối
     </button>
     <button
+    (click)="openApproveRequestModal()"
       class="btn btn-primary mr-3 button"
     >
       Xác nhận
     </button>
     <button
-      class="btn btn-primary mr-3 button"
+      class="btn btn-outline-primary mr-3 button"
       (click)="onClose()"
     >
       Đóng
     </button>
   </div>
 </div>
+
+<ng-template #rejectRequest>
+	<div class="modal-header">
+		<h4 class="modal-title">Từ chối yêu cầu đặt hàng</h4>
+	</div>
+	<div class="modal-body">
+		<div class="w-100">
+			<label class="form-label required">Nhập lý do từ chối</label>
+			<input
+				[formControl]="reasonControl"
+				class="form-control form-control-solid"
+				trim="blur"
+				maxlength="255"
+			/>
+			<app-validate
+				[control]="reasonControl"
+				[error]="'required'"
+				[message]="'Lý do từ chối không được để trống'"
+			></app-validate>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary" (click)="reasonControl.reset(); activeModal.close(false)">
+			Hủy
+		</button>
+		<button type="button" class="btn btn-primary" (click)="activeModal.close(true)">
+			Từ chối
+		</button>
+	</div>
+</ng-template>

@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IFuelRevenue, ShiftService } from '../../../shift.service';
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +15,7 @@ import { IError } from '../../../../../shared/models/error.model';
 	styleUrls: ['./fuel-revenue-detail.component.scss'],
 	providers: [DestroyService, FormBuilder]
 })
-export class FuelRevenueDetailComponent implements OnInit {
+export class FuelRevenueDetailComponent extends BaseComponent implements OnInit {
 	@Output() stepSubmitted = new EventEmitter();
 	lockShiftId: number;
 	statusLockShift: string;
@@ -32,7 +33,9 @@ export class FuelRevenueDetailComponent implements OnInit {
 		private destroy$: DestroyService,
 		private toastr: ToastrService,
 		private fb: FormBuilder
-	) {}
+	) {
+		super();
+	}
 
 	ngOnInit(): void {
     this.activeRoute.params
