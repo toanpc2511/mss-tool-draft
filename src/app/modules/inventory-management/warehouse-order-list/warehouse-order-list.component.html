@@ -35,7 +35,6 @@
 							class="form-control form-control-solid"
 							placeholder="DD/MM/YYYY"
 							ngbDatepicker
-							readonly
 							#startAt="ngbDatepicker"
 							formControlName="dateFrom"
 						/>
@@ -47,6 +46,12 @@
 							></button>
 						</div>
 					</div>
+
+					<app-validate
+						[control]="searchForm.controls['dateFrom']"
+						[error]="'ngbDate'"
+						[message]="'Ngày hết hạn không đúng định dạng'"
+					></app-validate>
 				</div>
 
 				<div class="col-lg-6">
@@ -57,7 +62,6 @@
 							class="form-control form-control-solid"
 							placeholder="DD/MM/YYYY"
 							ngbDatepicker
-							readonly
 							#endAt="ngbDatepicker"
 							formControlName="dateTo"
 						/>
@@ -69,6 +73,12 @@
 							></button>
 						</div>
 					</div>
+
+					<app-validate
+						[control]="searchForm.controls['dateTo']"
+						[error]="'ngbDate'"
+						[message]="'Ngày hết hạn không đúng định dạng'"
+					></app-validate>
 				</div>
 			</div>
 
@@ -79,7 +89,7 @@
 						<option [value]="''">Tất cả</option>
 						<option [value]="eStatus.NEW">Mới</option>
 						<option [value]="eStatus.WAITING">Chờ phê duyệt</option>
-						<option [value]="eStatus.CONFIRMED">Đã xác nhận</option>
+						<option [value]="eStatus.CONFIRMED">Đã phê duyệt</option>
 						<option [value]="eStatus.REFUSED">Đã từ chối</option>
 						<option [value]="eStatus.ADJUST">Yêu cầu điều chỉnh</option>
 					</select>
@@ -108,6 +118,7 @@
 			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
 				<thead>
 					<tr>
+						<th scope="">Mã đặt kho</th>
 						<th scope="">Trạm</th>
 						<th scope="">Người gửi duyệt</th>
 						<th scope="">Ngày gửi duyệt</th>
@@ -120,6 +131,11 @@
 
 				<tbody>
 					<tr *ngFor="let item of dataSource">
+						<td class="code">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code ">
+								{{ item.code }}
+							</p>
+						</td>
 						<td class="station-name">
 							<p
 								class="cursor-pointer text-ellipsis"
@@ -168,11 +184,11 @@
 						<td class="status">
 							<span
 								class="label label-lg label-inline"
-								[class.label-light-warning]="item.status === eStatus.NEW"
-								[class.label-light-primary]="item.status === eStatus.WAITING"
+								[class.label-light-info]="item.status === eStatus.NEW"
+								[class.label-light-warning]="item.status === eStatus.WAITING"
 								[class.label-light-success]="item.status === eStatus.CONFIRMED"
 								[class.label-light-danger]="item.status === eStatus.REFUSED"
-								[class.label-light-danger]="item.status === eStatus.ADJUST"
+								[class.label-light-primary]="item.status === eStatus.ADJUST"
 							>
 								<ng-container *ngIf="item.status === eStatus.NEW">Mới</ng-container>
 								<ng-container *ngIf="item.status === eStatus.WAITING">Chờ phê duyệt</ng-container>
@@ -186,7 +202,7 @@
 
 						<td class="text-center action">
 							<a
-								*ngIf="item.status !== eStatus.REFUSED || item.status !== eStatus.CONFIRMED"
+								*ngIf="item.status !== eStatus.REFUSED && item.status !== eStatus.CONFIRMED"
 								(click)="updateOrderRequest($event,item.id)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 								[ngbTooltip]="'Sửa'"
