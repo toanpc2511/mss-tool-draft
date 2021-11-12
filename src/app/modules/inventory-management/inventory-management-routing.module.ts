@@ -25,7 +25,7 @@ const routes: Routes = [
         component: CreateOrderComponent
       },
       {
-        path: 'chi-tiet/:contractId',
+        path: 'chi-tiet/:id',
         component: OrderDetailsComponent
       },
       {

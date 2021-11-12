@@ -13,6 +13,9 @@ import { convertDateToServer } from '../../../shared/helpers/functions';
 import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { LIST_STATUS_ORDER_REQUEST } from '../../../shared/data-enum/list-status';
+import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
+import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-order-request-list',
@@ -37,6 +40,7 @@ export class OrderRequestListComponent implements OnInit {
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
+    private modalService: NgbModal,
   ) {
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
@@ -124,6 +128,11 @@ export class OrderRequestListComponent implements OnInit {
     this.router.navigate(['/kho/yeu-cau-dat-hang/them-moi']);
   }
 
+  viewDetailOrderRequest($event: Event, id: number): void {
+    $event.stopPropagation();
+    this.router.navigate([`/kho/yeu-cau-dat-hang/chi-tiet/${id}`]);
+  }
+
   getFilterData() {
     const filterFormData: IFilterTransaction = this.searchForm.value;
     return {
@@ -135,7 +144,6 @@ export class OrderRequestListComponent implements OnInit {
 
   onSearch() {
     const filterData: IFilterTransaction = this.getFilterData();
-    console.log(filterData);
 
     this.inventoryManagementService
       .searchOrderRequest(this.paginatorState.page, this.paginatorState.pageSize, filterData)
@@ -157,7 +165,33 @@ export class OrderRequestListComponent implements OnInit {
   }
 
   deleteOrderRequest($event: Event, item) {
-    console.log(item);
+    $event.stopPropagation();
+    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+      backdrop: 'static'
+    });
+    const data: IConfirmModalData = {
+      title: 'Xác nhận',
+      message: `Bạn có chắc chắn muốn yêu cầu đặt hàng:  ${item.code}?`,
+      button: { class: 'btn-primary', title: 'Xác nhận' }
+    };
+    modalRef.componentInstance.data = data;
+
+    modalRef.result.then((result) => {
+      if (result) {
+        this.inventoryManagementService.deleteOrderRequest(item.id).subscribe(
+          (res) => {
+            if (res.data) {
+              this.init();
+              this.onSearch();
+            }
+          },
+          (err: IError) => {
+            this.checkError(err);
+          }
+        );
+      }
+    });
+
   }
 
   onReset() {
