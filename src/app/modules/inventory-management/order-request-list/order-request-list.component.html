@@ -125,7 +125,7 @@
         </thead>
 
         <tbody>
-        <tr *ngFor='let item of dataSource'>
+        <tr *ngFor='let item of dataSource' (click)='viewDetailOrderRequest($event, item.id)'>
           <td class='code'>
             <p
               class="cursor-pointer text-ellipsis"
@@ -210,7 +210,7 @@
 								</span>
             </a>
             <a
-              *ngIf="item.status === item.WAIT_CONFIRM"
+              *ngIf="item.status === listStatus.WAIT_CONFIRM"
               (click)="deleteOrderRequest($event, item)"
               class="btn btn-icon btn-light btn-hover-danger btn-sm"
               [ngbTooltip]="'Xóa'"

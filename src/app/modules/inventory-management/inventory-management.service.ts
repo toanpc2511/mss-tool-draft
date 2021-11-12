@@ -142,4 +142,14 @@ export class InventoryManagementService {
     return this.http.post('import-request', dataReq);
   }
 
+  // Xóa yêu cầu đặt hàng
+  deleteOrderRequest(id: number) {
+    return this.http.delete(`import-request/${id}`);
+  }
+
+  // Xem chi tiết yêu cầu đặt hàng
+  viewDetailOrderRequest(id: number) {
+    return this.http.get(`import-request/${id}`);
+  }
+
 }
