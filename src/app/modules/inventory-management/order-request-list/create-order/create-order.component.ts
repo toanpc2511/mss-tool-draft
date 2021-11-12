@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IStationEployee } from '../../../history-of-using-points/history-of-using-points.service';
-import { takeUntil } from 'rxjs/operators';
-import { IGasFuel, InventoryManagementService } from '../../inventory-management.service';
+import { finalize, pluck, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { IGasFuel, IInfoOrderRequest, InventoryManagementService } from '../../inventory-management.service';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,8 +9,9 @@ import * as moment from 'moment';
 import { IInfoProduct, IProduct, ProductService } from 'src/app/modules/product/product.service';
 import { ToastrService } from 'ngx-toastr';
 import { IError } from '../../../../shared/models/error.model';
-import { convertDateToServer, convertMoney } from '../../../../shared/helpers/functions';
-import { Router } from '@angular/router';
+import { convertDateToDisplay, convertDateToServer, convertMoney, ofNull } from '../../../../shared/helpers/functions';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-create-order',
@@ -27,6 +28,11 @@ export class CreateOrderComponent implements OnInit {
   productFuels: IProduct[] = [];
   listGasField: IGasFuel[] = [];
   stationId: number;
+  orderDataUpdate: IInfoOrderRequest;
+  isUpdate = false;
+  orderRequestId: number;
+  isInitDataUpdateSubject = new Subject();
+  isInitDataUpdate$ = this.isInitDataUpdateSubject.asObservable();
 
   currentDate = moment().add({
     day: 1
@@ -45,10 +51,36 @@ export class CreateOrderComponent implements OnInit {
     private modalService: NgbModal,
     private toastr: ToastrService,
     private fb: FormBuilder,
+    private activeRoute: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.activeRoute.params
+      .pipe(
+        pluck('id'),
+        take(1),
+        switchMap((id: number) => {
+          if (id) {
+            this.isUpdate = true;
+
+            this.minDate = null;
+            this.orderRequestId = id;
+            // this.setBreadcumb();
+            return this.inventoryManagementService.viewDetailOrderRequest(id);
+          }
+          return ofNull();
+        }),
+        tap((res) => {
+          if (res?.data) {
+            this.loadDataUpdate(res.data);
+          }
+        }),
+        finalize(() => this.isInitDataUpdateSubject.next(true)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
     this.getStationEmployee();
     this.getListProductFuels();
     this.buildForm();
@@ -68,7 +100,7 @@ export class CreateOrderComponent implements OnInit {
     this.productForm = this.fb.group({
       products: this.fb.array([
         this.fb.group({
-          productId: ['', Validators.required],
+          id: ['', Validators.required],
           gasFieldId: ['', Validators.required],
           unit: [''],
           amountActually: ['', [Validators.required, Validators.min(1)]]
@@ -78,6 +110,32 @@ export class CreateOrderComponent implements OnInit {
 
     this.productFormArray = this.productForm.get('products') as FormArray;
     this.cdr.detectChanges();
+  }
+
+  loadDataUpdate(data: IInfoOrderRequest) {
+    this.orderDataUpdate = data;
+    console.log(this.orderDataUpdate);
+    this.pathValueRequestForm(data);
+    this.pathValueProduct(data);
+  }
+
+  pathValueRequestForm(data: IInfoOrderRequest) {
+    this.requestForm.get('stationId').patchValue(data.stationId);
+    this.requestForm.get('fullAddress').patchValue(data.address);
+    this.requestForm.get('expectedDate').patchValue(convertDateToDisplay(data.requestDate));
+  }
+
+  pathValueProduct(data: IInfoOrderRequest) {
+    data.productResponses.forEach((product, i) => {
+      if (i >= 1) {
+        this.addItem();
+      }
+      console.log(product);
+      this.productFormArray.at(i).get('id').patchValue('');
+      this.productFormArray.at(i).get('unit').patchValue(product.unit);
+      this.productFormArray.at(i).get('amountActually').patchValue(product.amountActually);
+      // this.patchInfoProduct(product.productResponse.id, i);
+    });
   }
 
   handleStationChange() {
@@ -90,7 +148,7 @@ export class CreateOrderComponent implements OnInit {
         return x.id === Number(this.stationId);
       })
 
-      this.requestForm.get('fullAddress').patchValue(itemStation.address);
+      // this.requestForm.get('fullAddress').patchValue(itemStation.address);
     })
   }
 
@@ -122,12 +180,12 @@ export class CreateOrderComponent implements OnInit {
   patchInfoProduct(productId: string | number, i: number) {
     const allProduct = this.productFormArray.value as Array<any>;
     const checkExisted = allProduct.some(
-      (p, index) => p.productId && i !== index && Number(p.productId) === Number(productId)
+      (p, index) => p.id && i !== index && Number(p.id) === Number(productId)
     );
 
     if (checkExisted) {
       this.toastr.error('Sản phẩm này đã được thêm');
-      this.productFormArray.at(i).get('productId').patchValue('');
+      this.productFormArray.at(i).get('id').patchValue('');
       return;
     }
     if (!productId) {
@@ -135,13 +193,13 @@ export class CreateOrderComponent implements OnInit {
     }
 
     if (!this.stationId) {
-      this.productFormArray.at(i).get('productId').patchValue('')
+      this.productFormArray.at(i).get('id').patchValue('')
       this.toastr.error('Bạn chưa chọn trạm');
       return;
     }
 
     this.inventoryManagementService.getListGasFuel(productId, this.stationId).subscribe((res) => {
-      this.listGasField = res.data;
+      this.products[i] = res.data;
       this.cdr.detectChanges();
     });
 
@@ -156,7 +214,7 @@ export class CreateOrderComponent implements OnInit {
     this.productFormArray.push(
       this.fb.group({
         gasFieldId: ['', Validators.required],
-        productId: ['', Validators.required],
+        id: ['', Validators.required],
         unit: [''],
         amountActually: ['', [Validators.required, Validators.min(1)]]
       })
@@ -178,14 +236,14 @@ export class CreateOrderComponent implements OnInit {
       (p) => ({
         ...p,
         amountActually: convertMoney(p.amountActually),
-        id: Number(p.productId),
+        id: Number(p.id),
         gasFieldId: Number(p.gasFieldId)
       })
     );
 
     const dataReq = {
       stationId: Number(this.stationId),
-      fullAddress: this.requestForm.get('fullAddress').value.toString(),
+      fullAddress: this.requestForm.get('fullAddress').value,
       expectedDate: convertDateToServer(this.requestForm.get('expectedDate').value),
       productInfoRequests: productData
     }
@@ -194,6 +252,7 @@ export class CreateOrderComponent implements OnInit {
       .subscribe((res) => {
         if (res) {
           this.router.navigate(['/kho/yeu-cau-dat-hang']);
+          this.toastr.success('Gửi yêu cầu đặt hàng thành công')
         }
       }), (err: IError) => {
       this.checkError(err);

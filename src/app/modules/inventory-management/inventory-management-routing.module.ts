@@ -29,8 +29,8 @@ const routes: Routes = [
         component: OrderDetailsComponent
       },
       {
-        path: 'sua-hop-dong/:id',
-        component: OrderDetailsComponent
+        path: 'sua-yeu-cau/:id',
+        component: CreateOrderComponent
       }
     ]
   },

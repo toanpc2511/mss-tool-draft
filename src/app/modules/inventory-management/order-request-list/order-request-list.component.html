@@ -35,7 +35,6 @@
               class="form-control form-control-solid"
               placeholder="DD/MM/YYYY"
               ngbDatepicker
-              readonly
               #startAt="ngbDatepicker"
               formControlName='expectedDate'
             />
@@ -47,6 +46,12 @@
               ></button>
             </div>
           </div>
+
+          <app-validate
+            [control]="searchForm.controls['expectedDate']"
+            [error]="'ngbDate'"
+            [message]="'Ngày yêu cầu không đúng định dạng'"
+          ></app-validate>
         </div>
 
         <div class="col-lg-6">
@@ -57,7 +62,6 @@
               class="form-control form-control-solid"
               placeholder="DD/MM/YYYY"
               ngbDatepicker
-              readonly
               #endAt="ngbDatepicker"
               formControlName='approvalDate'
             />
@@ -69,6 +73,12 @@
               ></button>
             </div>
           </div>
+
+          <app-validate
+            [control]="searchForm.controls['approvalDate']"
+            [error]="'ngbDate'"
+            [message]="'Ngày yêu cầu đến không đúng định dạng'"
+          ></app-validate>
         </div>
       </div>
 

@@ -1,6 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IEmployees, IFilterTransaction, InventoryManagementService } from '../inventory-management.service';
+import {
+  IEmployees,
+  IFilterTransaction,
+  IInfoOrderRequest,
+  InventoryManagementService
+} from '../inventory-management.service';
 import * as moment from 'moment';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { Router } from '@angular/router';
@@ -160,11 +165,12 @@ export class OrderRequestListComponent implements OnInit {
         });
   }
 
-  updateOrderRequest($event: Event, id: number) {
-    console.log(id);
+  updateOrderRequest($event: Event, id: number): void {
+    $event.stopPropagation();
+    this.router.navigate([`/kho/yeu-cau-dat-hang/sua-yeu-cau/${id}`]);
   }
 
-  deleteOrderRequest($event: Event, item) {
+  deleteOrderRequest($event: Event, item: IInfoOrderRequest) {
     $event.stopPropagation();
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
       backdrop: 'static'

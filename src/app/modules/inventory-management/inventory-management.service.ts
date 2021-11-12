@@ -80,6 +80,36 @@ export interface IGasFuel {
   status: string;
 }
 
+export interface IInfoOrderRequest {
+  id: number;
+  address: string;
+  code: string;
+  employeeRequest: string;
+  reason: string;
+  requestDate: string;
+  stationName: string;
+  stationId: number;
+  status: string;
+  productResponses: [ IProductRequest ];
+}
+
+export interface IProductRequest {
+  amountActually: number;
+  gasFieldIn: number;
+  gasFieldOut: {
+    capacity: string;
+    code: string;
+    height: string;
+    id: number;
+    length: string;
+    name: string;
+    product_id: number;
+    status: string;
+  }
+  productName: string;
+  unit: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -149,7 +179,7 @@ export class InventoryManagementService {
 
   // Xem chi tiết yêu cầu đặt hàng
   viewDetailOrderRequest(id: number) {
-    return this.http.get(`import-request/${id}`);
+    return this.http.get<Array<IInfoOrderRequest>>(`import-request/${id}`);
   }
 
   // Duyệt/Từ chối yêu cầu đặt hàng
