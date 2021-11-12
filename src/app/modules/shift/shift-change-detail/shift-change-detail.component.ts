@@ -35,7 +35,6 @@ import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interfac
 	providers: [SortService, FilterService, DestroyService, NgbActiveModal]
 })
 export class ShiftChangeDetailComponent extends BaseComponent implements OnInit, AfterViewInit {
-	@ViewChild('approveRequest') approveRequest: TemplateRef<any>;
 	@ViewChild('rejectRequest') rejectRequest: TemplateRef<any>;
 
 	eShiftChangeRequestStatus = EShiftChangRequestStatus;

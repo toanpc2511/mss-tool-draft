@@ -1,19 +1,17 @@
-import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import * as moment from 'moment';
-import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { Router } from '@angular/router';
-import { IStationEployee } from '../../history-of-using-points/history-of-using-points.service';
-import { concatMap, takeUntil, tap } from 'rxjs/operators';
-import { DestroyService } from '../../../shared/services/destroy.service';
-import { NO_EMIT_EVENT } from '../../../shared/app-constants';
+import { ToastrService } from 'ngx-toastr';
 import { of } from 'rxjs';
+import { concatMap, takeUntil, tap } from 'rxjs/operators';
+import { NO_EMIT_EVENT } from '../../../shared/app-constants';
 import { convertDateToServer } from '../../../shared/helpers/functions';
 import { IError } from '../../../shared/models/error.model';
-import { ToastrService } from 'ngx-toastr';
-import { LIST_STATUS_ORDER_REQUEST } from '../../../shared/data-enum/list-status';
-import { IEmployees, InventoryManagementService, IFilterTransaction, IFilterWarehouseOrder, EWarehouseOrderStatus, IWarehouseOrderRequest } from '../inventory-management.service';
+import { DestroyService } from '../../../shared/services/destroy.service';
+import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
+import { IStationEployee } from '../../history-of-using-points/history-of-using-points.service';
+import { EWarehouseOrderStatus, IEmployees, IFilterWarehouseOrder, InventoryManagementService, IWarehouseOrderRequest } from '../inventory-management.service';
+import { BaseComponent } from './../../../shared/components/base/base.component';
 
 @Component({
   selector: 'app-warehouse-order-list',
@@ -40,8 +38,6 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
     private toastr: ToastrService,
   ) {
     super();
-    this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
-    this.today = moment().format('DD/MM/YYYY');
     this.init();
   }
   init() {
@@ -55,8 +51,6 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 
   ngOnInit(): void {
     this.buildForm();
-    this.initDate();
-
     this.getStationEmployee();
     this.getAllEmployee();
     this.onSearch();
@@ -68,15 +62,10 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
     this.searchForm = this.fb.group({
       stationId: [''],
       employeeId: [''],
-      dateFrom: [null],
-      dateTo: [null],
+      dateFrom: [''],
+      dateTo: [''],
       status: ['']
     })
-  }
-
-  initDate() {
-    this.searchForm.get('dateFrom').patchValue(this.firstDayOfMonth);
-    this.searchForm.get('dateTo').patchValue(this.today);
   }
 
   getStationEmployee() {
@@ -108,12 +97,10 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
         this.searchForm.get('employeeId').reset('', NO_EMIT_EVENT);
         if (stationName) {
           return this.inventoryManagementService.getEmployeeStation(stationName);
-        } else {
-          return this.inventoryManagementService.getAllEmployee();
         }
-        return of(null);
+        return this.inventoryManagementService.getAllEmployee();
       }),
-      tap((res) => {
+      tap((res: any) => {
         this.listEmployees = res.data;
         this.cdr.detectChanges();
       }),
@@ -122,22 +109,17 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
       .subscribe();
   }
 
-  createOrder() {
-    this.router.navigate(['/kho/yeu-cau-dat-hang/them-moi']);
-  }
-
   getFilterData(): IFilterWarehouseOrder {
     const filterFormData: IFilterWarehouseOrder = this.searchForm.value;
     return {
       ...filterFormData,
-      dateFrom: convertDateToServer(filterFormData.dateFrom),
-      dateTo: convertDateToServer(filterFormData.dateTo)
+      dateFrom: convertDateToServer(filterFormData.dateFrom) || '',
+      dateTo: convertDateToServer(filterFormData.dateTo) || ''
     };
   }
 
   onSearch() {
     const filterData: IFilterWarehouseOrder = this.getFilterData();
-    console.log(filterData);
 
     this.inventoryManagementService
       .searchWarehouseOrderRequest(this.paginatorState.page, this.paginatorState.pageSize, filterData)

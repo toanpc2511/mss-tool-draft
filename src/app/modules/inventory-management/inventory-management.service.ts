@@ -152,4 +152,8 @@ export class InventoryManagementService {
     return this.http.get(`import-request/${id}`);
   }
 
+  // Duyệt/Từ chối yêu cầu đặt hàng
+  approveOrRejectOrderRequest(id: string|number, data: {requestConfirm: boolean; reason: string}) {
+	  return this.http.put(`import-request/handles/${id}`, data);
+  }
 }
