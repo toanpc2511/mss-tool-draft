@@ -149,7 +149,7 @@
     </button>
     <button
       *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM'
-    (click)="openApproveRequestModal()"
+    (click)="openApproveRequestModal(dataSource.code)"
       class="btn btn-primary mr-3 button"
     >
       Xác nhận

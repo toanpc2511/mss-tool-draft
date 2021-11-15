@@ -9,9 +9,9 @@
       <div class="form-group row">
         <div class="col-lg-6">
           <label>Tên trạm</label>
-          <select class="form-control form-control-solid w-75" formControlName='stationId'>
+          <select class="form-control form-control-solid w-75" formControlName='stationName'>
             <option [value]="''">Tất cả</option>
-            <option *ngFor="let item of stationEmployee" [value]="item.id">{{item.name}}</option>
+            <option *ngFor="let item of stationEmployee" [value]="item.name">{{item.name}}</option>
           </select>
         </div>
 

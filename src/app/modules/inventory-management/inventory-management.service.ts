@@ -25,7 +25,7 @@ export interface IEmployees {
 
 export interface IFilterTransaction {
 	status: string;
-	stationId: number;
+	stationName: string;
 	employeeId: number;
 	expectedDate: string;
 	approvalDate: string;
@@ -83,6 +83,7 @@ export interface IGasFuel {
 export interface IInfoOrderRequest {
   id: number;
   address: string;
+  fullAddress: string;
   code: string;
   employeeRequest: string;
   reason: string;
@@ -118,7 +119,7 @@ export class InventoryManagementService {
 
 	// Lấy ds trạm
 	getStationEmployee() {
-		return this.http.get<Array<IStationEployee>>(`employees/station`);
+    return this.http.get<Array<IStationEployee>>(`employees/station`);
 	}
 
 	// Lấy ds tất cả nhân viên yêu cầu
@@ -138,7 +139,7 @@ export class InventoryManagementService {
 			.set('page', page.toString())
 			.set('size', size.toString())
 			.set('status', data.status)
-			.set('station-id', data.stationId.toString())
+			.set('station-name', data.stationName)
 			.set('employee-id', data.employeeId.toString())
 			.set('expected-date', data.expectedDate)
 			.set('approval-date', data.approvalDate);

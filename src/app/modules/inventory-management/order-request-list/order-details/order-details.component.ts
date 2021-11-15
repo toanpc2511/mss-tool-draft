@@ -100,14 +100,14 @@ export class OrderDetailsComponent extends BaseComponent implements OnInit {
 			.subscribe();
 	}
 
-	openApproveRequestModal() {
+	openApproveRequestModal(code: string) {
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
 			backdrop: 'static'
 		});
 
 		const data: IConfirmModalData = {
 			title: 'Xác nhận',
-			message: `Bạn có chắc chắn muốn duyệt yêu cầu ?`,
+			message: `Bạn có chắc chắn muốn xác nhận đơn đặt hàng ${code} hay không?`,
 			button: { class: 'btn-primary', title: 'Xác nhận' }
 		};
 		modalRef.componentInstance.data = data;

@@ -34,9 +34,7 @@ export class CreateOrderComponent implements OnInit {
   isInitDataUpdateSubject = new Subject();
   isInitDataUpdate$ = this.isInitDataUpdateSubject.asObservable();
 
-  currentDate = moment().add({
-    day: 1
-  });
+  currentDate = moment();
   minDate: NgbDateStruct = {
     day: this.currentDate.date(),
     month: this.currentDate.month() + 1,
@@ -121,7 +119,7 @@ export class CreateOrderComponent implements OnInit {
 
   pathValueRequestForm(data: IInfoOrderRequest) {
     this.requestForm.get('stationId').patchValue(data.stationId);
-    this.requestForm.get('fullAddress').patchValue(data.address);
+    this.requestForm.get('fullAddress').patchValue(data.fullAddress);
     this.requestForm.get('expectedDate').patchValue(convertDateToDisplay(data.requestDate));
   }
 
@@ -134,7 +132,6 @@ export class CreateOrderComponent implements OnInit {
       this.productFormArray.at(i).get('id').patchValue('');
       this.productFormArray.at(i).get('unit').patchValue(product.unit);
       this.productFormArray.at(i).get('amountActually').patchValue(product.amountActually);
-      // this.patchInfoProduct(product.productResponse.id, i);
     });
   }
 
@@ -148,7 +145,7 @@ export class CreateOrderComponent implements OnInit {
         return x.id === Number(this.stationId);
       })
 
-      // this.requestForm.get('fullAddress').patchValue(itemStation.address);
+      // this.requestForm.get('fullAddress').patchValue(itemStation.fullAddress);
     })
   }
 

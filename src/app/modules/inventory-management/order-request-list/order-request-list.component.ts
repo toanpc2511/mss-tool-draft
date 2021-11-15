@@ -73,7 +73,7 @@ export class OrderRequestListComponent implements OnInit {
 
   buildForm() {
     this.searchForm = this.fb.group({
-      stationId: [''],
+      stationName: [''],
       employeeId: [''],
       expectedDate: [],
       approvalDate: [],
@@ -108,7 +108,7 @@ export class OrderRequestListComponent implements OnInit {
 
   handleStationChange() {
     this.searchForm
-      .get('stationId')
+      .get('stationName')
       .valueChanges.pipe(
       concatMap((stationName: string) => {
         this.listEmployees = [];
@@ -177,7 +177,7 @@ export class OrderRequestListComponent implements OnInit {
     });
     const data: IConfirmModalData = {
       title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn yêu cầu đặt hàng:  ${item.code}?`,
+      message: `Bạn có chắc chắn muốn xóa yêu cầu đặt hàng ${item.code}?`,
       button: { class: 'btn-primary', title: 'Xác nhận' }
     };
     modalRef.componentInstance.data = data;
