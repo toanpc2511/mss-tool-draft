@@ -137,6 +137,20 @@
 
             <td class="text-center action">
               <a
+                [ngbTooltip]="'Cài đặt barem'"
+                (click)='settingBarem(item)'
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                *ngIf="eAuthorize.UPDATE_GAS_FIELD_BUTTON |canUseFeature"
+              >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Settings-1.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                >
+                </span>
+              </a>
+
+              <a
                 [ngbTooltip]="'Sửa'"
                 (click)="update(item)"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"

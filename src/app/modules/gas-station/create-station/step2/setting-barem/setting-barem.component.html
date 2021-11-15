@@ -1,0 +1,91 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title h4">Nhập Barem bồn</div>
+    <div class="close-icon" (click)="modal.dismiss()"></div>
+  </div>
+
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+      <div class="form-group row">
+        <div class='col-lg-6'>
+          <div class='row pb-3'>
+            <div class='col-lg-3'>Mã bồn</div>
+            <div class='col-lg-9'>BJD4567</div>
+          </div>
+          <div class='row pb-3'>
+            <div class='col-lg-3'>Tên bồn</div>
+            <div class='col-lg-9'>BJD4567</div>
+          </div>
+          <div class='row pb-3'>
+            <div class='col-lg-3'>Dung tích</div>
+            <div class='col-lg-9'>BJD4567</div>
+          </div>
+          <div class='row pb-3'>
+            <div class='col-lg-3'>Chiều cao</div>
+            <div class='col-lg-9'>BJD4567</div>
+          </div>
+          <div class='row pb-3'>
+            <div class='col-lg-3'>Chiều dài</div>
+            <div class='col-lg-9'>BJD4567</div>
+          </div>
+        </div>
+
+        <div class='col-lg-6'>
+          <div class="w-100 d-flex justify-content-center">
+            <button class="btn btn-primary font-weight-bold mr-3">
+              Tải mẫu nhập Barem
+            </button>
+            <button class="btn btn-primary font-weight-bold">
+              Nhập dữ liệu Barem
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="overlay overlay-block">
+          <div class="py-3">
+            <div class="title-card pb-3">
+              <label class='title'>Thông tin Barem</label>
+            </div>
+
+            <div class="body-card px-5">
+              <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+                <thead>
+                <tr>
+                  <th scope=''>Số thứ tự</th>
+                  <th scope=''>Chiều cao (cm)</th>
+                  <th scope=''>Thể tích (L)</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                </tbody>
+
+                <tfoot *ngIf="dataSource?.length === 0">
+                <tr>
+                  <td colspan="13" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary btn-dialog mr-2"
+      (click)="modal.dismiss()"
+    >
+      Hủy
+    </button>
+
+    <button type="button" (click)="onSubmit()" class="btn btn-primary btn-dialog">
+      Lưu
+    </button>
+  </div>
+</div>
