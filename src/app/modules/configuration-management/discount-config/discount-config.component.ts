@@ -111,11 +111,12 @@ export class DiscountConfigComponent extends BaseComponent implements OnInit {
 		if (this.dataSource.invalid) {
 			return;
 		}
+		
 		this.configurationManagementService
 			.updateDiscountConfig({
 				discountRequests: this.dataSource.getRawValue().map((d) => ({
 					id: d.id,
-					discount: convertMoney(d.discount)
+					discount: convertMoney(d.discount) || 0
 				}))
 			})
 			.subscribe(

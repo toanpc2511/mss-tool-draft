@@ -130,7 +130,7 @@
 				</thead>
 
 				<tbody>
-					<tr *ngFor="let item of dataSource">
+					<tr *ngFor="let item of dataSource" (click)="goToDetail($event, item.id)">
 						<td class="code">
 							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code ">
 								{{ item.code }}

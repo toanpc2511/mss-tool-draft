@@ -86,7 +86,10 @@ const SPECIAL_URL: SpecialUrl[] = [
 	},{
     url: '/kho/yeu-cau-dat-hang/sua-yeu-cau',
     permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-  }
+  },{
+    url: '/kho/don-dat-kho/chi-tiet',
+    permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+  },
   /*End*/
 ];
 
