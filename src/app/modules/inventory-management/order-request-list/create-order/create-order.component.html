@@ -39,12 +39,10 @@
           <div class="input-group w-75">
             <input
               class="form-control form-control-solid"
-              placeholder="Chọn ngày dự kiến nhập hàng"
+              placeholder="DD/MM/YYYY"
               ngbDatepicker
-              readonly
               #startAt="ngbDatepicker"
               formControlName='expectedDate'
-              [minDate]="minDate"
             />
             <div class="input-group-append">
               <button
@@ -54,10 +52,16 @@
               ></button>
             </div>
           </div>
+
+          <app-validate
+            [control]="requestForm.controls['expectedDate']"
+            [error]="'ngbDate'"
+            [message]="'Ngày dự kiến không đúng định dạng'"
+          ></app-validate>
           <app-validate
             [control]="requestForm.controls['expectedDate']"
             [error]="'required'"
-            [message]="'Ngày dự kiến nhập hàng không được để trống'"
+            [message]="'Ngày dự kiến không được để trống'"
           ></app-validate>
         </div>
       </div>
