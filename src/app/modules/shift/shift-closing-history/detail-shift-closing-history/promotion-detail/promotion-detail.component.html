@@ -13,8 +13,8 @@
 						<th scope="">Loại sản phẩm</th>
 						<th scope="">Đơn vị</th>
 						<th scope="" class="text-right head-inventory">Tồn đầu</th>
-						<th scope="">Nhập</th>
-						<th scope="">Xuất</th>
+						<th class="text-right" scope="">Nhập</th>
+						<th class="text-right" scope="">Xuất</th>
 						<th scope="" [ngClass]='statusLockShift === "CLOSE" ? "text-right" : ""'>Số lượng thực tế</th>
 						<th scope="" class="text-right final-inventory">Tồn cuối</th>
 						<th scope="" class="text-right compensate-quantity">Bù</th>
@@ -149,7 +149,7 @@
 										{{ item.headInventory.toLocaleString('en-US') }}
 									</p>
 								</td>
-								<td class="import-quantity">
+								<td class="import-quantity text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
@@ -158,7 +158,7 @@
 										{{ item.importQuantity.toLocaleString('en-US') }}
 									</p>
 								</td>
-								<td class="export-quantity">
+								<td class="export-quantity text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
