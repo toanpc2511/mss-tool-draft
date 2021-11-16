@@ -1,6 +1,6 @@
 <div class="modal-content">
   <div class="modal-header">
-    <div class="modal-title h4">Nhập Barem bồn</div>
+    <div class="modal-title h4">{{data.title}}</div>
     <div class="close-icon" (click)="modal.dismiss()"></div>
   </div>
 
@@ -10,23 +10,33 @@
         <div class='col-lg-6'>
           <div class='row pb-3'>
             <div class='col-lg-3'>Mã bồn</div>
-            <div class='col-lg-9'>BJD4567</div>
+            <div class='col-lg-9'>
+              <strong>{{dataSource?.code}}</strong>
+            </div>
           </div>
           <div class='row pb-3'>
             <div class='col-lg-3'>Tên bồn</div>
-            <div class='col-lg-9'>BJD4567</div>
+            <div class='col-lg-9'>
+              <strong>{{dataSource?.name}}</strong>
+            </div>
           </div>
           <div class='row pb-3'>
             <div class='col-lg-3'>Dung tích</div>
-            <div class='col-lg-9'>BJD4567</div>
+            <div class='col-lg-9'>
+              <strong>{{dataSource?.capacity}}</strong>
+            </div>
           </div>
           <div class='row pb-3'>
             <div class='col-lg-3'>Chiều cao</div>
-            <div class='col-lg-9'>BJD4567</div>
+            <div class='col-lg-9'>
+              <strong>{{dataSource?.height}}</strong>
+            </div>
           </div>
           <div class='row pb-3'>
             <div class='col-lg-3'>Chiều dài</div>
-            <div class='col-lg-9'>BJD4567</div>
+            <div class='col-lg-9'>
+              <strong>{{dataSource?.length}}</strong>
+            </div>
           </div>
         </div>
 
@@ -64,7 +74,7 @@
 
                 <tfoot *ngIf="dataSource?.length === 0">
                 <tr>
-                  <td colspan="13" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+                  <td colspan="3" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
                 </tr>
                 </tfoot>
               </table>

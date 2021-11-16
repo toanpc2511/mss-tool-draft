@@ -129,6 +129,10 @@ export class HistoryOfUsingPointsComponent implements OnInit {
 	}
 
 	onSearch() {
+		this.searchForm.markAllAsTouched();
+		if (this.searchForm.invalid) {
+			return;
+		}
 		const filterData: IFilterUsingPoint = this.getFilterData();
 
 		this.historyUsingPointsService

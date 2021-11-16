@@ -200,6 +200,16 @@ export class Step2Component extends BaseComponent implements OnInit {
       backdrop: 'static',
       size: 'xl'
     });
-    modalRef.componentInstance.data = data;
+
+    modalRef.componentInstance.data = {
+      title: 'Nhập Barem bồn',
+      gasBinId: data.id
+    };
+
+    modalRef.result.then((result) => {
+      if (result) {
+        console.log('done');
+      }
+    });
   }
 }
