@@ -14,6 +14,7 @@ export interface IStationEployee {
 	id: number;
 	name: string;
 	address: string;
+  fullAddress?: string;
 	status: string;
 	code: string;
 }
