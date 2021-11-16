@@ -32,7 +32,6 @@ export class CreateOrderComponent implements OnInit {
   isUpdate = false;
   orderRequestId: number;
   isInitDataUpdateSubject = new Subject();
-  isInitDataUpdate$ = this.isInitDataUpdateSubject.asObservable();
 
   currentDate = moment();
   minDate: NgbDateStruct = {
@@ -61,10 +60,10 @@ export class CreateOrderComponent implements OnInit {
         switchMap((id: number) => {
           if (id) {
             this.isUpdate = true;
+            this.orderRequestId = id;
 
             this.minDate = null;
             this.orderRequestId = id;
-            // this.setBreadcumb();
             return this.inventoryManagementService.viewDetailOrderRequest(id);
           }
           return ofNull();
@@ -252,7 +251,7 @@ export class CreateOrderComponent implements OnInit {
     }
 
     if (this.isUpdate) {
-      this.inventoryManagementService.updateOrderRequest(dataReq)
+      this.inventoryManagementService.updateOrderRequest(dataReq, this.orderRequestId)
         .subscribe((res) => {
           if (res) {
             this.router.navigate(['/kho/yeu-cau-dat-hang']);

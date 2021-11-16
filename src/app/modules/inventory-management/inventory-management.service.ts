@@ -94,6 +94,39 @@ export interface IInfoOrderRequest {
   productResponses: [ IProductRequest ];
 }
 
+
+address: "Số 23/34, Châu Minh, Hiệp Hòa, Bắc Giang"
+code: "YCDH186"
+employeeRequest: "Nguyễn Văn D"
+reason: null
+requestDate: "2021-11-17"
+stationId: 5141
+stationName: "SunOil-HoaTest"
+status: "APPROVE"
+
+
+
+productResponses:
+{
+  amountActually: 12211111
+  amountRecommended: 234
+  gasFieldIn: null
+  productId: 1041
+  productName: "Xăng E5 RON 92-II"
+  unit: "L"
+  gasFieldOut: {
+    capacity: "1000"
+    code: "SB10"
+    gasStationId: 5141
+    height: "100"
+    id: 5079
+    length: "100"
+    name: "Bồn 2-TestLich"
+    productId: 1041
+    status: "ACTIVE"
+  }
+}
+
 export interface IProductRequest {
   amountActually: number;
   amountRecommended: number;
@@ -178,8 +211,8 @@ export class InventoryManagementService {
   }
 
   // Update yêu cầu dặt hàng
-  updateOrderRequest(dataReq) {
-    return this.http.put('import-request', dataReq);
+  updateOrderRequest(dataReq, orderRequestId: number) {
+    return this.http.put(`import-request/${orderRequestId}`, dataReq);
   }
 
   // Xóa yêu cầu đặt hàng
@@ -189,7 +222,7 @@ export class InventoryManagementService {
 
   // Xem chi tiết yêu cầu đặt hàng
   viewDetailOrderRequest(id: number) {
-    return this.http.get<Array<IInfoOrderRequest>>(`import-request/${id}`);
+    return this.http.get<IInfoOrderRequest>(`import-request/${id}`);
   }
 
   // Duyệt/Từ chối yêu cầu đặt hàng
