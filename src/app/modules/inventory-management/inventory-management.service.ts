@@ -68,82 +68,114 @@ export interface IWarehouseOrderRequest {
 	status: EWarehouseOrderStatus;
 }
 
+export interface IWareHouseOrderDetail {
+	capacity: number;
+	driver: {
+		id: number;
+		name: string;
+	};
+	exportedWarehouseAddress: string;
+	exportedWarehouseName: string;
+	freightCharges: number;
+	id: number;
+	importedWarehouseAddress: string;
+	importedWarehouseName: string;
+	internalCar: boolean;
+	licensePlates: string;
+	oderForm: 'DEPOT';
+	paymentMethod: 'CASH';
+	representativeName: string;
+	totalProductMoney: number;
+	transportCost: number;
+	vehicleCostMethod: 'CASH';
+	wareHouseOrderProductResponses: [
+		{
+			amountActually: number;
+			compartment: string;
+			gasFieldInName: string;
+			gasFieldOutName: string;
+			id: number;
+			intoMoney: number;
+			price: number;
+			productName: string;
+			supplierName: string;
+			unit: string;
+		}
+	];
+}
+
 export interface IGasFuel {
-  capacity: string;
-  code: string;
-  description: null
-  height: string;
-  id: number;
-  length: string;
-  name: string;
-  productId: number;
-  status: string;
+	capacity: string;
+	code: string;
+	description: null;
+	height: string;
+	id: number;
+	length: string;
+	name: string;
+	productId: number;
+	status: string;
 }
 
 export interface IInfoOrderRequest {
-  id: number;
-  address: string;
-  fullAddress: string;
-  code: string;
-  employeeRequest: string;
-  reason: string;
-  requestDate: string;
-  stationName: string;
-  stationId: number;
-  status: string;
-  productResponses: [ IProductRequest ];
+	id: number;
+	address: string;
+	fullAddress: string;
+	code: string;
+	employeeRequest: string;
+	reason: string;
+	requestDate: string;
+	stationName: string;
+	stationId: number;
+	status: string;
+	productResponses: [IProductRequest];
 }
 
+address: 'Số 23/34, Châu Minh, Hiệp Hòa, Bắc Giang';
+code: 'YCDH186';
+employeeRequest: 'Nguyễn Văn D';
+reason: null;
+requestDate: '2021-11-17';
+stationId: 5141;
+stationName: 'SunOil-HoaTest';
+status: 'APPROVE';
 
-address: "Số 23/34, Châu Minh, Hiệp Hòa, Bắc Giang"
-code: "YCDH186"
-employeeRequest: "Nguyễn Văn D"
-reason: null
-requestDate: "2021-11-17"
-stationId: 5141
-stationName: "SunOil-HoaTest"
-status: "APPROVE"
-
-
-
-productResponses:
-{
-  amountActually: 12211111
-  amountRecommended: 234
-  gasFieldIn: null
-  productId: 1041
-  productName: "Xăng E5 RON 92-II"
-  unit: "L"
-  gasFieldOut: {
-    capacity: "1000"
-    code: "SB10"
-    gasStationId: 5141
-    height: "100"
-    id: 5079
-    length: "100"
-    name: "Bồn 2-TestLich"
-    productId: 1041
-    status: "ACTIVE"
-  }
+productResponses: {
+	amountActually: 12211111;
+	amountRecommended: 234;
+	gasFieldIn: null;
+	productId: 1041;
+	productName: 'Xăng E5 RON 92-II';
+	unit: 'L';
+	gasFieldOut: {
+		capacity: '1000';
+		code: 'SB10';
+		gasStationId: 5141;
+		height: '100';
+		id: 5079;
+		length: '100';
+		name: 'Bồn 2-TestLich';
+		productId: 1041;
+		status: 'ACTIVE';
+	}
 }
 
 export interface IProductRequest {
-  amountActually: number;
-  amountRecommended: number;
-  gasFieldIn: number;
-  gasFieldOut: {
-    capacity: string;
-    code: string;
-    height: string;
-    id: number;
-    length: string;
-    name: string;
-    product_id: number;
-    status: string;
-  }
-  productName: string;
-  productId: number;
-  unit: string;
+	amountActually: number;
+	amountRecommended: number;
+	gasFieldIn: number;
+	gasFieldOut: {
+		capacity: string;
+		code: string;
+		height: string;
+		id: number;
+		length: string;
+		name: string;
+		product_id: number;
+		status: string;
+	};
+	productName: string;
+	productId: number;
+	unit: string;
 }
 
 @Injectable({
@@ -154,9 +186,8 @@ export class InventoryManagementService {
 
 	// Lấy ds trạm trạng thái active
 	getStationEmployee() {
-    const params =  new HttpParams()
-      .set('status', 'ACTIVE');
-    return this.http.get<Array<IStationEployee>>(`employees/station-status`, {params});
+		const params = new HttpParams().set('status', 'ACTIVE');
+		return this.http.get<Array<IStationEployee>>(`employees/station-status`, { params });
 	}
 
 	// Lấy ds tất cả nhân viên yêu cầu
@@ -194,39 +225,47 @@ export class InventoryManagementService {
 			.set('employee-id', data.employeeId.toString())
 			.set('date-from', data.dateFrom)
 			.set('date-to', data.dateTo);
-		return this.http.get<IWarehouseOrderRequest[]>('warehouse_orders/filters', { params });
+		return this.http.get<IWarehouseOrderRequest[]>('warehouse-orders/filters', { params });
 	}
-  // Lấy ds bồn theo trạm và loại nhiên liệu
-  getListGasFuel(productId: number | string, gasStationId: number | string) {
-    const params = new HttpParams()
-      .set('product-id', productId.toString())
-      .set('gas-station-id', gasStationId.toString());
+	// Lấy ds bồn theo trạm và loại nhiên liệu
+	getListGasFuel(productId: number | string, gasStationId: number | string) {
+		const params = new HttpParams()
+			.set('product-id', productId.toString())
+			.set('gas-station-id', gasStationId.toString());
 
-    return this.http.get<Array<IGasFuel>>('gas-fields/station-product', {params})
-  }
+		return this.http.get<Array<IGasFuel>>('gas-fields/station-product', { params });
+	}
 
-  // tạo yêu cầu đặt hàng
-  createOrderRequest(dataReq) {
-    return this.http.post('import-request', dataReq);
-  }
+	// tạo yêu cầu đặt hàng
+	createOrderRequest(dataReq) {
+		return this.http.post('import-request', dataReq);
+	}
 
-  // Update yêu cầu dặt hàng
-  updateOrderRequest(dataReq, orderRequestId: number) {
-    return this.http.put(`import-request/${orderRequestId}`, dataReq);
-  }
+	// Update yêu cầu dặt hàng
+	updateOrderRequest(dataReq, orderRequestId: number) {
+		return this.http.put(`import-request/${orderRequestId}`, dataReq);
+	}
 
-  // Xóa yêu cầu đặt hàng
-  deleteOrderRequest(id: number) {
-    return this.http.delete(`import-request/${id}`);
-  }
+	// Xóa yêu cầu đặt hàng
+	deleteOrderRequest(id: number) {
+		return this.http.delete(`import-request/${id}`);
+	}
 
-  // Xem chi tiết yêu cầu đặt hàng
-  viewDetailOrderRequest(id: number) {
-    return this.http.get<IInfoOrderRequest>(`import-request/${id}`);
-  }
+	// Xem chi tiết yêu cầu đặt hàng
+	viewDetailOrderRequest(id: number) {
+		return this.http.get<IInfoOrderRequest>(`import-request/${id}`);
+	}
 
-  // Duyệt/Từ chối yêu cầu đặt hàng
-  approveOrRejectOrderRequest(id: string|number, data: {requestConfirm: boolean; reason: string}) {
-	  return this.http.put(`import-request/handles/${id}`, data);
-  }
+	// Duyệt/Từ chối yêu cầu đặt hàng
+	approveOrRejectOrderRequest(
+		id: string | number,
+		data: { requestConfirm: boolean; reason: string }
+	) {
+		return this.http.put(`import-request/handles/${id}`, data);
+	}
+
+	// Xem chi tiết yêu cầu đặt kho
+	viewDetailOrderWarehouse(id: string) {
+		return this.http.get<IWareHouseOrderDetail>(`warehouse-orders/details/${id}`);
+	}
 }
