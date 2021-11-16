@@ -60,7 +60,7 @@ export class HistoryUsingPointsService {
 
 	// Lấy ds trạm
 	getStationEmployee() {
-		return this.http.get<Array<IStationEployee>>(`employees/station`);
+		return this.http.get<Array<IStationEployee>>(`employees/station-status`);
 	}
 
 	// Tìm kiếm giao dịch sử dụng điểm

@@ -33,7 +33,6 @@
 							class="form-control form-control-solid"
 							placeholder="DD/MM/YYYY"
 							ngbDatepicker
-							readonly
 							#startAt="ngbDatepicker"
 							formControlName="startAt"
 						/>
@@ -50,6 +49,12 @@
 						[error]="'errorDateStart'"
 						[message]="'Thời gian từ ngày không lớn hơn thời gian đến ngày'"
 					></app-validate>
+
+          <app-validate
+            [control]="searchForm.controls['startAt']"
+            [error]="'ngbDate'"
+            [message]="'Ngày bắt đầu không đúng định dạng'"
+          ></app-validate>
 				</div>
 
 				<div class="col-lg-6">
@@ -60,7 +65,6 @@
 							class="form-control form-control-solid"
 							placeholder="DD/MM/YYYY"
 							ngbDatepicker
-							readonly
 							#endAt="ngbDatepicker"
 							formControlName="endAt"
 						/>
@@ -77,6 +81,12 @@
 						[error]="'errorDateEnd'"
 						[message]="'Thời gian đến ngày không nhỏ hơn thời gian từ ngày'"
 					></app-validate>
+
+          <app-validate
+            [control]="searchForm.controls['endAt']"
+            [error]="'ngbDate'"
+            [message]="'Đến ngày không đúng định dạng'"
+          ></app-validate>
 				</div>
 			</div>
 		</form>

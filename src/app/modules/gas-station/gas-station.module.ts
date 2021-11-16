@@ -22,6 +22,7 @@ import { GasStationComponent } from './gas-station.component';
 import { CanActiveStepPipe } from './gas-station.pipe';
 import { ListLayoutComponent } from './list-layout/list-layout.component';
 import { ListStationComponent } from './list-station/list-station.component';
+import { SettingBaremComponent } from './create-station/step2/setting-barem/setting-barem.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ListStationComponent } from './list-station/list-station.component';
     PumpPoleModalComponent,
     CreateGasBinComponent,
     PumpHoseModalComponent,
-    ListLayoutComponent
+    ListLayoutComponent,
+    SettingBaremComponent
   ],
   imports: [
     CommonModule,
