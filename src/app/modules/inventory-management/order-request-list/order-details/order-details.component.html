@@ -84,6 +84,7 @@
           <th scope='' class=''>Đơn vị</th>
           <th scope='' class=''>Bồn</th>
           <th scope='' class='text-right'>Lượng đề xuất</th>
+          <th scope='' class='text-right' *ngIf='dataSource?.status === "APPROVE"'>Lượng thực nhập</th>
         </tr>
         </thead>
 
@@ -121,9 +122,18 @@
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.amountActually.toLocaleString('en-US')"
+              [ngbTooltip]="item.amountRecommended | number| vnCurrency"
             >
-              {{ item.amountActually.toLocaleString('en-US') }}
+              {{ item.amountRecommended | number| vnCurrency }}
+            </p>
+          </td>
+          <td class='amount-actually text-right' *ngIf='dataSource.status === "APPROVE"'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.amountActually | number| vnCurrency"
+            >
+              {{ item.amountActually | number| vnCurrency }}
             </p>
           </td>
         </tr>
@@ -143,7 +153,7 @@
     <button
       *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM'
       (click)="openRejectOrderRequestModal()"
-      class="btn btn-outline-danger mr-3 button"
+      class="btn btn-outline-primary mr-3 button"
     >
       Từ chối
     </button>

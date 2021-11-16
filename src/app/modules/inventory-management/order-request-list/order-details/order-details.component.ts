@@ -1,7 +1,7 @@
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BaseComponent } from './../../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { InventoryManagementService } from '../../inventory-management.service';
+import { IInfoOrderRequest, InventoryManagementService } from '../../inventory-management.service';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { ProductService } from '../../../product/product.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -27,7 +27,7 @@ export class OrderDetailsComponent extends BaseComponent implements OnInit {
 	activeModal: NgbActiveModal;
 	orderRequestId: number;
 	listStatus = LIST_STATUS_ORDER_REQUEST;
-	dataSource;
+	dataSource: IInfoOrderRequest;
 
 	constructor(
 		private inventoryManagementService: InventoryManagementService,
