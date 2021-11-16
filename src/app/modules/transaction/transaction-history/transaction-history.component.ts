@@ -186,6 +186,10 @@ export class TransactionHistoryComponent extends BaseComponent implements OnInit
 	}
 
 	onSearch() {
+    this.searchForm.markAllAsTouched();
+    if (this.searchForm.invalid) {
+      return;
+    }
 		const filterData: IFilterTransaction = this.getFilterData();
 
 		this.transactionService

@@ -16,7 +16,7 @@
 					<div class="col-lg-8">
 						<select class="form-control form-control-solid" formControlName="shiftId">
 							<option [value]="''">Chọn ca làm việc</option>
-							<option *ngFor="let item of listShifts" [value]="item.id">{{item.name}}</option>
+							<option *ngFor="let item of listShifts" [value]="item.id">{{item.name}} ({{item.startTime  | displayTime}} - {{item.endTime | displayTime}})</option>
 						</select>
 
 						<app-validate
@@ -34,7 +34,7 @@
 						<th scope="">STT</th>
 						<th scope="" class="">Nhân viên</th>
 						<th scope="" class="">Cột</th>
-						<th scope="" class="">Thời gian</th>
+						<th scope="" class="">Thời gian nghỉ</th>
 						<th scope="" class="text-center">Trưởng ca</th>
 					</thead>
 

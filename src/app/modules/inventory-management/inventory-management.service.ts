@@ -69,6 +69,7 @@ export interface IWarehouseOrderRequest {
 }
 
 export interface IWareHouseOrderDetail {
+	code: string;
 	capacity: number;
 	driver: {
 		id: number;
@@ -82,12 +83,12 @@ export interface IWareHouseOrderDetail {
 	importedWarehouseName: string;
 	internalCar: boolean;
 	licensePlates: string;
-	oderForm: 'DEPOT';
-	paymentMethod: 'CASH';
+	oderForm: string;
+	paymentMethod: string;
 	representativeName: string;
 	totalProductMoney: number;
 	transportCost: number;
-	vehicleCostMethod: 'CASH';
+	vehicleCostMethod: string;
 	wareHouseOrderProductResponses: [
 		{
 			amountActually: number;
@@ -102,6 +103,11 @@ export interface IWareHouseOrderDetail {
 			unit: string;
 		}
 	];
+	rejectReason: string;
+	adjustReason: string;
+	status: EWarehouseOrderStatus;
+	requestCode: string;
+	expectedDate: string;
 }
 
 export interface IGasFuel {
@@ -129,36 +135,6 @@ export interface IInfoOrderRequest {
 	status: string;
 	productResponses: [IProductRequest];
 }
-
-address: 'Số 23/34, Châu Minh, Hiệp Hòa, Bắc Giang';
-code: 'YCDH186';
-employeeRequest: 'Nguyễn Văn D';
-reason: null;
-requestDate: '2021-11-17';
-stationId: 5141;
-stationName: 'SunOil-HoaTest';
-status: 'APPROVE';
-
-productResponses: {
-	amountActually: 12211111;
-	amountRecommended: 234;
-	gasFieldIn: null;
-	productId: 1041;
-	productName: 'Xăng E5 RON 92-II';
-	unit: 'L';
-	gasFieldOut: {
-		capacity: '1000';
-		code: 'SB10';
-		gasStationId: 5141;
-		height: '100';
-		id: 5079;
-		length: '100';
-		name: 'Bồn 2-TestLich';
-		productId: 1041;
-		status: 'ACTIVE';
-	}
-}
-
 export interface IProductRequest {
 	amountActually: number;
 	amountRecommended: number;

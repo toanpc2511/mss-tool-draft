@@ -90,7 +90,7 @@ export class TransactionService {
 
 	// Lấy ds trạm
 	getStationEmployee() {
-		return this.http.get<Array<IStationEployee>>(`employees/station`);
+		return this.http.get<Array<IStationEployee>>(`employees/station-status`);
 	}
 
 	// Lấy ds tất cả nhân viên thực hiện

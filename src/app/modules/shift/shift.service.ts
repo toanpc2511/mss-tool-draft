@@ -78,6 +78,9 @@ export interface IShiftConfig {
 	endMinute: number;
 	offTimes: [ITime];
 	codeColor: string;
+
+  startTime?: string;
+  endTime?: string;
 }
 
 export interface ITime {

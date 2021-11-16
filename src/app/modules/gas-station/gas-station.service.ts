@@ -172,6 +172,16 @@ export interface IAddress {
 	fullAddress: string;
 	provinceId: number;
 }
+
+export interface IInfoBarem {
+  capacity: string;
+  code: string;
+  height: string;
+  length: string;
+  name: string;
+  scales: [];
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -333,4 +343,11 @@ export class GasStationService {
 		const params = new HttpParams().set('station-id', stationId);
 		return this.http.get<PumpPoleResponse[]>('pump-poles/stations', { params });
 	}
+
+  // Lấy thông tin Barem của bồn
+  getInfoBarem(gasBinId: number) {
+    const params = new HttpParams()
+      .set('gas-field-id', gasBinId.toString())
+    return this.http.get<IInfoBarem>(`scales`, {params})
+  }
 }

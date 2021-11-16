@@ -22,7 +22,7 @@ import { of } from 'rxjs';
 	providers: [DestroyService]
 })
 export class WareHouseOrderDetailComponent extends BaseComponent implements OnInit, AfterViewInit {
-	eContractStatus = EWarehouseOrderStatus;
+	eWarehouseStatus = EWarehouseOrderStatus;
 	dataDetail: IWareHouseOrderDetail;
 
 	constructor(
@@ -80,6 +80,7 @@ export class WareHouseOrderDetailComponent extends BaseComponent implements OnIn
 				}),
 				tap((res) => {
 					this.dataDetail = res.data;
+					this.cdr.detectChanges();
 				}),
 				takeUntil(this.destroy$)
 			)

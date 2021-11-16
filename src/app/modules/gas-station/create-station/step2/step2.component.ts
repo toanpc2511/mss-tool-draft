@@ -13,6 +13,7 @@ import { SortService } from 'src/app/shared/services/sort.service';
 import { FilterField, SortState } from 'src/app/_metronic/shared/crud-table';
 import { GasBinResponse, GasStationService } from '../../gas-station.service';
 import { CreateGasBinComponent } from './create-gas-bin/create-gas-bin.component';
+import { SettingBaremComponent } from './setting-barem/setting-barem.component';
 
 @Component({
   selector: 'app-step2',
@@ -184,6 +185,30 @@ export class Step2Component extends BaseComponent implements OnInit {
               this.cdr.detectChanges();
             }
           });
+      }
+    });
+  }
+
+  settingBarem(data) {
+    if (
+      !this.gasStationService.gasStationId ||
+      this.gasStationService.gasStationStatus !== 'ACTIVE'
+    ) {
+      return this.toastr.error('Không thể cài đặt barem vì trạm xăng không hoạt động');
+    }
+    const modalRef = this.modalService.open(SettingBaremComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+
+    modalRef.componentInstance.data = {
+      title: 'Nhập Barem bồn',
+      gasBinId: data.id
+    };
+
+    modalRef.result.then((result) => {
+      if (result) {
+        console.log('done');
       }
     });
   }

@@ -64,6 +64,20 @@
           </label>
         </div>
       </div>
+
+      <div class="col-lg-6 row">
+        <div class='col-lg-5'>
+          <label class='form-label'>Trạng thái</label>
+        </div>
+        <div class='col-lg-7'>
+          <label class='form-label'>
+            <strong *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM'>Chờ xác nhận</strong>
+            <strong *ngIf='dataSource?.status === listStatus.APPROVE'>Đã phê duyệt</strong>
+            <strong *ngIf='dataSource?.status === listStatus.CONFIRM'>Đã xác nhận</strong>
+            <strong *ngIf='dataSource?.status === listStatus.REFUSE'>Đã từ chối</strong>
+          </label>
+        </div>
+      </div>
     </div>
   </div>
 
