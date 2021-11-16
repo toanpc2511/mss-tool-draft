@@ -161,12 +161,13 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 		console.log(id);
 	}
 
-	deleteOrderRequest($event: Event, item) {
-		console.log(item);
-	}
-
 	onReset() {
 		this.ngOnInit();
+	}
+
+	goToDetail($event: Event, id: string) {
+		$event.stopPropagation();
+		this.router.navigate([`/kho/don-dat-kho/chi-tiet/${id}`])
 	}
 
 	pagingChange($event: IPaginatorState) {
