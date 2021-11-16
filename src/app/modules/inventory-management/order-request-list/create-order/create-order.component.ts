@@ -83,7 +83,6 @@ export class CreateOrderComponent implements OnInit {
     this.getListProductFuels();
     this.buildForm();
     this.buildProductForm();
-    this.handleStationChange();
   }
 
   buildForm() {
@@ -101,7 +100,7 @@ export class CreateOrderComponent implements OnInit {
           id: ['', Validators.required],
           gasFieldId: ['', Validators.required],
           unit: [''],
-          amountActually: ['', [Validators.required, Validators.min(1)]]
+          amountRecommended: ['', [Validators.required, Validators.min(1)]]
         })
       ])
     });
@@ -112,14 +111,15 @@ export class CreateOrderComponent implements OnInit {
 
   loadDataUpdate(data: IInfoOrderRequest) {
     this.orderDataUpdate = data;
-    console.log(this.orderDataUpdate);
+
+    this.stationId = data.stationId;
     this.pathValueRequestForm(data);
     this.pathValueProduct(data);
   }
 
   pathValueRequestForm(data: IInfoOrderRequest) {
     this.requestForm.get('stationId').patchValue(data.stationId);
-    this.requestForm.get('fullAddress').patchValue(data.fullAddress);
+    this.requestForm.get('fullAddress').patchValue(data.address);
     this.requestForm.get('expectedDate').patchValue(convertDateToDisplay(data.requestDate));
   }
 
@@ -128,10 +128,16 @@ export class CreateOrderComponent implements OnInit {
       if (i >= 1) {
         this.addItem();
       }
-      console.log(product);
-      this.productFormArray.at(i).get('id').patchValue('');
+
+      this.inventoryManagementService.getListGasFuel(product.productId, data.stationId).subscribe((res) => {
+        this.products[i] = res.data;
+        this.cdr.detectChanges();
+      });
+
+      this.productFormArray.at(i).get('id').patchValue(product.productId);
+      this.productFormArray.at(i).get('gasFieldId').patchValue(product.gasFieldOut.id);
       this.productFormArray.at(i).get('unit').patchValue(product.unit);
-      this.productFormArray.at(i).get('amountActually').patchValue(product.amountActually);
+      this.productFormArray.at(i).get('amountRecommended').patchValue(product.amountRecommended);
     });
   }
 
@@ -145,7 +151,7 @@ export class CreateOrderComponent implements OnInit {
         return x.id === Number(this.stationId);
       })
 
-      // this.requestForm.get('fullAddress').patchValue(itemStation.fullAddress);
+      this.requestForm.get('fullAddress').patchValue(itemStation.fullAddress);
     })
   }
 
@@ -213,7 +219,7 @@ export class CreateOrderComponent implements OnInit {
         gasFieldId: ['', Validators.required],
         id: ['', Validators.required],
         unit: [''],
-        amountActually: ['', [Validators.required, Validators.min(1)]]
+        amountRecommended: ['', [Validators.required, Validators.min(1)]]
       })
     );
   }
@@ -232,7 +238,7 @@ export class CreateOrderComponent implements OnInit {
     const productData = this.productForm.value.products.map(
       (p) => ({
         ...p,
-        amountActually: convertMoney(p.amountActually),
+        amountRecommended: convertMoney(p.amountRecommended.toString()),
         id: Number(p.id),
         gasFieldId: Number(p.gasFieldId)
       })
@@ -245,19 +251,35 @@ export class CreateOrderComponent implements OnInit {
       productInfoRequests: productData
     }
 
-    this.inventoryManagementService.createOrderRequest(dataReq)
-      .subscribe((res) => {
-        if (res) {
-          this.router.navigate(['/kho/yeu-cau-dat-hang']);
-          this.toastr.success('Gửi yêu cầu đặt hàng thành công')
-        }
-      }), (err: IError) => {
-      this.checkError(err);
-    };
+    if (this.isUpdate) {
+      this.inventoryManagementService.updateOrderRequest(dataReq)
+        .subscribe((res) => {
+          if (res) {
+            this.router.navigate(['/kho/yeu-cau-dat-hang']);
+            this.toastr.success('Sửa yêu cầu đặt hàng thành công')
+          }
+        }), (err: IError) => {
+        this.checkError(err);
+      };
+    } else {
+      this.inventoryManagementService.createOrderRequest(dataReq)
+        .subscribe((res) => {
+          if (res) {
+            this.router.navigate(['/kho/yeu-cau-dat-hang']);
+            this.toastr.success('Gửi yêu cầu đặt hàng thành công')
+          }
+        }), (err: IError) => {
+        this.checkError(err);
+      };
+    }
   }
 
   checkError(error: IError) {
     this.toastr.error(error.code)
+  }
+
+  onBack() {
+    this.router.navigate(['/kho/yeu-cau-dat-hang']);
   }
 
 }

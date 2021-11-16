@@ -96,6 +96,7 @@ export interface IInfoOrderRequest {
 
 export interface IProductRequest {
   amountActually: number;
+  amountRecommended: number;
   gasFieldIn: number;
   gasFieldOut: {
     capacity: string;
@@ -108,6 +109,7 @@ export interface IProductRequest {
     status: string;
   }
   productName: string;
+  productId: number;
   unit: string;
 }
 
@@ -117,9 +119,11 @@ export interface IProductRequest {
 export class InventoryManagementService {
 	constructor(private http: HttpService) {}
 
-	// Lấy ds trạm
+	// Lấy ds trạm trạng thái active
 	getStationEmployee() {
-    return this.http.get<Array<IStationEployee>>(`employees/station`);
+    const params =  new HttpParams()
+      .set('status', 'ACTIVE');
+    return this.http.get<Array<IStationEployee>>(`employees/station-status`, {params});
 	}
 
 	// Lấy ds tất cả nhân viên yêu cầu
@@ -171,6 +175,11 @@ export class InventoryManagementService {
   // tạo yêu cầu đặt hàng
   createOrderRequest(dataReq) {
     return this.http.post('import-request', dataReq);
+  }
+
+  // Update yêu cầu dặt hàng
+  updateOrderRequest(dataReq) {
+    return this.http.put('import-request', dataReq);
   }
 
   // Xóa yêu cầu đặt hàng
