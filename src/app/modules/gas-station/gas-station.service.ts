@@ -179,7 +179,10 @@ export interface IInfoBarem {
   height: string;
   length: string;
   name: string;
-  scales: [];
+  scales: [{
+    numberOfLit: number,
+    height: number
+  }];
 }
 
 @Injectable({
@@ -349,5 +352,10 @@ export class GasStationService {
     const params = new HttpParams()
       .set('gas-field-id', gasBinId.toString())
     return this.http.get<IInfoBarem>(`scales`, {params})
+  }
+
+  // nhập barem bồn
+  impostBarem(dataReq) {
+    return this.http.post('scales', dataReq);
   }
 }
