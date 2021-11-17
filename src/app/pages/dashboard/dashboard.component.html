@@ -1,1 +1,19 @@
-<app-dashboard-wrapper></app-dashboard-wrapper>
+<div class="dashboard-wrapper p-3">
+	<div class="tracking-price-chart w-100">
+		<h3 class="m-5 pt-5 title">Biểu đồ thay đổi giá nhiên liệu</h3>
+		<apx-chart
+			#chart
+			[series]="chartOptions.series"
+			[chart]="chartOptions.chart"
+			[xaxis]="chartOptions.xaxis"
+			[yaxis]="chartOptions.yaxis"
+			[dataLabels]="chartOptions.dataLabels"
+			[grid]="chartOptions.grid"
+			[stroke]="chartOptions.stroke"
+			[title]="chartOptions.title"
+			[legend]="chartOptions.legend"
+			[markers]="chartOptions.marker"
+			[tooltip]="chartOptions.tooltip"
+		></apx-chart>
+	</div>
+</div>
