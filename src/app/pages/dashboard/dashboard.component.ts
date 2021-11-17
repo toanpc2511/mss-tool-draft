@@ -10,6 +10,7 @@ import {
 	ApexMarkers,
 	ApexStroke,
 	ApexTitleSubtitle,
+	ApexTooltip,
 	ApexXAxis,
 	ApexYAxis,
 	ChartComponent
@@ -30,6 +31,7 @@ export type ChartOptions = {
 	stroke: ApexStroke;
 	title: ApexTitleSubtitle;
 	legend: ApexLegend;
+	tooltip: ApexTooltip;
 };
 @Component({
 	selector: 'app-dashboard',
@@ -64,7 +66,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 				show: false
 			},
 			background: '#ffffff',
-			defaultLocale: 'vi'
+			defaultLocale: 'vi',
 		},
 		dataLabels: {
 			enabled: false
@@ -75,11 +77,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 			width: 3
 		},
 		xaxis: {
-			type: 'datetime',
+			type: 'category',
 			labels: {
 				formatter: (value) => moment(value).format('DD/MM/YY')
 			},
-			tickAmount: 'dataPoints'
+			tickAmount: 'dataPoints',
 		},
 		marker: {
 			size: 4,
@@ -87,9 +89,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 		},
 		yaxis: {
 			labels: {
-				show: false,
 				formatter: (value) => {
-					return formatMoney(value);
+					if (value < 99999) {
+						return value.toString().substr(0, 2);
+					}
+					return value.toString().substr(0, 3);
 				}
 			}
 		},
@@ -100,6 +104,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 			},
 			height: 80
 		},
+		tooltip: {
+			y: {
+				formatter: (value) => `${value} VNĐ`
+			}
+		}
 	};
 	trackingPriceSeriesData: ISerieTrackingPriceData[] = [];
 

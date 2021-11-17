@@ -44,13 +44,15 @@ export class DashboardService {
 		const series: ISerieTrackingPriceData[] = data.map((tp) => {
 			const serie: ISerieTrackingPriceData = {
 				name: tp.product.name,
-				data: tp.trackingPrices.map((d) => {
-					const xy: { x: string; y: number } = {
-						x: `${moment(d.createdAt).format('YYYY/MM/DD')} GMT`,
-						y: d.price
-					};
-					return xy;
-				})
+				data: tp.trackingPrices
+					.map((d) => {
+						const xy: { x: string; y: number } = {
+							x: `${moment(d.createdAt).format('YYYY/MM/DD')} GMT`,
+							y: d.price
+						};
+						return xy;
+					})
+					.reverse()
 			};
 			return serie;
 		});
