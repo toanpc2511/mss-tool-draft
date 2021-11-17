@@ -446,9 +446,9 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.totalLiter| number| vnCurrency"
+										[ngbTooltip]="item.totalLiter.toLocaleString('en-US')"
 									>
-										{{ item.totalLiter| number| vnCurrency }}
+										{{ item.totalLiter.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="provisional-money text-right">
