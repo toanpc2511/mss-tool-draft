@@ -2,7 +2,7 @@
 	<div class="info-request pb-0 mt-2">
 		<div class="card-header">
 			<div class="card-title mb-0">
-				<h3 class="title">Mã đặt kho: 123456</h3>
+				<h3 class="title">Mã đặt kho: {{dataDetail?.code}}</h3>
 			</div>
 		</div>
 	</div>
@@ -22,7 +22,7 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">654321</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.requestCode}}</label>
 					</div>
 				</div>
 
@@ -32,7 +32,7 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">ABC</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.representativeName}}</label>
 					</div>
 				</div>
 			</div>
@@ -44,7 +44,7 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">Tổng công ty</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.importedWarehouseName}}</label>
 					</div>
 				</div>
 
@@ -54,14 +54,52 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">Tổng công ty</label>
+						<label class="form-label font-weight-bold"
+							>{{dataDetail?.importedWarehouseAddress}}</label
+						>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-lg-6 row">
+					<div class="col-lg-5">
+						<label class="form-label">Ngày dự kiến nhập hàng</label>
+					</div>
+
+					<div class="col-lg-7">
+						<label class="form-label font-weight-bold">{{dataDetail?.expectedDate |date: 'dd/MM/yyyy'}}</label>
+					</div>
+				</div>
+
+				<div class="col-lg-6 row">
+					<div class="col-lg-5">
+						<label class="form-label">Trạng thái</label>
+					</div>
+
+					<div class="col-lg-7">
+						<label class="form-label">
+							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.NEW">Mới</ng-container>
+							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
+								>Chờ phê duyệt</ng-container
+							>
+							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.CONFIRMED"
+								>Đã phê duyệt</ng-container
+							>
+							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.REFUSED"
+								>Đã từ chối</ng-container
+							>
+							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.ADJUST"
+								>Yêu cầu điều chỉnh</ng-container
+							>
+						</label>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-    <div class="info-request-in">
+	<div class="info-request-in">
 		<div class="card-header">
 			<div class="card-title">
 				<h3 class="title">Thông tin đặt kho</h3>
@@ -76,7 +114,15 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">Nhà cung cấp</label>
+						<label class="form-label font-weight-bold" *ngIf="dataDetail?.oderForm === 'SUPPLIER'"
+							>Nhà cung cấp</label
+						>
+						<label class="form-label font-weight-bold" *ngIf="dataDetail?.oderForm === 'DEPOT'"
+							>Kho chứa</label
+						>
+						<label class="form-label font-weight-bold" *ngIf="dataDetail?.oderForm === 'STORE'"
+							>Cửa hàng</label
+						>
 					</div>
 				</div>
 
@@ -86,7 +132,12 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">Chuyển khoản</label>
+						<label class="form-label font-weight-bold" *ngIf="dataDetail?.paymentMethod === 'MONEY'"
+							>Tiền mặt</label
+						>
+						<label class="form-label font-weight-bold" *ngIf="dataDetail?.paymentMethod === 'CASH'"
+							>Chuyển khoản</label
+						>
 					</div>
 				</div>
 			</div>
@@ -98,7 +149,7 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">Tổng công ty</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.exportedWarehouseName}}</label>
 					</div>
 				</div>
 
@@ -108,14 +159,90 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">Tổng công ty</label>
+						<label class="form-label font-weight-bold"
+							>{{dataDetail?.exportedWarehouseAddress}}</label
+						>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-    <div class="info-request-in">
+	<div class="info-request-in">
+		<div class="card-header">
+			<div class="card-title">
+				<h3 class="title">Danh sách hàng hoá</h3>
+			</div>
+		</div>
+
+		<div class="card-body">
+			<div class="table-responsive angular-bootstrap-table">
+				<table class="table table-vertical-center overflow-hidden" aria-label="">
+					<thead class="thead-light">
+						<tr>
+							<th scope="">
+								<label class="form-label">STT</label>
+							</th>
+							<th scope="">
+								<label class="form-label">Tên sản phẩm</label>
+							</th>
+							<th scope="">
+								<label class="form-label">Đơn vị</label>
+							</th>
+							<th class="text-right" scope="">
+								<label class="form-label">Số lượng</label>
+							</th>
+							<th class="text" scope="">
+								<label class="form-label">Bồn xuất</label>
+							</th>
+							<th class="text" scope="">
+								<label class="form-label">Ngăn</label>
+							</th>
+							<th class="text" scope="">
+								<label class="form-label">Bồn nhập</label>
+							</th>
+							<th class="text-right" scope="">
+								<label class="form-label">Đơn giá(VNĐ)</label>
+							</th>
+							<th class="text" scope="">
+								<label class="form-label">Nguồn hàng</label>
+							</th>
+							<th class="text-right" scope="">
+								<label class="form-label">Thành tiền</label>
+							</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr *ngFor="let item of dataDetail?.wareHouseOrderProductResponses; let i =index">
+							<td>{{i + 1}}</td>
+							<td>{{item.productName}}</td>
+							<td>{{item.unit}}</td>
+							<td class="text-right">{{item.amountActually}}</td>
+							<td class="">{{item.gasFieldOutName}}</td>
+							<td class="">{{item.compartment}}</td>
+							<td class="">{{item.gasFieldInName}}</td>
+							<td class="text-right">{{item.price}}</td>
+							<td class="">{{item.supplierName}}</td>
+							<td class="text-right">{{item.intoMoney}}</td>
+						</tr>
+					</tbody>
+
+					<tfoot>
+						<tr>
+							<td colspan="6"></td>
+							<td colspan="3" class="text-right"><strong>Tổng tiền thanh toán</strong></td>
+							<td colspan="1" class="text-right">
+								<strong>{{dataDetail?.totalProductMoney}}</strong>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="info-request-in">
 		<div class="card-header">
 			<div class="card-title">
 				<h3 class="title">Thông tin vận tải</h3>
@@ -130,7 +257,10 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">Có</label>
+						<label class="form-label font-weight-bold" *ngIf="dataDetail?.internalCar">Có</label>
+						<label class="form-label font-weight-bold" *ngIf="!dataDetail?.internalCar"
+							>Không</label
+						>
 					</div>
 				</div>
 
@@ -140,7 +270,16 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">Tiền mặt</label>
+						<label
+							class="form-label font-weight-bold"
+							*ngIf="dataDetail?.vehicleCostMethod === 'MONEY'"
+							>Tiền mặt</label
+						>
+						<label
+							class="form-label font-weight-bold"
+							*ngIf="dataDetail?.vehicleCostMethod === 'CASH'"
+							>Chuyển khoản</label
+						>
 					</div>
 				</div>
 			</div>
@@ -152,7 +291,9 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">10.000vnđ</label>
+						<label class="form-label font-weight-bold"
+							>{{dataDetail?.transportCost |number|vnCurrency}}</label
+						>
 					</div>
 				</div>
 
@@ -162,19 +303,19 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">10.100vnđ</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.freightCharges}}</label>
 					</div>
 				</div>
 			</div>
 
-            <div class="form-group row">
+			<div class="form-group row">
 				<div class="col-lg-6 row">
 					<div class="col-lg-5">
 						<label class="form-label">Biển số xe sử dụng</label>
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">29Z1-53843</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.licensePlates}}</label>
 					</div>
 				</div>
 
@@ -184,117 +325,41 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">4300L</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.capacity}}</label>
 					</div>
 				</div>
 			</div>
 
-            <div class="form-group row">
+			<div class="form-group row">
 				<div class="col-lg-6 row">
 					<div class="col-lg-5">
 						<label class="form-label">Lái xe</label>
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">Hồng Thất Công</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.driver?.name}}</label>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-    <div class="info-request-in">
-		<div class="card-header">
-			<div class="card-title">
-				<h3 class="title">Danh sách hàng hoá</h3>
-			</div>
-		</div>
-
-        <div class="card-body">
-            <div class="table-responsive angular-bootstrap-table">
-                <table class="table table-vertical-center overflow-hidden" aria-label="">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="">
-                                <label class="form-label">STT</label>
-                            </th>
-                            <th scope="">
-                                <label class="form-label">Tên sản phẩm</label>
-                            </th>
-                            <th scope="">
-                                <label class="form-label">Đơn vị</label>
-                            </th>
-                            <th class='text-right' scope="">
-                                <label class="form-label">Số lượng</label>
-                            </th>
-                            <th class="text-right" scope="">
-                                <label class="form-label">Bồn xuất</label>
-                            </th>
-                            <th class="text-right" scope="">
-                                <label class="form-label">Ngăn</label>
-                            </th>
-                            <th class="text-right" scope="">
-                                <label class="form-label">Bồn nhập</label>
-                            </th>
-                            <th class="text-right" scope="">
-                                <label class="form-label">Đơn giá(VNĐ)</label>
-                            </th>
-                            <th class="text-right" scope="">
-                                <label class="form-label">Nguồn hàng</label>
-                            </th>
-                            <th class="text-right" scope="">
-                                <label class="form-label">Thành tiền</label>
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Dầu đốt</td>
-                            <td>Lít</td>
-                            <td class='text-right'>160</td>
-                            <td class="text-right">N2</td>
-                            <td class="text-right">N2</td>
-                            <td class="text-right">
-                                160
-                            </td>
-                            <td class="text-right">
-                                100
-                            </td>
-                            <td class="text-right">
-                                Nhà cung cấp
-                            </td>
-                            <td class="text-right">
-                                160000
-                            </td>
-                        </tr>
-                    </tbody>
-
-                    <tfoot>
-                        <tr>
-                            <td colspan="6"></td>
-                            <td colspan="3" class="text-right"><strong>Tổng tiền thanh toán</strong></td>
-                            <td colspan="1" class="text-right"><strong>700000</strong></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-	</div>
-
 	<div class="reason-refusal">
 		<div class="card-header">
-			<div class="card-title">
+			<div class="card-title" *ngIf="dataDetail?.status === eWarehouseStatus.REFUSED">
 				<span class="title-reason">Lý do từ chối:</span>
-				<span class="title-reason pl-5">Thích chối bỏ</span>
+				<span class="title-reason pl-5">{{dataDetail?.rejectReason}}</span>
+			</div>
+			<div class="card-title" *ngIf="dataDetail?.status === eWarehouseStatus.ADJUST">
+				<span class="title-reason">Lý do yêu cầu điều chỉnh:</span>
+				<span class="title-reason pl-5">{{dataDetail?.adjustReason}}</span>
 			</div>
 		</div>
 	</div>
 
 	<div class="w-100 d-flex justify-content-center pb-10">
-		<button type="button" class="btn btn-outline-primary mr-3">Từ chối</button>
+		<button type="button" class="btn btn-outline-danger mr-3">Từ chối</button>
 		<button type="button" class="btn btn-primary mr-3">Phê duyệt</button>
-        <button type="button" class="btn btn-outline-primary mr-3">Yêu cầu điều chỉnh</button>
+		<button type="button" class="btn btn-outline-primary mr-3">Yêu cầu điều chỉnh</button>
 	</div>
 </div>
