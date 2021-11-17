@@ -233,9 +233,10 @@ export class CreateOrderComponent implements OnInit {
 		);
 	}
 
-	deleteItem(index: number): void {
-		this.productFormArray.removeAt(index);
-	}
+  deleteItem(index: number): void {
+    this.productFormArray.removeAt(index);
+    this.products = [...this.products].filter((_, i) => i !== index);
+  }
 
 	onSubmit() {
 		this.requestForm.markAllAsTouched();
@@ -258,34 +259,34 @@ export class CreateOrderComponent implements OnInit {
 			productInfoRequests: productData
 		};
 
-		if (this.isUpdate) {
-			this.inventoryManagementService
-				.updateOrderRequest(dataReq, this.orderRequestId)
-				.subscribe((res) => {
-					if (res) {
-						this.router.navigate(['/kho/yeu-cau-dat-hang']);
-						this.toastr.success('Sửa yêu cầu đặt hàng thành công');
-					}
-				}),
-				(err: IError) => {
-					this.checkError(err);
-				};
-		} else {
-			this.inventoryManagementService.createOrderRequest(dataReq).subscribe((res) => {
-				if (res) {
-					this.router.navigate(['/kho/yeu-cau-dat-hang']);
-					this.toastr.success('Gửi yêu cầu đặt hàng thành công');
-				}
-			}),
-				(err: IError) => {
-					this.checkError(err);
-				};
-		}
-	}
+    if (this.isUpdate) {
+      this.inventoryManagementService.updateOrderRequest(dataReq, this.orderRequestId)
+        .subscribe((res) => {
+          if (res) {
+            this.router.navigate(['/kho/yeu-cau-dat-hang']);
+            this.toastr.success('Sửa yêu cầu đặt hàng thành công')
+          }
+        }, (err: IError) => {
+          this.checkError(err);
+        })
+    } else {
+      this.inventoryManagementService.createOrderRequest(dataReq)
+        .subscribe((res) => {
+          if (res) {
+            this.router.navigate(['/kho/yeu-cau-dat-hang']);
+            this.toastr.success('Gửi yêu cầu đặt hàng thành công')
+          }
+        }, (err: IError) => {
+          this.checkError(err);
+        })
+    }
+  }
 
-	checkError(error: IError) {
-		this.toastr.error(error.code);
-	}
+  checkError(error: IError) {
+    if (error.code === 'SUN-OIL-4801') {
+      this.toastr.error('Nhập lượng đề xuất nhỏ hơn 1,000,000,000');
+    }
+  }
 
 	onBack() {
 		this.router.navigate(['/kho/yeu-cau-dat-hang']);
