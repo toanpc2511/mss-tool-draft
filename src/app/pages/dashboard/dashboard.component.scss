@@ -1,6 +1,11 @@
+:host {
+    .apexcharts-xaxis-label:nth-last-child(2) {
+        transform: translateX(-20px)
+      }
+}
 .dashboard-wrapper {
-    margin-top: -20px;
-    .tracking-price-chart {
-        background: #ffffff;
-    }
+	margin-top: -20px;
+	.tracking-price-chart {
+		background: #ffffff;
+	}
 }
