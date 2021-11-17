@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 		series: [],
 		chart: {
 			height: 400,
-			width: '70%',
+			width: '100%',
 			type: 'line',
 			zoom: {
 				enabled: false
@@ -74,13 +74,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 			lineCap: 'round',
 			width: 3
 		},
-		grid: {
-			show: true,
-			padding: {
-				right: 30,
-				left: 20
-			}
-		},
 		xaxis: {
 			type: 'datetime',
 			labels: {
@@ -101,7 +94,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 			}
 		},
 		legend: {
-			fontSize: '13px'
+			fontSize: '13px',
+			containerMargin: {
+				top: 100
+			},
+			height: 80
 		},
 	};
 	trackingPriceSeriesData: ISerieTrackingPriceData[] = [];
