@@ -68,7 +68,9 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{dataDetail?.expectedDate |date: 'dd/MM/yyyy'}}</label>
+						<label class="form-label font-weight-bold"
+							>{{dataDetail?.expectedDate |date: 'dd/MM/yyyy'}}</label
+						>
 					</div>
 				</div>
 
@@ -358,8 +360,93 @@
 	</div>
 
 	<div class="w-100 d-flex justify-content-center pb-10">
-		<button type="button" class="btn btn-outline-danger mr-3">Từ chối</button>
-		<button type="button" class="btn btn-primary mr-3">Phê duyệt</button>
-		<button type="button" class="btn btn-outline-primary mr-3">Yêu cầu điều chỉnh</button>
+		<button
+			type="button"
+			class="btn btn-outline-danger mr-3"
+			(click)="reject()"
+			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING && dataDetail?.status === eWarehouseStatus.NEW"
+		>
+			Từ chối
+		</button>
+		<button
+			type="button"
+			class="btn btn-primary mr-3"
+			(click)="accept()"
+			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
+		>
+			Phê duyệt
+		</button>
+		<button
+			type="button"
+			class="btn btn-outline-primary mr-3"
+			(click)="adjust()"
+			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING && dataDetail?.status === eWarehouseStatus.NEW"
+		>
+			Yêu cầu điều chỉnh
+		</button>
 	</div>
 </div>
+
+<ng-template #adjustRequest>
+	<div class="modal-header">
+		<h4 class="modal-title">Yêu cầu điều chỉnh đơn đặt kho</h4>
+	</div>
+	<div class="modal-body">
+		<div class="w-100">
+			<label class="form-label required">Nhập lý do yêu cầu điều chỉnh</label>
+			<input
+				[formControl]="reasonControl"
+				class="form-control form-control-solid"
+				trim="blur"
+				maxlength="200"
+			/>
+			<app-validate
+				[control]="reasonControl"
+				[error]="'required'"
+				[message]="'Lý do từ chối không được để trống'"
+			></app-validate>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button
+			type="button"
+			class="btn btn-outline-secondary"
+			(click)="reasonControl.reset(); activeModal.close(false)"
+		>
+			Hủy
+		</button>
+		<button type="button" class="btn btn-primary" (click)="activeModal.close(true)">Từ chối</button>
+	</div>
+</ng-template>
+
+<ng-template #rejectRequest>
+	<div class="modal-header">
+		<h4 class="modal-title">Từ chối yêu cầu đơn đặt kho</h4>
+	</div>
+	<div class="modal-body">
+		<div class="w-100">
+			<label class="form-label required">Nhập lý do từ chối</label>
+			<input
+				[formControl]="reasonControl"
+				class="form-control form-control-solid"
+				trim="blur"
+				maxlength="200"
+			/>
+			<app-validate
+				[control]="reasonControl"
+				[error]="'required'"
+				[message]="'Lý do từ chối không được để trống'"
+			></app-validate>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button
+			type="button"
+			class="btn btn-outline-secondary"
+			(click)="reasonControl.reset(); activeModal.close(false)"
+		>
+			Hủy
+		</button>
+		<button type="button" class="btn btn-primary" (click)="activeModal.close(true)">Từ chối</button>
+	</div>
+</ng-template>

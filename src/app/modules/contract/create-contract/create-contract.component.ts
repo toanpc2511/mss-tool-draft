@@ -350,7 +350,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			idCard: [null],
 			email: [null],
 			rankId: [null],
-			address: [null]
+			location: [null]
 		});
 
 		this.infoForm
@@ -506,7 +506,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.infoForm.get('dateOfBirth').patchValue(convertDateToDisplay(infoData.dateOfBirth));
 		this.infoForm.get('idCard').patchValue(infoData.idCard);
 		this.infoForm.get('email').patchValue(infoData.email);
-		this.infoForm.get('address').patchValue(infoData.address);
+		this.infoForm.get('location').patchValue(infoData.location);
 		this.infoForm.get('phone').setErrors(null);
 		this.cdr.detectChanges();
 	}
@@ -519,7 +519,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.infoForm.get('dateOfBirth').reset();
 		this.infoForm.get('idCard').reset();
 		this.infoForm.get('email').reset();
-		this.infoForm.get('address').reset();
+		this.infoForm.get('location').reset();
 		this.cdr.detectChanges();
 	}
 

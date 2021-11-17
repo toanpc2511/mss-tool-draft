@@ -244,4 +244,17 @@ export class InventoryManagementService {
 	viewDetailOrderWarehouse(id: string) {
 		return this.http.get<IWareHouseOrderDetail>(`warehouse-orders/details/${id}`);
 	}
+
+	// Duyệt yêu cầu đặt kho
+	approveWarehouseRequest(id: string) {
+		return this.http.put(`warehouse-orders/approve/${id}`, null);
+	}
+	// Từ chối yêu cầu đặt kho
+	rejectWarehouseRequest(id: string, reason: string) {
+		return this.http.put(`warehouse-orders/refuses/${id}`, { reason });
+	}
+	// Yêu cầu điều chỉnh yêu cầu đặt kho
+	adjustWarehouseRequest(id: string, reason: string) {
+		return this.http.put(`warehouse-orders/request-adjustments/${id}`, { reason });
+	}
 }
