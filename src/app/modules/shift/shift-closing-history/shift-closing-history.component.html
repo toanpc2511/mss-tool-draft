@@ -149,6 +149,7 @@
 						</td>
 						<td class="time-end">
 							<p
+                *ngIf='item.timeEnd'
 								class="cursor-pointer text-ellipsis"
 								placement="top"
 								[ngbTooltip]="item.timeEnd | date: 'dd/MM/yyyy' + ' - ' + formatTime(item.endHour, item.endMinute)"

@@ -1,8 +1,14 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { GasStationService, IInfoBarem } from '../../../gas-station.service';
 import { takeUntil } from 'rxjs/operators';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
+import * as XLSX from 'xlsx';
+import { ToastrService } from 'ngx-toastr';
+import * as _ from 'lodash';
+import { IError } from '../../../../../shared/models/error.model';
+
+type FileContent = any[][];
 
 @Component({
   selector: 'app-setting-barem',
@@ -13,13 +19,20 @@ import { DestroyService } from '../../../../../shared/services/destroy.service';
 export class SettingBaremComponent implements OnInit {
   @Input() data: IDataTransfer;
   dataSource: IInfoBarem;
+  isDisabled: boolean;
+
+  fileContent: FileContent = [];
+  wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
 
   constructor(
     public modal: NgbActiveModal,
     private gasStationService: GasStationService,
     private cdr: ChangeDetectorRef,
+    private toastr: ToastrService,
     private destroy$: DestroyService
-    ) { }
+    ) {
+    this.isDisabled = true;
+  }
 
   ngOnInit(): void {
     this.gasStationService.getInfoBarem(this.data.gasBinId)
@@ -33,9 +46,83 @@ export class SettingBaremComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('lưu');
+    const dataBarem = [];
+    this.fileContent.map((x) => {
+      dataBarem.push(_.zipObject(['height', 'numberOfLit'], x))
+    })
+
+    const dataReq = {
+      gasFieldId: this.data.gasBinId,
+      scaleRequest: dataBarem
+    }
+
+    this.gasStationService.impostBarem(dataReq)
+      .subscribe(() => {
+        this.modal.close();
+        this.toastr.success('Nhập Barem bồn thành công !');
+      },(error: IError) => {
+      this.checkError(error);
+    });
   }
 
+  checkError(error: IError) {
+    this.toastr.error(error.code)
+  }
+
+  onFileChange(evt: any) {
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: any) => {
+      /* Đọc file */
+      const bstr: string = e.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+
+
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+      /* lấy thông tin từ file */
+      this.fileContent = <FileContent>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+
+      this.fileContent.shift();
+      this.fileContent.length > 0 ? this.isDisabled = false : this.isDisabled = true;
+
+      this.checkValidateReadFile(this.fileContent);
+    }
+
+    reader.readAsBinaryString(target.files[0]);
+  }
+
+  checkValidateReadFile(dataFile) {
+    if (dataFile.length === 0) {
+      this.toastr.error('Vui lòng nhập file có dữ liệu barem!')
+      return;
+    }
+
+    if (dataFile[0].length !== 2) {
+      this.toastr.error('File không đúng định dạng. Vui lòng nhập lại!');
+      this.isDisabled = true;
+      return dataFile = [];
+    }
+
+    dataFile.map((x, index) => {
+      if (
+        index > 0 && (typeof(x[0]) === 'string' || typeof(x[1]) === 'string')
+        || x[0] > 10000 || x[1] > 1000000
+      ) {
+        this.toastr.error('File không đúng định dạng. Vui lòng nhập lại!');
+        this.isDisabled = true;
+        return dataFile = [];
+      }
+
+      if (index > 0 && (!Number.isInteger(x[0]) || !Number.isInteger(x[1]) )) {
+        this.toastr.error('File không đúng định dạng. Vui lòng nhập lại!')
+        this.isDisabled = true;
+        return dataFile = [];
+      }
+    })
+  }
 }
 
 export interface IDataTransfer {
