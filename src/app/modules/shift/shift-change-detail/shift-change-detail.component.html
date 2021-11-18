@@ -84,7 +84,7 @@
 			type="button"
 			class="btn btn-outline-primary mr-3"
 			(click)="openRejectRequestModal()"
-			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING && (eAuthorize.REJECT_SWAP_SHIFT_BUTTON|canUseFeature)"
+			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING && (eAuthorize.CONFIRM_AND_REJECT_SWAP_SHIFT|canUseFeature)"
 		>
 			Từ chối
 		</button>
@@ -92,7 +92,7 @@
 			type="button"
 			class="btn btn-primary mr-3"
 			(click)="openApproveRequestModal()"
-			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING && (eAuthorize.ACCEPT_SWAP_SHIFT_BUTTON|canUseFeature)"
+			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING && (eAuthorize.CONFIRM_AND_REJECT_SWAP_SHIFT|canUseFeature)"
 		>
 			Phê duyệt
 		</button>
