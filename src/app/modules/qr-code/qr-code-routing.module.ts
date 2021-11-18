@@ -5,6 +5,11 @@ import { QrCodePumpHosesComponent } from './qr-code-pump-hoses/qr-code-pump-hose
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: '/dashboard',
+    pathMatch: 'full'
+  },
+  {
     path: 'qr-san-pham',
     component: QrCodeProductOtherComponent,
   },

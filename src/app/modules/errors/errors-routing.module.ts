@@ -10,11 +10,11 @@ const routes: Routes = [
 		path: '',
 		component: ErrorsComponent,
 		children: [
+			{ path: '', redirectTo: 'error-1', pathMatch: 'full' },
 			{
 				path: 'error-1',
 				component: Error1Component
 			},
-			{ path: '', redirectTo: 'error-1', pathMatch: 'full' },
 			{ path: 'error-authorize', component: ErrorAuthorizeComponent },
 			{
 				path: '**',

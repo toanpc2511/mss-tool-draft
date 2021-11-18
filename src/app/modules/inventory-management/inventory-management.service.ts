@@ -247,7 +247,7 @@ export class InventoryManagementService {
 
 	// Duyệt yêu cầu đặt kho
 	approveWarehouseRequest(id: string) {
-		return this.http.put(`warehouse-orders/approve/${id}`, null);
+		return this.http.put(`warehouse-orders/approves/${id}`, null);
 	}
 	// Từ chối yêu cầu đặt kho
 	rejectWarehouseRequest(id: string, reason: string) {
