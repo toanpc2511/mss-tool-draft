@@ -157,7 +157,22 @@ export class WareHouseOrderDetailComponent extends BaseComponent implements OnIn
 
 		modalRef.result.then((result) => {
 			if (result) {
-				this.inventoryManagementService;
+				this.inventoryManagementService
+					.approveWarehouseRequest(`${this.dataDetail?.id}`)
+					.pipe(
+						tap((res) => {
+							if (res.data) {
+								this.toastr.success('Đã phê duyệt đơn đặt kho!');
+							}
+							this.goBack();
+						}),
+						catchError((error: IError) => {
+							this.checkError(error);
+							return of();
+						}),
+						takeUntil(this.destroy$)
+					)
+					.subscribe();
 			}
 		});
 	}

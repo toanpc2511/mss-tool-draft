@@ -7,7 +7,7 @@ import { ListStationComponent } from './list-station/list-station.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'danh-sach',
+    redirectTo: '/dashboard',
     pathMatch: 'full'
   },
   {

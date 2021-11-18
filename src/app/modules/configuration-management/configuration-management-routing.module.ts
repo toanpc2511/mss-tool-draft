@@ -8,7 +8,7 @@ import { PromotionConfigComponent } from './promotion-config/promotion-config.co
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'cau-hinh',
+    redirectTo: '/dashboard',
     pathMatch: 'full'
   },
   {

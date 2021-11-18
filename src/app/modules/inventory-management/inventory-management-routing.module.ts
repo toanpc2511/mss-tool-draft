@@ -10,7 +10,7 @@ import { WareHouseOrderDetailComponent } from './warehouse-order-list/warehouse-
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'kho',
+    redirectTo: '/dashboard',
     pathMatch: 'full'
   },
   {
