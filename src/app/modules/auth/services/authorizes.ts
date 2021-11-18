@@ -101,5 +101,6 @@ export enum EAuthorize {
 	VIEW_TRANSACTION_HISTORY_MENU = 'view_transaction_history_menu',
 	EXPORT_FILE_TRANSATION_HISTORY_BUTTON = 'export_file_transation_history_button',
 	VIEW_TRANSACTION_HISTORY_DETAIL_BUTTON = 'view_transaction_history_detail_button',
-	ACCEPT_ACCUMULATE_POINTS_BUTTON = 'accept_accumulate_points_button'
+	ACCEPT_ACCUMULATE_POINTS_BUTTON = 'accept_accumulate_points_button',
+	CONFIRM_AND_REJECT_SWAP_SHIFT = 'confirm_and_reject_swap_shift'
 }
