@@ -263,6 +263,7 @@ export interface ITotalMoneyRevenue {
 	totalProvisionalRevenue: number;
 	employeeMoneyRevenues: [IEmployeeMoneyRevenues];
 	productRevenueResponses: [IProductRevenue];
+  totalRevenue: number;
 }
 
 export interface IEmployeeMoneyRevenues {
