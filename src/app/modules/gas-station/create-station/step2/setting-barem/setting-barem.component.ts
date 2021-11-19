@@ -113,7 +113,7 @@ export class SettingBaremComponent implements OnInit {
         return dataFile = [];
       }
 
-      if (index > 0 && (!Number.isInteger(x[0]) || !Number.isInteger(x[1]) )) {
+      if (index > 0 && (!Number.isInteger(x[0]) || !Number.isInteger(x[1]) || x[0] < 0 || x[1] < 0 )) {
         this.toastr.error('File không đúng định dạng. Vui lòng nhập lại!')
         this.isDisabled = true;
         return dataFile = [];

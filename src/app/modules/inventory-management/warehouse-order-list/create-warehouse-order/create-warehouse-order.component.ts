@@ -125,13 +125,13 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     this.orderInfoForm.get('exportedWarehouseAddress').patchValue(data.exportedWarehouseAddress);
 
 
-    this.transportInfoForm.get('internalCar').patchValue(data.internalCar.toString());
+    this.transportInfoForm.get('internalCar').patchValue(data.internalCar);
     this.transportInfoForm.get('vehicleCostMethod').patchValue(data.vehicleCostMethod);
     this.transportInfoForm.get('transportCost').patchValue(data.transportCost);
     this.transportInfoForm.get('freightCharges').patchValue(data.freightCharges);
     this.transportInfoForm.get('licensePlates').patchValue(data.licensePlates);
     this.transportInfoForm.get('capacity').patchValue(data.capacity);
-    this.transportInfoForm.get('driver').patchValue(data.driver.id);
+    this.transportInfoForm.get('driver').patchValue(data.driver?.id);
   }
 
   hanldChangeOrderInfo() {
@@ -196,7 +196,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
         pluck('id'),
         switchMap((id: string) => {
           if (id) {
-            return this.inventoryManagementService.viewDetailOrderWarehouse("516");
+            return this.inventoryManagementService.viewDetailOrderWarehouse(id);
           }
           this.router.navigate(['']);
           return ofNull();
@@ -248,8 +248,14 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   }
 
   onSubmit() {
-    // console.log(this.orderInfoForm.value);
-    // console.log(this.transportInfoForm.value);
-    console.log(this.dataProductResponses.value);
+    this.orderInfoForm.markAllAsTouched();
+    this.productForm.markAllAsTouched();
+    this.transportInfoForm.markAllAsTouched();
+
+    if (this.orderInfoForm.invalid || this.productForm.invalid || this.transportInfoForm.invalid) {
+      return;
+    }
+
+    const a = '';
   }
 }
