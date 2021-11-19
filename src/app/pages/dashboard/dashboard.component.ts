@@ -32,6 +32,7 @@ export type ChartOptions = {
 	title: ApexTitleSubtitle;
 	legend: ApexLegend;
 	tooltip: ApexTooltip;
+	colors: string[];
 };
 @Component({
 	selector: 'app-dashboard',
@@ -103,7 +104,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 			y: {
 				formatter: (value) => `${formatMoney(value)} VNĐ`
 			}
-		}
+		},
+		colors: [
+			'#F44336',
+			'#E91E63',
+			'#9C27B0',
+			'#32a852',
+			'#c7a94e',
+			'#7a641f',
+			'#138031',
+			'#014f16',
+			'#750459',
+			'#002109',
+			'#506e11',
+			'#93cc31',
+			'#ceff7a',
+			'#bf242a',
+			'#c21998'
+		]
 	};
 	trackingPriceSeriesData: ISerieTrackingPriceData[] = [];
 

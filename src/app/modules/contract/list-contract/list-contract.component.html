@@ -19,7 +19,7 @@
 				type="button"
 				class="btn btn-primary"
 				(click)="createContract()"
-				*ngIf="eAuthorize.CREATE_CONTRACT_BUTTON|canUseFeature"
+				*ngIf="(eAuthorize.CREATE_CONTRACT_BUTTON|canUseFeature) || (eAuthorize.CREATE_CONTRACT_PLAN_BUTTON|canUseFeature)"
 			>
 				Thêm mới
 			</button>
@@ -141,7 +141,7 @@
 						</td>
 						<td class="text-center action">
 							<a
-								*ngIf="item.status === contractStatus.DRAFT && (eAuthorize.UPDATE_CONTRACT_BUTTON|canUseFeature)"
+								*ngIf="item.status === contractStatus.DRAFT && ((item.contractType.code === 'PRE_PAY' && (eAuthorize.UPDATE_CONTRACT_BUTTON|canUseFeature)) || (item.contractType.code === 'PLAN' && (eAuthorize.UPDATE_CONTRACT_PLAN_BUTTON|canUseFeature)))"
 								(click)="updateContract($event,item.id)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 								[ngbTooltip]="'Sửa'"
