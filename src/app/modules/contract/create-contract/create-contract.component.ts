@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { HttpEventType } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -54,7 +55,7 @@ import {
 	styleUrls: ['./create-contract.component.scss'],
 	providers: [DestroyService]
 })
-export class CreateContractComponent implements OnInit, AfterViewInit {
+export class CreateContractComponent extends BaseComponent implements OnInit, AfterViewInit {
 	eContractStatus = EContractStatus;
 	infoForm: FormGroup;
 	contractForm: FormGroup;
@@ -103,7 +104,9 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		private fileService: FileService,
 		private activeRoute: ActivatedRoute,
 		private destroy$: DestroyService
-	) {}
+	) {
+		super();
+	}
 
 	ngOnInit(): void {
 		this.init();

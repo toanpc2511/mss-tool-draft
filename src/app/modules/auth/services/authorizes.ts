@@ -46,6 +46,8 @@ export enum EAuthorize {
 	VIEW_CONTRACT_DETAIL_BUTTON = 'view_contract_detail_button',
 	CREATE_CONTRACT_BUTTON = 'create_contract_button',
 	UPDATE_CONTRACT_BUTTON = 'update_contract_button',
+	CREATE_CONTRACT_PLAN_BUTTON = 'create_contract_plan_button',
+	UPDATE_CONTRACT_PLAN_BUTTON = 'update_contract_plan',
 	DELETE_CONTRACT_BUTTON = 'delete_contract_button',
 	ACCEPT_CONTRACT_BUTTON = 'accept_contract_button',
 	REJECT_CONTRACT_BUTTION = 'reject_contract_buttion',

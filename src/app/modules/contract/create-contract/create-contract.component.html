@@ -119,10 +119,20 @@
 							class="form-control form-control-lg form-control-solid"
 							formControlName="contractTypeCode"
 						>
-							<option *ngFor="let item of contractTypes" [ngValue]="item.code">
-								{{item.name}}
-							</option>
+							<ng-container *ngFor="let item of contractTypes">
+								<option
+									[ngValue]="item.code"
+									*ngIf="(item.code === 'PLAN' && (eAuthorize.CREATE_CONTRACT_PLAN_BUTTON|canUseFeature) || item.code === 'PRE_PAY' && (eAuthorize.CREATE_CONTRACT_BUTTON|canUseFeature))"
+								>
+									{{item.name}}
+								</option>
+							</ng-container>
 						</select>
+						<app-validate
+							[control]="contractForm.controls['contractTypeCode']"
+							[error]="'required'"
+							[message]="'Loại hợp đồng không được để trống'"
+						></app-validate>
 					</div>
 
 					<div class="col-lg-4" *ngIf="isUpdate">
@@ -561,7 +571,10 @@
 								</td>
 								<td colspan="4"></td>
 								<td class="font-weight-bold text-right" colspan="1">Tổng tiền thanh toán</td>
-								<td class="font-weight-bold text-right" [textContent]="getTotal() | number | vnCurrency"></td>
+								<td
+									class="font-weight-bold text-right"
+									[textContent]="getTotal() | number | vnCurrency"
+								></td>
 								<td></td>
 							</tr>
 						</tfoot>
