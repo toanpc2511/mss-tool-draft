@@ -1,6 +1,6 @@
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BaseComponent } from './../../../../shared/components/base/base.component';
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { IInfoOrderRequest, InventoryManagementService } from '../../inventory-management.service';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { ProductService } from '../../../product/product.service';
@@ -14,13 +14,14 @@ import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { of } from 'rxjs';
 import { IError } from 'src/app/shared/models/error.model';
+import { SubheaderService } from '../../../../_metronic/partials/layout';
 
 @Component({
 	selector: 'app-order-details',
 	templateUrl: './order-details.component.html',
 	styleUrls: ['./order-details.component.scss']
 })
-export class OrderDetailsComponent extends BaseComponent implements OnInit {
+export class OrderDetailsComponent extends BaseComponent implements OnInit, AfterViewInit {
 	reasonControl = new FormControl(null, [TValidators.required]);
 	@ViewChild('rejectRequest') rejectRequest: TemplateRef<any>;
 
@@ -38,6 +39,7 @@ export class OrderDetailsComponent extends BaseComponent implements OnInit {
 		private toastr: ToastrService,
 		private fb: FormBuilder,
 		private activeRoute: ActivatedRoute,
+    private subheader: SubheaderService,
 		private router: Router
 	) {
 		super();
@@ -49,6 +51,28 @@ export class OrderDetailsComponent extends BaseComponent implements OnInit {
 			.subscribe();
 	}
 
+  setBreadcumb() {
+    setTimeout(() => {
+      this.subheader.setBreadcrumbs([
+        {
+          title: 'Quản lý kho',
+          linkText: 'Quản lý kho',
+          linkPath: 'kho'
+        },
+        {
+          title: 'Danh sách yêu cầu đặt hàng',
+          linkText: 'Danh sách yêu cầu đặt hàng',
+          linkPath: 'kho/yeu-cau-dat-hang'
+        },
+        {
+          title: 'Chi tiết yêu cầu đạt hàng',
+          linkText: 'Chi tiết yêu cầu đặt hàng',
+          linkPath: null
+        }
+      ]);
+    }, 1);
+  }
+
 	ngOnInit(): void {
 		this.activeRoute.params.subscribe((res) => {
 			this.orderRequestId = res.id;
@@ -56,6 +80,10 @@ export class OrderDetailsComponent extends BaseComponent implements OnInit {
 
 		this.getDetailOrderRequest();
 	}
+
+  ngAfterViewInit(): void {
+    this.setBreadcumb();
+  }
 
 	getDetailOrderRequest() {
 		this.inventoryManagementService.viewDetailOrderRequest(this.orderRequestId).subscribe((res) => {

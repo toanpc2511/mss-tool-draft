@@ -170,6 +170,11 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 		this.router.navigate([`/kho/don-dat-kho/chi-tiet/${id}`])
 	}
 
+	createWarehouseOrder($event: Event, id: string) {
+		$event.stopPropagation();
+		this.router.navigate([`/kho/don-dat-kho/tao-yeu-cau/${id}`])
+	}
+
 	pagingChange($event: IPaginatorState) {
 		this.paginatorState = $event as PaginatorState;
 		this.onSearch();

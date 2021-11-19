@@ -13,8 +13,8 @@
 						<th scope="">Loại sản phẩm</th>
 						<th scope="">Đơn vị</th>
 						<th scope="" class="text-right head-inventory">Tồn đầu</th>
-						<th class="text-right" scope="">Nhập</th>
-						<th class="text-right" scope="">Xuất</th>
+						<th scope="" [ngClass]='statusLockShift === "CLOSE" ? "text-right" : ""'>Nhập</th>
+						<th scope="" [ngClass]='statusLockShift === "CLOSE" ? "text-right" : ""'>Xuất</th>
 						<th scope="" [ngClass]='statusLockShift === "CLOSE" ? "text-right" : ""'>Số lượng thực tế</th>
 						<th scope="" class="text-right final-inventory">Tồn cuối</th>
 						<th scope="" class="text-right compensate-quantity">Bù</th>
