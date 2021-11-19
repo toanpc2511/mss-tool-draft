@@ -6,6 +6,7 @@ import { OrderDetailsComponent } from './order-request-list/order-details/order-
 import { CreateOrderComponent } from './order-request-list/create-order/create-order.component';
 import { WareHouseOrderListComponent } from './warehouse-order-list/warehouse-order-list.component';
 import { WareHouseOrderDetailComponent } from './warehouse-order-list/warehouse-order-detail/warehouse-order-detail.component';
+import { CreateWarehouseOrderComponent } from './warehouse-order-list/create-warehouse-order/create-warehouse-order.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,10 @@ const routes: Routes = [
       {
         path: 'chi-tiet/:id',
         component: WareHouseOrderDetailComponent,
+      },
+      {
+        path: 'tao-yeu-cau/:id',
+        component: CreateWarehouseOrderComponent,
       }
     ]
   }

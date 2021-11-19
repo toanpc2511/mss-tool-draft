@@ -9,6 +9,18 @@ export enum EWarehouseOrderStatus {
 	REFUSED = 'REFUSED',
 	ADJUST = 'ADJUST'
 }
+
+export const PaymentMethod = [
+	{ key: 'MONEY', value: 'Tiền mặt'},
+	{ key: 'CASH', value: 'Chuyển khoản'}
+]
+
+export const LIST_WAREHOUSE_ORDER_FORM = [
+	{ key: 'SUPPLIER', value: 'Nhà cung cấp'},
+	{ key: 'DEPOT', value: 'Kho tổng'},
+	{ key: 'STORE', value: 'Kho  tại của hàng'}
+]
+
 export interface IStationEployee {
 	id: number;
 	name: string;
@@ -138,7 +150,16 @@ export interface IInfoOrderRequest {
 export interface IProductRequest {
 	amountActually: number;
 	amountRecommended: number;
-	gasFieldIn: number;
+	gasFieldIn: {
+    capacity: string;
+    code: string;
+    height: string;
+    id: number;
+    length: string;
+    name: string;
+    product_id: number;
+    status: string;
+  };
 	gasFieldOut: {
 		capacity: string;
 		code: string;
@@ -152,6 +173,24 @@ export interface IProductRequest {
 	productName: string;
 	productId: number;
 	unit: string;
+}
+
+export interface ISupplier {
+	address: string;
+	id: number;
+	name: string;
+}
+
+export interface ITransitCar {
+  capacity: number;
+  id: number;
+  licensePlates: string;
+}
+
+export interface IShippingTeam {
+  code: string;
+  id: number;
+  name: string;
 }
 
 @Injectable({
@@ -244,4 +283,21 @@ export class InventoryManagementService {
 	viewDetailOrderWarehouse(id: string) {
 		return this.http.get<IWareHouseOrderDetail>(`warehouse-orders/details/${id}`);
 	}
+
+	// Lấy danh sách kho xuất theo hình thức đặt kho
+	getListSuppliers(formOrder: string) {
+		const params = new HttpParams()
+			.set('form-order', formOrder)
+		return this.http.get<Array<ISupplier>>(`suppliers`, {params})
+	}
+
+  // Lấy danh sách xe vận chuyển
+  getTransitCars() {
+    return this.http.get<Array<ITransitCar>>('transit-cars')
+  }
+
+  // Lấy danh sách tài xế
+  getShippingTeam() {
+    return this.http.get<Array<IShippingTeam>>('employees/shipping-team');
+  }
 }
