@@ -75,15 +75,15 @@ export class OrderRequestListComponent implements OnInit {
     this.searchForm = this.fb.group({
       stationName: [''],
       employeeId: [''],
-      expectedDate: [],
-      approvalDate: [],
+      expectedDateStart: [],
+      expectedDateEnd: [],
       status: ['']
     })
   }
 
   initDate() {
-    this.searchForm.get('expectedDate').patchValue(this.firstDayOfMonth);
-    this.searchForm.get('approvalDate').patchValue(this.today);
+    this.searchForm.get('expectedDateStart').patchValue(this.firstDayOfMonth);
+    this.searchForm.get('expectedDateEnd').patchValue(this.today);
   }
 
   getStationEmployee() {
@@ -142,8 +142,8 @@ export class OrderRequestListComponent implements OnInit {
     const filterFormData: IFilterTransaction = this.searchForm.value;
     return {
       ...filterFormData,
-      expectedDate: convertDateToServer(filterFormData.expectedDate),
-      approvalDate: convertDateToServer(filterFormData.approvalDate)
+      expectedDateStart: convertDateToServer(filterFormData.expectedDateStart),
+      expectedDateEnd: convertDateToServer(filterFormData.expectedDateEnd)
     };
   }
 

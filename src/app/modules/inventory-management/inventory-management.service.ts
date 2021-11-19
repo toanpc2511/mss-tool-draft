@@ -39,8 +39,8 @@ export interface IFilterTransaction {
 	status: string;
 	stationName: string;
 	employeeId: number;
-	expectedDate: string;
-	approvalDate: string;
+  expectedDateStart: string;
+  expectedDateEnd: string;
 }
 
 export interface IFilterWarehouseOrder {
@@ -101,25 +101,26 @@ export interface IWareHouseOrderDetail {
 	totalProductMoney: number;
 	transportCost: number;
 	vehicleCostMethod: string;
-	wareHouseOrderProductResponses: [
-		{
-			amountActually: number;
-			compartment: string;
-			gasFieldInName: string;
-			gasFieldOutName: string;
-			id: number;
-			intoMoney: number;
-			price: number;
-			productName: string;
-			supplierName: string;
-			unit: string;
-		}
-	];
+	wareHouseOrderProductResponses: [IWareHouseOrderProductResponses];
 	rejectReason: string;
 	adjustReason: string;
 	status: EWarehouseOrderStatus;
 	requestCode: string;
 	expectedDate: string;
+}
+
+export interface IWareHouseOrderProductResponses {
+  amountActually: number;
+  amountRecommended: number;
+  compartment: string;
+  gasFieldInName: string;
+  gasFieldOutName: string;
+  id: number;
+  intoMoney: number;
+  price: number;
+  productName: string;
+  supplierName: string;
+  unit: string;
 }
 
 export interface IGasFuel {
@@ -224,8 +225,8 @@ export class InventoryManagementService {
 			.set('status', data.status)
 			.set('station-name', data.stationName)
 			.set('employee-id', data.employeeId.toString())
-			.set('expected-date', data.expectedDate)
-			.set('approval-date', data.approvalDate);
+			.set('expected-date-start', data.expectedDateStart)
+			.set('expected-date-end', data.expectedDateEnd);
 
 		return this.http.get('import-request/filters', { params });
 	}
