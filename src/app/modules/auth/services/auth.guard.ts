@@ -33,11 +33,16 @@ type SpecialUrl = {
 
 const SPECIAL_URL: SpecialUrl[] = [
 	{ url: '/hop-dong/danh-sach/them-moi', permissionKey: EAuthorize.CREATE_CONTRACT_BUTTON },
+	{ url: '/hop-dong/danh-sach/them-moi', permissionKey: EAuthorize.CREATE_CONTRACT_PLAN_BUTTON },
 	{
 		url: '/hop-dong/danh-sach/chi-tiet',
 		permissionKey: EAuthorize.VIEW_CONTRACT_DETAIL_BUTTON
 	},
 	{ url: '/hop-dong/danh-sach/sua-hop-dong', permissionKey: EAuthorize.UPDATE_CONTRACT_BUTTON },
+	{
+		url: '/hop-dong/danh-sach/sua-hop-dong',
+		permissionKey: EAuthorize.UPDATE_CONTRACT_PLAN_BUTTON
+	},
 	{
 		url: '/tram-xang/danh-sach/sua-tram',
 		permissionKey: EAuthorize.UPDATE_GAS_STATION_BUTTON
@@ -75,7 +80,7 @@ const SPECIAL_URL: SpecialUrl[] = [
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	},
 
-  /* thêm tạm thời */
+	/* thêm tạm thời */
 	{
 		url: '/kho/yeu-cau-dat-hang/them-moi',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
@@ -83,17 +88,28 @@ const SPECIAL_URL: SpecialUrl[] = [
 	{
 		url: '/kho/yeu-cau-dat-hang/chi-tiet',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	},{
-    url: '/kho/yeu-cau-dat-hang/sua-yeu-cau',
-    permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-  },{
-    url: '/kho/don-dat-kho/chi-tiet',
-    permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-  },{
-    url: '/kho/don-dat-kho/tao-yeu-cau',
-    permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-  },
-  /*End*/
+	},
+	{
+		url: '/kho/yeu-cau-dat-hang/sua-yeu-cau',
+		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+	},
+	{
+		url: '/kho/don-dat-kho/chi-tiet',
+		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+	},
+	{
+		url: '/kho/yeu-cau-dat-hang/sua-yeu-cau',
+		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+	},
+	{
+		url: '/kho/don-dat-kho/chi-tiet',
+		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+	},
+	{
+		url: '/kho/don-dat-kho/tao-yeu-cau',
+		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+	}
+	/*End*/
 ];
 
 @Injectable({ providedIn: 'root' })
