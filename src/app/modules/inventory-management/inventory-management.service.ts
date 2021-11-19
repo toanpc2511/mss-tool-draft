@@ -314,4 +314,9 @@ export class InventoryManagementService {
 	adjustWarehouseRequest(id: string, reason: string) {
 		return this.http.put(`warehouse-orders/request-adjustments/${id}`, { reason });
 	}
+
+  // Gửi yêu cầu đạt kho
+  putWarehouseOrders(id: number, dataReq) {
+    return this.http.put(`warehouse-orders/${id}`, dataReq)
+  }
 }
