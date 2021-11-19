@@ -36,7 +36,7 @@
               placeholder="DD/MM/YYYY"
               ngbDatepicker
               #startAt="ngbDatepicker"
-              formControlName='expectedDate'
+              formControlName='expectedDateStart'
             />
             <div class="input-group-append">
               <button
@@ -48,7 +48,7 @@
           </div>
 
           <app-validate
-            [control]="searchForm.controls['expectedDate']"
+            [control]="searchForm.controls['expectedDateStart']"
             [error]="'ngbDate'"
             [message]="'Ngày yêu cầu không đúng định dạng'"
           ></app-validate>
@@ -63,7 +63,7 @@
               placeholder="DD/MM/YYYY"
               ngbDatepicker
               #endAt="ngbDatepicker"
-              formControlName='approvalDate'
+              formControlName='expectedDateEnd'
             />
             <div class="input-group-append">
               <button
@@ -75,7 +75,7 @@
           </div>
 
           <app-validate
-            [control]="searchForm.controls['approvalDate']"
+            [control]="searchForm.controls['expectedDateEnd']"
             [error]="'ngbDate'"
             [message]="'Ngày yêu cầu đến không đúng định dạng'"
           ></app-validate>

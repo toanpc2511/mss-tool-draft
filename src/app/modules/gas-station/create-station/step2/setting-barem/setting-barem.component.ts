@@ -82,19 +82,16 @@ export class SettingBaremComponent implements OnInit {
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
-      /* lấy thông tin từ file */
-      this.fileContent = <FileContent>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-
-      this.fileContent.shift();
-      this.fileContent.length > 0 ? this.isDisabled = false : this.isDisabled = true;
-
-      this.checkValidateReadFile(this.fileContent);
+      this.checkValidateReadFile(<FileContent>(XLSX.utils.sheet_to_json(ws, { header: 1 })));
     }
 
     reader.readAsBinaryString(target.files[0]);
   }
 
   checkValidateReadFile(dataFile) {
+    dataFile.shift();
+    dataFile.length > 0 ? this.isDisabled = false : this.isDisabled = true;
+    console.log(dataFile);
     if (dataFile.length === 0) {
       this.toastr.error('Vui lòng nhập file có dữ liệu barem!')
       return;
@@ -122,6 +119,8 @@ export class SettingBaremComponent implements OnInit {
         return dataFile = [];
       }
     })
+
+    return this.fileContent = dataFile
   }
 }
 
