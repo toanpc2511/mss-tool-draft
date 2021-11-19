@@ -11,7 +11,7 @@ import { ListLayoutComponent } from 'src/app/shared/components/list-layout/list-
 const routes: Routes = [
 	{
 		path: '',
-		redirectTo: 'danh-sach',
+		redirectTo: '/dashboard',
 		pathMatch: 'full'
 	},
 	{

@@ -7,7 +7,7 @@ import { ListProductOtherComponent } from './list-product-other/list-product-oth
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'san-pham',
+    redirectTo: '/dashboard',
     pathMatch: 'full'
   },
   {

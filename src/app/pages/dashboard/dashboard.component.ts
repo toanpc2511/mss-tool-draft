@@ -66,13 +66,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 				show: false
 			},
 			background: '#ffffff',
-			defaultLocale: 'vi',
+			defaultLocale: 'vi'
 		},
 		dataLabels: {
 			enabled: false
 		},
 		stroke: {
-			curve: 'smooth',
+			curve: 'straight',
 			lineCap: 'round',
 			width: 3
 		},
@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 			labels: {
 				formatter: (value) => moment(value).format('DD/MM/YY')
 			},
-			tickAmount: 'dataPoints',
+			tickAmount: 'dataPoints'
 		},
 		marker: {
 			size: 4,
@@ -89,12 +89,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 		},
 		yaxis: {
 			labels: {
-				formatter: (value) => {
-					if (value < 99999) {
-						return value.toString().substr(0, 2);
-					}
-					return value.toString().substr(0, 3);
-				}
+				formatter: (value) => formatMoney(value)
 			}
 		},
 		legend: {
@@ -106,7 +101,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 		},
 		tooltip: {
 			y: {
-				formatter: (value) => `${value} VNĐ`
+				formatter: (value) => `${formatMoney(value)} VNĐ`
 			}
 		}
 	};

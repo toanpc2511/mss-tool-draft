@@ -11,7 +11,7 @@ import { CreateWarehouseOrderComponent } from './warehouse-order-list/create-war
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'kho',
+    redirectTo: '/dashboard',
     pathMatch: 'full'
   },
   {

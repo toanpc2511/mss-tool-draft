@@ -300,4 +300,17 @@ export class InventoryManagementService {
   getShippingTeam() {
     return this.http.get<Array<IShippingTeam>>('employees/shipping-team');
   }
+
+	// Duyệt yêu cầu đặt kho
+	approveWarehouseRequest(id: string) {
+		return this.http.put(`warehouse-orders/approves/${id}`, null);
+	}
+	// Từ chối yêu cầu đặt kho
+	rejectWarehouseRequest(id: string, reason: string) {
+		return this.http.put(`warehouse-orders/refuses/${id}`, { reason });
+	}
+	// Yêu cầu điều chỉnh yêu cầu đặt kho
+	adjustWarehouseRequest(id: string, reason: string) {
+		return this.http.put(`warehouse-orders/request-adjustments/${id}`, { reason });
+	}
 }
