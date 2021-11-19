@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IStationEployee } from '../../../history-of-using-points/history-of-using-points.service';
 import { finalize, pluck, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import {
@@ -21,6 +21,8 @@ import {
 } from '../../../../shared/helpers/functions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { SubheaderService } from '../../../../_metronic/partials/layout';
+import { BaseComponent } from '../../../../shared/components/base/base.component';
 
 @Component({
 	selector: 'app-create-order',
@@ -28,7 +30,7 @@ import { Subject } from 'rxjs';
 	styleUrls: ['./create-order.component.scss'],
 	providers: [DestroyService, FormBuilder]
 })
-export class CreateOrderComponent implements OnInit {
+export class CreateOrderComponent extends BaseComponent implements OnInit, AfterViewInit {
 	stationEmployee: Array<IStationEployee> = [];
 	requestForm: FormGroup;
 	productForm: FormGroup;
@@ -58,8 +60,33 @@ export class CreateOrderComponent implements OnInit {
 		private toastr: ToastrService,
 		private fb: FormBuilder,
 		private activeRoute: ActivatedRoute,
+    private subheader: SubheaderService,
 		private router: Router
-	) {}
+	) {
+    super();
+  }
+
+  setBreadcumb() {
+    setTimeout(() => {
+      this.subheader.setBreadcrumbs([
+        {
+          title: 'Quản lý kho',
+          linkText: 'Quản lý kho',
+          linkPath: 'kho'
+        },
+        {
+          title: 'Danh sách yêu cầu đặt hàng',
+          linkText: 'Danh sách yêu cầu đặt hàng',
+          linkPath: 'kho/yeu-cau-dat-hang'
+        },
+        {
+          title: 'Tạo yêu cầu đạt hàng',
+          linkText: 'Tạo yêu cầu đặt hàng',
+          linkPath: null
+        }
+      ]);
+    }, 1);
+  }
 
 	ngOnInit(): void {
 		this.activeRoute.params
@@ -92,6 +119,10 @@ export class CreateOrderComponent implements OnInit {
 		this.buildForm();
 		this.buildProductForm();
 	}
+
+  ngAfterViewInit(): void {
+    this.setBreadcumb();
+  }
 
 	buildForm() {
 		this.requestForm = this.fb.group({
