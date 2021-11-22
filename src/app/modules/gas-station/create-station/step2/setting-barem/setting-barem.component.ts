@@ -1,12 +1,13 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { GasStationService, IInfoBarem } from '../../../gas-station.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
 import * as XLSX from 'xlsx';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import { IError } from '../../../../../shared/models/error.model';
+import { FileService } from '../../../../../shared/services/file.service';
 
 type FileContent = any[][];
 
@@ -20,6 +21,7 @@ export class SettingBaremComponent implements OnInit {
   @Input() data: IDataTransfer;
   dataSource: IInfoBarem;
   isDisabled: boolean;
+  sampleFile: string;
 
   fileContent: FileContent = [];
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
@@ -29,9 +31,11 @@ export class SettingBaremComponent implements OnInit {
     private gasStationService: GasStationService,
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
-    private destroy$: DestroyService
+    private destroy$: DestroyService,
+    private fileService: FileService
     ) {
     this.isDisabled = true;
+    this.sampleFile = 'https://sunoil-management.firecloud.live/images/2021-11-22/Barem-bo%CC%82%CC%80n.xlsx';
   }
 
   ngOnInit(): void {
@@ -82,13 +86,13 @@ export class SettingBaremComponent implements OnInit {
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
-      this.checkValidateReadFile(<FileContent>(XLSX.utils.sheet_to_json(ws, { header: 1 })));
+      this.checkValidateReadFile(<FileContent>(XLSX.utils.sheet_to_json(ws, { header: 1 })), evt);
     }
 
     reader.readAsBinaryString(target.files[0]);
   }
 
-  checkValidateReadFile(dataFile) {
+  checkValidateReadFile(dataFile, event) {
     dataFile.shift();
     dataFile.length > 0 ? this.isDisabled = false : this.isDisabled = true;
     console.log(dataFile);
@@ -119,8 +123,12 @@ export class SettingBaremComponent implements OnInit {
         return dataFile = [];
       }
     })
-
+    event.target.value = null;
     return this.fileContent = dataFile
+  }
+
+  downloadSampleFile() {
+    this.fileService.downloadFromUrl(this.sampleFile);
   }
 }
 

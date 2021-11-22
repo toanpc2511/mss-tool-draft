@@ -99,7 +99,6 @@ export class TotalRevenueComponent implements OnInit {
       .pipe(
         tap((res) => {
           if (res) {
-            console.log(res.data);
             this.fileService.downloadFromUrl(res.data);
           }
         }),
