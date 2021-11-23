@@ -10,8 +10,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubheaderService } from '../../../../_metronic/partials/layout';
 import { pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { ofNull } from '../../../../shared/helpers/functions';
+import { convertMoney, ofNull } from '../../../../shared/helpers/functions';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { forkJoin, Observable } from 'rxjs';
+import { IError } from '../../../../shared/models/error.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-warehouse-order',
@@ -25,16 +28,20 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   eWarehouseStatus = EWarehouseOrderStatus;
   dataDetail: IWareHouseOrderDetail;
   dataSupplier: ISupplier[] = [];
+  dataSupplierProduct: ISupplier[] = [];
   dataTransitCars: ITransitCar[] = [];
   dataShippingTeam: IShippingTeam[] = [];
   isInternalCar: boolean;
 
   exportedWarehouseNameId: number;
+  oderForm: string;
 
   orderInfoForm: FormGroup;
   transportInfoForm: FormGroup;
-  productForm: FormGroup;
-  dataProductResponses: FormArray = new FormArray([]);
+  dataProductResponses;
+  gasArray$: Array<Observable<any>> = [];
+  listItemGas: Array<any> = [];
+  sumTotalMoney: number;
 
   constructor(
     private router: Router,
@@ -44,9 +51,11 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     private destroy$: DestroyService,
     private activeRoute: ActivatedRoute,
     private subheader: SubheaderService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastr: ToastrService,
   ) {
     super();
+    this.sumTotalMoney = 0;
   }
 
   setBreadcumb() {
@@ -78,10 +87,8 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
     this.buildFormOrderInfo();
     this.buildTransportinfoForm();
-    this.buildFormProduct();
     this.hanldChangeOrderInfo();
-    this.hanldChangeWarehouse();
-    this.changeInternalCar();
+    this.getListSuppliers();
   }
 
   ngAfterViewInit(): void {
@@ -99,7 +106,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
   buildTransportinfoForm() {
     this.transportInfoForm = this.fb.group({
-      internalCar: ['true'], /*Chọn xe*/
+      internalCar: [''], /*Chọn xe*/
       vehicleCostMethod: ['', Validators.required], /* Hình thức thanh toán cước xe */
       transportCost: ['', Validators.required], /* Cước vận tải/lit */
       freightCharges: [{ value: '', disabled: true }], /* Thành tiền */
@@ -109,21 +116,11 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     })
   }
 
-  buildFormProduct() {
-    this.productForm = this.fb.group({
-      amountActually: ['', Validators.required],
-      gasFieldOutName: ['', Validators.required],
-      compartment: ['', Validators.required],
-      price: ['', Validators.required],
-      supplierName: ['', Validators.required]
-    })
-  }
-
   pathValue(data) {
     this.orderInfoForm.get('oderForm').patchValue(data.oderForm);
     this.orderInfoForm.get('paymentMethod').patchValue(data.paymentMethod);
-    this.orderInfoForm.get('exportedWarehouseAddress').patchValue(data.exportedWarehouseAddress);
-
+    this.orderInfoForm.controls['exportedWarehouseAddress'].patchValue(data.exportedWarehouseAddress);
+    this.orderInfoForm.get('exportedWarehouseName').patchValue(data.exportedWarehouseId);
 
     this.transportInfoForm.get('internalCar').patchValue(data.internalCar);
     this.transportInfoForm.get('vehicleCostMethod').patchValue(data.vehicleCostMethod);
@@ -152,11 +149,18 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   hanldChangeWarehouse() {
     this.orderInfoForm.get('exportedWarehouseName').valueChanges.subscribe(() => {
       this.exportedWarehouseNameId = this.orderInfoForm.get('exportedWarehouseName').value;
+      this.oderForm = this.orderInfoForm.get('oderForm').value;
+      console.log(this.oderForm);
 
       const itemExportedWarehouse = this.dataSupplier.find((x) => {
         return x.id === Number(this.exportedWarehouseNameId);
       });
       this.orderInfoForm.controls['exportedWarehouseAddress'].patchValue(itemExportedWarehouse?.address);
+
+      this.dataProductResponses.value.map((product, index) => {
+        this.dataProductResponses.at(index).get('gasFieldOutName').patchValue('');
+        this.getListGasFuelWrehouse(product.id, this.exportedWarehouseNameId, this.oderForm);
+      })
     });
   }
 
@@ -190,6 +194,14 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       } );
   }
 
+  getListSuppliers() {
+    this.inventoryManagementService.getListSuppliers('SUPPLIER')
+      .subscribe((res) => {
+        this.dataSupplierProduct = res.data;
+        this.cdr.detectChanges();
+      })
+  }
+
   getWareHouseOrderRequestById() {
     this.activeRoute.params
       .pipe(
@@ -205,12 +217,42 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.dataDetail = res.data;
           this.pathValue(this.dataDetail);
           this.dataProductResponses = this.convertToFormArray(this.dataDetail.wareHouseOrderProductResponses);
-          console.log(this.dataDetail);
+
+          this.getListGasFuelWrehouse(this.dataDetail.id, this.dataDetail.exportedWarehouseId, this.dataDetail.oderForm, this.dataDetail);
+
+          this.transportInfoForm.get('internalCar').patchValue(this.dataDetail.internalCar);
+
+          if ( this.dataDetail.internalCar) {
+            this.transportInfoForm.get('licensePlates').enable();
+            this.transportInfoForm.get('capacity').enable();
+            this.transportInfoForm.get('driver').enable();
+          } else {
+            this.transportInfoForm.get('licensePlates').disable();
+            this.transportInfoForm.get('capacity').disable();
+            this.transportInfoForm.get('driver').disable();
+          }
           this.cdr.detectChanges();
         }),
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  getListGasFuelWrehouse(id, exportedWarehouseId, oderForm, data?) {
+    data?.wareHouseOrderProductResponses.forEach((product, index) => {
+      this.gasArray$.push(
+        this.inventoryManagementService.getListGasFuelWrehouse(product.id, exportedWarehouseId, oderForm)
+      );
+    })
+
+    forkJoin(this.gasArray$).subscribe((res) => {
+      this.listItemGas = [];
+      res.map((x) => {
+        this.listItemGas.push(x.data);
+        console.log(x.data);
+      })
+      this.cdr.detectChanges();
+    })
   }
 
   getTransitCars() {
@@ -233,29 +275,95 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     const controls = data.map((d) => {
       return this.fb.group({
         amountActually: [d.amountRecommended, Validators.required],
-        gasFieldOutName: [d.gasFieldOutName, Validators.required],
+        gasFieldOutName: [d.gasFieldInId, Validators.required],
         compartment: [d.compartment, Validators.required],
         price: [d.price, Validators.required],
-        supplierName: [d.supplierName, Validators.required],
+        supplierId: [d.supplierId, Validators.required],
         gasFieldInName: [d.gasFieldInName],
         id: [d.id],
         intoMoney: [d.intoMoney],
         productName: [d.productName],
-        unit: [d.unit]
+        unit: [d.unit],
+        importProductId: [d.importProductId]
       });
     });
     return this.fb.array(controls);
   }
 
+  changeValuePrice(index: number) {
+    const amountActually: number = convertMoney(
+      this.dataProductResponses.at(index).get('amountActually').value.toString()
+    );
+
+    const price: number = convertMoney(
+      this.dataProductResponses.at(index).get('price').value.toString()
+    );
+
+    this.dataProductResponses.at(index).get('intoMoney').patchValue(amountActually * price);
+
+    this.sumTotalMoney = 0;
+    for (let i = 0; i < this.dataProductResponses.value.length; i++) {
+      this.sumTotalMoney += this.dataProductResponses.value[i].intoMoney;
+    }
+  }
+
   onSubmit() {
     this.orderInfoForm.markAllAsTouched();
-    this.productForm.markAllAsTouched();
+    this.dataProductResponses.markAllAsTouched();
     this.transportInfoForm.markAllAsTouched();
 
-    if (this.orderInfoForm.invalid || this.productForm.invalid || this.transportInfoForm.invalid) {
+    if (this.orderInfoForm.invalid || this.dataProductResponses.invalid || this.transportInfoForm.invalid) {
       return;
     }
 
-    const a = '';
+
+    const driver = this.dataShippingTeam.find((x) => {
+      return x.id === Number(this.transportInfoForm.getRawValue().driver);
+    });
+    delete driver?.code;
+
+    const importProducts = this.dataProductResponses.value.map((p, index) => ({
+      id: Number(p.importProductId),
+      amountRecommended: convertMoney(p.amountActually.toString()),
+      compartment: p.compartment,
+      price: convertMoney(p.price.toString()),
+      supplierId: Number(p.supplierId),
+      gasField: this.listItemGas[index].find((x) => {
+        return x.id ===  Number(p.gasFieldOutName)
+      })
+    }))
+
+    const dataReq = {
+      orderForm: this.orderInfoForm.getRawValue().oderForm,
+      storeExportId: Number(this.orderInfoForm.getRawValue().exportedWarehouseName),
+      storeExportAddress: this.orderInfoForm.getRawValue().exportedWarehouseAddress,
+      paymentMethod: this.orderInfoForm.getRawValue().paymentMethod,
+      internalCar: this.transportInfoForm.getRawValue().internalCar,
+      vehicleCostMethod: this.transportInfoForm.getRawValue().vehicleCostMethod,
+      freightCharges: this.transportInfoForm.getRawValue().transportCost,
+      importRequestId: this.dataDetail.importRequestId,
+      capacity: Number(this.transportInfoForm.getRawValue().capacity),
+      licensePlates: this.transportInfoForm.getRawValue().licensePlates,
+      importProducts: importProducts,
+      driver: driver || ''
+    };
+
+    console.log(dataReq);
+
+    this.inventoryManagementService.putWarehouseOrders(this.dataDetail.id, dataReq)
+      .subscribe((res) => {
+        if (res) {
+          this.router.navigate(['/kho/don-dat-kho']);
+          this.toastr.success('Gửi yêu cầu đặt kho thành công')
+        }
+      }, (err: IError) => {
+        this.checkError(err);
+      })
+  }
+
+  checkError(error: IError) {
+    if (error.code === 'SUN-OIL-4268') {
+      this.toastr.error('Đơn đặt kho không tồn tại')
+    }
   }
 }
