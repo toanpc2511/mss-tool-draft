@@ -120,6 +120,27 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			icon: 'fas fa-lock',
 			permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
 		},
+    {
+      title: 'Quản lý đổi điểm',
+      root: true,
+      bullet: 'dot',
+      page: '/doi-diem',
+      icon: 'fas fa-sync',
+      submenu: [
+        {
+          title: 'Đổi điểm',
+          bullet: 'dot',
+          page: '/doi-diem/chi-tiet',
+          permissionKey: EAuthorize.VIEW_TRANSFER_POINT_HISTORY_MENU
+        },
+        {
+          title: 'Lịch sử đổi điểm',
+          bullet: 'dot',
+          page: '/doi-diem/lich-su',
+          permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+        }
+      ]
+    },
 		{
 			title: 'Quản lý ca làm việc',
 			root: true,
