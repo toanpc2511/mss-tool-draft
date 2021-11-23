@@ -116,6 +116,14 @@ const routes: Routes = [
 					),
 				canActivate: [AuthorizeGuard]
 			},
+      {
+        path: 'doi-diem',
+        loadChildren: () =>
+          import('../modules/exchange-point-management/exchange-point-management.module').then(
+            (m) => m.ExchangePointManagementModule
+          ),
+        canActivate: [AuthorizeGuard]
+      },
 			{
 				path: '',
 				redirectTo: '/dashboard',
