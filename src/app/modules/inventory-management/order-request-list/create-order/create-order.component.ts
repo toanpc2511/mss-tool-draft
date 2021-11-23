@@ -176,7 +176,7 @@ export class CreateOrderComponent extends BaseComponent implements OnInit, After
 				});
 
 			this.productFormArray.at(i).get('id').patchValue(product.productId);
-			this.productFormArray.at(i).get('gasFieldId').patchValue(product.gasFieldOut.id);
+			this.productFormArray.at(i).get('gasFieldId').patchValue(product.gasFieldIn.id);
 			this.productFormArray.at(i).get('unit').patchValue(product.unit);
 			this.productFormArray.at(i).get('amountRecommended').patchValue(product.amountRecommended);
 		});

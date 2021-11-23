@@ -165,7 +165,6 @@ export class Step1Component implements OnInit, OnChanges {
 			this.stationForm = this.initForm();
 		}
 		if (this.step1Data) {
-			console.log(this.step1Data);
 
 			this.isUpdate = true;
 			setTimeout(() => {

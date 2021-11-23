@@ -22,5 +22,26 @@
     th {
       text-transform: none;
     }
+
+    td {
+      &.stt {
+        min-width: 35px;
+      }
+      &.unit {
+        min-width: 100px;
+        max-width: 120px;
+      }
+      &.product-name,
+      &.amount-actually,
+      &.gas-field-out-name,
+      &.compartment,
+      &.gas-field-in-name,
+      &.price,
+      &.supplier-name,
+      &.into-money {
+        min-width: 200px;
+        max-width: 220px;
+      }
+    }
   }
 }
