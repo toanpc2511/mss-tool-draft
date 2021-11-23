@@ -1,0 +1,31 @@
+.card-header {
+  border-bottom: 0;
+}
+
+.card-body {
+  padding-top: 0 !important;
+}
+
+.input-group-text {
+  border: 0;
+}
+
+table {
+  min-width: 1024px;
+
+  th,
+  td {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  thead {
+    th {
+      text-transform: none;
+    }
+  }
+
+  .fa-images {
+    color: #4674EB;
+  }
+}
