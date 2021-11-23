@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 			enabled: false
 		},
 		stroke: {
-			curve: 'straight',
+			curve: 'smooth',
 			lineCap: 'round',
 			width: 3
 		},
