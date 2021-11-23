@@ -113,4 +113,8 @@ export class ExchangePointHistoryComponent extends BaseComponent implements OnIn
     this.toastr.error(`err`);
   }
 
+  formatTime(timeString: string) {
+    return timeString.split('-').reverse().join(' - ');
+  }
+
 }
