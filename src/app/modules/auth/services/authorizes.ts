@@ -50,7 +50,7 @@ export enum EAuthorize {
 	UPDATE_CONTRACT_PLAN_BUTTON = 'update_contract_plan',
 	DELETE_CONTRACT_BUTTON = 'delete_contract_button',
 	ACCEPT_CONTRACT_BUTTON = 'accept_contract_button',
-	REJECT_CONTRACT_BUTTION = 'reject_contract_buttion',
+	REJECT_CONTRACT_BUTTION = 'reject_contract_button',
 	VIEW_DRIVER_LIST_SCREEN = 'view_driver_list_screen',
 	VIEW_DRIVER_DETAIL_SCREEN = 'view_driver_detail_screen',
 	UPDATE_DRIVER_INFO_BUTTON = 'update_driver_info_button',

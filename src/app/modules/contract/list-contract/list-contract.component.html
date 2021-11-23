@@ -139,7 +139,7 @@
 								<ng-container *ngIf="item.status === contractStatus.DRAFT">Lưu nháp</ng-container>
 							</span>
 						</td>
-						<td class="text-center action">
+						<td class="action pl-8">
 							<a
 								*ngIf="item.status === contractStatus.DRAFT && ((item.contractType.code === 'PRE_PAY' && (eAuthorize.UPDATE_CONTRACT_BUTTON|canUseFeature)) || (item.contractType.code === 'PLAN' && (eAuthorize.UPDATE_CONTRACT_PLAN_BUTTON|canUseFeature)))"
 								(click)="updateContract($event,item.id)"
