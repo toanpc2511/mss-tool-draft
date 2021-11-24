@@ -1,1 +1,156 @@
-<p>exchange-point works!</p>
+<div class="mt-1 card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Đổi điểm thành tiền</h3>
+    </div>
+
+    <div class="w-100">
+      <strong class="d-block text-danger w-100">Lưu ý: 1 điểm = 1 VNĐ</strong>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-toolbar row align-items-center mb-5">
+        <div class='col-lg-2'>
+          <label>Số điện thoại</label>
+        </div>
+        <div class='col-auto'>
+          <input
+            type="text"
+            class="form-control form-control-solid form-control-lg"
+            placeholder="Nhập số điện thoại"
+            [formControl]="phoneNumberControl"
+            autocomplete="off"
+            maxlength="13"
+            trim="blur"
+            numbersOnly
+            (keydown.space)="$event.preventDefault()"
+          />
+        </div>
+
+        <button type="button" class="btn btn-primary ml-3" (click)="onSearch()">
+          Tìm kiếm
+        </button>
+    </div>
+
+    <div *ngIf='isSearched'>
+      <div *ngIf='!isSearchable; else exchangePointTpl'>
+        <p>Số điện thoại không tồn tại. Vui lòng nhập lại</p>
+      </div>
+
+      <ng-template #exchangePointTpl>
+        <form [formGroup]='exchangePointForm'>
+          <div class="row mb-5">
+            <div class='col-lg-2'>
+              <label>Tên khách hàng</label>
+            </div>
+            <div class='col-auto'>
+              <p style='padding: 0 1.42rem'>{{ driver.name }}</p>
+            </div>
+          </div>
+
+          <div class="row mb-5">
+            <div class='col-lg-2'>
+              <label>CMT/CCCD</label>
+            </div>
+            <div class='col-auto'>
+              <p style='padding: 0 1.42rem'>{{ driver.idCard }}</p>
+            </div>
+          </div>
+
+          <div class="row mb-5">
+            <div class='col-lg-2'>
+              <label>Điểm hiện có</label>
+            </div>
+            <div class='col-auto'>
+              <p style='padding: 0 1.42rem'>{{ driver.point | number | vnCurrency }}</p>
+            </div>
+          </div>
+
+          <div class="row align-items-center mb-5">
+            <div class='col-lg-2'>
+              <label class='form-label required'>Điểm quy đổi</label>
+            </div>
+            <div class='col-auto'>
+              <input
+                class="form-control form-control-solid form-control-lg"
+                placeholder="Nhập điểm quy đổi"
+                formControlName='pointSwap'
+                autocomplete="off"
+                maxlength='13'
+                decimal-mask
+                trim="blur"
+                (keydown.space)="$event.preventDefault()"
+              />
+              <app-validate
+                [control]="exchangePointForm.controls['pointSwap']"
+                [error]="'required'"
+                [message]="'Điểm quy đổi không được để trống'"
+              ></app-validate>
+
+              <app-validate
+                [control]="exchangePointForm.controls['pointSwap']"
+                [error]="'min'"
+                [message]="'Điểm quy đổi phải lớn hơn 0'"
+              ></app-validate>
+
+              <app-validate
+                [control]="exchangePointForm.controls['pointSwap']"
+                [error]="'compared'"
+                [message]="'Số điểm quy đổi không thể lớn hơn số ảnh hiện có. Vui lòng nhập lại'"
+              ></app-validate>
+            </div>
+          </div>
+
+          <div class="row mb-5">
+            <div class='col-lg-2'>
+              <label>Số tiền tương ứng</label>
+            </div>
+            <div class='col-auto' style='padding: 0 0.825rem'>
+              <p style='padding: 0 1.42rem'>{{ exchangePointForm.get('pointSwap').value | vnCurrency }} VNĐ</p>
+            </div>
+          </div>
+
+          <div class="row mb-5">
+            <div class='col-lg-2'>
+              <label class='form-label required'>Ảnh quy đổi</label>
+            </div>
+            <div class='col-auto'>
+              <input
+                hidden
+                type="file"
+                id='img'
+                accept="image/*"
+                #exchangePointImg
+                (change)="addImage($event)"
+                formControlName='photoVoucher'
+              />
+              <img
+                alt="Ảnh đính kèm"
+                class="attachment-img"
+                (click)="exchangePointImg.click()"
+                width="300px"
+                [src]="attachmentImg && attachmentImg?.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+              />
+              <app-validate
+                [control]="exchangePointForm.controls['photoVoucher']"
+                [error]="'required'"
+                [message]="'Vui lòng cập nhật ảnh phiếu chi'"
+              ></app-validate>
+            </div>
+          </div>
+        </form>
+
+        <div class="row justify-content-center w-100">
+          <button type="button" style='width: 90px' class="btn btn-outline-secondary mr-6" (click)="onReset()">
+            Hủy
+          </button>
+          <button type="button" style='width: 90px' class="btn btn-primary" (click)="onSubmit()">
+            Đổi điểm
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+

@@ -9,19 +9,23 @@ import { NgbDatepickerModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstra
 import { CRUDTableModule } from '../../_metronic/shared/crud-table';
 import { InputTrimModule } from 'ng2-trim-directive';
 import { ExchangePointComponent } from './exchange-point/exchange-point.component';
+import { DirectivesModule } from '../../shared/directives/directives.module';
+import { PipesModule } from '../../shared/pipes/pipes.module';
 
 
 @NgModule({
   declarations: [ExchangePointHistoryComponent, ExchangePointComponent],
-  imports: [
-    CommonModule,
-    SharedComponentsModule,
-    NgbTooltipModule,
-    ExchangePointManagementRoutingModule,
-    ReactiveFormsModule,
-    CRUDTableModule,
-    NgbDatepickerModule,
-    InputTrimModule
-  ]
+	imports: [
+		CommonModule,
+		SharedComponentsModule,
+		NgbTooltipModule,
+		ExchangePointManagementRoutingModule,
+		ReactiveFormsModule,
+		CRUDTableModule,
+		NgbDatepickerModule,
+		InputTrimModule,
+		DirectivesModule,
+		PipesModule
+	]
 })
 export class ExchangePointManagementModule { }
