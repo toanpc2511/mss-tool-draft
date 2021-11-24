@@ -89,6 +89,8 @@ export interface IWareHouseOrderDetail {
 	};
 	exportedWarehouseAddress: string;
 	exportedWarehouseName: string;
+  exportedWarehouseId: number;
+  licensePlateId: number;
 	freightCharges: number;
 	id: number;
 	importedWarehouseAddress: string;
@@ -100,6 +102,7 @@ export interface IWareHouseOrderDetail {
 	representativeName: string;
 	totalProductMoney: number;
 	transportCost: number;
+  importRequestId: number;
 	vehicleCostMethod: string;
 	wareHouseOrderProductResponses: [IWareHouseOrderProductResponses];
 	rejectReason: string;
@@ -112,6 +115,12 @@ export interface IWareHouseOrderDetail {
 export interface IWareHouseOrderProductResponses {
   amountActually: number;
   amountRecommended: number;
+  treasurerRecommend: number;
+  gasFieldInId: number;
+  recommend: number;
+  gasFieldOutId: number;
+  supplierId: number;
+  importProductId: number;
   compartment: string;
   gasFieldInName: string;
   gasFieldOutName: string;
@@ -252,6 +261,16 @@ export class InventoryManagementService {
 		return this.http.get<Array<IGasFuel>>('gas-fields/station-product', { params });
 	}
 
+  // lấy ds bồn theo nhiên liệu và trạm kho
+  getListGasFuelWrehouse(productId: number | string, gasStationId: number | string, fromOrder: string) {
+    const params = new HttpParams()
+      .set('product-id', productId.toString())
+      .set('form-order', fromOrder)
+      .set('station-id', gasStationId.toString());
+
+    return this.http.get<Array<IGasFuel>>('suppliers/stations', { params });
+  }
+
 	// tạo yêu cầu đặt hàng
 	createOrderRequest(dataReq) {
 		return this.http.post('import-request', dataReq);
@@ -315,7 +334,7 @@ export class InventoryManagementService {
 		return this.http.put(`warehouse-orders/request-adjustments/${id}`, { reason });
 	}
 
-  // Gửi yêu cầu đạt kho
+  // Gửi yêu cầu đặt kho
   putWarehouseOrders(id: number, dataReq) {
     return this.http.put(`warehouse-orders/${id}`, dataReq)
   }
