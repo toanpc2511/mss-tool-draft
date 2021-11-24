@@ -32,4 +32,23 @@ table {
       }
     }
   }
+
+  td {
+    &.code,
+    &.created-at,
+    &.approval-date,
+    &.license-plates,
+    &.driver-name,
+    &.store-import {
+      min-width: 140px;
+      max-width: 160px;
+    }
+    &.order-form {
+      min-width: 160px;
+    }
+    &.status {
+      min-width: 120px;
+      max-width: 150px;
+    }
+  }
 }

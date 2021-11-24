@@ -1,14 +1,19 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { LIST_STATUS_ORDER_REQUEST } from '../../../shared/data-enum/list-status';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
-import { IFilterImportInventory, InventoryManagementService } from '../inventory-management.service';
+import {
+  IExportInventory,
+  IFilterImportInventory,
+  InventoryManagementService, ISupplier,
+  LIST_WAREHOUSE_ORDER_FORM
+} from '../inventory-management.service';
 import { ToastrService } from 'ngx-toastr';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { IError } from '../../../shared/models/error.model';
 import { convertDateToServer } from '../../../shared/helpers/functions';
+import { LIST_STATUS_EXPORT } from '../../../shared/data-enum/list-status';
 
 @Component({
   selector: 'app-export-inventory',
@@ -20,10 +25,10 @@ export class ExportInventoryComponent implements OnInit {
   today: string;
   firstDayOfMonth: string;
   paginatorState = new PaginatorState();
-
-
-  dataSource;
-  listStatus = LIST_STATUS_ORDER_REQUEST;
+  dataSource: IExportInventory[] = [];
+  dataSupplier: ISupplier[] = [];
+  listWarehouseOrderForm = LIST_WAREHOUSE_ORDER_FORM;
+  listStatus = LIST_STATUS_EXPORT;
 
   searchForm: FormGroup;
 
@@ -55,13 +60,13 @@ export class ExportInventoryComponent implements OnInit {
     this.initDate();
 
     this.onSearch();
+    this.hanldChangeOrderInfo();
   }
 
   builForm() {
     this.searchForm = this.fb.group({
       orderForm: [''],
       idStoreExport: [''],
-      idStoreImport: [''],
       expectedDateStart: [''],
       expectedDateEnd: [''],
       status: [''],
@@ -71,6 +76,21 @@ export class ExportInventoryComponent implements OnInit {
   initDate() {
     this.searchForm.get('expectedDateStart').patchValue(this.firstDayOfMonth);
     this.searchForm.get('expectedDateEnd').patchValue(this.today);
+  }
+
+  hanldChangeOrderInfo() {
+    this.searchForm.get('orderForm').valueChanges
+      .subscribe((x) => {
+        this.dataSupplier = [];
+        if (x) {
+          this.searchForm.get('idStoreExport').patchValue('');
+          this.inventoryManagementService.getListSuppliers(x)
+            .subscribe((res) => {
+              this.dataSupplier = res.data;
+              this.cdr.detectChanges();
+            })
+        }
+      });
   }
 
   onSearch() {

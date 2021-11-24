@@ -220,11 +220,11 @@
 							<td class='stt'>{{i + 1}}</td>
 							<td class='product-name'>{{item.productName}}</td>
 							<td class='unit'>{{item.unit}}</td>
-							<td class="text-right treasurer-recommend">{{item.treasurerRecommend | number | vnCurrency}}</td>
+							<td class="text-right treasurer-recommend">{{item.recommend | number | vnCurrency}}</td>
 							<td class="gas-field-out-name">{{item.gasFieldOutName}}</td>
 							<td class="compartment">{{item.compartment}}</td>
 							<td class="gas-field-in-name">{{item.gasFieldInName}}</td>
-							<td class="text-right price">{{item.price}}</td>
+							<td class="text-right price">{{item.price | number | vnCurrency}}</td>
 							<td class="supplie-name">{{item.supplierName}}</td>
 							<td class="text-right into-money">{{item.intoMoney | number | vnCurrency}}</td>
 						</tr>
