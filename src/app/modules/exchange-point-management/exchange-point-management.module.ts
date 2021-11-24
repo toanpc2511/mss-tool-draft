@@ -11,10 +11,11 @@ import { InputTrimModule } from 'ng2-trim-directive';
 import { ExchangePointComponent } from './exchange-point/exchange-point.component';
 import { DirectivesModule } from '../../shared/directives/directives.module';
 import { PipesModule } from '../../shared/pipes/pipes.module';
+import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
-  declarations: [ExchangePointHistoryComponent, ExchangePointComponent],
+  declarations: [ExchangePointHistoryComponent, ExchangePointComponent, ConfirmDialogComponent],
 	imports: [
 		CommonModule,
 		SharedComponentsModule,
