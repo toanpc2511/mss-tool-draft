@@ -1,0 +1,154 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Tìm kiếm nhập kho</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="searchForm" class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Hình thức đặt kho</label>
+          <select class="form-control form-control-solid w-75" formControlName='orderForm'>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Kho xuất</label>
+          <select class="form-control form-control-solid w-75" formControlName="idStoreExport">
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Thời gian tạo từ</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #startAt="ngbDatepicker"
+              formControlName='expectedDateStart'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="startAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.controls['expectedDateStart']"
+            [error]="'ngbDate'"
+            [message]="'Thời gian tạo không đúng định dạng'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Thời gian tạo đến</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #endAt="ngbDatepicker"
+              formControlName='expectedDateEnd'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="endAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.controls['expectedDateEnd']"
+            [error]="'ngbDate'"
+            [message]="'Thời gian tạo không đúng định dạng'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Trạng thái</label>
+          <select class="form-control form-control-solid w-75" formControlName='status'>
+            <option [value]="''">Tất cả</option>
+            <option [value]="listStatus.WAIT_CONFIRM">Chờ xác nhận</option>
+            <option [value]="listStatus.APPROVE">Đã phê duyệt</option>
+            <option [value]="listStatus.CONFIRM">Đã xác nhận</option>
+            <option [value]="listStatus.REFUSE">Đã từ chối</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Kho nhập</label>
+          <select class="form-control form-control-solid w-75" formControlName="idStoreImport">
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+          </select>
+        </div>
+      </div>
+    </form>
+
+    <div class="form-group row py-3">
+      <button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+        <em class="fas fa-search"></em> Tìm kiếm
+      </button>
+      <button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
+    </div>
+  </div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách nhập kho</h3>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <tr>
+          <th scope=''>Mã phiếu nhập</th>
+          <th scope=''>Thời gian tạo</th>
+          <th scope=''>Thời gian nhập</th>
+          <th scope=''>Hình thức đặt kho</th>
+          <th scope=''>Kho xuất</th>
+          <th scope=''>Biển số xe</th>
+          <th scope=''>Tên lái xe</th>
+          <th scope=''>Kho nhập</th>
+          <th scope=''>Trạng thái</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+
+        <tfoot *ngIf="dataSource?.length === 0">
+        <tr>
+          <td colspan="8" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+        <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+  </div>
+</div>

@@ -160,7 +160,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
   renderListApi () {
     return this.dataProductResponses.value.map((product, index) => {
-      this.dataProductResponses.at(index).get('gasFieldOutName').patchValue('');
+      this.dataProductResponses.at(index).get('gasFieldOut').patchValue('');
       return this.inventoryManagementService.getListGasFuelWrehouse(product.id, this.exportedWarehouseNameId, this.oderForm);
     })
   }
@@ -248,6 +248,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.gasArray$ = [];
           this.listItemGas.push(x.data);
         })
+        console.log(this.listItemGas);
         this.cdr.detectChanges();
       })
   }
@@ -272,8 +273,8 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     const controls = data.map((d) => {
       return this.fb.group({
         recommend: [d.recommend, Validators.required],
-        gasFieldOutName: [d.gasFieldOutName, Validators.required],
-        compartment: [d.compartment, Validators.required],
+        gasFieldOut: [d.gasFieldOutId],
+        compartment: [d.compartment],
         price: [d.price, Validators.required],
         supplierId: [d.supplierId, Validators.required],
         gasFieldInName: [d.gasFieldInName],
@@ -338,7 +339,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       price: convertMoney(p.price.toString()),
       supplierId: Number(p.supplierId),
       gasField: this.listItemGas[index].find((x) => {
-        return x.id ===  Number(p.gasFieldOutName)
+        return x.id ===  Number(p.gasFieldOut)
       })
     }))
 
@@ -349,7 +350,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       paymentMethod: this.orderInfoForm.getRawValue().paymentMethod,
       internalCar: this.transportInfoForm.getRawValue().internalCar,
       vehicleCostMethod: this.transportInfoForm.getRawValue().vehicleCostMethod,
-      freightCharges: convertMoney(this.transportInfoForm.getRawValue().freightCharges),
+      freightCharges: convertMoney(this.transportInfoForm.getRawValue().freightCharges.toString()),
       importRequestId: this.dataDetail.importRequestId,
       capacity: Number(this.transportInfoForm.getRawValue().capacity) || null,
       licensePlates: this.transportInfoForm.getRawValue().licensePlates,

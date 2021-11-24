@@ -7,6 +7,9 @@ import { CreateOrderComponent } from './order-request-list/create-order/create-o
 import { WareHouseOrderListComponent } from './warehouse-order-list/warehouse-order-list.component';
 import { WareHouseOrderDetailComponent } from './warehouse-order-list/warehouse-order-detail/warehouse-order-detail.component';
 import { CreateWarehouseOrderComponent } from './warehouse-order-list/create-warehouse-order/create-warehouse-order.component';
+import { ExportInventoryComponent } from './export-inventory/export-inventory.component';
+import { ImportInventoryComponent } from './import-inventory/import-inventory.component';
+import { ReportInventoryComponent } from './report-inventory/report-inventory.component';
 
 const routes: Routes = [
   {
@@ -49,6 +52,33 @@ const routes: Routes = [
       {
         path: 'tao-yeu-cau/:id',
         component: CreateWarehouseOrderComponent,
+      }
+    ]
+  },
+  {
+    path: 'xuat-kho',
+    children: [
+      {
+        path: '',
+        component: ExportInventoryComponent,
+      }
+    ]
+  },
+  {
+    path: 'nhap-kho',
+    children: [
+      {
+        path: '',
+        component: ImportInventoryComponent,
+      }
+    ]
+  },
+  {
+    path: 'tinh-kho',
+    children: [
+      {
+        path: '',
+        component: ReportInventoryComponent
       }
     ]
   }

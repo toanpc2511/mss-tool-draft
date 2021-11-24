@@ -178,8 +178,8 @@
             <th scope=''>Tên sản phẩm</th>
             <th scope=''>Đơn vị</th>
             <th scope='' class='form-label required'>Lượng đề xuất</th>
-            <th scope='' class='form-label required'>Bồn xuất</th>
-            <th scope='' class='form-label required'>Ngăn</th>
+            <th scope='' class='form-label'>Bồn xuất</th>
+            <th scope='' class='form-label'>Ngăn</th>
             <th scope=''>Bồn nhập</th>
             <th scope='' class='form-label required'>Đơn giá(VNĐ)</th>
             <th scope='' class='form-label required'>Nguồn hàng</th>
@@ -225,15 +225,10 @@
               ></app-validate>
             </td>
             <td class="gas-field-out-name">
-              <select class="form-control" formControlName='gasFieldOutName'>
+              <select class="form-control" formControlName='gasFieldOut'>
                 <option [value]="''">Chọn bồn xuất</option>
                 <option *ngFor="let item of listItemGas[i]" [value]="item.id">{{item.name}}</option>
               </select>
-              <app-validate
-                [control]="item.controls['gasFieldOutName']"
-                [error]="'required'"
-                [message]="'Bồn xuất không được để trống'"
-              ></app-validate>
             </td>
             <td class="compartment">
               <input
@@ -245,11 +240,6 @@
                 maxlength="100"
                 trim="blur"
               />
-              <app-validate
-                [control]="item.controls['compartment']"
-                [error]="'required'"
-                [message]="'Bồn xuất không được để trống'"
-              ></app-validate>
             </td>
             <td class="gas-field-in-name">
               <p
@@ -366,6 +356,7 @@
               class="form-control form-control-solid w-75"
               placeholder="Thành tiền"
               formControlName='transportCost'
+              decimal-mask
             />
           </div>
         </div>
