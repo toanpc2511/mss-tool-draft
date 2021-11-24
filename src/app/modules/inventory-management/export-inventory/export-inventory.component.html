@@ -11,8 +11,7 @@
           <label>Hình thức đặt kho</label>
           <select class="form-control form-control-solid w-75" formControlName='orderForm'>
             <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
+            <option *ngFor="let item of listWarehouseOrderForm" [value]="item.key">{{item.value}}</option>
           </select>
         </div>
 
@@ -20,8 +19,7 @@
           <label>Kho xuất</label>
           <select class="form-control form-control-solid w-75" formControlName="idStoreExport">
             <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
-            <option [value]="''">Tất cả</option>
+            <option *ngFor="let item of dataSupplier" [value]="item.id">{{item.name}}</option>
           </select>
         </div>
       </div>
@@ -87,10 +85,8 @@
           <label>Trạng thái</label>
           <select class="form-control form-control-solid w-75" formControlName='status'>
             <option [value]="''">Tất cả</option>
-            <option [value]="listStatus.WAIT_CONFIRM">Chờ xác nhận</option>
-            <option [value]="listStatus.APPROVE">Đã phê duyệt</option>
-            <option [value]="listStatus.CONFIRM">Đã xác nhận</option>
-            <option [value]="listStatus.REFUSE">Đã từ chối</option>
+            <option [value]="listStatus.EXPORTED">Đã xuất</option>
+            <option [value]="listStatus.NOT_EXPORTED">Chưa xuất</option>
           </select>
         </div>
       </div>
@@ -135,6 +131,81 @@
         </thead>
 
         <tbody>
+        <tr *ngFor='let item of dataSource'>
+          <td class='code'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.code"
+            >
+              {{ item.code }}
+            </p>
+          </td>
+          <td class='created-at'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.createdAt | date: 'dd/MM/yyyy - HH:mm'"
+            >
+              {{ item.createdAt | date: 'dd/MM/yyyy - HH:mm' }}
+            </p>
+          </td>
+          <td class='approval-date'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.approvalDate | date: 'dd/MM/yyyy - HH:mm'"
+            >
+              {{ item.approvalDate | date: 'dd/MM/yyyy - HH:mm' }}
+            </p>
+          </td>
+          <td class='order-form'>
+							<p
+                class="cursor-pointer text-ellipsis"
+              >
+								<ng-container *ngIf="item.orderForm === 'SUPPLIER'">Nhà cung cấp</ng-container>
+								<ng-container *ngIf="item.orderForm === 'DEPOT'">Kho tổng</ng-container>
+								<ng-container *ngIf="item.orderForm === 'STORE'">Kho tại cửa hàng</ng-container>
+							</p>
+          </td>
+          <td class='store-export'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.storeExport"
+            >
+              {{ item.storeExport }}
+            </p>
+          </td>
+          <td class='license-plates'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.licensePlates"
+            >
+              {{ item.licensePlates }}
+            </p>
+          </td>
+          <td class='driver-name'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.driverName"
+            >
+              {{ item.driverName }}
+            </p>
+          </td>
+          <td class="status">
+							<span
+                class="label label-lg label-inline"
+                [class.label-light-success]="item.status === listStatus.EXPORTED"
+                [class.label-light-warning]="item.status === listStatus.NOT_EXPORTED"
+              >
+								<ng-container *ngIf="item.status === listStatus.EXPORTED">Đã xuất</ng-container>
+								<ng-container *ngIf="item.status === listStatus.NOT_EXPORTED">Chưa xuất</ng-container>
+							</span>
+          </td>
+        </tr>
         </tbody>
 
         <tfoot *ngIf="dataSource?.length === 0">
@@ -145,6 +216,6 @@
       </table>
     </div>
 
-<!--    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>-->
+    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
   </div>
 </div>

@@ -212,6 +212,42 @@ export interface IFilterImportInventory {
   status: string;
 }
 
+export interface IFilterExportInventory {
+  orderForm: string;
+  idStoreExport: number;
+  expectedDateStart: string;
+  expectedDateEnd: string;
+  status: string;
+}
+
+export interface IExportInventory {
+  approvalDate: string;
+  code: string;
+  createdAt: string;
+  driverName: string;
+  licensePlates: string;
+  orderForm: string;
+  status: string;
+  storeExport: string;
+  storeImport: string;
+  id: number;
+}
+
+export interface IImportInventory {
+  approvalDate: string;
+  code: string;
+  createdAt: string;
+  driverName: string;
+  id: number;
+  importRequestId: number;
+  licensePlates: string;
+  orderForm: string;
+  status: string;
+  storeExport: string;
+  storeImport: string;
+  warehouseOrderId: number;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -360,21 +396,20 @@ export class InventoryManagementService {
       .set('expected-date-start', data.expectedDateStart)
       .set('expected-date-end', data.expectedDateEnd);
 
-    return this.http.get('warehouse-import/filters', { params });
+    return this.http.get<Array<IImportInventory>>('warehouse-import/filters', { params });
   }
 
   // Tìm kiếm ds xuất kho
-  searchExportInventory(page: number, size: number, data: IFilterImportInventory) {
+  searchExportInventory(page: number, size: number, data: IFilterExportInventory) {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
       .set('status', data.status)
       .set('order-form', data.orderForm)
       .set('id-store-export', data.idStoreExport.toString())
-      .set('id-store-import', data.idStoreImport.toString())
       .set('expected-date-start', data.expectedDateStart)
       .set('expected-date-end', data.expectedDateEnd);
 
-    return this.http.get('warehouse-export/filters', { params });
+    return this.http.get<Array<IExportInventory>>('warehouse-export/filters', { params });
   }
 }

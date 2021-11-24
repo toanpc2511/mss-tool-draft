@@ -108,7 +108,7 @@
       <form class="form form-label-right" [formGroup]='orderInfoForm'>
         <div class="form-group row">
           <div class="col-lg-6">
-            <label class="form-label">Hình thức đặt kho</label>
+            <label class="form-label required">Hình thức đặt kho</label>
             <select class="form-control form-control-solid w-75" formControlName='oderForm'>
               <option [value]="''">Chọn hình thức đặt kho</option>
               <option *ngFor="let item of listWarehouseOrderForm" [value]="item.key">{{item.value}}</option>
@@ -121,7 +121,7 @@
           </div>
 
           <div class="col-lg-6">
-            <label class="form-label">Hình thức thanh toán</label>
+            <label class="form-label required">Hình thức thanh toán</label>
             <select class="form-control form-control-solid w-75" formControlName='paymentMethod'>
               <option [value]="''">Chọn hình thức thanh toán</option>
               <option *ngFor="let item of paymentMethod" [value]="item.key">{{item.value}}</option>
@@ -136,7 +136,7 @@
 
         <div class="form-group row">
           <div class="col-lg-6">
-            <label class="form-label">Kho xuất</label>
+            <label class="form-label required">Kho xuất</label>
             <select class="form-control form-control-solid w-75" formControlName='exportedWarehouseName' (change)='hanldChangeWarehouse()'>
               <option [value]="''">Chọn kho xuất</option>
               <option *ngFor="let item of dataSupplier" [value]="item.id">{{item.name}}</option>
@@ -310,7 +310,7 @@
       <form class="form form-label-right" [formGroup]='transportInfoForm'>
         <div class="form-group row">
           <div class="col-lg-6">
-            <label class="form-label">Sử dụng xe Sunoil</label>
+            <label class="form-label required">Sử dụng xe Sunoil</label>
             <select class="form-control form-control-solid w-75" formControlName='internalCar' (input)='changeInternalCar()'>
               <option [value]="'true'">Có</option>
               <option [value]="'false'">Không</option>
@@ -318,7 +318,7 @@
           </div>
 
           <div class="col-lg-6">
-            <label class="form-label">Hình thức thanh toán cước xe</label>
+            <label class="form-label required">Hình thức thanh toán cước xe</label>
             <select class="form-control form-control-solid w-75" formControlName='vehicleCostMethod'>
               <option [value]="''">Chọn hình thức thanh toán</option>
               <option *ngFor="let item of paymentMethod" [value]="item.key">{{item.value}}</option>
@@ -333,7 +333,7 @@
 
         <div class="form-group row">
           <div class="col-lg-6">
-            <label class="form-label">Cước vận tải/Lít</label>
+            <label class="form-label required">Cước vận tải/Lít</label>
             <input
               class="form-control form-control-solid w-75"
               placeholder="Nhập cước vận tải/Lít"

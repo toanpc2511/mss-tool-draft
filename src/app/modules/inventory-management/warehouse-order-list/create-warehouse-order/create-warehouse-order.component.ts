@@ -155,12 +155,14 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     });
     this.orderInfoForm.controls['exportedWarehouseAddress'].patchValue(itemExportedWarehouse?.address);
 
-    this.getListGasFuelWrehouse(this.renderListApi());
+    this.getListGasFuelWrehouse(this.renderListApi(true));
   }
 
-  renderListApi () {
+  renderListApi (loadData: boolean) {
     return this.dataProductResponses.value.map((product, index) => {
-      this.dataProductResponses.at(index).get('gasFieldOut').patchValue('');
+      if (loadData) {
+        this.dataProductResponses.at(index).get('gasFieldOut').patchValue('');
+      }
       return this.inventoryManagementService.getListGasFuelWrehouse(product.id, this.exportedWarehouseNameId, this.oderForm);
     })
   }
@@ -217,7 +219,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.dataProductResponses = this.convertToFormArray(this.dataDetail.wareHouseOrderProductResponses);
           this.exportedWarehouseNameId = this.dataDetail.exportedWarehouseId;
           this.oderForm = this.dataDetail.oderForm;
-          this.getListGasFuelWrehouse(this.renderListApi());
+          this.getListGasFuelWrehouse(this.renderListApi(false));
 
           this.transportInfoForm.get('internalCar').patchValue(this.dataDetail.internalCar);
 
@@ -248,7 +250,6 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.gasArray$ = [];
           this.listItemGas.push(x.data);
         })
-        console.log(this.listItemGas);
         this.cdr.detectChanges();
       })
   }
@@ -271,7 +272,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
   convertToFormArray(data: IWareHouseOrderProductResponses[]): FormArray {
     const controls = data.map((d) => {
-      return this.fb.group({
+      const fb = this.fb.group({
         recommend: [d.recommend, Validators.required],
         gasFieldOut: [d.gasFieldOutId],
         compartment: [d.compartment],
@@ -284,7 +285,10 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
         unit: [d.unit],
         importProductId: [d.importProductId]
       });
+     fb.get('gasFieldOut').patchValue(d.gasFieldOutId)
+      return fb;
     });
+
     return this.fb.array(controls);
   }
 

@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { LIST_STATUS_ORDER_REQUEST } from '../../../shared/data-enum/list-status';
+import { LIST_STATUS_IMPORT, LIST_STATUS_ORDER_REQUEST } from '../../../shared/data-enum/list-status';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import {
-  IFilterImportInventory,
-  InventoryManagementService
+  IExportInventory,
+  IFilterImportInventory, IImportInventory,
+  InventoryManagementService, ISupplier, LIST_WAREHOUSE_ORDER_FORM
 } from '../inventory-management.service';
 import { convertDateToServer } from '../../../shared/helpers/functions';
 import { IError } from '../../../shared/models/error.model';
@@ -23,10 +24,11 @@ export class ImportInventoryComponent implements OnInit {
   today: string;
   firstDayOfMonth: string;
   paginatorState = new PaginatorState();
+  dataSource: IImportInventory[] = [];
+  dataSupplier: ISupplier[] = [];
+  listWarehouseOrderForm = LIST_WAREHOUSE_ORDER_FORM;
 
-
-  dataSource;
-  listStatus = LIST_STATUS_ORDER_REQUEST;
+  listStatus = LIST_STATUS_IMPORT;
 
   searchForm: FormGroup;
 
@@ -58,6 +60,7 @@ export class ImportInventoryComponent implements OnInit {
     this.initDate();
 
     this.onSearch();
+    this.hanldChangeOrderInfo();
   }
 
   builForm() {
@@ -74,6 +77,21 @@ export class ImportInventoryComponent implements OnInit {
   initDate() {
     this.searchForm.get('expectedDateStart').patchValue(this.firstDayOfMonth);
     this.searchForm.get('expectedDateEnd').patchValue(this.today);
+  }
+
+  hanldChangeOrderInfo() {
+    this.searchForm.get('orderForm').valueChanges
+      .subscribe((x) => {
+        this.dataSupplier = [];
+        if (x) {
+          this.searchForm.get('idStoreExport').patchValue('');
+          this.inventoryManagementService.getListSuppliers(x)
+            .subscribe((res) => {
+              this.dataSupplier = res.data;
+              this.cdr.detectChanges();
+            })
+        }
+      });
   }
 
   onSearch() {
