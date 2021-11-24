@@ -5,6 +5,8 @@ import { HttpService } from '../../shared/services/http.service';
 import { convertDateToServer } from '../../shared/helpers/functions';
 import { IExchangePoint } from './models/exchange-point.interface';
 import { DataResponse } from '../../shared/models/data-response.model';
+import { IDriver } from './models/driver.interface';
+import { IExchangePointCreator } from './models/exchange-point-creater.interface';
 
 interface IFilter {
   startAt?: string,
@@ -39,5 +41,13 @@ export class ExchangePointManagementService {
       .set('end-at', convertDateToServer(param.filter.endAt))
       .set('driver-name', param.filter.driverName)
       .set('phone', param.filter.phone)
+  }
+
+  getDriverInformation(phoneNumber: string): Observable<DataResponse<IDriver>> {
+    return this.http.get<IDriver>(`drivers/information?phone-number=${phoneNumber}`);
+  }
+
+  createSwapPoint(data: IExchangePointCreator): Observable<DataResponse<boolean>> {
+    return this.http.post<boolean>('swap-point', data);
   }
 }
