@@ -22,9 +22,12 @@ import { CreateOrderComponent } from './order-request-list/create-order/create-o
 import { WareHouseOrderListComponent } from './warehouse-order-list/warehouse-order-list.component';
 import { WareHouseOrderDetailComponent } from './warehouse-order-list/warehouse-order-detail/warehouse-order-detail.component';
 import { CreateWarehouseOrderComponent } from './warehouse-order-list/create-warehouse-order/create-warehouse-order.component';
+import { ExportInventoryComponent } from './export-inventory/export-inventory.component';
+import { ImportInventoryComponent } from './import-inventory/import-inventory.component';
+import { ReportInventoryComponent } from './report-inventory/report-inventory.component';
 
 @NgModule({
-  declarations: [InventoryManagementComponent, OrderRequestListComponent, OrderDetailsComponent, CreateOrderComponent, WareHouseOrderListComponent, WareHouseOrderDetailComponent, CreateWarehouseOrderComponent],
+  declarations: [InventoryManagementComponent, OrderRequestListComponent, OrderDetailsComponent, CreateOrderComponent, WareHouseOrderListComponent, WareHouseOrderDetailComponent, CreateWarehouseOrderComponent, ExportInventoryComponent, ImportInventoryComponent, ReportInventoryComponent],
   imports: [
     CommonModule,
     InventoryManagementRoutingModule,

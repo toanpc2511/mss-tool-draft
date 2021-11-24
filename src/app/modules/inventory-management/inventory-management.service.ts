@@ -203,6 +203,15 @@ export interface IShippingTeam {
   name: string;
 }
 
+export interface IFilterImportInventory {
+  orderForm: string;
+  idStoreExport: number;
+  idStoreImport: number;
+  expectedDateStart: string;
+  expectedDateEnd: string;
+  status: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -337,5 +346,35 @@ export class InventoryManagementService {
   // Gửi yêu cầu đặt kho
   putWarehouseOrders(id: number, dataReq) {
     return this.http.put(`warehouse-orders/${id}`, dataReq)
+  }
+
+  // Tìm kiếm ds xuất kho
+  searchImportInventory(page: number, size: number, data: IFilterImportInventory) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('status', data.status)
+      .set('order-form', data.orderForm)
+      .set('id-store-export', data.idStoreExport.toString())
+      .set('id-store-import', data.idStoreImport.toString())
+      .set('expected-date-start', data.expectedDateStart)
+      .set('expected-date-end', data.expectedDateEnd);
+
+    return this.http.get('warehouse-import/filters', { params });
+  }
+
+  // Tìm kiếm ds xuất kho
+  searchExportInventory(page: number, size: number, data: IFilterImportInventory) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('status', data.status)
+      .set('order-form', data.orderForm)
+      .set('id-store-export', data.idStoreExport.toString())
+      .set('id-store-import', data.idStoreImport.toString())
+      .set('expected-date-start', data.expectedDateStart)
+      .set('expected-date-end', data.expectedDateEnd);
+
+    return this.http.get('warehouse-export/filters', { params });
   }
 }
