@@ -137,7 +137,7 @@
         <div class="form-group row">
           <div class="col-lg-6">
             <label class="form-label">Kho xuất</label>
-            <select class="form-control form-control-solid w-75" formControlName='exportedWarehouseName' (input)='hanldChangeWarehouse()'>
+            <select class="form-control form-control-solid w-75" formControlName='exportedWarehouseName' (change)='hanldChangeWarehouse()'>
               <option [value]="''">Chọn kho xuất</option>
               <option *ngFor="let item of dataSupplier" [value]="item.id">{{item.name}}</option>
             </select>
@@ -212,16 +212,16 @@
               <input
                 class="form-control"
                 placeholder="Nhập lượng đề xuất"
-                formControlName='amountActually'
+                formControlName='recommend'
                 maxlength="11"
                 decimal-mask
                 (input)='changeValuePrice(i)'
               />
 
               <app-validate
-                [control]="item.controls['amountActually']"
+                [control]="item.controls['recommend']"
                 [error]="'required'"
-                [message]="'Lượng đề không được để trống'"
+                [message]="'Lượng đề xuất không được để trống'"
               ></app-validate>
             </td>
             <td class="gas-field-out-name">
@@ -229,6 +229,11 @@
                 <option [value]="''">Chọn bồn xuất</option>
                 <option *ngFor="let item of listItemGas[i]" [value]="item.id">{{item.name}}</option>
               </select>
+              <app-validate
+                [control]="item.controls['gasFieldOutName']"
+                [error]="'required'"
+                [message]="'Bồn xuất không được để trống'"
+              ></app-validate>
             </td>
             <td class="compartment">
               <input
@@ -342,12 +347,13 @@
             <input
               class="form-control form-control-solid w-75"
               placeholder="Nhập cước vận tải/Lít"
-              formControlName='transportCost'
+              formControlName='freightCharges'
               maxlength="11"
               decimal-mask
+              (input)='sumFreightCharge()'
             />
             <app-validate
-              [control]="transportInfoForm.controls['transportCost']"
+              [control]="transportInfoForm.controls['freightCharges']"
               [error]="'required'"
               [message]="'Cước vận tải không được để trống'"
             ></app-validate>
@@ -359,7 +365,7 @@
               type="text"
               class="form-control form-control-solid w-75"
               placeholder="Thành tiền"
-              formControlName='freightCharges'
+              formControlName='transportCost'
             />
           </div>
         </div>
@@ -368,7 +374,7 @@
           <div class="col-lg-6">
             <label class="form-label">Biển số xe sử dụng</label>
             <select class="form-control form-control-solid w-75" formControlName='licensePlates' (input)='changeLicensePlates()'>
-              <option [value]="''">Chọn biển số xe</option>
+              <option [value]="null">Chọn biển số xe</option>
               <option *ngFor='let item of dataTransitCars' [value]="item.licensePlates">{{item.licensePlates}}</option>
             </select>
           </div>
@@ -389,7 +395,7 @@
           <div class="col-lg-6">
             <label class="form-label">Lái xe</label>
             <select class="form-control form-control-solid w-75" formControlName='driver'>
-              <option [value]="''">Chọn lái xe</option>
+              <option [value]="null">Chọn lái xe</option>
               <option *ngFor='let item of dataShippingTeam' [value]="item.id">{{item.name}}</option>
             </select>
           </div>

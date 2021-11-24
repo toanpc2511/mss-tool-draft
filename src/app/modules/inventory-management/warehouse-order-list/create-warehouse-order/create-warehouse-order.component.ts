@@ -9,7 +9,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubheaderService } from '../../../../_metronic/partials/layout';
-import { pluck, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { pluck, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { convertMoney, ofNull } from '../../../../shared/helpers/functions';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { forkJoin, Observable } from 'rxjs';
@@ -108,11 +108,11 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     this.transportInfoForm = this.fb.group({
       internalCar: [''], /*Chọn xe*/
       vehicleCostMethod: ['', Validators.required], /* Hình thức thanh toán cước xe */
-      transportCost: ['', Validators.required], /* Cước vận tải/lit */
-      freightCharges: [{ value: '', disabled: true }], /* Thành tiền */
-      licensePlates: [''], /*Biển số xe*/
+      freightCharges: ['', Validators.required], /* Cước vận tải/lit */
+      transportCost: [{ value: '', disabled: true }], /* Thành tiền */
+      licensePlates: [null], /*Biển số xe*/
       capacity: [{ value: '', disabled: true }], /* Dung tích */
-      driver: [''] /*Tài xế*/
+      driver: [null] /*Tài xế*/
     })
   }
 
@@ -147,37 +147,35 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   }
 
   hanldChangeWarehouse() {
-    this.orderInfoForm.get('exportedWarehouseName').valueChanges.subscribe(() => {
-      this.exportedWarehouseNameId = this.orderInfoForm.get('exportedWarehouseName').value;
-      this.oderForm = this.orderInfoForm.get('oderForm').value;
-      console.log(this.oderForm);
+    this.exportedWarehouseNameId = this.orderInfoForm.get('exportedWarehouseName').value;
+    this.oderForm = this.orderInfoForm.get('oderForm').value;
 
-      const itemExportedWarehouse = this.dataSupplier.find((x) => {
-        return x.id === Number(this.exportedWarehouseNameId);
-      });
-      this.orderInfoForm.controls['exportedWarehouseAddress'].patchValue(itemExportedWarehouse?.address);
-
-      this.dataProductResponses.value.map((product, index) => {
-        this.dataProductResponses.at(index).get('gasFieldOutName').patchValue('');
-        this.getListGasFuelWrehouse(product.id, this.exportedWarehouseNameId, this.oderForm);
-      })
+    const itemExportedWarehouse = this.dataSupplier.find((x) => {
+      return x.id === Number(this.exportedWarehouseNameId);
     });
+    this.orderInfoForm.controls['exportedWarehouseAddress'].patchValue(itemExportedWarehouse?.address);
+
+    this.getListGasFuelWrehouse(this.renderListApi());
   }
 
+  renderListApi () {
+    return this.dataProductResponses.value.map((product, index) => {
+      this.dataProductResponses.at(index).get('gasFieldOutName').patchValue('');
+      return this.inventoryManagementService.getListGasFuelWrehouse(product.id, this.exportedWarehouseNameId, this.oderForm);
+    })
+  }
   changeInternalCar() {
     this.transportInfoForm.get('internalCar').valueChanges
       .subscribe((x) => {
         if ((x === 'true')) {
           this.transportInfoForm.get('licensePlates').enable();
-          this.transportInfoForm.get('capacity').enable();
           this.transportInfoForm.get('driver').enable();
         } else {
           this.transportInfoForm.get('licensePlates').disable();
-          this.transportInfoForm.get('capacity').disable();
           this.transportInfoForm.get('driver').disable();
-          this.transportInfoForm.get('licensePlates').patchValue('');
+          this.transportInfoForm.get('licensePlates').patchValue(null);
+          this.transportInfoForm.get('driver').patchValue(null);
           this.transportInfoForm.get('capacity').patchValue('');
-          this.transportInfoForm.get('driver').patchValue('');
         }
       } );
   }
@@ -185,10 +183,10 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   changeLicensePlates() {
     this.transportInfoForm.get('licensePlates').valueChanges
       .subscribe(() => {
-        const licensePlateId: number = this.transportInfoForm.get('licensePlates').value;
+        const licensePlateName: string = this.transportInfoForm.get('licensePlates').value;
 
         const itemlicensePlate = this.dataTransitCars.find((x) => {
-          return x.id === Number(licensePlateId);
+          return x.licensePlates === licensePlateName;
         });
         this.transportInfoForm.controls['capacity'].patchValue(itemlicensePlate?.capacity);
       } );
@@ -217,19 +215,23 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.dataDetail = res.data;
           this.pathValue(this.dataDetail);
           this.dataProductResponses = this.convertToFormArray(this.dataDetail.wareHouseOrderProductResponses);
-
-          this.getListGasFuelWrehouse(this.dataDetail.id, this.dataDetail.exportedWarehouseId, this.dataDetail.oderForm, this.dataDetail);
+          this.exportedWarehouseNameId = this.dataDetail.exportedWarehouseId;
+          this.oderForm = this.dataDetail.oderForm;
+          this.getListGasFuelWrehouse(this.renderListApi());
 
           this.transportInfoForm.get('internalCar').patchValue(this.dataDetail.internalCar);
 
+          for (let i = 0; i < this.dataProductResponses?.value.length; i++) {
+            this.sumTotalMoney += convertMoney(this.dataProductResponses.value[i].intoMoney.toString());
+          }
+
           if ( this.dataDetail.internalCar) {
             this.transportInfoForm.get('licensePlates').enable();
-            this.transportInfoForm.get('capacity').enable();
             this.transportInfoForm.get('driver').enable();
           } else {
             this.transportInfoForm.get('licensePlates').disable();
-            this.transportInfoForm.get('capacity').disable();
             this.transportInfoForm.get('driver').disable();
+
           }
           this.cdr.detectChanges();
         }),
@@ -238,21 +240,16 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       .subscribe();
   }
 
-  getListGasFuelWrehouse(id, exportedWarehouseId, oderForm, data?) {
-    data?.wareHouseOrderProductResponses.forEach((product, index) => {
-      this.gasArray$.push(
-        this.inventoryManagementService.getListGasFuelWrehouse(product.id, exportedWarehouseId, oderForm)
-      );
-    })
-
-    forkJoin(this.gasArray$).subscribe((res) => {
-      this.listItemGas = [];
-      res.map((x) => {
-        this.listItemGas.push(x.data);
-        console.log(x.data);
+  getListGasFuelWrehouse(listApi) {
+      forkJoin(...listApi)
+        .pipe(take(1)).subscribe((res) => {
+        this.listItemGas = [];
+        res.map((x) => {
+          this.gasArray$ = [];
+          this.listItemGas.push(x.data);
+        })
+        this.cdr.detectChanges();
       })
-      this.cdr.detectChanges();
-    })
   }
 
   getTransitCars() {
@@ -274,8 +271,8 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   convertToFormArray(data: IWareHouseOrderProductResponses[]): FormArray {
     const controls = data.map((d) => {
       return this.fb.group({
-        amountActually: [d.amountRecommended, Validators.required],
-        gasFieldOutName: [d.gasFieldInId, Validators.required],
+        recommend: [d.recommend, Validators.required],
+        gasFieldOutName: [d.gasFieldOutName, Validators.required],
         compartment: [d.compartment, Validators.required],
         price: [d.price, Validators.required],
         supplierId: [d.supplierId, Validators.required],
@@ -291,20 +288,32 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   }
 
   changeValuePrice(index: number) {
-    const amountActually: number = convertMoney(
-      this.dataProductResponses.at(index).get('amountActually').value.toString()
+    const recommend: number = convertMoney(
+      this.dataProductResponses.at(index).get('recommend').value.toString()
     );
 
     const price: number = convertMoney(
       this.dataProductResponses.at(index).get('price').value.toString()
     );
 
-    this.dataProductResponses.at(index).get('intoMoney').patchValue(amountActually * price);
+    this.dataProductResponses.at(index).get('intoMoney').patchValue(recommend * price);
 
     this.sumTotalMoney = 0;
     for (let i = 0; i < this.dataProductResponses.value.length; i++) {
       this.sumTotalMoney += this.dataProductResponses.value[i].intoMoney;
     }
+    this.sumFreightCharge();
+  }
+
+  sumFreightCharge() {
+    const freightCharges = convertMoney(this.transportInfoForm.get('freightCharges').value.toString());
+    let totalRecommend = 0;
+
+    for (let i = 0; i < this.dataProductResponses.value.length; i++) {
+      totalRecommend += convertMoney(this.dataProductResponses.value[i].recommend.toString());
+    }
+
+    this.transportInfoForm.get('transportCost').patchValue(freightCharges * totalRecommend);
   }
 
   onSubmit() {
@@ -324,7 +333,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
     const importProducts = this.dataProductResponses.value.map((p, index) => ({
       id: Number(p.importProductId),
-      amountRecommended: convertMoney(p.amountActually.toString()),
+      amountRecommended: convertMoney(p.recommend.toString()),
       compartment: p.compartment,
       price: convertMoney(p.price.toString()),
       supplierId: Number(p.supplierId),
@@ -340,15 +349,13 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       paymentMethod: this.orderInfoForm.getRawValue().paymentMethod,
       internalCar: this.transportInfoForm.getRawValue().internalCar,
       vehicleCostMethod: this.transportInfoForm.getRawValue().vehicleCostMethod,
-      freightCharges: this.transportInfoForm.getRawValue().transportCost,
+      freightCharges: convertMoney(this.transportInfoForm.getRawValue().freightCharges),
       importRequestId: this.dataDetail.importRequestId,
-      capacity: Number(this.transportInfoForm.getRawValue().capacity),
+      capacity: Number(this.transportInfoForm.getRawValue().capacity) || null,
       licensePlates: this.transportInfoForm.getRawValue().licensePlates,
       importProducts: importProducts,
-      driver: driver || ''
+      driver: driver || null
     };
-
-    console.log(dataReq);
 
     this.inventoryManagementService.putWarehouseOrders(this.dataDetail.id, dataReq)
       .subscribe((res) => {
@@ -364,6 +371,9 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   checkError(error: IError) {
     if (error.code === 'SUN-OIL-4268') {
       this.toastr.error('Đơn đặt kho không tồn tại')
+    }
+    if (error.code === 'SUN-OIL-4934') {
+      this.toastr.error('Cước vận tải/lit không được để trống')
     }
   }
 }

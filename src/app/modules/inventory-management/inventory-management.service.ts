@@ -117,6 +117,7 @@ export interface IWareHouseOrderProductResponses {
   amountRecommended: number;
   treasurerRecommend: number;
   gasFieldInId: number;
+  recommend: number;
   gasFieldOutId: number;
   supplierId: number;
   importProductId: number;
