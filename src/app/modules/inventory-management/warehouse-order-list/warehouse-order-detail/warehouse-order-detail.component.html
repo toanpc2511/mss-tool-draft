@@ -362,9 +362,9 @@
 	<div class="w-100 d-flex justify-content-center pb-10">
 		<button
 			type="button"
-			class="btn btn-outline-danger mr-3"
+			class="btn btn-outline-primary mr-3"
 			(click)="reject()"
-			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING && dataDetail?.status === eWarehouseStatus.NEW"
+			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
 		>
 			Từ chối
 		</button>
