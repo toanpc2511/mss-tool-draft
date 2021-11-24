@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { EFileType, FileService } from '../../../shared/services/file.service';
@@ -10,10 +10,9 @@ import { DataResponse } from '../../../shared/models/data-response.model';
 import { IError } from '../../../shared/models/error.model';
 import { TValidators } from '../../../shared/validators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
-import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 import { IExchangePointCreator } from '../models/exchange-point-creater.interface';
 import { convertMoney } from '../../../shared/helpers/functions';
+import { ConfirmDialogComponent } from '../modals/confirm-dialog/confirm-dialog.component';
 
 interface IImage {
   id: number;
@@ -27,7 +26,7 @@ interface IImage {
   styleUrls: ['./exchange-point.component.scss'],
   providers: [DestroyService]
 })
-export class ExchangePointComponent implements OnInit {
+export class ExchangePointComponent {
 
   phoneNumberControl = new FormControl();
   exchangePointForm: FormGroup;
@@ -45,9 +44,6 @@ export class ExchangePointComponent implements OnInit {
               private modalService: NgbModal
   ) {
     this.initExchangePointForm();
-  }
-
-  ngOnInit(): void {
   }
 
   initExchangePointForm(): void {
@@ -72,10 +68,8 @@ export class ExchangePointComponent implements OnInit {
       .subscribe((res: DataResponse<IDriver>) => {
         this.driver = res.data;
         this.isSearchable = true;
-        this.cdr.detectChanges();
       }, ((error: IError) => {
         this.isSearchable = false;
-        this.cdr.detectChanges();
       }));
   }
 
@@ -96,7 +90,7 @@ export class ExchangePointComponent implements OnInit {
     this.openConfirmDialog();
   }
 
-  setFormData(): IExchangePointCreator {
+  getFormData(): IExchangePointCreator {
     return {
       phone: this.driver.phone,
       driver_id: this.driver.accountId,
@@ -109,20 +103,18 @@ export class ExchangePointComponent implements OnInit {
 
     const pointSwap: string = this.exchangePointForm.get('pointSwap').value;
 
-    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+    const modalRef = this.modalService.open(ConfirmDialogComponent, {
       backdrop: 'static'
     });
-    const data: IConfirmModalData = {
-      title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn đổi ${ pointSwap } của tài xế ${this.driver.name} thành ${ pointSwap } VNĐ không?`,
-      button: { class: 'btn-primary', title: 'Xác nhận' }
-    };
-    modalRef.componentInstance.data = data;
+
+    modalRef.componentInstance.data = {
+      message: `Bạn có chắc chắn muốn đổi <strong>${ pointSwap } điểm</strong> của tài xế <strong>${this.driver.name}</strong> thành <strong>${ pointSwap } VNĐ</strong> không?`,
+    }
 
     modalRef.result.then((result) => {
       if (result) {
         this.epmService
-          .createSwapPoint(this.setFormData())
+          .createSwapPoint(this.getFormData())
           .pipe(
             finalize(() => {
               this.onReset();
@@ -137,7 +129,8 @@ export class ExchangePointComponent implements OnInit {
   }
 
   setComparedValidator(): void {
-    if (convertMoney(this.exchangePointForm.get('pointSwap').value.toString()) > this.driver.point) {
+    const pointSwap = this.exchangePointForm.get('pointSwap').value;
+    if (pointSwap && convertMoney(pointSwap.toString()) > this.driver.point) {
       this.exchangePointForm.controls['pointSwap'].setErrors({ compared: true })
     }
   }
