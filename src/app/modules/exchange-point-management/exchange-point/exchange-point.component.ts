@@ -60,6 +60,8 @@ export class ExchangePointComponent implements OnInit {
   }
 
   onSearch(): void {
+    this.exchangePointForm.reset();
+    this.attachmentImg = null;
     this.epmService.getDriverInformation(this.phoneNumberControl.value)
       .pipe(
         finalize(() => {

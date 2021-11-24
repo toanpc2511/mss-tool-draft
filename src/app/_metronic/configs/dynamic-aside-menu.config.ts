@@ -137,7 +137,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
           title: 'Lịch sử đổi điểm',
           bullet: 'dot',
           page: '/doi-diem/lich-su',
-          permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+          permissionKey: EAuthorize.CREATE_SWAP_POINT
         }
       ]
     },
