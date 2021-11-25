@@ -143,8 +143,6 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 			.subscribe(
 				(res) => {
 					if (res.data) {
-						console.log(res.data);
-
 						this.dataSource = res.data;
 
 						this.paginatorState.recalculatePaginator(res.meta.total);
@@ -155,10 +153,6 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 					this.checkError(err);
 				}
 			);
-	}
-
-	updateOrderRequest($event: Event, id: number) {
-		console.log(id);
 	}
 
 	onReset() {

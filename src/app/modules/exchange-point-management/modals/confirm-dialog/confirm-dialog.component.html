@@ -1,0 +1,12 @@
+<div class="confirm-container">
+  <h3 class="title">Xác định</h3>
+
+  <div class="sub-title" [innerHTML]='data.message'></div>
+
+  <div class="action-btn">
+    <button class="btn btn-primary" (click)="modal.close(true)">
+      Xác định
+    </button>
+    <button class="btn btn-secondary" (click)="modal.close(false)">Hủy</button>
+  </div>
+</div>

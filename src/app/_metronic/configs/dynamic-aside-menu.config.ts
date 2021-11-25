@@ -120,6 +120,27 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			icon: 'fas fa-lock',
 			permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
 		},
+    {
+      title: 'Quản lý đổi điểm',
+      root: true,
+      bullet: 'dot',
+      page: '/doi-diem',
+      icon: 'fas fa-sync',
+      submenu: [
+        {
+          title: 'Đổi điểm',
+          bullet: 'dot',
+          page: '/doi-diem/chi-tiet',
+          permissionKey: EAuthorize.VIEW_TRANSFER_POINT_HISTORY_MENU
+        },
+        {
+          title: 'Lịch sử đổi điểm',
+          bullet: 'dot',
+          page: '/doi-diem/lich-su',
+          permissionKey: EAuthorize.CREATE_SWAP_POINT
+        }
+      ]
+    },
 		{
 			title: 'Quản lý ca làm việc',
 			root: true,
@@ -210,15 +231,39 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			icon: 'fas fa-warehouse',
 			submenu: [
 				{
-					title: 'Danh sách yêu cầu đặt hàng',
+					title: 'Yêu cầu đặt hàng',
 					bullet: 'dot',
 					page: '/kho/yeu-cau-dat-hang',
 					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
 				},
 				{
-					title: 'Danh sách yêu cầu đặt kho',
+					title: 'Yêu cầu đặt kho',
 					bullet: 'dot',
 					page: '/kho/don-dat-kho',
+					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+				},
+				{
+					title: 'Xuất kho',
+					bullet: 'dot',
+					page: '/kho/xuat-kho',
+					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+				},
+				{
+					title: 'Nhập kho',
+					bullet: 'dot',
+					page: '/kho/nhap-kho',
+					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+				},
+				{
+					title: 'Tịnh kho đo bể',
+					bullet: 'dot',
+					page: '/kho/tinh-kho-do-be',
+					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+				},
+				{
+					title: 'Tịnh kho kịch bơm',
+					bullet: 'dot',
+					page: '/kho/tinh-kho-kich-bom',
 					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
 				}
 			]

@@ -18,7 +18,7 @@ export const PaymentMethod = [
 export const LIST_WAREHOUSE_ORDER_FORM = [
 	{ key: 'SUPPLIER', value: 'Nhà cung cấp'},
 	{ key: 'DEPOT', value: 'Kho tổng'},
-	{ key: 'STORE', value: 'Kho  tại của hàng'}
+	{ key: 'STORE', value: 'Kho  tại cửa hàng'}
 ]
 
 export interface IStationEployee {
@@ -89,6 +89,8 @@ export interface IWareHouseOrderDetail {
 	};
 	exportedWarehouseAddress: string;
 	exportedWarehouseName: string;
+  exportedWarehouseId: number;
+  licensePlateId: number;
 	freightCharges: number;
 	id: number;
 	importedWarehouseAddress: string;
@@ -100,6 +102,7 @@ export interface IWareHouseOrderDetail {
 	representativeName: string;
 	totalProductMoney: number;
 	transportCost: number;
+  importRequestId: number;
 	vehicleCostMethod: string;
 	wareHouseOrderProductResponses: [IWareHouseOrderProductResponses];
 	rejectReason: string;
@@ -112,6 +115,12 @@ export interface IWareHouseOrderDetail {
 export interface IWareHouseOrderProductResponses {
   amountActually: number;
   amountRecommended: number;
+  treasurerRecommend: number;
+  gasFieldInId: number;
+  recommend: number;
+  gasFieldOutId: number;
+  supplierId: number;
+  importProductId: number;
   compartment: string;
   gasFieldInName: string;
   gasFieldOutName: string;
@@ -194,6 +203,51 @@ export interface IShippingTeam {
   name: string;
 }
 
+export interface IFilterImportInventory {
+  orderForm: string;
+  idStoreExport: number;
+  idStoreImport: number;
+  expectedDateStart: string;
+  expectedDateEnd: string;
+  status: string;
+}
+
+export interface IFilterExportInventory {
+  orderForm: string;
+  idStoreExport: number;
+  expectedDateStart: string;
+  expectedDateEnd: string;
+  status: string;
+}
+
+export interface IExportInventory {
+  approvalDate: string;
+  code: string;
+  createdAt: string;
+  driverName: string;
+  licensePlates: string;
+  orderForm: string;
+  status: string;
+  storeExport: string;
+  storeImport: string;
+  id: number;
+}
+
+export interface IImportInventory {
+  approvalDate: string;
+  code: string;
+  createdAt: string;
+  driverName: string;
+  id: number;
+  importRequestId: number;
+  licensePlates: string;
+  orderForm: string;
+  status: string;
+  storeExport: string;
+  storeImport: string;
+  warehouseOrderId: number;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -251,6 +305,16 @@ export class InventoryManagementService {
 
 		return this.http.get<Array<IGasFuel>>('gas-fields/station-product', { params });
 	}
+
+  // lấy ds bồn theo nhiên liệu và trạm kho
+  getListGasFuelWrehouse(productId: number | string, gasStationId: number | string, fromOrder: string) {
+    const params = new HttpParams()
+      .set('product-id', productId.toString())
+      .set('form-order', fromOrder)
+      .set('station-id', gasStationId?.toString());
+
+    return this.http.get<Array<IGasFuel>>('suppliers/stations', { params });
+  }
 
 	// tạo yêu cầu đặt hàng
 	createOrderRequest(dataReq) {
@@ -315,8 +379,37 @@ export class InventoryManagementService {
 		return this.http.put(`warehouse-orders/request-adjustments/${id}`, { reason });
 	}
 
-  // Gửi yêu cầu đạt kho
+  // Gửi yêu cầu đặt kho
   putWarehouseOrders(id: number, dataReq) {
     return this.http.put(`warehouse-orders/${id}`, dataReq)
+  }
+
+  // Tìm kiếm ds xuất kho
+  searchImportInventory(page: number, size: number, data: IFilterImportInventory) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('status', data.status)
+      .set('order-form', data.orderForm)
+      .set('id-store-export', data.idStoreExport.toString())
+      .set('id-store-import', data.idStoreImport.toString())
+      .set('expected-date-start', data.expectedDateStart)
+      .set('expected-date-end', data.expectedDateEnd);
+
+    return this.http.get<Array<IImportInventory>>('warehouse-import/filters', { params });
+  }
+
+  // Tìm kiếm ds xuất kho
+  searchExportInventory(page: number, size: number, data: IFilterExportInventory) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('status', data.status)
+      .set('order-form', data.orderForm)
+      .set('id-store-export', data.idStoreExport.toString())
+      .set('expected-date-start', data.expectedDateStart)
+      .set('expected-date-end', data.expectedDateEnd);
+
+    return this.http.get<Array<IExportInventory>>('warehouse-export/filters', { params });
   }
 }

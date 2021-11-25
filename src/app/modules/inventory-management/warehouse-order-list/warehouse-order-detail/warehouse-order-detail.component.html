@@ -80,7 +80,7 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label">
+						<label class="form-label font-weight-bold">
 							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.NEW">Mới</ng-container>
 							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
 								>Chờ phê duyệt</ng-container
@@ -217,25 +217,25 @@
 
 					<tbody>
 						<tr *ngFor="let item of dataDetail?.wareHouseOrderProductResponses; let i =index">
-							<td class="col-item-1" style="width: 80px">{{i + 1}}</td>
-							<td class="col-item-2" style="width: 250px">{{item.productName}}</td>
-							<td class="col-item-3" style="width: 140px">{{item.unit}}</td>
-							<td class="text-right col-item-4" style="width: 140px">{{item.amountActually}}</td>
-							<td class="col-item-5 pl-4" style="width: 140px">{{item.gasFieldOutName}}</td>
-							<td class="col-item-6" style="width: 140px">{{item.compartment}}</td>
-							<td class="col-item-7" style="width: 140px">{{item.gasFieldInName}}</td>
-							<td class="text-right pr-8 col-item-8" style="width: 160px">{{item.price}}</td>
-							<td class="col-item-9" style="width: 140px">{{item.supplierName}}</td>
-							<td class="text-right col-item-10" style="width: 130px">{{item.intoMoney}}</td>
+							<td class='stt'>{{i + 1}}</td>
+							<td class='product-name'>{{item.productName}}</td>
+							<td class='unit'>{{item.unit}}</td>
+							<td class="text-right treasurer-recommend">{{item.recommend | number | vnCurrency}}</td>
+							<td class="gas-field-out-name">{{item.gasFieldOutName}}</td>
+							<td class="compartment">{{item.compartment}}</td>
+							<td class="gas-field-in-name">{{item.gasFieldInName}}</td>
+							<td class="text-right price">{{item.price | number | vnCurrency}}</td>
+							<td class="supplie-name">{{item.supplierName}}</td>
+							<td class="text-right into-money">{{item.intoMoney | number | vnCurrency}}</td>
 						</tr>
 					</tbody>
 
 					<tfoot>
 						<tr>
-							<td colspan="6"></td>
-							<td colspan="3" class="text-right"><strong>Tổng tiền thanh toán</strong></td>
-							<td colspan="1" class="text-right">
-								<strong>{{dataDetail?.totalProductMoney}}</strong>
+							<td colspan="5"></td>
+							<td colspan="3" class="text-right"><strong>Tổng tiền thanh toán:</strong></td>
+							<td colspan="2" class="text-right">
+								<strong>{{dataDetail?.totalProductMoney | number | vnCurrency}}</strong>
 							</td>
 						</tr>
 					</tfoot>
@@ -294,7 +294,7 @@
 
 					<div class="col-lg-7">
 						<label class="form-label font-weight-bold"
-							>{{dataDetail?.transportCost |number|vnCurrency}}</label
+							>{{dataDetail?.freightCharges |number|vnCurrency}}</label
 						>
 					</div>
 				</div>
@@ -305,7 +305,7 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{dataDetail?.freightCharges}}</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.transportCost | number | vnCurrency}}</label>
 					</div>
 				</div>
 			</div>
@@ -327,7 +327,7 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{dataDetail?.capacity}}</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.capacity | number | vnCurrency}}</label>
 					</div>
 				</div>
 			</div>
@@ -362,9 +362,9 @@
 	<div class="w-100 d-flex justify-content-center pb-10">
 		<button
 			type="button"
-			class="btn btn-outline-danger mr-3"
+			class="btn btn-outline-primary mr-3"
 			(click)="reject()"
-			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING || dataDetail?.status === eWarehouseStatus.NEW"
+			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
 		>
 			Từ chối
 		</button>
