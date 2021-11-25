@@ -248,6 +248,50 @@ export interface IImportInventory {
   warehouseOrderId: number;
 }
 
+export interface IExportInventoryDetail {
+  code: string;
+  status: string;
+  driverName: string;
+  exportedWarehouseAddress: string;
+  exportedWarehouseName: string;
+  id: number;
+  importRequestId: number;
+  importedWarehouseAddress: string;
+  importedWarehouseName: string;
+  licensePlates: string;
+  representativeGiveName: string;
+  representativeTakeName: string;
+  internalCar: boolean;
+  wareHouseOrderProductResponses: [IProductExportInventory]
+}
+
+export interface IProductExportInventory {
+  amountActually: number;
+  amountRecommended: number;
+  capLead: string;
+  capValve: string;
+  compartment: string;
+  difference: string;
+  gasFieldInId: number;
+  gasFieldInName: string;
+  gasFieldOutId: number;
+  gasFieldOutName: string;
+  id: number;
+  importProductId: number;
+  intoMoney: number;
+  price: number;
+  productName: string;
+  quotaExport: string;
+  quotaImport: string;
+  recommend: number;
+  supplierId: number;
+  supplierName: string;
+  temperatureExport: string;
+  temperatureImport: string;
+  treasurerRecommend: number;
+  unit: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -411,5 +455,15 @@ export class InventoryManagementService {
       .set('expected-date-end', data.expectedDateEnd);
 
     return this.http.get<Array<IExportInventory>>('warehouse-export/filters', { params });
+  }
+
+  // Chi tiết phiếu xuất kho
+  getDetailExportInventory(id: string) {
+    return this.http.get<IExportInventoryDetail>(`warehouse-export/${id}`);
+  }
+
+  //Hoàn thành xuất kho
+  submitExportInventory(id: string, dataReq) {
+    return this.http.put(`warehouse-export/complete/${id}`, dataReq)
   }
 }
