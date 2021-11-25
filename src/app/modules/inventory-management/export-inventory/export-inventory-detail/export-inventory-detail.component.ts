@@ -95,7 +95,7 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
   convertToFormArray(data: IProductExportInventory[]): FormArray {
     const controls = data.map((p) => {
       return this.fb.group({
-        importProducId: [p.id],
+        importProducId: [p.importProductId],
         productName:[p.productName],
         unit: [p.unit],
         supplierName: [p.supplierName],
@@ -123,7 +123,7 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
     const dataProductReq = this.dataProductResponses.value.map((x) => ({
       capLead: x.capLead,
       capValve: x.capValve,
-      importProducId: x.importProducId,
+      importProductId: x.importProducId,
       quotaExport: convertMoney(x.quotaExport.toString()),
       temperatureExport: convertMoney(x.temperatureExport.toString())
     }))
@@ -148,6 +148,9 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
   checkError(error: IError) {
     if (error.code === 'SUN-OIL-4279') {
       this.toastr.error('Phiếu xuất kho không tồn tại');
+    }
+    if (error.code === 'SUN-OIL-4284') {
+      this.toastr.error('Dữ liệu lỗi vui lòng thử lại');
     }
   }
 
