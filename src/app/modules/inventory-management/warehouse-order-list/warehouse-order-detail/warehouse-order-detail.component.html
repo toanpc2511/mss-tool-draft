@@ -195,7 +195,7 @@
 								<label class="form-label">Số lượng</label>
 							</th>
 							<th class="text" scope="">
-								<label class="form-label ml-4">Bồn xuất</label>
+								<label class="form-label ml-6">Bồn xuất</label>
 							</th>
 							<th class="text" scope="">
 								<label class="form-label">Ngăn</label>
@@ -221,10 +221,10 @@
 							<td class='product-name'>{{item.productName}}</td>
 							<td class='unit'>{{item.unit}}</td>
 							<td class="text-right treasurer-recommend">{{item.recommend | number | vnCurrency}}</td>
-							<td class="gas-field-out-name">{{item.gasFieldOutName}}</td>
+							<td class="gas-field-out-name pl-6">{{item.gasFieldOutName}}</td>
 							<td class="compartment">{{item.compartment}}</td>
 							<td class="gas-field-in-name">{{item.gasFieldInName}}</td>
-							<td class="text-right price">{{item.price | number | vnCurrency}}</td>
+							<td class="text-right price pr-7">{{item.price | number | vnCurrency}}</td>
 							<td class="supplie-name">{{item.supplierName}}</td>
 							<td class="text-right into-money">{{item.intoMoney | number | vnCurrency}}</td>
 						</tr>
@@ -362,7 +362,7 @@
 	<div class="w-100 d-flex justify-content-center pb-10">
 		<button
 			type="button"
-			class="btn btn-outline-primary mr-3"
+			class="btn btn-outline-danger mr-3"
 			(click)="reject()"
 			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
 		>
