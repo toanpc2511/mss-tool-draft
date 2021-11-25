@@ -260,6 +260,7 @@ export interface IExportInventoryDetail {
   importedWarehouseName: string;
   licensePlates: string;
   representativeGiveName: string;
+  representativeGiveCode: string;
   representativeTakeName: string;
   internalCar: boolean;
   wareHouseOrderProductResponses: [IProductExportInventory]
