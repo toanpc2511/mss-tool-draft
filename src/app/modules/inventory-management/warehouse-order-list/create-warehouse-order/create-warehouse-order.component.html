@@ -338,8 +338,11 @@
               class="form-control form-control-solid w-75"
               placeholder="Nhập cước vận tải/Lít"
               formControlName='freightCharges'
-              maxlength="11"
+              autocomplete="off"
+              maxlength='13'
               decimal-mask
+              trim="blur"
+              (keydown.space)="$event.preventDefault()"
               (input)='sumFreightCharge()'
             />
             <app-validate
@@ -347,12 +350,16 @@
               [error]="'required'"
               [message]="'Cước vận tải không được để trống'"
             ></app-validate>
+            <app-validate
+              [control]="transportInfoForm.controls['freightCharges']"
+              [error]="'min'"
+              [message]="'Cước vận phải lớn hơn 0'"
+            ></app-validate>
           </div>
 
           <div class="col-lg-6">
             <label>Thành tiền</label>
             <input
-              type="text"
               class="form-control form-control-solid w-75"
               placeholder="Thành tiền"
               formControlName='transportCost'
