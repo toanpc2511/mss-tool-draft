@@ -18,7 +18,7 @@ export const PaymentMethod = [
 export const LIST_WAREHOUSE_ORDER_FORM = [
 	{ key: 'SUPPLIER', value: 'Nhà cung cấp'},
 	{ key: 'DEPOT', value: 'Kho tổng'},
-	{ key: 'STORE', value: 'Kho  tại của hàng'}
+	{ key: 'STORE', value: 'Kho  tại cửa hàng'}
 ]
 
 export interface IStationEployee {
@@ -311,7 +311,7 @@ export class InventoryManagementService {
     const params = new HttpParams()
       .set('product-id', productId.toString())
       .set('form-order', fromOrder)
-      .set('station-id', gasStationId.toString());
+      .set('station-id', gasStationId?.toString());
 
     return this.http.get<Array<IGasFuel>>('suppliers/stations', { params });
   }

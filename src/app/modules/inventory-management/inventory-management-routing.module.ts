@@ -74,7 +74,16 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'tinh-kho',
+    path: 'tinh-kho-do-be',
+    children: [
+      {
+        path: '',
+        component: ReportInventoryComponent
+      }
+    ]
+  },
+  {
+    path: 'tinh-kho-kich-bom',
     children: [
       {
         path: '',

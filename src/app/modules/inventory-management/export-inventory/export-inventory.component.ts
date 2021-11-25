@@ -105,7 +105,6 @@ export class ExportInventoryComponent implements OnInit {
       .subscribe((res) => {
           if (res.data) {
             this.dataSource = res.data;
-            console.log(this.dataSource);
 
             this.paginatorState.recalculatePaginator(res.meta.total);
             this.cdr.detectChanges();
