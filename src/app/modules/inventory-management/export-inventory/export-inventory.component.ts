@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { IError } from '../../../shared/models/error.model';
 import { convertDateToServer } from '../../../shared/helpers/functions';
 import { LIST_STATUS_EXPORT } from '../../../shared/data-enum/list-status';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-export-inventory',
@@ -39,7 +40,7 @@ export class ExportInventoryComponent implements OnInit {
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
-    private modalService: NgbModal,
+    private router: Router,
   ) {
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
@@ -123,6 +124,11 @@ export class ExportInventoryComponent implements OnInit {
       expectedDateStart: convertDateToServer(filterFormData.expectedDateStart),
       expectedDateEnd: convertDateToServer(filterFormData.expectedDateEnd)
     };
+  }
+
+  viewDetailExportInventory($event: Event, id: number): void {
+    $event.stopPropagation();
+    this.router.navigate([`/kho/xuat-kho/chi-tiet/${id}`]);
   }
 
   checkError(error: IError) {

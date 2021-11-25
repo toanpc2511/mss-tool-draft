@@ -125,7 +125,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
     this.transportInfoForm.get('internalCar').patchValue(data.internalCar || 'false');
     this.transportInfoForm.get('vehicleCostMethod').patchValue(data.vehicleCostMethod || '');
-    this.transportInfoForm.get('transportCost').patchValue(data.transportCost.toLocaleString('en-US') || '');
+    this.transportInfoForm.get('transportCost').patchValue(data.transportCost?.toLocaleString('en-US') || '');
     this.transportInfoForm.get('freightCharges').patchValue(data.freightCharges || '');
     this.transportInfoForm.get('licensePlates').patchValue(data.licensePlates || null);
     this.transportInfoForm.get('capacity').patchValue(data.capacity || null);
