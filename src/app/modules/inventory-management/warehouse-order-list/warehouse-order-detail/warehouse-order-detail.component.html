@@ -177,7 +177,7 @@
 			</div>
 		</div>
 
-		<div class="card-body">
+		<div class="card-body list-request">
 			<div class="table-responsive angular-bootstrap-table">
 				<table class="table table-vertical-center overflow-hidden" aria-label="">
 					<thead class="thead-light">
@@ -195,7 +195,7 @@
 								<label class="form-label">Số lượng</label>
 							</th>
 							<th class="text" scope="">
-								<label class="form-label">Bồn xuất</label>
+								<label class="form-label ml-6">Bồn xuất</label>
 							</th>
 							<th class="text" scope="">
 								<label class="form-label">Ngăn</label>
@@ -204,7 +204,7 @@
 								<label class="form-label">Bồn nhập</label>
 							</th>
 							<th class="text-right" scope="">
-								<label class="form-label">Đơn giá(VNĐ)</label>
+								<label class="form-label mr-5">Đơn giá(VNĐ)</label>
 							</th>
 							<th class="text" scope="">
 								<label class="form-label">Nguồn hàng</label>
@@ -221,10 +221,10 @@
 							<td class='product-name'>{{item.productName}}</td>
 							<td class='unit'>{{item.unit}}</td>
 							<td class="text-right treasurer-recommend">{{item.recommend | number | vnCurrency}}</td>
-							<td class="gas-field-out-name">{{item.gasFieldOutName}}</td>
+							<td class="gas-field-out-name pl-6">{{item.gasFieldOutName}}</td>
 							<td class="compartment">{{item.compartment}}</td>
 							<td class="gas-field-in-name">{{item.gasFieldInName}}</td>
-							<td class="text-right price">{{item.price | number | vnCurrency}}</td>
+							<td class="text-right price pr-7">{{item.price | number | vnCurrency}}</td>
 							<td class="supplie-name">{{item.supplierName}}</td>
 							<td class="text-right into-money">{{item.intoMoney | number | vnCurrency}}</td>
 						</tr>
@@ -310,7 +310,7 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
+			<div class="form-group row" *ngIf="dataDetail?.licensePlates">
 				<div class="col-lg-6 row">
 					<div class="col-lg-5">
 						<label class="form-label">Biển số xe sử dụng</label>
@@ -321,7 +321,7 @@
 					</div>
 				</div>
 
-				<div class="col-lg-6 row">
+				<div class="col-lg-6 row" *ngIf="dataDetail?.capacity">
 					<div class="col-lg-5">
 						<label class="form-label">Dung tích</label>
 					</div>
@@ -332,7 +332,7 @@
 				</div>
 			</div>
 
-			<div class="form-group row">
+			<div class="form-group row" *ngIf="dataDetail?.driver?.name">
 				<div class="col-lg-6 row">
 					<div class="col-lg-5">
 						<label class="form-label">Lái xe</label>
@@ -362,7 +362,7 @@
 	<div class="w-100 d-flex justify-content-center pb-10">
 		<button
 			type="button"
-			class="btn btn-outline-primary mr-3"
+			class="btn btn-outline-danger mr-3"
 			(click)="reject()"
 			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
 		>
@@ -380,7 +380,7 @@
 			type="button"
 			class="btn btn-outline-primary mr-3"
 			(click)="adjust()"
-			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING && dataDetail?.status === eWarehouseStatus.NEW"
+			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
 		>
 			Yêu cầu điều chỉnh
 		</button>
@@ -399,6 +399,7 @@
 				class="form-control form-control-solid"
 				trim="blur"
 				maxlength="200"
+				placeholder="Nhập lý do yêu cầu điều chỉnh"
 			/>
 			<app-validate
 				[control]="reasonControl"
@@ -431,6 +432,7 @@
 				class="form-control form-control-solid"
 				trim="blur"
 				maxlength="200"
+				placeholder="Nhập lý do từ chối"
 			/>
 			<app-validate
 				[control]="reasonControl"
