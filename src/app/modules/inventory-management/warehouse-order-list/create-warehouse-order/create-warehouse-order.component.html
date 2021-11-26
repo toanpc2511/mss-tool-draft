@@ -368,13 +368,18 @@
           </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row" *ngIf='isInternalCar'>
           <div class="col-lg-6">
-            <label class="form-label">Biển số xe sử dụng</label>
+            <label class="form-label required">Biển số xe sử dụng</label>
             <select class="form-control form-control-solid w-75" formControlName='licensePlates' (input)='changeLicensePlates()'>
               <option [value]="null">Chọn biển số xe</option>
               <option *ngFor='let item of dataTransitCars' [value]="item.licensePlates">{{item.licensePlates}}</option>
             </select>
+            <app-validate
+              [control]="transportInfoForm.controls['licensePlates']"
+              [error]="'required'"
+              [message]="'Biển số xe không được để trống'"
+            ></app-validate>
           </div>
 
           <div class="col-lg-6">
@@ -389,13 +394,18 @@
           </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row" *ngIf='isInternalCar'>
           <div class="col-lg-6">
-            <label class="form-label">Lái xe</label>
+            <label class="form-label required">Lái xe</label>
             <select class="form-control form-control-solid w-75" formControlName='driver'>
               <option [value]="null">Chọn lái xe</option>
               <option *ngFor='let item of dataShippingTeam' [value]="item.id">{{item.name}}</option>
             </select>
+            <app-validate
+              [control]="transportInfoForm.controls['driver']"
+              [error]="'required'"
+              [message]="'Lái xe không được để trống'"
+            ></app-validate>
           </div>
         </div>
       </form>

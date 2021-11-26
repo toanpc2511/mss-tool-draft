@@ -85,7 +85,7 @@ export class ExportInventoryComponent implements OnInit {
         this.dataSupplier = [];
         if (x) {
           this.searchForm.get('idStoreExport').patchValue('');
-          this.inventoryManagementService.getListSuppliers(x)
+          this.inventoryManagementService.getListSuppliersAll(x)
             .subscribe((res) => {
               this.dataSupplier = res.data;
               this.cdr.detectChanges();
