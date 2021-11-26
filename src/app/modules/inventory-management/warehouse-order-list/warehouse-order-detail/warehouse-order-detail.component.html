@@ -120,10 +120,10 @@
 							>Nhà cung cấp</label
 						>
 						<label class="form-label font-weight-bold" *ngIf="dataDetail?.oderForm === 'DEPOT'"
-							>Kho chứa</label
+							>Kho tổng</label
 						>
 						<label class="form-label font-weight-bold" *ngIf="dataDetail?.oderForm === 'STORE'"
-							>Cửa hàng</label
+							>Kho tại cửa hàng</label
 						>
 					</div>
 				</div>
@@ -191,20 +191,20 @@
 							<th scope="">
 								<label class="form-label">Đơn vị</label>
 							</th>
-							<th class="text-right" scope="">
+							<th class="text-right recommend" scope="">
 								<label class="form-label">Số lượng</label>
 							</th>
-							<th class="text" scope="">
-								<label class="form-label ml-6">Bồn xuất</label>
+							<th class="text pl-6" scope="">
+								<label class="form-label">Bồn xuất</label>
 							</th>
 							<th class="text" scope="">
 								<label class="form-label">Ngăn</label>
 							</th>
-							<th class="text" scope="">
+							<th class="text pl-6" scope="">
 								<label class="form-label">Bồn nhập</label>
 							</th>
-							<th class="text-right" scope="">
-								<label class="form-label mr-5">Đơn giá(VNĐ)</label>
+							<th class="text-right price" scope="">
+								<label class="form-label">Đơn giá(VNĐ)</label>
 							</th>
 							<th class="text" scope="">
 								<label class="form-label">Nguồn hàng</label>
@@ -220,11 +220,11 @@
 							<td class='stt'>{{i + 1}}</td>
 							<td class='product-name'>{{item.productName}}</td>
 							<td class='unit'>{{item.unit}}</td>
-							<td class="text-right treasurer-recommend">{{item.recommend | number | vnCurrency}}</td>
+							<td class="text-right recommend">{{item.recommend | number | vnCurrency}}</td>
 							<td class="gas-field-out-name pl-6">{{item.gasFieldOutName}}</td>
 							<td class="compartment">{{item.compartment}}</td>
-							<td class="gas-field-in-name">{{item.gasFieldInName}}</td>
-							<td class="text-right price pr-7">{{item.price | number | vnCurrency}}</td>
+							<td class="gas-field-in-name pl-6">{{item.gasFieldInName}}</td>
+							<td class="text-right price">{{item.price | number | vnCurrency}}</td>
 							<td class="supplie-name">{{item.supplierName}}</td>
 							<td class="text-right into-money">{{item.intoMoney | number | vnCurrency}}</td>
 						</tr>
@@ -362,7 +362,7 @@
 	<div class="w-100 d-flex justify-content-center pb-10">
 		<button
 			type="button"
-			class="btn btn-outline-danger mr-3"
+			class="btn btn-outline-primary mr-3"
 			(click)="reject()"
 			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
 		>
@@ -378,7 +378,7 @@
 		</button>
 		<button
 			type="button"
-			class="btn btn-outline-primary mr-3"
+			class="btn btn-primary mr-3"
 			(click)="adjust()"
 			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
 		>

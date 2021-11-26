@@ -467,4 +467,11 @@ export class InventoryManagementService {
   submitExportInventory(id: string, dataReq) {
     return this.http.put(`warehouse-export/complete/${id}`, dataReq)
   }
+
+  // Lấy tất cả kho xuất theo hình thức đặt kho
+  getListSuppliersAll(formOrder: string) {
+    const params = new HttpParams()
+      .set('form-order', formOrder)
+    return this.http.get<Array<ISupplier>>(`suppliers/stations/import-export`, {params})
+  }
 }
