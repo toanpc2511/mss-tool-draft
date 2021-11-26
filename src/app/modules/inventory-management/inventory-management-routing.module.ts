@@ -10,6 +10,7 @@ import { CreateWarehouseOrderComponent } from './warehouse-order-list/create-war
 import { ExportInventoryComponent } from './export-inventory/export-inventory.component';
 import { ImportInventoryComponent } from './import-inventory/import-inventory.component';
 import { ReportInventoryComponent } from './report-inventory/report-inventory.component';
+import { ImportingInventoryDetailComponent } from './import-inventory/importing-inventory-detail/importing-inventory-detail.component';
 
 const routes: Routes = [
   {
@@ -70,6 +71,10 @@ const routes: Routes = [
       {
         path: '',
         component: ImportInventoryComponent,
+      },
+      {
+        path: 'chi-tiet/:id',
+        component: ImportingInventoryDetailComponent
       }
     ]
   },
