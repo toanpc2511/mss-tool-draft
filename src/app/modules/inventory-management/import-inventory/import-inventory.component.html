@@ -136,7 +136,7 @@
 
         <tbody>
         <tr *ngFor='let item of dataSource'>
-          <td class='code'>
+          <td class='code' [routerLink]='["chi-tiet", item.id]'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
@@ -145,7 +145,7 @@
               {{ item.code }}
             </p>
           </td>
-          <td class='created-at'>
+          <td class='created-at' [routerLink]='["chi-tiet", item.id]'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
@@ -154,7 +154,7 @@
               {{ item.createdAt | date: 'dd/MM/yyyy - HH:mm' }}
             </p>
           </td>
-          <td class='approval-date'>
+          <td class='approval-date' [routerLink]='["chi-tiet", item.id]'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
@@ -163,7 +163,7 @@
               {{ item.approvalDate | date: 'dd/MM/yyyy - HH:mm' }}
             </p>
           </td>
-          <td class='order-form'>
+          <td class='order-form' [routerLink]='["chi-tiet", item.id]'>
             <p
               class="cursor-pointer text-ellipsis"
             >
@@ -172,7 +172,7 @@
               <ng-container *ngIf="item.orderForm === 'STORE'">Kho tại cửa hàng</ng-container>
             </p>
           </td>
-          <td class='store-export'>
+          <td class='store-export' [routerLink]='["chi-tiet", item.id]'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
@@ -181,7 +181,7 @@
               {{ item.storeExport }}
             </p>
           </td>
-          <td class='license-plates'>
+          <td class='license-plates' [routerLink]='["chi-tiet", item.id]'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
@@ -190,16 +190,16 @@
               {{ item.licensePlates }}
             </p>
           </td>
-          <td class='driver-name'>
+          <td class='driver-name' [routerLink]='["chi-tiet", item.id]'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
               [ngbTooltip]="item.driverName"
-            >a
+            >
               {{ item.driverName }}
             </p>
           </td>
-          <td class='store-import'>
+          <td class='store-import' [routerLink]='["chi-tiet", item.id]'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
