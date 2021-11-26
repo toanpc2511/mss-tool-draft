@@ -18,7 +18,7 @@ export const PaymentMethod = [
 export const LIST_WAREHOUSE_ORDER_FORM = [
 	{ key: 'SUPPLIER', value: 'Nhà cung cấp'},
 	{ key: 'DEPOT', value: 'Kho tổng'},
-	{ key: 'STORE', value: 'Kho  tại của hàng'}
+	{ key: 'STORE', value: 'Kho  tại cửa hàng'}
 ]
 
 export interface IStationEployee {
@@ -248,6 +248,51 @@ export interface IImportInventory {
   warehouseOrderId: number;
 }
 
+export interface IExportInventoryDetail {
+  code: string;
+  status: string;
+  driverName: string;
+  exportedWarehouseAddress: string;
+  exportedWarehouseName: string;
+  id: number;
+  importRequestId: number;
+  importedWarehouseAddress: string;
+  importedWarehouseName: string;
+  licensePlates: string;
+  representativeGiveName: string;
+  representativeGiveCode: string;
+  representativeTakeName: string;
+  internalCar: boolean;
+  wareHouseOrderProductResponses: [IProductExportInventory]
+}
+
+export interface IProductExportInventory {
+  amountActually: number;
+  amountRecommended: number;
+  capLead: string;
+  capValve: string;
+  compartment: string;
+  difference: string;
+  gasFieldInId: number;
+  gasFieldInName: string;
+  gasFieldOutId: number;
+  gasFieldOutName: string;
+  id: number;
+  importProductId: number;
+  intoMoney: number;
+  price: number;
+  productName: string;
+  quotaExport: string;
+  quotaImport: string;
+  recommend: number;
+  supplierId: number;
+  supplierName: string;
+  temperatureExport: string;
+  temperatureImport: string;
+  treasurerRecommend: number;
+  unit: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -311,7 +356,7 @@ export class InventoryManagementService {
     const params = new HttpParams()
       .set('product-id', productId.toString())
       .set('form-order', fromOrder)
-      .set('station-id', gasStationId.toString());
+      .set('station-id', gasStationId?.toString());
 
     return this.http.get<Array<IGasFuel>>('suppliers/stations', { params });
   }
@@ -411,5 +456,22 @@ export class InventoryManagementService {
       .set('expected-date-end', data.expectedDateEnd);
 
     return this.http.get<Array<IExportInventory>>('warehouse-export/filters', { params });
+  }
+
+  // Chi tiết phiếu xuất kho
+  getDetailExportInventory(id: string) {
+    return this.http.get<IExportInventoryDetail>(`warehouse-export/${id}`);
+  }
+
+  //Hoàn thành xuất kho
+  submitExportInventory(id: string, dataReq) {
+    return this.http.put(`warehouse-export/complete/${id}`, dataReq)
+  }
+
+  // Lấy tất cả kho xuất theo hình thức đặt kho
+  getListSuppliersAll(formOrder: string) {
+    const params = new HttpParams()
+      .set('form-order', formOrder)
+    return this.http.get<Array<ISupplier>>(`suppliers/stations/import-export`, {params})
   }
 }

@@ -1,0 +1,425 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="info-request pb-0 mt-2">
+    <div class="card-header">
+      <div class="card-title my-5">
+        <h3 class="title">Mã phiếu xuất: {{dataDetail?.code}}</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-request-in pb-5">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Thông tin bên nhận hàng</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-4">
+            <label class="form-label">Người đại diện</label>
+          </div>
+
+          <div class="col-lg-8" *ngIf='dataDetail?.status === "EXPORTED" '>
+            <label class="form-label font-weight-bold">{{dataDetail?.representativeTakeName}}</label>
+          </div>
+
+          <div class="col-lg-8" *ngIf='dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>
+            <label class="form-label font-weight-bold">{{dataDetail?.representativeTakeName}}</label>
+          </div>
+
+          <div class="col-lg-8" *ngIf='!dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>
+            <input
+              type='text'
+              class="form-control form-control-sm w-75"
+              placeholder="Nhập tên người đại diện"
+              maxlength="20"
+              [formControl]='driverNameControl'
+            />
+            <app-validate
+              [control]="driverNameControl"
+              [error]="'required'"
+              [message]="'Tên người đại diện không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+
+        <div class="col-lg-6 row">
+          <div class="col-lg-4">
+            <label class="form-label">Bên nhận hàng</label>
+          </div>
+
+          <div class="col-lg-8">
+            <label class="form-label font-weight-bold">{{dataDetail?.importedWarehouseName}}</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-4">
+            <label class="form-label">Địa chỉ</label>
+          </div>
+
+          <div class="col-lg-8">
+            <label class="form-label font-weight-bold">{{dataDetail?.importedWarehouseAddress}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="order-info pb-5">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Thông tin bên giao hàng</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-4">
+            <label class="form-label">Người đại diện</label>
+          </div>
+
+          <div class="col-lg-8">
+            <label class="form-label font-weight-bold">{{dataDetail?.representativeGiveCode }} - {{dataDetail?.representativeGiveName}}</label>
+          </div>
+        </div>
+
+        <div class="col-lg-6 row">
+          <div class="col-lg-4">
+            <label class="form-label">Bên giao hàng</label>
+          </div>
+
+          <div class="col-lg-8">
+            <label class="form-label font-weight-bold">{{dataDetail?.representativeGiveCode }} - {{dataDetail?.exportedWarehouseName}}</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-4">
+            <label class="form-label">Địa chỉ</label>
+          </div>
+
+          <div class="col-lg-8">
+            <label class="form-label font-weight-bold">{{dataDetail?.exportedWarehouseAddress}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="order-info pb-5">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Thông tin lái xe</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-4">
+            <label class="form-label">Tên lái xe</label>
+          </div>
+
+          <div class="col-lg-8">
+            <label class="form-label font-weight-bold">{{dataDetail?.driverName}}</label>
+          </div>
+        </div>
+
+        <div class="col-lg-6 row">
+          <div class="col-lg-4">
+            <label class="form-label">Biển kiểm soát</label>
+          </div>
+
+          <div class="col-lg-8">
+            <label class="form-label font-weight-bold">{{dataDetail?.licensePlates}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="list-product py-5">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Danh sách hàng hóa</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive angular-bootstrap-table">
+        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+          <thead>
+          <tr>
+            <th scope=''>STT</th>
+            <th scope=''>Tên sản phẩm</th>
+            <th scope=''>Đơn vị</th>
+            <th scope=''>Nguồn hàng</th>
+            <th scope=''>Ngăn</th>
+            <th scope='' class='amount-actually text-right'>Số lượng</th>
+            <th scope=''>Bồn xuất</th>
+            <th scope=''>Bồn nhập</th>
+            <th scope=''>Nhiệt độ thực tế tại kho</th>
+            <th scope=''>Tâm mức thực tại kho</th>
+            <th scope=''>Số chì nắp</th>
+            <th scope=''>Số chì van</th>
+          </tr>
+          </thead>
+
+          <tbody *ngIf='dataDetail?.status !== "EXPORTED"'>
+          <tr *ngFor="let item of dataProductResponses?.controls; let i = index" [formGroup]="item">
+            <td class='stt'>{{i + 1}}</td>
+            <td class='product-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('productName').value"
+              >
+                {{ item.get('productName').value}}
+              </p>
+            </td>
+            <td class='unit'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('unit').value"
+              >
+                {{ item.get('unit').value}}
+              </p>
+            </td>
+            <td class='supplier-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('supplierName').value"
+              >
+                {{ item.get('supplierName').value}}
+              </p>
+            </td>
+            <td class='compartment'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('compartment').value"
+              >
+                {{ item.get('compartment').value}}
+              </p>
+            </td>
+            <td class='amount-actually text-right'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('amountActually').value"
+              >
+                {{ item.get('amountActually').value}}
+              </p>
+            </td>
+            <td class='gas-field-out-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('gasFieldOutName').value"
+              >
+                {{ item.get('gasFieldOutName').value}}
+              </p>
+            </td>
+            <td class='gas-field-in-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('gasFieldInName').value"
+              >
+                {{ item.get('gasFieldInName').value}}
+              </p>
+            </td>
+            <td class="temperature-export">
+              <input
+                class="form-control w-75"
+                placeholder="Nhập nhiệt độ"
+                formControlName='temperatureExport'
+                maxlength="13"
+                decimal-mask
+              />
+              <app-validate
+                [control]="item.controls['temperatureExport']"
+                [error]="'required'"
+                [message]="'Nhiệt độ không được để trống'"
+              ></app-validate>
+            </td>
+            <td class="quota-export">
+              <input
+                class="form-control w-75"
+                placeholder="Nhập tâm mức"
+                formControlName='quotaExport'
+                maxlength="13"
+                decimal-mask
+              />
+              <app-validate
+                [control]="item.controls['quotaExport']"
+                [error]="'required'"
+                [message]="'Tâm mức không được để trống'"
+              ></app-validate>
+            </td>
+            <td class="cap-lead">
+              <input
+                type='text'
+                class="form-control w-75"
+                placeholder="Nhập số chì nắp"
+                formControlName='capLead'
+                maxlength="20"
+              />
+              <app-validate
+                [control]="item.controls['capLead']"
+                [error]="'required'"
+                [message]="'Số chì nắp không được để trống'"
+              ></app-validate>
+            </td>
+            <td class="cap-valve">
+              <input
+                type='text'
+                class="form-control w-75"
+                placeholder="Nhập số chì van"
+                formControlName='capValve'
+                maxlength="20"
+              />
+              <app-validate
+                [control]="item.controls['capValve']"
+                [error]="'required'"
+                [message]="'Số chì van không được để trống'"
+              ></app-validate>
+            </td>
+          </tr>
+          </tbody>
+
+          <tbody *ngIf='dataDetail?.status === "EXPORTED"'>
+          <tr *ngFor="let item of dataProductResponses?.controls; let i = index" [formGroup]="item">
+            <td class='stt'>{{i + 1}}</td>
+            <td class='product-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('productName').value"
+              >
+                {{ item.get('productName').value}}
+              </p>
+            </td>
+            <td class='unit'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('unit').value"
+              >
+                {{ item.get('unit').value}}
+              </p>
+            </td>
+            <td class='supplier-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('supplierName').value"
+              >
+                {{ item.get('supplierName').value}}
+              </p>
+            </td>
+            <td class='compartment'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('compartment').value"
+              >
+                {{ item.get('compartment').value}}
+              </p>
+            </td>
+            <td class='amount-actually text-right'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('amountActually').value | number | vnCurrency"
+              >
+                {{ item.get('amountActually').value | number | vnCurrency}}
+              </p>
+            </td>
+            <td class='gas-field-out-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('gasFieldOutName').value"
+              >
+                {{ item.get('gasFieldOutName').value}}
+              </p>
+            </td>
+            <td class='gas-field-in-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('gasFieldInName').value"
+              >
+                {{ item.get('gasFieldInName').value}}
+              </p>
+            </td>
+            <td class="temperature-export">
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('temperatureExport').value"
+              >
+                {{ item.get('temperatureExport').value}}
+              </p>
+            </td>
+            <td class="quota-export">
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('quotaExport').value"
+              >
+                {{ item.get('quotaExport').value}}
+              </p>
+            </td>
+            <td class="cap-lead">
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('capLead').value"
+              >
+                {{ item.get('capLead').value}}
+              </p>
+            </td>
+            <td class="cap-valve">
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.get('capValve').value"
+              >
+                {{ item.get('capValve').value}}
+              </p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="py-10 w-100 d-flex justify-content-center">
+    <button
+      *ngIf='dataDetail?.status !== "EXPORTED"'
+      class="btn btn-primary mr-3 button"
+      (click)='onSubmit()'
+    >
+      Hoàn thành
+    </button>
+    <button
+      *ngIf='dataDetail?.status === "EXPORTED"'
+      class="btn btn-primary mr-3 button"
+    >
+      In phiếu xuất
+    </button>
+  </div>
+</div>

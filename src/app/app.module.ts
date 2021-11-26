@@ -31,7 +31,6 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
 
-
 registerLocaleData(localeVi, 'vi', localeViExtra);
 
 FullCalendarModule.registerPlugins([bootstrapPlugin, dayGridPlugin, timeGridPlugin]);

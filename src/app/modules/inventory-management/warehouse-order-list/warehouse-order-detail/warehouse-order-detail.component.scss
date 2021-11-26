@@ -50,7 +50,7 @@
         }
       }
 
-      td {
+      td, th {
         &.stt {
           min-width: 60px;
         }
@@ -58,8 +58,6 @@
           min-width: 80px;
           max-width: 120px;
         }
-        &.treasurer-recommend,
-        &.price,
         &.into-money {
           min-width: 130px;
           max-width: 150px;
@@ -72,6 +70,13 @@
           min-width: 150px;
           max-width: 200px;
         }
+        &.recommend,
+        &.price {
+          min-width: 150px;
+          max-width: 160px;
+          padding-right: 35px;
+        }
+
       }
 
       tfoot {

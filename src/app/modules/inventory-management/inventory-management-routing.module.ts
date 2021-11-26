@@ -10,6 +10,7 @@ import { CreateWarehouseOrderComponent } from './warehouse-order-list/create-war
 import { ExportInventoryComponent } from './export-inventory/export-inventory.component';
 import { ImportInventoryComponent } from './import-inventory/import-inventory.component';
 import { ReportInventoryComponent } from './report-inventory/report-inventory.component';
+import { ExportInventoryDetailComponent } from './export-inventory/export-inventory-detail/export-inventory-detail.component';
 import { ImportingInventoryDetailComponent } from './import-inventory/importing-inventory-detail/importing-inventory-detail.component';
 
 const routes: Routes = [
@@ -62,7 +63,11 @@ const routes: Routes = [
       {
         path: '',
         component: ExportInventoryComponent,
-      }
+      },
+      {
+        path: 'chi-tiet/:id',
+        component: ExportInventoryDetailComponent,
+      },
     ]
   },
   {
@@ -79,7 +84,16 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'tinh-kho',
+    path: 'tinh-kho-do-be',
+    children: [
+      {
+        path: '',
+        component: ReportInventoryComponent
+      }
+    ]
+  },
+  {
+    path: 'tinh-kho-kich-bom',
     children: [
       {
         path: '',

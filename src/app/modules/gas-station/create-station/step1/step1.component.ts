@@ -196,6 +196,7 @@ export class Step1Component implements OnInit, OnChanges {
 			areaDisplay: [null],
 			phone: [null, [TValidators.noWhiteSpace, TValidators.phone, TValidators.required]],
 			chip: [false],
+      corporation: [false],
 			status: [this.listStatus.ACTIVE]
 		});
 	}
@@ -210,6 +211,7 @@ export class Step1Component implements OnInit, OnChanges {
 		const lat = coordinates[0] || null;
 		const lon = coordinates[1] || null;
 		const value = { ...this.stationForm.value, lat, lon };
+    console.log(value);
 
 		if (!this.isUpdate) {
 			this.gasStationService.createStation(value).subscribe(

@@ -118,7 +118,11 @@ const SPECIAL_URL: SpecialUrl[] = [
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	},
 	{
-		url: '/kho/tinh-kho',
+		url: '/kho/tinh-kho-do-be',
+		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+	},
+	{
+		url: '/kho/tinh-kho-kich-bom',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	}
 	/*End*/

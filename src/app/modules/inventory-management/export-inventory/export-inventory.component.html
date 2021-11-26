@@ -131,7 +131,7 @@
         </thead>
 
         <tbody>
-        <tr *ngFor='let item of dataSource'>
+        <tr *ngFor='let item of dataSource' (click)='viewDetailExportInventory($event, item.id)'>
           <td class='code'>
             <p
               class="cursor-pointer text-ellipsis"
