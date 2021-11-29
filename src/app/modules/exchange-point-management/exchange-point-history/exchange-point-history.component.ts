@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { ISortData } from '../../contract/contract.service';
@@ -29,8 +29,7 @@ export class ExchangePointHistoryComponent extends BaseComponent implements OnIn
               private fb: FormBuilder,
               private epmService: ExchangePointManagementService,
               private modalService: NgbModal,
-              private cdr: ChangeDetectorRef
-  ) {
+              private cdr: ChangeDetectorRef) {
     super();
     this.today = moment().format('DD/MM/YYYY');
     this.startOfMonth = moment().startOf('month').format('DD/MM/YYYY');
