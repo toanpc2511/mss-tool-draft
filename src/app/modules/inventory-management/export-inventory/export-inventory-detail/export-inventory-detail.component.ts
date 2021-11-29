@@ -14,7 +14,6 @@ import {
   IProductExportInventory
 } from '../../inventory-management.service';
 import { IError } from '../../../../shared/models/error.model';
-import { error } from 'protractor';
 import { convertMoney } from '../../../../shared/helpers/functions';
 
 @Component({
@@ -29,7 +28,9 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
   dataDetail: IExportInventoryDetail;
   dataProductResponses;
 
-  driverNameControl: FormControl = new FormControl('', [Validators.required]);
+  representativeTakeNameControl: FormControl = new FormControl('', [Validators.required]);
+  driverNameControl: FormControl = new FormControl();
+  licensePlatesControl: FormControl = new FormControl('', [Validators.required]);
 
   constructor(
     private modalService: NgbModal,
@@ -43,6 +44,7 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
     private destroy$: DestroyService
   ) {
     super();
+    this.driverNameControl.disable();
   }
 
   setBreadcumb() {
@@ -80,12 +82,16 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
         tap((res) => {
           this.dataDetail = res.data;
           this.dataProductResponses = this.convertToFormArray(this.dataDetail?.wareHouseOrderProductResponses);
+          this.representativeTakeNameControl.patchValue(this.dataDetail?.driverName || '');
           this.driverNameControl.patchValue(this.dataDetail?.driverName || '');
+          this.licensePlatesControl.patchValue(this.dataDetail?.licensePlates || '');
           this.cdr.detectChanges();
         }),
         takeUntil(this.destroy$)
       )
       .subscribe();
+
+    this.changeValueDriver();
   }
 
   ngAfterViewInit(): void {
@@ -112,11 +118,19 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
     return this.fb.array(controls);
   }
 
+  changeValueDriver() {
+    this.representativeTakeNameControl.valueChanges
+      .subscribe((x) => {
+      this.driverNameControl.patchValue(x);
+    })
+  }
+
   onSubmit() {
-    this.driverNameControl.markAllAsTouched();
+    this.representativeTakeNameControl.markAllAsTouched();
+    this.licensePlatesControl.markAllAsTouched();
     this.dataProductResponses.markAllAsTouched();
 
-    if (this.driverNameControl.invalid || this.dataProductResponses.invalid) {
+    if (this.representativeTakeNameControl.invalid || this.licensePlatesControl.invalid || this.dataProductResponses.invalid) {
       return;
     }
 
@@ -129,8 +143,8 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
     }))
 
     const dataReq = {
-      driverName: this.driverNameControl.value || this.dataDetail.driverName,
-      licensePlates: this.dataDetail.licensePlates,
+      driverName: this.representativeTakeNameControl.value || this.dataDetail.driverName,
+      licensePlates: this.licensePlatesControl.value || this.dataDetail.licensePlates,
       importProductRequests: dataProductReq
     }
 

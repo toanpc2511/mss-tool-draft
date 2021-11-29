@@ -412,6 +412,15 @@
     </div>
   </div>
 
+  <div class="reason-refusal">
+    <div class="card-header">
+      <div class="card-title text-danger" *ngIf="dataDetail?.status === eWarehouseStatus.ADJUST">
+        <span class="title-reason">Lý do yêu cầu điều chỉnh:</span>
+        <span class="title-reason pl-5">{{dataDetail?.adjustReason}}</span>
+      </div>
+    </div>
+  </div>
+
   <div class="py-10 w-100 d-flex justify-content-center">
     <button
       class="btn btn-primary mr-3 button"
