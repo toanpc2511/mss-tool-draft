@@ -79,12 +79,12 @@ const SPECIAL_URL: SpecialUrl[] = [
 		url: '/khach-hang/danh-sach/chi-tiet',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	},
+  {
+    url: '/kho/yeu-cau-dat-hang/them-moi',
+    permissionKey: EAuthorize.CREATE_IMPORT_REQUEST
+  },
 
 	/* thêm tạm thời */
-	{
-		url: '/kho/yeu-cau-dat-hang/them-moi',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	},
 	{
 		url: '/kho/yeu-cau-dat-hang/chi-tiet',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN

@@ -21,6 +21,7 @@ import { LIST_STATUS_ORDER_REQUEST } from '../../../shared/data-enum/list-status
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 
 @Component({
   selector: 'app-order-request-list',
@@ -28,7 +29,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./order-request-list.component.scss'],
   providers: [FormBuilder, DestroyService]
 })
-export class OrderRequestListComponent implements OnInit {
+export class OrderRequestListComponent extends BaseComponent implements OnInit {
   today: string;
   firstDayOfMonth: string;
   paginatorState = new PaginatorState();
@@ -47,6 +48,7 @@ export class OrderRequestListComponent implements OnInit {
     private toastr: ToastrService,
     private modalService: NgbModal,
   ) {
+    super();
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
     this.init();

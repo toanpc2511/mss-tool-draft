@@ -18,7 +18,7 @@
       <div class="form-group row">
         <div class="col-lg-6 row">
           <div class="col-lg-4">
-            <label class="form-label">Người đại diện</label>
+            <label class="form-label" [class.required]='!dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>Người đại diện</label>
           </div>
 
           <div class="col-lg-8" *ngIf='dataDetail?.status === "EXPORTED" '>
@@ -77,9 +77,9 @@
       </div>
     </div>
 
-    <div class="card-body">
+    <div class="card-body" *ngIf='dataDetail?.status === "EXPORTED"'>
       <div class="form-group row">
-        <div class="col-lg-6 row">
+        <div class="col-lg-6 row" *ngIf='dataDetail.status === "EXPORTED"'>
           <div class="col-lg-4">
             <label class="form-label">Người đại diện</label>
           </div>
@@ -101,6 +101,30 @@
       </div>
 
       <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-4">
+            <label class="form-label">Địa chỉ</label>
+          </div>
+
+          <div class="col-lg-8">
+            <label class="form-label font-weight-bold">{{dataDetail?.exportedWarehouseAddress}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body" *ngIf='dataDetail?.status !== "EXPORTED"'>
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-4">
+            <label class="form-label">Bên giao hàng</label>
+          </div>
+
+          <div class="col-lg-8">
+            <label class="form-label font-weight-bold">{{dataDetail?.representativeGiveCode }} - {{dataDetail?.exportedWarehouseName}}</label>
+          </div>
+        </div>
+
         <div class="col-lg-6 row">
           <div class="col-lg-4">
             <label class="form-label">Địa chỉ</label>
@@ -149,7 +173,7 @@
 
         <div class="col-lg-6 row">
           <div class="col-lg-4">
-            <label class="form-label">Biển kiểm soát</label>
+            <label class="form-label" [class.required]='!dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>Biển kiểm soát</label>
           </div>
 
           <div class="col-lg-8" *ngIf='dataDetail?.status === "EXPORTED" '>

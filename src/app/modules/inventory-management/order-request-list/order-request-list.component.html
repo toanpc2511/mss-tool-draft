@@ -112,7 +112,7 @@
     </div>
 
     <div class="card-toolbar row">
-      <a (click)="createOrder()">
+      <a (click)="createOrder()" *ngIf='eAuthorize.CREATE_IMPORT_REQUEST | canUseFeature'>
         <button type="button" class="btn btn-primary btn-def">Tạo yêu cầu</button>
       </a>
     </div>
