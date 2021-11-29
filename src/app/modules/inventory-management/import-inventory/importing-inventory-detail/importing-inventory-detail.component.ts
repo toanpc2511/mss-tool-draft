@@ -44,8 +44,7 @@ export class ImportingInventoryDetailComponent implements OnInit, AfterViewInit 
 
   initImportInventoryDetailForm(): void {
     this.importInventoryDetailForm = this.fb.group({
-      representGiveName: [''],
-      driverName: [''],
+      nameDriver: [''],
       licensePlates: [''],
       importProductInfos: this.fb.array([])
     });
@@ -94,9 +93,9 @@ export class ImportingInventoryDetailComponent implements OnInit, AfterViewInit 
         this.dataSource = res.data;
         this.isSupplier = res.data.orderForm === 'SUPPLIER';
         this.status = this.dataSource.status === 'NOT_ENTER';
+        console.log(this.dataSource);
         if (!this.dataSource.internalCar) {
           this.initFormValue();
-          this.setValidate();
         }
         this.importProductInfos = this.convertToFormArray(res.data.wareHouseOrderProductResponses);
     });
@@ -114,6 +113,7 @@ export class ImportingInventoryDetailComponent implements OnInit, AfterViewInit 
     }
 
     const data = this.importInventoryDetailForm.getRawValue();
+
     this.service.completeImportingInventoryRequest(data, this.idImportingInventoryDetail)
       .pipe(
         finalize(() => {
@@ -121,18 +121,19 @@ export class ImportingInventoryDetailComponent implements OnInit, AfterViewInit 
         })
       )
       .subscribe((res: DataResponse<boolean>) => {
-        this.ngOnInit();
+        this.getImportingInventoryDetail();
         this.toarst.success('Đã hoàn thành nhập kho');
       });
   }
 
   initFormValue(): void {
-    this.importInventoryDetailForm.patchValue({
-      representGiveName: this.dataSource?.representativeGiveName,
-      driverName: this.dataSource?.driverName,
-      licensePlates:this.dataSource?.licensePlates
-    })
+    this.importInventoryDetailForm.controls['nameDriver'].patchValue(this.dataSource?.driverName);
+    this.importInventoryDetailForm.controls['licensePlates'].patchValue(this.dataSource?.licensePlates);
+
+    this.setValidate();
+
     this.importInventoryDetailForm.controls['importProductInfos'] = this.extractData();
+
   }
 
   setBreadcumb() {
@@ -178,9 +179,10 @@ export class ImportingInventoryDetailComponent implements OnInit, AfterViewInit 
   }
 
   setValidate(): void {
-    this.importInventoryDetailForm.controls['representGiveName'].setValidators(Validators.required);
-    this.importInventoryDetailForm.controls['driverName'].setValidators(Validators.required);
-    this.importInventoryDetailForm.controls['licensePlates'].setValidators(Validators.required);
+    this.importInventoryDetailForm.controls['nameDriver'].setValidators([Validators.required]);
+    this.importInventoryDetailForm.controls['nameDriver'].updateValueAndValidity();
+    this.importInventoryDetailForm.controls['licensePlates'].setValidators([Validators.required]);
+    this.importInventoryDetailForm.controls['licensePlates'].updateValueAndValidity();
   }
 
 }
