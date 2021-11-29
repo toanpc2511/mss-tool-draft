@@ -234,7 +234,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					title: 'Yêu cầu đặt hàng',
 					bullet: 'dot',
 					page: '/kho/yeu-cau-dat-hang',
-					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+					permissionKey: EAuthorize.VIEW_LIST_IMPORT_REQUEST
 				},
 				{
 					title: 'Yêu cầu đặt kho',

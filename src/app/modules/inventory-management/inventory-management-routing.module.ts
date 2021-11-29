@@ -9,9 +9,10 @@ import { WareHouseOrderDetailComponent } from './warehouse-order-list/warehouse-
 import { CreateWarehouseOrderComponent } from './warehouse-order-list/create-warehouse-order/create-warehouse-order.component';
 import { ExportInventoryComponent } from './export-inventory/export-inventory.component';
 import { ImportInventoryComponent } from './import-inventory/import-inventory.component';
-import { ReportInventoryComponent } from './report-inventory/report-inventory.component';
 import { ExportInventoryDetailComponent } from './export-inventory/export-inventory-detail/export-inventory-detail.component';
 import { ImportingInventoryDetailComponent } from './import-inventory/importing-inventory-detail/importing-inventory-detail.component';
+import { ReportMeasureTankComponent } from './report-measure-tank/report-measure-tank.component';
+import { ReportMinTankComponent } from './report-min-tank/report-min-tank.component';
 
 const routes: Routes = [
   {
@@ -88,7 +89,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: ReportInventoryComponent
+        component: ReportMeasureTankComponent
       }
     ]
   },
@@ -97,7 +98,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: ReportInventoryComponent
+        component: ReportMinTankComponent
       }
     ]
   }
