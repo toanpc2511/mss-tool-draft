@@ -66,23 +66,22 @@
               <label class="form-label">Người đại diện</label>
             </div>
 
-            <div class="col-lg-7" *ngIf='!status'>
+            <div class="col-lg-7" *ngIf='!status || status && dataSource?.internalCar'>
               <label class="form-label font-weight-bold">{{ dataSource?.representativeGiveName }}</label>
             </div>
 
-            <div class="col-lg-7" *ngIf='status && !dataSource?.internalCar'>
-              <div class='col-lg-7'>
-                <input
-                  class="form-control"
-                  formControlName='representGiveName'
-                />
-                <app-validate
-                  [control]="importInventoryDetailForm.controls['representGiveName']"
-                  [error]="'required'"
-                  [message]="'Người đại diện không được để trống'"
-                ></app-validate>
+              <div *ngIf='status && !dataSource?.internalCar' class="col-lg-7">
+                  <input
+                    class="form-control"
+                    formControlName='nameDriver'
+                    placeholder='Nhập tên người đại diện'
+                  />
+                  <app-validate
+                    [control]="importInventoryDetailForm.controls['nameDriver']"
+                    [error]="'required'"
+                    [message]="'Người đại diện không được để trống'"
+                  ></app-validate>
               </div>
-            </div>
           </div>
 
           <div class="col-lg-6 row">
@@ -124,23 +123,18 @@
               <label class="form-label">Tên lái xe</label>
             </div>
 
-            <div class="col-lg-7" *ngIf='!status'>
+            <div class="col-lg-7" *ngIf='!status || status && dataSource?.internalCar'>
               <label class="form-label font-weight-bold">{{ dataSource?.driverName }}</label>
             </div>
 
-            <div class="col-lg-7" *ngIf='status && !dataSource?.internalCar'>
-              <div class='col-lg-7'>
-                <input
-                  class="form-control"
-                  formControlName='driverName'
-                />
-                <app-validate
-                  [control]="importInventoryDetailForm.controls['driverName']"
-                  [error]="'required'"
-                  [message]="'Tên lái xe không được để trống'"
-                ></app-validate>
+              <div *ngIf='status && !dataSource?.internalCar' class="col-lg-7">
+                  <input
+                    class="form-control"
+                    [disabled]='true'
+                    placeholder='Tên người lái xe'
+                    [value]='importInventoryDetailForm.controls["nameDriver"].value'
+                  />
               </div>
-            </div>
           </div>
 
           <div class="col-lg-6 row align-items-center">
@@ -148,23 +142,22 @@
               <label class="form-label">Biển kiểm soát</label>
             </div>
 
-            <div class="col-lg-7" *ngIf='!status'>
+            <div class="col-lg-7" *ngIf='!status || status && dataSource?.internalCar'>
               <label class="form-label font-weight-bold">{{ dataSource?.licensePlates }}</label>
             </div>
 
-            <div class="col-lg-7" *ngIf='status && !dataSource?.internalCar'>
-              <div class='col-lg-7'>
-                <input
-                  class="form-control"
-                  formControlName='licensePlates'
-                />
-                <app-validate
-                  [control]="importInventoryDetailForm.controls['licensePlates']"
-                  [error]="'required'"
-                  [message]="'Biển kiểm soát không được để trống'"
-                ></app-validate>
+              <div *ngIf='status && !dataSource?.internalCar' class="col-lg-7">
+                  <input
+                    class="form-control"
+                    formControlName='licensePlates'
+                    placeholder='Nhập biển kiểm soát'
+                  />
+                  <app-validate
+                    [control]="importInventoryDetailForm.controls['licensePlates']"
+                    [error]="'required'"
+                    [message]="'Biển kiểm soát không được để trống'"
+                  ></app-validate>
               </div>
-            </div>
           </div>
         </div>
       </div>
@@ -250,9 +243,9 @@
                 <p
                   class="cursor-pointer text-right"
                   placement="top"
-                  [ngbTooltip]="item.get('amountActually').value"
+                  [ngbTooltip]="item.get('amountActually').value | number | vnCurrency"
                 >
-                  {{ item.get('amountActually').value }}
+                  {{ item.get('amountActually').value | number | vnCurrency }}
                 </p>
               </td>
               <td class="gas-field-out-name">
@@ -295,7 +288,7 @@
                   class="form-control"
                   formControlName='quotaExport'
                   autocomplete="off"
-                  maxlength='13'
+                  maxlength='10'
                   decimal-mask
                   trim="blur"
                   (keydown.space)="$event.preventDefault()"
@@ -312,8 +305,7 @@
                   class="form-control"
                   formControlName='capLead'
                   autocomplete="off"
-                  maxlength='13'
-                  decimal-mask
+                  maxlength='10'
                   trim="blur"
                   (keydown.space)="$event.preventDefault()"
                   placeholder='Nhập số chì nắp'
@@ -329,10 +321,8 @@
                   class="form-control"
                   formControlName='capValve'
                   autocomplete="off"
-                  maxlength='13'
-                  decimal-mask
+                  maxlength='10'
                   trim="blur"
-                  (keydown.space)="$event.preventDefault()"
                   placeholder='Nhập số chì van'
                 />
                 <app-validate
@@ -346,7 +336,7 @@
                   class="form-control"
                   formControlName='temperatureImport'
                   autocomplete="off"
-                  maxlength='13'
+                  maxlength='10'
                   decimal-mask
                   trim="blur"
                   placeholder='Nhập nhiệt độ thực tế tại kho nhập'
@@ -363,7 +353,7 @@
                   class="form-control"
                   formControlName='quotaImport'
                   autocomplete="off"
-                  maxlength='13'
+                  maxlength='10'
                   decimal-mask
                   trim="blur"
                   (keydown.space)="$event.preventDefault()"
@@ -432,9 +422,9 @@
                   <p
                     class="cursor-pointer text-right"
                     placement="top"
-                    [ngbTooltip]="item.get('amountActually').value"
+                    [ngbTooltip]="item.get('amountActually').value | number | vnCurrency"
                   >
-                    {{ item.get('amountActually').value }}
+                    {{ item.get('amountActually').value | number | vnCurrency }}
                   </p>
                 </td>
                 <td class="gas-field-out-name">
@@ -459,9 +449,9 @@
                   <p
                     class="cursor-pointer text-ellipsis"
                     placement="top"
-                    [ngbTooltip]="item.get('temperatureExport').value"
+                    [ngbTooltip]="item.get('temperatureExport').value | number | vnCurrency"
                   >
-                    {{ item.get('temperatureExport').value }}
+                    {{ item.get('temperatureExport').value | number | vnCurrency }}
                   </p>
                 </td>
                 <td class="quota-export text-right">
@@ -495,9 +485,9 @@
                   <p
                     class="cursor-pointer text-ellipsis"
                     placement="top"
-                    [ngbTooltip]="item.get('temperatureImport').value"
+                    [ngbTooltip]="item.get('temperatureImport').value | number | vnCurrency"
                   >
-                    {{ item.get('temperatureImport').value }}
+                    {{ item.get('temperatureImport').value | number | vnCurrency }}
                   </p>
                 </td>
                 <td class="quota-import text-right">
@@ -515,7 +505,7 @@
                     placement="top"
                     [ngbTooltip]="item.get('difference').value"
                   >
-                    {{ item.get('difference').value }}
+                    chưa có công thức
                   </p>
                 </td>
               </ng-container>
