@@ -80,7 +80,7 @@ export enum EAuthorize {
 	CREATE_SHIFT_CONFIG_BUTTON = 'create_shift_config_button',
 	UPDATE_SHIFT_CONFIG_BUTTON = 'update_shift_config_button',
 	DELETE_SHIFT_CONFIG_BUTTON = 'delete_shift_config_button',
-	VIEW_CALENDAR_SCREEN = 'view_calendar _screen',
+	VIEW_CALENDAR_SCREEN = 'view_calendar_screen',
 	CREATE_CALENDAR_BUTTON = 'create_calendar_button',
 	UPDATE_CALENDAR_BUTTON = 'update_calendar_button',
 	DELETE_CALENDAR_BUTTON = 'delete_calendar_button',
