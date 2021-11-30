@@ -490,4 +490,11 @@ export class InventoryManagementService {
       .set('create-to', data.createTo);
     return this.http.get(`measures/filters`, {params})
   }
+
+  // Lấy ds bồn theo trạm
+  getGasFields(gasStationId: number) {
+    const params = new HttpParams()
+      .set('gas-station-id', gasStationId.toString())
+    return this.http.get(`gas-fields`, {params})
+  }
 }
