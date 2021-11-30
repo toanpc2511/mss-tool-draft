@@ -24,7 +24,7 @@ export class ReportMeasureTankComponent implements OnInit {
   paginatorState = new PaginatorState();
   searchForm: FormGroup;
   stationEmployee: Array<IStationEployee> = [];
-  listGas;
+  listGasField;
   dataSource;
 
   constructor(
@@ -71,7 +71,12 @@ export class ReportMeasureTankComponent implements OnInit {
   handleGasStation() {
     this.searchForm.get('stationId').valueChanges
       .subscribe((x) => {
-        console.log(x);
+        this.searchForm.get('gasFieldId').patchValue('');
+        this.inventoryManagementService.getGasFields(x)
+          .subscribe((res) => {
+            this.listGasField = res.data;
+            this.cdr.detectChanges();
+          })
       })
   }
 
@@ -102,7 +107,7 @@ export class ReportMeasureTankComponent implements OnInit {
     this.inventoryManagementService.getMeasures(this.paginatorState.page, this.paginatorState.pageSize, this.getFilterData())
       .subscribe((res) => {
         this.dataSource = res.data;
-        console.log(this.dataSource);
+        this.paginatorState.recalculatePaginator(res.meta.total);
         this.cdr.detectChanges();
       })
   }
