@@ -111,9 +111,9 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       vehicleCostMethod: ['', Validators.required],
       freightCharges: ['', [Validators.required, TValidators.min(1)]],
       transportCost: [{ value: '', disabled: true }],
-      licensePlates: [null],
+      licensePlates: [null, [!this.isInternalCar ? Validators.required : Validators.nullValidator]],
       capacity: [{ value: '', disabled: true }],
-      driver: [null]
+      driver: [null, [!this.isInternalCar ? Validators.required : Validators.nullValidator]]
     })
   }
 
@@ -176,9 +176,11 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     this.transportInfoForm.get('internalCar').valueChanges
       .subscribe((x) => {
         if ((x === 'true')) {
+          this.isInternalCar = true;
           this.transportInfoForm.get('licensePlates').enable();
           this.transportInfoForm.get('driver').enable();
         } else {
+          this.isInternalCar = false;
           this.transportInfoForm.get('licensePlates').disable();
           this.transportInfoForm.get('driver').disable();
           this.transportInfoForm.get('licensePlates').patchValue(null);
@@ -236,7 +238,9 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           if ( this.dataDetail.internalCar) {
             this.transportInfoForm.get('licensePlates').enable();
             this.transportInfoForm.get('driver').enable();
+            this.isInternalCar = true;
           } else {
+            this.isInternalCar = false;
             this.transportInfoForm.get('licensePlates').disable();
             this.transportInfoForm.get('driver').disable();
 

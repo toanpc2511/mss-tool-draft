@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { EFileType, FileService } from '../../../shared/services/file.service';
@@ -13,6 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IExchangePointCreator } from '../models/exchange-point-creater.interface';
 import { convertMoney } from '../../../shared/helpers/functions';
 import { ConfirmDialogComponent } from '../modals/confirm-dialog/confirm-dialog.component';
+import { SubheaderService } from '../../../_metronic/partials/layout';
 
 interface IImage {
   id: number;
@@ -41,7 +42,7 @@ export class ExchangePointComponent {
               private destroy$: DestroyService,
               private cdr: ChangeDetectorRef,
               private epmService: ExchangePointManagementService,
-              private modalService: NgbModal
+              private modalService: NgbModal,
   ) {
     this.initExchangePointForm();
   }

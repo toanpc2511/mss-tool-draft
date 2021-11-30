@@ -66,7 +66,7 @@ export class TValidators extends Validators {
 				coordinates[0].length === 0 ||
 				coordinates[1].length === 0 ||
 				!longtitudePattern.test(coordinates[0]) ||
-				!latitudePattern.test(coordinates[1])
+				!latitudePattern.test(coordinates[1].trim())
 			) {
 				return { coordinates: true };
 			}
