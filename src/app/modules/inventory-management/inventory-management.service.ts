@@ -478,4 +478,16 @@ export class InventoryManagementService {
   getGasStations() {
     return this.http.get<GasStationResponse[]>(`gas-stations`);
   }
+
+  // Lấy ds lịch sử tịnh kho đo bể
+  getMeasures(page: number, size: number, data) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('station-id', data.stationId.toString())
+      .set('gas-field-id', data.gasFieldId.toString())
+      .set('create-from', data.createFrom)
+      .set('create-to', data.createTo);
+    return this.http.get(`measures/filters`, {params})
+  }
 }

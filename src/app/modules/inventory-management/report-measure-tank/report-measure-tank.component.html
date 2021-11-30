@@ -17,7 +17,7 @@
 
         <div class="col-lg-6">
           <label>Bồn</label>
-          <select class="form-control form-control-solid w-75" formControlName="gas">
+          <select class="form-control form-control-solid w-75" formControlName="gasFieldId">
             <option [value]="''">Tất cả</option>
 <!--            <option *ngFor="let item of listGas" [value]="item.id">-->
 <!--              {{ item.code }} - {{item.name}}-->
@@ -36,7 +36,7 @@
               placeholder="DD/MM/YYYY"
               ngbDatepicker
               #startAt="ngbDatepicker"
-              formControlName='expectedDateStart'
+              formControlName='createFrom'
             />
             <div class="input-group-append">
               <button
@@ -48,7 +48,7 @@
           </div>
 
           <app-validate
-            [control]="searchForm.controls['expectedDateStart']"
+            [control]="searchForm.controls['createFrom']"
             [error]="'ngbDate'"
             [message]="'Ngày yêu cầu không đúng định dạng'"
           ></app-validate>
@@ -63,7 +63,7 @@
               placeholder="DD/MM/YYYY"
               ngbDatepicker
               #endAt="ngbDatepicker"
-              formControlName='expectedDateEnd'
+              formControlName='createTo'
             />
             <div class="input-group-append">
               <button
@@ -75,7 +75,7 @@
           </div>
 
           <app-validate
-            [control]="searchForm.controls['expectedDateEnd']"
+            [control]="searchForm.controls['createTo']"
             [error]="'ngbDate'"
             [message]="'Ngày yêu cầu đến không đúng định dạng'"
           ></app-validate>

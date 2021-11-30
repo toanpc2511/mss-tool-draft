@@ -2,13 +2,14 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IStationEployee } from '../../history-of-using-points/history-of-using-points.service';
 import { takeUntil } from 'rxjs/operators';
-import { InventoryManagementService } from '../inventory-management.service';
+import { IFilterImportInventory, InventoryManagementService } from '../inventory-management.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import * as moment from 'moment';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { IDataTransfer, ProductModalComponent } from '../../product/product-modal/product-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalReportMeasureTankComponent } from './modal-report-measure-tank/modal-report-measure-tank.component';
+import { convertDateToServer } from '../../../shared/helpers/functions';
 
 @Component({
   selector: 'app-report-measure-tank',
@@ -43,8 +44,6 @@ export class ReportMeasureTankComponent implements OnInit {
     this.paginatorState.pageSize = 10;
     this.paginatorState.pageSizes = [5, 10, 15, 20];
     this.paginatorState.total = 0;
-
-    this.dataSource = [];
   }
 
   ngOnInit(): void {
@@ -52,19 +51,20 @@ export class ReportMeasureTankComponent implements OnInit {
     this.buildForm();
     this.initDate();
     this.handleGasStation();
+    this.onSearch();
   }
 
   initDate() {
-    this.searchForm.get('expectedDateStart').patchValue(this.firstDayOfMonth);
-    this.searchForm.get('expectedDateEnd').patchValue(this.today);
+    this.searchForm.get('createFrom').patchValue(this.firstDayOfMonth);
+    this.searchForm.get('createTo').patchValue(this.today);
   }
 
   buildForm() {
     this.searchForm = this.fb.group({
       stationId: [''],
-      gas:[''],
-      expectedDateStart: [],
-      expectedDateEnd: []
+      gasFieldId:[''],
+      createFrom: [],
+      createTo: []
     })
   }
 
@@ -85,7 +85,27 @@ export class ReportMeasureTankComponent implements OnInit {
       });
   }
 
-  onSearch() {}
+  getFilterData() {
+    const filterFormData = this.searchForm.value;
+    return {
+      ...filterFormData,
+      createFrom: convertDateToServer(filterFormData.createFrom),
+      createTo: convertDateToServer(filterFormData.createTo)
+    };
+  }
+
+  onSearch() {
+    if (this.searchForm.invalid) {
+      return;
+    }
+
+    this.inventoryManagementService.getMeasures(this.paginatorState.page, this.paginatorState.pageSize, this.getFilterData())
+      .subscribe((res) => {
+        this.dataSource = res.data;
+        console.log(this.dataSource);
+        this.cdr.detectChanges();
+      })
+  }
 
   onReset() {
     this.ngOnInit();

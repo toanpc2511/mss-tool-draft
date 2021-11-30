@@ -27,6 +27,7 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
   exportInventoryId:  string;
   dataDetail: IExportInventoryDetail;
   dataProductResponses;
+  decimalPattern = /^[0-9]+(\.[0-9]+)?$/;
 
   representativeTakeNameControl: FormControl = new FormControl('', [Validators.required]);
   driverNameControl: FormControl = new FormControl();
@@ -109,7 +110,7 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
         amountActually: [p.amountActually],
         gasFieldOutName: [p.gasFieldOutName],
         gasFieldInName: [p.gasFieldInName],
-        temperatureExport: [p.temperatureExport, [Validators.required]],
+        temperatureExport: [p.temperatureExport, [Validators.required, Validators.pattern(this.decimalPattern)]],
         quotaExport: [p.quotaExport, [Validators.required]],
         capLead: [p.capLead, [Validators.required]],
         capValve: [p.capValve, [Validators.required]]
