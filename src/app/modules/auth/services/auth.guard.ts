@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { DynamicAsideMenuConfig } from 'src/app/_metronic/configs/dynamic-aside-menu.config';
 import { AuthService } from './auth.service';
-import { isNumber } from 'lodash';
 import { EAuthorize } from './authorizes';
 
 @Injectable({ providedIn: 'root' })
@@ -98,6 +97,10 @@ const SPECIAL_URL: SpecialUrl[] = [
   {
     url: '/kho/tinh-kho-do-be',
     permissionKey: EAuthorize.VIEW_MEASURES_SCREEN
+  },
+  {
+    url: '/cau-hinh/banner',
+    permissionKey: EAuthorize.VIEW_BANNERS_SCREEN
   },
 	/* thêm tạm thời */
 	{

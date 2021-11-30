@@ -1,0 +1,90 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách Banner</h3>
+    </div>
+
+    <div class="card-toolbar">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)='openCreateDialog()'
+        *ngIf='eAuthorize.CREATE_BANNER | canUseFeature'
+      >
+        Thêm mới
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <th class="banner-name" scope="">Banner</th>
+        <th class="status" scope="">Trạng thái</th>
+        <th class="image" scope="">Ảnh</th>
+        <th class="action text-center" scope="">Tác động</th>
+        </thead>
+
+        <tbody>
+        <tr *ngFor='let item of listBanner'>
+          <td class="banner-name">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.title">
+              {{ item.title }}
+            </p>
+          </td>
+
+          <td class="status">
+							<span
+                class="label label-lg label-inline"
+                [class.label-light-success]="item.shows"
+                [class.label-light-danger]="!item.shows"
+                placement='top'
+                ngbTooltip='Trạng thái'
+              >
+								<ng-container *ngIf="item.shows">Hoạt động</ng-container>
+								<ng-container *ngIf="!item.shows"> Không hoạt động </ng-container>
+							</span>
+          </td>
+
+          <td class="image">
+            <img [src]='item.image.url' ngbTooltip='Ảnh' placement='top' alt=''>
+          </td>
+
+          <td class="text-center action">
+            <a class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+               (click)='openUpdateDialog(item)'
+               *ngIf='eAuthorize.UPDATE_BANNER | canUseFeature'
+            >
+								<span
+                  [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Sửa'"
+                >
+								</span>
+            </a>
+            <a class="btn btn-icon btn-light btn-hover-danger btn-sm"
+               (click)='openConfirmDeleteDialog(item.id)'
+               *ngIf='eAuthorize.DELETE_BANNER | canUseFeature'
+            >
+								<span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-danger"
+                  [ngbTooltip]="'Xóa'"
+                >
+								</span>
+            </a>
+          </td>
+        </tr>
+        </tbody>
+
+        <tfoot *ngIf="listBanner?.length === 0">
+        <tr>
+          <td colspan="10" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

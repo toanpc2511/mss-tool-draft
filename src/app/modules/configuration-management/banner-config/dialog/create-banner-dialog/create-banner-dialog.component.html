@@ -1,0 +1,85 @@
+<div class="mt-1 card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Thêm banner</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]='createForm'>
+      <div class="row align-items-center mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label required'>Title</label>
+        </div>
+        <div class='col-lg-10'>
+          <input
+            class="form-control form-control-solid form-control-lg"
+            placeholder="Nhập title"
+            formControlName='title'
+            autocomplete="off"
+          />
+          <app-validate
+            [control]="createForm.controls['title']"
+            [error]="'required'"
+            [message]="'Title không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label required'>Ảnh</label>
+        </div>
+        <div class='col-auto'>
+          <input
+            hidden
+            type="file"
+            id='img'
+            accept="image/*"
+            #bannerImg
+            (change)="addImage($event)"
+            formControlName='imageId'
+          />
+          <img
+            alt="Ảnh đính kèm"
+            class="img"
+            (click)="bannerImg.click()"
+            width="300px"
+            [src]="attachmentImg && attachmentImg?.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+          />
+          <app-validate
+            [control]="createForm.controls['imageId']"
+            [error]="'required'"
+            [message]="'Vui lòng cập nhật ảnh banner'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="row align-items-center mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label'>Trạng thái</label>
+        </div>
+        <div class='col-auto'>
+          <label class="checkbox checkbox-lg mr-2">
+            <input type="checkbox" id="status" formControlName="shows" />
+            <span></span>
+          </label>
+        </div>
+      </div>
+    </form>
+
+    <div class="row justify-content-center w-100">
+      <div>
+        <button type="button" style='width: 100px' class="btn btn-outline-secondary mr-6" (click)="modal.close(false)">
+          Hủy
+        </button>
+      </div>
+      <div>
+        <button type="button" style='width: 100px' class="btn btn-primary" (click)="onSubmit()">
+          Thêm mới
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
