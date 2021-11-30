@@ -1,0 +1,18 @@
+.modal-body {
+  padding: 0 1.75rem;
+}
+
+table {
+  min-width: 1024px;
+  thead {
+    tr {
+      &:hover {
+        background-color: #fff;
+      }
+
+      th {
+        text-transform: none;
+      }
+    }
+  }
+}

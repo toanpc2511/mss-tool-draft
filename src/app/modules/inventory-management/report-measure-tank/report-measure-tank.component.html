@@ -1,1 +1,148 @@
-<p>report-measure-tank works!</p>
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Tìm kiếm lịch sử tịnh kho đo bể</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="searchForm" class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Trạm</label>
+          <select class="form-control form-control-solid w-75" formControlName='stationId'>
+            <option [value]="''">Tất cả</option>
+            <option *ngFor="let item of stationEmployee" [value]="item.name">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Bồn</label>
+          <select class="form-control form-control-solid w-75" formControlName="gas">
+            <option [value]="''">Tất cả</option>
+<!--            <option *ngFor="let item of listGas" [value]="item.id">-->
+<!--              {{ item.code }} - {{item.name}}-->
+<!--            </option>-->
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Thời gian tạo từ</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #startAt="ngbDatepicker"
+              formControlName='expectedDateStart'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="startAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.controls['expectedDateStart']"
+            [error]="'ngbDate'"
+            [message]="'Ngày yêu cầu không đúng định dạng'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Thời gian tạo đến</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #endAt="ngbDatepicker"
+              formControlName='expectedDateEnd'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="endAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.controls['expectedDateEnd']"
+            [error]="'ngbDate'"
+            [message]="'Ngày yêu cầu đến không đúng định dạng'"
+          ></app-validate>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="form-group row py-3">
+      <button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+        <em class="fas fa-search"></em> Tìm kiếm
+      </button>
+      <button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
+    </div>
+  </div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách lịch sử tịnh kho đo bể</h3>
+    </div>
+
+    <div class="card-toolbar row">
+      <a (click)='openModal($event)'>
+        <button type="button" class="btn btn-primary btn-def">Tạo tịnh kho</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <tr>
+          <th scope='' rowspan='2' class='align-bottom'>Tên kỳ kiểm kho</th>
+          <th scope='' rowspan='2' class='align-bottom'>Mã bồn</th>
+          <th scope='' rowspan='2' class='align-bottom'>Ngày tạo</th>
+          <th scope='' rowspan='2' class='align-bottom'>Người tạo</th>
+          <th scope=''>Đầu kỳ</th>
+          <th scope='' colspan='2' class='text-center'>Trong kỳ</th>
+          <th scope=''>Cuối kỳ</th>
+          <th scope='' colspan='2' class='text-center'>Cuối kỳ thực tế</th>
+          <th scope='' rowspan='2' class='align-bottom'>Âm dương</th>
+          <th scope='' rowspan='2' class='align-bottom'>Ghi chú</th>
+        </tr>
+        <tr>
+          <th scope=''>Tồn đầu</th>
+          <th scope=''>Nhập</th>
+          <th scope=''>Xuất</th>
+          <th scope=''>Tồn cuối</th>
+          <th scope=''>Chiều cao đo bể (cm)</th>
+          <th scope=''>Tồn cuối thực tế</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+
+        <tfoot *ngIf="dataSource?.length === 0">
+        <tr>
+          <td colspan="12" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+  </div>
+</div>

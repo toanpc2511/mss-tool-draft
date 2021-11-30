@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { GasStationResponse } from '../gas-station/gas-station.service';
 
 export enum EWarehouseOrderStatus {
 	NEW = 'NEW',
@@ -469,9 +470,12 @@ export class InventoryManagementService {
   }
 
   // Lấy tất cả kho xuất theo hình thức đặt kho
-  getListSuppliersAll(formOrder: string) {
-    const params = new HttpParams()
-      .set('form-order', formOrder)
-    return this.http.get<Array<ISupplier>>(`suppliers/stations/import-export`, {params})
+  getListSuppliersActive() {
+    return this.http.get<Array<ISupplier>>(`gas-stations/employee-active`)
+  }
+
+  // Lấy ds kho xuất (scr nhập kho)
+  getGasStations() {
+    return this.http.get<GasStationResponse[]>(`gas-stations`);
   }
 }

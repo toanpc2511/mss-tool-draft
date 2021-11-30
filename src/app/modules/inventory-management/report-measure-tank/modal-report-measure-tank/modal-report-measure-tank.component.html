@@ -1,0 +1,150 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+    <div class="close-icon" (click)="modal.close()"></div>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
+      <form class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-6 row">
+            <div class='col-lg-4'>
+              <label class="form-label required">Tên kỳ tịnh kho</label>
+            </div>
+            <div class='col-lg-8'>
+              <input
+                type="text"
+                class="form-control form-control-solid w-75"
+                placeholder="Nhập tên kỳ tịnh kho"
+                autocomplete="off"
+                maxlength="50"
+              />
+              <!--            <app-validate-->
+              <!--              [control]="productForm.controls['code']"-->
+              <!--              [error]="'required'"-->
+              <!--              [message]="'Mã nhóm sản phẩm không được để trống'"-->
+              <!--            ></app-validate>-->
+            </div>
+          </div>
+
+          <div class="col-lg-6 row ml-5">
+            <div class='col-lg-4'>
+              <label class="form-label">Dung tích</label>
+            </div>
+            <div class='col-lg-8'>
+              <label class="form-label font-weight-bold">1000 L</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-6 row">
+            <div class='col-lg-4'>
+              <label class="form-label required">Chọn trạm</label>
+            </div>
+            <div class='col-lg-8'>
+              <select
+                class="form-control form-control-solid w-75"
+              >
+                <option value=''>tất cả</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-6 row ml-5">
+            <div class='col-lg-4'>
+              <label class="form-label">Chiều cao</label>
+            </div>
+            <div class='col-lg-8'>
+              <label class="form-label font-weight-bold">1000 mm</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-6 row">
+            <div class='col-lg-4'>
+              <label class="form-label required">Chọn bồn</label>
+            </div>
+            <div class='col-lg-8'>
+              <select
+                class="form-control form-control-solid w-75"
+              >
+                <option value=''>tất cả</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-6 row ml-5">
+            <div class='col-lg-4'>
+              <label class="form-label">Chiều dài</label>
+            </div>
+            <div class='col-lg-8'>
+              <label class="form-label font-weight-bold">1000 mm</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-6 row">
+            <div class='col-lg-4'>
+              <label class="form-label">Mã bồn</label>
+            </div>
+            <div class='col-lg-8'>
+              <label class="form-label font-weight-bold">DHD678</label>
+            </div>
+          </div>
+
+          <div class="col-lg-6 row ml-5">
+            <div class='col-lg-4'>
+              <label class="form-label">Nhiên liệu đang chứa</label>
+            </div>
+            <div class='col-lg-8'>
+              <label class="form-label font-weight-bold">RON 95</label>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-body pt-3">
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
+      <div class="table-responsive angular-bootstrap-table">
+        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+          <thead>
+          <tr>
+            <th scope='' rowspan='2' class='align-bottom'>Tên kỳ kiểm kho</th>
+            <th scope='' rowspan='2' class='align-bottom'>Mã bồn</th>
+            <th scope='' rowspan='2' class='align-bottom'>Ngày tạo</th>
+            <th scope='' rowspan='2' class='align-bottom'>Người tạo</th>
+            <th scope=''>Đầu kỳ</th>
+            <th scope='' colspan='2' class='text-center'>Trong kỳ</th>
+            <th scope=''>Cuối kỳ</th>
+            <th scope='' colspan='2' class='text-center'>Cuối kỳ thực tế</th>
+            <th scope='' rowspan='2' class='align-bottom'>Âm dương</th>
+            <th scope='' rowspan='2' class='align-bottom'>Ghi chú</th>
+          </tr>
+          <tr>
+            <th scope=''>Tồn đầu</th>
+            <th scope=''>Nhập</th>
+            <th scope=''>Xuất</th>
+            <th scope=''>Tồn cuối</th>
+            <th scope=''>Chiều cao đo bể (cm)</th>
+            <th scope=''>Tồn cuối thực tế</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button type="button" ngbAutofocus class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
+  </div>
+</div>
