@@ -282,7 +282,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			bullet: 'dot',
 			page: '/lich-su-su-dung-diem/danh-sach',
 			icon: 'fas fa-business-time',
-			permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
+			permissionKey: EAuthorize.VIEW_HISTORY_ACCUMULATE_SCREEN
 		}
 	]
 };

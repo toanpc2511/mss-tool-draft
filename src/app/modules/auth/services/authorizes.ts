@@ -109,5 +109,6 @@ export enum EAuthorize {
   VIEW_LIST_IMPORT_REQUEST = 'view_list_import_request',
   CREATE_IMPORT_REQUEST = 'create_import_request',
   VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN = 'view_warehouse_import_detail_screen',
-  COMPLETE_WAREHOUSE_IMPORT_BUTTON = 'complete_warehouse_import_button'
+  COMPLETE_WAREHOUSE_IMPORT_BUTTON = 'complete_warehouse_import_button',
+  VIEW_HISTORY_ACCUMULATE_SCREEN = 'view_history_accumulate_screen'
 }
