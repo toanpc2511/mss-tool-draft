@@ -107,5 +107,7 @@ export enum EAuthorize {
 	CONFIRM_AND_REJECT_SWAP_SHIFT = 'confirm_and_reject_swap_shift',
   CREATE_SWAP_POINT = 'create_swap_point',
   VIEW_LIST_IMPORT_REQUEST = 'view_list_import_request',
-  CREATE_IMPORT_REQUEST = 'create_improt_request'
+  CREATE_IMPORT_REQUEST = 'create_improt_request',
+  VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN = 'view_warehouse_import_detail_screen',
+  COMPLETE_WAREHOUSE_IMPORT_BUTTON = 'complete_warehouse_import_button'
 }

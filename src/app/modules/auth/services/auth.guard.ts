@@ -83,8 +83,23 @@ const SPECIAL_URL: SpecialUrl[] = [
     url: '/kho/yeu-cau-dat-hang/them-moi',
     permissionKey: EAuthorize.CREATE_IMPORT_REQUEST
   },
-
+  {
+    url: '/doi-diem/chi-tiet',
+    permissionKey: EAuthorize.CREATE_SWAP_POINT
+  },
+  {
+    url: '/doi-diem/lich-su',
+    permissionKey: EAuthorize.VIEW_TRANSFER_POINT_HISTORY_MENU
+  },
+  {
+    url: '/kho/nhap-kho/chi-tiet',
+    permissionKey: EAuthorize.VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN
+  },
 	/* thêm tạm thời */
+	{
+		url: '/kho/yeu-cau-dat-hang/them-moi',
+		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+	},
 	{
 		url: '/kho/yeu-cau-dat-hang/chi-tiet',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
