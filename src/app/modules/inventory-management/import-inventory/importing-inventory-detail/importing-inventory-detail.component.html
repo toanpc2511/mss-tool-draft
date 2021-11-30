@@ -270,9 +270,7 @@
                 <input
                   class="form-control"
                   formControlName='temperatureExport'
-                  autocomplete="off"
                   maxlength='10'
-                  trim="blur"
                   (keydown.space)="$event.preventDefault()"
                   (keydown)='preventLetter($event)'
                   placeholder='Nhập nhiệt độ thực tế tại kho xuất'
@@ -292,9 +290,7 @@
                 <input
                   class="form-control"
                   formControlName='quotaExport'
-                  autocomplete="off"
                   maxlength='10'
-                  trim="blur"
                   (keydown.space)="$event.preventDefault()"
                   (keydown)='preventLetter($event)'
                   placeholder='Nhập tâm mức thực tế tại kho xuất'
