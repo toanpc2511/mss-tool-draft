@@ -7,13 +7,15 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DataResponse } from '../../../../shared/models/data-response.model';
 import { SubheaderService } from '../../../../_metronic/partials/layout';
+import { preventLetter } from '../../../../shared/utitlies/prevent-letter';
+import { BaseComponent } from '../../../../shared/components/base/base.component';
 
 @Component({
   selector: 'app-importing-inventory-detail',
   templateUrl: './importing-inventory-detail.component.html',
   styleUrls: ['./importing-inventory-detail.component.scss']
 })
-export class ImportingInventoryDetailComponent implements OnInit, AfterViewInit {
+export class ImportingInventoryDetailComponent extends BaseComponent implements OnInit, AfterViewInit {
 
   dataSource: IImportingInventoryDetail;
   importInventoryDetailForm: FormGroup;
@@ -22,6 +24,8 @@ export class ImportingInventoryDetailComponent implements OnInit, AfterViewInit 
   isSupplier: boolean;
   status: boolean;
   isInternalCar: boolean;
+  preventLetter: (event: KeyboardEvent) => void = preventLetter;
+  decimalPattern = /^[0-9]+(\.[0-9]+)?$/;
 
   constructor(private _route: ActivatedRoute,
               private service: ImportInventoryDetailService,
@@ -30,6 +34,7 @@ export class ImportingInventoryDetailComponent implements OnInit, AfterViewInit 
               private toarst: ToastrService,
               private subheader: SubheaderService)
   {
+    super();
     this.initImportInventoryDetailForm();
   }
 
@@ -69,12 +74,12 @@ export class ImportingInventoryDetailComponent implements OnInit, AfterViewInit 
         intoMoney: [d.intoMoney || ''],
         amountRecommended: [d.amountRecommended || ''],
         treasurerRecommend:[d.treasurerRecommend || ''],
-        temperatureExport: [{ value: d.temperatureExport || '', disabled: !this.isSupplier }, [this.isSupplier ? Validators.required : Validators.nullValidator]],
-        quotaExport: [{ value: d.quotaExport || '', disabled: !this.isSupplier }, [this.isSupplier ? Validators.required : Validators.nullValidator]],
-        quotaImport: [d.quotaImport || '', Validators.required],
+        temperatureExport: [{ value: d.temperatureExport || '', disabled: !this.isSupplier }, [this.isSupplier ? [Validators.pattern(this.decimalPattern), Validators.required] : Validators.nullValidator]],
+        quotaExport: [{ value: d.quotaExport || '', disabled: !this.isSupplier }, [this.isSupplier ? [Validators.required, Validators.pattern(this.decimalPattern)] : Validators.nullValidator]],
+        quotaImport: [d.quotaImport || '', [Validators.required, Validators.pattern(this.decimalPattern)]],
         capLead: [{ value: d.capLead || '', disabled: !this.isSupplier }, [this.isSupplier ? Validators.required : Validators.nullValidator]],
         capValve: [{ value: d.capValve || '', disabled: !this.isSupplier }, [this.isSupplier ? Validators.required : Validators.nullValidator]],
-        temperatureImport: [d.temperatureImport || '', Validators.required],
+        temperatureImport: [d.temperatureImport || '', [Validators.pattern(this.decimalPattern), Validators.required]],
         difference: [d.difference || 1],
         recommend: [d.recommend || ''],
       });
@@ -93,7 +98,6 @@ export class ImportingInventoryDetailComponent implements OnInit, AfterViewInit 
         this.dataSource = res.data;
         this.isSupplier = res.data.orderForm === 'SUPPLIER';
         this.status = this.dataSource.status === 'NOT_ENTER';
-        console.log(this.dataSource);
         if (!this.dataSource.internalCar) {
           this.initFormValue();
         }

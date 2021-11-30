@@ -131,13 +131,13 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
           title: 'Đổi điểm',
           bullet: 'dot',
           page: '/doi-diem/chi-tiet',
-          permissionKey: EAuthorize.VIEW_TRANSFER_POINT_HISTORY_MENU
+          permissionKey: EAuthorize.CREATE_SWAP_POINT
         },
         {
           title: 'Lịch sử đổi điểm',
           bullet: 'dot',
           page: '/doi-diem/lich-su',
-          permissionKey: EAuthorize.CREATE_SWAP_POINT
+          permissionKey: EAuthorize.VIEW_TRANSFER_POINT_HISTORY_MENU
         }
       ]
     },
