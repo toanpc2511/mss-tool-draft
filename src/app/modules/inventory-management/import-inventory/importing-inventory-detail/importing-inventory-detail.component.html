@@ -272,15 +272,20 @@
                   formControlName='temperatureExport'
                   autocomplete="off"
                   maxlength='10'
-                  decimal-mask
                   trim="blur"
                   (keydown.space)="$event.preventDefault()"
+                  (keydown)='preventLetter($event)'
                   placeholder='Nhập nhiệt độ thực tế tại kho xuất'
                 />
                 <app-validate
                   [control]="item.get('temperatureExport')"
                   [error]="'required'"
                   [message]="'Nhiệt độ thực tế tại kho xuất không được để trống'"
+                ></app-validate>
+                <app-validate
+                  [control]="item.get('temperatureExport')"
+                  [error]="'pattern'"
+                  [message]="'Sai định dạng'"
                 ></app-validate>
               </td>
               <td class="quota-export">
@@ -289,15 +294,20 @@
                   formControlName='quotaExport'
                   autocomplete="off"
                   maxlength='10'
-                  decimal-mask
                   trim="blur"
                   (keydown.space)="$event.preventDefault()"
+                  (keydown)='preventLetter($event)'
                   placeholder='Nhập tâm mức thực tế tại kho xuất'
                 />
                 <app-validate
                   [control]="item.get('quotaExport')"
                   [error]="'required'"
                   [message]="'Tâm mức thực tế tại kho xuất không được để trống'"
+                ></app-validate>
+                <app-validate
+                  [control]="item.get('quotaExport')"
+                  [error]="'pattern'"
+                  [message]="'Sai định dạng'"
                 ></app-validate>
               </td>
               <td class="cap-lead">
@@ -337,11 +347,15 @@
                   formControlName='temperatureImport'
                   autocomplete="off"
                   maxlength='10'
-                  decimal-mask
-                  trim="blur"
-                  placeholder='Nhập nhiệt độ thực tế tại kho nhập'
                   (keydown.space)="$event.preventDefault()"
+                  (keydown)='preventLetter($event)'
+                  placeholder='Nhập nhiệt độ thực tế tại kho nhập'
                 />
+                <app-validate
+                  [control]="item.get('temperatureImport')"
+                  [error]="'pattern'"
+                  [message]="'Sai định dạng'"
+                ></app-validate>
                 <app-validate
                   [control]="item.get('temperatureImport')"
                   [error]="'required'"
@@ -354,15 +368,20 @@
                   formControlName='quotaImport'
                   autocomplete="off"
                   maxlength='10'
-                  decimal-mask
                   trim="blur"
                   (keydown.space)="$event.preventDefault()"
+                  (keydown)='preventLetter($event)'
                   placeholder='Nhập tâm mực thực tại kho nhập'
                 />
                 <app-validate
                   [control]="item.get('quotaImport')"
                   [error]="'required'"
                   [message]="'Tâm mức thực tại kho nhập không được để trống'"
+                ></app-validate>
+                <app-validate
+                  [control]="item.get('quotaImport')"
+                  [error]="'pattern'"
+                  [message]="'Sai định dạng'"
                 ></app-validate>
               </td>
               <td class="difference text-right">
@@ -449,9 +468,9 @@
                   <p
                     class="cursor-pointer text-ellipsis"
                     placement="top"
-                    [ngbTooltip]="item.get('temperatureExport').value | number | vnCurrency"
+                    [ngbTooltip]="item.get('temperatureExport').value"
                   >
-                    {{ item.get('temperatureExport').value | number | vnCurrency }}
+                    {{ item.get('temperatureExport').value }}
                   </p>
                 </td>
                 <td class="quota-export text-right">
@@ -485,9 +504,9 @@
                   <p
                     class="cursor-pointer text-ellipsis"
                     placement="top"
-                    [ngbTooltip]="item.get('temperatureImport').value | number | vnCurrency"
+                    [ngbTooltip]="item.get('temperatureImport').value"
                   >
-                    {{ item.get('temperatureImport').value | number | vnCurrency }}
+                    {{ item.get('temperatureImport').value }}
                   </p>
                 </td>
                 <td class="quota-import text-right">
@@ -523,7 +542,7 @@
   </div>
 
   <div class="py-10 w-100 d-flex justify-content-center">
-    <button *ngIf='status'
+    <button *ngIf='status && eAuthorize.COMPLETE_WAREHOUSE_IMPORT_BUTTON | canUseFeature'
       class="btn btn-primary mr-3 button"
       (click)='submit()'
     >
