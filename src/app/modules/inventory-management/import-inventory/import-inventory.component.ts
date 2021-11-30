@@ -13,6 +13,7 @@ import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GasStationResponse } from '../../gas-station/gas-station.service';
 
 @Component({
   selector: 'app-import-inventory',
@@ -26,6 +27,7 @@ export class ImportInventoryComponent implements OnInit {
   paginatorState = new PaginatorState();
   dataSource: IImportInventory[] = [];
   dataSupplier: ISupplier[] = [];
+  listExportWarehouse: GasStationResponse[] = [];
   listWarehouseOrderForm = LIST_WAREHOUSE_ORDER_FORM;
 
   listStatus = LIST_STATUS_IMPORT;
@@ -35,11 +37,9 @@ export class ImportInventoryComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private inventoryManagementService: InventoryManagementService,
-    private toart: ToastrService,
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
-    private toastr: ToastrService,
-    private modalService: NgbModal,
+    private toastr: ToastrService
   ) {
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
@@ -56,11 +56,12 @@ export class ImportInventoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getListSupplier();
+    this.getGasStations();
     this.builForm();
     this.initDate();
 
     this.onSearch();
-    this.hanldChangeOrderInfo();
   }
 
   builForm() {
@@ -79,19 +80,20 @@ export class ImportInventoryComponent implements OnInit {
     this.searchForm.get('expectedDateEnd').patchValue(this.today);
   }
 
-  hanldChangeOrderInfo() {
-    this.searchForm.get('orderForm').valueChanges
-      .subscribe((x) => {
-        this.dataSupplier = [];
-        if (x) {
-          this.searchForm.get('idStoreExport').patchValue('');
-          this.inventoryManagementService.getListSuppliersAll(x)
-            .subscribe((res) => {
-              this.dataSupplier = res.data;
-              this.cdr.detectChanges();
-            })
-        }
-      });
+  getListSupplier() {
+    this.inventoryManagementService.getListSuppliersActive()
+      .subscribe((res) => {
+        this.dataSupplier = res.data;
+        this.cdr.detectChanges();
+      })
+  }
+
+  getGasStations() {
+    this.inventoryManagementService.getGasStations()
+      .subscribe((res) => {
+        this.listExportWarehouse = res.data;
+        this.cdr.detectChanges();
+      })
   }
 
   onSearch() {
