@@ -1,0 +1,38 @@
+.modal-body {
+  padding: 0 1.75rem;
+}
+
+table {
+  min-width: 1024px;
+  thead {
+    tr {
+      &:hover {
+        background-color: #fff;
+      }
+
+      th {
+        text-transform: none;
+      }
+    }
+  }
+
+  th, td {
+    &.import-quantity,
+    &.head-meter,
+    &.final-meter,
+    &.difference {
+      min-width: 150px;
+      max-width: 170px;
+    }
+
+    &.with-meter {
+      min-width: 210px;
+      max-width: 220px;
+    }
+
+    &.note {
+      min-width: 200px;
+      max-width: 250px;
+    }
+  }
+}
