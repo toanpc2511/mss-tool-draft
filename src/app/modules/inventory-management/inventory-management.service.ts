@@ -329,16 +329,42 @@ export interface IMeasures {
   }
 }
 
+export interface IShallow {
+  capacity: string;
+  createdAt: string;
+  creatorName: string;
+  difference: number;
+  finalMeter: number;
+  gasFieldCode: string;
+  gasFieldId: number;
+  gasFieldName: string;
+  headMeter: number;
+  height: string;
+  id: number;
+  importQuantity: number;
+  length: string;
+  name: string;
+  note: string;
+  productId: number;
+  productName: string;
+  withMeter: number;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
 export class InventoryManagementService {
 	constructor(private http: HttpService) {}
 
-	// Lấy ds trạm trạng thái active
+	// Lấy ds trạm trạng thái hoạt động và không hoạt dộng
 	getStationEmployee() {
 		const params = new HttpParams().set('status', 'ACTIVE');
 		return this.http.get<Array<IStationEployee>>(`employees/station-status`, { params });
+	}
+
+	// Lấy ds trạm trạng thái hoạt động
+	getStationEmployeeActive() {
+		return this.http.get<Array<IStationEployee>>(`gas-stations/employee/station-active`);
 	}
 
 	// Lấy ds tất cả nhân viên yêu cầu
@@ -532,4 +558,17 @@ export class InventoryManagementService {
       .set('gas-station-id', gasStationId.toString())
     return this.http.get(`gas-fields`, {params})
   }
+
+  // Lấy ds lịch sử tịnh kho kịch bơm
+  getShallows(page: number, size: number, data) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('station-id', data.stationId.toString())
+      .set('gas-field-id', data.gasFieldId.toString())
+      .set('create-from', data.createFrom)
+      .set('create-to', data.createTo);
+    return this.http.get<Array<IShallow>>(`shallows/filters`, {params})
+  }
+
 }

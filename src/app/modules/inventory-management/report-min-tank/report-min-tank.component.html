@@ -111,22 +111,22 @@
       <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
         <tr>
-          <th scope='' class=''>Tên kỳ kiểm kho</th>
-          <th scope='' class=''>Mã bồn</th>
-          <th scope='' class=''>Ngày tạo</th>
-          <th scope='' class=''>Người tạo</th>
-          <th scope='' class=''>Nhập</th>
-          <th scope='' class=''>Số công tơ đầu</th>
-          <th scope='' class=''>Số công tơ cuối</th>
-          <th scope='' class=''>Lượng theo công tơ</th>
-          <th scope='' class=''>Âm dương</th>
-          <th scope='' class=''>Ghi chú</th>
+          <th scope='' class='name'>Tên kỳ kiểm kho</th>
+          <th scope='' class='gas-field-code'>Mã bồn</th>
+          <th scope='' class='create-at'>Ngày tạo</th>
+          <th scope='' class='creator-name pl-5'>Người tạo</th>
+          <th scope='' class='import-quantity text-right'>Nhập trong kỳ</th>
+          <th scope='' class='head-meter text-right'>Số công tơ đầu</th>
+          <th scope='' class='final-meter text-right'>Số công tơ cuối</th>
+          <th scope='' class='with-meter text-right'>Lượng xuất theo công tơ</th>
+          <th scope='' class='difference text-right'>Âm dương</th>
+          <th scope='' class='note'>Ghi chú</th>
         </tr>
         </thead>
 
         <tbody>
         <tr *ngFor='let item of dataSource' (click)='openModal($event, item)'>
-          <td class='code'>
+          <td class='name'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
@@ -135,13 +135,13 @@
               {{ item.name }}
             </p>
           </td>
-          <td class='gas-field'>
+          <td class='gas-field-code'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.gasField?.code"
+              [ngbTooltip]="item.gasFieldCode"
             >
-              {{ item.gasField?.code }}
+              {{ item.gasFieldCode }}
             </p>
           </td>
           <td class='create-at'>
@@ -153,22 +153,13 @@
               {{ item.createdAt | date:'dd/MM/yyyy' }}
             </p>
           </td>
-          <td class='creator'>
+          <td class='creator-name pl-5'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.creator?.name"
+              [ngbTooltip]="item.creatorName"
             >
-              {{ item.creator?.name }}
-            </p>
-          </td>
-          <td class='head-inventory text-right'>
-            <p
-              class="cursor-pointer text-ellipsis"
-              placement="top"
-              [ngbTooltip]="item.headInventory | number | vnCurrency"
-            >
-              {{ item.headInventory | number | vnCurrency }}
+              {{ item.creatorName }}
             </p>
           </td>
           <td class='import-quantity text-right'>
@@ -180,40 +171,31 @@
               {{ item.importQuantity | number | vnCurrency }}
             </p>
           </td>
-          <td class='export-quantity text-right'>
+          <td class='head-meter text-right'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.exportQuantity | number | vnCurrency"
+              [ngbTooltip]="item.headMeter | number | vnCurrency"
             >
-              {{ item.exportQuantity | number | vnCurrency }}
+              {{ item.headMeter | number | vnCurrency }}
             </p>
           </td>
-          <td class='final-inventory text-right'>
+          <td class='final-meter text-right'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.finalInventory | number | vnCurrency"
+              [ngbTooltip]="item.finalMeter | number | vnCurrency"
             >
-              {{ item.finalInventory | number | vnCurrency }}
+              {{ item.finalMeter | number | vnCurrency }}
             </p>
           </td>
-          <td class='height text-right'>
+          <td class='with-meter text-right'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.height | number |  vnCurrency"
+              [ngbTooltip]="item.withMeter | number | vnCurrency"
             >
-              {{ item.height | number |  vnCurrency }}
-            </p>
-          </td>
-          <td class='actual-final text-right'>
-            <p
-              class="cursor-pointer text-ellipsis"
-              placement="top"
-              [ngbTooltip]="item.actualFinal | number | vnCurrency"
-            >
-              {{ item.actualFinal | number | vnCurrency }}
+              {{ item.withMeter | number | vnCurrency }}
             </p>
           </td>
           <td class='difference text-right'>
@@ -222,9 +204,9 @@
               placement="top"
               [class.text-primary]='item.difference > 0'
               [class.text-danger]='item.difference < 0'
-              [ngbTooltip]="item.difference"
+              [ngbTooltip]="item.difference | number | vnCurrency"
             >
-              {{item.difference > 0 ? ("+ " + item.difference) : item.difference}}
+              {{item.difference > 0 ? ("+ " + item.difference) : item.difference | number | vnCurrency}}
             </p>
           </td>
           <td class='note'>
