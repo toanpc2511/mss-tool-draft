@@ -75,20 +75,20 @@ export class BannerConfigComponent extends BaseComponent implements OnInit {
     });
   }
 
-  openConfirmDeleteDialog(id: number) {
+  openConfirmDeleteDialog(banner: IBanner) {
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
       backdrop: 'static'
     });
 
     modalRef.componentInstance.data = {
       title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xóa cấu hình banner?`,
+      message: `Bạn có chắc chắn muốn xóa cấu hình banner ${banner.title}?`,
       button: { class: 'btn-primary', title: 'Xác nhận' }
     }
 
     modalRef.result.then((result) => {
       if (result) {
-        this.bannerService.delete(id).subscribe((res: DataResponse<boolean>): void => {
+        this.bannerService.delete(banner.id).subscribe((res: DataResponse<boolean>): void => {
             this.toastr.success('Bạn đã xóa cấu hình banner thành công');
             this.getList();
           });
