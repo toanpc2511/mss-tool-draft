@@ -53,6 +53,11 @@
             [error]="'required'"
             [message]="'Vui lòng cập nhật ảnh banner'"
           ></app-validate>
+          <app-validate
+            [control]="createForm.controls['imageId']"
+            [error]="'file'"
+            [message]="'Vui lòng chọn ảnh'"
+          ></app-validate>
         </div>
       </div>
 
@@ -77,7 +82,7 @@
       </div>
       <div>
         <button type="button" style='width: 100px' class="btn btn-primary" (click)="onSubmit()">
-          Thêm mới
+          Xác nhận
         </button>
       </div>
     </div>

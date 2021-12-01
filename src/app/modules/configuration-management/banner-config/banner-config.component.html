@@ -33,18 +33,29 @@
             </p>
           </td>
 
-          <td class="status">
+          <td class="status" *ngIf='item.shows; else hiddenStatusTpl'>
 							<span
                 class="label label-lg label-inline"
                 [class.label-light-success]="item.shows"
-                [class.label-light-danger]="!item.shows"
                 placement='top'
-                ngbTooltip='Trạng thái'
+                ngbTooltip='Hiện'
               >
-								<ng-container *ngIf="item.shows">Hiện banner</ng-container>
-								<ng-container *ngIf="!item.shows">Ẩn banner</ng-container>
+                Hiện banner
 							</span>
           </td>
+
+          <ng-template #hiddenStatusTpl>
+            <td class="status">
+							<span
+                class="label label-lg label-inline"
+                [class.label-light-danger]="!item.shows"
+                placement='top'
+                ngbTooltip='Ẩn'
+              >
+								Ẩn banner
+							</span>
+            </td>
+          </ng-template>
 
           <td class="image">
             <img [src]='item.image.url' ngbTooltip='Ảnh' placement='top' alt=''>
@@ -64,7 +75,7 @@
 								</span>
             </a>
             <a class="btn btn-icon btn-light btn-hover-danger btn-sm"
-               (click)='openConfirmDeleteDialog(item.id)'
+               (click)='openConfirmDeleteDialog(item)'
                *ngIf='eAuthorize.DELETE_BANNER | canUseFeature'
             >
 								<span

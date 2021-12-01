@@ -73,6 +73,15 @@ export class CreateBannerDialogComponent {
       this.toastr.error('Dung lượng ảnh quá lớn');
     }
 
+    const typeFile = files[0].type.split('/')[0];
+    console.log(this.createForm.controls['imageId'].hasError('required'));
+    if (typeFile !== 'image') {
+      this.createForm.controls['imageId'].setErrors({file: true});
+      this.attachmentImg = null;
+      return;
+    }
+
+    this.createForm.controls['imageId'].setErrors({file: false});
     this.uploadImageFile(files[0]);
 
     inputElement.value = null;

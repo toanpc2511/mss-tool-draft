@@ -46,12 +46,17 @@
             class="img"
             (click)="bannerImg.click()"
             width="300px"
-            [src]="attachmentImg && attachmentImg?.url || this.data?.image.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+            [src]="attachmentImg && attachmentImg?.url || urlImg || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
           />
           <app-validate
             [control]="updateForm.controls['imageId']"
             [error]="'required'"
             [message]="'Vui lòng cập nhật ảnh banner'"
+          ></app-validate>
+          <app-validate
+            [control]="updateForm.controls['imageId']"
+            [error]="'file'"
+            [message]="'Vui lòng chọn ảnh'"
           ></app-validate>
         </div>
       </div>
