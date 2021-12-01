@@ -27,7 +27,7 @@
 
         <tbody>
         <tr *ngFor='let item of listBanner'>
-          <td class="banner-name">
+          <td class="title">
             <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.title">
               {{ item.title }}
             </p>
@@ -41,8 +41,8 @@
                 placement='top'
                 ngbTooltip='Trạng thái'
               >
-								<ng-container *ngIf="item.shows">Hoạt động</ng-container>
-								<ng-container *ngIf="!item.shows"> Không hoạt động </ng-container>
+								<ng-container *ngIf="item.shows">Hiện banner</ng-container>
+								<ng-container *ngIf="!item.shows">Ẩn banner</ng-container>
 							</span>
           </td>
 

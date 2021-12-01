@@ -34,7 +34,7 @@ export class CreateBannerDialogComponent {
   initCreateForm(): void {
     this.createForm = this.fb.group({
       title: ['', Validators.required],
-      shows: [false],
+      shows: [true],
       imageId: ['', Validators.required],
       typeMedia: ['IMAGE']
     });

@@ -5,7 +5,11 @@ table thead th {
 table {
   min-width: 1024px;
 
-  td {
+  tr, td {
+    &.title, &.status {
+      max-width: 200px;
+    }
+
     &.image {
       img {
         max-width: 300px;
