@@ -220,7 +220,14 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					page: '/cau-hinh/khuyen-mai',
 
 					permissionKey: EAuthorize.VIEW_PROMOTION_LIST_SCREEN
-				}
+				},
+        {
+          title: 'Cấu hình banner',
+          bullet: 'dot',
+          page: '/cau-hinh/banner',
+
+          permissionKey: EAuthorize.VIEW_BANNERS_SCREEN
+        }
 			]
 		},
 		{

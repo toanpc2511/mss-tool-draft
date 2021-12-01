@@ -1,0 +1,94 @@
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { IBanner } from '../../models';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DestroyService } from '../../../../../shared/services/destroy.service';
+import { EFileType, FileService } from '../../../../../shared/services/file.service';
+import { ToastrService } from 'ngx-toastr';
+import { BannerConfigService } from '../../banner-config.service';
+import { takeUntil } from 'rxjs/operators';
+import { DataResponse } from '../../../../../shared/models/data-response.model';
+
+interface IImage {
+  id: number;
+  url: string;
+  name: string;
+}
+
+@Component({
+  selector: 'app-update-banner-dialog',
+  templateUrl: './update-banner-dialog.component.html',
+  styleUrls: ['./update-banner-dialog.component.scss'],
+  providers: [FormBuilder, DestroyService]
+})
+export class UpdateBannerDialogComponent implements OnInit {
+
+  @Input() data: IBanner;
+  updateForm: FormGroup;
+  attachmentImg: IImage;
+
+  constructor(public modal: NgbActiveModal,
+              private fb: FormBuilder,
+              private destroy$: DestroyService,
+              private fileService: FileService,
+              private cdr: ChangeDetectorRef,
+              private toastr: ToastrService,
+              private bannerService: BannerConfigService
+  ) {}
+
+  ngOnInit(): void {
+    this.initUpdateForm();
+  }
+
+  initUpdateForm(): void {
+    this.updateForm = this.fb.group({
+      title: [this.data.title, Validators.required],
+      shows: [this.data.shows],
+      typeMedia: ['IMAGE'],
+      imageId: ['', Validators.required]
+    });
+  }
+
+  onSubmit(): void {
+    console.log(this.data.image)
+    if (!this.updateForm.get('imageId').value) {
+      this.updateForm.get('imageId').patchValue(this.data.image.id, {emitModelToViewChange: false});
+    }
+    this.updateForm.markAllAsTouched();
+    if (this.updateForm.invalid) {
+      return;
+    }
+    this.bannerService.update(this.updateForm.getRawValue(), this.data.id).subscribe((res: DataResponse<boolean>): void => {
+      this.modal.close(true);
+    });
+  }
+
+  uploadImageFile(file: File): void {
+    const formData = new FormData();
+    formData.append('files', file);
+    this.fileService
+      .uploadFile(formData, EFileType.IMAGE)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event: any) => {
+        if (event?.data) {
+          this.attachmentImg = event.data[0];
+          this.updateForm.get('imageId').patchValue(event.data[0].id , {emitModelToViewChange: false});
+        }
+        this.cdr.detectChanges();
+      });
+  }
+
+  addImage($event): void {
+    const inputElement = $event.target as HTMLInputElement;
+    const files = Array.from(inputElement.files);
+
+    if (files[0].size > 2000000) {
+      this.toastr.error('Dung lượng ảnh quá lớn');
+    }
+
+    this.uploadImageFile(files[0]);
+
+    inputElement.value = null;
+  }
+
+}

@@ -113,5 +113,11 @@ export enum EAuthorize {
   COMPLETE_WAREHOUSE_IMPORT_BUTTON = 'complete_warehouse_import_button',
   VIEW_HISTORY_ACCUMULATE_SCREEN = 'view_history_accumulate_screen',
   VIEW_MEASURES_SCREEN = 'view_measures_screen',
-  DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button'
+  DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button',
+
+  //Banner Roles
+  VIEW_BANNERS_SCREEN = 'view_banners_screen',
+  UPDATE_BANNER = 'update_banner',
+  CREATE_BANNER = 'create_banner',
+  DELETE_BANNER = 'delete_banner'
 }
