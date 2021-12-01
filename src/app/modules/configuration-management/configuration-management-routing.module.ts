@@ -4,6 +4,7 @@ import { RankConfigComponent } from './rank-config/rank-config.component';
 import { PointsConfigComponent } from './points-config/points-config.component';
 import { DiscountConfigComponent } from './discount-config/discount-config.component';
 import { PromotionConfigComponent } from './promotion-config/promotion-config.component';
+import { BannerConfigComponent } from './banner-config/banner-config.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'khuyen-mai',
     component: PromotionConfigComponent,
+  },
+  {
+    path: 'banner',
+    component: BannerConfigComponent
   }
 ];
 
