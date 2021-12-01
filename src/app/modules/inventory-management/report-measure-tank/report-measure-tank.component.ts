@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IStationEployee } from '../../history-of-using-points/history-of-using-points.service';
 import { takeUntil } from 'rxjs/operators';
-import { IFilterImportInventory, InventoryManagementService } from '../inventory-management.service';
+import { IFilterImportInventory, IMeasures, InventoryManagementService } from '../inventory-management.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import * as moment from 'moment';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
@@ -25,7 +25,7 @@ export class ReportMeasureTankComponent implements OnInit {
   searchForm: FormGroup;
   stationEmployee: Array<IStationEployee> = [];
   listGasField;
-  dataSource;
+  dataSource: IMeasures[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -116,7 +116,7 @@ export class ReportMeasureTankComponent implements OnInit {
     this.ngOnInit();
   }
 
-  openModal($event?: Event, data?: IDataTransfer): void {
+  openModal($event?: Event, data?): void {
     console.log(data);
     if ($event) {
       $event.stopPropagation();

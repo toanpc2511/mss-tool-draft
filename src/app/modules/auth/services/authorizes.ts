@@ -115,6 +115,10 @@ export enum EAuthorize {
   VIEW_MEASURES_SCREEN = 'view_measures_screen',
   DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button',
 
+  /* Quản lý kho */
+
+  /* End */
+
   //Banner Roles
   VIEW_BANNERS_SCREEN = 'view_banners_screen',
   UPDATE_BANNER = 'update_banner',
