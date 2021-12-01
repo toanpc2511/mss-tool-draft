@@ -258,7 +258,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					title: 'Tịnh kho đo bể',
 					bullet: 'dot',
 					page: '/kho/tinh-kho-do-be',
-					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+					permissionKey: EAuthorize.VIEW_MEASURES_SCREEN
 				},
 				{
 					title: 'Tịnh kho kịch bơm',

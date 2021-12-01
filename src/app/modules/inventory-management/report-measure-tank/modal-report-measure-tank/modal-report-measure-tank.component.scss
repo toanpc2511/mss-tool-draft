@@ -15,4 +15,24 @@ table {
       }
     }
   }
+
+  th, td {
+    &.head-inventory,
+    &.import-quantity,
+    &.export-quantity,
+    &.final-inventory,
+    &.difference {
+      min-width: 130px;
+      max-width: 150px;
+    }
+    &.height,
+    &.actual-final {
+      min-width: 185px;
+      max-width: 190px;
+    }
+    &.note {
+      min-width: 200px;
+      max-width: 250px;
+    }
+  }
 }

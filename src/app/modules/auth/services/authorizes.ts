@@ -111,5 +111,7 @@ export enum EAuthorize {
   CREATE_IMPORT_REQUEST = 'create_import_request',
   VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN = 'view_warehouse_import_detail_screen',
   COMPLETE_WAREHOUSE_IMPORT_BUTTON = 'complete_warehouse_import_button',
-  VIEW_HISTORY_ACCUMULATE_SCREEN = 'view_history_accumulate_screen'
+  VIEW_HISTORY_ACCUMULATE_SCREEN = 'view_history_accumulate_screen',
+  VIEW_MEASURES_SCREEN = 'view_measures_screen',
+  DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button'
 }

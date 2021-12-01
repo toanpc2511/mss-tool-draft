@@ -117,6 +117,7 @@ export class ReportMeasureTankComponent implements OnInit {
   }
 
   openModal($event?: Event, data?: IDataTransfer): void {
+    console.log(data);
     if ($event) {
       $event.stopPropagation();
     }
@@ -127,7 +128,7 @@ export class ReportMeasureTankComponent implements OnInit {
 
     modalRef.componentInstance.data = {
       title: data ? 'Chi tiết tịnh kho đo bể' : 'Tạo tịnh kho đo bể',
-      product: data
+      dataDetail: data
     };
 
     modalRef.result.then((result) => {
