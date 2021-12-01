@@ -4,6 +4,7 @@ import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IError } from '../../../../shared/models/error.model';
 import { DestroyService } from '../../../../shared/services/destroy.service';
+import { IMeasures } from '../../inventory-management.service';
 
 @Component({
   selector: 'app-modal-report-measure-tank',
@@ -47,5 +48,5 @@ export class ModalReportMeasureTankComponent implements OnInit {
 
 export interface IDataTransfer {
   title: string;
-  dataDetail?;
+  dataDetail?: IMeasures;
 }

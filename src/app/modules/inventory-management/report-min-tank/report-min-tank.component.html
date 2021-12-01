@@ -1,1 +1,252 @@
-<p>report-min-tank works!</p>
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Tìm kiếm lịch sử tịnh kho kịch bơm</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="searchForm" class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Trạm</label>
+          <select class="form-control form-control-solid w-75" formControlName='stationId'>
+            <option [value]="''">Tất cả</option>
+            <option *ngFor="let item of stationEmployee" [value]="item.id">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Bồn</label>
+          <select class="form-control form-control-solid w-75" formControlName="gasFieldId">
+            <option [value]="''">Tất cả</option>
+            <option *ngFor="let item of listGasField" [value]="item.id">
+              {{ item.code }} - {{item.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Thời gian tạo từ</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #startAt="ngbDatepicker"
+              formControlName='createFrom'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="startAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.controls['createFrom']"
+            [error]="'ngbDate'"
+            [message]="'Ngày yêu cầu không đúng định dạng'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Thời gian tạo đến</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #endAt="ngbDatepicker"
+              formControlName='createTo'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="endAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.controls['createTo']"
+            [error]="'ngbDate'"
+            [message]="'Ngày yêu cầu đến không đúng định dạng'"
+          ></app-validate>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="form-group row py-3">
+      <button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+        <em class="fas fa-search"></em> Tìm kiếm
+      </button>
+      <button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
+    </div>
+  </div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách lịch sử tịnh kho kịch bơm</h3>
+    </div>
+
+    <div class="card-toolbar row">
+      <a (click)='openModal($event)'>
+        <button type="button" class="btn btn-primary btn-def">Tạo tịnh kho</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <tr>
+          <th scope='' class=''>Tên kỳ kiểm kho</th>
+          <th scope='' class=''>Mã bồn</th>
+          <th scope='' class=''>Ngày tạo</th>
+          <th scope='' class=''>Người tạo</th>
+          <th scope='' class=''>Nhập</th>
+          <th scope='' class=''>Số công tơ đầu</th>
+          <th scope='' class=''>Số công tơ cuối</th>
+          <th scope='' class=''>Lượng theo công tơ</th>
+          <th scope='' class=''>Âm dương</th>
+          <th scope='' class=''>Ghi chú</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor='let item of dataSource' (click)='openModal($event, item)'>
+          <td class='code'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.name"
+            >
+              {{ item.name }}
+            </p>
+          </td>
+          <td class='gas-field'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.gasField?.code"
+            >
+              {{ item.gasField?.code }}
+            </p>
+          </td>
+          <td class='create-at'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.createdAt | date:'dd/MM/yyyy'"
+            >
+              {{ item.createdAt | date:'dd/MM/yyyy' }}
+            </p>
+          </td>
+          <td class='creator'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.creator?.name"
+            >
+              {{ item.creator?.name }}
+            </p>
+          </td>
+          <td class='head-inventory text-right'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.headInventory | number | vnCurrency"
+            >
+              {{ item.headInventory | number | vnCurrency }}
+            </p>
+          </td>
+          <td class='import-quantity text-right'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.importQuantity | number | vnCurrency"
+            >
+              {{ item.importQuantity | number | vnCurrency }}
+            </p>
+          </td>
+          <td class='export-quantity text-right'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.exportQuantity | number | vnCurrency"
+            >
+              {{ item.exportQuantity | number | vnCurrency }}
+            </p>
+          </td>
+          <td class='final-inventory text-right'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.finalInventory | number | vnCurrency"
+            >
+              {{ item.finalInventory | number | vnCurrency }}
+            </p>
+          </td>
+          <td class='height text-right'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.height | number |  vnCurrency"
+            >
+              {{ item.height | number |  vnCurrency }}
+            </p>
+          </td>
+          <td class='actual-final text-right'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.actualFinal | number | vnCurrency"
+            >
+              {{ item.actualFinal | number | vnCurrency }}
+            </p>
+          </td>
+          <td class='difference text-right'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [class.text-primary]='item.difference > 0'
+              [class.text-danger]='item.difference < 0'
+              [ngbTooltip]="item.difference"
+            >
+              {{item.difference > 0 ? ("+ " + item.difference) : item.difference}}
+            </p>
+          </td>
+          <td class='note'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.note"
+            >
+              {{ item.note }}
+            </p>
+          </td>
+        </tr>
+        </tbody>
+
+        <tfoot *ngIf="dataSource?.length === 0">
+        <tr>
+          <td colspan="12" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+  </div>
+</div>

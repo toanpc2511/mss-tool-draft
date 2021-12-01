@@ -95,6 +95,10 @@ const SPECIAL_URL: SpecialUrl[] = [
     url: '/kho/nhap-kho/chi-tiet',
     permissionKey: EAuthorize.VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN
   },
+  {
+    url: '/kho/tinh-kho-do-be',
+    permissionKey: EAuthorize.VIEW_MEASURES_SCREEN
+  },
 	/* thêm tạm thời */
 	{
 		url: '/kho/yeu-cau-dat-hang/them-moi',
@@ -130,10 +134,6 @@ const SPECIAL_URL: SpecialUrl[] = [
 	},
 	{
 		url: '/kho/nhap-kho',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	},
-	{
-		url: '/kho/tinh-kho-do-be',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	},
 	{

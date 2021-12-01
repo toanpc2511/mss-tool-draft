@@ -294,6 +294,41 @@ export interface IProductExportInventory {
   unit: string;
 }
 
+export interface IMeasures {
+  actualFinal: number;
+  code: string;
+  createdAt: string;
+  difference: number;
+  exportQuantity: number;
+  finalInventory: number;
+  headInventory: number;
+  height: number;
+  id: number;
+  importQuantity: number;
+  name: string;
+  note: string;
+  stationId: number;
+  stationName: string;
+  creator: {
+    code: string;
+    id: number;
+    name: string;
+    positionName: string;
+  },
+  gasField: {
+    capacity: string;
+    code: string;
+    gasStationId: number;
+    height: string;
+    id: number;
+    length: string;
+    name: string;
+    productId: number;
+    productName: string;
+    status: string;
+  }
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -488,7 +523,7 @@ export class InventoryManagementService {
       .set('gas-field-id', data.gasFieldId.toString())
       .set('create-from', data.createFrom)
       .set('create-to', data.createTo);
-    return this.http.get(`measures/filters`, {params})
+    return this.http.get<IMeasures[]>(`measures/filters`, {params})
   }
 
   // Lấy ds bồn theo trạm
