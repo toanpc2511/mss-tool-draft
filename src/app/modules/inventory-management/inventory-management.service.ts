@@ -330,6 +330,7 @@ export interface IMeasures {
 }
 
 export interface IShallow {
+  stationName: string;
   capacity: string;
   createdAt: string;
   creatorName: string;

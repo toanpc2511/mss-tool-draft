@@ -107,7 +107,6 @@ export class ReportMinTankComponent implements OnInit {
     this.inventoryManagementService.getShallows(this.paginatorState.page, this.paginatorState.pageSize, this.getFilterData())
       .subscribe((res) => {
         this.dataSource = res.data;
-        console.log(this.dataSource);
         this.paginatorState.recalculatePaginator(res.meta.total);
         this.cdr.detectChanges();
       })
@@ -119,7 +118,6 @@ export class ReportMinTankComponent implements OnInit {
   }
 
   openModal($event?: Event, data?): void {
-    console.log(data);
     if ($event) {
       $event.stopPropagation();
     }

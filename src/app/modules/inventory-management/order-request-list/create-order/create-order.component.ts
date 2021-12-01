@@ -201,7 +201,6 @@ export class CreateOrderComponent extends BaseComponent implements OnInit, After
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
 				this.stationEmployee = res.data;
-        console.log(this.stationEmployee);
 				this.cdr.detectChanges();
 			});
 	}
