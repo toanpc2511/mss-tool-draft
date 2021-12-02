@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <h4 class="modal-title">Xác thực 2 yếu tố</h4>
+</div>
+
+<div class="modal-body" [hidden]="step !== 1">
+  <div class="w-100">
+    <h4>Gửi mã xác thực tới số điện thoại {{currentPhoneNumber}}</h4>
+    <div class="mt-4" id="otp-captcha"></div>
+    <p class="text-danger" *ngIf="reCapchaError">Captcha không hợp lệ</p>
+  </div>
+</div>
+<div class="modal-body" [hidden]="step !== 2">
+  <h3>Nhập mã</h3>
+  <p>Nhập mã xác thực 6 chữ số được gửi tới số điện thoại {{currentPhoneNumber}} để thay đổi trạng thái xác thực 2 yếu
+    tố</p>
+  <div class="w-100">
+    <input class="form-control form-control-solid" [formControl]="verificationCodeControl" trim="blur" maxlength="6" />
+    <app-validate [control]="verificationCodeControl" [error]="'required'"
+      [message]="'Mã xác thực không được để trống'">
+    </app-validate>
+    <app-validate [control]="verificationCodeControl" [error]="'verificationCode'"
+      [message]="'Mã xác thực bao gồm 6 số'">
+    </app-validate>
+  </div>
+  <button class="btn btn-link mt-3" id="resend-otp-btn" [textContent]="'Gửi lại OTP'"></button>
+</div>
+<div class="modal-body" [hidden]="step !== 3">
+  <h3>Đã bật xác thực 2 yếu tố</h3>
+  <p>Các lần đăng nhập tiếp theo sẽ yêu cầu xác thực với OTP</p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="verificationCodeControl.reset(); modal.close(false)">
+    Hủy
+  </button>
+  <button *ngIf="step=== 1" type="button" (click)="sendOTP()" class="btn btn-primary">
+    Gửi OTP
+  </button>
+  <button *ngIf="step === 2" type="button" class="btn btn-primary" (click)="verifyOTP()">
+    Xác nhận
+  </button>
+  <button *ngIf="step === 3" type="button" class="btn btn-primary" (click)="complete()">
+    Xong
+  </button>
+</div>

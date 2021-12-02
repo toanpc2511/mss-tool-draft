@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import firebase from 'firebase';
 import jwt_decode from 'jwt-decode';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { BehaviorSubject, defer, Observable, of, throwError } from 'rxjs';
+import { finalize, switchMap } from 'rxjs/operators';
 import { storageUtils } from 'src/app/shared/helpers/storage';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
@@ -22,7 +24,7 @@ export interface UserModel {
 		status: UserStatus;
 		updatedAt: Date;
 		username: string;
-    profile: IProfile;
+		profile: IProfile;
 	};
 	actions: string[];
 	changePassword: boolean;
@@ -30,21 +32,20 @@ export interface UserModel {
 }
 
 export interface IProfile {
-  name: string;
-  dateOfBirth: string;
-  idCard: string;
-  address: string;
-  phone: string;
-  code: string;
-  email: string;
-  avatar:
-    {
-      face: string;
-      id: number;
-      name: string;
-      type: string;
-      url: string;
-    }
+	name: string;
+	dateOfBirth: string;
+	idCard: string;
+	address: string;
+	phone: string;
+	code: string;
+	email: string;
+	avatar: {
+		face: string;
+		id: number;
+		name: string;
+		type: string;
+		url: string;
+	};
 }
 
 @Injectable({
@@ -60,6 +61,7 @@ export class AuthService {
 	constructor(
 		private http: HttpService,
 		private router: Router,
+		public firebaseAuth: AngularFireAuth
 	) {
 		this.isLoadingSubject = new BehaviorSubject<boolean>(false);
 		this.currentUserSubject = new BehaviorSubject<UserModel>(null);
@@ -127,9 +129,9 @@ export class AuthService {
 		});
 	}
 
-  getProfileInfo() {
-    return this.http.get('profiles');
-  }
+	getProfileInfo() {
+		return this.http.get('profiles');
+	}
 
 	canUseFeature(featurePermissionKey: EAuthorize) {
 		const actions = this.currentUserSubject.value?.actions || [];
@@ -137,5 +139,30 @@ export class AuthService {
 			return true;
 		}
 		return false;
+	}
+
+	sendOTP(phoneNumber: string, recaptchaVerifier: firebase.auth.RecaptchaVerifier) {
+		const phoneVerifier$ = defer(() =>
+			this.firebaseAuth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier)
+		);
+		return phoneVerifier$.pipe(
+			switchMap((confirmResult) => {
+				if (confirmResult) {
+					return of(confirmResult);
+				}
+				return throwError({
+					code: 'CAN_NOT_SEND_OTP',
+					message: `Can not send otp to ${phoneNumber}`
+				});
+			})
+		);
+	}
+
+	verifyOTP(confirmationResult: firebase.auth.ConfirmationResult, verificationCode: string) {
+		return defer(() => confirmationResult.confirm(verificationCode));
+	}
+
+	sendOTPAsync(phoneNumber: string, recaptchaVerifier: firebase.auth.RecaptchaVerifier) {
+		return this.firebaseAuth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
 	}
 }

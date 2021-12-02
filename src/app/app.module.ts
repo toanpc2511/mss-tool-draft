@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localeViExtra from '@angular/common/locales/extra/vi';
@@ -30,6 +31,8 @@ import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 registerLocaleData(localeVi, 'vi', localeViExtra);
 
@@ -40,7 +43,7 @@ function appInitializer(authService: AuthService, router: Router) {
 		return new Promise((resolve) => {
 			authService.getLoggedUser().subscribe(
 				(currentUser) => {
-					if(!currentUser) {
+					if (!currentUser) {
 						authService.clearData();
 					}
 					if (currentUser?.changePassword) {
@@ -57,6 +60,8 @@ function appInitializer(authService: AuthService, router: Router) {
 @NgModule({
 	declarations: [AppComponent, DevComponent],
 	imports: [
+		AngularFireModule.initializeApp(environment.firebase),
+		AngularFireModule,
 		BrowserModule,
 		BrowserAnimationsModule,
 		SplashScreenModule,
@@ -79,7 +84,7 @@ function appInitializer(authService: AuthService, router: Router) {
 		NgSelectModule,
 		FormsModule,
 		TextMaskModule,
-		FullCalendarModule,
+		FullCalendarModule
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'vi' },

@@ -1,3 +1,6 @@
+import { InputTrimModule } from 'ng2-trim-directive';
+import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -22,47 +25,56 @@ import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
-  suppressScrollX: true,
+	suppressScrollX: true
 };
 
 @NgModule({
-  declarations: [
-    SearchDropdownInnerComponent,
-    NotificationsDropdownInnerComponent,
-    QuickActionsDropdownInnerComponent,
-    CartDropdownInnerComponent,
-    UserDropdownInnerComponent,
-    SearchOffcanvasComponent,
-    SearchResultComponent,
-    NotificationsOffcanvasComponent,
-    QuickActionsOffcanvasComponent,
-    CartOffcanvasComponent,
-    QuickPanelOffcanvasComponent,
-    UserOffcanvasComponent,
-    ScrollTopComponent,
-    ToolbarComponent,
-  ],
-  imports: [CommonModule, InlineSVGModule, PerfectScrollbarModule, CoreModule, RouterModule],
-  providers: [
-    {
-      provide: PERFECT_SCROLLBAR_CONFIG,
-      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
-    },
-  ],
-  exports: [
-    SearchDropdownInnerComponent,
-    NotificationsDropdownInnerComponent,
-    QuickActionsDropdownInnerComponent,
-    CartDropdownInnerComponent,
-    UserDropdownInnerComponent,
-    SearchOffcanvasComponent,
-    NotificationsOffcanvasComponent,
-    QuickActionsOffcanvasComponent,
-    CartOffcanvasComponent,
-    QuickPanelOffcanvasComponent,
-    UserOffcanvasComponent,
-    ToolbarComponent,
-    ScrollTopComponent,
-  ],
+	declarations: [
+		SearchDropdownInnerComponent,
+		NotificationsDropdownInnerComponent,
+		QuickActionsDropdownInnerComponent,
+		CartDropdownInnerComponent,
+		UserDropdownInnerComponent,
+		SearchOffcanvasComponent,
+		SearchResultComponent,
+		NotificationsOffcanvasComponent,
+		QuickActionsOffcanvasComponent,
+		CartOffcanvasComponent,
+		QuickPanelOffcanvasComponent,
+		UserOffcanvasComponent,
+		ScrollTopComponent,
+		ToolbarComponent
+	],
+	imports: [
+		CommonModule,
+		InlineSVGModule,
+		PerfectScrollbarModule,
+		CoreModule,
+		RouterModule,
+		ReactiveFormsModule,
+		SharedComponentsModule,
+		InputTrimModule
+	],
+	providers: [
+		{
+			provide: PERFECT_SCROLLBAR_CONFIG,
+			useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+		}
+	],
+	exports: [
+		SearchDropdownInnerComponent,
+		NotificationsDropdownInnerComponent,
+		QuickActionsDropdownInnerComponent,
+		CartDropdownInnerComponent,
+		UserDropdownInnerComponent,
+		SearchOffcanvasComponent,
+		NotificationsOffcanvasComponent,
+		QuickActionsOffcanvasComponent,
+		CartOffcanvasComponent,
+		QuickPanelOffcanvasComponent,
+		UserOffcanvasComponent,
+		ToolbarComponent,
+		ScrollTopComponent
+	]
 })
-export class ExtrasModule { }
+export class ExtrasModule {}
