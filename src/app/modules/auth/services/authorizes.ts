@@ -113,6 +113,7 @@ export enum EAuthorize {
   DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button',
 
   /* Quản lý kho */
+  EXPORT_FILE_WORD_WAREHOUSE_IMPORT = 'export_file_word_warehouse_import',
 
   /* End */
 
@@ -125,5 +126,12 @@ export enum EAuthorize {
   VIEW_BANNERS_SCREEN = 'view_banners_screen',
   UPDATE_BANNER = 'update_banner',
   CREATE_BANNER = 'create_banner',
-  DELETE_BANNER = 'delete_banner'
+  DELETE_BANNER = 'delete_banner',
+  //End
+
+  // News Roles
+  VIEW_LIST_NEWS_SCREEN = 'view_list_news_screen',
+  CREATE_NEWS_BUTTON = 'create_news_button',
+  UPDATE_NEWS_BUTTON = 'update_news_button',
+  DELETE_NEWS_BUTTON = 'delete_news_button'
 }
