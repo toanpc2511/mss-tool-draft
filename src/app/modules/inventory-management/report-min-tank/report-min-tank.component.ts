@@ -8,8 +8,8 @@ import { InventoryManagementService, IShallow } from '../inventory-management.se
 import * as moment from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { convertDateToServer } from '../../../shared/helpers/functions';
-import { IDataTransfer } from '../../product/product-modal/product-modal.component';
 import { ModalReportMinTankComponent } from './modal-report-min-tank/modal-report-min-tank.component';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 
 @Component({
   selector: 'app-report-min-tank',
@@ -17,7 +17,7 @@ import { ModalReportMinTankComponent } from './modal-report-min-tank/modal-repor
   styleUrls: ['./report-min-tank.component.scss'],
   providers: [FormBuilder, DestroyService]
 })
-export class ReportMinTankComponent implements OnInit {
+export class ReportMinTankComponent extends BaseComponent implements OnInit {
   today: string;
   firstDayOfMonth: string;
 
@@ -34,6 +34,7 @@ export class ReportMinTankComponent implements OnInit {
     private modalService: NgbModal,
     private inventoryManagementService: InventoryManagementService
   ) {
+    super();
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
     this.init();
@@ -55,16 +56,16 @@ export class ReportMinTankComponent implements OnInit {
   }
 
   initDate() {
-    this.searchForm.get('createFrom').patchValue(this.firstDayOfMonth);
-    this.searchForm.get('createTo').patchValue(this.today);
+    this.searchForm.get('dateFrom').patchValue(this.firstDayOfMonth);
+    this.searchForm.get('dateTo').patchValue(this.today);
   }
 
   buildForm() {
     this.searchForm = this.fb.group({
       stationId: [''],
       gasFieldId:[''],
-      createFrom: [],
-      createTo: []
+      dateFrom: [],
+      dateTo: []
     })
   }
 
@@ -94,8 +95,8 @@ export class ReportMinTankComponent implements OnInit {
     const filterFormData = this.searchForm.value;
     return {
       ...filterFormData,
-      createFrom: convertDateToServer(filterFormData.createFrom),
-      createTo: convertDateToServer(filterFormData.createTo)
+      dateFrom: convertDateToServer(filterFormData.dateFrom),
+      dateTo: convertDateToServer(filterFormData.dateTo)
     };
   }
 

@@ -36,6 +36,7 @@ export enum EAuthorize {
 	DELETE_OTHER_PRODUCT_SCREEN = 'delete_other_product_screen',
 	VIEW_PUMP_POLE_QR_LIST_SCREEN = 'view_pump_pole_qr_list_screen',
 	VIEW_PRODUCT_QR_LIST_SCREEN = 'view_product_qr_list_screen',
+  VIEW_PUMP_HOSE_QR_LIST_SCREEN = 'view_pump_hose_qr_list_screen',
 	DOWNLOAD_PUMP_HOSE_QR_BUTTON = 'download_pump_hose_qr_button',
 	DOWNLOAD_PRODUCT_QR_BUTTON = 'download_product_qr_button',
 	VIEW_ACCOUNT_LIST_SCREEN = 'view_account_list_screen',
@@ -116,7 +117,8 @@ export enum EAuthorize {
   DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button',
 
   /* Quản lý kho */
-
+  VIEW_LIST_SHALLOW_SCREEN = 'view_list_shallow_screen',
+  CREATE_SHALLOW_BUTTON = 'create_shallow_button',
   /* End */
 
   //Banner Roles

@@ -102,6 +102,18 @@ const SPECIAL_URL: SpecialUrl[] = [
     url: '/cau-hinh/banner',
     permissionKey: EAuthorize.VIEW_BANNERS_SCREEN
   },
+  {
+    url: '/kho/tinh-kho-kich-bom',
+    permissionKey: EAuthorize.VIEW_LIST_SHALLOW_SCREEN
+  },
+  {
+    url: '/quan-ly-qr-code/qr-san-pham',
+    permissionKey: EAuthorize.VIEW_PRODUCT_QR_LIST_SCREEN
+  },
+  {
+    url: '/quan-ly-qr-code/qr-voi',
+    permissionKey: EAuthorize.VIEW_PUMP_HOSE_QR_LIST_SCREEN
+  },
 	/* thêm tạm thời */
 	{
 		url: '/kho/yeu-cau-dat-hang/them-moi',
@@ -137,10 +149,6 @@ const SPECIAL_URL: SpecialUrl[] = [
 	},
 	{
 		url: '/kho/nhap-kho',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	},
-	{
-		url: '/kho/tinh-kho-kich-bom',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	}
 	/*End*/
