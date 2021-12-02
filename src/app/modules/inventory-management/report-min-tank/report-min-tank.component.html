@@ -36,7 +36,7 @@
               placeholder="DD/MM/YYYY"
               ngbDatepicker
               #startAt="ngbDatepicker"
-              formControlName='createFrom'
+              formControlName='dateFrom'
             />
             <div class="input-group-append">
               <button
@@ -48,7 +48,7 @@
           </div>
 
           <app-validate
-            [control]="searchForm.controls['createFrom']"
+            [control]="searchForm.controls['dateFrom']"
             [error]="'ngbDate'"
             [message]="'Ngày yêu cầu không đúng định dạng'"
           ></app-validate>
@@ -63,7 +63,7 @@
               placeholder="DD/MM/YYYY"
               ngbDatepicker
               #endAt="ngbDatepicker"
-              formControlName='createTo'
+              formControlName='dateTo'
             />
             <div class="input-group-append">
               <button
@@ -75,7 +75,7 @@
           </div>
 
           <app-validate
-            [control]="searchForm.controls['createTo']"
+            [control]="searchForm.controls['dateTo']"
             [error]="'ngbDate'"
             [message]="'Ngày yêu cầu đến không đúng định dạng'"
           ></app-validate>
@@ -100,7 +100,7 @@
     </div>
 
     <div class="card-toolbar row">
-      <a (click)='openModal($event)'>
+      <a (click)='openModal($event)' *ngIf='eAuthorize.CREATE_SHALLOW_BUTTON'>
         <button type="button" class="btn btn-primary btn-def">Tạo tịnh kho</button>
       </a>
     </div>

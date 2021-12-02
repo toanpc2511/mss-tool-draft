@@ -2,6 +2,14 @@
   padding: 0 1.75rem;
 }
 
+.custom-pl-100 {
+  padding-left: 100px;
+}
+
+.btn {
+  min-width: 155px;
+}
+
 table {
   min-width: 1024px;
   thead {
@@ -21,8 +29,8 @@ table {
     &.head-meter,
     &.final-meter,
     &.difference {
-      min-width: 150px;
-      max-width: 170px;
+      min-width: 170px;
+      max-width: 200px;
     }
 
     &.with-meter {
@@ -31,8 +39,9 @@ table {
     }
 
     &.note {
-      min-width: 200px;
+      min-width: 230px;
       max-width: 250px;
+      padding-left: 50px;
     }
   }
 }

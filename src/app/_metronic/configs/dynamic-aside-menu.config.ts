@@ -84,7 +84,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					bullet: 'dot',
 					page: '/quan-ly-qr-code/qr-voi',
 
-					permissionKey: EAuthorize.VIEW_PUMP_POLE_QR_LIST_SCREEN
+					permissionKey: EAuthorize.VIEW_PUMP_HOSE_QR_LIST_SCREEN
 				}
 			]
 		},
@@ -278,7 +278,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					title: 'Tịnh kho kịch bơm',
 					bullet: 'dot',
 					page: '/kho/tinh-kho-kich-bom',
-					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+					permissionKey: EAuthorize.VIEW_LIST_SHALLOW_SCREEN
 				}
 			]
 		},

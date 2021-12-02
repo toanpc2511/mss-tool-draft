@@ -6,8 +6,8 @@
   <div class="modal-body">
     <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
       <ng-container *ngIf='!data.dataDetail'>
-        <form class="form form-label-right">
-          <div class="form-group row">
+        <form class="form form-label-right" [formGroup]='minTankForm'>
+          <div class="form-group px-5 row">
             <div class="col-lg-6 row">
               <div class='col-lg-4'>
                 <label class="form-label required">Tên kỳ tịnh kho</label>
@@ -19,116 +19,198 @@
                   placeholder="Nhập tên kỳ tịnh kho"
                   autocomplete="off"
                   maxlength="50"
+                  formControlName='name'
+                  trim='blur'
                 />
-                <!--            <app-validate-->
-                <!--              [control]="productForm.controls['code']"-->
-                <!--              [error]="'required'"-->
-                <!--              [message]="'Mã nhóm sản phẩm không được để trống'"-->
-                <!--            ></app-validate>-->
+                <app-validate
+                  [control]="minTankForm.controls['name']"
+                  [error]="'required'"
+                  [message]="'Tên kỳ tịnh kho không được để trống'"
+                ></app-validate>
               </div>
             </div>
 
-            <div class="col-lg-6 row ml-5">
-              <div class='col-lg-4'>
+            <div class="col-lg-6 row custom-pl-100">
+              <div class='col-lg-5'>
                 <label class="form-label">Dung tích</label>
               </div>
-              <div class='col-lg-8'>
-                <label class="form-label font-weight-bold">1000 L</label>
+              <div class='col-lg-7'>
+                <label class="form-label font-weight-bold">{{minTankForm.get('capacity').value || 0}}</label>
               </div>
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group px-5 row">
             <div class="col-lg-6 row">
               <div class='col-lg-4'>
                 <label class="form-label required">Chọn trạm</label>
               </div>
               <div class='col-lg-8'>
-                <select
-                  class="form-control form-control-solid w-75"
-                >
-                  <option value=''>tất cả</option>
+                <select class="form-control form-control-solid w-75" formControlName='stationId'>
+                  <option [value]="''">Chọn trạm</option>
+                  <option *ngFor="let item of stationEmployee" [value]="item.id">{{item.name}}</option>
                 </select>
+                <app-validate
+                  [control]="minTankForm.controls['stationId']"
+                  [error]="'required'"
+                  [message]="'Trạm không được để trống'"
+                ></app-validate>
               </div>
             </div>
 
-            <div class="col-lg-6 row ml-5">
-              <div class='col-lg-4'>
+            <div class="col-lg-6 row custom-pl-100">
+              <div class='col-lg-5'>
                 <label class="form-label">Chiều cao</label>
               </div>
-              <div class='col-lg-8'>
-                <label class="form-label font-weight-bold">1000 mm</label>
+              <div class='col-lg-7'>
+                <label class="form-label font-weight-bold">{{minTankForm.get('height').value || 0}}</label>
               </div>
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group px-5 row">
             <div class="col-lg-6 row">
               <div class='col-lg-4'>
                 <label class="form-label required">Chọn bồn</label>
               </div>
               <div class='col-lg-8'>
-                <select
-                  class="form-control form-control-solid w-75"
-                >
-                  <option value=''>tất cả</option>
+                <select class="form-control form-control-solid w-75" formControlName="gasFieldId">
+                  <option [value]="''">Chọn bồn</option>
+                  <option *ngFor="let item of listGasField" [value]="item.id">
+                    {{ item.code }} - {{item.name}}
+                  </option>
                 </select>
+                <app-validate
+                  [control]="minTankForm.controls['gasFieldId']"
+                  [error]="'required'"
+                  [message]="'Bồn không được để trống'"
+                ></app-validate>
               </div>
             </div>
 
-            <div class="col-lg-6 row ml-5">
-              <div class='col-lg-4'>
+            <div class="col-lg-6 row custom-pl-100">
+              <div class='col-lg-5'>
                 <label class="form-label">Chiều dài</label>
               </div>
-              <div class='col-lg-8'>
-                <label class="form-label font-weight-bold">1000 mm</label>
+              <div class='col-lg-7'>
+                <label class="form-label font-weight-bold">{{minTankForm.get('length').value || 0 }}</label>
               </div>
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group px-5 row">
             <div class="col-lg-6 row">
               <div class='col-lg-4'>
                 <label class="form-label">Mã bồn</label>
               </div>
               <div class='col-lg-8'>
-                <label class="form-label font-weight-bold">DHD678</label>
+                <label class="form-label font-weight-bold">{{minTankForm.get('gasFieldCode').value || '--'}}</label>
               </div>
             </div>
 
-            <div class="col-lg-6 row ml-5">
-              <div class='col-lg-4'>
+            <div class="col-lg-6 row custom-pl-100">
+              <div class='col-lg-5'>
                 <label class="form-label">Nhiên liệu đang chứa</label>
               </div>
-              <div class='col-lg-8'>
-                <label class="form-label font-weight-bold">RON 95</label>
+              <div class='col-lg-7'>
+                <label class="form-label font-weight-bold">{{minTankForm.get('productName').value || '--'}}</label>
               </div>
             </div>
           </div>
+
+          <div class="table-responsive angular-bootstrap-table pt-5">
+            <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+              <thead>
+              <tr>
+                <th scope='' class='import-quantity text-right'>Nhập trong kỳ</th>
+                <th scope='' class='head-meter text-right'>Số công tơ đầu</th>
+                <th scope='' class='final-meter form-label required'>Số công tơ cuối</th>
+                <th scope='' class='with-meter text-right'>Lượng xuất theo công tơ</th>
+                <th scope='' class='difference text-right'>Âm dương</th>
+                <th scope='' class='note'>Ghi chú</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr>
+                <td class='import-quantity text-right'>
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [ngbTooltip]="minTankForm.get('importQuantity').value || 0 | number | vnCurrency"
+                  >
+                    {{ minTankForm.get('importQuantity').value || 0 | number | vnCurrency }}
+                  </p>
+                </td>
+                <td class='head-meter text-right'>
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [ngbTooltip]="minTankForm.get('headMeter').value || 0 | number | vnCurrency"
+                  >
+                    {{ minTankForm.get('headMeter').value || 0 | number | vnCurrency }}
+                  </p>
+                </td>
+                <td class='final-meter'>
+                  <input
+                    class="form-control w-75"
+                    placeholder="Nhập số công tơ cuối"
+                    formControlName='finalMeter'
+                    maxlength="13"
+                    decimal-mask
+                  />
+                  <app-validate
+                    [control]="minTankForm.controls['finalMeter']"
+                    [error]="'required'"
+                    [message]="'Số công tơ cuối không được để trống'"
+                  ></app-validate>
+                  <app-validate
+                    [control]="minTankForm.controls['finalMeter']"
+                    [error]="'gasFieldNull'"
+                    [message]="'Vui lòng chọn bồn'"
+                  ></app-validate>
+                </td>
+                <td class='with-meter text-right'>
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [ngbTooltip]="minTankForm.get('withMeter').value || 0 | number | vnCurrency"
+                  >
+                    {{ minTankForm.get('withMeter').value || 0 | number | vnCurrency }}
+                  </p>
+                </td>
+                <td class='difference text-right'>
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [class.text-primary]='minTankForm.get("difference").value > 0'
+                    [class.text-danger]='minTankForm.get("difference").value < 0'
+                    [ngbTooltip]="minTankForm.get('difference').value || 0| number | vnCurrency"
+                  >
+                    {{minTankForm.get("difference").value > 0 ? ("+ " + minTankForm.get("difference").value) : minTankForm.get("difference").value || 0 | number | vnCurrency}}
+                  </p>
+                </td>
+                <td class='note'>
+                  <input
+                    type="text"
+                    class="form-control form-control-solid"
+                    placeholder="Nhập ghi chú"
+                    autocomplete="off"
+                    maxlength="200"
+                    formControlName='note'
+                    trim='blur'
+                  />
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </form>
-
-        <div class="table-responsive angular-bootstrap-table pt-5">
-          <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
-            <thead>
-            <tr>
-              <th scope='' class='import-quantity text-right'>Nhập trong kỳ</th>
-              <th scope='' class='head-meter text-right'>Số công tơ đầu</th>
-              <th scope='' class='final-meter text-right'>Số công tơ cuối</th>
-              <th scope='' class='with-meter text-right'>Lượng xuất theo công tơ</th>
-              <th scope='' class='difference text-right'>Âm dương</th>
-              <th scope='' class='note'>Ghi chú</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            </tbody>
-          </table>
-        </div>
       </ng-container>
 
       <ng-container *ngIf='data.dataDetail'>
         <form class="form form-label-right">
-          <div class="form-group row">
+          <div class="form-group px-5 row">
             <div class="col-lg-6 row">
               <div class='col-lg-4'>
                 <label class="form-label">Tên kỳ tịnh kho</label>
@@ -138,7 +220,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 row ml-5">
+            <div class="col-lg-6 row custom-pl-100">
               <div class='col-lg-4'>
                 <label class="form-label">Dung tích</label>
               </div>
@@ -148,7 +230,7 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group px-5 row">
             <div class="col-lg-6 row">
               <div class='col-lg-4'>
                 <label class="form-label">Tên trạm</label>
@@ -158,7 +240,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 row ml-5">
+            <div class="col-lg-6 row custom-pl-100">
               <div class='col-lg-4'>
                 <label class="form-label">Chiều cao</label>
               </div>
@@ -168,7 +250,7 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group px-5 row">
             <div class="col-lg-6 row">
               <div class='col-lg-4'>
                 <label class="form-label">Tên bồn</label>
@@ -178,7 +260,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 row ml-5">
+            <div class="col-lg-6 row custom-pl-100">
               <div class='col-lg-4'>
                 <label class="form-label">Chiều dài</label>
               </div>
@@ -188,7 +270,7 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group px-5 row">
             <div class="col-lg-6 row">
               <div class='col-lg-4'>
                 <label class="form-label">Mã bồn</label>
@@ -198,7 +280,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 row ml-5">
+            <div class="col-lg-6 row custom-pl-100">
               <div class='col-lg-4'>
                 <label class="form-label">Nhiên liệu đang chứa</label>
               </div>
@@ -292,7 +374,10 @@
       Hủy
     </button>
     <ng-container *ngIf='!data.dataDetail'>
-      <button type="button" class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
+      <button type="button" class="btn btn-primary btn-dialog" (click)='onSubmit()'>Lưu</button>
+    </ng-container>
+    <ng-container *ngIf='data.dataDetail'>
+      <button type="button" class="btn btn-primary btn-dialog" (click)='downloadFile()'>Xuất phiếu tịnh kho</button>
     </ng-container>
   </div>
 </div>

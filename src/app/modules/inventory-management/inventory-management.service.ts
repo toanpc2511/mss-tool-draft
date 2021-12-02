@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { GasStationResponse } from '../gas-station/gas-station.service';
+import { IInfoGasField } from './report-min-tank/modal-report-min-tank/modal-report-min-tank.component';
 
 export enum EWarehouseOrderStatus {
 	NEW = 'NEW',
@@ -567,9 +568,22 @@ export class InventoryManagementService {
       .set('size', size.toString())
       .set('station-id', data.stationId.toString())
       .set('gas-field-id', data.gasFieldId.toString())
-      .set('create-from', data.createFrom)
-      .set('create-to', data.createTo);
+      .set('date-from', data.dateFrom)
+      .set('date-to', data.dateTo);
     return this.http.get<Array<IShallow>>(`shallows/filters`, {params})
+  }
+
+  // Lấy thông tin nhập kịch bơm
+  getInfoShallows(statioId: number, gasFieldId: number) {
+    const params = new HttpParams()
+      .set('station-id', statioId.toString())
+      .set('gas-field-id', gasFieldId.toString())
+    return this.http.get<IInfoGasField>('shallows/infos', {params});
+  }
+
+  // Tạo tịnh kho kịch bơm
+  createShallow(dataReq) {
+    return this.http.post('shallows', dataReq);
   }
 
 }
