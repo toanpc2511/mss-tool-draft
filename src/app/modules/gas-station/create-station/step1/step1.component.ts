@@ -171,7 +171,7 @@ export class Step1Component implements OnInit, OnChanges {
 				this.stationForm.patchValue(this.step1Data);
 				const coordinates =
 					this.step1Data.lat && this.step1Data.lon
-						? [this.step1Data.lat, this.step1Data.lon].join(',')
+						? [this.step1Data.lat, this.step1Data.lon].join(', ')
 						: '';
 				this.stationForm.get('coordinates').patchValue(coordinates);
 				this.cdr.detectChanges();
@@ -209,7 +209,7 @@ export class Step1Component implements OnInit, OnChanges {
 		}
 		const coordinates = (this.stationForm.value?.coordinates as string)?.split(',') || '';
 		const lat = coordinates[0] || null;
-		const lon = coordinates[1] || null;
+		const lon = coordinates[1].trim() || null;
 		const value = { ...this.stationForm.value, lat, lon };
     console.log(value);
 

@@ -1,22 +1,5 @@
-.card-header {
-  border-bottom: 0;
-}
-
-.card-body {
-  padding-top: 0 !important;
-}
-
-.search-result {
-  padding: 0 1em;
-  line-height: 35px;
-  background: #e3f1ff;
-  .card-toolbar {
-    gap: 50px;
-  }
-}
-
-.btn-def {
-  min-width: 110px;
+.modal-body {
+  padding: 0 1.75rem;
 }
 
 table {
@@ -32,14 +15,8 @@ table {
       }
     }
   }
+
   th, td {
-    &.code,
-    &.gas-field,
-    &.create-at,
-    &.creator {
-      min-width: 170px;
-      max-width: 220px;
-    }
     &.head-inventory,
     &.import-quantity,
     &.export-quantity,

@@ -95,7 +95,7 @@
           </div>
 
           <div class="col-lg-8">
-            <label class="form-label font-weight-bold">{{dataDetail?.representativeGiveCode }} - {{dataDetail?.exportedWarehouseName}}</label>
+            <label class="form-label font-weight-bold">{{dataDetail?.exportedWarehouseName}}</label>
           </div>
         </div>
       </div>
@@ -121,7 +121,7 @@
           </div>
 
           <div class="col-lg-8">
-            <label class="form-label font-weight-bold">{{dataDetail?.representativeGiveCode }} - {{dataDetail?.exportedWarehouseName}}</label>
+            <label class="form-label font-weight-bold">{{dataDetail?.exportedWarehouseName}}</label>
           </div>
         </div>
 
@@ -302,12 +302,16 @@
                 placeholder="Nhập nhiệt độ"
                 formControlName='temperatureExport'
                 maxlength="13"
-                decimal-mask
               />
               <app-validate
                 [control]="item.controls['temperatureExport']"
                 [error]="'required'"
                 [message]="'Nhiệt độ không được để trống'"
+              ></app-validate>
+              <app-validate
+                [control]="item.get('temperatureExport')"
+                [error]="'pattern'"
+                [message]="'Nhiệt độ sai định dạng'"
               ></app-validate>
             </td>
             <td class="quota-export">

@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { GasStationResponse } from '../gas-station/gas-station.service';
 
 export enum EWarehouseOrderStatus {
 	NEW = 'NEW',
@@ -293,16 +294,78 @@ export interface IProductExportInventory {
   unit: string;
 }
 
+export interface IMeasures {
+  actualFinal: number;
+  code: string;
+  createdAt: string;
+  difference: number;
+  exportQuantity: number;
+  finalInventory: number;
+  headInventory: number;
+  height: number;
+  id: number;
+  importQuantity: number;
+  name: string;
+  note: string;
+  stationId: number;
+  stationName: string;
+  creator: {
+    code: string;
+    id: number;
+    name: string;
+    positionName: string;
+  },
+  gasField: {
+    capacity: string;
+    code: string;
+    gasStationId: number;
+    height: string;
+    id: number;
+    length: string;
+    name: string;
+    productId: number;
+    productName: string;
+    status: string;
+  }
+}
+
+export interface IShallow {
+  stationName: string;
+  capacity: string;
+  createdAt: string;
+  creatorName: string;
+  difference: number;
+  finalMeter: number;
+  gasFieldCode: string;
+  gasFieldId: number;
+  gasFieldName: string;
+  headMeter: number;
+  height: string;
+  id: number;
+  importQuantity: number;
+  length: string;
+  name: string;
+  note: string;
+  productId: number;
+  productName: string;
+  withMeter: number;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
 export class InventoryManagementService {
 	constructor(private http: HttpService) {}
 
-	// Lấy ds trạm trạng thái active
+	// Lấy ds trạm trạng thái hoạt động và không hoạt dộng
 	getStationEmployee() {
 		const params = new HttpParams().set('status', 'ACTIVE');
 		return this.http.get<Array<IStationEployee>>(`employees/station-status`, { params });
+	}
+
+	// Lấy ds trạm trạng thái hoạt động
+	getStationEmployeeActive() {
+		return this.http.get<Array<IStationEployee>>(`gas-stations/employee/station-active`);
 	}
 
 	// Lấy ds tất cả nhân viên yêu cầu
@@ -469,9 +532,44 @@ export class InventoryManagementService {
   }
 
   // Lấy tất cả kho xuất theo hình thức đặt kho
-  getListSuppliersAll(formOrder: string) {
-    const params = new HttpParams()
-      .set('form-order', formOrder)
-    return this.http.get<Array<ISupplier>>(`suppliers/stations/import-export`, {params})
+  getListSuppliersActive() {
+    return this.http.get<Array<ISupplier>>(`gas-stations/employee-active`)
   }
+
+  // Lấy ds kho xuất (scr nhập kho)
+  getGasStations() {
+    return this.http.get<GasStationResponse[]>(`gas-stations`);
+  }
+
+  // Lấy ds lịch sử tịnh kho đo bể
+  getMeasures(page: number, size: number, data) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('station-id', data.stationId.toString())
+      .set('gas-field-id', data.gasFieldId.toString())
+      .set('create-from', data.createFrom)
+      .set('create-to', data.createTo);
+    return this.http.get<IMeasures[]>(`measures/filters`, {params})
+  }
+
+  // Lấy ds bồn theo trạm
+  getGasFields(gasStationId: number) {
+    const params = new HttpParams()
+      .set('gas-station-id', gasStationId.toString())
+    return this.http.get(`gas-fields`, {params})
+  }
+
+  // Lấy ds lịch sử tịnh kho kịch bơm
+  getShallows(page: number, size: number, data) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('station-id', data.stationId.toString())
+      .set('gas-field-id', data.gasFieldId.toString())
+      .set('create-from', data.createFrom)
+      .set('create-to', data.createTo);
+    return this.http.get<Array<IShallow>>(`shallows/filters`, {params})
+  }
+
 }

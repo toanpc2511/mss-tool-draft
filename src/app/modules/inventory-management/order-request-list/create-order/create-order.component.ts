@@ -197,7 +197,7 @@ export class CreateOrderComponent extends BaseComponent implements OnInit, After
 
 	getStationEmployee() {
 		this.inventoryManagementService
-			.getStationEmployee()
+			.getStationEmployeeActive()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
 				this.stationEmployee = res.data;

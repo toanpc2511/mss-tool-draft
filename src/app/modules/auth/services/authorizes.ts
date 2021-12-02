@@ -88,6 +88,7 @@ export enum EAuthorize {
 	REJECT_SWAP_SHIFT_BUTTON = 'reject_swap_shift_button',
 	ACCEPT_SWAP_SHIFT_BUTTON = 'accept_swap_shift_button',
 	VIEW_LOCK_SHIFT_LIST_SCREEN = 'view_lock_shift_list_screen',
+  CONFIRMED_REQUEST_LOCK_SHIFT = 'confirmed_request_lock_shift',
 	VIEW_HISTORY_REVENUE_SHIFT = 'view_history_revenue_shift',
 	VIEW_REVENUE_OIL_DETAIL_SCREEN = 'view_revenue_oil_detail_screen',
 	VIEW_REVENUE_OTHER_PRODUCT_DETAIL_SCREEN = 'view_revenue_other_product_detail_screen',
@@ -107,5 +108,20 @@ export enum EAuthorize {
 	CONFIRM_AND_REJECT_SWAP_SHIFT = 'confirm_and_reject_swap_shift',
   CREATE_SWAP_POINT = 'create_swap_point',
   VIEW_LIST_IMPORT_REQUEST = 'view_list_import_request',
-  CREATE_IMPORT_REQUEST = 'create_improt_request'
+  CREATE_IMPORT_REQUEST = 'create_import_request',
+  VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN = 'view_warehouse_import_detail_screen',
+  COMPLETE_WAREHOUSE_IMPORT_BUTTON = 'complete_warehouse_import_button',
+  VIEW_HISTORY_ACCUMULATE_SCREEN = 'view_history_accumulate_screen',
+  VIEW_MEASURES_SCREEN = 'view_measures_screen',
+  DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button',
+
+  /* Quản lý kho */
+
+  /* End */
+
+  //Banner Roles
+  VIEW_BANNERS_SCREEN = 'view_banners_screen',
+  UPDATE_BANNER = 'update_banner',
+  CREATE_BANNER = 'create_banner',
+  DELETE_BANNER = 'delete_banner'
 }

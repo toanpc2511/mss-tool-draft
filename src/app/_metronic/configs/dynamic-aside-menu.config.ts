@@ -131,13 +131,13 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
           title: 'Đổi điểm',
           bullet: 'dot',
           page: '/doi-diem/chi-tiet',
-          permissionKey: EAuthorize.VIEW_TRANSFER_POINT_HISTORY_MENU
+          permissionKey: EAuthorize.CREATE_SWAP_POINT
         },
         {
           title: 'Lịch sử đổi điểm',
           bullet: 'dot',
           page: '/doi-diem/lich-su',
-          permissionKey: EAuthorize.CREATE_SWAP_POINT
+          permissionKey: EAuthorize.VIEW_TRANSFER_POINT_HISTORY_MENU
         }
       ]
     },
@@ -220,7 +220,14 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					page: '/cau-hinh/khuyen-mai',
 
 					permissionKey: EAuthorize.VIEW_PROMOTION_LIST_SCREEN
-				}
+				},
+        {
+          title: 'Cấu hình banner',
+          bullet: 'dot',
+          page: '/cau-hinh/banner',
+
+          permissionKey: EAuthorize.VIEW_BANNERS_SCREEN
+        }
 			]
 		},
 		{
@@ -258,7 +265,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					title: 'Tịnh kho đo bể',
 					bullet: 'dot',
 					page: '/kho/tinh-kho-do-be',
-					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+					permissionKey: EAuthorize.VIEW_MEASURES_SCREEN
 				},
 				{
 					title: 'Tịnh kho kịch bơm',
@@ -282,7 +289,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 			bullet: 'dot',
 			page: '/lich-su-su-dung-diem/danh-sach',
 			icon: 'fas fa-business-time',
-			permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
+			permissionKey: EAuthorize.VIEW_HISTORY_ACCUMULATE_SCREEN
 		}
 	]
 };

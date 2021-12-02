@@ -19,7 +19,7 @@
           <label>Kho xuất</label>
           <select class="form-control form-control-solid w-75" formControlName="idStoreExport">
             <option [value]="''">Tất cả</option>
-            <option *ngFor="let item of dataSupplier" [value]="item.id">{{item.name}}</option>
+            <option *ngFor="let item of listExportWarehouse" [value]="item.id">{{item.name}}</option>
           </select>
         </div>
       </div>

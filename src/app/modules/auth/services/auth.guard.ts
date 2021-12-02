@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { DynamicAsideMenuConfig } from 'src/app/_metronic/configs/dynamic-aside-menu.config';
 import { AuthService } from './auth.service';
-import { isNumber } from 'lodash';
 import { EAuthorize } from './authorizes';
 
 @Injectable({ providedIn: 'root' })
@@ -83,8 +82,31 @@ const SPECIAL_URL: SpecialUrl[] = [
     url: '/kho/yeu-cau-dat-hang/them-moi',
     permissionKey: EAuthorize.CREATE_IMPORT_REQUEST
   },
-
+  {
+    url: '/doi-diem/chi-tiet',
+    permissionKey: EAuthorize.CREATE_SWAP_POINT
+  },
+  {
+    url: '/doi-diem/lich-su',
+    permissionKey: EAuthorize.VIEW_TRANSFER_POINT_HISTORY_MENU
+  },
+  {
+    url: '/kho/nhap-kho/chi-tiet',
+    permissionKey: EAuthorize.VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN
+  },
+  {
+    url: '/kho/tinh-kho-do-be',
+    permissionKey: EAuthorize.VIEW_MEASURES_SCREEN
+  },
+  {
+    url: '/cau-hinh/banner',
+    permissionKey: EAuthorize.VIEW_BANNERS_SCREEN
+  },
 	/* thêm tạm thời */
+	{
+		url: '/kho/yeu-cau-dat-hang/them-moi',
+		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+	},
 	{
 		url: '/kho/yeu-cau-dat-hang/chi-tiet',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
@@ -115,10 +137,6 @@ const SPECIAL_URL: SpecialUrl[] = [
 	},
 	{
 		url: '/kho/nhap-kho',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	},
-	{
-		url: '/kho/tinh-kho-do-be',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	},
 	{

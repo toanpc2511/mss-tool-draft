@@ -15,6 +15,7 @@ import { IError } from '../../../shared/models/error.model';
 import { convertDateToServer } from '../../../shared/helpers/functions';
 import { LIST_STATUS_EXPORT } from '../../../shared/data-enum/list-status';
 import { Router } from '@angular/router';
+import { GasStationResponse } from '../../gas-station/gas-station.service';
 
 @Component({
   selector: 'app-export-inventory',
@@ -57,11 +58,11 @@ export class ExportInventoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getListSupplier();
     this.builForm();
     this.initDate();
 
     this.onSearch();
-    this.hanldChangeOrderInfo();
   }
 
   builForm() {
@@ -79,19 +80,12 @@ export class ExportInventoryComponent implements OnInit {
     this.searchForm.get('expectedDateEnd').patchValue(this.today);
   }
 
-  hanldChangeOrderInfo() {
-    this.searchForm.get('orderForm').valueChanges
-      .subscribe((x) => {
-        this.dataSupplier = [];
-        if (x) {
-          this.searchForm.get('idStoreExport').patchValue('');
-          this.inventoryManagementService.getListSuppliersAll(x)
-            .subscribe((res) => {
-              this.dataSupplier = res.data;
-              this.cdr.detectChanges();
-            })
-        }
-      });
+  getListSupplier() {
+    this.inventoryManagementService.getListSuppliersActive()
+      .subscribe((res) => {
+        this.dataSupplier = res.data;
+        this.cdr.detectChanges();
+      })
   }
 
   onSearch() {
