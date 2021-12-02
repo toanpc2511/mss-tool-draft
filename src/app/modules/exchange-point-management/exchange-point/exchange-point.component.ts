@@ -156,7 +156,7 @@ export class ExchangePointComponent {
     const files = Array.from(inputElement.files);
 
     if (files[0].size > 2000000) {
-      this.toastr.error('Dung lượng ảnh quá lớn');
+      this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 2MB');
       this.exchangePointForm.controls['photoVoucher'].patchValue('');
       return;
     }

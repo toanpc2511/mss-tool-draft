@@ -19,6 +19,7 @@ import { PromotionConfigModalComponent } from './promotion-config-modal/promotio
 import { BannerConfigComponent } from './banner-config/banner-config.component';
 import { CreateBannerDialogComponent } from './banner-config/dialog/create-banner-dialog/create-banner-dialog.component';
 import { UpdateBannerDialogComponent } from './banner-config/dialog/update-banner-dialog/update-banner-dialog.component';
+import { NewsConfigComponent } from './news-config/news-config.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { UpdateBannerDialogComponent } from './banner-config/dialog/update-banne
     PromotionConfigModalComponent,
     BannerConfigComponent,
     CreateBannerDialogComponent,
-    UpdateBannerDialogComponent
+    UpdateBannerDialogComponent,
+    NewsConfigComponent
   ],
   imports: [
     CommonModule,

@@ -5,6 +5,7 @@ import { PointsConfigComponent } from './points-config/points-config.component';
 import { DiscountConfigComponent } from './discount-config/discount-config.component';
 import { PromotionConfigComponent } from './promotion-config/promotion-config.component';
 import { BannerConfigComponent } from './banner-config/banner-config.component';
+import { NewsConfigComponent } from './news-config/news-config.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'banner',
     component: BannerConfigComponent
+  },
+  {
+    path: 'news',
+    component: NewsConfigComponent
   }
 ];
 
