@@ -1,48 +1,206 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IError } from '../../../../shared/models/error.model';
 import { DestroyService } from '../../../../shared/services/destroy.service';
-import { IMeasures } from '../../inventory-management.service';
+import { IMeasures, InventoryManagementService } from '../../inventory-management.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { convertMoney } from '../../../../shared/helpers/functions';
 
 @Component({
   selector: 'app-modal-report-measure-tank',
   templateUrl: './modal-report-measure-tank.component.html',
   styleUrls: ['./modal-report-measure-tank.component.scss'],
-  providers: [DestroyService]
+  providers: [DestroyService, FormBuilder]
 })
 export class ModalReportMeasureTankComponent implements OnInit {
   @Input() data: IDataTransfer;
-  @ViewChild('btnSave', { static: true }) btnSave: ElementRef;
+
+  measureTankForm: FormGroup;
+  stationEmployee;
+  listGasField;
+  listInfoHeightGas;
 
   constructor(
     public modal: NgbActiveModal,
-    private destroy$: DestroyService
+    private destroy$: DestroyService,
+    private inventoryManagementService: InventoryManagementService,
+    private cdr: ChangeDetectorRef,
+    private fb: FormBuilder,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
-    this.onSubmit();
+    this.getStationEmployeeActive();
+    this.buildForm();
+    this.handleGasStation();
+    this.handleGasField();
+    this.changeValueHeight();
+  }
+
+  buildForm() {
+    this.measureTankForm = this.fb.group({
+      name: ['', Validators.required],
+      capacity: [''],
+      heightGasFieldInfo: [''],
+      stationId: ['', Validators.required],
+      height: ['', Validators.required],
+      gasFieldId: ['', Validators.required],
+      length: [''],
+      gasFieldCode: [''],
+      productName: [''],
+
+      headInventory: [''],
+      importQuantity: [''],
+      exportQuantity: [''],
+      finalInventory: [''],
+      actualFinal: [''],
+      difference: [''],
+      note: [''],
+      productId: [''],
+      gasFieldName: ['']
+    })
+  }
+
+  getStationEmployeeActive() {
+    this.inventoryManagementService
+      .getStationEmployeeActive()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.stationEmployee = res.data;
+        this.cdr.detectChanges();
+      });
+  }
+
+  handleGasStation() {
+    this.measureTankForm.get('stationId').valueChanges
+      .subscribe((x) => {
+        if (x) {
+          this.inventoryManagementService.getGasFields(x)
+            .subscribe((res) => {
+              this.listGasField = res.data;
+              this.cdr.detectChanges();
+            })
+        } else {
+          this.listGasField = [];
+        }
+
+        this.measureTankForm.get('gasFieldId').patchValue('');
+      })
+  }
+
+  handleGasField() {
+    this.measureTankForm.get('gasFieldId').valueChanges
+      .subscribe((x) => {
+        const gasFieldId = this.measureTankForm.get('gasFieldId').value;
+        const stationId = this.measureTankForm.get('stationId').value;
+
+        if (x) {
+          this.inventoryManagementService.getInfoMeasures(stationId, gasFieldId)
+            .subscribe((res) => {
+              this.pathValueForm(res.data);
+              this.cdr.detectChanges();
+            })
+        } else {
+          this.pathValueForm();
+        }
+      })
+  }
+
+  pathValueForm(value?) {
+    const headInventoryValue = Number(this.measureTankForm.get('headInventory').value);
+    const importQuantityValue = Number(this.measureTankForm.get('importQuantity').value);
+    const exportQuantityValue = Number(this.measureTankForm.get('exportQuantity').value);
+    const finalInventoryValue = headInventoryValue + importQuantityValue - exportQuantityValue;
+
+    this.listInfoHeightGas = value ? value.scales : [];
+
+    this.measureTankForm.get('gasFieldCode').patchValue(value ? value.gasFieldCode : '');
+    this.measureTankForm.get('capacity').patchValue(value ? value.capacity : '');
+    this.measureTankForm.get('heightGasFieldInfo').patchValue(value ? value.heightGasFieldInfo : '');
+    this.measureTankForm.get('length').patchValue(value ? value.length : '');
+    this.measureTankForm.get('productName').patchValue(value ? value?.productName : '');
+
+    this.measureTankForm.get('headInventory').patchValue(value ? value?.headInventory : '');
+    this.measureTankForm.get('importQuantity').patchValue(value ? value?.importQuantity : '');
+    this.measureTankForm.get('exportQuantity').patchValue(value ? value?.exportQuantity : '');
+    this.measureTankForm.get('finalInventory').patchValue(value ? (finalInventoryValue) : '');
+    this.measureTankForm.get('actualFinal').patchValue(value ? value?.actualFinal : '');
+    this.measureTankForm.get('difference').patchValue(value ? value?.difference : '');
+    this.measureTankForm.get('productId').patchValue(value ? value?.productId : '');
+    this.measureTankForm.get('gasFieldName').patchValue(value ? value?.gasFieldName : '');
+
+    this.measureTankForm.get('height').patchValue('');
+
+  }
+
+  changeValueHeight() {
+    this.measureTankForm.get('height').valueChanges
+      .subscribe((value) => {
+        if (this.measureTankForm.get('gasFieldId').value) {
+          const infoHeightGas = this.listInfoHeightGas.find((x) => {
+            return x.height === convertMoney(value.toString());
+          });
+          if (!infoHeightGas && value) {
+            this.measureTankForm.get('actualFinal').patchValue(0);
+            this.measureTankForm.get('height').setErrors({heightNull: true});
+            return;
+          }
+          this.measureTankForm.get('actualFinal').patchValue(infoHeightGas?.numberOfLit);
+
+          const finalInventoryValue = Number(this.measureTankForm.get('finalInventory').value);
+          const differenceValue = infoHeightGas?.numberOfLit - finalInventoryValue;
+
+          this.measureTankForm.get('difference').patchValue(differenceValue);
+          this.cdr.detectChanges();
+        } else {
+          this.measureTankForm.get('height').setErrors({gasFieldNull: true})
+        }
+      })
   }
 
   onClose() {
     this.modal.close();
   }
 
-  onSubmit(): void {
-    fromEvent(this.btnSave.nativeElement, 'click')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        // this.productForm.markAllAsTouched();
-        // if (this.productForm.invalid) {
-        //   return;
-        // }
-        if (!this.data.dataDetail) {
-          console.log('new');
-        } else {
-          console.log('update');
+  onSubmit() {
+    this.measureTankForm.markAllAsTouched();
+    if (this.measureTankForm.invalid) {
+      return;
+    }
+
+    const valueForm = this.measureTankForm.value;
+    const dataReq = {
+      name: valueForm.name,
+      productName: valueForm.productName,
+      productId: Number(valueForm.productId),
+      gasFieldName: valueForm.gasFieldName,
+      gasFieldCode: valueForm.gasFieldCode,
+      gasFieldId: Number(valueForm.gasFieldId),
+      stationId: Number(valueForm.stationId),
+      length: valueForm.length,
+      capacity: valueForm.capacity,
+      note: valueForm.note,
+      importQuantity: valueForm.importQuantity,
+      exportQuantity: valueForm.exportQuantity,
+      height: valueForm.height,
+      actualFinal: valueForm.actualFinal,
+      heightGasField: valueForm.heightGasFieldInfo
+    }
+    this.inventoryManagementService.createmMasures(dataReq)
+      .subscribe((res) => {
+        if (res) {
+          this.modal.close(true);
         }
-      });
+      }, (error: IError) => {
+        this.checkError(error);
+      })
+  }
+
+  checkError(error: IError) {
+    this.toastr.error(error.code)
   }
 }
 

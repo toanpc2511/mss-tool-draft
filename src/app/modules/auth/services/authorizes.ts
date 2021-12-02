@@ -117,6 +117,7 @@ export enum EAuthorize {
   EXPORT_FILE_WORD_WAREHOUSE_IMPORT = 'export_file_word_warehouse_import',
   VIEW_LIST_SHALLOW_SCREEN = 'view_list_shallow_screen',
   CREATE_SHALLOW_BUTTON = 'create_shallow_button',
+  CREATE_MEASURES_BUTTON = 'create_measures_button',
   /* End */
 
   // Exchange point roles
