@@ -136,6 +136,11 @@
                 [error]="'required'"
                 [message]="'Vui lòng cập nhật ảnh phiếu chi'"
               ></app-validate>
+              <app-validate
+                [control]="exchangePointForm.controls['photoVoucher']"
+                [error]="'file'"
+                [message]="'Vui lòng chọn ảnh'"
+              ></app-validate>
             </div>
           </div>
         </form>
