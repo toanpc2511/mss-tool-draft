@@ -16,6 +16,8 @@
             placeholder="Nhập title"
             formControlName='title'
             autocomplete="off"
+            maxlength='100'
+            trim='blur'
           />
           <app-validate
             [control]="createForm.controls['title']"
@@ -51,12 +53,17 @@
             [error]="'required'"
             [message]="'Vui lòng cập nhật ảnh banner'"
           ></app-validate>
+          <app-validate
+            [control]="createForm.controls['imageId']"
+            [error]="'file'"
+            [message]="'Vui lòng chọn ảnh'"
+          ></app-validate>
         </div>
       </div>
 
       <div class="row align-items-center mb-5">
         <div class='col-lg-2'>
-          <label class='form-label'>Trạng thái</label>
+          <label class='form-label'>Hiện banner</label>
         </div>
         <div class='col-auto'>
           <label class="checkbox checkbox-lg mr-2">
@@ -75,7 +82,7 @@
       </div>
       <div>
         <button type="button" style='width: 100px' class="btn btn-primary" (click)="onSubmit()">
-          Thêm mới
+          Xác nhận
         </button>
       </div>
     </div>

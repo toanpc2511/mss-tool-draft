@@ -34,7 +34,7 @@ export class CreateBannerDialogComponent {
   initCreateForm(): void {
     this.createForm = this.fb.group({
       title: ['', Validators.required],
-      shows: [false],
+      shows: [true],
       imageId: ['', Validators.required],
       typeMedia: ['IMAGE']
     });
@@ -70,9 +70,19 @@ export class CreateBannerDialogComponent {
     const files = Array.from(inputElement.files);
 
     if (files[0].size > 2000000) {
-      this.toastr.error('Dung lượng ảnh quá lớn');
+      this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 2MB');
+      this.createForm.controls['imageId'].patchValue('');
+      return;
     }
 
+    const typeFile = files[0].type.split('/')[0];
+    if (typeFile !== 'image') {
+      this.createForm.controls['imageId'].setErrors({file: true});
+      this.attachmentImg = null;
+      return;
+    }
+
+    this.createForm.controls['imageId'].setErrors({file: false});
     this.uploadImageFile(files[0]);
 
     inputElement.value = null;

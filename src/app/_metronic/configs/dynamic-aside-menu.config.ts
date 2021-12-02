@@ -131,7 +131,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
           title: 'Đổi điểm',
           bullet: 'dot',
           page: '/doi-diem/chi-tiet',
-          permissionKey: EAuthorize.CREATE_SWAP_POINT
+          permissionKey: EAuthorize.TRANSFER_POINT_BUTTON
         },
         {
           title: 'Lịch sử đổi điểm',
@@ -227,6 +227,13 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
           page: '/cau-hinh/banner',
 
           permissionKey: EAuthorize.VIEW_BANNERS_SCREEN
+        },
+        {
+          title: 'Cấu hình tin tức',
+          bullet: 'dot',
+          page: '/cau-hinh/news',
+
+          permissionKey: EAuthorize.VIEW_LIST_NEWS_SCREEN
         }
 			]
 		},

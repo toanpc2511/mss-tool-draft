@@ -16,6 +16,8 @@
             placeholder="Nhập title"
             formControlName='title'
             autocomplete="off"
+            maxlength='100'
+            trim='blur'
           />
           <app-validate
             [control]="updateForm.controls['title']"
@@ -44,19 +46,24 @@
             class="img"
             (click)="bannerImg.click()"
             width="300px"
-            [src]="attachmentImg && attachmentImg?.url || this.data?.image.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+            [src]="attachmentImg && attachmentImg?.url || urlImg || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
           />
           <app-validate
             [control]="updateForm.controls['imageId']"
             [error]="'required'"
             [message]="'Vui lòng cập nhật ảnh banner'"
           ></app-validate>
+          <app-validate
+            [control]="updateForm.controls['imageId']"
+            [error]="'file'"
+            [message]="'Vui lòng chọn ảnh'"
+          ></app-validate>
         </div>
       </div>
 
       <div class="row align-items-center mb-5">
         <div class='col-lg-2'>
-          <label class='form-label'>Trạng thái</label>
+          <label class='form-label'>Hiện banner</label>
         </div>
         <div class='col-auto'>
           <label class="checkbox checkbox-lg mr-2">

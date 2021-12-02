@@ -26,6 +26,8 @@ export class UpdateBannerDialogComponent implements OnInit {
   @Input() data: IBanner;
   updateForm: FormGroup;
   attachmentImg: IImage;
+  urlImg: string;
+  isImageLarge: boolean;
 
   constructor(public modal: NgbActiveModal,
               private fb: FormBuilder,
@@ -38,6 +40,8 @@ export class UpdateBannerDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.initUpdateForm();
+    this.urlImg = this.data.image.url;
+    this.cdr.detectChanges();
   }
 
   initUpdateForm(): void {
@@ -50,8 +54,7 @@ export class UpdateBannerDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.data.image)
-    if (!this.updateForm.get('imageId').value) {
+    if (!this.updateForm.get('imageId').value && !this.isImageLarge) {
       this.updateForm.get('imageId').patchValue(this.data.image.id, {emitModelToViewChange: false});
     }
     this.updateForm.markAllAsTouched();
@@ -83,9 +86,23 @@ export class UpdateBannerDialogComponent implements OnInit {
     const files = Array.from(inputElement.files);
 
     if (files[0].size > 2000000) {
-      this.toastr.error('Dung lượng ảnh quá lớn');
+      this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 2MB');
+      this.updateForm.controls['imageId'].patchValue('');
+      this.attachmentImg = null;
+      this.urlImg = '';
+      this.isImageLarge = true;
+      return;
     }
 
+    const typeFile = files[0].type.split('/')[0];
+    if (typeFile !== 'image') {
+      this.updateForm.controls['imageId'].setErrors({file: true});
+      this.attachmentImg = null;
+      this.urlImg = '';
+      return;
+    }
+
+    this.updateForm.controls['imageId'].setErrors({file: false});
     this.uploadImageFile(files[0]);
 
     inputElement.value = null;

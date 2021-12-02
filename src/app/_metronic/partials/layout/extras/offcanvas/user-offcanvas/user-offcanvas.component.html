@@ -4,8 +4,8 @@
       <h3 class="font-weight-bold m-0">
         Thông tin cá nhân
 
-<!--        Notify-->
-<!--        <small class="text-muted font-size-sm ml-2">Chưa có notify</small>-->
+        <!--        Notify-->
+        <!--        <small class="text-muted font-size-sm ml-2">Chưa có notify</small>-->
       </h3>
       <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
         <em class="ki ki-close icon-xs text-muted"></em>
@@ -15,10 +15,8 @@
     <div class="offcanvas-content pr-5 mr-n5">
       <div class="d-flex align-items-center mt-5">
         <div class="symbol symbol-100 mr-5">
-          <div
-            class="symbol-label"
-            [ngStyle]="{ 'background-image': 'url(' + _user.accountAuth?.profile?.avatar?.url + ')'}"
-          ></div>
+          <div class="symbol-label"
+            [ngStyle]="{ 'background-image': 'url(' + _user.accountAuth?.profile?.avatar?.url + ')'}"></div>
           <em class="symbol-badge bg-success"></em>
         </div>
         <div class="d-flex flex-column">
@@ -26,7 +24,8 @@
             {{ _user.accountAuth?.username }}
           </a>
           <div class="navi mt-2">
-            <a class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5 cursor-pointer" (click)="logout()">Đăng xuất</a>
+            <a class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5 cursor-pointer" (click)="logout()">Đăng
+              xuất</a>
           </div>
         </div>
       </div>
@@ -62,6 +61,17 @@
           <div class='col-lg-5'>Email</div>
           <div class='col-lg-7'>
             <strong>{{ _user.accountAuth?.profile?.email }}</strong>
+          </div>
+        </div>
+        <div class="form-group row align-items-center py-3">
+          <label class="col-5 col-form-label">Xác thực 2 bước</label>
+          <div class="col-7 d-flex justify-content-start">
+            <span class="switch switch-primary switch-sm">
+              <label>
+                <input type="checkbox" name="select-two-auth-step" [formControl]="enableTwoAuthStepControl" />
+                <span></span>
+              </label>
+            </span>
           </div>
         </div>
       </div>

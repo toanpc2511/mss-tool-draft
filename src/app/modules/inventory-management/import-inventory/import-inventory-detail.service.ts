@@ -16,7 +16,10 @@ export class ImportInventoryDetailService {
   }
 
   completeImportingInventoryRequest(data: any, id: string): Observable<DataResponse<boolean>> {
-    console.log(data);
     return this.http.put<boolean>(`warehouse-import/${id}`, data);
+  }
+
+  exportFileWorld(id: string): Observable<DataResponse<string>> {
+    return this.http.getFileUrl<string>(`warehouse-import/word/${id}`);
   }
 }

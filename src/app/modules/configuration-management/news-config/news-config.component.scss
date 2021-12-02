@@ -6,15 +6,12 @@ table {
   min-width: 1024px;
 
   tr, td {
-    &.title, &.status {
-      max-width: 200px;
+    &.title {
+      max-width: 900px;
     }
 
-    &.image {
-      img {
-        max-width: 300px;
-        max-height: 300px;
-      }
+    &.action {
+      width: 150px;
     }
   }
 

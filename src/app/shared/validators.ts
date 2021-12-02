@@ -74,6 +74,16 @@ export class TValidators extends Validators {
 		return null;
 	};
 
+	static verificationCode = (control: FormControl): ValidationErrors | null => {
+		const value = control?.value as string;
+		if (value) {
+			if (value.length !== 6) {
+				return { verificationCode: true };
+			}
+		}
+		return null;
+	};
+
 	static phone = (control: FormControl): ValidationErrors | null => {
 		const value = control.value || '';
 		if (!value.trim()) {

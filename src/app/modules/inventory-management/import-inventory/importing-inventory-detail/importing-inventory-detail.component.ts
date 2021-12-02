@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IImportingInventoryDetail, IWareHouseOrderProduct } from '../models/importing-inventory-detail.interface';
 import { ActivatedRoute } from '@angular/router';
-import { finalize } from 'rxjs/operators';
+import { finalize, takeUntil, tap } from 'rxjs/operators';
 import { ImportInventoryDetailService } from '../import-inventory-detail.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -9,6 +9,8 @@ import { DataResponse } from '../../../../shared/models/data-response.model';
 import { SubheaderService } from '../../../../_metronic/partials/layout';
 import { preventLetter } from '../../../../shared/utitlies/prevent-letter';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
+import { FileService } from '../../../../shared/services/file.service';
+import { DestroyService } from '../../../../shared/services/destroy.service';
 
 @Component({
   selector: 'app-importing-inventory-detail',
@@ -32,7 +34,9 @@ export class ImportingInventoryDetailComponent extends BaseComponent implements 
               private cdr: ChangeDetectorRef,
               private fb: FormBuilder,
               private toarst: ToastrService,
-              private subheader: SubheaderService)
+              private subheader: SubheaderService,
+              private fileService: FileService,
+              private destroy$: DestroyService)
   {
     super();
     this.initImportInventoryDetailForm();
@@ -187,6 +191,19 @@ export class ImportingInventoryDetailComponent extends BaseComponent implements 
     this.importInventoryDetailForm.controls['nameDriver'].updateValueAndValidity();
     this.importInventoryDetailForm.controls['licensePlates'].setValidators([Validators.required]);
     this.importInventoryDetailForm.controls['licensePlates'].updateValueAndValidity();
+  }
+
+  exportFile(): void {
+    this.service.exportFileWorld(this.idImportingInventoryDetail)
+      .pipe(
+        tap((res: DataResponse<string>) => {
+          if (res) {
+            this.fileService.downloadFromUrl(res.data);
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
 }
