@@ -35,8 +35,7 @@ export class TwoFactorComponent implements AfterViewInit {
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService
 	) {
-		this.currentPhoneNumber =
-			'0965927626' || this.authService.getCurrentUserValue()?.accountAuth?.profile?.phone;
+		this.currentPhoneNumber = this.authService.getCurrentUserValue()?.accountAuth?.profile?.phone;
 	}
 	ngAfterViewInit(): void {
 		this.reCapchaVerifier = new firebase.auth.RecaptchaVerifier('otp-captcha', {
