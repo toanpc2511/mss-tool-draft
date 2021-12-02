@@ -153,7 +153,7 @@
                 </td>
                 <td class='final-meter'>
                   <input
-                    class="form-control w-75"
+                    class="form-control"
                     placeholder="Nhập số công tơ cuối"
                     formControlName='finalMeter'
                     maxlength="13"
@@ -193,7 +193,7 @@
                 <td class='note'>
                   <input
                     type="text"
-                    class="form-control form-control-solid"
+                    class="form-control"
                     placeholder="Nhập ghi chú"
                     autocomplete="off"
                     maxlength="200"
@@ -256,7 +256,7 @@
                 <label class="form-label">Tên bồn</label>
               </div>
               <div class='col-lg-8'>
-                <label class="form-label font-weight-bold">{{data.dataDetail?.name}}</label>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.gasFieldName}}</label>
               </div>
             </div>
 
@@ -285,7 +285,7 @@
                 <label class="form-label">Nhiên liệu đang chứa</label>
               </div>
               <div class='col-lg-8'>
-                <label class="form-label font-weight-bold">RON 95</label>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.productName}}</label>
               </div>
             </div>
           </div>

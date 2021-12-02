@@ -2,14 +2,14 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IStationEployee } from '../../history-of-using-points/history-of-using-points.service';
 import { takeUntil } from 'rxjs/operators';
-import { IFilterImportInventory, IMeasures, InventoryManagementService } from '../inventory-management.service';
+import { IMeasures, InventoryManagementService } from '../inventory-management.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import * as moment from 'moment';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
-import { IDataTransfer, ProductModalComponent } from '../../product/product-modal/product-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalReportMeasureTankComponent } from './modal-report-measure-tank/modal-report-measure-tank.component';
 import { convertDateToServer } from '../../../shared/helpers/functions';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 
 @Component({
   selector: 'app-report-measure-tank',
@@ -17,7 +17,7 @@ import { convertDateToServer } from '../../../shared/helpers/functions';
   styleUrls: ['./report-measure-tank.component.scss'],
   providers: [FormBuilder, DestroyService]
 })
-export class ReportMeasureTankComponent implements OnInit {
+export class ReportMeasureTankComponent extends BaseComponent implements OnInit {
   today: string;
   firstDayOfMonth: string;
 
@@ -34,6 +34,7 @@ export class ReportMeasureTankComponent implements OnInit {
     private modalService: NgbModal,
     private inventoryManagementService: InventoryManagementService
   ) {
+    super();
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
     this.init();
@@ -117,7 +118,6 @@ export class ReportMeasureTankComponent implements OnInit {
   }
 
   openModal($event?: Event, data?): void {
-    console.log(data);
     if ($event) {
       $event.stopPropagation();
     }

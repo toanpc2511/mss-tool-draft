@@ -574,16 +574,29 @@ export class InventoryManagementService {
   }
 
   // Lấy thông tin nhập kịch bơm
-  getInfoShallows(statioId: number, gasFieldId: number) {
+  getInfoShallows(stationId: number, gasFieldId: number) {
     const params = new HttpParams()
-      .set('station-id', statioId.toString())
+      .set('station-id', stationId.toString())
       .set('gas-field-id', gasFieldId.toString())
     return this.http.get<IInfoGasField>('shallows/infos', {params});
+  }
+
+  // Lấy thông tin nhập kịch bơm
+  getInfoMeasures(stationId: number, gasFieldId: number) {
+    const params = new HttpParams()
+      .set('station-id', stationId.toString())
+      .set('gas-field-id', gasFieldId.toString())
+    return this.http.get('measures/infos', {params});
   }
 
   // Tạo tịnh kho kịch bơm
   createShallow(dataReq) {
     return this.http.post('shallows', dataReq);
+  }
+
+  // Tạo tịnh kho đo bể
+  createmMasures(dataReq) {
+    return this.http.post('measures', dataReq);
   }
 
 }

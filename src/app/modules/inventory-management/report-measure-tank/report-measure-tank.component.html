@@ -100,7 +100,7 @@
     </div>
 
     <div class="card-toolbar row">
-      <a (click)='openModal($event)'>
+      <a (click)='openModal($event)' *ngIf='eAuthorize.CREATE_MEASURES_BUTTON | canUseFeature'>
         <button type="button" class="btn btn-primary btn-def">Tạo tịnh kho</button>
       </a>
     </div>

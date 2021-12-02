@@ -16,7 +16,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ModalReportMinTankComponent implements OnInit {
   @Input() data: IDataTransfer;
-  @ViewChild('btnSave', { static: true }) btnSave: ElementRef;
 
   minTankForm: FormGroup;
   stationEmployee;
