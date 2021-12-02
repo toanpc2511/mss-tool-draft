@@ -157,7 +157,18 @@ export class ExchangePointComponent {
 
     if (files[0].size > 2000000) {
       this.toastr.error('Dung lượng ảnh quá lớn');
+      this.exchangePointForm.controls['photoVoucher'].patchValue('');
+      return;
     }
+
+    const typeFile = files[0].type.split('/')[0];
+    if (typeFile !== 'image') {
+      this.exchangePointForm.controls['photoVoucher'].setErrors({file: true});
+      this.attachmentImg = null;
+      return;
+    }
+
+    this.exchangePointForm.controls['photoVoucher'].setErrors({file: false});
 
     this.uploadImageFile(files[0]);
 

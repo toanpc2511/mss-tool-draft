@@ -84,7 +84,7 @@ const SPECIAL_URL: SpecialUrl[] = [
   },
   {
     url: '/doi-diem/chi-tiet',
-    permissionKey: EAuthorize.CREATE_SWAP_POINT
+    permissionKey: EAuthorize.TRANSFER_POINT_BUTTON
   },
   {
     url: '/doi-diem/lich-su',

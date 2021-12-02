@@ -99,14 +99,11 @@ export enum EAuthorize {
 	CONFIRM_CLOSE_SHIFT_BUTTON = 'confirm_close_shift_button',
 	REQUEST_ = 'request_',
 	PRINT_SELL_REPORT_BUTTON = 'print_sell_report_button',
-	TRANSFER_POINT_BUTTON = 'transfer_point_button',
-	VIEW_TRANSFER_POINT_HISTORY_MENU = 'view_transfer_point_history_menu',
 	VIEW_TRANSACTION_HISTORY_MENU = 'view_transaction_history_menu',
 	EXPORT_FILE_TRANSATION_HISTORY_BUTTON = 'export_file_transation_history_button',
 	VIEW_TRANSACTION_HISTORY_DETAIL_BUTTON = 'view_transaction_history_detail_button',
 	ACCEPT_ACCUMULATE_POINTS_BUTTON = 'accept_accumulate_points_button',
 	CONFIRM_AND_REJECT_SWAP_SHIFT = 'confirm_and_reject_swap_shift',
-  CREATE_SWAP_POINT = 'create_swap_point',
   VIEW_LIST_IMPORT_REQUEST = 'view_list_import_request',
   CREATE_IMPORT_REQUEST = 'create_import_request',
   VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN = 'view_warehouse_import_detail_screen',
@@ -118,6 +115,11 @@ export enum EAuthorize {
   /* Quản lý kho */
 
   /* End */
+
+  // Exchange point roles
+  TRANSFER_POINT_BUTTON = 'transfer_point_button',
+  VIEW_TRANSFER_POINT_HISTORY_MENU = 'view_transfer_point_history_menu',
+  // End
 
   //Banner Roles
   VIEW_BANNERS_SCREEN = 'view_banners_screen',

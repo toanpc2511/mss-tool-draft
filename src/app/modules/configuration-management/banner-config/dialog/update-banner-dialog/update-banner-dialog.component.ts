@@ -86,6 +86,8 @@ export class UpdateBannerDialogComponent implements OnInit {
 
     if (files[0].size > 2000000) {
       this.toastr.error('Dung lượng ảnh quá lớn');
+      this.updateForm.controls['imageId'].patchValue('');
+      return;
     }
 
     const typeFile = files[0].type.split('/')[0];
