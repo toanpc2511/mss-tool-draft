@@ -46,7 +46,8 @@
               "ng2-trim-directive",
               "angular2-text-mask",
               "file-saver",
-              "moment-timezone"
+              "moment-timezone",
+              "@firebase/app-check"
             ],
             "index": "src/index.html",
             "main": "src/main.ts",
