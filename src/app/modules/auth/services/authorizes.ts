@@ -113,6 +113,12 @@ export enum EAuthorize {
   VIEW_MEASURES_SCREEN = 'view_measures_screen',
   DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button',
 
+  /* Lịch sử chốt ca */
+  UPDATE_PRODUCT_REVENUE = 'update_product_revenue',
+  UPDATE_OTHER_PRODUCT_REVENUE = 'update_other_product_revenue',
+  UPDATE_PROMOTIONAL_REVENUE = 'update_promotional_revenue',
+  /* End */
+
   /* Quản lý kho */
   EXPORT_FILE_WORD_WAREHOUSE_IMPORT = 'export_file_word_warehouse_import',
   VIEW_LIST_SHALLOW_SCREEN = 'view_list_shallow_screen',
