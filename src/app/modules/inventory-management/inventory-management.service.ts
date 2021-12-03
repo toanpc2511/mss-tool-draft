@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { GasStationResponse } from '../gas-station/gas-station.service';
 import { IInfoGasField } from './report-min-tank/modal-report-min-tank/modal-report-min-tank.component';
+import { Observable } from 'rxjs';
+import { DataResponse } from '../../shared/models/data-response.model';
 
 export enum EWarehouseOrderStatus {
 	NEW = 'NEW',
@@ -309,7 +311,12 @@ export interface IMeasures {
   name: string;
   note: string;
   stationId: number;
-  stationName: string;
+  station: {
+    address: string;
+    chip: boolean;
+    id: number;
+    name: string;
+  };
   creator: {
     code: string;
     id: number;
@@ -597,6 +604,19 @@ export class InventoryManagementService {
   // Tạo tịnh kho đo bể
   createmMasures(dataReq) {
     return this.http.post('measures', dataReq);
+  }
+
+  // Download file world (scr: warehouse-export)
+  exportFileWorldWarehouseExport(id: string): Observable<DataResponse<string>> {
+    return this.http.getFileUrl<string>(`warehouse-export/word/${id}`);
+  }
+
+  // Download file world (scr: measure-tank)
+  exportFileWorldMeasure(stationId: number, gasFieldId: number): Observable<DataResponse<string>> {
+    const params = new HttpParams()
+      .set('station-id', stationId.toString())
+      .set('gas-field-id', gasFieldId.toString())
+    return this.http.getFileUrl<string>(`measures/export/word`, {params});
   }
 
 }

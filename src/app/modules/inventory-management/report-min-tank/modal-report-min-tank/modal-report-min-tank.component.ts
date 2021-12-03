@@ -101,6 +101,9 @@ export class ModalReportMinTankComponent implements OnInit {
     if (error.code === 'SUN-OIL-4963') {
       this.toastr.error('Số công tơ cuối phải lớn hơn số công tơ đầu')
     }
+    if (error.code === 'SUN-OIL-4962') {
+      this.minTankForm.get('name').setErrors({ nameExisted: true });
+    }
   }
 
   getStationEmployeeActive() {

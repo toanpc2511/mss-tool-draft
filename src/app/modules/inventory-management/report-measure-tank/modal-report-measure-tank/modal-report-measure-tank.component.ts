@@ -1,13 +1,15 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { IError } from '../../../../shared/models/error.model';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { IMeasures, InventoryManagementService } from '../../inventory-management.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { convertMoney } from '../../../../shared/helpers/functions';
+import { DataResponse } from '../../../../shared/models/data-response.model';
+import { FileService } from '../../../../shared/services/file.service';
 
 @Component({
   selector: 'app-modal-report-measure-tank',
@@ -22,6 +24,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
   stationEmployee;
   listGasField;
   listInfoHeightGas;
+  isChip: boolean;
 
   constructor(
     public modal: NgbActiveModal,
@@ -29,6 +32,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
     private inventoryManagementService: InventoryManagementService,
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
+    private fileService: FileService,
     private toastr: ToastrService
   ) { }
 
@@ -54,7 +58,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
 
       headInventory: [''],
       importQuantity: [''],
-      exportQuantity: [''],
+      exportQuantity: ['', !this.isChip ? Validators.required : Validators.nullValidator],
       finalInventory: [''],
       actualFinal: [''],
       difference: [''],
@@ -62,6 +66,8 @@ export class ModalReportMeasureTankComponent implements OnInit {
       productId: [''],
       gasFieldName: ['']
     })
+
+    this.isChip = true;
   }
 
   getStationEmployeeActive() {
@@ -110,6 +116,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
   }
 
   pathValueForm(value?) {
+    this.isChip = value ? value.chip : true;
     const headInventoryValue = Number(this.measureTankForm.get('headInventory').value);
     const importQuantityValue = Number(this.measureTankForm.get('importQuantity').value);
     const exportQuantityValue = Number(this.measureTankForm.get('exportQuantity').value);
@@ -184,7 +191,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
       capacity: valueForm.capacity,
       note: valueForm.note,
       importQuantity: valueForm.importQuantity,
-      exportQuantity: valueForm.exportQuantity,
+      exportQuantity: convertMoney(valueForm.exportQuantity.toString()),
       height: valueForm.height,
       actualFinal: valueForm.actualFinal,
       heightGasField: valueForm.heightGasFieldInfo
@@ -200,7 +207,22 @@ export class ModalReportMeasureTankComponent implements OnInit {
   }
 
   checkError(error: IError) {
-    this.toastr.error(error.code)
+    if (error.code === 'SUN-OIL-4964') {
+      this.measureTankForm.get('name').setErrors({ nameExisted: true });
+    }
+  }
+
+  downloadFile() {
+    this.inventoryManagementService.exportFileWorldMeasure(this.data?.dataDetail?.station.id, this.data?.dataDetail.gasField.id)
+      .pipe(
+        tap((res: DataResponse<string>) => {
+          if (res) {
+            this.fileService.downloadFromUrl(res.data);
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 }
 

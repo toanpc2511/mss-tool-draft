@@ -25,7 +25,12 @@
                 <app-validate
                   [control]="minTankForm.controls['name']"
                   [error]="'required'"
-                  [message]="'Tên kỳ tịnh kho không được để trống'"
+                  [message]="'Tên kỳ tịnh kho không được để trống1'"
+                ></app-validate>
+                <app-validate
+                  [control]="minTankForm.controls['name']"
+                  [error]="'nameExisted'"
+                  [message]="'Tên kỳ tịnh kho đã tồn tại'"
                 ></app-validate>
               </div>
             </div>
@@ -370,14 +375,14 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" [class.btn-155]='data.dataDetail' (click)="onClose()">
       Hủy
     </button>
     <ng-container *ngIf='!data.dataDetail'>
       <button type="button" class="btn btn-primary btn-dialog" (click)='onSubmit()'>Lưu</button>
     </ng-container>
     <ng-container *ngIf='data.dataDetail'>
-      <button type="button" class="btn btn-primary btn-dialog" (click)='downloadFile()'>Xuất phiếu tịnh kho</button>
+      <button type="button" class="btn btn-primary btn-dialog" [class.btn-155]='data.dataDetail' (click)='downloadFile()'>Xuất phiếu tịnh kho</button>
     </ng-container>
   </div>
 </div>
