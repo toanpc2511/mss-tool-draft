@@ -15,6 +15,8 @@ import {
 } from '../../inventory-management.service';
 import { IError } from '../../../../shared/models/error.model';
 import { convertMoney } from '../../../../shared/helpers/functions';
+import { DataResponse } from '../../../../shared/models/data-response.model';
+import { FileService } from '../../../../shared/services/file.service';
 
 @Component({
   selector: 'app-export-inventory-detail',
@@ -42,7 +44,9 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
     private router: Router,
     private cdr: ChangeDetectorRef,
     private inventoryManagementService: InventoryManagementService,
-    private destroy$: DestroyService
+    private destroy$: DestroyService,
+    private fileService: FileService,
+    private _route: ActivatedRoute
   ) {
     super();
     this.driverNameControl.disable();
@@ -167,6 +171,19 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
     if (error.code === 'SUN-OIL-4284') {
       this.toastr.error('Dữ liệu lỗi vui lòng thử lại');
     }
+  }
+
+  exportFile(): void {
+    this.inventoryManagementService.exportFileWorldWarehouseExport(this.exportInventoryId)
+      .pipe(
+        tap((res: DataResponse<string>) => {
+          if (res) {
+            this.fileService.downloadFromUrl(res.data);
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
 }

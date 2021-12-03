@@ -479,6 +479,7 @@
     <button
       *ngIf='dataDetail?.status === "EXPORTED"'
       class="btn btn-primary mr-3 button"
+      (click)='exportFile()'
     >
       In phiếu xuất
     </button>

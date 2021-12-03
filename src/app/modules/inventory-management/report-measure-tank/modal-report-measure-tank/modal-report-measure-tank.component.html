@@ -27,6 +27,11 @@
                   [error]="'required'"
                   [message]="'Tên kỳ tịnh kho không được để trống'"
                 ></app-validate>
+                <app-validate
+                  [control]="measureTankForm.controls['name']"
+                  [error]="'nameExisted'"
+                  [message]="'Tên kỳ tịnh kho đã tồn tại'"
+                ></app-validate>
               </div>
             </div>
 
@@ -132,7 +137,7 @@
               <tr>
                 <th scope='' class='head-inventory text-right'>Tồn đầu</th>
                 <th scope='' class='import-quantity import-quantity text-right'>Nhập</th>
-                <th scope='' class='export-quantity text-right'>Xuất</th>
+                <th scope='' class='export-quantity form-label' [class.text-right]='isChip' [class.required]='!isChip'>Xuất</th>
                 <th scope='' class='final-inventory text-right'>Tồn cuối</th>
                 <th scope='' class='height form-label required'>Chiều cao đo bể (cm)</th>
                 <th scope='' class='actual-final text-right'>Tồn cuối thực tế</th>
@@ -159,14 +164,31 @@
                     {{ measureTankForm.get('importQuantity').value || 0 | number | vnCurrency }}
                   </p>
                 </td>
-                <td class='export-quantity text-right'>
-                  <p
-                    class="cursor-pointer text-ellipsis"
-                    placement="top"
-                    [ngbTooltip]="measureTankForm.get('exportQuantity').value || 0 | number | vnCurrency"
-                  >
-                    {{ measureTankForm.get('exportQuantity').value || 0 | number | vnCurrency }}
-                  </p>
+                <td class='export-quantity' [class.text-right]='isChip'>
+                  <ng-container *ngIf='isChip'>
+                    <p
+                      class="cursor-pointer text-ellipsis"
+                      placement="top"
+                      [ngbTooltip]="measureTankForm.get('exportQuantity').value || 0 | number | vnCurrency"
+                    >
+                      {{ measureTankForm.get('exportQuantity').value || 0 | number | vnCurrency }}
+                    </p>
+                  </ng-container>
+
+                  <ng-container *ngIf='!isChip'>
+                    <input
+                      class="form-control"
+                      placeholder="Xuất trong kỳ"
+                      formControlName='exportQuantity'
+                      maxlength="13"
+                      decimal-mask
+                    />
+                    <app-validate
+                      [control]="measureTankForm.controls['exportQuantity']"
+                      [error]="'required'"
+                      [message]="'Xuất trong kỳ không được để trống'"
+                    ></app-validate>
+                  </ng-container>
                 </td>
                 <td class='final-inventory text-right'>
                   <p
@@ -267,7 +289,7 @@
                 <label class="form-label">Tên trạm</label>
               </div>
               <div class='col-lg-8'>
-                <label class="form-label font-weight-bold">{{data.dataDetail?.stationName}}</label>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.station?.name}}</label>
               </div>
             </div>
 
@@ -427,9 +449,14 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" [class.btn-155]='data.dataDetail' (click)="onClose()">
       Hủy
     </button>
-    <button type="button" class="btn btn-primary btn-dialog" (click)='onSubmit()'>Lưu</button>
+    <ng-container *ngIf='!data.dataDetail'>
+      <button type="button" class="btn btn-primary btn-dialog" (click)='onSubmit()'>Lưu</button>
+    </ng-container>
+    <ng-container *ngIf='data.dataDetail'>
+      <button type="button" class="btn btn-primary btn-dialog" [class.btn-155]='data.dataDetail' (click)='downloadFile()'>Xuất phiếu tịnh kho</button>
+    </ng-container>
   </div>
 </div>
