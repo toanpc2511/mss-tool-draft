@@ -31,7 +31,7 @@ export class ModalReportMinTankComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getStationEmployeeActive();
+    this.getStationToken();
     this.buildForm();
     this.handleGasStation();
     this.handleGasField();
@@ -106,9 +106,9 @@ export class ModalReportMinTankComponent implements OnInit {
     }
   }
 
-  getStationEmployeeActive() {
+  getStationToken() {
     this.inventoryManagementService
-      .getStationEmployeeActive()
+      .getStationToken('ACTIVE', 'false')
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.stationEmployee = res.data;

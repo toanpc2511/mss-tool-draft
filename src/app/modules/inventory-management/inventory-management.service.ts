@@ -376,6 +376,14 @@ export class InventoryManagementService {
 		return this.http.get<Array<IStationEployee>>(`gas-stations/employee/station-active`);
 	}
 
+  // Lấy ds trạm theo token login
+  getStationToken(status, corporation) {
+    const params = new HttpParams()
+      .set('status', status)
+      .set('corporation', corporation)
+    return this.http.get<Array<IStationEployee>>(`gas-stations/employee/status-corporation`, {params});
+  }
+
 	// Lấy ds tất cả nhân viên yêu cầu
 	getAllEmployee() {
 		return this.http.get<Array<IEmployees>>(`employees/stations-employee`);
@@ -565,7 +573,7 @@ export class InventoryManagementService {
   getGasFields(gasStationId: number) {
     const params = new HttpParams()
       .set('gas-station-id', gasStationId.toString())
-    return this.http.get(`gas-fields`, {params})
+    return this.http.get(`gas-fields/station`, {params})
   }
 
   // Lấy ds lịch sử tịnh kho kịch bơm

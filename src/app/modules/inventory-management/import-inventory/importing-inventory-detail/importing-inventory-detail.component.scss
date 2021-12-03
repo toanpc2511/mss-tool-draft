@@ -29,23 +29,26 @@
       }
 
       &.unit {
-        min-width: 70px;
+        min-width: 80px;
       }
 
       &.amount-actually {
-        min-width: 90px;
+        min-width: 120px;
       }
 
-      &.gas-field-out-name, &.gas-field-in-name, &.difference, &.compartment {
-        min-width: 100px;
+      &.gas-field-out-name, &.gas-field-in-name, &.difference {
+        min-width: 150px;
+      }
+      &.compartment {
+        min-width: 200px;
       }
 
       &.temperature-export, &.quota-export, &.temperature-import, &.quota-import {
-        min-width: 160px;
+        min-width: 245px;
       }
 
       &.cap-lead, &.cap-valve {
-        min-width: 110px;
+        min-width: 200px;
       }
     }
 

@@ -71,6 +71,10 @@ const SPECIAL_URL: SpecialUrl[] = [
 		permissionKey: EAuthorize.VIEW_SWAP_SHIFT_SCREEN
 	},
 	{
+		url: '/ca-lam-viec/lich-su-chot-ca',
+		permissionKey: EAuthorize.VIEW_LOCK_SHIFT_LIST_SCREEN
+	},
+	{
 		url: '/ca-lam-viec/lich-su-chot-ca/chi-tiet',
 		permissionKey: EAuthorize.VIEW_SWAP_SHIFT_SCREEN
 	},
