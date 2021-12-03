@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { convertMoney } from '../../../../../shared/helpers/functions';
 import { IError } from '../../../../../shared/models/error.model';
+import { BaseComponent } from '../../../../../shared/components/base/base.component';
 
 @Component({
 	selector: 'app-promotion-detail',
@@ -14,7 +15,7 @@ import { IError } from '../../../../../shared/models/error.model';
 	styleUrls: ['./promotion-detail.component.scss'],
 	providers: [DestroyService]
 })
-export class PromotionDetailComponent implements OnInit {
+export class PromotionDetailComponent extends BaseComponent implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
   lockShiftId: number;
   dataSourceForm: FormArray = new FormArray([]);
@@ -29,7 +30,9 @@ export class PromotionDetailComponent implements OnInit {
 		private cdr: ChangeDetectorRef,
 		private toastr: ToastrService,
 		private fb: FormBuilder
-	) {}
+	) {
+    super();
+  }
 
 	ngOnInit(): void {
     this.activeRoute.params

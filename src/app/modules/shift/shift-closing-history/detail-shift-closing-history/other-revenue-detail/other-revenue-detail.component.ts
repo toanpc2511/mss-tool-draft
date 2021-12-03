@@ -8,6 +8,7 @@ import { convertMoney } from '../../../../../shared/helpers/functions';
 import { IError } from '../../../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { IPaginatorState, PaginatorState } from '../../../../../_metronic/shared/crud-table';
+import { BaseComponent } from '../../../../../shared/components/base/base.component';
 
 @Component({
 	selector: 'app-other-revenue-detail',
@@ -15,7 +16,7 @@ import { IPaginatorState, PaginatorState } from '../../../../../_metronic/shared
 	styleUrls: ['./other-revenue-detail.component.scss'],
 	providers: [FormBuilder, DestroyService]
 })
-export class OtherRevenueDetailComponent implements OnInit {
+export class OtherRevenueDetailComponent extends BaseComponent implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
   lockShiftId: number;
   dataSourceForm: FormArray = new FormArray([]);
@@ -32,6 +33,7 @@ export class OtherRevenueDetailComponent implements OnInit {
 		private toastr: ToastrService,
 		private fb: FormBuilder
 	) {
+    super();
 		this.paginatorState.page = 1;
 		this.paginatorState.pageSize = 10;
 		this.paginatorState.pageSizes = [5, 10, 15, 20];

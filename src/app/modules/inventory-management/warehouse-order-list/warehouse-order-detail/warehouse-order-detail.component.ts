@@ -149,7 +149,7 @@ export class WareHouseOrderDetailComponent extends BaseComponent implements OnIn
 
 		const dataModal: IConfirmModalData = {
 			title: 'Xác nhận',
-			message: `Bạn có chắc chắn muốn muốn phê duyệt đơn đặt kho ${this.dataDetail?.code} không ?`,
+			message: `Bạn có chắc chắn muốn phê duyệt đơn đặt kho ${this.dataDetail?.code} không ?`,
 			button: { class: 'btn-primary', title: 'Xác nhận' }
 		};
 

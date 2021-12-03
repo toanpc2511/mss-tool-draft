@@ -554,7 +554,7 @@
     </button>
 
     <button
-      *ngIf='statusLockShift !== "CLOSE"'
+      *ngIf='statusLockShift !== "CLOSE" && eAuthorize.UPDATE_PRODUCT_REVENUE | canUseFeature'
       class="m-2 btn btn-primary font-weight-bold"
       (click)="onSubmit()"
     >
