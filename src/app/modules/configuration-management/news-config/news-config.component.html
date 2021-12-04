@@ -5,13 +5,14 @@
     </div>
 
     <div class="card-toolbar">
-      <button
+      <a
+        [routerLink]='"them-moi"'
         type="button"
         class="btn btn-primary"
         *ngIf='eAuthorize.CREATE_NEWS_BUTTON | canUseFeature'
       >
         Thêm mới
-      </button>
+      </a>
     </div>
   </div>
   <div class="card-body">
@@ -24,8 +25,12 @@
 
         <tbody>
         <tr *ngFor='let item of listNews'>
-          <td class="title">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.title">
+          <td class='title' [routerLink]='["chi-tiet", item.id]'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.title"
+            >
               {{ item.title }}
             </p>
           </td>
@@ -33,6 +38,7 @@
           <td class="text-center action">
             <a class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                *ngIf='eAuthorize.UPDATE_NEWS_BUTTON | canUseFeature'
+               [routerLink]='["cap-nhat", item.id]'
             >
 								<span
                   [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -65,5 +71,7 @@
         </tfoot>
       </table>
     </div>
+
+    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
   </div>
 </div>

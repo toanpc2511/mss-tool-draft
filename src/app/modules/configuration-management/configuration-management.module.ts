@@ -20,6 +20,10 @@ import { BannerConfigComponent } from './banner-config/banner-config.component';
 import { CreateBannerDialogComponent } from './banner-config/dialog/create-banner-dialog/create-banner-dialog.component';
 import { UpdateBannerDialogComponent } from './banner-config/dialog/update-banner-dialog/update-banner-dialog.component';
 import { NewsConfigComponent } from './news-config/news-config.component';
+import { CreateNewsComponent } from './news-config/create-news/create-news.component';
+import { AngularEditorModule } from './news-config/editor-config/angular-editor.module';
+import { UpdateNewsComponent } from './news-config/update-news/update-news.component';
+import { NewsDetailComponent } from './news-config/news-detail/news-detail.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,10 @@ import { NewsConfigComponent } from './news-config/news-config.component';
     BannerConfigComponent,
     CreateBannerDialogComponent,
     UpdateBannerDialogComponent,
-    NewsConfigComponent
+    NewsConfigComponent,
+    CreateNewsComponent,
+    UpdateNewsComponent,
+    NewsDetailComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +54,8 @@ import { NewsConfigComponent } from './news-config/news-config.component';
     InputTrimModule,
     DirectivesModule,
     PipesModule,
-    AuthModule
+    AuthModule,
+    AngularEditorModule
   ]
 })
 export class ConfigurationManagementModule {}
