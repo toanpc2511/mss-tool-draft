@@ -68,8 +68,8 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           linkPath: 'kho'
         },
         {
-          title: 'Danh sách yêu cầu đặt kho',
-          linkText: 'Danh sách yêu cầu đặt kho',
+          title: 'Yêu cầu đặt kho',
+          linkText: 'Yêu cầu đặt kho',
           linkPath: 'kho/don-dat-kho'
         },
         {

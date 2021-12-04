@@ -254,19 +254,19 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
 					title: 'Yêu cầu đặt kho',
 					bullet: 'dot',
 					page: '/kho/don-dat-kho',
-					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+					permissionKey: EAuthorize.VIEW_WAREHOUSE_ORDERS_SCREEN
 				},
 				{
 					title: 'Xuất kho',
 					bullet: 'dot',
 					page: '/kho/xuat-kho',
-					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+					permissionKey: EAuthorize.VIEW_WAREHOUSE_EXPORT_LIST_SCREEN
 				},
 				{
 					title: 'Nhập kho',
 					bullet: 'dot',
 					page: '/kho/nhap-kho',
-					permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+					permissionKey: EAuthorize.VIEW_WAREHOUSE_IMPORT_LIST_SCREEN
 				},
 				{
 					title: 'Tịnh kho đo bể',

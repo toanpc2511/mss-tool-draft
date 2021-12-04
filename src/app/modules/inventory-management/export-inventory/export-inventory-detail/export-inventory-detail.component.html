@@ -470,7 +470,7 @@
 
   <div class="py-10 w-100 d-flex justify-content-center">
     <button
-      *ngIf='dataDetail?.status !== "EXPORTED"'
+      *ngIf='dataDetail?.status !== "EXPORTED" && eAuthorize.COMPLETE_WAREHOUSE_EXPORT_BUTTON | canUseFeature'
       class="btn btn-primary mr-3 button"
       (click)='onSubmit()'
     >

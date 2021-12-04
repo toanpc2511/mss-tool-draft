@@ -83,10 +83,6 @@ const SPECIAL_URL: SpecialUrl[] = [
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	},
   {
-    url: '/kho/yeu-cau-dat-hang',
-    permissionKey: EAuthorize.CREATE_IMPORT_REQUEST
-  },
-  {
     url: '/doi-diem/chi-tiet',
     permissionKey: EAuthorize.TRANSFER_POINT_BUTTON
   },
@@ -95,20 +91,8 @@ const SPECIAL_URL: SpecialUrl[] = [
     permissionKey: EAuthorize.VIEW_TRANSFER_POINT_HISTORY_MENU
   },
   {
-    url: '/kho/nhap-kho/chi-tiet',
-    permissionKey: EAuthorize.VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN
-  },
-  {
-    url: '/kho/tinh-kho-do-be',
-    permissionKey: EAuthorize.VIEW_MEASURES_SCREEN
-  },
-  {
     url: '/cau-hinh/banner',
     permissionKey: EAuthorize.VIEW_BANNERS_SCREEN
-  },
-  {
-    url: '/kho/tinh-kho-kich-bom',
-    permissionKey: EAuthorize.VIEW_LIST_SHALLOW_SCREEN
   },
   {
     url: '/quan-ly-qr-code/qr-san-pham',
@@ -118,32 +102,52 @@ const SPECIAL_URL: SpecialUrl[] = [
     url: '/quan-ly-qr-code/qr-voi',
     permissionKey: EAuthorize.VIEW_PUMP_HOSE_QR_LIST_SCREEN
   },
+  {
+    url: '/kho/yeu-cau-dat-hang',
+    permissionKey: EAuthorize.CREATE_IMPORT_REQUEST
+  },
+  {
+    url: '/kho/yeu-cau-dat-hang/them-moi',
+    permissionKey: EAuthorize.CREATE_IMPORT_REQUEST
+  },
+  {
+    url: '/kho/yeu-cau-dat-hang/chi-tiet',
+    permissionKey: EAuthorize.VIEW_DETAIL_IMPORT_REQUEST
+  },
+  {
+    url: '/kho/yeu-cau-dat-hang/sua-yeu-cau',
+    permissionKey: EAuthorize.UPDATE_IMPORT_REQUEST
+  },
+  {
+    url: '/kho/don-dat-kho',
+    permissionKey: EAuthorize.VIEW_WAREHOUSE_ORDERS_SCREEN
+  },
+  {
+    url: '/kho/xuat-kho',
+    permissionKey: EAuthorize.VIEW_WAREHOUSE_EXPORT_LIST_SCREEN
+  },
+  {
+    url: '/kho/nhap-kho',
+    permissionKey: EAuthorize.VIEW_WAREHOUSE_IMPORT_LIST_SCREEN
+  },
+  {
+    url: '/kho/tinh-kho-kich-bom',
+    permissionKey: EAuthorize.VIEW_LIST_SHALLOW_SCREEN
+  },
+  {
+    url: '/kho/nhap-kho/chi-tiet',
+    permissionKey: EAuthorize.VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN
+  },
+  {
+    url: '/kho/tinh-kho-do-be',
+    permissionKey: EAuthorize.VIEW_MEASURES_SCREEN
+  },
 
 
 
 
 
 	/* thêm tạm thời */
-	{
-		url: '/kho/yeu-cau-dat-hang/them-moi',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	},
-	{
-		url: '/kho/yeu-cau-dat-hang/chi-tiet',
-		permissionKey: EAuthorize.VIEW_DETAIL_IMPORT_REQUEST
-	},
-	{
-		url: '/kho/yeu-cau-dat-hang/sua-yeu-cau',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	},
-	{
-		url: '/kho/don-dat-kho/chi-tiet',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	},
-	{
-		url: '/kho/yeu-cau-dat-hang/sua-yeu-cau',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	},
 	{
 		url: '/kho/don-dat-kho/chi-tiet',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
@@ -152,14 +156,6 @@ const SPECIAL_URL: SpecialUrl[] = [
 		url: '/kho/don-dat-kho/tao-yeu-cau',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	},
-	{
-		url: '/kho/xuat-kho',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	},
-	{
-		url: '/kho/nhap-kho',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
-	}
 	/*End*/
 ];
 

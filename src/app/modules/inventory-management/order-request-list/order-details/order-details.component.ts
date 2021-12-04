@@ -60,8 +60,8 @@ export class OrderDetailsComponent extends BaseComponent implements OnInit, Afte
           linkPath: 'kho'
         },
         {
-          title: 'Danh sách yêu cầu đặt hàng',
-          linkText: 'Danh sách yêu cầu đặt hàng',
+          title: 'Yêu cầu đặt hàng',
+          linkText: 'Yêu cầu đặt hàng',
           linkPath: 'kho/yeu-cau-dat-hang'
         },
         {

@@ -364,7 +364,7 @@
 			type="button"
 			class="btn btn-outline-primary mr-3"
 			(click)="reject()"
-			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
+			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING && eAuthorize.REFUSES_WAREHOUSE_ORDERS | canUseFeature"
 		>
 			Từ chối
 		</button>
@@ -372,7 +372,7 @@
 			type="button"
 			class="btn btn-primary mr-3"
 			(click)="accept()"
-			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
+			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING && eAuthorize.ACCEPT_WAREHOUSE_ORDER | canUseFeature"
 		>
 			Phê duyệt
 		</button>
@@ -380,7 +380,7 @@
 			type="button"
 			class="btn btn-primary mr-3"
 			(click)="adjust()"
-			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING"
+			*ngIf="dataDetail?.status === eWarehouseStatus.WAITING && eAuthorize.REQUIRE_ADJUSTMENT_WAREHOUSE_ORDERS | canUseFeature"
 		>
 			Yêu cầu điều chỉnh
 		</button>
@@ -451,6 +451,10 @@
 		>
 			Hủy
 		</button>
-		<button type="button" class="btn btn-primary" (click)="activeModal.close(true)">Từ chối</button>
+		<button
+      type="button"
+      class="btn btn-primary"
+      (click)="activeModal.close(true)"
+    >Từ chối</button>
 	</div>
 </ng-template>
