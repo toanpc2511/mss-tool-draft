@@ -33,26 +33,10 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
     maxHeight: '25rem',
     placeholder: 'Nhập nội dung tin tức',
     translate: 'no',
-    sanitize: false,
-    outline: true,
+    sanitize: true,
+    toolbarPosition: 'top',
     defaultFontName: 'Times New Roman',
-    defaultFontSize: '5',
     defaultParagraphSeparator: 'p',
-    customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
     upload: (file: File) => {
       const formData = new FormData();
       formData.append('files', file);
@@ -61,7 +45,18 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
         return new Observable<HttpResponse<null>>();
       }
       return this.newsService.uploadImage(formData);
-    }
+    },
+    toolbarHiddenButtons: [
+      [
+        'subscript',
+        'superscript',
+      ],
+      [
+        'insertVideo',
+        'removeFormat',
+        'toggleEditorMode'
+      ]
+    ]
   };
 
   constructor(private fb: FormBuilder,

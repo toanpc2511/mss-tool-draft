@@ -45,6 +45,7 @@ export class NewsConfigComponent extends BaseComponent implements OnInit {
       )
       .subscribe((res: DataResponse<INews[]>) => {
         this.listNews = res.data;
+        this.paginatorState.recalculatePaginator(res.meta.total);
     });
   }
 

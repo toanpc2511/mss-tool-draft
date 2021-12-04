@@ -30,6 +30,11 @@ a {
   padding: 0.2rem;
   border: 1px solid #ddd;
 
+  i {
+    font-size: 0.875rem;
+    color: black;
+  }
+
   .angular-editor-toolbar-set {
     display: none;
     margin-right: 5px;
