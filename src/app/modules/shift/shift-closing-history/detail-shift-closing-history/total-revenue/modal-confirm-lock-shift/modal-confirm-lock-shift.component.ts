@@ -126,7 +126,7 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 						this.router.navigate([`/ca-lam-viec/lich-su-chot-ca`]);
 						this.toastr.success('Chốt ca thành công');
 					}
-				});
+				}, (error => this.checkError(error)));
 			});
 	}
 
@@ -138,7 +138,9 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 	}
 
 	checkError(error: IError) {
-		this.toastr.error(error.code);
+    if (error.code === 'SUN-OIL-4977') {
+      this.toastr.error('Vui lòng lựa chọn một trưởng ca.');
+    }
 	}
 
 	getListPumpPole(data: IPumpPole[]) {

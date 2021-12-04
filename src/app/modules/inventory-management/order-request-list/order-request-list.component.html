@@ -207,7 +207,7 @@
 
           <td class="text-center action">
             <a
-              *ngIf="item.status === listStatus.WAIT_CONFIRM"
+              *ngIf="item.status === listStatus.WAIT_CONFIRM && eAuthorize.UPDATE_IMPORT_REQUEST | canUseFeature"
               (click)="updateOrderRequest($event,item.id)"
               class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               [ngbTooltip]="'Sửa'"
@@ -220,7 +220,7 @@
 								</span>
             </a>
             <a
-              *ngIf="item.status === listStatus.WAIT_CONFIRM"
+              *ngIf="item.status === listStatus.WAIT_CONFIRM && eAuthorize.DELETE_DETAIL_IMPORT_REQUEST | canUseFeature"
               (click)="deleteOrderRequest($event, item)"
               class="btn btn-icon btn-light btn-hover-danger btn-sm"
               [ngbTooltip]="'Xóa'"

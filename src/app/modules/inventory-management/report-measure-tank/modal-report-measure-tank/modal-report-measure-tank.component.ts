@@ -42,6 +42,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
     this.handleGasStation();
     this.handleGasField();
     this.changeValueHeight();
+    this.handleeExportQuantityValue();
   }
 
   buildForm() {
@@ -117,10 +118,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
 
   pathValueForm(value?) {
     this.isChip = value ? value.chip : true;
-    const headInventoryValue = Number(this.measureTankForm.get('headInventory').value);
-    const importQuantityValue = Number(this.measureTankForm.get('importQuantity').value);
-    const exportQuantityValue = Number(this.measureTankForm.get('exportQuantity').value);
-    const finalInventoryValue = headInventoryValue + importQuantityValue - exportQuantityValue;
+    this.sumFinalInventoryValue();
 
     this.listInfoHeightGas = value ? value.scales : [];
 
@@ -133,14 +131,35 @@ export class ModalReportMeasureTankComponent implements OnInit {
     this.measureTankForm.get('headInventory').patchValue(value ? value?.headInventory : '');
     this.measureTankForm.get('importQuantity').patchValue(value ? value?.importQuantity : '');
     this.measureTankForm.get('exportQuantity').patchValue(value ? value?.exportQuantity : '');
-    this.measureTankForm.get('finalInventory').patchValue(value ? (finalInventoryValue) : '');
-    this.measureTankForm.get('actualFinal').patchValue(value ? value?.actualFinal : '');
+    this.measureTankForm.get('actualFinal').patchValue(value ? value?.actualFinal : 0);
     this.measureTankForm.get('difference').patchValue(value ? value?.difference : '');
     this.measureTankForm.get('productId').patchValue(value ? value?.productId : '');
     this.measureTankForm.get('gasFieldName').patchValue(value ? value?.gasFieldName : '');
 
     this.measureTankForm.get('height').patchValue('');
 
+  }
+
+  sumFinalInventoryValue() {
+    const headInventoryValue = Number(this.measureTankForm.get('headInventory').value);
+    const importQuantityValue = Number(this.measureTankForm.get('importQuantity').value);
+    const actualFinalValue = Number(this.measureTankForm.get('actualFinal').value) || 0;
+    const exportQuantityValue = convertMoney(this.measureTankForm.get('exportQuantity').value.toString());
+    const finalInventoryValue = headInventoryValue + importQuantityValue - exportQuantityValue;
+
+    this.measureTankForm.get('finalInventory').patchValue(finalInventoryValue);
+
+    const differenceValue = actualFinalValue - finalInventoryValue;
+
+    this.measureTankForm.get('difference').patchValue(differenceValue);
+  }
+
+  handleeExportQuantityValue() {
+    this.measureTankForm.get('exportQuantity').valueChanges
+      .subscribe(() => {
+        this.sumFinalInventoryValue();
+        this.cdr.detectChanges();
+      })
   }
 
   changeValueHeight() {
