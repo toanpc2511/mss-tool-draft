@@ -129,7 +129,15 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
     inputElement.value = null;
   }
 
+  trimContentValue(): string {
+    const convertedHTML = this.createForm.controls['content'].value.replace(/(<([^>]+)>)/ig,'');
+    return convertedHTML.replace(/&#160;/ig, '').trim();
+  }
+
   onSubmit(): void {
+    if (this.trimContentValue() === '') {
+      this.createForm.controls['content'].patchValue('');
+    }
     this.createForm.markAllAsTouched();
     this.idContentControl.markAsTouched();
     this.idDetailControl.markAsTouched();
