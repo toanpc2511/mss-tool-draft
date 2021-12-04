@@ -165,14 +165,14 @@
 
   <div class="py-10 w-100 d-flex justify-content-center">
     <button
-      *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM'
+      *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM && eAuthorize.CONFIRM_OR_CANCEL_IMPORT_REQUEST | canUseFeature'
       (click)="openRejectOrderRequestModal()"
       class="btn btn-outline-primary mr-3 button"
     >
       Từ chối
     </button>
     <button
-      *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM'
+      *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM && eAuthorize.CONFIRM_OR_CANCEL_IMPORT_REQUEST | canUseFeature'
     (click)="openApproveRequestModal(dataSource.code)"
       class="btn btn-primary mr-3 button"
     >

@@ -105,8 +105,6 @@ export enum EAuthorize {
 	VIEW_TRANSACTION_HISTORY_DETAIL_BUTTON = 'view_transaction_history_detail_button',
 	ACCEPT_ACCUMULATE_POINTS_BUTTON = 'accept_accumulate_points_button',
 	CONFIRM_AND_REJECT_SWAP_SHIFT = 'confirm_and_reject_swap_shift',
-  VIEW_LIST_IMPORT_REQUEST = 'view_list_import_request',
-  CREATE_IMPORT_REQUEST = 'create_import_request',
   VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN = 'view_warehouse_import_detail_screen',
   COMPLETE_WAREHOUSE_IMPORT_BUTTON = 'complete_warehouse_import_button',
   VIEW_HISTORY_ACCUMULATE_SCREEN = 'view_history_accumulate_screen',
@@ -120,6 +118,12 @@ export enum EAuthorize {
   /* End */
 
   /* Quản lý kho */
+  VIEW_LIST_IMPORT_REQUEST = 'view_list_import_request',
+  VIEW_DETAIL_IMPORT_REQUEST = 'view_detail_import_request',
+  CREATE_IMPORT_REQUEST = 'create_import_request',
+  UPDATE_IMPORT_REQUEST = 'update_import_request',
+  DELETE_DETAIL_IMPORT_REQUEST = 'delete_detail_import_request',
+  CONFIRM_OR_CANCEL_IMPORT_REQUEST = 'confirm_or_cancel_import_request',
   EXPORT_FILE_WORD_WAREHOUSE_IMPORT = 'export_file_word_warehouse_import',
   VIEW_LIST_SHALLOW_SCREEN = 'view_list_shallow_screen',
   CREATE_SHALLOW_BUTTON = 'create_shallow_button',

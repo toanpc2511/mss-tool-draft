@@ -83,7 +83,7 @@ const SPECIAL_URL: SpecialUrl[] = [
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	},
   {
-    url: '/kho/yeu-cau-dat-hang/them-moi',
+    url: '/kho/yeu-cau-dat-hang',
     permissionKey: EAuthorize.CREATE_IMPORT_REQUEST
   },
   {
@@ -118,6 +118,11 @@ const SPECIAL_URL: SpecialUrl[] = [
     url: '/quan-ly-qr-code/qr-voi',
     permissionKey: EAuthorize.VIEW_PUMP_HOSE_QR_LIST_SCREEN
   },
+
+
+
+
+
 	/* thêm tạm thời */
 	{
 		url: '/kho/yeu-cau-dat-hang/them-moi',
@@ -125,7 +130,7 @@ const SPECIAL_URL: SpecialUrl[] = [
 	},
 	{
 		url: '/kho/yeu-cau-dat-hang/chi-tiet',
-		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+		permissionKey: EAuthorize.VIEW_DETAIL_IMPORT_REQUEST
 	},
 	{
 		url: '/kho/yeu-cau-dat-hang/sua-yeu-cau',

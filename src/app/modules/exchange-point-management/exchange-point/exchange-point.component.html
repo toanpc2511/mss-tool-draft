@@ -34,7 +34,7 @@
 
     <div *ngIf='isSearched'>
       <div *ngIf='!isSearchable; else exchangePointTpl'>
-        <p>Số điện thoại không tồn tại. Vui lòng nhập lại</p>
+        <p class='text-danger'>Số điện thoại không tồn tại. Vui lòng nhập lại</p>
       </div>
 
       <ng-template #exchangePointTpl>
@@ -96,7 +96,7 @@
               <app-validate
                 [control]="exchangePointForm.controls['pointSwap']"
                 [error]="'compared'"
-                [message]="'Số điểm quy đổi không thể lớn hơn số ảnh hiện có. Vui lòng nhập lại'"
+                [message]="'Số điểm quy đổi không thể lớn hơn số điểm hiện có. Vui lòng nhập lại'"
               ></app-validate>
             </div>
           </div>
