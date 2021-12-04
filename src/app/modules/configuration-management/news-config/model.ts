@@ -8,9 +8,22 @@ export interface INews {
   createdAt?: string;
 }
 
-interface IImageNews {
+export interface IImageNews {
   id: number;
   url: string;
   type: string;
   location: string;
+}
+
+export enum ELocationImg {
+  DETAIL= 'DETAIL',
+  CONTENT = 'CONTENT'
+}
+
+export interface IImage {
+  id: number;
+  type: string;
+  url: string;
+  name?: string;
+  location: ELocationImg
 }

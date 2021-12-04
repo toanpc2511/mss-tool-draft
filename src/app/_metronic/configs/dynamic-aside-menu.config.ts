@@ -231,7 +231,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
         {
           title: 'Cấu hình tin tức',
           bullet: 'dot',
-          page: '/cau-hinh/news',
+          page: '/cau-hinh/tin-tuc',
 
           permissionKey: EAuthorize.VIEW_LIST_NEWS_SCREEN
         }

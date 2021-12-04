@@ -7,6 +7,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 
 @Component({
   selector: 'app-news-config',
@@ -16,11 +17,12 @@ import { ToastrService } from 'ngx-toastr';
 export class NewsConfigComponent extends BaseComponent implements OnInit {
 
   listNews: INews[];
+  paginatorState = new PaginatorState();
 
   constructor(private newsService: NewsService,
               private modalService: NgbModal,
               private cdr: ChangeDetectorRef,
-              private toastr: ToastrService
+              private toastr: ToastrService,
   ) {
     super();
   }
@@ -30,7 +32,12 @@ export class NewsConfigComponent extends BaseComponent implements OnInit {
   }
 
   getList(): void {
-    this.newsService.getAll()
+    const params = {
+      page: this.paginatorState.page,
+      size: this.paginatorState.pageSize,
+    }
+
+    this.newsService.getAll(params)
       .pipe(
         finalize((): void => {
           this.cdr.detectChanges();
@@ -62,4 +69,8 @@ export class NewsConfigComponent extends BaseComponent implements OnInit {
     });
   }
 
+  pagingChange($event: IPaginatorState): void {
+    this.paginatorState = $event as PaginatorState;
+    this.getList();
+  }
 }

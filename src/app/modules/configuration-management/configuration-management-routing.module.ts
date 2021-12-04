@@ -6,6 +6,9 @@ import { DiscountConfigComponent } from './discount-config/discount-config.compo
 import { PromotionConfigComponent } from './promotion-config/promotion-config.component';
 import { BannerConfigComponent } from './banner-config/banner-config.component';
 import { NewsConfigComponent } from './news-config/news-config.component';
+import { CreateNewsComponent } from './news-config/create-news/create-news.component';
+import { NewsDetailComponent } from './news-config/news-detail/news-detail.component';
+import { UpdateNewsComponent } from './news-config/update-news/update-news.component';
 
 const routes: Routes = [
   {
@@ -34,8 +37,25 @@ const routes: Routes = [
     component: BannerConfigComponent
   },
   {
-    path: 'news',
-    component: NewsConfigComponent
+    path: 'tin-tuc',
+    children: [
+      {
+        path: '',
+        component: NewsConfigComponent
+      },
+      {
+        path: 'them-moi',
+        component: CreateNewsComponent
+      },
+      {
+        path: 'chi-tiet/:id',
+        component: NewsDetailComponent
+      },
+      {
+        path: 'cap-nhat/:id',
+        component: UpdateNewsComponent
+      }
+    ]
   }
 ];
 

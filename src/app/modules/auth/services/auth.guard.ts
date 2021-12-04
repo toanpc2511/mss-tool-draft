@@ -131,6 +131,18 @@ const SPECIAL_URL: SpecialUrl[] = [
     permissionKey: EAuthorize.VIEW_WAREHOUSE_IMPORT_LIST_SCREEN
   },
   {
+    url: '/cau-hinh/tin-tuc',
+    permissionKey: EAuthorize.VIEW_LIST_NEWS_SCREEN
+  },
+  {
+    url:'/cau-hinh/tin-tuc/them-moi',
+    permissionKey: EAuthorize.CREATE_NEWS_BUTTON
+  },
+  {
+    url: '/cau-hinh/tin-tuc/cap-nhat',
+    permissionKey: EAuthorize.UPDATE_NEWS_BUTTON
+  },
+  {
     url: '/kho/tinh-kho-kich-bom',
     permissionKey: EAuthorize.VIEW_LIST_SHALLOW_SCREEN
   },
