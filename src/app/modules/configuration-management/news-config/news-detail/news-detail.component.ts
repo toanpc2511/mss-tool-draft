@@ -15,6 +15,7 @@ export class NewsDetailComponent implements OnInit, AfterViewInit {
 
   newsDetail: INews;
   idNews: string;
+  contentNews: string;
 
   constructor(private newsService: NewsService,
               private router: Router,
@@ -38,8 +39,22 @@ export class NewsDetailComponent implements OnInit, AfterViewInit {
         finalize(() => { this.cdr.detectChanges(); })
       )
       .subscribe((res: DataResponse<INews>) => {
-      this.newsDetail = res.data;
-    });
+        this.newsDetail = res.data;
+        this.contentNews = this.transformContentToWebView(res.data.content);
+      });
+  }
+
+  transformContentToWebView(content: string): string {
+    const regexp = new RegExp('<br><[^/b]+>','g');
+    let match;
+
+    let removingBrTagStr: string = content;
+
+    while ((match = regexp.exec(removingBrTagStr)) !== null) {
+      removingBrTagStr = removingBrTagStr.slice(0, match.index) + removingBrTagStr.slice(Number(match.index) + 4);
+    }
+
+    return removingBrTagStr;
   }
 
   setBreadcumb() {

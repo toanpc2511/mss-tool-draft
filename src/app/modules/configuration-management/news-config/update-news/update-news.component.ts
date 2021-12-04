@@ -32,7 +32,7 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
     maxHeight: '25rem',
     placeholder: 'Nhập nội dung tin tức',
     translate: 'no',
-    sanitize: true,
+    sanitize: false,
     toolbarPosition: 'top',
     defaultFontName: 'Times New Roman',
     defaultParagraphSeparator: 'p',
@@ -91,7 +91,8 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
 
   getDetailNews(): void {
     this.newsService.getDetail(this.idNews).subscribe((res: DataResponse<INews>) => {
-      this.updateForm.patchValue(res.data);
+      const { title, content, description, image } = {...res.data};
+      this.updateForm.patchValue({ title, description, content: this.transformContentToWebView(content), image });
       this.imgContent = res.data.image[1];
       this.imgDetail = res.data.image[0];
     });
@@ -144,6 +145,39 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
     return convertedHTML.replace(/&#160;/ig, '').trim();
   }
 
+  transformContentToWebView(content: string): string {
+    const regexp = new RegExp('<br><[^/b]+>','g');
+    let match;
+
+    let removingBrTagStr: string = content;
+
+    while ((match = regexp.exec(removingBrTagStr)) !== null) {
+      removingBrTagStr = removingBrTagStr.slice(0, match.index) + removingBrTagStr.slice(Number(match.index) + 4);
+    }
+
+    return removingBrTagStr;
+  }
+
+  transformContentToPhoneView(): string {
+    /*
+       regex: /<p>[<\w="/ ]*>*<br>[<\w="/ ]*>*<\/p>/g
+       catch 2 case:
+        <p><font face="Times New Roman"><br></font></p>
+        <p><br></p>
+     */
+    const transformBrTag: string = this.updateForm.controls['content'].value.replace(/<p>[<\w="/ ]*>*<br>[<\w="/ ]*>*<\/p>/g, '<br>');
+    const regexp = new RegExp('<br><[^/b]+>','g');
+    let match;
+
+    let addingBrTagStr = transformBrTag;
+
+    while ((match = regexp.exec(transformBrTag)) !== null) {
+      addingBrTagStr = addingBrTagStr.slice(0, match.index) + "<br>" + addingBrTagStr.slice(match.index);
+    }
+
+    return addingBrTagStr;
+  }
+
   onSubmit(): void {
     if (this.trimContentValue() === '') {
       this.updateForm.controls['content'].patchValue('');
@@ -152,6 +186,8 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
     if (this.updateForm.invalid) {
       return;
     }
+
+    this.updateForm.controls['content'].patchValue(this.transformContentToPhoneView());
 
     this.newsService.update(this.updateForm.getRawValue(), this.idNews).subscribe((res: DataResponse<boolean>) => {
       this.router.navigate(['cau-hinh/tin-tuc']);
