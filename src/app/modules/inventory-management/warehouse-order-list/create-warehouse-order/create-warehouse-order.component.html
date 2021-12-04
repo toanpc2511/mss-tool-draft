@@ -425,6 +425,7 @@
     <button
       class="btn btn-primary mr-3 button"
       (click)='onSubmit()'
+      *ngIf='eAuthorize.BROWSE_WAREHOUSE_ORDER_BUTTON | canUseFeature'
     >
       Gửi duyệt
     </button>

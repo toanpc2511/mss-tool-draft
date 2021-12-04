@@ -106,9 +106,7 @@ export enum EAuthorize {
 	ACCEPT_ACCUMULATE_POINTS_BUTTON = 'accept_accumulate_points_button',
 	CONFIRM_AND_REJECT_SWAP_SHIFT = 'confirm_and_reject_swap_shift',
   VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN = 'view_warehouse_import_detail_screen',
-  COMPLETE_WAREHOUSE_IMPORT_BUTTON = 'complete_warehouse_import_button',
   VIEW_HISTORY_ACCUMULATE_SCREEN = 'view_history_accumulate_screen',
-  VIEW_MEASURES_SCREEN = 'view_measures_screen',
   DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button',
 
   /* Lịch sử chốt ca */
@@ -128,6 +126,16 @@ export enum EAuthorize {
   VIEW_LIST_SHALLOW_SCREEN = 'view_list_shallow_screen',
   CREATE_SHALLOW_BUTTON = 'create_shallow_button',
   CREATE_MEASURES_BUTTON = 'create_measures_button',
+  VIEW_WAREHOUSE_ORDERS_SCREEN = 'view_warehouse_orders_screen',
+  BROWSE_WAREHOUSE_ORDER_BUTTON = 'browse_warehouse_order_button',
+  REFUSES_WAREHOUSE_ORDERS = 'refuses_warehouse_orders',
+  ACCEPT_WAREHOUSE_ORDER = 'accept_warehouse_order',
+  REQUIRE_ADJUSTMENT_WAREHOUSE_ORDERS = 'require_adjustment_warehouse_orders',
+  VIEW_WAREHOUSE_EXPORT_LIST_SCREEN = 'view_warehouse_export_list_screen',
+  COMPLETE_WAREHOUSE_EXPORT_BUTTON = 'complete_warehouse_export_button',
+  VIEW_WAREHOUSE_IMPORT_LIST_SCREEN = 'view_warehouse_import_list_screen',
+  COMPLETE_WAREHOUSE_IMPORT_BUTTON = 'complete_warehouse_import_button',
+  VIEW_MEASURES_SCREEN = 'view_measures_screen',
   /* End */
 
   // Exchange point roles
