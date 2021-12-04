@@ -99,7 +99,6 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
       this.updateForm.patchValue(res.data);
       this.imgContent = res.data.image[1];
       this.imgDetail = res.data.image[0];
-      console.log(res.data);
     });
   }
 
