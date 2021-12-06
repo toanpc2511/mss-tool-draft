@@ -20,6 +20,7 @@
       <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
         <th class="banner-name" scope="">Tin tức</th>
+        <th class="status" scope="">Trạng thái</th>
         <th class="action text-center" scope="">Tác động</th>
         </thead>
 
@@ -34,6 +35,30 @@
               {{ item.title }}
             </p>
           </td>
+
+          <td class="status" *ngIf='item.display; else hiddenStatusTpl'>
+							<span
+                class="label label-lg label-inline"
+                [class.label-light-success]="item.display"
+                placement='top'
+                ngbTooltip='Hiện tin tức'
+              >
+                Hiện banner
+							</span>
+          </td>
+
+          <ng-template #hiddenStatusTpl>
+            <td class="status">
+							<span
+                class="label label-lg label-inline"
+                [class.label-light-danger]="!item.display"
+                placement='top'
+                ngbTooltip='Ẩn tin tức'
+              >
+								Ẩn banner
+							</span>
+            </td>
+          </ng-template>
 
           <td class="text-center action">
             <a class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"

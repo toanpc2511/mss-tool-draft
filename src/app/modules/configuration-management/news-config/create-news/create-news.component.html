@@ -87,11 +87,14 @@
               style='margin-left: 0.5rem'
               [src]="imgDetail && imgDetail?.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
             />
-            <app-validate
-              [control]="idDetailControl"
-              [error]="'required'"
-              [message]="'Vui lòng cập nhật ảnh'"
-            ></app-validate>
+            <div style='margin-left: 0.5rem'>
+              <app-validate
+                [control]="idDetailControl"
+                [error]="'required'"
+                [message]="'Vui lòng cập nhật ảnh'"
+              ></app-validate>
+            </div>
+
           </div>
         </div>
 

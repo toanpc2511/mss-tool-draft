@@ -139,7 +139,15 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
     inputElement.value = null;
   }
 
+  trimContentValue(): string {
+    const convertedHTML = this.updateForm.controls['content'].value.replace(/(<([^>]+)>)/ig,'');
+    return convertedHTML.replace(/&#160;/ig, '').trim();
+  }
+
   onSubmit(): void {
+    if (this.trimContentValue() === '') {
+      this.updateForm.controls['content'].patchValue('');
+    }
     this.updateForm.markAllAsTouched();
     if (this.updateForm.invalid) {
       return;
