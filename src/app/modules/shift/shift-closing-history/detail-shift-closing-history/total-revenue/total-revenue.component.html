@@ -240,7 +240,7 @@
 			class="m-2 btn btn-primary font-weight-bold"
 			[disabled]="hideButton"
 			(click)="createModal($event)"
-      *ngIf='statusLockShift !== "CLOSE"'
+      *ngIf='statusLockShift !== "CLOSE" && eAuthorize.CONFIRM_CLOSE_SHIFT_BUTTON | canUseFeature'
 		>
 			Xác nhận
 		</button>

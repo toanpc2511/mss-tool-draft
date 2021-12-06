@@ -1,10 +1,14 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IStationEployee } from '../../history-of-using-points/history-of-using-points.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoryManagementService, IShallow } from '../inventory-management.service';
+import {
+  IGasFieldByStation,
+  InventoryManagementService,
+  IShallow,
+  IStationActiveByToken
+} from '../inventory-management.service';
 import * as moment from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { convertDateToServer } from '../../../shared/helpers/functions';
@@ -23,9 +27,9 @@ export class ReportMinTankComponent extends BaseComponent implements OnInit {
 
   paginatorState = new PaginatorState();
   searchForm: FormGroup;
-  stationEmployee: Array<IStationEployee> = [];
-  listGasField;
+  listGasField: IGasFieldByStation[] = [];
   dataSource: IShallow[] = [];
+  stationByToken: IStationActiveByToken[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -48,7 +52,7 @@ export class ReportMinTankComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getStationEmployee();
+    this.getStationToken();
     this.buildForm();
     this.initDate();
     this.handleGasStation();
@@ -81,12 +85,12 @@ export class ReportMinTankComponent extends BaseComponent implements OnInit {
       })
   }
 
-  getStationEmployee() {
+  getStationToken() {
     this.inventoryManagementService
-      .getStationEmployee()
+      .getStationByToken('NOT_DELETE', 'false')
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.stationEmployee = res.data;
+        this.stationByToken = res.data;
         this.cdr.detectChanges();
       });
   }

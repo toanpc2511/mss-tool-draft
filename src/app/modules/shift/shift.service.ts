@@ -281,6 +281,25 @@ export interface IProductRevenue {
 	unit: string;
 }
 
+export interface IStationActiveByToken {
+  address: string;
+  areaType: string;
+  chip: boolean;
+  code: string;
+  corporation: boolean;
+  distance: string;
+  districtId: number;
+  fullAddress: string;
+  id: number;
+  lat: number;
+  lon: number;
+  name: string;
+  phone: string;
+  provinceId: number;
+  status: string;
+  wardId: number;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -535,4 +554,12 @@ export class ShiftService {
 			employeeIdCreate: employeeIdFrom
 		});
 	}
+
+  // Lấy ds trạm theo token login và trạng thái
+  getStationByToken(status, corporation) {
+    const params = new HttpParams()
+      .set('status', status)
+      .set('corporation', corporation)
+    return this.http.get<Array<IStationActiveByToken>>(`gas-stations/employee/status-corporation`, {params});
+  }
 }

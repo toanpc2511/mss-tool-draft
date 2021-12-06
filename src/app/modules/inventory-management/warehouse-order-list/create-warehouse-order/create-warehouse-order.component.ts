@@ -3,7 +3,7 @@ import { DestroyService } from '../../../../shared/services/destroy.service';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 import {
   EWarehouseOrderStatus,
-  InventoryManagementService, IShippingTeam, ISupplier, ITransitCar,
+  InventoryManagementService, IShippingTeam, IStationActiveByToken, ISupplier, ITransitCar,
   IWareHouseOrderDetail, IWareHouseOrderProductResponses, LIST_WAREHOUSE_ORDER_FORM, PaymentMethod
 } from '../../inventory-management.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -33,6 +33,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   dataTransitCars: ITransitCar[] = [];
   dataShippingTeam: IShippingTeam[] = [];
   isInternalCar: boolean;
+  stationByToken: IStationActiveByToken[] = [];
 
   exportedWarehouseNameId: number;
   oderForm: string;

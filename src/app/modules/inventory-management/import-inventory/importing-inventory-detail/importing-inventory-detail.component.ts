@@ -71,7 +71,7 @@ export class ImportingInventoryDetailComponent extends BaseComponent implements 
         unit: [d.unit],
         amountActually: [d.amountActually],
         gasFieldOutName: [d.gasFieldOutName],
-        compartment: [ { value: d.compartment, disabled: !this.isSupplier }, [this.isSupplier ? Validators.required : Validators.nullValidator]],
+        compartment: [ { value: d.compartment, disabled: !this.isSupplier }],
         gasFieldInName: [d.gasFieldInName],
         price: [d.price],
         supplierName: [d.supplierName],
@@ -128,14 +128,14 @@ export class ImportingInventoryDetailComponent extends BaseComponent implements 
           this.cdr.detectChanges();
         })
       )
-      .subscribe((res: DataResponse<boolean>) => {
+      .subscribe(() => {
         this.getImportingInventoryDetail();
         this.toarst.success('Đã hoàn thành nhập kho');
       });
   }
 
   initFormValue(): void {
-    this.importInventoryDetailForm.controls['nameDriver'].patchValue(this.dataSource?.driverName);
+    this.importInventoryDetailForm.controls['nameDriver'].patchValue(this.dataSource?.driver.name);
     this.importInventoryDetailForm.controls['licensePlates'].patchValue(this.dataSource?.licensePlates);
 
     this.setValidate();

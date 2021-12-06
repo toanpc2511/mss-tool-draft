@@ -11,7 +11,7 @@
           <label>Trạm</label>
           <select class="form-control form-control-solid w-75" formControlName='stationId'>
             <option [value]="''">Tất cả</option>
-            <option *ngFor="let item of stationEmployee" [value]="item.id">{{item.name}}</option>
+            <option *ngFor="let item of stationByToken" [value]="item.id">{{item.name}}</option>
           </select>
         </div>
 

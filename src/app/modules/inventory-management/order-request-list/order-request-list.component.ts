@@ -4,12 +4,12 @@ import {
   IEmployees,
   IFilterTransaction,
   IInfoOrderRequest,
-  InventoryManagementService
+  InventoryManagementService,
+  IStationActiveByToken
 } from '../inventory-management.service';
 import * as moment from 'moment';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { Router } from '@angular/router';
-import { IStationEployee } from '../../history-of-using-points/history-of-using-points.service';
 import { concatMap, takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { NO_EMIT_EVENT } from '../../../shared/app-constants';
@@ -19,7 +19,6 @@ import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { LIST_STATUS_ORDER_REQUEST } from '../../../shared/data-enum/list-status';
 import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
-import { IConfirmModalData } from '../../../shared/models/confirm-delete.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 
@@ -35,7 +34,7 @@ export class OrderRequestListComponent extends BaseComponent implements OnInit {
   paginatorState = new PaginatorState();
   searchForm: FormGroup;
   dataSource;
-  stationEmployee: Array<IStationEployee> = [];
+  stationByToken: IStationActiveByToken[] = [];
   listEmployees: Array<IEmployees> = [];
   listStatus = LIST_STATUS_ORDER_REQUEST;
 
@@ -66,7 +65,7 @@ export class OrderRequestListComponent extends BaseComponent implements OnInit {
     this.buildForm();
     this.initDate();
 
-    this.getStationEmployee();
+    this.getStationToken();
     this.getAllEmployee();
     this.onSearch();
 
@@ -88,12 +87,12 @@ export class OrderRequestListComponent extends BaseComponent implements OnInit {
     this.searchForm.get('expectedDateEnd').patchValue(this.today);
   }
 
-  getStationEmployee() {
+  getStationToken() {
     this.inventoryManagementService
-      .getStationEmployee()
+      .getStationByToken('NOT_DELETE', 'false')
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.stationEmployee = res.data;
+        this.stationByToken = res.data;
         this.cdr.detectChanges();
       });
   }
@@ -177,12 +176,11 @@ export class OrderRequestListComponent extends BaseComponent implements OnInit {
     const modalRef = this.modalService.open(ConfirmDeleteComponent, {
       backdrop: 'static'
     });
-    const data: IConfirmModalData = {
+    modalRef.componentInstance.data = {
       title: 'Xác nhận',
       message: `Bạn có chắc chắn muốn xóa yêu cầu đặt hàng ${item.code}?`,
       button: { class: 'btn-primary', title: 'Xác nhận' }
     };
-    modalRef.componentInstance.data = data;
 
     modalRef.result.then((result) => {
       if (result) {

@@ -1,19 +1,17 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { LIST_STATUS_IMPORT, LIST_STATUS_ORDER_REQUEST } from '../../../shared/data-enum/list-status';
+import { LIST_STATUS_IMPORT } from '../../../shared/data-enum/list-status';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import {
-  IExportInventory,
-  IFilterImportInventory, IImportInventory,
-  InventoryManagementService, ISupplier, LIST_WAREHOUSE_ORDER_FORM
+    IFilterImportInventory, IImportInventory,
+  InventoryManagementService, IStationActiveByToken, ISupplier, LIST_WAREHOUSE_ORDER_FORM
 } from '../inventory-management.service';
 import { convertDateToServer } from '../../../shared/helpers/functions';
 import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { DestroyService } from '../../../shared/services/destroy.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GasStationResponse } from '../../gas-station/gas-station.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-import-inventory',
@@ -27,7 +25,7 @@ export class ImportInventoryComponent implements OnInit {
   paginatorState = new PaginatorState();
   dataSource: IImportInventory[] = [];
   dataSupplier: ISupplier[] = [];
-  listExportWarehouse: GasStationResponse[] = [];
+  listExportWarehouse: IStationActiveByToken[] = [];
   listWarehouseOrderForm = LIST_WAREHOUSE_ORDER_FORM;
 
   listStatus = LIST_STATUS_IMPORT;
@@ -56,8 +54,8 @@ export class ImportInventoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getListSupplier();
-    this.getGasStations();
+    this.getStationNotByToken();
+    this.getStationToken();
     this.builForm();
     this.initDate();
 
@@ -80,20 +78,24 @@ export class ImportInventoryComponent implements OnInit {
     this.searchForm.get('expectedDateEnd').patchValue(this.today);
   }
 
-  getListSupplier() {
-    this.inventoryManagementService.getListSuppliersActive()
+  getStationToken() {
+    this.inventoryManagementService
+      .getStationByToken('NOT_DELETE', 'false')
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.dataSupplier = res.data;
         this.cdr.detectChanges();
-      })
+      });
   }
 
-  getGasStations() {
-    this.inventoryManagementService.getGasStations()
+  getStationNotByToken() {
+    this.inventoryManagementService
+      .getStationNotByToken('NOT_DELETE', 'false')
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.listExportWarehouse = res.data;
         this.cdr.detectChanges();
-      })
+      });
   }
 
   onSearch() {

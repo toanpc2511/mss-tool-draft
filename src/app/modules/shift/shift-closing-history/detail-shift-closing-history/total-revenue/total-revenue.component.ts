@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil, tap } from 'rxjs/operators';
 import { ITotalMoneyRevenue, ShiftService } from '../../../shift.service';
 import { FileService } from '../../../../../shared/services/file.service';
+import { BaseComponent } from '../../../../../shared/components/base/base.component';
 
 @Component({
 	selector: 'app-total-revenue',
@@ -16,7 +17,7 @@ import { FileService } from '../../../../../shared/services/file.service';
 	styleUrls: ['./total-revenue.component.scss'],
 	providers: [DestroyService]
 })
-export class TotalRevenueComponent implements OnInit {
+export class TotalRevenueComponent extends BaseComponent implements OnInit {
 	proceeds: FormControl;
 	hideButton = true;
 	stationId: number;
@@ -34,6 +35,7 @@ export class TotalRevenueComponent implements OnInit {
 		private router: Router,
     private fileService: FileService
 	) {
+    super();
 		this.proceeds = new FormControl();
 	}
 

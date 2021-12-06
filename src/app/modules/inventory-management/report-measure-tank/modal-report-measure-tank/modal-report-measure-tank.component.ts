@@ -1,12 +1,15 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { fromEvent } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { IError } from '../../../../shared/models/error.model';
 import { DestroyService } from '../../../../shared/services/destroy.service';
-import { IMeasures, InventoryManagementService } from '../../inventory-management.service';
+import {
+  IGasFieldByStation,
+  IMeasures,
+  InventoryManagementService,
+  IStationActiveByToken
+} from '../../inventory-management.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { convertMoney } from '../../../../shared/helpers/functions';
 import { DataResponse } from '../../../../shared/models/data-response.model';
 import { FileService } from '../../../../shared/services/file.service';
@@ -21,8 +24,8 @@ export class ModalReportMeasureTankComponent implements OnInit {
   @Input() data: IDataTransfer;
 
   measureTankForm: FormGroup;
-  stationEmployee;
-  listGasField;
+  stationByToken: IStationActiveByToken[] = [];
+  listGasField: IGasFieldByStation[] = [];
   listInfoHeightGas;
   isChip: boolean;
 
@@ -32,8 +35,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
     private inventoryManagementService: InventoryManagementService,
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
-    private fileService: FileService,
-    private toastr: ToastrService
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
@@ -73,10 +75,10 @@ export class ModalReportMeasureTankComponent implements OnInit {
 
   getStationToken() {
     this.inventoryManagementService
-      .getStationToken('ACTIVE', 'false')
+      .getStationByToken('ACTIVE', 'false')
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.stationEmployee = res.data;
+        this.stationByToken = res.data;
         this.cdr.detectChanges();
       });
   }
@@ -118,7 +120,6 @@ export class ModalReportMeasureTankComponent implements OnInit {
 
   pathValueForm(value?) {
     this.isChip = value ? value.chip : true;
-    this.sumFinalInventoryValue();
 
     this.listInfoHeightGas = value ? value.scales : [];
 
@@ -126,25 +127,26 @@ export class ModalReportMeasureTankComponent implements OnInit {
     this.measureTankForm.get('capacity').patchValue(value ? value.capacity : '');
     this.measureTankForm.get('heightGasFieldInfo').patchValue(value ? value.heightGasFieldInfo : '');
     this.measureTankForm.get('length').patchValue(value ? value.length : '');
-    this.measureTankForm.get('productName').patchValue(value ? value?.productName : '');
+    this.measureTankForm.get('productName').patchValue(value ? value.productName : '');
 
-    this.measureTankForm.get('headInventory').patchValue(value ? value?.headInventory : '');
-    this.measureTankForm.get('importQuantity').patchValue(value ? value?.importQuantity : '');
-    this.measureTankForm.get('exportQuantity').patchValue(value ? value?.exportQuantity.toLocaleString('en-US') : '');
-    this.measureTankForm.get('actualFinal').patchValue(value ? value?.actualFinal : 0);
-    this.measureTankForm.get('difference').patchValue(value ? value?.difference : '');
-    this.measureTankForm.get('productId').patchValue(value ? value?.productId : '');
-    this.measureTankForm.get('gasFieldName').patchValue(value ? value?.gasFieldName : '');
+    this.measureTankForm.get('headInventory').patchValue(value ? value.headInventory : '');
+    this.measureTankForm.get('importQuantity').patchValue(value ? value.importQuantity : '');
+    this.measureTankForm.get('exportQuantity').patchValue(value ? value.exportQuantity : '');
+    this.measureTankForm.get('actualFinal').patchValue(value ? value.actualFinal : 0);
+    this.measureTankForm.get('difference').patchValue(value ? value.difference : '');
+    this.measureTankForm.get('productId').patchValue(value ? value.productId : '');
+    this.measureTankForm.get('gasFieldName').patchValue(value ? value.gasFieldName : '');
 
     this.measureTankForm.get('height').patchValue('');
 
+    this.sumFinalInventoryValue();
   }
 
   sumFinalInventoryValue() {
     const headInventoryValue = Number(this.measureTankForm.get('headInventory').value);
     const importQuantityValue = Number(this.measureTankForm.get('importQuantity').value);
     const actualFinalValue = Number(this.measureTankForm.get('actualFinal').value) || 0;
-    const exportQuantityValue = convertMoney(this.measureTankForm.get('exportQuantity').value.toString());
+    const exportQuantityValue = convertMoney(this.measureTankForm.get('exportQuantity').value?.toString());
     const finalInventoryValue = headInventoryValue + importQuantityValue - exportQuantityValue;
 
     this.measureTankForm.get('finalInventory').patchValue(finalInventoryValue);
