@@ -58,14 +58,14 @@ export class AngularEditorToolbarComponent {
       label: 'Predefined',
       value: 'pre'
     },
-    // {
-    //   label: 'Standard',
-    //   value: 'p'
-    // },
-    // {
-    //   label: 'default',
-    //   value: 'default'
-    // }
+    {
+      label: 'Standard',
+      value: 'div'
+    },
+    {
+      label: 'default',
+      value: 'default'
+    }
   ];
 
   fontSizes: SelectOption[] = [

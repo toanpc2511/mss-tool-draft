@@ -83,6 +83,7 @@
               class="detailImg"
               (click)="detailImg.click()"
               width="300px"
+              style='margin-left: 0.5rem;'
               [src]="imgDetail && imgDetail?.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
             />
           </div>
@@ -90,7 +91,7 @@
 
         <div class='col-lg-6 row'>
           <label class='col-lg-4 form-label required'>Ảnh view list tin tức</label>
-          <div class='col-lg-8'>
+          <div class='col-lg-8 text-right'>
             <input
               hidden
               type="file"
