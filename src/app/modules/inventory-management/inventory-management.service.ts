@@ -289,6 +289,12 @@ export interface IExportInventoryDetail {
   code: string;
   status: string;
   driverName: string;
+  driver: {
+    code: string;
+    id: number;
+    name: string;
+    position_name: string;
+  };
   exportedWarehouseAddress: string;
   exportedWarehouseName: string;
   id: number;
@@ -300,6 +306,12 @@ export interface IExportInventoryDetail {
   representativeGiveCode: string;
   representativeTakeName: string;
   internalCar: boolean;
+  acceptor: {
+    code: string;
+    id: number;
+    name: string;
+    position_name: string;
+  };
   wareHouseOrderProductResponses: [IProductExportInventory]
 }
 

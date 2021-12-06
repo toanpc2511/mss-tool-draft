@@ -14,6 +14,12 @@ export interface IImportingInventoryDetail {
       name: string;
       position_name: string;
     };
+  acceptor: {
+    code: string;
+    id: number;
+    name: string;
+    position_name: string;
+  };
     licensePlates: string;
     importRequestId: string;
     status: string;

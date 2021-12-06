@@ -85,7 +85,7 @@
           </div>
 
           <div class="col-lg-8">
-            <label class="form-label font-weight-bold">{{dataDetail?.representativeGiveCode }} - {{dataDetail?.representativeGiveName}}</label>
+            <label class="form-label font-weight-bold">{{dataDetail?.acceptor.code }} - {{dataDetail?.acceptor.name}}</label>
           </div>
         </div>
 
@@ -153,11 +153,11 @@
           </div>
 
           <div class="col-lg-8" *ngIf='dataDetail?.status === "EXPORTED" '>
-            <label class="form-label font-weight-bold">{{dataDetail?.driverName}}</label>
+            <label class="form-label font-weight-bold">{{dataDetail?.driver.name}}</label>
           </div>
 
           <div class="col-lg-8" *ngIf='dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>
-            <label class="form-label font-weight-bold">{{dataDetail?.driverName}}</label>
+            <label class="form-label font-weight-bold">{{dataDetail?.driver.name}}</label>
           </div>
 
           <div class="col-lg-8" *ngIf='!dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>

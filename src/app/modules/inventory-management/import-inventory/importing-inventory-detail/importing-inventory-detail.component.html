@@ -124,7 +124,7 @@
             </div>
 
             <div class="col-lg-7" *ngIf='!status || status && dataSource?.internalCar'>
-              <label class="form-label font-weight-bold">{{ dataSource?.driverName }}</label>
+              <label class="form-label font-weight-bold">{{ dataSource?.driver.name }}</label>
             </div>
 
               <div *ngIf='status && !dataSource?.internalCar' class="col-lg-7">
