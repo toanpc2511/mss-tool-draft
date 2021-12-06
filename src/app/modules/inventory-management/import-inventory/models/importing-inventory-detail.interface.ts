@@ -8,6 +8,12 @@ export interface IImportingInventoryDetail {
     exportedWarehouseName: string;
     exportedWarehouseAddress: string;
     driverName: string;
+    driver: {
+      code: string;
+      id: number;
+      name: string;
+      position_name: string;
+    };
     licensePlates: string;
     importRequestId: string;
     status: string;

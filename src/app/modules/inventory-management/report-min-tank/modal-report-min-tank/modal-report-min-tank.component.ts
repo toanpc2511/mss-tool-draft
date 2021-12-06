@@ -1,8 +1,13 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { takeUntil } from 'rxjs/operators';
-import { InventoryManagementService, IShallow } from '../../inventory-management.service';
+import {
+  IGasFieldByStation,
+  InventoryManagementService,
+  IShallow,
+  IStationActiveByToken
+} from '../../inventory-management.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { convertMoney } from '../../../../shared/helpers/functions';
 import { IError } from '../../../../shared/models/error.model';
@@ -18,8 +23,8 @@ export class ModalReportMinTankComponent implements OnInit {
   @Input() data: IDataTransfer;
 
   minTankForm: FormGroup;
-  stationEmployee;
-  listGasField;
+  stationByToken: IStationActiveByToken[] = [];
+  listGasField: IGasFieldByStation[] = [];
 
   constructor(
     public modal: NgbActiveModal,
@@ -108,10 +113,10 @@ export class ModalReportMinTankComponent implements OnInit {
 
   getStationToken() {
     this.inventoryManagementService
-      .getStationToken('ACTIVE', 'false')
+      .getStationByToken('ACTIVE', 'false')
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.stationEmployee = res.data;
+        this.stationByToken = res.data;
         this.cdr.detectChanges();
       });
   }

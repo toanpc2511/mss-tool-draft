@@ -4,18 +4,17 @@ import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-
 import {
   IExportInventory,
   IFilterImportInventory,
-  InventoryManagementService, ISupplier,
+  InventoryManagementService, IStationActiveByToken,
   LIST_WAREHOUSE_ORDER_FORM
 } from '../inventory-management.service';
 import { ToastrService } from 'ngx-toastr';
 import { DestroyService } from '../../../shared/services/destroy.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { IError } from '../../../shared/models/error.model';
 import { convertDateToServer } from '../../../shared/helpers/functions';
 import { LIST_STATUS_EXPORT } from '../../../shared/data-enum/list-status';
 import { Router } from '@angular/router';
-import { GasStationResponse } from '../../gas-station/gas-station.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-export-inventory',
@@ -28,7 +27,7 @@ export class ExportInventoryComponent implements OnInit {
   firstDayOfMonth: string;
   paginatorState = new PaginatorState();
   dataSource: IExportInventory[] = [];
-  dataSupplier: ISupplier[] = [];
+  dataSupplier: IStationActiveByToken[] = [];
   listWarehouseOrderForm = LIST_WAREHOUSE_ORDER_FORM;
   listStatus = LIST_STATUS_EXPORT;
 
@@ -81,11 +80,13 @@ export class ExportInventoryComponent implements OnInit {
   }
 
   getListSupplier() {
-    this.inventoryManagementService.getListSuppliersActive()
+    this.inventoryManagementService
+      .getStationByToken('NOT_DELETE', 'false')
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         this.dataSupplier = res.data;
         this.cdr.detectChanges();
-      })
+      });
   }
 
   onSearch() {

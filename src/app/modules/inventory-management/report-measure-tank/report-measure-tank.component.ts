@@ -1,8 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IStationEployee } from '../../history-of-using-points/history-of-using-points.service';
 import { takeUntil } from 'rxjs/operators';
-import { IMeasures, InventoryManagementService } from '../inventory-management.service';
+import {
+  IGasFieldByStation,
+  IMeasures,
+  InventoryManagementService,
+  IStationActiveByToken
+} from '../inventory-management.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import * as moment from 'moment';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
@@ -23,8 +27,8 @@ export class ReportMeasureTankComponent extends BaseComponent implements OnInit 
 
   paginatorState = new PaginatorState();
   searchForm: FormGroup;
-  stationEmployee: Array<IStationEployee> = [];
-  listGasField;
+  stationByToken: IStationActiveByToken[] = [];
+  listGasField: IGasFieldByStation[] = [];
   dataSource: IMeasures[] = [];
 
   constructor(
@@ -48,7 +52,7 @@ export class ReportMeasureTankComponent extends BaseComponent implements OnInit 
   }
 
   ngOnInit(): void {
-    this.getStationEmployee();
+    this.getStationToken();
     this.buildForm();
     this.initDate();
     this.handleGasStation();
@@ -81,12 +85,12 @@ export class ReportMeasureTankComponent extends BaseComponent implements OnInit 
       })
   }
 
-  getStationEmployee() {
+  getStationToken() {
     this.inventoryManagementService
-      .getStationEmployee()
+      .getStationByToken('NOT_DELETE', 'false')
       .pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
-        this.stationEmployee = res.data;
+        this.stationByToken = res.data;
         this.cdr.detectChanges();
       });
   }

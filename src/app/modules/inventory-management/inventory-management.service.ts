@@ -32,6 +32,39 @@ export interface IStationEployee {
 	status: string;
 	code: string;
 }
+
+export interface IStationActiveByToken {
+  address: string;
+  areaType: string;
+  chip: boolean;
+  code: string;
+  corporation: boolean;
+  distance: string;
+  districtId: number;
+  fullAddress: string;
+  id: number;
+  lat: number;
+  lon: number;
+  name: string;
+  phone: string;
+  provinceId: number;
+  status: string;
+  wardId: number;
+}
+
+export interface IGasFieldByStation {
+  capacity: string;
+  code: string;
+  description: string;
+  height: string;
+  id: number;
+  length: string;
+  name: string;
+  product: string;
+  stationId: number;
+  status: string;
+}
+
 export interface IEmployees {
 	id: number;
 	name: string;
@@ -376,12 +409,20 @@ export class InventoryManagementService {
 		return this.http.get<Array<IStationEployee>>(`gas-stations/employee/station-active`);
 	}
 
-  // Lấy ds trạm theo token login
-  getStationToken(status, corporation) {
+  // Lấy ds trạm theo token login và trạng thái
+  getStationByToken(status, corporation) {
     const params = new HttpParams()
       .set('status', status)
       .set('corporation', corporation)
-    return this.http.get<Array<IStationEployee>>(`gas-stations/employee/status-corporation`, {params});
+    return this.http.get<Array<IStationActiveByToken>>(`gas-stations/employee/status-corporation`, {params});
+  }
+
+  // Lấy ds trạm không theo token login và trạng thái
+  getStationNotByToken(status, corporation) {
+    const params = new HttpParams()
+      .set('status', status)
+      .set('corporation', corporation)
+    return this.http.get<Array<IStationActiveByToken>>(`gas-stations/status-corporation`, {params});
   }
 
 	// Lấy ds tất cả nhân viên yêu cầu
@@ -573,7 +614,7 @@ export class InventoryManagementService {
   getGasFields(gasStationId: number) {
     const params = new HttpParams()
       .set('gas-station-id', gasStationId.toString())
-    return this.http.get(`gas-fields/station`, {params})
+    return this.http.get<Array<IGasFieldByStation>>(`gas-fields/station`, {params})
   }
 
   // Lấy ds lịch sử tịnh kho kịch bơm

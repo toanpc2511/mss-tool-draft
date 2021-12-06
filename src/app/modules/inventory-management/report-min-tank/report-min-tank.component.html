@@ -11,7 +11,7 @@
           <label>Trạm</label>
           <select class="form-control form-control-solid w-75" formControlName='stationId'>
             <option [value]="''">Tất cả</option>
-            <option *ngFor="let item of stationEmployee" [value]="item.id">{{item.name}}</option>
+            <option *ngFor="let item of stationByToken" [value]="item.id">{{item.name}}</option>
           </select>
         </div>
 
@@ -111,16 +111,16 @@
       <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
         <tr>
-          <th scope='' class='name'>Tên kỳ kiểm kho</th>
-          <th scope='' class='gas-field-code'>Mã bồn</th>
-          <th scope='' class='create-at'>Ngày tạo</th>
-          <th scope='' class='creator-name pl-5'>Người tạo</th>
-          <th scope='' class='import-quantity text-right'>Nhập trong kỳ</th>
-          <th scope='' class='head-meter text-right'>Số công tơ đầu</th>
-          <th scope='' class='final-meter text-right'>Số công tơ cuối</th>
-          <th scope='' class='with-meter text-right'>Lượng xuất theo công tơ</th>
-          <th scope='' class='difference text-right'>Âm dương</th>
-          <th scope='' class='note'>Ghi chú</th>
+          <th id='name' class='name'>Tên kỳ kiểm kho</th>
+          <th id='gas-field-code' class='gas-field-code'>Mã bồn</th>
+          <th id='create-at' class='create-at'>Ngày tạo</th>
+          <th id='creator-name' class='creator-name pl-5'>Người tạo</th>
+          <th id='import-quantity' class='import-quantity text-right'>Nhập trong kỳ</th>
+          <th id='head-meter' class='head-meter text-right'>Số công tơ đầu</th>
+          <th id='final-meter' class='final-meter text-right'>Số công tơ cuối</th>
+          <th id='with-meter' class='with-meter text-right'>Lượng xuất theo công tơ</th>
+          <th id='difference' class='difference text-right'>Âm dương</th>
+          <th id='note' class='note'>Ghi chú</th>
         </tr>
         </thead>
 

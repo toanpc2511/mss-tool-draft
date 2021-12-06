@@ -1,24 +1,22 @@
-import { TransactionService } from './../../transaction/transaction.service';
+import { TransactionService } from '../../transaction/transaction.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { of } from 'rxjs';
 import { concatMap, takeUntil, tap } from 'rxjs/operators';
 import { NO_EMIT_EVENT } from '../../../shared/app-constants';
 import { convertDateToServer } from '../../../shared/helpers/functions';
 import { IError } from '../../../shared/models/error.model';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
-import { IStationEployee } from '../../history-of-using-points/history-of-using-points.service';
 import {
-	EWarehouseOrderStatus,
-	IEmployees,
-	IFilterWarehouseOrder,
-	InventoryManagementService,
-	IWarehouseOrderRequest
+  EWarehouseOrderStatus,
+  IEmployees,
+  IFilterWarehouseOrder,
+  InventoryManagementService, IStationActiveByToken,
+  IWarehouseOrderRequest
 } from '../inventory-management.service';
-import { BaseComponent } from './../../../shared/components/base/base.component';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 
 @Component({
 	selector: 'app-warehouse-order-list',
@@ -32,7 +30,7 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 	paginatorState = new PaginatorState();
 	searchForm: FormGroup;
 	dataSource: IWarehouseOrderRequest[];
-	stationEmployee: Array<IStationEployee> = [];
+	stationByToken: Array<IStationActiveByToken> = [];
 	listEmployees: Array<IEmployees> = [];
 	eStatus = EWarehouseOrderStatus;
 
@@ -59,7 +57,7 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 
 	ngOnInit(): void {
 		this.buildForm();
-		this.getStationEmployee();
+		this.getStationToken();
 		this.getAllEmployee();
 		this.onSearch();
 
@@ -76,15 +74,15 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 		});
 	}
 
-	getStationEmployee() {
-		this.inventoryManagementService
-			.getStationEmployee()
-			.pipe(takeUntil(this.destroy$))
-			.subscribe((res) => {
-				this.stationEmployee = res.data;
-				this.cdr.detectChanges();
-			});
-	}
+  getStationToken() {
+    this.inventoryManagementService
+      .getStationByToken('NOT_DELETE', 'false')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.stationByToken = res.data;
+        this.cdr.detectChanges();
+      });
+  }
 
 	getAllEmployee() {
 		this.inventoryManagementService
@@ -102,7 +100,7 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 			.valueChanges.pipe(
 				concatMap((stationId: string) => {
 					const stationName =
-						this.stationEmployee.find((s) => s.id === Number(stationId))?.name || '';
+						this.stationByToken.find((s) => s.id === Number(stationId))?.name || '';
 					this.listEmployees = [];
 					this.searchForm.get('employeeId').reset('', NO_EMIT_EVENT);
 					if (stationName) {

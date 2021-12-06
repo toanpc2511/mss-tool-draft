@@ -11,7 +11,7 @@
           <label>Tên trạm</label>
           <select class="form-control form-control-solid w-75" formControlName='stationName'>
             <option [value]="''">Tất cả</option>
-            <option *ngFor="let item of stationEmployee" [value]="item.name">{{item.name}}</option>
+            <option *ngFor="let item of stationByToken" [value]="item.name">{{item.name}}</option>
           </select>
         </div>
 

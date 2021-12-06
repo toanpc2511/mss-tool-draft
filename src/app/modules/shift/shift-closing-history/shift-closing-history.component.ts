@@ -1,5 +1,4 @@
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
-import { AuthService } from './../../auth/services/auth.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
@@ -7,25 +6,26 @@ import { LIST_STATUS_SHIFT_CLOSING } from '../../../shared/data-enum/list-status
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
 import { Router } from '@angular/router';
-import { ILockShift, IOrderOfShift, IShiftConfig, ShiftService } from '../shift.service';
-import { GasStationResponse } from '../../gas-station/gas-station.service';
+import { ILockShift, IOrderOfShift, IShiftConfig, IStationActiveByToken, ShiftService } from '../shift.service';
 import { convertTimeToString } from '../../../shared/helpers/functions';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
+import { takeUntil } from 'rxjs/operators';
+import { DestroyService } from '../../../shared/services/destroy.service';
 
 @Component({
 	selector: 'app-shift-closing-history',
 	templateUrl: './shift-closing-history.component.html',
 	styleUrls: ['./shift-closing-history.component.scss'],
-	providers: [FormBuilder]
+	providers: [FormBuilder, DestroyService]
 })
 export class ShiftClosingHistoryComponent extends BaseComponent implements OnInit {
 	searchForm: FormGroup;
 	today: string;
 	dataSource: ILockShift[] = [];
 	listStatus = LIST_STATUS_SHIFT_CLOSING;
-	listStations: GasStationResponse[] = [];
+  listStations: IStationActiveByToken[] = [];
 	listShifts: IShiftConfig[] = [];
 	paginatorState = new PaginatorState();
 	listOrder: IOrderOfShift[] = [];
@@ -36,7 +36,8 @@ export class ShiftClosingHistoryComponent extends BaseComponent implements OnIni
 		private router: Router,
 		private shiftService: ShiftService,
 		private cdr: ChangeDetectorRef,
-		private toastr: ToastrService
+		private toastr: ToastrService,
+    private destroy$: DestroyService
 	) {
     super();
 		this.today = moment().format('DD/MM/YYYY');
@@ -51,10 +52,7 @@ export class ShiftClosingHistoryComponent extends BaseComponent implements OnIni
 		this.buildForm();
 		this.initDate();
 
-		this.shiftService.getStationByAccount().subscribe((res) => {
-			this.listStations = res.data;
-			this.cdr.detectChanges();
-		});
+		this.getStationToken();
 
 		this.shiftService.getListShiftConfig().subscribe((res) => {
 			this.listShifts = res.data;
@@ -76,6 +74,16 @@ export class ShiftClosingHistoryComponent extends BaseComponent implements OnIni
 		this.searchForm.get('startAt').patchValue(this.today);
 		this.searchForm.get('endAt').patchValue(this.today);
 	}
+
+  getStationToken() {
+    this.shiftService
+      .getStationByToken('NOT_DELETE', 'false')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.listStations = res.data;
+        this.cdr.detectChanges();
+      });
+  }
 
 	onSearch() {
 		const timeStart = new Date(

@@ -2,9 +2,9 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/co
 import { IStationEployee } from '../../../history-of-using-points/history-of-using-points.service';
 import { finalize, pluck, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import {
-	IGasFuel,
-	IInfoOrderRequest,
-	InventoryManagementService
+  IGasFuel,
+  IInfoOrderRequest,
+  InventoryManagementService, IStationActiveByToken
 } from '../../inventory-management.service';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -31,7 +31,7 @@ import { BaseComponent } from '../../../../shared/components/base/base.component
 	providers: [DestroyService, FormBuilder]
 })
 export class CreateOrderComponent extends BaseComponent implements OnInit, AfterViewInit {
-	stationEmployee: Array<IStationEployee> = [];
+  stationByToken: IStationActiveByToken[] = [];
 	requestForm: FormGroup;
 	productForm: FormGroup;
 	productFormArray: FormArray;
@@ -114,7 +114,7 @@ export class CreateOrderComponent extends BaseComponent implements OnInit, After
 			)
 			.subscribe();
 
-		this.getStationEmployee();
+		this.getStationToken();
 		this.getListProductFuels();
 		this.buildForm();
 		this.buildProductForm();
@@ -187,7 +187,7 @@ export class CreateOrderComponent extends BaseComponent implements OnInit, After
 			this.stationId = this.requestForm.get('stationId').value;
 			this.buildProductForm();
 
-			const itemStation = this.stationEmployee.find((x) => {
+			const itemStation = this.stationByToken.find((x) => {
 				return x.id === Number(this.stationId);
 			});
 
@@ -195,15 +195,15 @@ export class CreateOrderComponent extends BaseComponent implements OnInit, After
 		});
 	}
 
-	getStationEmployee() {
-		this.inventoryManagementService
-			.getStationEmployeeActive()
-			.pipe(takeUntil(this.destroy$))
-			.subscribe((res) => {
-				this.stationEmployee = res.data;
-				this.cdr.detectChanges();
-			});
-	}
+  getStationToken() {
+    this.inventoryManagementService
+      .getStationByToken('ACTIVE', 'false')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.stationByToken = res.data;
+        this.cdr.detectChanges();
+      });
+  }
 
 	getListProductFuels() {
 		this.productService
