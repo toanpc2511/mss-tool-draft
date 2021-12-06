@@ -1,4 +1,4 @@
-import { IMenuConfigItem } from './../../../_metronic/configs/menu-config';
+import { IMenuConfigItem } from '../../../_metronic/configs/menu-config';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
@@ -31,6 +31,7 @@ type SpecialUrl = {
 };
 
 const SPECIAL_URL: SpecialUrl[] = [
+	{ url: '/hop-dong/danh-sach', permissionKey: EAuthorize.VIEW_CONTRACT_LIST_SCREEN },
 	{ url: '/hop-dong/danh-sach/them-moi', permissionKey: EAuthorize.CREATE_CONTRACT_BUTTON },
 	{ url: '/hop-dong/danh-sach/them-moi', permissionKey: EAuthorize.CREATE_CONTRACT_PLAN_BUTTON },
 	{
@@ -47,6 +48,10 @@ const SPECIAL_URL: SpecialUrl[] = [
 		permissionKey: EAuthorize.UPDATE_GAS_STATION_BUTTON
 	},
 	{
+		url: '/nhan-vien/danh-sach',
+		permissionKey: EAuthorize.VIEW_EMPLOYEE_LIST_SCREEN
+	},
+	{
 		url: '/nhan-vien/danh-sach/them-moi',
 		permissionKey: EAuthorize.CREATE_EMPLOYEE_BUTTON
 	},
@@ -59,12 +64,20 @@ const SPECIAL_URL: SpecialUrl[] = [
 		permissionKey: EAuthorize.UPDATE_EMPLOYEE_BUTTON
 	},
 	{
+		url: '/phan-quyen',
+		permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
+	},
+	{
 		url: '/phan-quyen/them-nhom-quyen',
 		permissionKey: EAuthorize.CREATE_ROLE_BUTTON
 	},
 	{
 		url: '/phan-quyen/sua-nhom-quyen',
 		permissionKey: EAuthorize.UPDATE_ROLE_BUTTON
+	},
+	{
+		url: '/ca-lam-viec/doi-ca',
+		permissionKey: EAuthorize.VIEW_SWAP_SHIFT_SCREEN
 	},
 	{
 		url: '/ca-lam-viec/doi-ca/chi-tiet-doi-ca',
@@ -77,6 +90,10 @@ const SPECIAL_URL: SpecialUrl[] = [
 	{
 		url: '/ca-lam-viec/lich-su-chot-ca/chi-tiet',
 		permissionKey: EAuthorize.VIEW_SWAP_SHIFT_SCREEN
+	},
+	{
+		url: '/khach-hang/danh-sach',
+		permissionKey: EAuthorize.VIEW_DRIVER_LIST_SCREEN
 	},
 	{
 		url: '/khach-hang/danh-sach/chi-tiet',
@@ -153,6 +170,54 @@ const SPECIAL_URL: SpecialUrl[] = [
   {
     url: '/kho/tinh-kho-do-be',
     permissionKey: EAuthorize.VIEW_MEASURES_SCREEN
+  },
+  {
+    url: '/lich-su-su-dung-diem/danh-sach',
+    permissionKey: EAuthorize.VIEW_HISTORY_ACCUMULATE_SCREEN
+  },
+  {
+    url: '/cau-hinh/tich-diem',
+    permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+  },
+  {
+    url: '/cau-hinh/chiet-khau',
+    permissionKey: EAuthorize.VIEW_DISCOUNT_LIST_SCREEN
+  },
+  {
+    url: '/cau-hinh/hang',
+    permissionKey: EAuthorize.VIEW_RANK_LIST_SCREEN
+  },
+  {
+    url: '/cau-hinh/khuyen-mai',
+    permissionKey: EAuthorize.VIEW_PROMOTION_LIST_SCREEN
+  },
+  {
+    url: '/lich-su-giao-dich/danh-sach',
+    permissionKey: EAuthorize.VIEW_TRANSACTION_HISTORY_MENU
+  },
+  {
+    url: '/ca-lam-viec/cauhinh-ca',
+    permissionKey: EAuthorize.VIEW_SHIFT_CONFIG_SCREEN
+  },
+  {
+    url: '/ca-lam-viec/lich-lam-viec',
+    permissionKey: EAuthorize.VIEW_CALENDAR_SCREEN
+  },
+  {
+    url: '/tai-khoan/danh-sach',
+    permissionKey: EAuthorize.VIEW_ACCOUNT_LIST_SCREEN
+  },
+  {
+    url: '/san-pham/nhom-san-pham',
+    permissionKey: EAuthorize.VIEW_CATEGORY_SCREEN
+  },
+  {
+    url: '/san-pham/san-pham-nhien-lieu',
+    permissionKey: EAuthorize.VIEW_OIL_LIST_SCREEN
+  },
+  {
+    url: '/san-pham/san-pham-khac',
+    permissionKey: EAuthorize.VIEW_OTHER_PRODUCT_SCREEN
   },
 
 

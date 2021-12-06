@@ -15,7 +15,7 @@ import {
 	IStationEployee
 } from './history-of-using-points.service';
 import { convertDateToServer } from '../../shared/helpers/functions';
-import { IFilterTransaction } from '../transaction/transaction.service';
+import { BaseComponent } from '../../shared/components/base/base.component';
 
 @Component({
 	selector: 'app-history-of-using-points',
@@ -23,7 +23,7 @@ import { IFilterTransaction } from '../transaction/transaction.service';
 	styleUrls: ['./history-of-using-points.component.scss'],
 	providers: [FormBuilder, DestroyService]
 })
-export class HistoryOfUsingPointsComponent implements OnInit {
+export class HistoryOfUsingPointsComponent extends BaseComponent implements OnInit {
 	dataSource: IHistoryUsingPoint[] = [];
 	searchForm: FormGroup;
 	paymentMethods: Array<IPaymentMethod> = [];
@@ -47,6 +47,7 @@ export class HistoryOfUsingPointsComponent implements OnInit {
 		private productService: ProductService,
 		private historyUsingPointsService: HistoryUsingPointsService
 	) {
+    super();
 		this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
 		this.today = moment().format('DD/MM/YYYY');
 		this.init();

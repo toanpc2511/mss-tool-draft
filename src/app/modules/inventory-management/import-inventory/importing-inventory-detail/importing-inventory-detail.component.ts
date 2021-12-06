@@ -71,7 +71,7 @@ export class ImportingInventoryDetailComponent extends BaseComponent implements 
         unit: [d.unit],
         amountActually: [d.amountActually],
         gasFieldOutName: [d.gasFieldOutName],
-        compartment: [ { value: d.compartment, disabled: !this.isSupplier }, [this.isSupplier ? Validators.required : Validators.nullValidator]],
+        compartment: [ { value: d.compartment, disabled: !this.isSupplier }],
         gasFieldInName: [d.gasFieldInName],
         price: [d.price],
         supplierName: [d.supplierName],
