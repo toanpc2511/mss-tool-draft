@@ -44,6 +44,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   gasArray$: Array<Observable<any>> = [];
   listItemGas: Array<any> = [];
   sumTotalMoney: number;
+  isRequired: boolean;
 
   constructor(
     private router: Router,
@@ -138,6 +139,12 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       .subscribe((x) => {
         this.dataSupplier = [];
         if (x) {
+          x !== 'SUPPLIER' ? this.isRequired = true : this.isRequired = false;
+          this.dataProductResponses?.value.map((_, index) => {
+            this.isRequired
+              ? this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.required)
+              : this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.nullValidator);
+          })
           this.orderInfoForm.get('exportedWarehouseName').patchValue('');
           this.orderInfoForm.controls['exportedWarehouseAddress'].patchValue('');
           this.inventoryManagementService.getListSuppliers(x)
