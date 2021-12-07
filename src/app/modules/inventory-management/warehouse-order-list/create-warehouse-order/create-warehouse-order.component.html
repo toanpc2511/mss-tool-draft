@@ -178,7 +178,7 @@
             <th scope=''>Tên sản phẩm</th>
             <th scope=''>Đơn vị</th>
             <th scope='' class='form-label required'>Lượng đề xuất</th>
-            <th scope='' class='form-label'>Bồn xuất</th>
+            <th scope='' class='form-label' [class.required]='isRequired'>Bồn xuất</th>
             <th scope='' class='form-label'>Ngăn</th>
             <th scope=''>Bồn nhập</th>
             <th scope='' class='form-label required'>Đơn giá(VNĐ)</th>
@@ -229,6 +229,11 @@
                 <option [value]="''">Chọn bồn xuất</option>
                 <option *ngFor="let item of listItemGas[i]" [value]="item.id">{{item.name}}</option>
               </select>
+              <app-validate
+                [control]="item.controls['gasFieldOut']"
+                [error]="'required'"
+                [message]="'Bồn xuất không được để trống'"
+              ></app-validate>
             </td>
             <td class="compartment">
               <input

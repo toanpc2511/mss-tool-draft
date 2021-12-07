@@ -67,7 +67,7 @@
             </div>
 
             <div class="col-lg-7" *ngIf='!status || status && dataSource?.internalCar'>
-              <label class="form-label font-weight-bold">{{ dataSource?.representativeGiveName }}</label>
+                <label class="form-label font-weight-bold">{{ dataSource?.driver.name }}</label>
             </div>
 
               <div *ngIf='status && !dataSource?.internalCar' class="col-lg-7">
@@ -118,7 +118,7 @@
 
       <div class="card-body">
         <div class="form-group row">
-          <div class="col-lg-6 row align-items-center">
+          <div class="col-lg-6 qrow align-items-center">
             <div class="col-lg-5">
               <label class="form-label">Tên lái xe</label>
             </div>
