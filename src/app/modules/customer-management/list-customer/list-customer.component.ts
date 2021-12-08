@@ -1,22 +1,23 @@
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { AuthService } from '../../auth/services/auth.service';
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { CustomerManagementService, ICustomers, ISortData } from '../customer-management.service';
 import { Router } from '@angular/router';
-import { catchError, debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { IError } from '../../../shared/models/error.model';
-import { of } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { TValidators } from '../../../shared/validators';
+import { ConfigurationManagementService, IRank } from '../../configuration-management/configuration-management.service';
 
 @Component({
 	selector: 'app-list-customer',
 	templateUrl: './list-customer.component.html',
 	styleUrls: ['./list-customer.component.scss'],
-	providers: [DestroyService]
+	providers: [DestroyService, NgbActiveModal]
 })
 export class ListCustomerComponent extends BaseComponent implements OnInit {
   @ViewChild('settingRank') settingRank: TemplateRef<any>;
@@ -24,11 +25,15 @@ export class ListCustomerComponent extends BaseComponent implements OnInit {
 	sortData: ISortData;
 	paginatorState = new PaginatorState();
 	dataSource: Array<ICustomers> = [];
-  listRank = [];
+  listRank: IRank[] = [];
+  rankControl: FormControl;
+  dataCustomer: ICustomers;
+  activeModal: NgbActiveModal;
 
 	constructor(
 		private router: Router,
 		private customerManagementService: CustomerManagementService,
+		private configurationManagementService: ConfigurationManagementService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private authService: AuthService,
@@ -37,6 +42,13 @@ export class ListCustomerComponent extends BaseComponent implements OnInit {
 	) {
 		super();
 		this.init();
+    this.rankControl = new FormControl(null, [TValidators.required]);
+    this.modalService.activeInstances
+      .pipe(
+        tap((modalRefs) => (this.activeModal = modalRefs[0])),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
 	}
 
 	init() {
@@ -114,6 +126,44 @@ export class ListCustomerComponent extends BaseComponent implements OnInit {
 		this.getListCustomer();
 	}
 
-  settingRankModal() {
+  settingRankModal($event: Event, data: ICustomers) {
+    $event.stopPropagation();
+    this.rankControl.reset();
+    this.dataCustomer = data;
+    this.rankControl.patchValue(this.dataCustomer.rank.id);
+
+    this.modalService.open(this.settingRank, {
+      size: 'xs',
+      backdrop: 'static'
+    });
+
+    this.configurationManagementService.getRankHighers(data.rank.code)
+      .subscribe((res) => {
+        this.listRank = res.data;
+      })
+  }
+
+  confirmChange(data: ICustomers) {
+    this.rankControl.markAllAsTouched();
+    if (this.rankControl.invalid) {
+      return
+    }
+
+    const dataReq = {
+      rankId: Number(this.rankControl.value),
+      driverId: data.id
+    }
+    this.customerManagementService.changeRank(dataReq)
+      .subscribe((res) => {
+        if (res.data) {
+          this.toastr.success('Cập nhật hạng khách hàng thành công!')
+          this.activeModal.close(true);
+          this.getListCustomer();
+        }
+      }, (error: IError) => this.checkerror(error))
+  }
+
+  checkerror(error: IError) {
+    this.toastr.error(error.code);
   }
 }

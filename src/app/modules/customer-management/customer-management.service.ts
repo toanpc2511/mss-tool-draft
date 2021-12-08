@@ -238,7 +238,7 @@ export class CustomerManagementService {
 	}
 
   // Thay đổi hạng khách hàng
-  changeRank(id: string) {
-    return this.http.put('driver-detail/ranks', id)
+  changeRank(dataReq: {rankId: number, driverId: string}) {
+    return this.http.put('customers/ranks', dataReq)
   }
 }
