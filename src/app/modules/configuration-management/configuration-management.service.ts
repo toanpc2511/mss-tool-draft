@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { HttpParams } from '@angular/common/http';
 
 export interface IRank {
 	id: number;
@@ -100,4 +101,11 @@ export class ConfigurationManagementService {
 	deleteConfigPromotion(id: number) {
 		return this.http.delete(`promotions/${id}`);
 	}
+
+  // Danh sách hạng cao hơn hiện tại
+  getRankHighers(code: string) {
+    const params = new HttpParams()
+      .set('code', code)
+    return this.http.get<Array<IRank>>('ranks/highers', {params})
+  }
 }
