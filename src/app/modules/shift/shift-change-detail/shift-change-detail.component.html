@@ -98,6 +98,14 @@
 		</button>
 		<button
 			type="button"
+			class="btn btn-primary mr-3"
+			(click)="openCompleteApproveModal()"
+			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.WAITING && (eAuthorize.CONFIRM_AND_REJECT_SWAP_SHIFT|canUseFeature)"
+		>
+			Hoàn duyệt
+		</button>
+		<button
+			type="button"
 			class="btn btn-outline-secondary mr-3"
 			(click)="goBack()"
 			*ngIf="shiftChangeRequestData?.status !== eShiftChangeRequestStatus.WAITING"

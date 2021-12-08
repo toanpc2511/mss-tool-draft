@@ -51,6 +51,8 @@ export class UserOffcanvasComponent implements OnInit {
 			backdrop: 'static'
 		});
 
+    modalRef.componentInstance.data =  this.enableTwoAuthStepControl.value;
+
 		modalRef.closed
 			.pipe(
 				tap((res: boolean) => {

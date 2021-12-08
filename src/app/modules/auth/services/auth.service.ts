@@ -165,4 +165,8 @@ export class AuthService {
 	sendOTPAsync(phoneNumber: string, recaptchaVerifier: firebase.auth.RecaptchaVerifier) {
 		return this.firebaseAuth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
 	}
+
+  ge(dataReq) {
+    return this.http.post('accounts/toggles/otps', dataReq);
+  }
 }
