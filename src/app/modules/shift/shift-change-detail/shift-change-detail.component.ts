@@ -1,5 +1,5 @@
-import { BaseComponent } from './../../../shared/components/base/base.component';
-import { ConfirmDeleteComponent } from './../../../shared/components/confirm-delete/confirm-delete.component';
+import { BaseComponent } from '../../../shared/components/base/base.component';
+import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delete/confirm-delete.component';
 import {
 	AfterViewInit,
 	Component,
@@ -18,13 +18,13 @@ import { DestroyService } from '../../../shared/services/destroy.service';
 import { FilterService } from '../../../shared/services/filter.service';
 import { SortService } from '../../../shared/services/sort.service';
 import { ShiftService } from '../shift.service';
-import { TValidators } from './../../../shared/validators';
-import { SubheaderService } from './../../../_metronic/partials/layout/subheader/_services/subheader.service';
+import { TValidators } from '../../../shared/validators';
+import { SubheaderService } from '../../../_metronic/partials/layout';
 import {
 	IShiftRequestChange,
 	EShiftChangRequestStatus,
 	EShiftChangRequestType
-} from './../shift.service';
+} from '../shift.service';
 import { of } from 'rxjs';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 
@@ -171,6 +171,39 @@ export class ShiftChangeDetailComponent extends BaseComponent implements OnInit,
 				tap((res) => {
 					if (res.data) {
 						this.toastr.success('Đã phê duyệt yêu cầu thay ca/đổi ca!');
+					}
+					this.goBack();
+				}),
+				catchError((error: IError) => {
+					this.checkError(error);
+					return of();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	openCompleteApproveModal() {
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+			backdrop: 'static'
+		});
+
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn hoàn duyệt yêu cầu ?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
+
+		modalRef.closed
+			.pipe(
+				filter((res) => res),
+				switchMap(() => {
+					return this.shiftService.approveShiftRequestChange(this.shiftChangeRequestData.id, this.shiftChangeRequestData.type, this.shiftChangeRequestData.employeeIdFrom);
+				}),
+				tap((res) => {
+					if (res.data) {
+						this.toastr.success('Đã hoàn duyệt yêu cầu thay ca/đổi ca!');
 					}
 					this.goBack();
 				}),

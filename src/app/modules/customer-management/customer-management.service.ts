@@ -236,4 +236,9 @@ export class CustomerManagementService {
 			step4: { isValid: false }
 		});
 	}
+
+  // Thay đổi hạng khách hàng
+  changeRank(id: string) {
+    return this.http.put('driver-detail/ranks', id)
+  }
 }

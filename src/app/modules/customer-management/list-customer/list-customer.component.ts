@@ -1,12 +1,16 @@
-import { BaseComponent } from './../../../shared/components/base/base.component';
-import { AuthService } from './../../auth/services/auth.service';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { BaseComponent } from '../../../shared/components/base/base.component';
+import { AuthService } from '../../auth/services/auth.service';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { CustomerManagementService, ICustomers, ISortData } from '../customer-management.service';
 import { Router } from '@angular/router';
-import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from '../../../shared/services/destroy.service';
+import { IError } from '../../../shared/models/error.model';
+import { of } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 	selector: 'app-list-customer',
@@ -15,17 +19,21 @@ import { DestroyService } from '../../../shared/services/destroy.service';
 	providers: [DestroyService]
 })
 export class ListCustomerComponent extends BaseComponent implements OnInit {
+  @ViewChild('settingRank') settingRank: TemplateRef<any>;
 	searchFormControl: FormControl = new FormControl();
 	sortData: ISortData;
 	paginatorState = new PaginatorState();
 	dataSource: Array<ICustomers> = [];
+  listRank = [];
 
 	constructor(
 		private router: Router,
 		private customerManagementService: CustomerManagementService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
-		private authService: AuthService
+		private authService: AuthService,
+    private modalService: NgbModal,
+    private toastr: ToastrService,
 	) {
 		super();
 		this.init();
@@ -105,4 +113,7 @@ export class ListCustomerComponent extends BaseComponent implements OnInit {
 		this.paginatorState = $event as PaginatorState;
 		this.getListCustomer();
 	}
+
+  settingRankModal() {
+  }
 }

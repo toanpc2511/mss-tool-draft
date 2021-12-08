@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ChangeDetectorRef, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import firebase from 'firebase';
@@ -18,6 +18,7 @@ import { TValidators } from 'src/app/shared/validators';
 	providers: [DestroyService]
 })
 export class TwoFactorComponent implements AfterViewInit {
+  @Input() data: IDataTransfer;
 	reCapchaError = false;
 	reCapchaValid = false;
 	reCapchaVerifier: firebase.auth.RecaptchaVerifier;
@@ -114,9 +115,25 @@ export class TwoFactorComponent implements AfterViewInit {
 		this.authService
 			.verifyOTP(this.confirmResult, this.verificationCodeControl.value)
 			.pipe(
-				tap((res) => {
+				tap( (res) => {
 					if (res.user) {
-						this.step = 3;
+            res.user.getIdToken()
+              .then((valueToken) => {
+                const dataReq = {
+                  phone: `+84${this.currentPhoneNumber.replace('0', '')}`,
+                  authentication: this.data,
+                  idToken: valueToken
+                }
+
+                this.authService.ge(dataReq)
+                  .subscribe((res) => {
+                    if (res.data) {
+                      this.step = 3;
+                      this.toastr.success('Xác thực thành công!')
+                    }
+                  }, (error => this.checkError(error)))
+              })
+              .catch((error) => {this.checkError(error)})
 					}
 				}),
 				catchError((error) => {
@@ -150,9 +167,16 @@ export class TwoFactorComponent implements AfterViewInit {
 			case 'auth/network-request-failed':
 				this.toastr.error('Yêu cầu không hợp lệ! Vui lòng kiểm tra lại');
 				break;
+			case 'SUN-OIL-4871':
+				this.toastr.error('Xác thực không thành công');
+				break;
 			default:
 				this.toastr.error(`${error.code} - ${error.message}`);
 				break;
 		}
 	}
+}
+
+export interface IDataTransfer {
+  data: string;
 }
