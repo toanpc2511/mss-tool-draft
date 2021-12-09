@@ -24,6 +24,7 @@ import { CreateNewsComponent } from './news-config/create-news/create-news.compo
 import { AngularEditorModule } from './news-config/editor-config/angular-editor.module';
 import { UpdateNewsComponent } from './news-config/update-news/update-news.component';
 import { NewsDetailComponent } from './news-config/news-detail/news-detail.component';
+import { CoreModule } from '../../_metronic/core';
 
 @NgModule({
   declarations: [
@@ -41,21 +42,22 @@ import { NewsDetailComponent } from './news-config/news-detail/news-detail.compo
     UpdateNewsComponent,
     NewsDetailComponent
   ],
-  imports: [
-    CommonModule,
-    ConfigurationManagementRoutingModule,
-    NgbTooltipModule,
-    NgbAccordionModule,
-    InlineSVGModule,
-    CRUDTableModule,
-    FormsModule,
-    SharedComponentsModule,
-    ReactiveFormsModule,
-    InputTrimModule,
-    DirectivesModule,
-    PipesModule,
-    AuthModule,
-    AngularEditorModule
-  ]
+	imports: [
+		CommonModule,
+		ConfigurationManagementRoutingModule,
+		NgbTooltipModule,
+		NgbAccordionModule,
+		InlineSVGModule,
+		CRUDTableModule,
+		FormsModule,
+		SharedComponentsModule,
+		ReactiveFormsModule,
+		InputTrimModule,
+		DirectivesModule,
+		PipesModule,
+		AuthModule,
+		AngularEditorModule,
+		CoreModule
+	]
 })
 export class ConfigurationManagementModule {}

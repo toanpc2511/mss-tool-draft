@@ -33,7 +33,7 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
     maxHeight: '25rem',
     placeholder: 'Nhập nội dung tin tức',
     translate: 'no',
-    sanitize: true,
+    sanitize: false,
     toolbarPosition: 'top',
     defaultFontName: 'Times New Roman',
     defaultParagraphSeparator: 'p',
@@ -134,6 +134,26 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
     return convertedHTML.replace(/&#160;/ig, '').trim();
   }
 
+  transformContentToPhoneView(): string {
+    /*
+       regex: /<p>[<\w="/ ]*>*<br>[<\w="/ ]*>*<\/p>/g
+       catch 2 case:
+        <p><font face="Times New Roman"><br></font></p>
+        <p><br></p>
+     */
+    const transformBrTag: string = this.createForm.controls['content'].value.replace(/<p>[<\w="/ ]*>*<br>[<\w="/ ]*>*<\/p>/g, '<br>');
+    const regexp = new RegExp('<br><[^/b]+>','g');
+    let match;
+
+    let addingBrTagStr = transformBrTag;
+
+    while ((match = regexp.exec(transformBrTag)) !== null) {
+      addingBrTagStr = addingBrTagStr.slice(0, match.index) + "<br>" + addingBrTagStr.slice(match.index);
+    }
+
+    return addingBrTagStr;
+  }
+
   onSubmit(): void {
     if (this.trimContentValue() === '') {
       this.createForm.controls['content'].patchValue('');
@@ -144,6 +164,8 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
     if (this.createForm.invalid) {
       return;
     }
+
+    this.createForm.controls['content'].patchValue(this.transformContentToPhoneView());
 
     this.newsService.create(this.createForm.getRawValue()).subscribe((res: DataResponse<boolean>) => {
       this.router.navigate(['cau-hinh/tin-tuc']);

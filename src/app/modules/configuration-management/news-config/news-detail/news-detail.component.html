@@ -27,7 +27,7 @@
         <div class='col-lg-2'>
           <label class='form-label'>Nội dung</label>
         </div>
-        <div class='col-lg-10' [innerHTML]='newsDetail?.content'>
+        <div class='col-lg-10' [innerHTML]='contentNews | safe:"html"'>
         </div>
       </div>
 
