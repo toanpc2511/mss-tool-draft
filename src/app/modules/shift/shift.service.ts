@@ -98,7 +98,7 @@ export interface IEmployeeByIdStation {
 
 export interface IInfoCalendarEmployee {
 	employeeId: number;
-	pumpPoles: [number];
+	pumpPoles: [];
 	shiftOffIds: [number];
 }
 
@@ -545,6 +545,10 @@ export class ShiftService {
 			employeeIdCreate: employeeIdFrom
 		});
 	}
+
+  rollBackShift(id: number) {
+    return this.http.put(`swap-shifts/roll-back/${id}`,{})
+  }
 
 	rejectShiftRequestChange(id: string, reason: string, type: EShiftChangRequestType, employeeIdFrom: string) {
 		return this.http.put(`swap-shifts/status/${id}`, {
