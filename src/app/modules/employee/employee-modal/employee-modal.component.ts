@@ -451,7 +451,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		const inputElement = $event.target as HTMLInputElement;
 		const files = Array.from(inputElement.files);
 
-		if (files[0].size > 2000000) {
+		if (files[0].size > 15360000) {
 			this.toastr.error('Dung lượng ảnh quá lớn');
 		}
 

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -18,7 +18,7 @@ import { LayoutService } from '../../../../../core';
 export class UserOffcanvasComponent implements OnInit {
 	extrasUserOffcanvasDirection = 'offcanvas-right';
 	user$: Observable<UserModel>;
-	enableTwoAuthStepControl = new FormControl(false);
+	enableTwoAuthStepControl = new FormControl();
 
 	activeModal: NgbActiveModal;
 	constructor(
@@ -26,23 +26,29 @@ export class UserOffcanvasComponent implements OnInit {
 		private auth: AuthService,
 		private modalService: NgbModal,
 		private toastr: ToastrService,
-		private destroy$: DestroyService
-	) {}
+		private destroy$: DestroyService,
+    private cdr: ChangeDetectorRef,
+	) {
+    this.user$ = this.auth.currentUser$;
+    this.user$.subscribe((x) => {
+      this.enableTwoAuthStepControl.patchValue(x?.accountAuth.otp);
+    })
+  }
 
 	ngOnInit(): void {
 		this.extrasUserOffcanvasDirection = `offcanvas-${this.layout.getProp(
 			'extras.user.offcanvas.direction'
 		)}`;
-		this.user$ = this.auth.currentUser$;
-		this.enableTwoAuthStepControl.valueChanges
-			.pipe(
-				tap((checked) => {
-					if (checked) {
-						this.openModal();
-					}
-				}, takeUntil(this.destroy$))
-			)
-			.subscribe();
+		// this.user$ = this.auth.currentUser$;
+		// this.enableTwoAuthStepControl.valueChanges
+		// 	.pipe(
+		// 		tap((checked) => {
+		// 			if (checked) {
+		// 				this.openModal();
+		// 			}
+		// 		}, takeUntil(this.destroy$))
+		// 	)
+		// 	.subscribe();
 	}
 
 	openModal() {
@@ -51,7 +57,7 @@ export class UserOffcanvasComponent implements OnInit {
 			backdrop: 'static'
 		});
 
-    modalRef.componentInstance.data =  this.enableTwoAuthStepControl.value;
+    modalRef.componentInstance.data =  !this.enableTwoAuthStepControl.value;
 
 		modalRef.closed
 			.pipe(

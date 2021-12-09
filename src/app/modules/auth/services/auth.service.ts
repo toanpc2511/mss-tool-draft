@@ -25,6 +25,7 @@ export interface UserModel {
 		updatedAt: Date;
 		username: string;
 		profile: IProfile;
+    otp: boolean;
 	};
 	actions: string[];
 	changePassword: boolean;
@@ -166,7 +167,7 @@ export class AuthService {
 		return this.firebaseAuth.signInWithPhoneNumber(phoneNumber, recaptchaVerifier);
 	}
 
-  ge(dataReq) {
+  togglesOtps(dataReq) {
     return this.http.post('accounts/toggles/otps', dataReq);
   }
 }

@@ -85,8 +85,8 @@ export class UpdateBannerDialogComponent implements OnInit {
     const inputElement = $event.target as HTMLInputElement;
     const files = Array.from(inputElement.files);
 
-    if (files[0].size > 2000000) {
-      this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 2MB');
+    if (files[0].size > 15360000) {
+      this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 15MB');
       this.updateForm.controls['imageId'].patchValue('');
       this.attachmentImg = null;
       this.urlImg = '';
