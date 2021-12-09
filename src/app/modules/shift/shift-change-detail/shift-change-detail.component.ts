@@ -71,7 +71,6 @@ export class ShiftChangeDetailComponent extends BaseComponent implements OnInit,
 				switchMap((id: string) => this.shiftService.getDetailShiftRequestChange(id)),
 				tap((res) => {
 					this.shiftChangeRequestData = res.data;
-					console.log(this.shiftChangeRequestData);
 
 					this.cdr.detectChanges();
 				}),
@@ -111,6 +110,8 @@ export class ShiftChangeDetailComponent extends BaseComponent implements OnInit,
 			this.toastr.error('Lịch/ca làm việc không tồn tại');
 		} else if(error.code === 'SUN-OIL-4901') {
 			this.toastr.error(`${this.shiftChangeRequestData.employeeCodeFrom} - ${this.shiftChangeRequestData.employeeNameFrom} đã tạo yêu cầu thay ca/đổi ca quá 5 lần/tháng`)
+		} else if(error.code === 'SUN-OIL-4979') {
+			this.toastr.error('Yêu cầu đổi ca thay ca chưa được duyệt')
 		} else {
 			this.toastr.error(`${error.code} - ${error.message}`);
 		}
@@ -195,25 +196,22 @@ export class ShiftChangeDetailComponent extends BaseComponent implements OnInit,
 		};
 		modalRef.componentInstance.data = data;
 
-		modalRef.closed
-			.pipe(
-				filter((res) => res),
-				switchMap(() => {
-					return this.shiftService.approveShiftRequestChange(this.shiftChangeRequestData.id, this.shiftChangeRequestData.type, this.shiftChangeRequestData.employeeIdFrom);
-				}),
-				tap((res) => {
-					if (res.data) {
-						this.toastr.success('Đã hoàn duyệt yêu cầu thay ca/đổi ca!');
-					}
-					this.goBack();
-				}),
-				catchError((error: IError) => {
-					this.checkError(error);
-					return of();
-				}),
-				takeUntil(this.destroy$)
-			)
-			.subscribe();
+    modalRef.result.then((result) => {
+      if (result) {
+        this.shiftService
+          .rollBackShift(Number(this.shiftChangeRequestData.id))
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(
+            (res) => {
+              if (res.data) {
+                this.toastr.success('Hoàn duyệt yêu cầu thay ca/đổi ca thành công');
+                this.goBack();
+              }
+            },
+            (err: IError) => this.checkError(err)
+          );
+      }
+    });
 	}
 
 	goBack() {

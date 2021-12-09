@@ -40,8 +40,8 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
     upload: (file: File) => {
       const formData = new FormData();
       formData.append('files', file);
-      if (file.size > 2000000) {
-        this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 2MB');
+      if (file.size > 15360000) {
+        this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 15MB');
         return new Observable<HttpResponse<null>>();
       }
       return this.newsService.uploadImage(formData);
@@ -114,8 +114,8 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
     const files = Array.from(inputElement.files);
     const typeFile = files[0].type.split('/')[0];
 
-    if (files[0].size > 2000000) {
-      this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 2MB');
+    if (files[0].size > 15360000) {
+      this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 15MB');
       return;
     }
 

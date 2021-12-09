@@ -68,7 +68,7 @@
           <div class="col-7 d-flex justify-content-start">
             <span class="switch switch-primary switch-sm">
               <label>
-                <input type="checkbox" name="select-two-auth-step" [formControl]="enableTwoAuthStepControl" />
+                <input type="checkbox" name="select-two-auth-step" [formControl]="enableTwoAuthStepControl" (click)='openModal()'/>
                 <span></span>
               </label>
             </span>

@@ -24,12 +24,16 @@
   </div>
   <button class="btn btn-link mt-3" id="resend-otp-btn" [textContent]="'Gửi lại OTP'"></button>
 </div>
-<div class="modal-body" [hidden]="step !== 3">
+<div class="modal-body pt-3" [hidden]="step !== 3" *ngIf='data'>
   <h3>Đã bật xác thực 2 yếu tố</h3>
   <p>Các lần đăng nhập tiếp theo sẽ yêu cầu xác thực với OTP</p>
 </div>
+<div class="modal-body pt-3" [hidden]="step !== 3" *ngIf='!data'>
+  <h3>Đã tắt xác thực 2 yếu tố</h3>
+  <p>Các lần đăng nhập tiếp theo sẽ không cần xác thực với OTP</p>
+</div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-secondary" (click)="verificationCodeControl.reset(); modal.close(false)">
+  <button type="button" class="btn btn-outline-secondary" (click)="verificationCodeControl.reset(); modal.close(false)" *ngIf="step !== 3">
     Hủy
   </button>
   <button *ngIf="step=== 1" type="button" (click)="sendOTP()" class="btn btn-primary">

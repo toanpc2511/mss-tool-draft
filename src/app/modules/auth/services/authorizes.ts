@@ -35,6 +35,7 @@ export enum EAuthorize {
   VIEW_CONTRACT_INFO_BUTTON = 'view_contract_info_button',
   VIEW_DRIVER_CHILDREN_BUTTON = 'view_driver_children_button',
   VIEW_VEHICLE_BUTTON = 'view_vehicle_button',
+  UPDATE_RANK_CUSTOMER = 'update_rank_customer',
   /* End */
 
   /* Lịch sử sử dụng điểm + giao dịch */
@@ -112,6 +113,7 @@ export enum EAuthorize {
   CONFIRM_CLOSE_SHIFT_BUTTON = 'confirm_close_shift_button',
   CONFIRMED_REQUEST_LOCK_SHIFT = 'confirmed_request_lock_shift',
   DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button',
+  ROLL_BACK_SWAP_SHIFT = 'roll_back_swap_shift',
   /* End */
 
   /* Quản lý cấu hình */

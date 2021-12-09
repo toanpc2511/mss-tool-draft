@@ -125,7 +125,7 @@ export class TwoFactorComponent implements AfterViewInit {
                   idToken: valueToken
                 }
 
-                this.authService.ge(dataReq)
+                this.authService.togglesOtps(dataReq)
                   .subscribe((res) => {
                     if (res.data) {
                       this.step = 3;

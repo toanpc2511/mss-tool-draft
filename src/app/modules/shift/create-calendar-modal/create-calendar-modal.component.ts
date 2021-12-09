@@ -246,7 +246,7 @@ export class CreateCalendarModalComponent implements OnInit {
 				} else {
 					const employeeData: Array<IInfoCalendarEmployee> = (
 						this.calenderForm.value.employee as Array<IInfoCalendarEmployee>
-					).map((p) => ({ ...p, employeeId: Number(p.employeeId) }));
+					).map((p) => ({ ...p, employeeId: Number(p.employeeId), pumpPoles: p.pumpPoles || [] }));
 
 					const req = {
 						shiftId: Number(this.calenderForm.get('shiftId').value),
