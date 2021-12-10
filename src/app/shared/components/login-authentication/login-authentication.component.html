@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">Xác thực 2 yếu tố</h4>
+  <h4 class="modal-title">Xác thực</h4>
 </div>
 
 <div class="modal-body" [hidden]="step !== 1">
@@ -11,33 +11,24 @@
 </div>
 <div class="modal-body" [hidden]="step !== 2">
   <h3>Nhập mã</h3>
-  <p>Nhập mã xác thực 6 chữ số được gửi tới số điện thoại <strong>{{currentPhoneNumber}}</strong> để thay đổi trạng thái xác thực 2 yếu
-    tố</p>
-  <div class="w-100 py-5">
+  <p class='p-3'>Nhập mã xác thực 6 chữ số được gửi tới số điện thoại <strong>{{currentPhoneNumber}}</strong> để tiếp tục đăng nhập</p>
+  <div class="w-100 p-3">
     <input
       class="form-control form-control-solid"
       [formControl]="verificationCodeControl"
-      trim="blur"
-      maxlength="6"
+      trim="blur" maxlength="6"
       placeholder='Nhập mã OTP'
     />
     <app-validate [control]="verificationCodeControl" [error]="'required'"
-      [message]="'Mã xác thực không được để trống'">
+                  [message]="'Mã xác thực không được để trống'">
     </app-validate>
     <app-validate [control]="verificationCodeControl" [error]="'verificationCode'"
-      [message]="'Mã xác thực bao gồm 6 số'">
+                  [message]="'Mã xác thực bao gồm 6 số'">
     </app-validate>
   </div>
   <button class="btn btn-link mt-3" id="resend-otp-btn" [textContent]="'Gửi lại OTP'"></button>
 </div>
-<div class="modal-body pt-3" [hidden]="step !== 3" *ngIf='data'>
-  <h3>Đã bật xác thực 2 yếu tố</h3>
-  <p>Các lần đăng nhập tiếp theo sẽ yêu cầu xác thực với OTP</p>
-</div>
-<div class="modal-body pt-3" [hidden]="step !== 3" *ngIf='!data'>
-  <h3>Đã tắt xác thực 2 yếu tố</h3>
-  <p>Các lần đăng nhập tiếp theo sẽ không cần xác thực với OTP</p>
-</div>
+
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-secondary" (click)="verificationCodeControl.reset(); modal.close(false)" *ngIf="step !== 3">
     Hủy
@@ -47,8 +38,5 @@
   </button>
   <button *ngIf="step === 2" type="button" class="btn btn-primary" (click)="verifyOTP()">
     Xác nhận
-  </button>
-  <button *ngIf="step === 3" type="button" class="btn btn-primary" (click)="complete()">
-    Xong
   </button>
 </div>

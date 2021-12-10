@@ -8,7 +8,11 @@ import { EAuthorize } from './authorizes';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-	constructor(private authService: AuthService, private router: Router) {}
+	constructor(private authService: AuthService, private router: Router) {
+    if (!this.authService.getCurrentUserValue().accountAuth.verifyOtp) {
+      this.authService.logout().subscribe();
+    }
+  }
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		const currentUser = this.authService.getCurrentUserValue();

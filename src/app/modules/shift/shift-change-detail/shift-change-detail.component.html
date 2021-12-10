@@ -100,7 +100,7 @@
 			type="button"
 			class="btn btn-primary mr-3"
 			(click)="openCompleteApproveModal()"
-			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.SWAPPED && (eAuthorize.ROLL_BACK_SWAP_SHIFT|canUseFeature)"
+			*ngIf="shiftChangeRequestData?.status === eShiftChangeRequestStatus.REPLACED && (eAuthorize.ROLL_BACK_SWAP_SHIFT|canUseFeature)"
 		>
 			Hoàn duyệt
 		</button>

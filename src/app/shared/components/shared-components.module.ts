@@ -8,9 +8,10 @@ import { NgSelectModule } from './ng-select/public-api';
 import { TabComponent } from './tab/tab.component';
 import { ListLayoutComponent } from './list-layout/list-layout.component';
 import { TwoFactorComponent } from './two-factor/two-factor.component';
+import { LoginAuthenticationComponent } from './login-authentication/login-authentication.component';
 
 @NgModule({
-	declarations: [ValidateComponent, ConfirmDeleteComponent, TabComponent, ListLayoutComponent, TwoFactorComponent],
+	declarations: [ValidateComponent, ConfirmDeleteComponent, TabComponent, ListLayoutComponent, TwoFactorComponent, LoginAuthenticationComponent],
 	imports: [CommonModule, NgSelectModule, RouterModule, ReactiveFormsModule],
 	exports: [
 		ValidateComponent,
