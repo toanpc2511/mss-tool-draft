@@ -7,3 +7,11 @@
     color: #fff !important;
   }
 }
+
+.switch.switch-primary:not(.switch-outline) input:empty ~ span:before {
+  background-color: #ccc !important;
+}
+
+.switch.switch-primary:not(.switch-outline) input:checked ~ span:before {
+  background-color: #3699FF !important;
+}

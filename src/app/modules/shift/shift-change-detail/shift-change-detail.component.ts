@@ -112,6 +112,18 @@ export class ShiftChangeDetailComponent extends BaseComponent implements OnInit,
 			this.toastr.error(`${this.shiftChangeRequestData.employeeCodeFrom} - ${this.shiftChangeRequestData.employeeNameFrom} đã tạo yêu cầu thay ca/đổi ca quá 5 lần/tháng`)
 		} else if(error.code === 'SUN-OIL-4979') {
 			this.toastr.error('Yêu cầu đổi ca thay ca chưa được duyệt')
+		} else if(error.code === 'SUN-OIL-4873') {
+			this.toastr.error('Vui lòng chọn ca lớn hơn giờ hiện tại')
+		} else if(error.code === 'SUN-OIL-4893') {
+			this.toastr.error('Lịch làm việc không tồn tại hoặc đã ở quá khứ')
+		} else if(error.code === 'SUN-OIL-4922') {
+			this.toastr.error('Thời gian làm việc đã bắt đầu , không thể yêu cầu thay ca')
+		} else if(error.code === 'SUN-OIL-4799') {
+			this.toastr.error('Không được đổi ca khác trạm làm việc')
+		} else if(error.code === 'SUN-OIL-4925') {
+			this.toastr.error('Nhân viên bị trùng ca làm việc  , không thể thay hoặc đổi ca')
+		} else if(error.code === 'SUN-OIL-4980') {
+			this.toastr.error('Nhân viên đã có lịch không thể hoàn duyệt')
 		} else {
 			this.toastr.error(`${error.code} - ${error.message}`);
 		}

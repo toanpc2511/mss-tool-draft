@@ -25,8 +25,8 @@ export interface UserModel {
 		updatedAt: Date;
 		username: string;
 		profile: IProfile;
-    otp: boolean;
-    verifyOtp: boolean;
+    otp: any;
+    verifyOtp: any;
 	};
 	actions: string[];
 	changePassword: boolean;
