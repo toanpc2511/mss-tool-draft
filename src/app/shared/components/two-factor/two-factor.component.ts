@@ -165,6 +165,9 @@ export class TwoFactorComponent implements AfterViewInit {
 			case 'auth/network-request-failed':
 				this.toastr.error('Yêu cầu không hợp lệ! Vui lòng kiểm tra lại');
 				break;
+      case 'auth/code-expired':
+        this.toastr.error('Mã OTP đã hết hạn. Vui lòng gửi lại mã xác minh để thử lại.');
+        break;
 			case 'SUN-OIL-4871':
 				this.toastr.error('Xác thực không thành công');
 				break;
