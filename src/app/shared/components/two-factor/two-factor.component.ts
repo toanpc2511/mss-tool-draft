@@ -117,9 +117,10 @@ export class TwoFactorComponent implements AfterViewInit {
 					if (res.user) {
             res.user.getIdToken()
               .then((valueToken) => {
+				const valueToggle = this.data;
                 const dataReq = {
                   phone: `+84${this.currentPhoneNumber.replace('0', '')}`,
-                  authentication: this.data,
+                  authentication: valueToggle,
                   idToken: valueToken
                 }
 
@@ -127,6 +128,11 @@ export class TwoFactorComponent implements AfterViewInit {
                   .subscribe((res) => {
                     if (res.data) {
                       this.step = 3;
+                      this.authService.currentUser$.subscribe((x) => {
+						            x.accountAuth.otp = valueToggle;
+                        x.accountAuth.verifyOtp = valueToggle;
+                        this.authService.setCurrentUserValue(x);
+                      })
                       this.toastr.success('Xác thực thành công!')
                     }
                   }, (error => this.checkError(error)))
