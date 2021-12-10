@@ -41,8 +41,7 @@ export class TwoFactorComponent implements AfterViewInit {
 	ngAfterViewInit(): void {
 		this.reCapchaVerifier = new firebase.auth.RecaptchaVerifier('otp-captcha', {
 			size: 'normal',
-			callback: (response) => {
-				console.log('Captcha: ', response);
+			callback: () => {
 				this.reCapchaValid = true;
 				this.reCapchaError = false;
 				this.cdr.detectChanges();
@@ -57,7 +56,6 @@ export class TwoFactorComponent implements AfterViewInit {
 		this.reCapchaVerifierInvisible = new firebase.auth.RecaptchaVerifier('resend-otp-btn', {
 			size: 'invisible',
 			callback: (response) => {
-				console.log('Captcha: ', response);
 				this.resendOTP();
 			}
 		});
@@ -103,7 +101,7 @@ export class TwoFactorComponent implements AfterViewInit {
 				}),
 				takeUntil(this.destroy$)
 			)
-			.subscribe((res) => console.log(res));
+			.subscribe();
 	}
 
 	verifyOTP() {

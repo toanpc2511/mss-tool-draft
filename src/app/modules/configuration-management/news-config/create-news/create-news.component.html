@@ -97,10 +97,12 @@
 
           </div>
         </div>
+      </div>
 
+      <div class="row mb-5 justify-content-between img-news">
         <div class='col-lg-6 row'>
           <label class='col-lg-4 form-label required'>Ảnh view list tin tức</label>
-          <div class='col-lg-8 text-right'>
+          <div class='col-lg-8'>
             <input
               hidden
               type="file"
@@ -112,9 +114,10 @@
             />
             <img
               alt="Ảnh đính kèm"
-              class="img"
+              class="detailImg"
               (click)="contentImg.click()"
               width="300px"
+              style='margin-left: 0.5rem'
               [src]="imgContent && imgContent.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
             />
             <app-validate

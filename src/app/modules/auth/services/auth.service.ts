@@ -26,6 +26,7 @@ export interface UserModel {
 		username: string;
 		profile: IProfile;
     otp: boolean;
+    verifyOtp: boolean;
 	};
 	actions: string[];
 	changePassword: boolean;
@@ -169,5 +170,9 @@ export class AuthService {
 
   togglesOtps(dataReq) {
     return this.http.post('accounts/toggles/otps', dataReq);
+  }
+
+  authenticationOtps(dataReq) {
+    return this.http.post('accounts/authentication/otps', dataReq);
   }
 }
