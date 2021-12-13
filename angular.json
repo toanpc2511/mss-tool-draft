@@ -47,7 +47,8 @@
               "angular2-text-mask",
               "file-saver",
               "moment-timezone",
-              "@firebase/app-check"
+              "@firebase/app-check",
+              "xlsx"
             ],
             "index": "src/index.html",
             "main": "src/main.ts",

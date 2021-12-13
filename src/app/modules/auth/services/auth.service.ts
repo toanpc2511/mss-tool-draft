@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import jwt_decode from 'jwt-decode';
 import { BehaviorSubject, defer, Observable, of, throwError } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';

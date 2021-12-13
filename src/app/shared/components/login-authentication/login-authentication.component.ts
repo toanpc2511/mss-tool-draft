@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { AuthService, UserModel } from '../../../modules/auth/services/auth.service';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import { catchError, finalize, takeUntil, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
