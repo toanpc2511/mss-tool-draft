@@ -4,3 +4,8 @@
     max-height: 300px;
   }
 }
+
+::ng-deep i {
+  color: revert;
+  font-size: revert;
+}
