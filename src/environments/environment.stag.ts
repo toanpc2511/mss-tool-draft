@@ -4,11 +4,12 @@ export const environment = {
 	apiUrl: 'https://sunoil-management.firecloud.live/management',
 	apiUrlRoot: 'https://sunoil-management.firecloud.live',
 	firebase: {
-    apiKey: 'AIzaSyBwXgkaZIpdgdt9pfF5D2A3wOSstLGEBE8',
-    authDomain: 'sun-oil-admin.firebaseapp.com',
-    projectId: 'sun-oil-admin',
-    storageBucket: 'sun-oil-admin.appspot.com',
-    messagingSenderId: '330576029994',
-    appId: '1:330576029994:web:8727d7da0207dea2bd5653'
+    apiKey: "AIzaSyBGDWDvuG1Wq6Wbu9fBhaU86WdD2B7Q6Mo",
+    authDomain: "sun-oil-e747c.firebaseapp.com",
+    projectId: "sun-oil-e747c",
+    storageBucket: "sun-oil-e747c.appspot.com",
+    messagingSenderId: "621967318770",
+    appId: "1:621967318770:web:f0b639097f7ae10b9a7a6b",
+    measurementId: "G-DB7RBLVY70"
 	}
 };
