@@ -34,6 +34,7 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
     placeholder: 'Nhập nội dung tin tức',
     translate: 'no',
     sanitize: false,
+    defaultFontSize: "4",
     toolbarPosition: 'top',
     defaultFontName: 'Times New Roman',
     defaultParagraphSeparator: 'p',

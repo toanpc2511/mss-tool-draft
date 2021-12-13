@@ -36,6 +36,11 @@
       }
     }
 
+    ::ng-deep i {
+      color: inherit;
+      font-size: inherit;
+    }
+
     ::ng-deep p {
       margin-bottom: 0;
     }
