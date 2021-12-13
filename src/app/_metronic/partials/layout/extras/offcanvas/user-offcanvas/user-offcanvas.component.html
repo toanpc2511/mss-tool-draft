@@ -15,8 +15,10 @@
     <div class="offcanvas-content pr-5 mr-n5">
       <div class="d-flex align-items-center mt-5">
         <div class="symbol symbol-100 mr-5">
-          <div class="symbol-label"
+          <div class="symbol-label" *ngIf='_user.accountAuth?.profile?.avatar?.url'
             [ngStyle]="{ 'background-image': 'url(' + _user.accountAuth?.profile?.avatar?.url + ')'}"></div>
+          <div class="symbol-label" *ngIf='!_user.accountAuth?.profile?.avatar?.url'
+            [ngStyle]="{ 'background-image': 'url(assets/media/sun-oil/employee/placeholder-user.png'}"></div>
           <em class="symbol-badge bg-success"></em>
         </div>
         <div class="d-flex flex-column">
