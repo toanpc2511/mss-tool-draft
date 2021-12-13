@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ChangeDetectorRef, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { throwError } from 'rxjs';
