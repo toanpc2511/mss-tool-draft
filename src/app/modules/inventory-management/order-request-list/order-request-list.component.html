@@ -130,6 +130,7 @@
           <th scope=''>Người duyệt</th>
           <th scope=''>Ngày duyệt</th>
           <th scope=''>Trạng thái</th>
+          <th scope=''>Thay đổi đặt hàng</th>
           <th scope='' class='text-center'>Tác động</th>
         </tr>
         </thead>
@@ -203,6 +204,18 @@
 								<ng-container *ngIf="item.status === listStatus.CONFIRM">Đã xác nhận</ng-container>
 								<ng-container *ngIf="item.status === listStatus.REFUSE">Đã từ chối</ng-container>
 							</span>
+          </td>
+          <td class='icon-check text-center'>
+            <a
+              class="btn btn-icon btn-sm mx-3"
+              [ngbTooltip]="'Đã thay đổi đặt hàng'"
+            >
+            <span
+              [inlineSVG]="'./assets/media/svg/icons/General/Shield-check.svg'"
+              cacheSVG="true"
+              class="svg-icon svg-icon-md svg-icon-success"
+            ></span>
+            </a>
           </td>
 
           <td class="text-center action">
