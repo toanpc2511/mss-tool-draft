@@ -190,7 +190,7 @@
             <th scope='' class='cap-valve text-right form-label' [class.text-right]='!status'>Số chì van</th>
             <th scope='' class='temperature-import text-right form-label' [class.text-right]='!status'>Nhiệt độ thực tế tại kho nhập (độ C)</th>
             <th scope='' class='quota-import text-right form-label' [class.text-right]='!status'>Tâm mức thực Kho nhập (cm)</th>
-            <th scope='' class='text-right'>Âm dương</th>
+            <th scope='' class='' [class.text-right]='!status'>Âm dương</th>
           </tr>
           </thead>
 
@@ -375,14 +375,22 @@
                   [message]="'Sai định dạng'"
                 ></app-validate>
               </td>
-              <td class="difference text-right">
-                <p
-                  class="cursor-pointer text-right"
-                  placement="top"
-                  ngbTooltip="Âm dương"
-                >
-                  {{ item.get('quotaImport').value }}
-                </p>
+              <td class="difference">
+                <input
+                  class="form-control"
+                  formControlName='difference'
+                  autocomplete="off"
+                  maxlength='10'
+                  trim="blur"
+                  (keydown.space)="$event.preventDefault()"
+                  (keydown)='preventLetter($event)'
+                  placeholder='Nhập âm dương'
+                />
+                <app-validate
+                  [control]="item.get('difference')"
+                  [error]="'required'"
+                  [message]="'Âm dương không được để trống'"
+                ></app-validate>
               </td>
             </ng-container>
           </tr>
@@ -511,11 +519,11 @@
                 </td>
                 <td class="difference text-right">
                   <p
-                    class="cursor-pointer text-right"
+                    class="cursor-pointer text-ellipsis"
                     placement="top"
                     [ngbTooltip]="item.get('difference').value"
                   >
-                    chưa có công thức
+                    {{ item.get('difference').value }}
                   </p>
                 </td>
               </ng-container>

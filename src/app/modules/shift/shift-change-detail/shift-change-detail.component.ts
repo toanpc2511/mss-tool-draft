@@ -106,7 +106,7 @@ export class ShiftChangeDetailComponent extends BaseComponent implements OnInit,
 	}
 
 	checkError(error: IError) {
-		if (error.code === 'SUN-OIL-4893' || error.code === 'SUN-OIL-4909') {
+		if (error.code === 'SUN-OIL-4909') {
 			this.toastr.error('Lịch/ca làm việc không tồn tại');
 		} else if(error.code === 'SUN-OIL-4901') {
 			this.toastr.error(`${this.shiftChangeRequestData.employeeCodeFrom} - ${this.shiftChangeRequestData.employeeNameFrom} đã tạo yêu cầu thay ca/đổi ca quá 5 lần/tháng`)
@@ -121,7 +121,13 @@ export class ShiftChangeDetailComponent extends BaseComponent implements OnInit,
 		} else if(error.code === 'SUN-OIL-4799') {
 			this.toastr.error('Không được đổi ca khác trạm làm việc')
 		} else if(error.code === 'SUN-OIL-4925') {
-			this.toastr.error('Nhân viên bị trùng ca làm việc  , không thể thay hoặc đổi ca')
+			this.toastr.error('Nhân viên bị trùng hoặc đã có lịch làm việc . Không thể hoàn duyệt')
+		} else if(error.code === 'SUN-OIL-4981') {
+			this.toastr.error('Không thể hoàn duyệt vì không tìm thấy lịch làm việc.')
+		} else if(error.code === 'SUN-OIL-4984') {
+			this.toastr.error('Ca làm việc đã bắt đầu không được hoàn duyệt.')
+		} else if(error.code === 'SUN-OIL-4982') {
+			this.toastr.error('Không thể phê duyệt vì không tìm thấy lịch làm việc')
 		} else if(error.code === 'SUN-OIL-4980') {
 			this.toastr.error('Nhân viên đã có lịch không thể hoàn duyệt')
 		} else {

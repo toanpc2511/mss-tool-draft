@@ -326,6 +326,9 @@ export class CreateCalendarModalComponent implements OnInit {
     if (error.code === 'SUN-OIL-4921') {
       this.toastr.error('1 cột chỉ được phép chứa 1 nhân viên')
     }
+    if (error.code === 'SUN-OIL-4960') {
+      this.toastr.error('Đã có yêu cầu đổi ca/ thay ca. Không thể sửa lịch làm việc')
+    }
 	}
 }
 
