@@ -84,7 +84,7 @@ export class ImportingInventoryDetailComponent extends BaseComponent implements 
         capLead: [{ value: d.capLead, disabled: !this.isSupplier }, [this.isSupplier ? Validators.required : Validators.nullValidator]],
         capValve: [{ value: d.capValve, disabled: !this.isSupplier }, [this.isSupplier ? Validators.required : Validators.nullValidator]],
         temperatureImport: [d.temperatureImport, [Validators.pattern(this.decimalPattern), Validators.required]],
-        difference: [d.difference || 1],
+        difference: [d.difference, Validators.required],
         recommend: [d.recommend],
       });
     });
