@@ -211,21 +211,12 @@
 
   <div class="py-10 w-100 d-flex justify-content-center">
     <button
-      *ngIf='!isUpdate'
       class="m-2 btn btn-primary font-weight-bold btn-def"
       (click)="onSubmit()"
     >
       Gửi yêu cầu
     </button>
     <button
-      *ngIf='isUpdate'
-      class="m-2 btn btn-outline-primary font-weight-bold btn-def"
-      (click)="onSubmit()"
-    >
-      Lưu
-    </button>
-    <button
-      *ngIf='isUpdate'
       class="m-2 btn btn-primary font-weight-bold btn-def"
       (click)="onBack()"
     >

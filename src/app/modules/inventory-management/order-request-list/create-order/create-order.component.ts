@@ -1,6 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { IStationEployee } from '../../../history-of-using-points/history-of-using-points.service';
-import { finalize, pluck, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import {
   IGasFuel,
   IInfoOrderRequest,
@@ -14,10 +13,8 @@ import { IInfoProduct, IProduct, ProductService } from 'src/app/modules/product/
 import { ToastrService } from 'ngx-toastr';
 import { IError } from '../../../../shared/models/error.model';
 import {
-	convertDateToDisplay,
 	convertDateToServer,
-	convertMoney,
-	ofNull
+	convertMoney
 } from '../../../../shared/helpers/functions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -40,7 +37,6 @@ export class CreateOrderComponent extends BaseComponent implements OnInit, After
 	listGasField: IGasFuel[] = [];
 	stationId: number;
 	orderDataUpdate: IInfoOrderRequest;
-	isUpdate = false;
 	orderRequestId: number;
 	isInitDataUpdateSubject = new Subject();
 
@@ -89,31 +85,6 @@ export class CreateOrderComponent extends BaseComponent implements OnInit, After
   }
 
 	ngOnInit(): void {
-		this.activeRoute.params
-			.pipe(
-				pluck('id'),
-				take(1),
-				switchMap((id: number) => {
-					if (id) {
-						this.isUpdate = true;
-						this.orderRequestId = id;
-
-						this.minDate = null;
-						this.orderRequestId = id;
-						return this.inventoryManagementService.viewDetailOrderRequest(id);
-					}
-					return ofNull();
-				}),
-				tap((res) => {
-					if (res?.data) {
-						this.loadDataUpdate(res.data);
-					}
-				}),
-				finalize(() => this.isInitDataUpdateSubject.next(true)),
-				takeUntil(this.destroy$)
-			)
-			.subscribe();
-
 		this.getStationToken();
 		this.getListProductFuels();
 		this.buildForm();
@@ -146,40 +117,6 @@ export class CreateOrderComponent extends BaseComponent implements OnInit, After
 
 		this.productFormArray = this.productForm.get('products') as FormArray;
 		this.cdr.detectChanges();
-	}
-
-	loadDataUpdate(data: IInfoOrderRequest) {
-		this.orderDataUpdate = data;
-
-		this.stationId = data.stationId;
-		this.pathValueRequestForm(data);
-		this.pathValueProduct(data);
-	}
-
-	pathValueRequestForm(data: IInfoOrderRequest) {
-		this.requestForm.get('stationId').patchValue(data.stationId);
-		this.requestForm.get('fullAddress').patchValue(data.address);
-		this.requestForm.get('expectedDate').patchValue(convertDateToDisplay(data.requestDate));
-	}
-
-	pathValueProduct(data: IInfoOrderRequest) {
-		data.productResponses.forEach((product, i) => {
-			if (i >= 1) {
-				this.addItem();
-			}
-
-			this.inventoryManagementService
-				.getListGasFuel(product.productId, data.stationId)
-				.subscribe((res) => {
-					this.products[i] = res.data;
-					this.cdr.detectChanges();
-				});
-
-			this.productFormArray.at(i).get('id').patchValue(product.productId);
-			this.productFormArray.at(i).get('gasFieldId').patchValue(product.gasFieldIn.id);
-			this.productFormArray.at(i).get('unit').patchValue(product.unit);
-			this.productFormArray.at(i).get('amountRecommended').patchValue(product.amountRecommended);
-		});
 	}
 
 	handleStationChange() {
@@ -290,27 +227,15 @@ export class CreateOrderComponent extends BaseComponent implements OnInit, After
 			productInfoRequests: productData
 		};
 
-    if (this.isUpdate) {
-      this.inventoryManagementService.updateOrderRequest(dataReq, this.orderRequestId)
-        .subscribe((res) => {
-          if (res) {
-            this.router.navigate(['/kho/yeu-cau-dat-hang']);
-            this.toastr.success('Sửa yêu cầu đặt hàng thành công')
-          }
-        }, (err: IError) => {
-          this.checkError(err);
-        })
-    } else {
-      this.inventoryManagementService.createOrderRequest(dataReq)
-        .subscribe((res) => {
-          if (res) {
-            this.router.navigate(['/kho/yeu-cau-dat-hang']);
-            this.toastr.success('Gửi yêu cầu đặt hàng thành công')
-          }
-        }, (err: IError) => {
-          this.checkError(err);
-        })
-    }
+    this.inventoryManagementService.createOrderRequest(dataReq)
+      .subscribe((res) => {
+        if (res) {
+          this.router.navigate(['/kho/yeu-cau-dat-hang']);
+          this.toastr.success('Gửi yêu cầu đặt hàng thành công')
+        }
+      }, (err: IError) => {
+        this.checkError(err);
+      })
   }
 
   checkError(error: IError) {

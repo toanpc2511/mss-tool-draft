@@ -193,6 +193,8 @@ export interface IInfoOrderRequest {
 	stationId: number;
 	status: string;
 	productResponses: [IProductRequest];
+  productNewResponses:[IProductRequest];
+  reasonChange: string;
 }
 export interface IProductRequest {
 	amountActually: number;
@@ -404,6 +406,19 @@ export interface IShallow {
   withMeter: number;
 }
 
+export interface IOrderRequest {
+  approveDate: string;
+  code: string;
+  employeeApprove: string;
+  employeeRequest: string;
+  id: number;
+  importRequestChange: string;
+  requestDate: string;
+  stationId: number;
+  stationName: string;
+  status: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -459,7 +474,7 @@ export class InventoryManagementService {
 			.set('expected-date-start', data.expectedDateStart)
 			.set('expected-date-end', data.expectedDateEnd);
 
-		return this.http.get('import-request/filters', { params });
+		return this.http.get<Array<IOrderRequest>>('import-request/filters', { params });
 	}
 
 	// Danh sách yêu cầu đặt kho
@@ -678,6 +693,11 @@ export class InventoryManagementService {
       .set('station-id', stationId.toString())
       .set('gas-field-id', gasFieldId.toString())
     return this.http.getFileUrl<string>(`measures/export/word`, {params});
+  }
+
+  // Xác nhận yêu cầu thay đổi đặt hàng
+  changeOrderRequest(id: number, dataReq) {
+    return this.http.put(`import-request/import-product/${id.toString()}`, dataReq)
   }
 
 }

@@ -91,6 +91,9 @@
             <option [value]="listStatus.APPROVE">Đã phê duyệt</option>
             <option [value]="listStatus.CONFIRM">Đã xác nhận</option>
             <option [value]="listStatus.REFUSE">Đã từ chối</option>
+            <option [value]="listStatus.IMPORTED">Đã nhập kho</option>
+            <option [value]="listStatus.EXPORTED">Đã xuất kho</option>
+            <option [value]="listStatus.REQUEST_CHANGE">Yêu cầu thay đổi</option>
           </select>
         </div>
       </div>
@@ -194,8 +197,8 @@
           <td class="status">
 							<span
                 class="label label-lg label-inline"
-                [class.label-light-warning]="item.status === listStatus.WAIT_CONFIRM"
-                [class.label-light-primary]="item.status === listStatus.APPROVE"
+                [class.label-light-warning]="item.status === listStatus.WAIT_CONFIRM || item.status === listStatus.REQUEST_CHANGE"
+                [class.label-light-primary]="item.status === listStatus.APPROVE || item.status === listStatus.IMPORTED || item.status === listStatus.EXPORTED"
                 [class.label-light-success]="item.status === listStatus.CONFIRM"
                 [class.label-light-danger]="item.status === listStatus.REFUSE"
               >
@@ -203,11 +206,15 @@
 								<ng-container *ngIf="item.status === listStatus.APPROVE">Đã phê duyệt</ng-container>
 								<ng-container *ngIf="item.status === listStatus.CONFIRM">Đã xác nhận</ng-container>
 								<ng-container *ngIf="item.status === listStatus.REFUSE">Đã từ chối</ng-container>
+								<ng-container *ngIf="item.status === listStatus.IMPORTED">Đã nhập kho</ng-container>
+								<ng-container *ngIf="item.status === listStatus.EXPORTED">Đã xuất kho</ng-container>
+								<ng-container *ngIf="item.status === listStatus.REQUEST_CHANGE">Yêu cầu thay đổi</ng-container>
 							</span>
           </td>
           <td class='icon-check text-center'>
             <a
-              class="btn btn-icon btn-sm mx-3"
+              *ngIf='item.importRequestChange !== "NOT_CHANGE"'
+              class="btn btn-icon btn-light btn-hover-success btn-sm"
               [ngbTooltip]="'Đã thay đổi đặt hàng'"
             >
             <span
@@ -218,9 +225,14 @@
             </a>
           </td>
 
-          <td class="text-center action">
+          <td class="action">
             <a
-              *ngIf="item.status === listStatus.WAIT_CONFIRM && eAuthorize.UPDATE_IMPORT_REQUEST | canUseFeature"
+              *ngIf="
+              (item.status === listStatus.WAIT_CONFIRM
+              || item.status === listStatus.CONFIRM
+              || item.status === listStatus.APPROVE
+              || item.status === listStatus.REQUEST_CHANGE)
+              && eAuthorize.UPDATE_IMPORT_REQUEST | canUseFeature"
               (click)="updateOrderRequest($event,item.id)"
               class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               [ngbTooltip]="'Sửa'"

@@ -4,7 +4,7 @@ import {
   IEmployees,
   IFilterTransaction,
   IInfoOrderRequest,
-  InventoryManagementService,
+  InventoryManagementService, IOrderRequest,
   IStationActiveByToken
 } from '../inventory-management.service';
 import * as moment from 'moment';
@@ -33,7 +33,7 @@ export class OrderRequestListComponent extends BaseComponent implements OnInit {
   firstDayOfMonth: string;
   paginatorState = new PaginatorState();
   searchForm: FormGroup;
-  dataSource;
+  dataSource: IOrderRequest[] = [];
   stationByToken: IStationActiveByToken[] = [];
   listEmployees: Array<IEmployees> = [];
   listStatus = LIST_STATUS_ORDER_REQUEST;
