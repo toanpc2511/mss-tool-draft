@@ -9,10 +9,11 @@ import { TabComponent } from './tab/tab.component';
 import { ListLayoutComponent } from './list-layout/list-layout.component';
 import { TwoFactorComponent } from './two-factor/two-factor.component';
 import { LoginAuthenticationComponent } from './login-authentication/login-authentication.component';
+import { DirectivesModule } from '../directives/directives.module';
 
 @NgModule({
 	declarations: [ValidateComponent, ConfirmDeleteComponent, TabComponent, ListLayoutComponent, TwoFactorComponent, LoginAuthenticationComponent],
-	imports: [CommonModule, NgSelectModule, RouterModule, ReactiveFormsModule],
+	imports: [CommonModule, NgSelectModule, RouterModule, ReactiveFormsModule, DirectivesModule],
 	exports: [
 		ValidateComponent,
 		NgSelectModule,

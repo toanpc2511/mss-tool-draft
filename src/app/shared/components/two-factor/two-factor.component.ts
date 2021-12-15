@@ -160,7 +160,7 @@ export class TwoFactorComponent implements AfterViewInit {
 		console.log(error);
 		switch (error.code) {
 			case 'auth/too-many-requests':
-				this.toastr.error('Quá nhiều yêu cầu đã được gửi! Vui lòng thử lại sau!');
+				this.toastr.error('Đã quá số lần lấy mã OTP. Vui lòng thử lại sau 4 giờ!');
 				break;
 			case 'auth/invalid-verification-code':
 				this.toastr.error('Mã xác thực không hợp lệ! Vui lòng kiểm tra lại');

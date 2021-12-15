@@ -1,12 +1,12 @@
 <div class="modal-header">
-  <h4 class="modal-title">Xác thực</h4>
+  <h4 class="modal-title">Xác thực 2 yếu tố</h4>
 </div>
 
 <div class="modal-body" [hidden]="step !== 1">
   <div class="w-100">
     <h4>Gửi mã xác thực tới số điện thoại {{currentPhoneNumber}}</h4>
     <div class="mt-4" id="otp-captcha"></div>
-    <p class="text-danger" *ngIf="reCapchaError">Captcha không hợp lệ</p>
+    <p class="text-danger" *ngIf="reCapchaError">Vui lòng xác minh rằng bạn không phải robot.</p>
   </div>
 </div>
 <div class="modal-body" [hidden]="step !== 2">
@@ -17,6 +17,7 @@
       class="form-control form-control-solid"
       [formControl]="verificationCodeControl"
       trim="blur" maxlength="6"
+      numbersOnly
       placeholder='Nhập mã OTP'
     />
     <app-validate [control]="verificationCodeControl" [error]="'required'"

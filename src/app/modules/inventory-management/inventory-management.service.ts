@@ -195,6 +195,7 @@ export interface IInfoOrderRequest {
 	productResponses: [IProductRequest];
   productNewResponses:[IProductRequest];
   reasonChange: string;
+  importRequestChange: string;
 }
 export interface IProductRequest {
 	amountActually: number;
@@ -534,6 +535,11 @@ export class InventoryManagementService {
 		data: { requestConfirm: boolean; reason: string }
 	) {
 		return this.http.put(`import-request/handles/${id}`, data);
+	}
+
+	// Duyệt/Từ chối yêu cầu đặt hàng
+	confirmChange( id: string | number) {
+		return this.http.put(`import-request/confirm-swap/${id}`,{});
 	}
 
 	// Xem chi tiết yêu cầu đặt kho
