@@ -13,6 +13,7 @@ import { ExportInventoryDetailComponent } from './export-inventory/export-invent
 import { ImportingInventoryDetailComponent } from './import-inventory/importing-inventory-detail/importing-inventory-detail.component';
 import { ReportMeasureTankComponent } from './report-measure-tank/report-measure-tank.component';
 import { ReportMinTankComponent } from './report-min-tank/report-min-tank.component';
+import { UpdateOrderComponent } from './order-request-list/update-order/update-order.component';
 
 const routes: Routes = [
   {
@@ -37,7 +38,7 @@ const routes: Routes = [
       },
       {
         path: 'sua-yeu-cau/:id',
-        component: CreateOrderComponent
+        component: UpdateOrderComponent
       }
     ]
   },

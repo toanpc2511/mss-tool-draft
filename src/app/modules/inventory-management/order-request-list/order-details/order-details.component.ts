@@ -1,5 +1,5 @@
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { BaseComponent } from './../../../../shared/components/base/base.component';
+import { BaseComponent } from '../../../../shared/components/base/base.component';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { IInfoOrderRequest, InventoryManagementService } from '../../inventory-management.service';
 import { DestroyService } from '../../../../shared/services/destroy.service';
