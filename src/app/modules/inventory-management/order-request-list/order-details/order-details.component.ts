@@ -128,6 +128,39 @@ export class OrderDetailsComponent extends BaseComponent implements OnInit, Afte
 			.subscribe();
 	}
 
+  confirmChange(code: string) {
+    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+      backdrop: 'static'
+    });
+
+    const data: IConfirmModalData = {
+      title: 'Xác nhận',
+      message: `Bạn có chắc chắn muốn duyệt đơn đặt hàng ${code} không?`,
+      button: { class: 'btn-primary', title: 'Xác nhận' }
+    };
+    modalRef.componentInstance.data = data;
+
+    modalRef.closed
+      .pipe(
+        filter((res) => res),
+        switchMap(() => {
+          return this.inventoryManagementService.confirmChange(this.orderRequestId);
+        }),
+        tap((res) => {
+          if (res.data) {
+            this.toastr.success('Đã phê duyệt yêu cầu thay đổi!');
+          }
+          this.goBack();
+        }),
+        catchError((error: IError) => {
+          this.checkError(error);
+          return of();
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
 	openApproveRequestModal(code: string) {
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
 			backdrop: 'static'
