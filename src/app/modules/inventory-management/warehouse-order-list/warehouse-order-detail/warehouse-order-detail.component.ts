@@ -14,15 +14,15 @@ import { catchError, filter, pluck, switchMap, takeUntil, tap } from 'rxjs/opera
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
 import { EWarehouseOrderStatus } from '../../inventory-management.service';
-import { ConfirmDeleteComponent } from './../../../../shared/components/confirm-delete/confirm-delete.component';
-import { ofNull } from './../../../../shared/helpers/functions';
-import { IConfirmModalData } from './../../../../shared/models/confirm-delete.interface';
-import { DestroyService } from './../../../../shared/services/destroy.service';
-import { TValidators } from './../../../../shared/validators';
+import { ConfirmDeleteComponent } from '../../../../shared/components/confirm-delete/confirm-delete.component';
+import { ofNull } from '../../../../shared/helpers/functions';
+import { IConfirmModalData } from '../../../../shared/models/confirm-delete.interface';
+import { DestroyService } from '../../../../shared/services/destroy.service';
+import { TValidators } from '../../../../shared/validators';
 import {
 	InventoryManagementService,
 	IWareHouseOrderDetail
-} from './../../inventory-management.service';
+} from '../../inventory-management.service';
 import { of } from 'rxjs';
 import { IError } from 'src/app/shared/models/error.model';
 
@@ -102,6 +102,7 @@ export class WareHouseOrderDetailComponent extends BaseComponent implements OnIn
 				}),
 				tap((res) => {
 					this.dataDetail = res.data;
+          console.log(this.dataDetail);
 					this.cdr.detectChanges();
 				}),
 				takeUntil(this.destroy$)

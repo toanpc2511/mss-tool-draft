@@ -129,7 +129,7 @@ export class ShiftChangeDetailComponent extends BaseComponent implements OnInit,
 		} else if(error.code === 'SUN-OIL-4982') {
 			this.toastr.error('Không thể phê duyệt vì không tìm thấy lịch làm việc')
 		} else if(error.code === 'SUN-OIL-4980') {
-			this.toastr.error('Nhân viên đã có lịch không thể hoàn duyệt')
+			this.toastr.error(' Nhân viên bị trùng hoặc đã có lịch làm việc. Không thể hoàn duyệt')
 		} else {
 			this.toastr.error(`${error.code} - ${error.message}`);
 		}

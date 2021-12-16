@@ -11,7 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubheaderService } from '../../../../_metronic/partials/layout';
 import { pluck, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { convertMoney, ofNull } from '../../../../shared/helpers/functions';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { forkJoin, Observable } from 'rxjs';
 import { IError } from '../../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
@@ -29,11 +29,12 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   eWarehouseStatus = EWarehouseOrderStatus;
   dataDetail: IWareHouseOrderDetail;
   dataSupplier: ISupplier[] = [];
-  dataSupplierProduct: ISupplier[] = [];
+  dataSupplierProduct: Array<any> = [];
   dataTransitCars: ITransitCar[] = [];
   dataShippingTeam: IShippingTeam[] = [];
   isInternalCar: boolean;
   stationByToken: IStationActiveByToken[] = [];
+  reasonChange: FormControl;
 
   exportedWarehouseNameId: number;
   oderForm: string;
@@ -59,6 +60,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   ) {
     super();
     this.sumTotalMoney = 0;
+    this.reasonChange = new FormControl('', Validators.required);
   }
 
   setBreadcumb() {
@@ -231,8 +233,11 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
         }),
         tap((res) => {
           this.dataDetail = res.data;
+          console.log(this.dataDetail);
           this.pathValue(this.dataDetail);
-          this.dataProductResponses = this.convertToFormArray(this.dataDetail.wareHouseOrderProductResponses);
+
+          this.checkStatusOrder(res.data);
+
           this.exportedWarehouseNameId = this.dataDetail.exportedWarehouseId;
           this.oderForm = this.dataDetail.oderForm;
           this.getListGasFuelWrehouse(this.renderListApi(false));
@@ -258,6 +263,14 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  checkStatusOrder(data: IWareHouseOrderDetail) {
+    if (!data.checkChange) {
+      this.dataProductResponses = this.convertToFormArray(data.wareHouseOrderProductResponsesOld);
+    } else {
+      this.dataProductResponses = this.convertToFormArray(this.dataDetail.checkBallot ? this.dataDetail.wareHouseOrderProductResponsesOld : this.dataDetail.wareHouseOrderProductResponsesNew);
+    }
   }
 
   getListGasFuelWrehouse(listApi) {
@@ -291,7 +304,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   convertToFormArray(data: IWareHouseOrderProductResponses[]): FormArray {
     const controls = data.map((d) => {
       const fb = this.fb.group({
-        recommend: [d.recommend, Validators.required],
+        recommend: [d.amountRecommended, Validators.required],
         gasFieldOut: [d.gasFieldOutId],
         compartment: [d.compartment],
         price: [d.price, Validators.required],
@@ -345,9 +358,9 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     this.transportInfoForm.markAllAsTouched();
 
     if (this.orderInfoForm.invalid || this.dataProductResponses.invalid || this.transportInfoForm.invalid) {
+      this.toastr.error('Vui lòng điền đầy đủ thông tin!');
       return;
     }
-
 
     const driver = this.dataShippingTeam.find((x) => {
       return x.id === Number(this.transportInfoForm.getRawValue().driver);
@@ -362,6 +375,9 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       supplierId: Number(p.supplierId),
       gasField: this.listItemGas[index].find((x) => {
         return x.id ===  Number(p.gasFieldOut)
+      }),
+      supplier: this.dataSupplierProduct.find((x) => {
+        return x.id  === Number(p.supplierId)
       })
     }))
 
@@ -380,15 +396,27 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       driver: driver || null
     };
 
-    this.inventoryManagementService.putWarehouseOrders(this.dataDetail.id, dataReq)
-      .subscribe((res) => {
-        if (res) {
-          this.router.navigate(['/kho/don-dat-kho']);
-          this.toastr.success('Gửi yêu cầu đặt kho thành công')
-        }
-      }, (err: IError) => {
-        this.checkError(err);
-      })
+    if (this.dataDetail?.checkChange) {
+      this.inventoryManagementService.updateWarehouseOrder(this.dataDetail.id, dataReq)
+        .subscribe((res) => {
+          if (res) {
+            this.router.navigate(['/kho/don-dat-kho']);
+            this.toastr.success('Gửi yêu cầu đặt kho thành công')
+          }
+        }, (err: IError) => {
+          this.checkError(err);
+        })
+    } else {
+      this.inventoryManagementService.putWarehouseOrders(this.dataDetail.id, dataReq)
+        .subscribe((res) => {
+          if (res) {
+            this.router.navigate(['/kho/don-dat-kho']);
+            this.toastr.success('Gửi yêu cầu đặt kho thành công')
+          }
+        }, (err: IError) => {
+          this.checkError(err);
+        })
+    }
   }
 
   checkError(error: IError) {

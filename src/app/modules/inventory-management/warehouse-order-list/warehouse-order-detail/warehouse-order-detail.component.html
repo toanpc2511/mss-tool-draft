@@ -216,7 +216,7 @@
 					</thead>
 
 					<tbody>
-						<tr *ngFor="let item of dataDetail?.wareHouseOrderProductResponses; let i =index">
+						<tr *ngFor="let item of dataDetail?.wareHouseOrderProductResponsesOld; let i =index">
 							<td class='stt'>{{i + 1}}</td>
 							<td class='product-name'>{{item.productName}}</td>
 							<td class='unit'>{{item.unit}}</td>
@@ -235,7 +235,81 @@
 							<td colspan="5"></td>
 							<td colspan="3" class="text-right"><strong>Tổng tiền thanh toán:</strong></td>
 							<td colspan="2" class="text-right">
-								<strong>{{dataDetail?.totalProductMoney | number | vnCurrency}}</strong>
+								<strong>{{dataDetail?.totalProductMoneyOld | number | vnCurrency}}</strong>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="info-product-change" *ngIf='dataDetail?.wareHouseOrderProductResponsesNew.length > 0'>
+		<div class="card-header">
+			<div class="card-title">
+				<h3 class="title">Danh sách hàng hoá thay đổi</h3>
+			</div>
+		</div>
+
+		<div class="card-body list-request">
+			<div class="table-responsive angular-bootstrap-table">
+				<table class="table table-vertical-center overflow-hidden" aria-label="">
+					<thead class="thead-light">
+						<tr>
+							<th scope="">
+								<label class="form-label">STT</label>
+							</th>
+							<th scope="">
+								<label class="form-label">Tên sản phẩm</label>
+							</th>
+							<th scope="">
+								<label class="form-label">Đơn vị</label>
+							</th>
+							<th class="text-right recommend" scope="">
+								<label class="form-label">Số lượng</label>
+							</th>
+							<th class="text pl-6" scope="">
+								<label class="form-label">Bồn xuất</label>
+							</th>
+							<th class="text" scope="">
+								<label class="form-label">Ngăn</label>
+							</th>
+							<th class="text pl-6" scope="">
+								<label class="form-label">Bồn nhập</label>
+							</th>
+							<th class="text-right price" scope="">
+								<label class="form-label">Đơn giá(VNĐ)</label>
+							</th>
+							<th class="text" scope="">
+								<label class="form-label">Nguồn hàng</label>
+							</th>
+							<th class="text-right" scope="">
+								<label class="form-label">Thành tiền</label>
+							</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr *ngFor="let item of dataDetail?.wareHouseOrderProductResponsesNew; let i =index">
+							<td class='stt'>{{i + 1}}</td>
+							<td class='product-name'>{{item.productName}}</td>
+							<td class='unit'>{{item.unit}}</td>
+							<td class="text-right recommend">{{item.recommend | number | vnCurrency}}</td>
+							<td class="gas-field-out-name pl-6">{{item.gasFieldOutName}}</td>
+							<td class="compartment">{{item.compartment}}</td>
+							<td class="gas-field-in-name pl-6">{{item.gasFieldInName}}</td>
+							<td class="text-right price">{{item.price | number | vnCurrency}}</td>
+							<td class="supplie-name">{{item.supplierName}}</td>
+							<td class="text-right into-money">{{item.intoMoney | number | vnCurrency}}</td>
+						</tr>
+					</tbody>
+
+					<tfoot>
+						<tr>
+							<td colspan="5"></td>
+							<td colspan="3" class="text-right"><strong>Tổng tiền thanh toán:</strong></td>
+							<td colspan="2" class="text-right">
+								<strong>{{dataDetail?.totalProductMoneyOld | number | vnCurrency}}</strong>
 							</td>
 						</tr>
 					</tfoot>
