@@ -92,6 +92,10 @@
 						<option [value]="eStatus.CONFIRMED">Đã phê duyệt</option>
 						<option [value]="eStatus.REFUSED">Đã từ chối</option>
 						<option [value]="eStatus.ADJUST">Yêu cầu điều chỉnh</option>
+						<option [value]="eStatus.SWAP">Yêu cầu thay đổi</option>
+						<option [value]="eStatus.LOCK">Tạm dừng</option>
+						<option [value]="eStatus.IMPORTED">Đã nhập</option>
+						<option [value]="eStatus.EXPORTED">Đã xuất</option>
 					</select>
 				</div>
 			</div>
@@ -125,6 +129,7 @@
 						<th scope="">Người duyệt</th>
 						<th scope="">Ngày duyệt</th>
 						<th scope="">Trạng thái</th>
+            <th scope=''>Thay đổi đặt hàng</th>
 						<th scope="" class="text-center">Tác động</th>
 					</tr>
 				</thead>
@@ -188,21 +193,36 @@
 								[class.label-light-warning]="item.status === eStatus.WAITING"
 								[class.label-light-success]="item.status === eStatus.CONFIRMED"
 								[class.label-light-danger]="item.status === eStatus.REFUSED"
-								[class.label-light-primary]="item.status === eStatus.ADJUST"
+								[class.label-light-primary]="item.status === eStatus.ADJUST || item.status === eStatus.SWAP"
 							>
 								<ng-container *ngIf="item.status === eStatus.NEW">Mới</ng-container>
 								<ng-container *ngIf="item.status === eStatus.WAITING">Chờ phê duyệt</ng-container>
 								<ng-container *ngIf="item.status === eStatus.CONFIRMED">Đã phê duyệt</ng-container>
 								<ng-container *ngIf="item.status === eStatus.REFUSED">Đã từ chối</ng-container>
-								<ng-container *ngIf="item.status === eStatus.ADJUST"
-									>Yêu cầu điều chỉnh</ng-container
-								>
+								<ng-container *ngIf="item.status === eStatus.ADJUST">Yêu cầu điều chỉnh</ng-container>
+								<ng-container *ngIf="item.status === eStatus.SWAP">Yêu cầu thay đổi</ng-container>
+								<ng-container *ngIf="item.status === eStatus.LOCK">Tạm dừng</ng-container>
+								<ng-container *ngIf="item.status === eStatus.IMPORTED">Đã nhập</ng-container>
+								<ng-container *ngIf="item.status === eStatus.EXPORTED">Đã xuất</ng-container>
 							</span>
 						</td>
+            <td class='icon-check text-center'>
+              <a
+                *ngIf='item.checkUpdate'
+                class="btn btn-icon btn-light btn-hover-success btn-sm"
+                [ngbTooltip]="'Đã thay đổi'"
+              >
+            <span
+              [inlineSVG]="'./assets/media/svg/icons/General/Shield-check.svg'"
+              cacheSVG="true"
+              class="svg-icon svg-icon-md svg-icon-success"
+            ></span>
+              </a>
+            </td>
 
 						<td class="text-center action">
 							<a
-								*ngIf="item.status !== eStatus.REFUSED && item.status !== eStatus.CONFIRMED"
+								*ngIf="item.status !== eStatus.REFUSED && item.status !== eStatus.CONFIRMED && item.status !== eStatus.LOCK"
 								(click)="createWarehouseOrder($event,item.id)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 								[ngbTooltip]="'Sửa'"

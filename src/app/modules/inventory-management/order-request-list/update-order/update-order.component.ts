@@ -268,10 +268,10 @@ export class UpdateOrderComponent extends BaseComponent implements OnInit, After
 
   onSubmit() {
     this.requestForm.markAllAsTouched();
-    this.reasonChange.markAllAsTouched();
     this.productForm.markAllAsTouched();
-    if (this.requestForm.invalid || this.productForm.invalid || this.reasonChange.invalid) {
+    if (this.requestForm.invalid || this.productForm.invalid) {
       return;
+      this.toastr.error("Vui lòng điền đầy đủ thông tin")
     }
 
     const productData = this.productForm.value.products.map((p) => ({
@@ -299,6 +299,11 @@ export class UpdateOrderComponent extends BaseComponent implements OnInit, After
           this.checkError(err);
         })
     } else {
+      this.reasonChange.markAllAsTouched();
+      if (this.reasonChange.invalid) {
+        return;
+        this.toastr.error("Vui lòng điền đầy đủ thông tin")
+      }
       const dataReq = {
         reasonChange: this.reasonChange.value,
         productInfoRequests: productData
@@ -321,9 +326,11 @@ export class UpdateOrderComponent extends BaseComponent implements OnInit, After
       this.toastr.error('Nhập lượng đề xuất nhỏ hơn 1,000,000,000');
     }
     if (error.code === 'SUN-OIL-4910') {
-      this.toastr.error('Không tìm thầy thông tin đặt hàng');
+      this.toastr.error('Không tìm thấy thông tin đặt hàng');
     }
-
+    if (error.code === 'SUN-OIL-4720') {
+      this.toastr.error('Bạn không thể cập nhật đơn hàng vì không phải là người tạo!');
+    }
   }
 
   onBack() {
