@@ -48,6 +48,7 @@
             width="300px"
             [src]="attachmentImg && attachmentImg?.url || urlImg || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
           />
+          <p class='my-1' style='color: rgb(63, 66, 84)'>Ảnh tỉ lệ 2.2:1 (khuyến khích 693x315 px)</p>
           <app-validate
             [control]="updateForm.controls['imageId']"
             [error]="'required'"
