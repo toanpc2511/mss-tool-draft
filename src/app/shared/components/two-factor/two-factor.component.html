@@ -19,6 +19,7 @@
       [formControl]="verificationCodeControl"
       trim="blur" numbersOnly
       maxlength="6"
+      (keydown.space)="$event.preventDefault()"
       placeholder='Nhập mã OTP'
     />
     <app-validate [control]="verificationCodeControl" [error]="'required'"
