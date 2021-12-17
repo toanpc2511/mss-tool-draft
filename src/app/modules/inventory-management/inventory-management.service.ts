@@ -11,7 +11,11 @@ export enum EWarehouseOrderStatus {
 	WAITING = 'WAITING',
 	CONFIRMED = 'CONFIRMED',
 	REFUSED = 'REFUSED',
-	ADJUST = 'ADJUST'
+	ADJUST = 'ADJUST',
+  SWAP = 'SWAP',
+  LOCK = 'LOCK',
+  IMPORTED = 'IMPORTED',
+  EXPORTED = 'EXPORTED'
 }
 
 export const PaymentMethod = [
@@ -94,6 +98,7 @@ export interface IWarehouseOrderRequest {
 	approvalDate: string;
 	capacity: number;
 	code: string;
+  checkUpdate: boolean;
 	driver: {
 		id: string;
 		name: string;
@@ -137,16 +142,21 @@ export interface IWareHouseOrderDetail {
 	oderForm: string;
 	paymentMethod: string;
 	representativeName: string;
-	totalProductMoney: number;
+	totalProductMoneyOld: number;
+  totalProductMoneyNew: number;
 	transportCost: number;
   importRequestId: number;
 	vehicleCostMethod: string;
-	wareHouseOrderProductResponses: [IWareHouseOrderProductResponses];
+  wareHouseOrderProductResponsesOld: [IWareHouseOrderProductResponses];
+  wareHouseOrderProductResponsesNew: [IWareHouseOrderProductResponses];
 	rejectReason: string;
 	adjustReason: string;
 	status: EWarehouseOrderStatus;
 	requestCode: string;
 	expectedDate: string;
+  checkChange: boolean;
+  reasonChange: string;
+  checkBallot: boolean;
 }
 
 export interface IWareHouseOrderProductResponses {
@@ -579,6 +589,11 @@ export class InventoryManagementService {
 
   // Gửi yêu cầu đặt kho
   putWarehouseOrders(id: number, dataReq) {
+    return this.http.put(`warehouse-orders/${id}`, dataReq)
+  }
+
+  // Cập nhật yêu cầu đặt kho
+  updateWarehouseOrder(id: string | number, dataReq) {
     return this.http.put(`warehouse-orders/${id}`, dataReq)
   }
 

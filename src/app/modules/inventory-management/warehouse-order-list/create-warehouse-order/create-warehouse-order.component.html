@@ -90,6 +90,12 @@
               <ng-container *ngIf="dataDetail?.status === eWarehouseStatus.ADJUST"
               >Yêu cầu điều chỉnh</ng-container
               >
+              <ng-container *ngIf="dataDetail?.status === eWarehouseStatus.SWAP"
+              >Yêu cầu thay đổi</ng-container
+              >
+              <ng-container *ngIf="dataDetail?.status === eWarehouseStatus.LOCK"
+              >Tạm dừng</ng-container
+              >
             </label>
           </div>
         </div>
@@ -97,334 +103,810 @@
     </div>
   </div>
 
-  <div class="order-info pb-5">
-    <div class="card-header">
-      <div class="card-title">
-        <h3 class="title">Thông tin đặt kho</h3>
-      </div>
-    </div>
 
-    <div class="card-body">
-      <form class="form form-label-right" [formGroup]='orderInfoForm'>
-        <div class="form-group row">
-          <div class="col-lg-6">
-            <label class="form-label required">Hình thức đặt kho</label>
-            <select class="form-control form-control-solid w-75" formControlName='oderForm'>
-              <option [value]="''">Chọn hình thức đặt kho</option>
-              <option *ngFor="let item of listWarehouseOrderForm" [value]="item.key">{{item.value}}</option>
-            </select>
-            <app-validate
-              [control]="orderInfoForm.controls['oderForm']"
-              [error]="'required'"
-              [message]="'Hình thức đặt kho không được để trống'"
-            ></app-validate>
-          </div>
 
-          <div class="col-lg-6">
-            <label class="form-label required">Hình thức thanh toán</label>
-            <select class="form-control form-control-solid w-75" formControlName='paymentMethod'>
-              <option [value]="''">Chọn hình thức thanh toán</option>
-              <option *ngFor="let item of paymentMethod" [value]="item.key">{{item.value}}</option>
-            </select>
-            <app-validate
-              [control]="orderInfoForm.controls['paymentMethod']"
-              [error]="'required'"
-              [message]="'Hình thức thanh toán không được để trống'"
-            ></app-validate>
-          </div>
+
+
+  <ng-container *ngIf='dataDetail?.checkChange else other'>
+    <div class="order-info pb-5">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Thông tin đặt kho</h3>
         </div>
-
-        <div class="form-group row">
-          <div class="col-lg-6">
-            <label class="form-label required">Kho xuất</label>
-            <select class="form-control form-control-solid w-75" formControlName='exportedWarehouseName' (change)='hanldChangeWarehouse()'>
-              <option [value]="''">Chọn kho xuất</option>
-              <option *ngFor="let item of dataSupplier" [value]="item.id">{{item.name}}</option>
-            </select>
-            <app-validate
-              [control]="orderInfoForm.controls['exportedWarehouseName']"
-              [error]="'required'"
-              [message]="'Kho xuất không được để trống'"
-            ></app-validate>
-          </div>
-
-          <div class="col-lg-6">
-            <label>Địa chỉ kho xuất</label>
-            <input
-              type="text"
-              class="form-control form-control-solid w-75"
-              placeholder="Địa chỉ kho xuất"
-              formControlName='exportedWarehouseAddress'
-            />
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="list-product py-5">
-    <div class="card-header">
-      <div class="card-title">
-        <h3 class="title">Danh sách hàng hóa</h3>
       </div>
-    </div>
 
-    <div class="card-body">
-      <div class="table-responsive angular-bootstrap-table">
-        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
-          <thead>
-          <tr>
-            <th scope=''>STT</th>
-            <th scope=''>Tên sản phẩm</th>
-            <th scope=''>Đơn vị</th>
-            <th scope='' class='form-label required'>Lượng đề xuất</th>
-            <th scope='' class='form-label' [class.required]='isRequired'>Bồn xuất</th>
-            <th scope='' class='form-label'>Ngăn</th>
-            <th scope=''>Bồn nhập</th>
-            <th scope='' class='form-label required'>Đơn giá(VNĐ)</th>
-            <th scope='' class='form-label required'>Nguồn hàng</th>
-            <th scope='' class='text-right'>Thành tiền</th>
-          </tr>
-          </thead>
-
-          <tbody>
-          <tr *ngFor="let item of dataProductResponses?.controls; let i = index" [formGroup]="item">
-            <td class='stt'>{{i + 1}}</td>
-            <td class='product-name'>
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.get('productName').value"
-              >
-                {{ item.get('productName').value}}
-              </p>
-            </td>
-            <td class='unit'>
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.get('unit').value"
-              >
-                {{ item.get('unit').value}}
-              </p>
-            </td>
-            <td class='amount-actually'>
-              <input
-                class="form-control"
-                placeholder="Nhập lượng đề xuất"
-                formControlName='recommend'
-                maxlength="11"
-                decimal-mask
-                (input)='changeValuePrice(i)'
-              />
-
-              <app-validate
-                [control]="item.controls['recommend']"
-                [error]="'required'"
-                [message]="'Lượng đề xuất không được để trống'"
-              ></app-validate>
-            </td>
-            <td class="gas-field-out-name">
-              <select class="form-control" formControlName='gasFieldOut'>
-                <option [value]="''">Chọn bồn xuất</option>
-                <option *ngFor="let item of listItemGas[i]" [value]="item.id">{{item.name}}</option>
+      <div class="card-body" *ngIf='dataDetail?.checkBallot'>
+        <form class="form form-label-right" [formGroup]='orderInfoForm'>
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label class="form-label required">Hình thức đặt kho</label>
+              <select class="form-control form-control-solid w-75" formControlName='oderForm'>
+                <option [value]="''">Chọn hình thức đặt kho</option>
+                <option *ngFor="let item of listWarehouseOrderForm" [value]="item.key">{{item.value}}</option>
               </select>
               <app-validate
-                [control]="item.controls['gasFieldOut']"
+                [control]="orderInfoForm.controls['oderForm']"
                 [error]="'required'"
-                [message]="'Bồn xuất không được để trống'"
+                [message]="'Hình thức đặt kho không được để trống'"
               ></app-validate>
-            </td>
-            <td class="compartment">
+            </div>
+
+            <div class="col-lg-6">
+              <label class="form-label required">Hình thức thanh toán</label>
+              <select class="form-control form-control-solid w-75" formControlName='paymentMethod'>
+                <option [value]="''">Chọn hình thức thanh toán</option>
+                <option *ngFor="let item of paymentMethod" [value]="item.key">{{item.value}}</option>
+              </select>
+              <app-validate
+                [control]="orderInfoForm.controls['paymentMethod']"
+                [error]="'required'"
+                [message]="'Hình thức thanh toán không được để trống'"
+              ></app-validate>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label class="form-label required">Kho xuất</label>
+              <select class="form-control form-control-solid w-75" formControlName='exportedWarehouseName' (change)='hanldChangeWarehouse()'>
+                <option [value]="''">Chọn kho xuất</option>
+                <option *ngFor="let item of dataSupplier" [value]="item.id">{{item.name}}</option>
+              </select>
+              <app-validate
+                [control]="orderInfoForm.controls['exportedWarehouseName']"
+                [error]="'required'"
+                [message]="'Kho xuất không được để trống'"
+              ></app-validate>
+            </div>
+
+            <div class="col-lg-6">
+              <label>Địa chỉ kho xuất</label>
               <input
                 type="text"
-                class="form-control"
-                placeholder="Nhập ngăn"
-                formControlName="compartment"
-                autocomplete="off"
-                maxlength="100"
-                trim="blur"
+                class="form-control form-control-solid w-75"
+                placeholder="Địa chỉ kho xuất"
+                formControlName='exportedWarehouseAddress'
               />
-            </td>
-            <td class="gas-field-in-name">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.get('gasFieldInName').value"
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="card-body" *ngIf='!dataDetail?.checkBallot'>
+        <div class="form-group row">
+          <div class="col-lg-6 row">
+            <div class="col-lg-5">
+              <label class="form-label">Hình thức đặt kho</label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold" *ngIf="dataDetail?.oderForm === 'SUPPLIER'"
+              >Nhà cung cấp</label
               >
-                {{item.get('gasFieldInName').value}}
-              </p>
-            </td>
-            <td class="price">
-              <input
-                class="form-control"
-                placeholder="Nhập đơn giá"
-                formControlName='price'
-                maxlength="11"
-                decimal-mask
-                (input)='changeValuePrice(i)'
-              />
-              <app-validate
-                [control]="item.controls['price']"
-                [error]="'required'"
-                [message]="'Đơn giá không được để trống'"
-              ></app-validate>
-            </td>
-            <td class="supplier-name">
-              <select class="form-control" formControlName='supplierId'>
-                <option [value]="''">Chọn nguồn hàng</option>
-                <option *ngFor="let item of dataSupplierProduct" [value]="item.id">{{item.name}}</option>
+              <label class="form-label font-weight-bold" *ngIf="dataDetail?.oderForm === 'DEPOT'"
+              >Kho tổng</label
+              >
+              <label class="form-label font-weight-bold" *ngIf="dataDetail?.oderForm === 'STORE'"
+              >Kho tại cửa hàng</label
+              >
+            </div>
+          </div>
+
+          <div class="col-lg-6 row">
+            <div class="col-lg-5">
+              <label class="form-label">Hình thức thanh toán</label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold" *ngIf="dataDetail?.paymentMethod === 'MONEY'"
+              >Tiền mặt</label
+              >
+              <label class="form-label font-weight-bold" *ngIf="dataDetail?.paymentMethod === 'CASH'"
+              >Chuyển khoản</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-6 row">
+            <div class="col-lg-5">
+              <label class="form-label">Kho xuất</label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{dataDetail?.exportedWarehouseName}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-6 row">
+            <div class="col-lg-5">
+              <label class="form-label">Địa chỉ kho xuất</label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold"
+              >{{dataDetail?.exportedWarehouseAddress}}</label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-product py-5" *ngIf='!dataDetail?.checkBallot'>
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Danh sách hàng hóa</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive angular-bootstrap-table">
+          <table class="table table-vertical-center overflow-hidden" aria-label="">
+            <thead class="thead-light">
+            <tr>
+              <th scope="">
+                <label class="form-label">STT</label>
+              </th>
+              <th scope="">
+                <label class="form-label">Tên sản phẩm</label>
+              </th>
+              <th scope="">
+                <label class="form-label">Đơn vị</label>
+              </th>
+              <th class="text-right recommend" scope="">
+                <label class="form-label">Số lượng</label>
+              </th>
+              <th class="text pl-6" scope="">
+                <label class="form-label">Bồn xuất</label>
+              </th>
+              <th class="text" scope="">
+                <label class="form-label">Ngăn</label>
+              </th>
+              <th class="text pl-6" scope="">
+                <label class="form-label">Bồn nhập</label>
+              </th>
+              <th class="text-right price" scope="">
+                <label class="form-label">Đơn giá(VNĐ)</label>
+              </th>
+              <th class="text" scope="">
+                <label class="form-label">Nguồn hàng</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Thành tiền</label>
+              </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr *ngFor="let item of dataDetail?.wareHouseOrderProductResponsesOld; let i =index">
+              <td class='stt'>{{i + 1}}</td>
+              <td class='product-name'>{{item.productName}}</td>
+              <td class='unit'>{{item.unit}}</td>
+              <td class="text-right recommend">{{item.recommend | number | vnCurrency}}</td>
+              <td class="gas-field-out-name pl-6">{{item.gasFieldOutName}}</td>
+              <td class="compartment">{{item.compartment}}</td>
+              <td class="gas-field-in-name pl-6">{{item.gasFieldInName}}</td>
+              <td class="text-right price">{{item.price | number | vnCurrency}}</td>
+              <td class="supplie-name">{{item.supplierName}}</td>
+              <td class="text-right into-money">{{item.intoMoney | number | vnCurrency}}</td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <td colspan="5"></td>
+              <td colspan="3" class="text-right"><strong>Tổng tiền thanh toán:</strong></td>
+              <td colspan="2" class="text-right">
+                <strong>{{dataDetail?.totalProductMoneyOld | number | vnCurrency}}</strong>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-product-change py-5">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">{{!dataDetail?.checkBallot ? 'Danh sách hàng hóa thay đổi' : 'Danh sách hàng hóa'}}</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <p
+          *ngIf='dataDetail?.checkChange'
+          class="text-danger font-weight-bold m-3"
+        >
+          Lý do thay đổi: {{dataDetail?.reasonChange}}
+        </p>
+
+        <div class="table-responsive angular-bootstrap-table">
+          <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+            <thead>
+            <tr>
+              <th scope=''>STT</th>
+              <th scope=''>Tên sản phẩm</th>
+              <th scope=''>Đơn vị</th>
+              <th scope='' class='form-label required'>Lượng đề xuất</th>
+              <th scope='' class='form-label' [class.required]='isRequired'>Bồn xuất</th>
+              <th scope='' class='form-label'>Ngăn</th>
+              <th scope=''>Bồn nhập</th>
+              <th scope='' class='form-label required'>Đơn giá(VNĐ)</th>
+              <th scope='' class='form-label required'>Nguồn hàng</th>
+              <th scope='' class='text-right'>Thành tiền</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr *ngFor="let item of dataProductResponses?.controls; let i = index" [formGroup]="item">
+              <td class='stt'>{{i + 1}}</td>
+              <td class='product-name'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="item.get('productName').value"
+                >
+                  {{ item.get('productName').value}}
+                </p>
+              </td>
+              <td class='unit'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="item.get('unit').value"
+                >
+                  {{ item.get('unit').value}}
+                </p>
+              </td>
+              <td class='amount-actually'>
+                <input
+                  class="form-control"
+                  placeholder="Nhập lượng đề xuất"
+                  formControlName='recommend'
+                  maxlength="11"
+                  decimal-mask
+                  (input)='changeValuePrice(i)'
+                />
+
+                <app-validate
+                  [control]="item.controls['recommend']"
+                  [error]="'required'"
+                  [message]="'Lượng đề xuất không được để trống'"
+                ></app-validate>
+              </td>
+              <td class="gas-field-out-name">
+                <select class="form-control" formControlName='gasFieldOut'>
+                  <option [value]="''">Chọn bồn xuất</option>
+                  <option *ngFor="let item of listItemGas[i]" [value]="item.id">{{item.name}}</option>
+                </select>
+                <app-validate
+                  [control]="item.controls['gasFieldOut']"
+                  [error]="'required'"
+                  [message]="'Bồn xuất không được để trống'"
+                ></app-validate>
+              </td>
+              <td class="compartment">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập ngăn"
+                  formControlName="compartment"
+                  autocomplete="off"
+                  maxlength="100"
+                  trim="blur"
+                />
+              </td>
+              <td class="gas-field-in-name">
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="item.get('gasFieldInName').value"
+                >
+                  {{item.get('gasFieldInName').value}}
+                </p>
+              </td>
+              <td class="price">
+                <input
+                  class="form-control"
+                  placeholder="Nhập đơn giá"
+                  formControlName='price'
+                  maxlength="11"
+                  decimal-mask
+                  (input)='changeValuePrice(i)'
+                />
+                <app-validate
+                  [control]="item.controls['price']"
+                  [error]="'required'"
+                  [message]="'Đơn giá không được để trống'"
+                ></app-validate>
+              </td>
+              <td class="supplier-name">
+                <select class="form-control" formControlName='supplierId'>
+                  <option [value]="''">Chọn nguồn hàng</option>
+                  <option *ngFor="let item of dataSupplierProduct" [value]="item.id">{{item.name}}</option>
+                </select>
+                <app-validate
+                  [control]="item.controls['supplierId']"
+                  [error]="'required'"
+                  [message]="'Nguồn hàng không được để trống'"
+                ></app-validate>
+              </td>
+              <td class="into-money text-right">
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="item.get('intoMoney').value | number | vnCurrency"
+                >
+                  {{ item.get('intoMoney').value | number | vnCurrency}}
+                </p>
+              </td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <td colspan='8' class='text-right'>Tổng tiền thanh toán:</td>
+              <td colspan='2' class='text-right'>{{ sumTotalMoney | number | vnCurrency }}</td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="transport-info pb-5">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Thông tin vận tải</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <form class="form form-label-right" [formGroup]='transportInfoForm'>
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label class="form-label required">Sử dụng xe Sunoil</label>
+              <select class="form-control form-control-solid w-75" formControlName='internalCar' (input)='changeInternalCar()'>
+                <option [value]="'true'">Có</option>
+                <option [value]="'false'">Không</option>
+              </select>
+            </div>
+
+            <div class="col-lg-6">
+              <label class="form-label required">Hình thức thanh toán cước xe</label>
+              <select class="form-control form-control-solid w-75" formControlName='vehicleCostMethod'>
+                <option [value]="''">Chọn hình thức thanh toán</option>
+                <option *ngFor="let item of paymentMethod" [value]="item.key">{{item.value}}</option>
               </select>
               <app-validate
-                [control]="item.controls['supplierId']"
+                [control]="transportInfoForm.controls['vehicleCostMethod']"
                 [error]="'required'"
-                [message]="'Nguồn hàng không được để trống'"
+                [message]="'Hình thức thanh toán không được để trống'"
               ></app-validate>
-            </td>
-            <td class="into-money text-right">
-              <p
-                class="cursor-pointer text-ellipsis"
-                placement="top"
-                [ngbTooltip]="item.get('intoMoney').value | number | vnCurrency"
-              >
-                {{ item.get('intoMoney').value | number | vnCurrency}}
-              </p>
-            </td>
-          </tr>
-          </tbody>
+            </div>
+          </div>
 
-          <tfoot>
-          <tr>
-            <td colspan='8' class='text-right'>Tổng tiền thanh toán:</td>
-            <td colspan='2' class='text-right'>{{ sumTotalMoney | number | vnCurrency }}</td>
-          </tr>
-          </tfoot>
-        </table>
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label class="form-label required">Cước vận tải/Lít</label>
+              <input
+                class="form-control form-control-solid w-75"
+                placeholder="Nhập cước vận tải/Lít"
+                formControlName='freightCharges'
+                autocomplete="off"
+                maxlength='13'
+                decimal-mask
+                trim="blur"
+                (keydown.space)="$event.preventDefault()"
+                (input)='sumFreightCharge()'
+              />
+              <app-validate
+                [control]="transportInfoForm.controls['freightCharges']"
+                [error]="'required'"
+                [message]="'Cước vận tải không được để trống'"
+              ></app-validate>
+              <app-validate
+                [control]="transportInfoForm.controls['freightCharges']"
+                [error]="'min'"
+                [message]="'Cước vận phải lớn hơn 0'"
+              ></app-validate>
+            </div>
+
+            <div class="col-lg-6">
+              <label>Thành tiền</label>
+              <input
+                class="form-control form-control-solid w-75"
+                placeholder="Thành tiền"
+                formControlName='transportCost'
+                decimal-mask
+              />
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf='isInternalCar'>
+            <div class="col-lg-6">
+              <label class="form-label required">Biển số xe sử dụng</label>
+              <select class="form-control form-control-solid w-75" formControlName='licensePlates' (input)='changeLicensePlates()'>
+                <option [value]="null">Chọn biển số xe</option>
+                <option *ngFor='let item of dataTransitCars' [value]="item.licensePlates">{{item.licensePlates}}</option>
+              </select>
+              <app-validate
+                [control]="transportInfoForm.controls['licensePlates']"
+                [error]="'required'"
+                [message]="'Biển số xe không được để trống'"
+              ></app-validate>
+            </div>
+
+            <div class="col-lg-6">
+              <label>Dung tích</label>
+              <input
+                class="form-control form-control-solid w-75"
+                placeholder="Dung tích"
+                formControlName='capacity'
+                maxlength="11"
+                decimal-mask
+              />
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf='isInternalCar'>
+            <div class="col-lg-6">
+              <label class="form-label required">Lái xe</label>
+              <select class="form-control form-control-solid w-75" formControlName='driver'>
+                <option [value]="null">Chọn lái xe</option>
+                <option *ngFor='let item of dataShippingTeam' [value]="item.id">{{item.name}}</option>
+              </select>
+              <app-validate
+                [control]="transportInfoForm.controls['driver']"
+                [error]="'required'"
+                [message]="'Lái xe không được để trống'"
+              ></app-validate>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-  </div>
+  </ng-container>
 
-  <div class="transport-info pb-5">
-    <div class="card-header">
-      <div class="card-title">
-        <h3 class="title">Thông tin vận tải</h3>
+
+
+
+
+
+
+  <ng-template #other>
+    <div class="order-info pb-5">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Thông tin đặt kho</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <form class="form form-label-right" [formGroup]='orderInfoForm'>
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label class="form-label required">Hình thức đặt kho</label>
+              <select class="form-control form-control-solid w-75" formControlName='oderForm'>
+                <option [value]="''">Chọn hình thức đặt kho</option>
+                <option *ngFor="let item of listWarehouseOrderForm" [value]="item.key">{{item.value}}</option>
+              </select>
+              <app-validate
+                [control]="orderInfoForm.controls['oderForm']"
+                [error]="'required'"
+                [message]="'Hình thức đặt kho không được để trống'"
+              ></app-validate>
+            </div>
+
+            <div class="col-lg-6">
+              <label class="form-label required">Hình thức thanh toán</label>
+              <select class="form-control form-control-solid w-75" formControlName='paymentMethod'>
+                <option [value]="''">Chọn hình thức thanh toán</option>
+                <option *ngFor="let item of paymentMethod" [value]="item.key">{{item.value}}</option>
+              </select>
+              <app-validate
+                [control]="orderInfoForm.controls['paymentMethod']"
+                [error]="'required'"
+                [message]="'Hình thức thanh toán không được để trống'"
+              ></app-validate>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label class="form-label required">Kho xuất</label>
+              <select class="form-control form-control-solid w-75" formControlName='exportedWarehouseName' (change)='hanldChangeWarehouse()'>
+                <option [value]="''">Chọn kho xuất</option>
+                <option *ngFor="let item of dataSupplier" [value]="item.id">{{item.name}}</option>
+              </select>
+              <app-validate
+                [control]="orderInfoForm.controls['exportedWarehouseName']"
+                [error]="'required'"
+                [message]="'Kho xuất không được để trống'"
+              ></app-validate>
+            </div>
+
+            <div class="col-lg-6">
+              <label>Địa chỉ kho xuất</label>
+              <input
+                type="text"
+                class="form-control form-control-solid w-75"
+                placeholder="Địa chỉ kho xuất"
+                formControlName='exportedWarehouseAddress'
+              />
+            </div>
+          </div>
+        </form>
       </div>
     </div>
 
-    <div class="card-body">
-      <form class="form form-label-right" [formGroup]='transportInfoForm'>
-        <div class="form-group row">
-          <div class="col-lg-6">
-            <label class="form-label required">Sử dụng xe Sunoil</label>
-            <select class="form-control form-control-solid w-75" formControlName='internalCar' (input)='changeInternalCar()'>
-              <option [value]="'true'">Có</option>
-              <option [value]="'false'">Không</option>
-            </select>
-          </div>
-
-          <div class="col-lg-6">
-            <label class="form-label required">Hình thức thanh toán cước xe</label>
-            <select class="form-control form-control-solid w-75" formControlName='vehicleCostMethod'>
-              <option [value]="''">Chọn hình thức thanh toán</option>
-              <option *ngFor="let item of paymentMethod" [value]="item.key">{{item.value}}</option>
-            </select>
-            <app-validate
-              [control]="transportInfoForm.controls['vehicleCostMethod']"
-              [error]="'required'"
-              [message]="'Hình thức thanh toán không được để trống'"
-            ></app-validate>
-          </div>
+    <div class="list-product py-5">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Danh sách hàng hóa</h3>
         </div>
+      </div>
 
-        <div class="form-group row">
-          <div class="col-lg-6">
-            <label class="form-label required">Cước vận tải/Lít</label>
-            <input
-              class="form-control form-control-solid w-75"
-              placeholder="Nhập cước vận tải/Lít"
-              formControlName='freightCharges'
-              autocomplete="off"
-              maxlength='13'
-              decimal-mask
-              trim="blur"
-              (keydown.space)="$event.preventDefault()"
-              (input)='sumFreightCharge()'
-            />
-            <app-validate
-              [control]="transportInfoForm.controls['freightCharges']"
-              [error]="'required'"
-              [message]="'Cước vận tải không được để trống'"
-            ></app-validate>
-            <app-validate
-              [control]="transportInfoForm.controls['freightCharges']"
-              [error]="'min'"
-              [message]="'Cước vận phải lớn hơn 0'"
-            ></app-validate>
-          </div>
+      <div class="card-body">
+        <div class="table-responsive angular-bootstrap-table">
+          <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+            <thead>
+            <tr>
+              <th scope=''>STT</th>
+              <th scope=''>Tên sản phẩm</th>
+              <th scope=''>Đơn vị</th>
+              <th scope='' class='form-label required'>Lượng đề xuất</th>
+              <th scope='' class='form-label' [class.required]='isRequired'>Bồn xuất</th>
+              <th scope='' class='form-label'>Ngăn</th>
+              <th scope=''>Bồn nhập</th>
+              <th scope='' class='form-label required'>Đơn giá(VNĐ)</th>
+              <th scope='' class='form-label required'>Nguồn hàng</th>
+              <th scope='' class='text-right'>Thành tiền</th>
+            </tr>
+            </thead>
 
-          <div class="col-lg-6">
-            <label>Thành tiền</label>
-            <input
-              class="form-control form-control-solid w-75"
-              placeholder="Thành tiền"
-              formControlName='transportCost'
-              decimal-mask
-            />
-          </div>
+            <tbody>
+            <tr *ngFor="let item of dataProductResponses?.controls; let i = index" [formGroup]="item">
+              <td class='stt'>{{i + 1}}</td>
+              <td class='product-name'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="item.get('productName').value"
+                >
+                  {{ item.get('productName').value}}
+                </p>
+              </td>
+              <td class='unit'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="item.get('unit').value"
+                >
+                  {{ item.get('unit').value}}
+                </p>
+              </td>
+              <td class='amount-actually'>
+                <input
+                  class="form-control"
+                  placeholder="Nhập lượng đề xuất"
+                  formControlName='recommend'
+                  maxlength="11"
+                  decimal-mask
+                  (input)='changeValuePrice(i)'
+                />
+
+                <app-validate
+                  [control]="item.controls['recommend']"
+                  [error]="'required'"
+                  [message]="'Lượng đề xuất không được để trống'"
+                ></app-validate>
+              </td>
+              <td class="gas-field-out-name">
+                <select class="form-control" formControlName='gasFieldOut'>
+                  <option [value]="''">Chọn bồn xuất</option>
+                  <option *ngFor="let item of listItemGas[i]" [value]="item.id">{{item.name}}</option>
+                </select>
+                <app-validate
+                  [control]="item.controls['gasFieldOut']"
+                  [error]="'required'"
+                  [message]="'Bồn xuất không được để trống'"
+                ></app-validate>
+              </td>
+              <td class="compartment">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập ngăn"
+                  formControlName="compartment"
+                  autocomplete="off"
+                  maxlength="100"
+                  trim="blur"
+                />
+              </td>
+              <td class="gas-field-in-name">
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="item.get('gasFieldInName').value"
+                >
+                  {{item.get('gasFieldInName').value}}
+                </p>
+              </td>
+              <td class="price">
+                <input
+                  class="form-control"
+                  placeholder="Nhập đơn giá"
+                  formControlName='price'
+                  maxlength="11"
+                  decimal-mask
+                  (input)='changeValuePrice(i)'
+                />
+                <app-validate
+                  [control]="item.controls['price']"
+                  [error]="'required'"
+                  [message]="'Đơn giá không được để trống'"
+                ></app-validate>
+              </td>
+              <td class="supplier-name">
+                <select class="form-control" formControlName='supplierId'>
+                  <option [value]="''">Chọn nguồn hàng</option>
+                  <option *ngFor="let item of dataSupplierProduct" [value]="item.id">{{item.name}}</option>
+                </select>
+                <app-validate
+                  [control]="item.controls['supplierId']"
+                  [error]="'required'"
+                  [message]="'Nguồn hàng không được để trống'"
+                ></app-validate>
+              </td>
+              <td class="into-money text-right">
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="item.get('intoMoney').value | number | vnCurrency"
+                >
+                  {{ item.get('intoMoney').value | number | vnCurrency}}
+                </p>
+              </td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <td colspan='8' class='text-right'>Tổng tiền thanh toán:</td>
+              <td colspan='2' class='text-right'>{{ sumTotalMoney | number | vnCurrency }}</td>
+            </tr>
+            </tfoot>
+          </table>
         </div>
-
-        <div class="form-group row" *ngIf='isInternalCar'>
-          <div class="col-lg-6">
-            <label class="form-label required">Biển số xe sử dụng</label>
-            <select class="form-control form-control-solid w-75" formControlName='licensePlates' (input)='changeLicensePlates()'>
-              <option [value]="null">Chọn biển số xe</option>
-              <option *ngFor='let item of dataTransitCars' [value]="item.licensePlates">{{item.licensePlates}}</option>
-            </select>
-            <app-validate
-              [control]="transportInfoForm.controls['licensePlates']"
-              [error]="'required'"
-              [message]="'Biển số xe không được để trống'"
-            ></app-validate>
-          </div>
-
-          <div class="col-lg-6">
-            <label>Dung tích</label>
-            <input
-              class="form-control form-control-solid w-75"
-              placeholder="Dung tích"
-              formControlName='capacity'
-              maxlength="11"
-              decimal-mask
-            />
-          </div>
-        </div>
-
-        <div class="form-group row" *ngIf='isInternalCar'>
-          <div class="col-lg-6">
-            <label class="form-label required">Lái xe</label>
-            <select class="form-control form-control-solid w-75" formControlName='driver'>
-              <option [value]="null">Chọn lái xe</option>
-              <option *ngFor='let item of dataShippingTeam' [value]="item.id">{{item.name}}</option>
-            </select>
-            <app-validate
-              [control]="transportInfoForm.controls['driver']"
-              [error]="'required'"
-              [message]="'Lái xe không được để trống'"
-            ></app-validate>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="reason-refusal">
-    <div class="card-header">
-      <div class="card-title text-danger" *ngIf="dataDetail?.status === eWarehouseStatus.ADJUST">
-        <span class="title-reason">Lý do yêu cầu điều chỉnh:</span>
-        <span class="title-reason pl-5">{{dataDetail?.adjustReason}}</span>
       </div>
     </div>
-  </div>
+
+    <div class="transport-info pb-5">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Thông tin vận tải</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <form class="form form-label-right" [formGroup]='transportInfoForm'>
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label class="form-label required">Sử dụng xe Sunoil</label>
+              <select class="form-control form-control-solid w-75" formControlName='internalCar' (input)='changeInternalCar()'>
+                <option [value]="'true'">Có</option>
+                <option [value]="'false'">Không</option>
+              </select>
+            </div>
+
+            <div class="col-lg-6">
+              <label class="form-label required">Hình thức thanh toán cước xe</label>
+              <select class="form-control form-control-solid w-75" formControlName='vehicleCostMethod'>
+                <option [value]="''">Chọn hình thức thanh toán</option>
+                <option *ngFor="let item of paymentMethod" [value]="item.key">{{item.value}}</option>
+              </select>
+              <app-validate
+                [control]="transportInfoForm.controls['vehicleCostMethod']"
+                [error]="'required'"
+                [message]="'Hình thức thanh toán không được để trống'"
+              ></app-validate>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-6">
+              <label class="form-label required">Cước vận tải/Lít</label>
+              <input
+                class="form-control form-control-solid w-75"
+                placeholder="Nhập cước vận tải/Lít"
+                formControlName='freightCharges'
+                autocomplete="off"
+                maxlength='13'
+                decimal-mask
+                trim="blur"
+                (keydown.space)="$event.preventDefault()"
+                (input)='sumFreightCharge()'
+              />
+              <app-validate
+                [control]="transportInfoForm.controls['freightCharges']"
+                [error]="'required'"
+                [message]="'Cước vận tải không được để trống'"
+              ></app-validate>
+              <app-validate
+                [control]="transportInfoForm.controls['freightCharges']"
+                [error]="'min'"
+                [message]="'Cước vận phải lớn hơn 0'"
+              ></app-validate>
+            </div>
+
+            <div class="col-lg-6">
+              <label>Thành tiền</label>
+              <input
+                class="form-control form-control-solid w-75"
+                placeholder="Thành tiền"
+                formControlName='transportCost'
+                decimal-mask
+              />
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf='isInternalCar'>
+            <div class="col-lg-6">
+              <label class="form-label required">Biển số xe sử dụng</label>
+              <select class="form-control form-control-solid w-75" formControlName='licensePlates' (input)='changeLicensePlates()'>
+                <option [value]="null">Chọn biển số xe</option>
+                <option *ngFor='let item of dataTransitCars' [value]="item.licensePlates">{{item.licensePlates}}</option>
+              </select>
+              <app-validate
+                [control]="transportInfoForm.controls['licensePlates']"
+                [error]="'required'"
+                [message]="'Biển số xe không được để trống'"
+              ></app-validate>
+            </div>
+
+            <div class="col-lg-6">
+              <label>Dung tích</label>
+              <input
+                class="form-control form-control-solid w-75"
+                placeholder="Dung tích"
+                formControlName='capacity'
+                maxlength="11"
+                decimal-mask
+              />
+            </div>
+          </div>
+
+          <div class="form-group row" *ngIf='isInternalCar'>
+            <div class="col-lg-6">
+              <label class="form-label required">Lái xe</label>
+              <select class="form-control form-control-solid w-75" formControlName='driver'>
+                <option [value]="null">Chọn lái xe</option>
+                <option *ngFor='let item of dataShippingTeam' [value]="item.id">{{item.name}}</option>
+              </select>
+              <app-validate
+                [control]="transportInfoForm.controls['driver']"
+                [error]="'required'"
+                [message]="'Lái xe không được để trống'"
+              ></app-validate>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="reason-refusal">
+      <div class="card-header">
+        <div class="card-title text-danger" *ngIf="dataDetail?.status === eWarehouseStatus.ADJUST">
+          <span class="title-reason">Lý do yêu cầu điều chỉnh:</span>
+          <span class="title-reason pl-5">{{dataDetail?.adjustReason}}</span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 
   <div class="py-10 w-100 d-flex justify-content-center">
     <button
