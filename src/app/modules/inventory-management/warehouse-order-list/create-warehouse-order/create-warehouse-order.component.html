@@ -449,7 +449,7 @@
             <tfoot>
             <tr>
               <td colspan='8' class='text-right'>Tổng tiền thanh toán:</td>
-              <td colspan='2' class='text-right'>{{ sumTotalMoney | number | vnCurrency }}</td>
+              <td colspan='2' class='text-right'>{{ totalMoney | number | vnCurrency }}</td>
             </tr>
             </tfoot>
           </table>
@@ -777,7 +777,7 @@
             <tfoot>
             <tr>
               <td colspan='8' class='text-right'>Tổng tiền thanh toán:</td>
-              <td colspan='2' class='text-right'>{{ sumTotalMoney | number | vnCurrency }}</td>
+              <td colspan='2' class='text-right'>{{ totalMoney | number | vnCurrency }}</td>
             </tr>
             </tfoot>
           </table>
@@ -915,6 +915,13 @@
       *ngIf='eAuthorize.BROWSE_WAREHOUSE_ORDER_BUTTON | canUseFeature'
     >
       Gửi duyệt
+    </button>
+
+    <button
+      class="btn btn-outline-primary mr-3 button"
+      (click)="goBack()"
+    >
+      Đóng
     </button>
   </div>
 </div>

@@ -94,6 +94,18 @@
 							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.ADJUST"
 								>Yêu cầu điều chỉnh</ng-container
 							>
+							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.SWAP"
+								>Yêu cầu thay đổi</ng-container
+							>
+							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.LOCK"
+								>Tạm dừng</ng-container
+							>
+							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.IMPORTED"
+								>Đã nhập</ng-container
+							>
+							<ng-container *ngIf="dataDetail?.status === eWarehouseStatus.EXPORTED"
+								>Đã xuất</ng-container
+							>
 						</label>
 					</div>
 				</div>
@@ -170,7 +182,7 @@
 		</div>
 	</div>
 
-	<div class="info-request-in">
+	<div class="info-request-in" *ngIf='!dataDetail?.checkChange || (dataDetail?.checkChange &&!dataDetail?.checkBallot)'>
 		<div class="card-header">
 			<div class="card-title">
 				<h3 class="title">Danh sách hàng hoá</h3>
@@ -247,14 +259,14 @@
 	<div class="info-request-in" *ngIf='dataDetail?.wareHouseOrderProductResponsesNew.length > 0'>
 		<div class="card-header">
 			<div class="card-title">
-				<h3 class="title">Danh sách hàng hoá thay đổi</h3>
-			</div>
+				<h3 class="title">{{!dataDetail?.checkBallot ? 'Danh sách hàng hóa thay đổi' : 'Danh sách hàng hóa'}}</h3>
+      </div>
 		</div>
 
 		<div class="card-body list-request">
       <p
         *ngIf='dataDetail?.checkChange'
-        class="text-danger font-weight-bold m-3"
+        class="text-danger font-weight-bold mx-3"
       >
         Lý do thay đổi: {{dataDetail?.reasonChange}}
       </p>

@@ -102,7 +102,6 @@ export class WareHouseOrderDetailComponent extends BaseComponent implements OnIn
 				}),
 				tap((res) => {
 					this.dataDetail = res.data;
-          console.log(this.dataDetail);
 					this.cdr.detectChanges();
 				}),
 				takeUntil(this.destroy$)
