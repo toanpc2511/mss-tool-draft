@@ -44,7 +44,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   dataProductResponses;
   gasArray$: Array<Observable<any>> = [];
   listItemGas: Array<any> = [];
-  sumTotalMoney: number;
+  totalMoney: number;
   isRequired: boolean;
 
   constructor(
@@ -59,7 +59,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     private toastr: ToastrService,
   ) {
     super();
-    this.sumTotalMoney = 0;
+    this.totalMoney = 0;
     this.reasonChange = new FormControl('', Validators.required);
   }
 
@@ -182,6 +182,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       return ofNull()
     })
   }
+
   changeInternalCar() {
     this.transportInfoForm.get('internalCar').valueChanges
       .subscribe((x) => {
@@ -233,31 +234,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
         }),
         tap((res) => {
           this.dataDetail = res.data;
-          console.log(this.dataDetail);
-          this.pathValue(this.dataDetail);
-
-          this.checkStatusOrder(res.data);
-
-          this.exportedWarehouseNameId = this.dataDetail.exportedWarehouseId;
-          this.oderForm = this.dataDetail.oderForm;
-          this.getListGasFuelWrehouse(this.renderListApi(false));
-
-          this.transportInfoForm.get('internalCar').patchValue(this.dataDetail.internalCar || 'false');
-
-          for (let i = 0; i < this.dataProductResponses?.value.length; i++) {
-            this.sumTotalMoney += convertMoney(this.dataProductResponses.value[i].intoMoney?.toString());
-          }
-
-          if ( this.dataDetail.internalCar) {
-            this.transportInfoForm.get('licensePlates').enable();
-            this.transportInfoForm.get('driver').enable();
-            this.isInternalCar = true;
-          } else {
-            this.isInternalCar = false;
-            this.transportInfoForm.get('licensePlates').disable();
-            this.transportInfoForm.get('driver').disable();
-
-          }
+          this.initData(res.data);
           this.cdr.detectChanges();
         }),
         takeUntil(this.destroy$)
@@ -265,11 +242,52 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       .subscribe();
   }
 
-  checkStatusOrder(data: IWareHouseOrderDetail) {
-    if (!data.checkChange) {
-      this.dataProductResponses = this.convertToFormArray(data.wareHouseOrderProductResponsesOld);
+  initData(data: IWareHouseOrderDetail) {
+    this.exportedWarehouseNameId = data.exportedWarehouseId;
+    this.pathValue(data);
+
+    this.extractStatusOrder(data);
+
+    this.oderForm = data.oderForm;
+    this.getListGasFuelWrehouse(this.renderListApi(false));
+
+    this.transportInfoForm.get('internalCar').patchValue(data.internalCar || 'false');
+
+    this.extractInternalCar(data.internalCar);
+
+    this.sumTotalMoney();
+  }
+
+  sumTotalMoney() {
+    for (let i = 0; i < this.dataProductResponses?.value.length; i++) {
+      this.totalMoney += convertMoney(this.dataProductResponses.value[i].intoMoney?.toString());
+    }
+  }
+
+  extractInternalCar(internalCar: boolean) {
+    if ( internalCar) {
+      this.transportInfoForm.get('licensePlates').enable();
+      this.transportInfoForm.get('driver').enable();
+      this.isInternalCar = true;
     } else {
-      this.dataProductResponses = this.convertToFormArray(this.dataDetail.checkBallot ? this.dataDetail.wareHouseOrderProductResponsesOld : this.dataDetail.wareHouseOrderProductResponsesNew);
+      this.isInternalCar = false;
+      this.transportInfoForm.get('licensePlates').disable();
+      this.transportInfoForm.get('driver').disable();
+    }
+  }
+
+  extractStatusOrder(data: IWareHouseOrderDetail) {
+    this.dataProductResponses = !data.checkChange ? this.convertToFormArray(data.wareHouseOrderProductResponsesOld) :
+      this.convertToFormArray(this.dataDetail.wareHouseOrderProductResponsesNew);
+
+    if (!data.checkBallot) {
+      this.transportInfoForm.get('internalCar').disable();
+      this.transportInfoForm.get('vehicleCostMethod').disable();
+      this.transportInfoForm.get('freightCharges').disable();
+    } else {
+      this.transportInfoForm.get('internalCar').enable();
+      this.transportInfoForm.get('vehicleCostMethod').enable();
+      this.transportInfoForm.get('freightCharges').enable();
     }
   }
 
@@ -334,9 +352,9 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
     this.dataProductResponses.at(index).get('intoMoney').patchValue(recommend * price);
 
-    this.sumTotalMoney = 0;
+    this.totalMoney = 0;
     for (let i = 0; i < this.dataProductResponses.value.length; i++) {
-      this.sumTotalMoney += this.dataProductResponses.value[i].intoMoney;
+      this.totalMoney += this.dataProductResponses.value[i].intoMoney;
     }
     this.sumFreightCharge();
   }
@@ -417,6 +435,10 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.checkError(err);
         })
     }
+  }
+
+  goBack() {
+    this.router.navigate(['/kho/don-dat-kho']);
   }
 
   checkError(error: IError) {

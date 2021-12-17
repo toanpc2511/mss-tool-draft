@@ -173,6 +173,12 @@
     </div>
 
     <div class="card-body">
+      <p
+        class="text-danger font-weight-bold mx-3"
+      >
+        Lý do thay đổi: {{dataSource?.reasonChange}}
+      </p>
+
       <div class="table-responsive angular-bootstrap-table">
         <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
           <thead>
@@ -228,16 +234,8 @@
           </tbody>
         </table>
       </div>
-
-      <p
-        class="text-danger mt-5"
-        *ngIf="dataSource?.status	 === listStatus.REQUEST_CHANGE"
-      >
-        Lý do thay đổi: {{dataSource?.reasonChange}}
-      </p>
     </div>
   </ng-container>
-
 
   <div class="py-10 w-100 d-flex justify-content-center">
     <button
