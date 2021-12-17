@@ -100,7 +100,7 @@
           <th scope='' class=''>Đơn vị</th>
           <th scope='' class=''>Bồn</th>
           <th scope='' class='text-right'>Lượng đề xuất</th>
-          <th scope='' class='text-right' *ngIf='dataSource?.status === "APPROVE"'>Lượng thực nhập</th>
+          <th scope='' class='text-right'>Lượng thực nhập</th>
         </tr>
         </thead>
 
@@ -143,7 +143,7 @@
               {{ item.amountRecommended | number| vnCurrency }}
             </p>
           </td>
-          <td class='amount-actually text-right' *ngIf='dataSource.status === "APPROVE"'>
+          <td class='amount-actually text-right'>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
@@ -188,6 +188,7 @@
             <th scope='' class=''>Đơn vị</th>
             <th scope='' class=''>Bồn</th>
             <th scope='' class='text-right'>Lượng đề xuất</th>
+            <th scope='' class='text-right'>Lượng thực nhập</th>
           </tr>
           </thead>
 
@@ -228,6 +229,15 @@
                 [ngbTooltip]="item.amountRecommended | number| vnCurrency"
               >
                 {{ item.amountRecommended | number| vnCurrency }}
+              </p>
+            </td>
+            <td class='amount-actually text-right'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.amountActually | number| vnCurrency"
+              >
+                {{ item.amountActually | number| vnCurrency }}
               </p>
             </td>
           </tr>
