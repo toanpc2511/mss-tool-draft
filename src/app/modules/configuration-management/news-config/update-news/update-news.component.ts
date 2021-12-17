@@ -1,8 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularEditorConfig } from '../editor-config/config';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
 import { EFileType, FileService } from '../../../../shared/services/file.service';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
@@ -12,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DataResponse } from '../../../../shared/models/data-response.model';
 import { ELocationImg, IImage, IImageNews, INews } from '../model';
 import { SubheaderService } from '../../../../_metronic/partials/layout';
+import { getConfigEditor } from '../config-editor';
 
 @Component({
   selector: 'app-update-news',
@@ -25,39 +24,7 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
   idNews: string;
   eLocationImg = ELocationImg;
 
-  config: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    minHeight: '15rem',
-    maxHeight: '25rem',
-    placeholder: 'Nhập nội dung tin tức',
-    translate: 'no',
-    sanitize: false,
-    defaultFontSize: '4',
-    toolbarPosition: 'top',
-    defaultFontName: 'Times New Roman',
-    defaultParagraphSeparator: 'p',
-    upload: (file: File) => {
-      const formData = new FormData();
-      formData.append('files', file);
-      if (file.size > 15360000) {
-        this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 15MB');
-        return new Observable<HttpResponse<null>>();
-      }
-      return this.newsService.uploadImage(formData);
-    },
-    toolbarHiddenButtons: [
-      [
-        'subscript',
-        'superscript',
-      ],
-      [
-        'insertVideo',
-        'removeFormat',
-        'toggleEditorMode'
-      ]
-    ]
-  };
+  config: AngularEditorConfig = getConfigEditor(this.toastr, this.newsService);
 
   constructor(private fb: FormBuilder,
               private fileService: FileService,
@@ -143,7 +110,7 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
 
   trimContentValue(): string {
     const convertedHTML = this.updateForm.controls['content'].value.replace(/(<([^>]+)>)/ig,'');
-    return convertedHTML.replace(/&#160;/ig, '').trim();
+    return convertedHTML.replace(/&nbsp;/ig, '').trim();
   }
 
   transformContentToWebView(content: string): string {
@@ -166,7 +133,7 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
         <p><font face="Times New Roman"><br></font></p>
         <p><br></p>
      */
-    const transformBrTag: string = this.updateForm.controls['content'].value.replace(/<p>[<\w="/ ]*>*<br>[<\w="/ ]*>*<\/p>/g, '<br>');
+    const transformBrTag: string = this.updateForm.controls['content'].value.replace(/<p>(<([^>]+)>)*<br>(<([^>]+)>)*<\/p>/g, '<br>');
     const regexp = new RegExp('<br><[^/b]+>','g');
     let match;
 
