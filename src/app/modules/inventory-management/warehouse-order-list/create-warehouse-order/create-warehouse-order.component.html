@@ -289,7 +289,7 @@
               <td class="compartment">{{item.compartment}}</td>
               <td class="gas-field-in-name pl-6">{{item.gasFieldInName}}</td>
               <td class="text-right price">{{item.price | number | vnCurrency}}</td>
-              <td class="supplie-name">{{item.supplierName}}</td>
+              <td class="supplier-name">{{item.supplierName}}</td>
               <td class="text-right into-money">{{item.intoMoney | number | vnCurrency}}</td>
             </tr>
             </tbody>
@@ -900,7 +900,7 @@
 
     <div class="reason-refusal">
       <div class="card-header">
-        <div class="card-title text-danger" *ngIf="dataDetail?.status === eWarehouseStatus.ADJUST">
+        <div class="card-title text-danger" *ngIf="dataDetail?.adjustReason">
           <span class="title-reason">Lý do yêu cầu điều chỉnh:</span>
           <span class="title-reason pl-5">{{dataDetail?.adjustReason}}</span>
         </div>

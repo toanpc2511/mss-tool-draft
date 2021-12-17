@@ -322,7 +322,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   convertToFormArray(data: IWareHouseOrderProductResponses[]): FormArray {
     const controls = data.map((d) => {
       const fb = this.fb.group({
-        recommend: [this.dataDetail?.status === 'NEW' ? d.amountRecommended : d.recommend, Validators.required],
+        recommend: [this.dataDetail?.status === 'NEW' || this.dataDetail?.status === "SWAP" ? d.amountRecommended : d.recommend, Validators.required],
         gasFieldOut: [d.gasFieldOutId],
         compartment: [d.compartment],
         price: [d.price, Validators.required],
