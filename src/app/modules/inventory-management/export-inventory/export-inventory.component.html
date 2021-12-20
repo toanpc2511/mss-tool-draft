@@ -203,6 +203,7 @@
               >
 								<ng-container *ngIf="item.status === listStatus.EXPORTED">Đã xuất</ng-container>
 								<ng-container *ngIf="item.status === listStatus.NOT_EXPORTED">Chưa xuất</ng-container>
+								<ng-container *ngIf="item.status === listStatus.WAITING">Tạm dừng</ng-container>
 							</span>
           </td>
         </tr>
