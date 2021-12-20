@@ -316,13 +316,6 @@
       </div>
 
       <div class="card-body">
-        <p
-          *ngIf='dataDetail?.checkChange'
-          class="text-danger font-weight-bold m-3"
-        >
-          Lý do thay đổi: {{dataDetail?.reasonChange}}
-        </p>
-
         <div class="table-responsive angular-bootstrap-table">
           <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
             <thead>
@@ -455,6 +448,12 @@
           </table>
         </div>
       </div>
+      <p
+        *ngIf='dataDetail?.checkChange'
+        class="text-danger font-weight-bold m-3"
+      >
+        Lý do thay đổi: {{dataDetail?.reasonChange}}
+      </p>
     </div>
 
     <div class="transport-info pb-5">
