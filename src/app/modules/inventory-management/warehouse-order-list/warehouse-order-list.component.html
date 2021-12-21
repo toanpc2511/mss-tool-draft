@@ -222,7 +222,7 @@
 
 						<td class="text-center action">
 							<a
-								*ngIf="item.status !== eStatus.REFUSED && item.status !== eStatus.CONFIRMED && item.status !== eStatus.LOCK"
+								*ngIf="(item.status !== eStatus.REFUSED && item.status !== eStatus.CONFIRMED && item.status !== eStatus.LOCK) || (item.status === 'CONFIRMED')"
 								(click)="createWarehouseOrder($event,item.id)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 								[ngbTooltip]="'Sửa'"
