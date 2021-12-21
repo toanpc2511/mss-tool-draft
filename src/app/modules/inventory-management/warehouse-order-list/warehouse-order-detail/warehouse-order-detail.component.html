@@ -347,14 +347,13 @@
 			<div class="form-group row">
 				<div class="col-lg-6 row">
 					<div class="col-lg-5">
-						<label class="form-label">Sử dụng xe Sunoil</label>
+						<label class="form-label">Hình thức sử dụng xe</label>
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold" *ngIf="dataDetail?.internalCar">Có</label>
-						<label class="form-label font-weight-bold" *ngIf="!dataDetail?.internalCar"
-							>Không</label
-						>
+						<label class="form-label font-weight-bold" *ngIf="dataDetail?.carMethod === 'SUPPLIER'">Xe nhà cung cấp</label>
+						<label class="form-label font-weight-bold" *ngIf="dataDetail?.carMethod === 'STORE'">Xe Sunoil</label>
+						<label class="form-label font-weight-bold" *ngIf="dataDetail?.carMethod === 'RENTAL'">Xe thuê</label>
 					</div>
 				</div>
 

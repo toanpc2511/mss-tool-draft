@@ -137,7 +137,8 @@ export interface IWareHouseOrderDetail {
 	id: number;
 	importedWarehouseAddress: string;
 	importedWarehouseName: string;
-	internalCar: boolean;
+	internalCar: string;
+  carMethod: string;
 	licensePlates: string;
 	oderForm: string;
 	paymentMethod: string;

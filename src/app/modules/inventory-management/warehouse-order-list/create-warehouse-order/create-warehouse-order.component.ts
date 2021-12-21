@@ -32,7 +32,8 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   dataSupplierProduct: Array<any> = [];
   dataTransitCars: ITransitCar[] = [];
   dataShippingTeam: IShippingTeam[] = [];
-  isInternalCar: boolean;
+  isInternalCar: string;
+  selectCapacity: boolean;
   stationByToken: IStationActiveByToken[] = [];
   reasonChange: FormControl;
 
@@ -93,6 +94,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     this.buildFormOrderInfo();
     this.buildTransportinfoForm();
     this.hanldChangeOrderInfo();
+    this.changeLicensePlates();
     this.getListSuppliers();
   }
 
@@ -111,29 +113,32 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
   buildTransportinfoForm() {
     this.transportInfoForm = this.fb.group({
-      internalCar: [''],
+      internalCar: ['', Validators.required],
       vehicleCostMethod: ['', Validators.required],
       freightCharges: ['', [Validators.required, TValidators.min(1)]],
       transportCost: [{ value: '', disabled: true }],
-      licensePlates: [null, [!this.isInternalCar ? Validators.required : Validators.nullValidator]],
-      capacity: [{ value: '', disabled: true }],
-      driver: [null, [!this.isInternalCar ? Validators.required : Validators.nullValidator]]
+      licensePlates: ['',
+        [this.isInternalCar !== 'SUPPLIER' ? Validators.required : Validators.nullValidator]
+      ],
+      capacity: [{ value: '', disabled: this.selectCapacity || true }, [this.isInternalCar === "RENTAL" ? Validators.required : Validators.nullValidator]],
+      driver: ['', [!this.isInternalCar ? Validators.required : Validators.nullValidator]]
     })
   }
 
   pathValue(data) {
+    data.carMethod === "RENTAL" ? this.selectCapacity = true : this.selectCapacity =false;
     this.orderInfoForm.get('oderForm').patchValue(data.oderForm || '');
     this.orderInfoForm.get('paymentMethod').patchValue(data.paymentMethod || '');
     this.orderInfoForm.controls['exportedWarehouseAddress'].patchValue(data.exportedWarehouseAddress || '');
     this.orderInfoForm.get('exportedWarehouseName').patchValue(data.exportedWarehouseId || '');
 
-    this.transportInfoForm.get('internalCar').patchValue(data.internalCar || 'false');
+    this.transportInfoForm.get('internalCar').patchValue(data.carMethod || '');
     this.transportInfoForm.get('vehicleCostMethod').patchValue(data.vehicleCostMethod || '');
     this.transportInfoForm.get('transportCost').patchValue(data.transportCost?.toLocaleString('en-US') || '');
     this.transportInfoForm.get('freightCharges').patchValue(data.freightCharges || '');
-    this.transportInfoForm.get('licensePlates').patchValue(data.licensePlates || null);
-    this.transportInfoForm.get('capacity').patchValue(data.capacity || null);
-    this.transportInfoForm.get('driver').patchValue(data.driver?.id || null);
+    this.transportInfoForm.get('licensePlates').patchValue(data.licensePlates || '');
+    this.transportInfoForm.get('capacity').patchValue(data.capacity || '');
+    this.transportInfoForm.get('driver').patchValue(data.driver?.id || data.driver?.name || '');
   }
 
   hanldChangeOrderInfo() {
@@ -185,31 +190,42 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
   changeInternalCar() {
     this.transportInfoForm.get('internalCar').valueChanges
-      .subscribe((x) => {
-        if ((x === 'true')) {
-          this.isInternalCar = true;
-          this.transportInfoForm.get('licensePlates').enable();
-          this.transportInfoForm.get('driver').enable();
-        } else {
-          this.isInternalCar = false;
+      .subscribe((x: string) => {
+        this.isInternalCar = x;
+
+        this.transportInfoForm.controls['capacity'].patchValue('');
+        this.transportInfoForm.controls['licensePlates'].patchValue('');
+        this.transportInfoForm.controls['driver'].patchValue('');
+
+        if (x === 'SUPPLIER') {
           this.transportInfoForm.get('licensePlates').disable();
           this.transportInfoForm.get('driver').disable();
-          this.transportInfoForm.get('licensePlates').patchValue(null);
-          this.transportInfoForm.get('driver').patchValue(null);
-          this.transportInfoForm.get('capacity').patchValue('');
         }
-      } );
+
+        if (x === 'RENTAL') {
+          this.transportInfoForm.get('licensePlates').enable();
+          this.transportInfoForm.get('driver').enable();
+          this.transportInfoForm.get('capacity').enable();
+          this.transportInfoForm.get('capacity').setValidators(Validators.required)
+        }
+        if (x === 'STORE') {
+          this.transportInfoForm.get('licensePlates').enable();
+          this.transportInfoForm.get('driver').enable();
+          this.transportInfoForm.get('capacity').disable();
+          this.transportInfoForm.get('capacity').setValidators(Validators.nullValidator)
+        }
+      });
   }
 
   changeLicensePlates() {
     this.transportInfoForm.get('licensePlates').valueChanges
-      .subscribe(() => {
-        const licensePlateName: string = this.transportInfoForm.get('licensePlates').value;
-
+      .subscribe((res: string) => {
         const itemlicensePlate = this.dataTransitCars.find((x) => {
-          return x.licensePlates === licensePlateName;
+          return x.licensePlates === res;
         });
-        this.transportInfoForm.controls['capacity'].patchValue(itemlicensePlate?.capacity);
+        this.isInternalCar === "RENTAL"
+          ?this.transportInfoForm.controls['capacity'].patchValue(this.dataDetail?.capacity)
+          :this.transportInfoForm.controls['capacity'].patchValue(itemlicensePlate?.capacity)
       } );
   }
 
@@ -251,11 +267,20 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     this.oderForm = data.oderForm;
     this.getListGasFuelWrehouse(this.renderListApi(false));
 
-    this.transportInfoForm.get('internalCar').patchValue(data.internalCar || 'false');
-
-    this.extractInternalCar(data.internalCar);
+    this.extractInternalCar(data.carMethod);
 
     this.sumTotalMoney();
+    this.checkStatusOrder(data.status);
+  }
+
+  checkStatusOrder(status: string) {
+    if (status === 'CONFIRMED') {
+      this.orderInfoForm.disable();
+      this.dataProductResponses.disable();
+      this.transportInfoForm.get('internalCar').disable();
+      this.transportInfoForm.get('vehicleCostMethod').disable();
+      this.transportInfoForm.get('freightCharges').disable();
+    }
   }
 
   sumTotalMoney() {
@@ -264,13 +289,20 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     }
   }
 
-  extractInternalCar(internalCar: boolean) {
-    if ( internalCar) {
+  extractInternalCar(internalCar: string) {
+    this.isInternalCar = internalCar;
+
+    if ( internalCar === 'STORE') {
       this.transportInfoForm.get('licensePlates').enable();
       this.transportInfoForm.get('driver').enable();
-      this.isInternalCar = true;
-    } else {
-      this.isInternalCar = false;
+    }
+
+    if (internalCar === 'RENTAL' ) {
+      this.transportInfoForm.get('licensePlates').enable();
+      this.transportInfoForm.get('driver').enable();
+      this.transportInfoForm.get('capacity').enable();
+    }
+    if (internalCar === 'SUPPLIER') {
       this.transportInfoForm.get('licensePlates').disable();
       this.transportInfoForm.get('driver').disable();
     }
@@ -343,11 +375,11 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
   changeValuePrice(index: number) {
     const recommend: number = convertMoney(
-      this.dataProductResponses.at(index).get('recommend').value.toString()
+      this.dataProductResponses.at(index).value.recommend.toString()
     );
 
     const price: number = convertMoney(
-      this.dataProductResponses.at(index).get('price').value.toString()
+      this.dataProductResponses.at(index).value.price?.toString() || 0
     );
 
     this.dataProductResponses.at(index).get('intoMoney').patchValue(recommend * price);
@@ -375,15 +407,24 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     this.dataProductResponses.markAllAsTouched();
     this.transportInfoForm.markAllAsTouched();
 
+    let driver;
     if (this.orderInfoForm.invalid || this.dataProductResponses.invalid || this.transportInfoForm.invalid) {
       this.toastr.error('Vui lòng điền đầy đủ thông tin!');
       return;
     }
 
-    const driver = this.dataShippingTeam.find((x) => {
-      return x.id === Number(this.transportInfoForm.getRawValue().driver);
-    });
-    delete driver?.code;
+    if (this.isInternalCar === "RENTAL") {
+      driver = {
+        id: null,
+        positionName: null,
+        name: this.transportInfoForm.getRawValue().driver
+      }
+    } else {
+      driver = this.dataShippingTeam.find((x) => {
+        return x.id === Number(this.transportInfoForm.getRawValue().driver);
+      });
+      delete driver?.code;
+    }
 
     const importProducts = this.dataProductResponses.value.map((p, index) => ({
       id: Number(p.importProductId),
@@ -404,11 +445,11 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       storeExportId: Number(this.orderInfoForm.getRawValue().exportedWarehouseName),
       storeExportAddress: this.orderInfoForm.getRawValue().exportedWarehouseAddress,
       paymentMethod: this.orderInfoForm.getRawValue().paymentMethod,
-      internalCar: this.transportInfoForm.getRawValue().internalCar,
+      carMethod: this.transportInfoForm.getRawValue().internalCar,
       vehicleCostMethod: this.transportInfoForm.getRawValue().vehicleCostMethod,
       freightCharges: convertMoney(this.transportInfoForm.getRawValue().freightCharges.toString()),
       importRequestId: this.dataDetail.importRequestId,
-      capacity: Number(this.transportInfoForm.getRawValue().capacity) || null,
+      capacity: Number(this.transportInfoForm.getRawValue().capacity) || convertMoney(this.transportInfoForm.getRawValue().capacity) || null,
       licensePlates: this.transportInfoForm.getRawValue().licensePlates,
       importProducts: importProducts,
       driver: driver || null
