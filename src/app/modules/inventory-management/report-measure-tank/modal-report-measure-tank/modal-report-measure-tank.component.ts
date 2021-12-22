@@ -87,7 +87,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
     this.measureTankForm.get('stationId').valueChanges
       .subscribe((x) => {
         if (x) {
-          this.inventoryManagementService.getGasFields(x)
+          this.inventoryManagementService.getGasFields(x, 'ACTIVE')
             .subscribe((res) => {
               this.listGasField = res.data;
               this.cdr.detectChanges();

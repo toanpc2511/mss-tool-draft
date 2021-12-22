@@ -66,11 +66,11 @@
               <label class="form-label">Người đại diện</label>
             </div>
 
-            <div class="col-lg-7" *ngIf='!status || status && dataSource?.internalCar'>
+            <div class="col-lg-7" *ngIf='!status || status && dataSource?.carMethod !== "SUPPLIER"'>
                 <label class="form-label font-weight-bold">{{ dataSource?.driver.name }}</label>
             </div>
 
-              <div *ngIf='status && !dataSource?.internalCar' class="col-lg-7">
+              <div *ngIf='status && dataSource?.carMethod === "SUPPLIER"' class="col-lg-7">
                   <input
                     class="form-control"
                     formControlName='nameDriver'
@@ -123,11 +123,11 @@
               <label class="form-label">Tên lái xe</label>
             </div>
 
-            <div class="col-lg-7" *ngIf='!status || status && dataSource?.internalCar'>
+            <div class="col-lg-7" *ngIf='!status || status && dataSource?.carMethod !== "SUPPLIER"'>
               <label class="form-label font-weight-bold">{{ dataSource?.driver.name }}</label>
             </div>
 
-              <div *ngIf='status && !dataSource?.internalCar' class="col-lg-7">
+              <div *ngIf='status && dataSource?.carMethod === "SUPPLIER"' class="col-lg-7">
                   <input
                     class="form-control"
                     [disabled]='true'
@@ -142,11 +142,11 @@
               <label class="form-label">Biển kiểm soát</label>
             </div>
 
-            <div class="col-lg-7" *ngIf='!status || status && dataSource?.internalCar'>
+            <div class="col-lg-7" *ngIf='!status || status && dataSource?.carMethod !== "SUPPLIER"'>
               <label class="form-label font-weight-bold">{{ dataSource?.licensePlates }}</label>
             </div>
 
-              <div *ngIf='status && !dataSource?.internalCar' class="col-lg-7">
+              <div *ngIf='status && dataSource?.carMethod === "SUPPLIER"' class="col-lg-7">
                   <input
                     class="form-control"
                     formControlName='licensePlates'

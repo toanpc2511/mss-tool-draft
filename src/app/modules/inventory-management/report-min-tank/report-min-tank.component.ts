@@ -77,7 +77,7 @@ export class ReportMinTankComponent extends BaseComponent implements OnInit {
     this.searchForm.get('stationId').valueChanges
       .subscribe((x) => {
         this.searchForm.get('gasFieldId').patchValue('');
-        this.inventoryManagementService.getGasFields(x)
+        this.inventoryManagementService.getGasFields(x, 'NOT_DELETE')
           .subscribe((res) => {
             this.listGasField = res.data;
             this.cdr.detectChanges();

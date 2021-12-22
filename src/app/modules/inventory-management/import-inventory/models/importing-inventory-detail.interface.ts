@@ -25,6 +25,7 @@ export interface IImportingInventoryDetail {
     status: string;
     orderForm: string;
     internalCar: boolean;
+    carMethod: string;
     wareHouseOrderProductResponses: IWareHouseOrderProduct[];
 }
 

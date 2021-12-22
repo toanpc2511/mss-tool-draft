@@ -320,6 +320,7 @@ export interface IExportInventoryDetail {
   representativeGiveCode: string;
   representativeTakeName: string;
   internalCar: boolean;
+  carMethod: string;
   acceptor: {
     code: string;
     id: number;
@@ -660,9 +661,10 @@ export class InventoryManagementService {
   }
 
   // Lấy ds bồn theo trạm
-  getGasFields(gasStationId: number) {
+  getGasFields(gasStationId: number, status: string) {
     const params = new HttpParams()
       .set('gas-station-id', gasStationId.toString())
+      .set('status', status)
     return this.http.get<Array<IGasFieldByStation>>(`gas-fields/station`, {params})
   }
 
@@ -707,6 +709,10 @@ export class InventoryManagementService {
   // Download file world (scr: warehouse-export)
   exportFileWorldWarehouseExport(id: string): Observable<DataResponse<string>> {
     return this.http.getFileUrl<string>(`warehouse-export/word/${id}`);
+  }
+  // Download file world (scr: warehouse-export)
+  exportFileWorldShallowsExport(id: string | number): Observable<DataResponse<string>> {
+    return this.http.getFileUrl<string>(`shallows/export/word/${id}`);
   }
 
   // Download file world (scr: measure-tank)
