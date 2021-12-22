@@ -1,0 +1,23 @@
+.search-result {
+  padding: 0 1em;
+  line-height: 35px;
+  background: #e3f1ff;
+  .card-toolbar {
+    gap: 50px;
+  }
+}
+
+.item {
+  padding-right: 35px;
+  line-height: 35px;
+}
+
+.input-group-text {
+  border: 0;
+}
+
+.fa-circle {
+  color: #ff0000;
+  padding-right: 12px;
+  font-size: 8px;
+}

@@ -166,9 +166,23 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
       title: 'Quản lý nhân viên',
       root: true,
       bullet: 'dot',
-      page: '/nhan-vien/danh-sach',
+      page: '/nhan-vien',
       icon: 'fas fa-user',
-      permissionKey: EAuthorize.VIEW_EMPLOYEE_LIST_SCREEN
+      submenu: [
+        {
+          title: 'Danh sách nhân viên',
+          bullet: 'dot',
+          page: '/nhan-vien/danh-sach',
+          permissionKey: EAuthorize.VIEW_EMPLOYEE_LIST_SCREEN
+        },
+        {
+          title: 'Đánh giá nhân viên',
+          bullet: 'dot',
+          page: '/nhan-vien/danh-gia',
+          permissionKey: EAuthorize.VIEW_LIST_EVALUATION
+        }
+      ]
+
     },
     {
       title: 'Quản lý tài khoản',
