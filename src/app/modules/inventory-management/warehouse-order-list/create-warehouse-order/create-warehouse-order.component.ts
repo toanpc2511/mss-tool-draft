@@ -16,6 +16,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { IError } from '../../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { TValidators } from '../../../../shared/validators';
+import { log } from 'util';
 
 @Component({
   selector: 'app-create-warehouse-order',
@@ -150,8 +151,10 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           x !== 'SUPPLIER' ? this.isRequired = true : this.isRequired = false;
           this.dataProductResponses?.value.map((_, index) => {
             this.isRequired
-              ? this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.required)
-              : this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.nullValidator);
+              ? (this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.required),
+                this.dataProductResponses.at(index).get('compartment').setValidators(Validators.required))
+              : (this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.nullValidator),
+                this.dataProductResponses.at(index).get('compartment').setValidators(Validators.nullValidator));
           })
           this.orderInfoForm.get('exportedWarehouseName').patchValue('');
           this.orderInfoForm.controls['exportedWarehouseAddress'].patchValue('');
@@ -453,7 +456,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       vehicleCostMethod: this.transportInfoForm.getRawValue().vehicleCostMethod,
       freightCharges: convertMoney(this.transportInfoForm.getRawValue().freightCharges.toString()),
       importRequestId: this.dataDetail.importRequestId,
-      capacity: Number(this.transportInfoForm.getRawValue().capacity) || convertMoney(this.transportInfoForm.getRawValue().capacity) || null,
+      capacity: this.transportInfoForm.get('internalCar').value !== 'SUPPLIER' ? Number(convertMoney(this.transportInfoForm.getRawValue().capacity)) : null,
       licensePlates: this.transportInfoForm.getRawValue().licensePlates,
       importProducts: importProducts,
       driver: this.driverInfo || null

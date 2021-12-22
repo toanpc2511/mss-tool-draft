@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DestroyService } from '../../../../shared/services/destroy.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import {
   IGasFieldByStation,
   InventoryManagementService,
@@ -12,6 +12,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { convertMoney } from '../../../../shared/helpers/functions';
 import { IError } from '../../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
+import { DataResponse } from '../../../../shared/models/data-response.model';
+import { FileService } from '../../../../shared/services/file.service';
 
 @Component({
   selector: 'app-modal-report-min-tank',
@@ -32,7 +34,8 @@ export class ModalReportMinTankComponent implements OnInit {
     private inventoryManagementService: InventoryManagementService,
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
@@ -124,7 +127,7 @@ export class ModalReportMinTankComponent implements OnInit {
   handleGasStation() {
     this.minTankForm.get('stationId').valueChanges
       .subscribe((x) => {
-        this.inventoryManagementService.getGasFields(x)
+        this.inventoryManagementService.getGasFields(x, 'ACTIVE')
           .subscribe((res) => {
             this.listGasField = res.data;
             this.cdr.detectChanges();
@@ -182,7 +185,16 @@ export class ModalReportMinTankComponent implements OnInit {
   }
 
   downloadFile() {
-    console.log('tải file');
+    this.inventoryManagementService.exportFileWorldShallowsExport(this.data.dataDetail.id)
+      .pipe(
+        tap((res: DataResponse<string>) => {
+          if (res) {
+            this.fileService.downloadFromUrl(res.data);
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
 }

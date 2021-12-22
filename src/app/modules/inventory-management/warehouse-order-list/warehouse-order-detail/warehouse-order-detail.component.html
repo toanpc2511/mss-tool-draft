@@ -403,7 +403,7 @@
 				</div>
 			</div>
 
-			<div class="form-group row" *ngIf="dataDetail?.licensePlates">
+			<div class="form-group row" *ngIf="dataDetail?.carMethod !== 'SUPPLIER'">
 				<div class="col-lg-6 row">
 					<div class="col-lg-5">
 						<label class="form-label">Biển số xe sử dụng</label>
@@ -414,7 +414,7 @@
 					</div>
 				</div>
 
-				<div class="col-lg-6 row" *ngIf="dataDetail?.capacity">
+				<div class="col-lg-6 row" *ngIf="dataDetail?.carMethod !== 'SUPPLIER'">
 					<div class="col-lg-5">
 						<label class="form-label">Dung tích</label>
 					</div>
@@ -425,7 +425,7 @@
 				</div>
 			</div>
 
-			<div class="form-group row" *ngIf="dataDetail?.driver?.name">
+			<div class="form-group row" *ngIf="dataDetail?.carMethod !== 'SUPPLIER'">
 				<div class="col-lg-6 row">
 					<div class="col-lg-5">
 						<label class="form-label">Lái xe</label>

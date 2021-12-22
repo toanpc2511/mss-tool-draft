@@ -18,18 +18,18 @@
       <div class="form-group row">
         <div class="col-lg-6 row">
           <div class="col-lg-4">
-            <label class="form-label" [class.required]='!dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>Người đại diện</label>
+            <label class="form-label" [class.required]='dataDetail?.carMethod === "SUPPLIER" && dataDetail?.status !== "EXPORTED"'>Người đại diện</label>
           </div>
 
           <div class="col-lg-8" *ngIf='dataDetail?.status === "EXPORTED" '>
             <label class="form-label font-weight-bold">{{dataDetail?.representativeTakeName}}</label>
           </div>
 
-          <div class="col-lg-8" *ngIf='dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>
+          <div class="col-lg-8" *ngIf='dataDetail?.carMethod !== "SUPPLIER"  && dataDetail?.status !== "EXPORTED"'>
             <label class="form-label font-weight-bold">{{dataDetail?.representativeTakeName}}</label>
           </div>
 
-          <div class="col-lg-8" *ngIf='!dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>
+          <div class="col-lg-8" *ngIf='dataDetail?.carMethod === "SUPPLIER"  && dataDetail?.status !== "EXPORTED"'>
             <input
               type='text'
               class="form-control form-control-sm w-75"
@@ -156,11 +156,11 @@
             <label class="form-label font-weight-bold">{{dataDetail?.driver?.name}}</label>
           </div>
 
-          <div class="col-lg-8" *ngIf='dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>
+          <div class="col-lg-8" *ngIf='dataDetail?.carMethod !== "SUPPLIER"  && dataDetail?.status !== "EXPORTED"'>
             <label class="form-label font-weight-bold">{{dataDetail?.driver?.name}}</label>
           </div>
 
-          <div class="col-lg-8" *ngIf='!dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>
+          <div class="col-lg-8" *ngIf='dataDetail?.carMethod === "SUPPLIER"  && dataDetail?.status !== "EXPORTED"'>
             <input
               type='text'
               class="form-control form-control-sm w-75"
@@ -173,18 +173,18 @@
 
         <div class="col-lg-6 row">
           <div class="col-lg-4">
-            <label class="form-label" [class.required]='!dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>Biển kiểm soát</label>
+            <label class="form-label" [class.required]='dataDetail?.carMethod === "SUPPLIER"  && dataDetail?.status !== "EXPORTED"'>Biển kiểm soát</label>
           </div>
 
           <div class="col-lg-8" *ngIf='dataDetail?.status === "EXPORTED" '>
             <label class="form-label font-weight-bold">{{dataDetail?.licensePlates}}</label>
           </div>
 
-          <div class="col-lg-8" *ngIf='dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>
+          <div class="col-lg-8" *ngIf='dataDetail?.carMethod !== "SUPPLIER"  && dataDetail?.status !== "EXPORTED"'>
             <label class="form-label font-weight-bold">{{dataDetail?.licensePlates}}</label>
           </div>
 
-          <div class="col-lg-8" *ngIf='!dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>
+          <div class="col-lg-8" *ngIf='dataDetail?.carMethod === "SUPPLIER"  && dataDetail?.status !== "EXPORTED"'>
             <input
               type='text'
               class="form-control form-control-sm w-75"

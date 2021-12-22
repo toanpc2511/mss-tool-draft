@@ -14,6 +14,7 @@ import { ImportingInventoryDetailComponent } from './import-inventory/importing-
 import { ReportMeasureTankComponent } from './report-measure-tank/report-measure-tank.component';
 import { ReportMinTankComponent } from './report-min-tank/report-min-tank.component';
 import { UpdateOrderComponent } from './order-request-list/update-order/update-order.component';
+import { CreateExportInventoryComponent } from './export-inventory/create-export-inventory/create-export-inventory.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,10 @@ const routes: Routes = [
       {
         path: 'chi-tiet/:id',
         component: ExportInventoryDetailComponent,
+      },
+      {
+        path: 'tao-moi',
+        component: CreateExportInventoryComponent,
       },
     ]
   },

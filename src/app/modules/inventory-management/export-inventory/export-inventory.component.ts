@@ -126,6 +126,11 @@ export class ExportInventoryComponent implements OnInit {
     this.router.navigate([`/kho/xuat-kho/chi-tiet/${id}`]);
   }
 
+  createExportInventory($event: Event) {
+    $event.stopPropagation();
+    this.router.navigate([`/kho/xuat-kho/tao-moi`]);
+  }
+
   checkError(error: IError) {
     this.toastr.error(error.code);
   }
