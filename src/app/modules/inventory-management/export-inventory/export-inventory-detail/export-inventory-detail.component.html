@@ -153,11 +153,11 @@
           </div>
 
           <div class="col-lg-8" *ngIf='dataDetail?.status === "EXPORTED" '>
-            <label class="form-label font-weight-bold">{{dataDetail?.driver.name}}</label>
+            <label class="form-label font-weight-bold">{{dataDetail?.driver?.name}}</label>
           </div>
 
           <div class="col-lg-8" *ngIf='dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>
-            <label class="form-label font-weight-bold">{{dataDetail?.driver.name}}</label>
+            <label class="form-label font-weight-bold">{{dataDetail?.driver?.name}}</label>
           </div>
 
           <div class="col-lg-8" *ngIf='!dataDetail?.internalCar && dataDetail?.status !== "EXPORTED"'>

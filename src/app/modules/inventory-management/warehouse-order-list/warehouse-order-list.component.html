@@ -191,7 +191,7 @@
 								class="label label-lg label-inline"
 								[class.label-light-info]="item.status === eStatus.NEW"
 								[class.label-light-warning]="item.status === eStatus.WAITING"
-								[class.label-light-success]="item.status === eStatus.CONFIRMED"
+								[class.label-light-success]="item.status === eStatus.CONFIRMED || item.status === eStatus.IMPORTED || item.status === eStatus.EXPORTED"
 								[class.label-light-danger]="item.status === eStatus.REFUSED"
 								[class.label-light-primary]="item.status === eStatus.ADJUST || item.status === eStatus.SWAP"
 							>
@@ -209,23 +209,19 @@
             <td class='icon-check text-center'>
               <a
                 *ngIf='item.checkUpdate'
-                class="btn btn-icon btn-light btn-hover-success btn-sm"
+                class="btn btn-icon  btn-hover-success btn-sm"
                 [ngbTooltip]="'Đã thay đổi'"
               >
-            <span
-              [inlineSVG]="'./assets/media/svg/icons/General/Shield-check.svg'"
-              cacheSVG="true"
-              class="svg-icon svg-icon-md svg-icon-success"
-            ></span>
+                <i class="fas fa-check-circle icon-xl text-success"></i>
               </a>
             </td>
 
 						<td class="text-center action">
 							<a
-								*ngIf="(item.status !== eStatus.REFUSED && item.status !== eStatus.CONFIRMED && item.status !== eStatus.LOCK) || (item.status === 'CONFIRMED')"
+								*ngIf="(item.status !== eStatus.REFUSED && item.status !== eStatus.CONFIRMED && item.status !== eStatus.LOCK && item.status !== eStatus.EXPORTED && item.status !== eStatus.IMPORTED ) || (item.status === 'CONFIRMED')"
 								(click)="createWarehouseOrder($event,item.id)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-								[ngbTooltip]="'Sửa'"
+								[ngbTooltip]="item.status === 'CONFIRMED' ? 'Sửa thông tin tài xế' : 'Sửa đơn đặt kho'"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"

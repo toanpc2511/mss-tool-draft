@@ -33,6 +33,7 @@ export class WareHouseOrderListComponent extends BaseComponent implements OnInit
 	stationByToken: Array<IStationActiveByToken> = [];
 	listEmployees: Array<IEmployees> = [];
 	eStatus = EWarehouseOrderStatus;
+  disableBtn:  boolean;
 
 	constructor(
 		private fb: FormBuilder,

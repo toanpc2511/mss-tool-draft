@@ -40,6 +40,7 @@ export interface ICalendarResponse {
 	calendarId: number;
 	employeeId: number;
 	employeeName: string;
+  status: string;
 	backgroundColor: string;
 	color: string;
 	start: string;

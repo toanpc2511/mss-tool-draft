@@ -29,7 +29,9 @@
       [message]="'Mã xác thực bao gồm 6 số'">
     </app-validate>
   </div>
-  <button class="btn btn-link mt-3" id="resend-otp-btn" [textContent]="'Gửi lại OTP'"></button>
+  <button class="btn btn-link mt-3" id="resend-otp-btn" [textContent]="'Gửi lại OTP'" *ngIf='disableBtn'></button>
+
+  <div id="countdown" class='font-weight-bold cursor-default mt-3' style='color: #8c8ea4'></div>
 </div>
 <div class="modal-body pt-3" [hidden]="step !== 3" *ngIf='data'>
   <h3>Đã bật xác thực 2 yếu tố</h3>

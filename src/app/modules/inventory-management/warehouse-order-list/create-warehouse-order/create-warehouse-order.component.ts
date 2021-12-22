@@ -47,6 +47,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   listItemGas: Array<any> = [];
   totalMoney: number;
   isRequired: boolean;
+  driverInfo;
 
   constructor(
     private router: Router,
@@ -402,29 +403,32 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     this.transportInfoForm.get('transportCost').patchValue((freightCharges * totalRecommend).toLocaleString('en-US'));
   }
 
-  onSubmit() {
-    this.orderInfoForm.markAllAsTouched();
-    this.dataProductResponses.markAllAsTouched();
-    this.transportInfoForm.markAllAsTouched();
-
-    let driver;
-    if (this.orderInfoForm.invalid || this.dataProductResponses.invalid || this.transportInfoForm.invalid) {
-      this.toastr.error('Vui lòng điền đầy đủ thông tin!');
-      return;
-    }
-
+  checkInternalCar() {
     if (this.isInternalCar === "RENTAL") {
-      driver = {
+      this.driverInfo = {
         id: null,
         positionName: null,
         name: this.transportInfoForm.getRawValue().driver
       }
     } else {
-      driver = this.dataShippingTeam.find((x) => {
+      this.driverInfo = this.dataShippingTeam.find((x) => {
         return x.id === Number(this.transportInfoForm.getRawValue().driver);
       });
-      delete driver?.code;
+      delete this.driverInfo?.code;
     }
+  }
+
+  onSubmit() {
+    this.orderInfoForm.markAllAsTouched();
+    this.dataProductResponses.markAllAsTouched();
+    this.transportInfoForm.markAllAsTouched();
+
+    if (this.orderInfoForm.invalid || this.dataProductResponses.invalid || this.transportInfoForm.invalid) {
+      this.toastr.error('Vui lòng điền đầy đủ thông tin!');
+      return;
+    }
+
+    this.checkInternalCar();
 
     const importProducts = this.dataProductResponses.value.map((p, index) => ({
       id: Number(p.importProductId),
@@ -452,7 +456,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       capacity: Number(this.transportInfoForm.getRawValue().capacity) || convertMoney(this.transportInfoForm.getRawValue().capacity) || null,
       licensePlates: this.transportInfoForm.getRawValue().licensePlates,
       importProducts: importProducts,
-      driver: driver || null
+      driver: this.driverInfo || null
     };
 
     if (this.dataDetail?.checkChange) {
@@ -476,6 +480,33 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.checkError(err);
         })
     }
+  }
+
+  updateInfoDriver() {
+    this.transportInfoForm.markAllAsTouched();
+    if (this.transportInfoForm.invalid) {
+      this.toastr.error('Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+
+    this.checkInternalCar();
+
+    const dataReq = {
+      capacity: convertMoney(this.transportInfoForm.getRawValue().capacity.toString()),
+      licensePlates: this.transportInfoForm.getRawValue().licensePlates,
+      driver: this.driverInfo
+    }
+
+    console.log(dataReq);
+    this.inventoryManagementService.updateDriver(this.dataDetail?.id, dataReq)
+      .subscribe((res) => {
+        if (res) {
+          this.router.navigate(['/kho/don-dat-kho']);
+          this.toastr.success('Cập nhật thông tin lái xe thành công')
+        }
+      }, (err: IError) => {
+        this.checkError(err);
+      })
   }
 
   goBack() {
