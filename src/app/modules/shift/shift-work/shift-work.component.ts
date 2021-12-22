@@ -54,8 +54,14 @@ import { EmployeeCheck } from './employee/employee.component';
 			[autoClose]="'outside'"
 		>
 			<div class="event-container">
-				<span class="month-title">{{ eventData.title }}</span>
-				<span class="week-title">{{ eventData.extendedProps.weekTitle }}</span>
+        <div class="month-title">
+          <span class='text-warning star' *ngIf='eventData.extendedProps.status === "SWAPPED" || eventData.extendedProps.status === "REPLACED"'>* </span>
+          <span class=''> {{ eventData.title }}</span>
+        </div>
+        <div class="week-title">
+          <span class='text-warning star' *ngIf='eventData.extendedProps.status === "SWAPPED" || eventData.extendedProps.status === "REPLACED"'>* </span>
+          <span>{{ eventData.extendedProps.weekTitle }}</span>
+        </div>
 				<span class="week-content">{{ eventData.extendedProps.weekContent }}</span>
 			</div>
 		</div>
@@ -343,6 +349,7 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 								warning: calendar.checked,
 								weekTitle: calendar.shiftName,
 								weekContent: calendar.employeeName,
+                status: calendar.status,
 								start: moment(calendar.start).format('YYYY-MM-DD HH:mm:ss'),
 								end: moment(calendar.end).format('YYYY-MM-DD HH:mm:ss'),
 								calendarChangedResponses: calendar.calendarChangedResponses

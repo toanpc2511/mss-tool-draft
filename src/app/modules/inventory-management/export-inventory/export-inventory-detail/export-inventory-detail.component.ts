@@ -87,6 +87,7 @@ export class ExportInventoryDetailComponent extends BaseComponent implements OnI
         tap((res) => {
           this.dataDetail = res.data;
           this.dataProductResponses = this.convertToFormArray(this.dataDetail?.wareHouseOrderProductResponses);
+          console.log(this.dataProductResponses.value);
           this.representativeTakeNameControl.patchValue(this.dataDetail?.driverName || '');
           this.driverNameControl.patchValue(this.dataDetail?.driverName || '');
           this.licensePlatesControl.patchValue(this.dataDetail?.licensePlates || '');

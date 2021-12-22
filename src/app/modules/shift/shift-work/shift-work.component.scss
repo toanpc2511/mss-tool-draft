@@ -80,6 +80,14 @@
 					overflow: hidden;
 					text-overflow: ellipsis;
 				}
+        span.star {
+          display: inline-flex;
+          width: 20%;
+          font-size: 22px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
 			}
 		}
 

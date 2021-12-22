@@ -28,6 +28,9 @@ export class TwoFactorComponent implements AfterViewInit {
 	currentPhoneNumber: string;
 	verificationCodeControl = new FormControl(null, [TValidators.required]);
 	step = 1;
+  disableBtn: boolean;
+  timeOut;
+
 	constructor(
 		public modal: NgbActiveModal,
 		private toastr: ToastrService,
@@ -37,6 +40,7 @@ export class TwoFactorComponent implements AfterViewInit {
 		private destroy$: DestroyService
 	) {
 		this.currentPhoneNumber = this.authService.getCurrentUserValue()?.accountAuth?.profile?.phone;
+    this.disableBtn = true;
 	}
 	ngAfterViewInit(): void {
 		this.reCapchaVerifier = new firebase.auth.RecaptchaVerifier('otp-captcha', {
@@ -62,6 +66,24 @@ export class TwoFactorComponent implements AfterViewInit {
 
 		this.reCapchaVerifier.render();
 	}
+
+  test() {
+    let counter = 10;
+    const interval = setInterval(() => {
+      counter--;
+
+      if (counter < 0 ) {
+        clearInterval(interval);
+        this.disableBtn = true;
+        document.getElementById('countdown').innerText = '';
+        console.log('ngu');
+      } else {
+        this.disableBtn = false;
+        document.getElementById('countdown').innerText = `Gửi lại mã OTP sau ${counter} giây`;
+      }
+    }, 1000);
+    this.cdr.detectChanges();
+  }
 
 	sendOTP() {
 		if (!this.reCapchaValid) {
@@ -90,6 +112,7 @@ export class TwoFactorComponent implements AfterViewInit {
 						this.step = 2;
 						this.reCapchaVerifierInvisible.render();
 					}
+          // this.test();
 					this.toastr.success(`Đã gửi mã OTP tới số điện thoại ${this.currentPhoneNumber}`);
 				}),
 				catchError((error) => {

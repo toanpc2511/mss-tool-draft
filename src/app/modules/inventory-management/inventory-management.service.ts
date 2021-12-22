@@ -722,4 +722,9 @@ export class InventoryManagementService {
     return this.http.put(`import-request/import-product/${id.toString()}`, dataReq)
   }
 
+  // Cập nhật thông tin tài xế
+  updateDriver(id: number | string, dataReq) {
+    return this.http.put(`warehouse-orders/driver/${id}`, dataReq)
+  }
+
 }

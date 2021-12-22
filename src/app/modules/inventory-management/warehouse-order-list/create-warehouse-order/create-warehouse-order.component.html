@@ -848,14 +848,26 @@
     </div>
   </div>
 
-  <div class="py-10 w-100 d-flex justify-content-center" *ngIf='dataDetail?.status !== "CONFIRMED" else btn'>
-    <button
-      class="btn btn-primary mr-3 button"
-      (click)='onSubmit()'
-      *ngIf='eAuthorize.BROWSE_WAREHOUSE_ORDER_BUTTON | canUseFeature'
-    >
-      Gửi duyệt
-    </button>
+  <div class="py-10 w-100 d-flex justify-content-center">
+    <ng-container *ngIf='dataDetail?.status !== "CONFIRMED" else btn'>
+      <button
+        class="btn btn-primary mr-3 button"
+        (click)='onSubmit()'
+        *ngIf='eAuthorize.BROWSE_WAREHOUSE_ORDER_BUTTON | canUseFeature'
+      >
+        Gửi duyệt
+      </button>
+    </ng-container>
+
+    <ng-template #btn>
+      <button
+        class="btn btn-primary mr-3 button"
+        *ngIf='dataDetail?.carMethod !== "SUPPLIER"'
+        (click)='updateInfoDriver()'
+      >
+        Lưu
+      </button>
+    </ng-template>
 
     <button
       class="btn btn-outline-primary mr-3 button"
@@ -864,23 +876,4 @@
       Đóng
     </button>
   </div>
-
-  <ng-template #btn>
-    <div class="py-10 w-100 d-flex justify-content-center">
-      <button
-        class="btn btn-primary mr-3 button"
-        (click)='onSubmit()'
-        *ngIf='eAuthorize.BROWSE_WAREHOUSE_ORDER_BUTTON | canUseFeature'
-      >
-        Lưu
-      </button>
-
-      <button
-        class="btn btn-outline-primary mr-3 button"
-        (click)="goBack()"
-      >
-        Đóng
-      </button>
-    </div>
-  </ng-template>
 </div>
