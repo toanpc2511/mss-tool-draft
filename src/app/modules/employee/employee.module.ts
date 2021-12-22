@@ -20,9 +20,10 @@ import { EmployeeModalComponent } from './employee-modal/employee-modal.componen
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { EmployeeComponent } from './employee.component';
 import { ListEmployeeComponent } from './list-employee/list-employee.component';
+import { ListEmployeeAssessmentComponent } from './employee-assessment/list-employee-assessment/list-employee-assessment.component';
 
 @NgModule({
-	declarations: [EmployeeComponent, ListEmployeeComponent, EmployeeModalComponent, EmployeeDetailModalComponent],
+	declarations: [EmployeeComponent, ListEmployeeComponent, EmployeeModalComponent, EmployeeDetailModalComponent, ListEmployeeAssessmentComponent],
 	imports: [
 		CommonModule,
 		EmployeeRoutingModule,

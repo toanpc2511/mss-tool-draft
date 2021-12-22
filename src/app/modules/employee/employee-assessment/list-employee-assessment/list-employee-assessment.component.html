@@ -1,0 +1,242 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Đánh giá nhân viên</h3>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="searchForm">
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Tên trạm</label>
+          <select class="form-control form-control-solid w-75"
+                  formControlName='stationId'
+                  (change)='getEmployeeByStation()'
+          >
+            <option [value]="null">Tất cả</option>
+            <option *ngFor="let station of listStationByToken" [value]="station.id">{{station.name}}</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Tên nhân viên</label>
+          <select class="form-control form-control-solid w-75" formControlName='employeeId'>
+            <option [value]="null">Tất cả</option>
+            <option *ngFor="let employee of listEmployee" [value]="employee.id">{{employee.name}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Từ ngày</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #startAt="ngbDatepicker"
+              formControlName="dateFrom"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="startAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.get('dateFrom')"
+            [error]="'errorDateStart'"
+            [message]="'Thời gian từ ngày không lớn hơn thời gian đến ngày'"
+          ></app-validate>
+
+          <app-validate
+            [control]="searchForm.controls['dateFrom']"
+            [error]="'ngbDate'"
+            [message]="'Ngày không đúng định dạng'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Đến ngày</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #endAt="ngbDatepicker"
+              formControlName="dateTo"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="endAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+          <app-validate
+            [control]="searchForm.get('dateTo')"
+            [error]="'errorDateEnd'"
+            [message]="'Thời gian đến ngày không nhỏ hơn thời gian từ ngày'"
+          ></app-validate>
+
+          <app-validate
+            [control]="searchForm.controls['dateTo']"
+            [error]="'ngbDate'"
+            [message]="'Ngày không đúng định dạng'"
+          ></app-validate>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="form-group row mx-3">
+      <button type="button" class="btn btn-primary mr-3" (click)="onSearch()">
+        <em class="fas fa-search"> </em> Tìm kiếm
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="onReset()">Nhập lại</button>
+    </div>
+
+    <div class="form-group row search-result">
+      <p class="item">Đánh giá TB: <strong>{{employeeAssessment?.quantityMedium}}/5</strong></p>
+      <p class="item">
+        <em class="fas fa-circle"></em>SL đánh giá 5<sup>*</sup>:
+        <strong>{{employeeAssessment?.quantityFiveStar}}</strong>
+      </p>
+      <p class="item">
+        <em class="fas fa-circle"></em>SL đánh giá 4<sup>*</sup>:
+        <strong>{{employeeAssessment?.quantityFourStar}}</strong>
+      </p>
+      <p class="item">
+        <em class="fas fa-circle"></em>SL đánh giá 3<sup>*</sup>:
+        <strong>{{employeeAssessment?.quantityThreeStar}}</strong>
+      </p>
+      <p class="item">
+        <em class="fas fa-circle"></em>SL đánh giá 2<sup>*</sup>:
+        <strong>{{employeeAssessment?.quantityTwoStar}}</strong>
+      </p>
+      <p class="item">
+        <em class="fas fa-circle"></em>SL đánh giá 1<sup>*</sup>:
+        <strong>{{employeeAssessment?.quantityOneStar}}</strong>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title justify-content-between w-100">
+      <h3 class="card-label">Danh sách đánh giá</h3>
+
+      <button class='btn btn-primary' (click)='exportFileExcel()'>Xuất file</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <th class="employee-id" scope="">Mã nhân viên</th>
+        <th class="employee-name" scope="">Tên nhân viên</th>
+        <th class="five-start text-right" scope="">Đánh giá 5 <sup>*</sup></th>
+        <th class="four-start text-right" scope="">Đánh giá 4 <sup>*</sup></th>
+        <th class="three-start text-right" scope="">Đánh giá 3 <sup>*</sup></th>
+        <th class="two-start text-right" scope="">Đánh giá 2 <sup>*</sup></th>
+        <th class="one-start text-right" scope="">Đánh giá 1 <sup>*</sup></th>
+        <th class="average-point text-right" scope="">Đánh giá trung bình</th>
+        <th class="assessment-point text-right" scope="">Điểm đánh giá</th>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let item of employeeAssessment?.evaluationResponses">
+          <td class="employee-id">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item?.employeeId">
+              {{ item?.employeeId }}
+            </p>
+          </td>
+          <td class="employee-name">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item?.name"
+            >
+              {{ item?.name }}
+            </p>
+          </td>
+          <td class="five-start text-right">
+            <p class="text-ellipsis" placement="top" [ngbTooltip]="item?.fiveStar.toLocaleString('en-US')">
+              {{ item?.fiveStar.toLocaleString('en-US') }}
+            </p>
+          </td>
+          <td class="four-start text-right">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item?.fourStar.toLocaleString('en-US')"
+            >
+              {{ item?.fourStar.toLocaleString('en-US') }}
+            </p>
+          </td>
+          <td class="three-start text-right">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item?.threeStar.toLocaleString('en-US')"
+            >
+              {{ item?.threeStar.toLocaleString('en-US') }}
+            </p>
+          </td>
+          <td class="two-start text-right">
+            <p class="cursor-pointer text-ellipsis " placement="top" [ngbTooltip]="item?.twoStar.toLocaleString('en-US')">
+              {{ item?.twoStar.toLocaleString('en-US') }}
+            </p>
+          </td>
+          <td class="one-start text-right">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item?.oneStar.toLocaleString('en-US')"
+            >
+              {{ item?.oneStar.toLocaleString('en-US') }}
+            </p>
+          </td>
+          <td class="average-point text-right">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              style='color: red'
+              [ngbTooltip]="item?.voteMedium + ' sao'"
+            >
+              {{ item?.voteMedium }}<sup>*</sup>
+            </p>
+          </td>
+          <td class="assessment-point text-right">
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item?.pointEvaluation.toLocaleString('en-US')"
+            >
+              {{ item?.pointEvaluation.toLocaleString('en-US') }}
+            </p>
+          </td>
+        </tr>
+        </tbody>
+
+        <tfoot *ngIf="!employeeAssessment?.evaluationResponses?.length">
+        <tr>
+          <td colspan="10" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+  </div>
+</div>

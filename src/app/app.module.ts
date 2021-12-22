@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localeViExtra from '@angular/common/locales/extra/vi';
 import localeVi from '@angular/common/locales/vi';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
@@ -83,6 +83,7 @@ function appInitializer(authService: AuthService, router: Router) {
 		NgxSpinnerModule,
 		NgSelectModule,
 		FormsModule,
+    ReactiveFormsModule,
 		TextMaskModule,
 		FullCalendarModule
 	],
