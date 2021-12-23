@@ -469,13 +469,13 @@
   </div>
 
   <div class="py-10 w-100 d-flex justify-content-center">
-    <button
+    <buttonq
       *ngIf='dataDetail?.status !== "EXPORTED" && eAuthorize.COMPLETE_WAREHOUSE_EXPORT_BUTTON | canUseFeature'
       class="btn btn-primary mr-3 button"
       (click)='onSubmit()'
     >
       Hoàn thành
-    </button>
+    </buttonq>
     <button
       *ngIf='dataDetail?.status === "EXPORTED"'
       class="btn btn-primary mr-3 button"
