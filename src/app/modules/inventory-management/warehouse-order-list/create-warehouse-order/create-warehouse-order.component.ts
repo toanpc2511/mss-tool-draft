@@ -48,6 +48,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   listItemGas: Array<any> = [];
   totalMoney: number;
   isRequired: boolean;
+  isSupplier: boolean;
   driverInfo;
 
   constructor(
@@ -64,6 +65,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     super();
     this.totalMoney = 0;
     this.reasonChange = new FormControl('', Validators.required);
+    this.isSupplier = false;
   }
 
   setBreadcumb() {
@@ -152,10 +154,9 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.dataProductResponses?.value.map((_, index) => {
             this.isRequired
               ? (this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.required),
-                this.dataProductResponses.at(index).get('compartment').setValidators(Validators.required),
-                this.dataProductResponses.at(index).get('compartment').updateValueAndValidity())
+                this.dataProductResponses.at(index).get('gasFieldOut').updateValueAndValidity())
               : (this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.nullValidator),
-                this.dataProductResponses.at(index).get('compartment').setValidators(Validators.nullValidator));
+                this.dataProductResponses.at(index).get('gasFieldOut').updateValueAndValidity());
           })
           this.orderInfoForm.get('exportedWarehouseName').patchValue('');
           this.orderInfoForm.controls['exportedWarehouseAddress'].patchValue('');
@@ -223,7 +224,25 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.transportInfoForm.get('capacity').disable();
           this.transportInfoForm.get('capacity').setValidators(Validators.nullValidator)
         }
+
+        this.checkValidateCompartment(x);
       });
+  }
+
+  checkValidateCompartment(value: string) {
+    if (value !== 'SUPPLIER') {
+      this.isSupplier = true;
+      this.dataProductResponses?.value.map((_, index) => {
+        this.dataProductResponses.at(index).get('compartment').setValidators(Validators.required),
+          this.dataProductResponses.at(index).get('compartment').updateValueAndValidity()
+      })
+    } else {
+      this.isSupplier = false;
+      this.dataProductResponses?.value.map((_, index) => {
+        this.dataProductResponses.at(index).get('compartment').setValidators(Validators.nullValidator),
+          this.dataProductResponses.at(index).get('compartment').updateValueAndValidity()
+      })
+    }
   }
 
   changeLicensePlates() {
@@ -466,29 +485,28 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       importProducts: importProducts,
       driver: this.driverInfo || null
     };
-    console.log(dataReq);
 
-    // if (this.dataDetail?.checkChange) {
-    //   this.inventoryManagementService.updateWarehouseOrder(this.dataDetail.id, dataReq)
-    //     .subscribe((res) => {
-    //       if (res) {
-    //         this.router.navigate(['/kho/don-dat-kho']);
-    //         this.toastr.success('Gửi yêu cầu đặt kho thành công')
-    //       }
-    //     }, (err: IError) => {
-    //       this.checkError(err);
-    //     })
-    // } else {
-    //   this.inventoryManagementService.putWarehouseOrders(this.dataDetail.id, dataReq)
-    //     .subscribe((res) => {
-    //       if (res) {
-    //         this.router.navigate(['/kho/don-dat-kho']);
-    //         this.toastr.success('Gửi yêu cầu đặt kho thành công')
-    //       }
-    //     }, (err: IError) => {
-    //       this.checkError(err);
-    //     })
-    // }
+    if (this.dataDetail?.checkChange) {
+      this.inventoryManagementService.updateWarehouseOrder(this.dataDetail.id, dataReq)
+        .subscribe((res) => {
+          if (res) {
+            this.router.navigate(['/kho/don-dat-kho']);
+            this.toastr.success('Gửi yêu cầu đặt kho thành công')
+          }
+        }, (err: IError) => {
+          this.checkError(err);
+        })
+    } else {
+      this.inventoryManagementService.putWarehouseOrders(this.dataDetail.id, dataReq)
+        .subscribe((res) => {
+          if (res) {
+            this.router.navigate(['/kho/don-dat-kho']);
+            this.toastr.success('Gửi yêu cầu đặt kho thành công')
+          }
+        }, (err: IError) => {
+          this.checkError(err);
+        })
+    }
   }
 
   updateInfoDriver() {
@@ -506,7 +524,6 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       driver: this.driverInfo
     }
 
-    console.log(dataReq);
     this.inventoryManagementService.updateDriver(this.dataDetail?.id, dataReq)
       .subscribe((res) => {
         if (res) {

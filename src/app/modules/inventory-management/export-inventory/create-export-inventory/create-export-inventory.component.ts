@@ -7,7 +7,6 @@ import { SubheaderService } from '../../../../_metronic/partials/layout';
 import { InventoryManagementService } from '../../inventory-management.service';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
-import { pluck, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-export-inventory',
@@ -15,8 +14,6 @@ import { pluck, switchMap, take, takeUntil, tap } from 'rxjs/operators';
   styleUrls: ['./create-export-inventory.component.scss']
 })
 export class CreateExportInventoryComponent extends BaseComponent implements OnInit, AfterViewInit {
-  dataDetail;
-  exportInventoryId;
 
   constructor(
     private modalService: NgbModal,
@@ -33,23 +30,6 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
   }
 
   ngOnInit(): void {
-    this.activeRoute.params
-      .pipe(
-        pluck('id'),
-        take(1),
-        switchMap((id) => {
-          this.setBreadcumb();
-          this.exportInventoryId = id;
-          return this.inventoryManagementService.getDetailExportInventory(id);
-        }),
-        tap((res) => {
-          this.dataDetail = res.data;
-          this.cdr.detectChanges();
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-
   }
 
   ngAfterViewInit(): void {
