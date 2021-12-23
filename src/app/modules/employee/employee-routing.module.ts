@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { EmployeeDetailModalComponent } from './employee-detail-modal/employee-detail-modal.component';
 import { EmployeeModalComponent } from './employee-modal/employee-modal.component';
 import { ListEmployeeComponent } from './list-employee/list-employee.component';
+import { ListEmployeeAssessmentComponent } from './employee-assessment/list-employee-assessment/list-employee-assessment.component';
 
 const routes: Routes = [
 	{
@@ -30,7 +31,16 @@ const routes: Routes = [
 				component: EmployeeDetailModalComponent
 			}
 		]
-	}
+	},
+  {
+    path: 'danh-gia',
+    children: [
+      {
+        path: '',
+        component: ListEmployeeAssessmentComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({

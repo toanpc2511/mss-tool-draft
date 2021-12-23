@@ -67,6 +67,10 @@ const SPECIAL_URL: SpecialUrl[] = [
 		url: '/nhan-vien/danh-sach/sua-nhan-vien',
 		permissionKey: EAuthorize.UPDATE_EMPLOYEE_BUTTON
 	},
+  {
+    url: '/nhan-vien/danh-gia',
+    permissionKey: EAuthorize.VIEW_LIST_EVALUATION
+  },
 	{
 		url: '/phan-quyen',
 		permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN

@@ -78,6 +78,7 @@ export enum EAuthorize {
   CREATE_EMPLOYEE_BUTTON = 'create_employee_button',
   UPDATE_EMPLOYEE_BUTTON = 'update_employee_button',
   DELETE_EMPLOYEE_BUTTON = 'delete_employee_button',
+  VIEW_LIST_EVALUATION = 'view_list_evaluation',
   /* End */
 
   /* Quản lý tài khoản */
