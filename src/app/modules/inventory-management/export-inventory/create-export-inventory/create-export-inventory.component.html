@@ -254,7 +254,7 @@
                     >
                       <option [value]="''">Chọn bồn</option>
                       <option
-                        *ngFor="let item of listGasField"
+                        *ngFor="let item of products[i]"
                         [value]="item.id"
                       >
                         {{item.name}}
@@ -374,12 +374,14 @@
 
   <div class="py-10 w-100 d-flex justify-content-center">
     <button
+      *ngIf='isDisable'
       class="btn btn-primary mr-3 button"
       (click)='onSubmit()'
     >
       Hoàn thành
     </button>
     <button
+      *ngIf='!isDisable'
       class="btn btn-primary mr-3 button"
       (click)='exportFile()'
     >

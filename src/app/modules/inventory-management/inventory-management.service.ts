@@ -628,6 +628,11 @@ export class InventoryManagementService {
     return this.http.get<Array<IExportInventory>>('warehouse-export/filters', { params });
   }
 
+  // Tạo phiếu xuất kho
+  createExportInventory(dataReq) {
+	  return this.http.post('warehouse-export', dataReq);
+  }
+
   // Chi tiết phiếu xuất kho
   getDetailExportInventory(id: string) {
     return this.http.get<IExportInventoryDetail>(`warehouse-export/${id}`);

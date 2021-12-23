@@ -14,6 +14,7 @@ import { BaseComponent } from '../../../../shared/components/base/base.component
 import { takeUntil } from 'rxjs/operators';
 import { IInfoProduct, IProduct, ProductService } from '../../../product/product.service';
 import { convertMoney } from '../../../../shared/helpers/functions';
+import { IError } from '../../../../shared/models/error.model';
 
 @Component({
   selector: 'app-create-export-inventory',
@@ -29,6 +30,7 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
   dataSupplierProduct: Array<any> = [];
   listItemGas: Array<any> = [];
   listGasField: IGasFieldByStation[] = [];
+  isDisable: boolean = true;
 
   infoForm: FormGroup;
   productForm: FormGroup;
@@ -101,7 +103,7 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
   listControlForm() {
     return this.fb.group({
       productId: ['', Validators.required],
-      productName: ['', Validators.required],
+      productName: [''],
       compartment: ['', Validators.required],
       gasFieldOut: ['', Validators.required],
       suppliers: [''],
@@ -188,10 +190,12 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
     if (checkExisted) {
       this.toastr.error('Sản phẩm này đã được thêm');
       this.productFormArray.at(i).get('productId').patchValue('');
+      this.productFormArray.at(i).get('gasFieldOut').patchValue('');
       return;
     }
     if (!productId) {
-      this.productFormArray.at(i).get('unit').patchValue(0);
+      this.productFormArray.at(i).get('unit').patchValue('');
+      this.productFormArray.at(i).get('gasFieldOut').patchValue('');
     }
 
     if (!this.stationId) {
@@ -208,6 +212,7 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
     this.productService.getInfoProductOther(Number(productId)).subscribe((res) => {
       const productInfo: IInfoProduct = res.data;
       this.productFormArray.at(i).get('unit').patchValue(productInfo.unit);
+      this.productFormArray.at(i).get('productName').patchValue(productInfo.name);
       this.cdr.detectChanges();
     });
   }
@@ -227,50 +232,64 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
     this.infoForm.markAllAsTouched();
     this.productForm.markAllAsTouched();
 
-    // if (this.infoForm.invalid ) {
-    //   this.toastr.error('Vui lòng điền đầy đủ thông tin!');
-    //   return;
-    // }
-    // console.log(this.getValueinffoForm());
-    // console.log(this.productForm.value.products);
+    if (this.infoForm.invalid || this.productForm.invalid) {
+      this.toastr.error('Vui lòng điền đầy đủ thông tin!');
+      return;
+    }
+    const valueInfoForm = this.infoForm.value;
 
-    this.getValueListProduct()
+    const dataReq = {
+      representativeTakeName: valueInfoForm.representativeTakeName,
+      importedWarehouseName: valueInfoForm.importedWarehouseName,
+      importedWarehouseAddress: valueInfoForm.importedWarehouseAddress,
+      driverName: valueInfoForm.driverName,
+      licensePlates: valueInfoForm.licensePlates,
+      storeExport: this.getValueStoreExport(),
+      importProductRequests: this.getValueListProduct()
+    }
+
+    this.inventoryManagementService.createExportInventory(dataReq)
+      .subscribe((res) => {
+        if (res) {
+          this.toastr.success('Tạo phiếu xuất kho thành công');
+          this.isDisable = false;
+        }
+      }, (error: IError) => {
+        this.checkError(error);
+      })
   }
 
-  getValueinffoForm() {
+  getValueStoreExport() {
     const valueForm = this.infoForm.value;
     const itemStation = this.listStation.find((x) => {
       return x.id === Number(valueForm.storeExport);
     })
-    valueForm.storeExport = {
+    return {
       id: Number(itemStation.id),
       name: itemStation.name,
       address: itemStation.fullAddress,
       chip: itemStation.chip
     }
-    delete valueForm.exportedWarehouseAddress;
-    return valueForm
   }
-  a= [];
-  b: any;
 
   getValueListProduct() {
-    let listProduct = this.productForm.value.products;
-    console.log(listProduct)
+    return this.productForm.value.products.map((p) => ({
+      ...p,
+      suppliers: this.dataSupplierProduct.find((x) => {
+        return x.id === Number(p.suppliers)
+      }) || null,
+      gasFieldOut: this.listGasField.find((x) => {
+        return x.id === Number(p.gasFieldOut)
+      }),
+      amountActually: convertMoney(p.amountActually.toString()),
+      temperatureExport: convertMoney(p.temperatureExport.toString()),
+      quotaExport: convertMoney(p.quotaExport.toString()),
+      productId: Number(p.productId)
+    }));
+  }
 
-    listProduct = listProduct.forEach((product) => {
-      const itemSuppliers = this.dataSupplierProduct.find((x) => {
-        return x.id === Number(product.suppliers)
-      })
-
-      const itemGas = this.listGasField.find((x) => {
-        return x.id === Number(product.gasFieldOut)
-      })
-
-      product.suppliers = itemSuppliers;
-      product.gasFieldOut = itemGas;
-    })
-    console.log(listProduct);
+  checkError(error: IError) {
+    this.toastr.error(error.code);
   }
 
   exportFile() {}
