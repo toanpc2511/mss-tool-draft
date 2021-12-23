@@ -1,19 +1,39 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubheaderService } from '../../../../_metronic/partials/layout';
-import { InventoryManagementService } from '../../inventory-management.service';
+import {
+  IGasFieldByStation,
+  InventoryManagementService,
+  IStationActiveByToken
+} from '../../inventory-management.service';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
+import { takeUntil } from 'rxjs/operators';
+import { IInfoProduct, IProduct, ProductService } from '../../../product/product.service';
+import { convertMoney } from '../../../../shared/helpers/functions';
 
 @Component({
   selector: 'app-create-export-inventory',
   templateUrl: './create-export-inventory.component.html',
-  styleUrls: ['./create-export-inventory.component.scss']
+  styleUrls: ['./create-export-inventory.component.scss'],
+  providers: [FormBuilder]
 })
 export class CreateExportInventoryComponent extends BaseComponent implements OnInit, AfterViewInit {
+  stationId: number;
+  decimalPattern = /^[0-9]+(\.[0-9]+)?$/;
+  listStation: IStationActiveByToken[] = [];
+  listProduct: IProduct[] = [];
+  dataSupplierProduct: Array<any> = [];
+  listItemGas: Array<any> = [];
+  listGasField: IGasFieldByStation[] = [];
+
+  infoForm: FormGroup;
+  productForm: FormGroup;
+  productFormArray: FormArray;
+  products: Array<Array<any>> = [];
 
   constructor(
     private modalService: NgbModal,
@@ -24,12 +44,20 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
     private router: Router,
     private cdr: ChangeDetectorRef,
     private inventoryManagementService: InventoryManagementService,
+    private productService: ProductService,
     private destroy$: DestroyService
     ) {
     super();
   }
 
   ngOnInit(): void {
+    this.getListStation();
+    this.getListProductFuels();
+    this.getListSuppliers();
+    this.buildFormInfo();
+    this.buildProductForm();
+
+    this.changeStation();
   }
 
   ngAfterViewInit(): void {
@@ -57,5 +85,194 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
       ]);
     }, 1);
   }
+
+  buildFormInfo() {
+    this.infoForm = this.fb.group({
+      representativeTakeName: ['', Validators.required],
+      importedWarehouseName: ['', Validators.required],
+      importedWarehouseAddress: ['', Validators.required],
+      storeExport: ['', Validators.required],
+      exportedWarehouseAddress: [{ value: '', disabled: true }],
+      driverName: ['', Validators.required],
+      licensePlates: ['', Validators.required]
+    })
+  }
+
+  listControlForm() {
+    return this.fb.group({
+      productId: ['', Validators.required],
+      productName: ['', Validators.required],
+      compartment: ['', Validators.required],
+      gasFieldOut: ['', Validators.required],
+      suppliers: [''],
+      temperatureExport: ['', [Validators.required, Validators.pattern(this.decimalPattern)]],
+      quotaExport: ['', Validators.required],
+      capLead: ['', Validators.required],
+      capValve: ['', Validators.required],
+      unit: [''],
+      amountActually: ['', [Validators.required, Validators.min(1)]]
+    })
+  }
+
+  buildProductForm() {
+    this.productForm = this.fb.group({
+      products: this.fb.array([
+        this.listControlForm()
+      ])
+    });
+
+    this.productFormArray = this.productForm.get('products') as FormArray;
+    this.cdr.detectChanges();
+  }
+
+  getListStation() {
+    this.inventoryManagementService
+      .getStationByToken('ACTIVE', 'false')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.listStation = res.data;
+        this.cdr.detectChanges();
+      });
+  }
+
+  getListProductFuels() {
+    this.productService
+      .getListOilProduct()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.listProduct = res.data;
+        this.cdr.detectChanges();
+      });
+  }
+
+  getListSuppliers() {
+    this.inventoryManagementService.getListSuppliers('SUPPLIER')
+      .subscribe((res) => {
+        this.dataSupplierProduct = res.data;
+        this.cdr.detectChanges();
+      })
+  }
+
+  changeStation() {
+    this.infoForm.get('storeExport').valueChanges
+      .subscribe((value: number | string) => {
+        this.stationId = Number(value);
+        const itemStoreExport = this.listStation.find((x) => {
+          return x.id === Number(value);
+        });
+        this.infoForm.controls['exportedWarehouseAddress'].patchValue(itemStoreExport?.fullAddress);
+
+        this.inventoryManagementService.getGasFields(value, 'ACTIVE')
+          .subscribe((res) => {
+            this.listGasField = res.data;
+            this.cdr.detectChanges();
+          })
+        const allProduct = this.productFormArray.value as Array<any>;
+        allProduct.map((item, index) => {
+          this.productFormArray.at(index).get('gasFieldOut').patchValue('')
+        })
+      })
+  }
+
+  productChanged($event, i: number) {
+    const value = ($event.target as HTMLSelectElement).value;
+    this.patchInfoProduct(value, i);
+  }
+
+  patchInfoProduct(productId: string | number, i: number) {
+    const allProduct = this.productFormArray.value as Array<any>;
+    const checkExisted = allProduct.some(
+      (p, index) => p.productId && i !== index && Number(p.productId) === Number(productId)
+    );
+
+    if (checkExisted) {
+      this.toastr.error('Sản phẩm này đã được thêm');
+      this.productFormArray.at(i).get('productId').patchValue('');
+      return;
+    }
+    if (!productId) {
+      this.productFormArray.at(i).get('unit').patchValue(0);
+    }
+
+    if (!this.stationId) {
+      this.productFormArray.at(i).get('productId').patchValue('');
+      this.toastr.error('Bạn chưa chọn trạm');
+      return;
+    }
+
+    this.inventoryManagementService.getListGasFuel(productId, this.stationId).subscribe((res) => {
+      this.products[i] = res.data;
+      this.cdr.detectChanges();
+    });
+
+    this.productService.getInfoProductOther(Number(productId)).subscribe((res) => {
+      const productInfo: IInfoProduct = res.data;
+      this.productFormArray.at(i).get('unit').patchValue(productInfo.unit);
+      this.cdr.detectChanges();
+    });
+  }
+
+  addItem() {
+    this.productFormArray.push(
+      this.listControlForm()
+    );
+  }
+
+  deleteItem(index: number): void {
+    this.productFormArray.removeAt(index);
+    this.products = [...this.products].filter((_, i) => i !== index);
+  }
+
+  onSubmit() {
+    this.infoForm.markAllAsTouched();
+    this.productForm.markAllAsTouched();
+
+    // if (this.infoForm.invalid ) {
+    //   this.toastr.error('Vui lòng điền đầy đủ thông tin!');
+    //   return;
+    // }
+    // console.log(this.getValueinffoForm());
+    // console.log(this.productForm.value.products);
+
+    this.getValueListProduct()
+  }
+
+  getValueinffoForm() {
+    const valueForm = this.infoForm.value;
+    const itemStation = this.listStation.find((x) => {
+      return x.id === Number(valueForm.storeExport);
+    })
+    valueForm.storeExport = {
+      id: Number(itemStation.id),
+      name: itemStation.name,
+      address: itemStation.fullAddress,
+      chip: itemStation.chip
+    }
+    delete valueForm.exportedWarehouseAddress;
+    return valueForm
+  }
+  a= [];
+  b: any;
+
+  getValueListProduct() {
+    let listProduct = this.productForm.value.products;
+    console.log(listProduct)
+
+    listProduct = listProduct.forEach((product) => {
+      const itemSuppliers = this.dataSupplierProduct.find((x) => {
+        return x.id === Number(product.suppliers)
+      })
+
+      const itemGas = this.listGasField.find((x) => {
+        return x.id === Number(product.gasFieldOut)
+      })
+
+      product.suppliers = itemSuppliers;
+      product.gasFieldOut = itemGas;
+    })
+    console.log(listProduct);
+  }
+
+  exportFile() {}
 
 }

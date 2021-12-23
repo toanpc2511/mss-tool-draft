@@ -661,7 +661,7 @@ export class InventoryManagementService {
   }
 
   // Lấy ds bồn theo trạm
-  getGasFields(gasStationId: number, status: string) {
+  getGasFields(gasStationId: number | string, status: string) {
     const params = new HttpParams()
       .set('gas-station-id', gasStationId.toString())
       .set('status', status)
