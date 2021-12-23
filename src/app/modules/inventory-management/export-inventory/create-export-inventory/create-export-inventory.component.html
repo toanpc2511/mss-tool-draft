@@ -1,1 +1,391 @@
-<p>create-export-inventory works!</p>
+<div class="card card-custom gutter-b mt-1">
+  <form class="form form-label-right" [formGroup]='infoForm'>
+    <div class="info-request-in pb-5">
+      <div class="card-header mt-5">
+        <div class="card-title">
+          <h3 class="title">Thông tin bên nhận hàng</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class='form-label required'>Người đại diện</label>
+            <input
+              type="text"
+              class="form-control form-control-solid w-75"
+              placeholder="Nhập tên người đại diện nhận hàng"
+              formControlName='representativeTakeName'
+            />
+            <app-validate
+              [control]="infoForm.controls['representativeTakeName']"
+              [error]="'required'"
+              [message]="'Người đại diện không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-6">
+            <label class='form-label required'>Bên nhận hàng</label>
+            <input
+              type="text"
+              class="form-control form-control-solid w-75"
+              placeholder="Nhập bên nhận hàng"
+              formControlName='importedWarehouseName'
+            />
+            <app-validate
+              [control]="infoForm.controls['importedWarehouseName']"
+              [error]="'required'"
+              [message]="'Bên nhận hàng không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class='form-label required'>Địa chỉ</label>
+            <input
+              type="text"
+              class="form-control form-control-solid w-75"
+              placeholder="Nhập địa chỉ"
+              formControlName='importedWarehouseAddress'
+            />
+            <app-validate
+              [control]="infoForm.controls['importedWarehouseAddress']"
+              [error]="'required'"
+              [message]="'Địa chỉ không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-info pb-5">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Thông tin bên giao hàng</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class='form-label required'>Bên giao hàng</label>
+            <select class="form-control form-control-solid w-75" formControlName='storeExport'>
+              <option [value]="''">Chọn bên giao hàng</option>
+              <option *ngFor='let item of listStation' [value]="item.id">{{item.name}}</option>
+            </select>
+            <app-validate
+              [control]="infoForm.controls['storeExport']"
+              [error]="'required'"
+              [message]="'Bên giao hàng không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-6">
+            <label class='form-label'>Địa chỉ</label>
+            <input
+              type="text"
+              class="form-control form-control-solid w-75"
+              placeholder="Địa chỉ nhận hàng"
+              formControlName='exportedWarehouseAddress'
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-info pb-5">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Thông tin lái xe</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="form-group row">
+          <div class="col-lg-6">
+            <label class='form-label required'>Tên lái xe</label>
+            <input
+              type="text"
+              class="form-control form-control-solid w-75"
+              placeholder="Nhập tên lái xe"
+              formControlName='driverName'
+            />
+            <app-validate
+              [control]="infoForm.controls['driverName']"
+              [error]="'required'"
+              [message]="'Tên lái xe không được để trống'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-6">
+            <label class='form-label required'>Biển kiểm soát</label>
+            <input
+              type="text"
+              class="form-control form-control-solid w-75"
+              placeholder="Nhập biển kiểm soát"
+              formControlName='licensePlates'
+            />
+            <app-validate
+              [control]="infoForm.controls['licensePlates']"
+              [error]="'required'"
+              [message]="'Biển kiểm soát không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="list-product py-5">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Danh sách hàng hóa</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive angular-bootstrap-table">
+        <form [formGroup]="productForm">
+          <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+            <thead>
+            <tr>
+              <th scope=''>STT</th>
+              <th scope=''>Tên sản phẩm</th>
+              <th scope=''>Đơn vị</th>
+              <th scope=''>Nguồn hàng</th>
+              <th scope=''>Ngăn</th>
+              <th scope='' class='amount-actually'>Số lượng</th>
+              <th scope=''>Bồn xuất</th>
+              <th scope=''>Nhiệt độ thực tế tại kho (độ C)</th>
+              <th scope=''>Tâm mức thực tại kho (cm)</th>
+              <th scope=''>Số chì nắp</th>
+              <th scope=''>Số chì van</th>
+              <th scope='' class='text-center'>Xóa</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <ng-container formArrayName='products'>
+              <tr
+                *ngFor="let productInfoFromGroup of productFormArray.controls; let i = index"
+              >
+                <ng-container [formGroup]="productInfoFromGroup">
+                  <td class="stt text-center">{{i + 1}}</td>
+                  <td class='product-name'>
+                    <select
+                      (change)="productChanged($event, i)"
+                      class="form-control form-control-sm w-75"
+                      formControlName="productId"
+                    >
+                      <option [value]="''">Chọn sản phẩm nhiên liệu</option>
+                      <option
+                        *ngFor="let prodType of listProduct"
+                        [value]="prodType.id"
+                      >
+                        {{prodType.name}}
+                      </option>
+                    </select>
+                    <app-validate
+                      [control]="productInfoFromGroup.get('productId')"
+                      [error]="'required'"
+                      [message]="'Sản phẩm được để trống'"
+                    ></app-validate>
+                  </td>
+                  <td
+                    class="unit"
+                    [textContent]="productInfoFromGroup.get('unit').value"
+                  ></td>
+                  <td class='supplier-name'>
+                    <select
+                      class="form-control form-control-sm w-75"
+                      formControlName="suppliers"
+                    >
+                      <option [value]="''">Chọn nguồn hàng</option>
+                      <option
+                        *ngFor="let item of dataSupplierProduct"
+                        [value]="item.id"
+                      >
+                        {{item.name}}
+                      </option>
+                    </select>
+                    <app-validate
+                      [control]="productInfoFromGroup.get('suppliers')"
+                      [error]="'required'"
+                      [message]="'Nguồn hàng không được để trống'"
+                    ></app-validate>
+                  </td>
+                  <td class='compartment'>
+                    <input
+                      placeholder="Nhập ngăn"
+                      class="form-control form-control-sm w-75"
+                      formControlName="compartment"
+                      maxlength="200"
+                    />
+                    <app-validate
+                      [control]="productInfoFromGroup.get('compartment')"
+                      [error]="'required'"
+                      [message]="'Ngăn chứa đề xuất không được để trống'"
+                    ></app-validate>
+                  </td>
+                  <td class='amount-actually'>
+                    <input
+                      placeholder="Nhập số lượng đề xuất"
+                      class="form-control form-control-sm w-75"
+                      formControlName="amountActually"
+                      maxlength="13"
+                      decimal-mask
+                    />
+                    <app-validate
+                      [control]="productInfoFromGroup.get('amountActually')"
+                      [error]="'required'"
+                      [message]="'Số lượng đề xuất không được để trống'"
+                    ></app-validate>
+                    <app-validate
+                      [control]="productInfoFromGroup.get('amountActually')"
+                      [error]="'min'"
+                      [message]="'Số lượng đề xuất phải lớn hơn 0'"
+                    ></app-validate>
+                  </td>
+                  <td class='gas-field-out-name'>
+                    <select
+                      class="form-control form-control-sm w-75"
+                      formControlName="gasFieldOut"
+                    >
+                      <option [value]="''">Chọn bồn</option>
+                      <option
+                        *ngFor="let item of products[i]"
+                        [value]="item.id"
+                      >
+                        {{item.name}}
+                      </option>
+                    </select>
+                    <app-validate
+                      [control]="productInfoFromGroup.get('gasFieldOut')"
+                      [error]="'required'"
+                      [message]="'Bồn không được để trống'"
+                    ></app-validate>
+                  </td>
+                  <td class="temperature-export">
+                    <input
+                      class="form-control w-75"
+                      placeholder="Nhập nhiệt độ"
+                      formControlName='temperatureExport'
+                      maxlength="5"
+                    />
+                    <app-validate
+                      [control]="productInfoFromGroup.get('temperatureExport')"
+                      [error]="'required'"
+                      [message]="'Nhiệt độ không được để trống'"
+                    ></app-validate>
+                    <app-validate
+                      [control]="productInfoFromGroup.get('temperatureExport')"
+                      [error]="'pattern'"
+                      [message]="'Nhiệt độ sai định dạng'"
+                    ></app-validate>
+                  </td>
+                  <td class="quota-export">
+                    <input
+                      class="form-control w-75"
+                      placeholder="Nhập tâm mức"
+                      formControlName='quotaExport'
+                      maxlength="13"
+                      decimal-mask
+                    />
+                    <app-validate
+                      [control]="productInfoFromGroup.get('quotaExport')"
+                      [error]="'required'"
+                      [message]="'Tâm mức không được để trống'"
+                    ></app-validate>
+                  </td>
+                  <td class="cap-lead">
+                    <input
+                      type='text'
+                      class="form-control w-75"
+                      placeholder="Nhập số chì nắp"
+                      formControlName='capLead'
+                      maxlength="20"
+                    />
+                    <app-validate
+                      [control]="productInfoFromGroup.get('capLead')"
+                      [error]="'required'"
+                      [message]="'Số chì nắp không được để trống'"
+                    ></app-validate>
+                  </td>
+                  <td class="cap-valve">
+                    <input
+                      type='text'
+                      class="form-control w-75"
+                      placeholder="Nhập số chì van"
+                      formControlName='capValve'
+                      maxlength="20"
+                    />
+                    <app-validate
+                      [control]="productInfoFromGroup.get('capValve')"
+                      [error]="'required'"
+                      [message]="'Số chì van không được để trống'"
+                    ></app-validate>
+                  </td>
+                  <td>
+                    <a
+                      *ngIf="i > 0 || productFormArray.length >= 2"
+                      (click)="deleteItem(i)"
+                      class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                    >
+                    <span
+                      [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                      cacheSVG="true"
+                      class="svg-icon svg-icon-md svg-icon-danger"
+                      [ngbTooltip]="'Xóa'"
+                    >
+                    </span>
+                    </a>
+                  </td>
+                </ng-container>
+              </tr>
+            </ng-container>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <td class="text-center">
+                <a
+                  (click)="addItem()"
+                  class="btn btn-icon btn-light btn-hover-primary btn-sm"
+                >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Thêm'"
+                >
+                </span>
+                </a>
+              </td>
+
+              <td colspan="5"></td>
+            </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="py-10 w-100 d-flex justify-content-center">
+    <button
+      *ngIf='isDisable'
+      class="btn btn-primary mr-3 button"
+      (click)='onSubmit()'
+    >
+      Hoàn thành
+    </button>
+    <button
+      *ngIf='!isDisable'
+      class="btn btn-primary mr-3 button"
+      (click)='exportFile()'
+    >
+      In phiếu xuất
+    </button>
+  </div>
+</div>
