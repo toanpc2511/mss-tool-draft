@@ -387,6 +387,11 @@
                   maxlength="100"
                   trim="blur"
                 />
+                <app-validate
+                  [control]="item.controls['compartment']"
+                  [error]="'required'"
+                  [message]="'Ngăn không được để trống'"
+                ></app-validate>
               </td>
               <td class="gas-field-in-name">
                 <p
@@ -536,7 +541,7 @@
               <th scope=''>Đơn vị</th>
               <th scope='' class='form-label required'>Lượng đề xuất</th>
               <th scope='' class='form-label' [class.required]='isRequired'>Bồn xuất</th>
-              <th scope='' class='form-label'>Ngăn</th>
+              <th scope='' class='form-label' [class.required]='isRequired'>Ngăn</th>
               <th scope=''>Bồn nhập</th>
               <th scope='' class='form-label required'>Đơn giá(VNĐ)</th>
               <th scope='' class='form-label required'>Nguồn hàng</th>
@@ -602,6 +607,11 @@
                   maxlength="100"
                   trim="blur"
                 />
+                <app-validate
+                  [control]="item.controls['compartment']"
+                  [error]="'required'"
+                  [message]="'Ngăn không được để trống'"
+                ></app-validate>
               </td>
               <td class="gas-field-in-name">
                 <p

@@ -31,9 +31,10 @@ import { ReportMinTankComponent } from './report-min-tank/report-min-tank.compon
 import { ModalReportMeasureTankComponent } from './report-measure-tank/modal-report-measure-tank/modal-report-measure-tank.component';
 import { ModalReportMinTankComponent } from './report-min-tank/modal-report-min-tank/modal-report-min-tank.component';
 import { UpdateOrderComponent } from './order-request-list/update-order/update-order.component';
+import { CreateExportInventoryComponent } from './export-inventory/create-export-inventory/create-export-inventory.component';
 
 @NgModule({
-  declarations: [InventoryManagementComponent, OrderRequestListComponent, OrderDetailsComponent, CreateOrderComponent, WareHouseOrderListComponent, WareHouseOrderDetailComponent, CreateWarehouseOrderComponent, ExportInventoryComponent, ImportInventoryComponent, ImportingInventoryDetailComponent, ExportInventoryDetailComponent, ReportMeasureTankComponent, ReportMinTankComponent, ModalReportMeasureTankComponent, ModalReportMinTankComponent, UpdateOrderComponent],
+  declarations: [InventoryManagementComponent, OrderRequestListComponent, OrderDetailsComponent, CreateOrderComponent, WareHouseOrderListComponent, WareHouseOrderDetailComponent, CreateWarehouseOrderComponent, ExportInventoryComponent, ImportInventoryComponent, ImportingInventoryDetailComponent, ExportInventoryDetailComponent, ReportMeasureTankComponent, ReportMinTankComponent, ModalReportMeasureTankComponent, ModalReportMinTankComponent, UpdateOrderComponent, CreateExportInventoryComponent],
   imports: [
     CommonModule,
     InventoryManagementRoutingModule,
