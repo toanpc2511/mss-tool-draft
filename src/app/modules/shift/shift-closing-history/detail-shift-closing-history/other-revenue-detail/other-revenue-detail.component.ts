@@ -1,20 +1,22 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IOtherRevenue, ShiftService } from '../../../shift.service';
 import { ActivatedRoute } from '@angular/router';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import { takeUntil, tap } from 'rxjs/operators';
+import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { convertMoney } from '../../../../../shared/helpers/functions';
 import { IError } from '../../../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
-import { IPaginatorState, PaginatorState } from '../../../../../_metronic/shared/crud-table';
+import { FilterField, IPaginatorState, PaginatorState } from '../../../../../_metronic/shared/crud-table';
 import { BaseComponent } from '../../../../../shared/components/base/base.component';
+import { SortService } from '../../../../../shared/services/sort.service';
+import { FilterService } from '../../../../../shared/services/filter.service';
 
 @Component({
 	selector: 'app-other-revenue-detail',
 	templateUrl: './other-revenue-detail.component.html',
 	styleUrls: ['./other-revenue-detail.component.scss'],
-	providers: [FormBuilder, DestroyService]
+	providers: [ SortService, FilterService, FormBuilder, DestroyService]
 })
 export class OtherRevenueDetailComponent extends BaseComponent implements OnInit {
   @Output() stepSubmitted = new EventEmitter();
@@ -23,7 +25,12 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
   dataSourceTemp: FormArray = new FormArray([]);
   paginatorState = new PaginatorState();
   statusLockShift: string;
-  dataSource
+  searchFormControl: FormControl;
+  dataSource: Array<IOtherRevenue>;
+  dataSourceCopy: Array<IOtherRevenue>;
+  filterField: FilterField<{
+    productName: null;
+  }>;
 
 	constructor(
 		private shiftService: ShiftService,
@@ -31,6 +38,8 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private toastr: ToastrService,
+    private sortService: SortService<IOtherRevenue>,
+    private filterService: FilterService<IOtherRevenue>,
 		private fb: FormBuilder
 	) {
     super();
@@ -38,6 +47,12 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 		this.paginatorState.pageSize = 10;
 		this.paginatorState.pageSizes = [5, 10, 15, 20];
 		this.paginatorState.total = 0;
+    this.searchFormControl = new FormControl();
+    this.filterField = new FilterField({
+      productName: null
+    });
+
+    this.dataSource = this.dataSourceCopy = [];
 	}
 
 	ngOnInit(): void {
@@ -54,19 +69,42 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 		});
 
 		this.getOtherProductRevenue();
+    this.searchProduct();
 	}
+
+  searchProduct() {
+    this.searchFormControl.valueChanges
+      .pipe(debounceTime(500), takeUntil(this.destroy$))
+      .subscribe((value) => {
+        console.log(value);
+        if (value.trim()) {
+          this.filterField.setFilterFieldValue(value.trim());
+        } else {
+          this.filterField.setFilterFieldValue(null);
+        }
+
+        this.dataSource = this.sortService.sort(
+          this.filterService.filter(this.dataSourceCopy, this.filterField.field)
+        );
+        console.log(this.dataSourceForm.value);
+        this.dataSourceForm = this.convertToFormArray(
+          this.sortService.sort(
+            this.filterService.filter(this.dataSourceTemp.value, this.filterField.field)
+          )
+        )
+        this.cdr.detectChanges();
+      });
+  }
 
 	getOtherProductRevenue() {
 		this.shiftService
 			.getOtherProductRevenue(
-				this.lockShiftId,
-				this.paginatorState.page,
-				this.paginatorState.pageSize
+				this.lockShiftId
 			)
 			.pipe(
 				tap((res) => {
 					if (this.statusLockShift === 'CLOSE') {
-						this.dataSource = res.data;
+						this.dataSource = this.dataSourceCopy = res.data;
 						this.cdr.detectChanges();
 					} else {
 						this.dataSourceForm = this.dataSourceTemp = this.convertToFormArray(res.data);
