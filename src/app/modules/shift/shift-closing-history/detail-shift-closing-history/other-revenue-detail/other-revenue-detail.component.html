@@ -70,7 +70,7 @@
                 placeholder="Nhập số lượng nhập"
                 decimal-mask
                 maxlength="13"
-                (input)="countFinalInventory(i)"
+                (input)="countFinalInventory(i, item.get('id').value)"
               />
               <app-validate
                 [control]="item.get('importQuantity')"
@@ -85,7 +85,7 @@
                 placeholder="Nhập số lượng xuất"
                 decimal-mask
                 maxlength="13"
-                (input)="countFinalInventory(i)"
+                (input)="countFinalInventory(i, item.get('id').value)"
               />
               <app-validate
                 [control]="item.get('exportQuantity')"

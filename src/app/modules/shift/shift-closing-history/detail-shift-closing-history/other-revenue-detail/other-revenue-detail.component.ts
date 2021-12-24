@@ -7,10 +7,11 @@ import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { convertMoney } from '../../../../../shared/helpers/functions';
 import { IError } from '../../../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
-import { FilterField, IPaginatorState, PaginatorState } from '../../../../../_metronic/shared/crud-table';
+import { FilterField } from '../../../../../_metronic/shared/crud-table';
 import { BaseComponent } from '../../../../../shared/components/base/base.component';
 import { SortService } from '../../../../../shared/services/sort.service';
 import { FilterService } from '../../../../../shared/services/filter.service';
+import { DataResponse } from '../../../../../shared/models/data-response.model';
 
 @Component({
 	selector: 'app-other-revenue-detail',
@@ -22,8 +23,8 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
   @Output() stepSubmitted = new EventEmitter();
   lockShiftId: number;
   dataSourceForm: FormArray = new FormArray([]);
-  dataSourceTemp: FormArray = new FormArray([]);
-  paginatorState = new PaginatorState();
+  // dataSourceTemp: FormArray = new FormArray([]);
+  dataSourceTemp: IOtherRevenue[];
   statusLockShift: string;
   searchFormControl: FormControl;
   dataSource: Array<IOtherRevenue>;
@@ -43,10 +44,6 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 		private fb: FormBuilder
 	) {
     super();
-		this.paginatorState.page = 1;
-		this.paginatorState.pageSize = 10;
-		this.paginatorState.pageSizes = [5, 10, 15, 20];
-		this.paginatorState.total = 0;
     this.searchFormControl = new FormControl();
     this.filterField = new FilterField({
       productName: null
@@ -76,7 +73,6 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
     this.searchFormControl.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))
       .subscribe((value) => {
-        console.log(value);
         if (value.trim()) {
           this.filterField.setFilterFieldValue(value.trim());
         } else {
@@ -86,12 +82,13 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
         this.dataSource = this.sortService.sort(
           this.filterService.filter(this.dataSourceCopy, this.filterField.field)
         );
-        console.log(this.dataSourceForm.value);
+
         this.dataSourceForm = this.convertToFormArray(
           this.sortService.sort(
-            this.filterService.filter(this.dataSourceTemp.value, this.filterField.field)
+            this.filterService.filter(this.dataSourceTemp, this.filterField.field)
           )
         )
+
         this.cdr.detectChanges();
       });
   }
@@ -102,24 +99,19 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 				this.lockShiftId
 			)
 			.pipe(
-				tap((res) => {
+				tap((res: DataResponse<IOtherRevenue[]>) => {
 					if (this.statusLockShift === 'CLOSE') {
 						this.dataSource = this.dataSourceCopy = res.data;
 						this.cdr.detectChanges();
 					} else {
-						this.dataSourceForm = this.dataSourceTemp = this.convertToFormArray(res.data);
-						this.paginatorState.recalculatePaginator(res.meta.total);
+						this.dataSourceForm = this.convertToFormArray(res.data);
+            this.dataSourceTemp = res.data;
 						this.cdr.detectChanges();
 					}
 				}),
 				takeUntil(this.destroy$)
 			)
 			.subscribe();
-	}
-
-	pagingChange($event: IPaginatorState) {
-		this.paginatorState = $event as PaginatorState;
-		this.getOtherProductRevenue();
 	}
 
 	convertToFormArray(data: IOtherRevenue[]): FormArray {
@@ -142,7 +134,7 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 		return this.fb.array(controls);
 	}
 
-	countFinalInventory(index: number) {
+	countFinalInventory(index: number, id: number) {
 		const valueExport: number = convertMoney(
 			this.dataSourceForm.at(index).get('exportQuantity').value.toString()
 		);
@@ -156,13 +148,20 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 		const totalFinalInventory = valueHeadInventory + valueImport - valueExport;
 		const totalMoney = valueExport * price;
 
-		this.dataSourceTemp.at(index).get('finalInventory').patchValue(totalFinalInventory);
+    this.dataSourceTemp.filter(x => x.id === id).map(x => {
+      x.finalInventory = totalFinalInventory;
+      x.exportQuantity = valueExport;
+      x.importQuantity = valueImport;
+      x.totalMoney = totalMoney;
+      x.headInventory = valueHeadInventory;
+    });
 
-		this.dataSourceTemp.at(index).get('totalMoney').patchValue(totalMoney);
+    this.dataSourceForm.patchValue(this.dataSourceTemp);
 	}
 
 	onSubmit() {
-		this.dataSourceForm = this.dataSourceTemp;
+    // this.dataSourceForm = this.convertToFormArray(this.dataSourceTemp1);
+    this.dataSourceForm.patchValue(this.dataSourceTemp);
 		this.dataSourceForm.markAllAsTouched();
 		if (this.dataSourceForm.invalid) {
 			return null;
