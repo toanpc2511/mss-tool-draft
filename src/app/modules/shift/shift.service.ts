@@ -457,11 +457,9 @@ export class ShiftService {
 	}
 
 	// Lấy ds doanh thu hàng hóa
-	getOtherProductRevenue(id: number, page: number, size: number) {
+	getOtherProductRevenue(id: number) {
 		const params = new HttpParams()
 			.set('lock-shift-id', id.toString())
-			.set('page', page.toString())
-			.set('size', size.toString());
 		return this.http.get<Array<IOtherRevenue>>('other-product-revenue', { params });
 	}
 

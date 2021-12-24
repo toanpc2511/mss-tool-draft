@@ -30,12 +30,11 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
   dataSupplierProduct: Array<any> = [];
   listItemGas: Array<any> = [];
   listGasField: IGasFieldByStation[] = [];
-  isDisable: boolean = true;
 
   infoForm: FormGroup;
   productForm: FormGroup;
   productFormArray: FormArray;
-  products: Array<Array<any>> = [];
+  gasFuels: Array<Array<any>> = [];
 
   constructor(
     private modalService: NgbModal,
@@ -172,7 +171,9 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
         const allProduct = this.productFormArray.value as Array<any>;
         allProduct.map((item, index) => {
           this.productFormArray.at(index).get('gasFieldOut').patchValue('')
-        })
+        });
+
+        this.buildProductForm();
       })
   }
 
@@ -205,7 +206,7 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
     }
 
     this.inventoryManagementService.getListGasFuel(productId, this.stationId).subscribe((res) => {
-      this.products[i] = res.data;
+      this.gasFuels[i] = res.data;
       this.cdr.detectChanges();
     });
 
@@ -225,7 +226,7 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
 
   deleteItem(index: number): void {
     this.productFormArray.removeAt(index);
-    this.products = [...this.products].filter((_, i) => i !== index);
+    this.gasFuels = [...this.gasFuels].filter((_, i) => i !== index);
   }
 
   onSubmit() {
@@ -250,10 +251,11 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
 
     this.inventoryManagementService.createExportInventory(dataReq)
       .subscribe((res) => {
-        if (res) {
-          this.toastr.success('Tạo phiếu xuất kho thành công');
-          this.isDisable = false;
-        }
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions,@typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        this.router.navigate([`/kho/xuat-kho/chi-tiet/${res.data.id}`]);
+        this.toastr.success('Tạo phiếu xuất kho thành công');
       }, (error: IError) => {
         this.checkError(error);
       })
@@ -291,7 +293,4 @@ export class CreateExportInventoryComponent extends BaseComponent implements OnI
   checkError(error: IError) {
     this.toastr.error(error.code);
   }
-
-  exportFile() {}
-
 }

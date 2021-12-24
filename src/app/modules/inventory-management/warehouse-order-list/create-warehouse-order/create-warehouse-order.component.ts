@@ -143,6 +143,8 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     this.transportInfoForm.get('licensePlates').patchValue(data.licensePlates || '');
     this.transportInfoForm.get('capacity').patchValue(data.capacity || '');
     this.transportInfoForm.get('driver').patchValue(data.driver?.id || data.driver?.name || '');
+
+    this.checkValidateCompartment(data.carMethod);
   }
 
   hanldChangeOrderInfo() {
@@ -199,7 +201,6 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       .subscribe((x: string) => {
         this.isInternalCar = x;
 
-        this.transportInfoForm.controls['capacity'].patchValue('');
         this.transportInfoForm.controls['licensePlates'].patchValue('');
         this.transportInfoForm.controls['driver'].patchValue('');
 
@@ -209,11 +210,13 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.transportInfoForm.get('driver').setValidators(Validators.nullValidator)
           this.transportInfoForm.get('licensePlates').setValidators(Validators.nullValidator)
           this.transportInfoForm.get('capacity').setValidators(Validators.nullValidator)
+          this.transportInfoForm.controls['capacity'].patchValue('');
         } else {
           this.transportInfoForm.get('licensePlates').enable();
           this.transportInfoForm.get('driver').enable();
           this.transportInfoForm.get('licensePlates').setValidators(Validators.required)
           this.transportInfoForm.get('driver').setValidators(Validators.required)
+          this.transportInfoForm.controls['capacity'].patchValue('');
         }
 
         if (x === 'RENTAL') {
@@ -234,7 +237,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       this.isSupplier = true;
       this.dataProductResponses?.value.map((_, index) => {
         this.dataProductResponses.at(index).get('compartment').setValidators(Validators.required),
-          this.dataProductResponses.at(index).get('compartment').updateValueAndValidity()
+          this.dataProductResponses.at(index).get('compartment').updateValueAndValidity();
       })
     } else {
       this.isSupplier = false;
@@ -243,6 +246,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
           this.dataProductResponses.at(index).get('compartment').updateValueAndValidity()
       })
     }
+    this.cdr.detectChanges();
   }
 
   changeLicensePlates() {
@@ -384,7 +388,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       const fb = this.fb.group({
         recommend: [this.dataDetail?.status === 'NEW' || this.dataDetail?.status === "SWAP" ? d.amountRecommended : d.recommend, Validators.required],
         gasFieldOut: [d.gasFieldOutId],
-        compartment: [d.compartment],
+        compartment: [d.compartment, this.dataDetail?.carMethod !== 'SUPPLIER' ? Validators.required : Validators.nullValidator],
         price: [d.price, Validators.required],
         supplierId: [d.supplierId || '', Validators.required],
         gasFieldInName: [d.gasFieldInName],
