@@ -136,15 +136,15 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 
 	countFinalInventory(index: number, id: number) {
 		const valueExport: number = convertMoney(
-			this.dataSourceForm.at(index).get('exportQuantity').value.toString()
+			this.dataSourceForm.at(index).get('exportQuantity').value?.toString()
 		);
 		const valueImport: number = convertMoney(
-			this.dataSourceForm.at(index).get('importQuantity').value.toString()
+			this.dataSourceForm.at(index).get('importQuantity').value?.toString()
 		);
 		const valueHeadInventory: number = convertMoney(
-			this.dataSourceForm.at(index).get('headInventory').value.toString()
+			this.dataSourceForm.at(index).get('headInventory').value?.toString()
 		);
-		const price: number = convertMoney(this.dataSourceForm.at(index).get('price').value.toString());
+		const price: number = convertMoney(this.dataSourceForm.at(index).get('price').value?.toString());
 		const totalFinalInventory = valueHeadInventory + valueImport - valueExport;
 		const totalMoney = valueExport * price;
 
@@ -160,7 +160,6 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 	}
 
 	onSubmit() {
-    // this.dataSourceForm = this.convertToFormArray(this.dataSourceTemp1);
     this.dataSourceForm.patchValue(this.dataSourceTemp);
 		this.dataSourceForm.markAllAsTouched();
 		if (this.dataSourceForm.invalid) {

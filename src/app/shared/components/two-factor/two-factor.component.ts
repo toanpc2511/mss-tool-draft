@@ -29,7 +29,7 @@ export class TwoFactorComponent implements AfterViewInit {
 	verificationCodeControl = new FormControl(null, [TValidators.required]);
 	step = 1;
   disableBtn: boolean;
-  timeOut;
+  timeOut = 0;
 
 	constructor(
 		public modal: NgbActiveModal,
@@ -67,22 +67,21 @@ export class TwoFactorComponent implements AfterViewInit {
 		this.reCapchaVerifier.render();
 	}
 
-  test() {
+  setTimeOut() {
     let counter = 10;
     const interval = setInterval(() => {
       counter--;
 
       if (counter < 0 ) {
         clearInterval(interval);
-        this.disableBtn = true;
-        document.getElementById('countdown').innerText = '';
-        console.log('ngu');
-      } else {
         this.disableBtn = false;
+        document.getElementById('countdown').innerText = '';
+      } else {
+        this.disableBtn = true;
         document.getElementById('countdown').innerText = `Gửi lại mã OTP sau ${counter} giây`;
       }
+      this.cdr.detectChanges();
     }, 1000);
-    this.cdr.detectChanges();
   }
 
 	sendOTP() {
@@ -112,7 +111,7 @@ export class TwoFactorComponent implements AfterViewInit {
 						this.step = 2;
 						this.reCapchaVerifierInvisible.render();
 					}
-          // this.test();
+          this.setTimeOut();
 					this.toastr.success(`Đã gửi mã OTP tới số điện thoại ${this.currentPhoneNumber}`);
 				}),
 				catchError((error) => {
