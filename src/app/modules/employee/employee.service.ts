@@ -8,6 +8,7 @@ import { convertDateToServer } from '../../shared/helpers/functions';
 import { Observable } from 'rxjs';
 import { DataResponse } from '../../shared/models/data-response.model';
 import { IEmployeeAssessment } from './employee-assessment/models/employee-assessment.interface';
+import { IDetailEmployeeAssessment } from './employee-assessment/models/detail-employee-assessment.interface';
 
 export enum EMaritalStatus {
 	MARRIED = 'MARRIED',
@@ -148,16 +149,17 @@ export interface IEmployeeDetail {
 	attachment: IFile[];
 }
 
-interface IFilter {
+export interface IFilter {
   dateFrom?: string,
   dateTo?: string,
   employeeId?: string,
   stationId?: string
+  vote?: string;
 }
 
 interface IParam {
-  page: number;
-  size: number;
+  page?: number;
+  size?: number;
   filter?: IFilter;
 }
 
@@ -228,13 +230,18 @@ export class EmployeeService {
     return this.http.getFileUrl<string>('evaluations/filters/excels', { params: this.createParam(params)});
   }
 
+  getListDetailEmployeeAssessment(params: IParam): Observable<DataResponse<IDetailEmployeeAssessment[]>> {
+    return this.http.get<IDetailEmployeeAssessment[]>('evaluations/detail', { params: this.createParam(params) });
+  }
+
   createParam(param: IParam): HttpParams {
     return new HttpParams()
-      .set('page', param.page.toString())
-      .set('size', param.size.toString())
+      .set('page', param.page ? param.page.toString() : '')
+      .set('size', param.size ? param?.size.toString() : '')
       .set('date-from', convertDateToServer(param.filter.dateFrom))
       .set('date-to', convertDateToServer(param.filter.dateTo))
       .set('employee-id', param.filter.employeeId || '')
       .set('station-id', param.filter.stationId || '')
+      .set('vote', param.filter.vote || '')
   }
 }

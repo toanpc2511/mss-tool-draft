@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs/operators';
 import { InventoryManagementService } from '../../../inventory-management/inventory-management.service';
@@ -136,8 +136,6 @@ export class ListEmployeeAssessmentComponent implements OnInit {
 
   exportFileExcel(): void {
     const params = {
-      page: this.paginatorState.page,
-      size: this.paginatorState.pageSize,
       filter: this.searchForm.value
     }
 
@@ -151,6 +149,15 @@ export class ListEmployeeAssessmentComponent implements OnInit {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  getQueryParam(employeeId: number) {
+    return {
+      dateFrom: this.searchForm.get('dateFrom').value,
+      dateTo: this.searchForm.get('dateTo').value,
+      employeeId,
+      stationId: this.searchForm.get('stationId').value || ''
+    }
   }
 
 }
