@@ -5,12 +5,13 @@ import { InventoryManagementService } from '../../../inventory-management/invent
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { IStationActiveByToken } from '../models/station-active-by-token.interface';
 import { DataResponse } from '../../../../shared/models/data-response.model';
-import { EmployeeService, IEmployee } from '../../employee.service';
+import { EmployeeService } from '../../employee.service';
 import * as moment from 'moment';
 import { IEmployeeAssessment } from '../models/employee-assessment.interface';
 import { IPaginatorState, PaginatorState } from '../../../../_metronic/shared/crud-table';
 import { ShiftService } from '../../../shift/shift.service';
 import { FileService } from '../../../../shared/services/file.service';
+import { IEmployees, TransactionService } from '../../../transaction/transaction.service';
 
 @Component({
   selector: 'app-list-employee-assessment',
@@ -22,7 +23,7 @@ export class ListEmployeeAssessmentComponent implements OnInit {
 
   searchForm: FormGroup;
   listStationByToken: IStationActiveByToken[];
-  listEmployee: IEmployee[];
+  listEmployee: IEmployees[];
   employeeAssessment: IEmployeeAssessment;
   today: string;
   paginatorState = new PaginatorState();
@@ -32,6 +33,7 @@ export class ListEmployeeAssessmentComponent implements OnInit {
               private destroy$: DestroyService,
               private cdr: ChangeDetectorRef,
               private employeeService: EmployeeService,
+              private transactionService: TransactionService,
               private shiftService: ShiftService,
               private fileService: FileService
   ) { }
@@ -114,16 +116,16 @@ export class ListEmployeeAssessmentComponent implements OnInit {
   }
 
   getEmployeeByStation() {
-    this.shiftService.getEmployeesByStation(this.searchForm.get('stationId').value).subscribe((res: DataResponse<IEmployee[]>): void => {
+    this.shiftService.getEmployeesByStation(this.searchForm.get('stationId').value).subscribe((res: DataResponse<IEmployees[]>): void => {
       this.listEmployee = res.data;
       this.cdr.detectChanges();
     });
   }
 
   getEmployee(): void {
-    this.employeeService
-      .getAllEmployees()
-      .subscribe((res: DataResponse<IEmployee[]>): void => {
+    this.transactionService
+      .getAllEmployee()
+      .subscribe((res: DataResponse<IEmployees[]>): void => {
         this.listEmployee = res.data;
         this.cdr.detectChanges();
       });
