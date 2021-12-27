@@ -14,7 +14,7 @@
           <ng-container *ngIf='i === 2' [ngTemplateOutlet]='start3'></ng-container>
           <ng-container *ngIf='i === 3' [ngTemplateOutlet]='start4'></ng-container>
           <ng-container *ngIf='i === 4' [ngTemplateOutlet]='start5'></ng-container>
-          <p class='text-center'>20</p>
+          <p class='text-center'>( 20 )</p>
         </div>
       </div>
     </div>
@@ -33,21 +33,21 @@
     <div class="table-responsive angular-bootstrap-table">
       <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
-        <th class="code" scope="">Mã đơn hàng</th>
-        <th class="date" scope="">Thời gian</th>
-        <th class="station" scope="">Trạm</th>
-        <th class="assessment" scope="">Đánh giá</th>
-        <th class="content" scope="">Ý kiến bình luận</th>
+        <th class="code-employee" scope="">Mã đơn hàng</th>
+        <th class="date-employee" scope="">Thời gian</th>
+        <th class="station-employee" scope="">Trạm</th>
+        <th class="assessment-employee text-center" scope="">Đánh giá</th>
+        <th scope="">Ý kiến bình luận</th>
         </thead>
 
         <tbody>
         <tr *ngFor="let item of listDetailEmployeeAssessment">
-          <td class="code">
+          <td class="code-employee">
             <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item?.code">
               {{ item?.code }}
             </p>
           </td>
-          <td class="date">
+          <td class="date-employee">
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
@@ -56,17 +56,17 @@
               {{ item?.date }}
             </p>
           </td>
-          <td class="station text-right">
-            <p class="text-ellipsis" placement="top" [ngbTooltip]="item?.stationName">
+          <td class="station-employee">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item?.stationName">
               {{ item?.stationName }}
             </p>
           </td>
-          <td class="assessment text-right">
-            <p class="text-ellipsis" placement="top" [ngbTooltip]="item?.vote + 'sao'">
+          <td class="assessment-employee text-right">
+            <p class="cursor-pointer text-center" placement="top" [ngbTooltip]="item?.vote + ' sao'">
               {{ item?.vote }}<sup>*</sup>
             </p>
           </td>
-          <td class="content text-right">
+          <td>
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"

@@ -28,7 +28,8 @@
     }
 
     input[type=checkbox]:checked ~ div {
-      background-color: #6993ff;
+      background-color: #3699ff;
+      color: #f3f6f9;
     }
 
     .selected-star {
@@ -42,30 +43,43 @@
 
 }
 
-
 table {
   min-width: 1024px;
 
-  th,
-  td {
-    padding-left: 10px;
-    padding-right: 10px;
-
-    &.code, &.station, &.vote {
-      min-width: 110px;
-      max-width: 130px;
+  th, td {
+    &.code-employee, &.date-employee {
+      width: 150px;
     }
 
-    &.date {
-      min-width: 150px;
-      max-width: 200px;
+    &.assessment-employee {
+      width: 100px;
     }
 
+    &.station-employee {
+      width: 300px;
+    }
   }
 
   thead {
     th {
       text-transform: none;
     }
+  }
+}
+
+.card.card-custom {
+  box-shadow: none !important;
+
+  .card-body,
+  .card-header {
+    border: 0;
+  }
+
+  .card-body {
+    padding-top: 1rem;
+  }
+
+  .card-header {
+    margin-top: 2rem;
   }
 }

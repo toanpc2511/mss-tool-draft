@@ -24,7 +24,7 @@
           <label>Tên nhân viên</label>
           <select class="form-control form-control-solid w-75" formControlName='employeeId'>
             <option [value]="null">Tất cả</option>
-            <option *ngFor="let employee of listEmployee" [value]="employee.id">{{employee.name}}</option>
+            <option *ngFor="let employee of listEmployee" [value]="employee.id">{{employee.code}} - {{employee.name}}</option>
           </select>
         </div>
       </div>
@@ -106,26 +106,26 @@
     </div>
 
     <div class="form-group row search-result justify-content-between">
-      <p class="item">Đánh giá TB: <strong>{{employeeAssessment?.quantityMedium}}/5</strong></p>
+      <p class="item">Đánh giá TB: <strong>{{employeeAssessment?.quantityMedium || 0}}/5</strong></p>
       <p class="item">
         <em class="fas fa-circle"></em>SL đánh giá 5<sup>*</sup>:
-        <strong>{{employeeAssessment?.quantityFiveStar}}</strong>
+        <strong>{{employeeAssessment?.quantityFiveStar || 0}}</strong>
       </p>
       <p class="item">
         <em class="fas fa-circle"></em>SL đánh giá 4<sup>*</sup>:
-        <strong>{{employeeAssessment?.quantityFourStar}}</strong>
+        <strong>{{employeeAssessment?.quantityFourStar || 0}}</strong>
       </p>
       <p class="item">
         <em class="fas fa-circle"></em>SL đánh giá 3<sup>*</sup>:
-        <strong>{{employeeAssessment?.quantityThreeStar}}</strong>
+        <strong>{{employeeAssessment?.quantityThreeStar || 0}}</strong>
       </p>
       <p class="item">
         <em class="fas fa-circle"></em>SL đánh giá 2<sup>*</sup>:
-        <strong>{{employeeAssessment?.quantityTwoStar}}</strong>
+        <strong>{{employeeAssessment?.quantityTwoStar || 0}}</strong>
       </p>
       <p class="item">
         <em class="fas fa-circle"></em>SL đánh giá 1<sup>*</sup>:
-        <strong>{{employeeAssessment?.quantityOneStar}}</strong>
+        <strong>{{employeeAssessment?.quantityOneStar || 0}}</strong>
       </p>
     </div>
   </div>
@@ -160,8 +160,8 @@
             [queryParams]='getQueryParam(item.employeeId)'
         >
           <td class="employee-id">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item?.employeeId">
-              {{ item?.employeeId }}
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item?.code">
+              {{ item?.code }}
             </p>
           </td>
           <td class="employee-name">
