@@ -48,15 +48,15 @@ table {
 
   th, td {
     &.code-employee, &.date-employee {
-      max-width: 90px;
+      width: 150px;
     }
 
     &.assessment-employee {
-      max-width: 50px;
+      width: 100px;
     }
 
     &.station-employee {
-      max-width: 150px;
+      width: 300px;
     }
   }
 
