@@ -29,6 +29,9 @@ export class LoginAuthenticationComponent implements AfterViewInit {
   user$: Observable<UserModel>;
   verificationCodeControl = new FormControl(null, [TValidators.required]);
   step = 1;
+  timeOut: number;
+  disableBtn: boolean;
+  titleTime: string;
 
   constructor(
     public modal: NgbActiveModal,
@@ -42,7 +45,10 @@ export class LoginAuthenticationComponent implements AfterViewInit {
     this.user$ = this.authService.currentUser$;
     this.user$.subscribe((x) => {
       this.currentPhoneNumber = x?.accountAuth?.profile?.phone;
-    })
+    });
+    this.timeOut = 0;
+    this.disableBtn = true;
+    this.titleTime = '';
   }
   ngAfterViewInit(): void {
     this.reCapchaVerifier = new firebase.auth.RecaptchaVerifier('otp-captcha', {
@@ -84,6 +90,36 @@ export class LoginAuthenticationComponent implements AfterViewInit {
     this.createOTPRequest(this.reCapchaVerifierInvisible);
   }
 
+  setTimeOut() {
+    let counter = 31;
+    switch (this.timeOut) {
+      case 1:
+        counter +=5;
+        break;
+      case 2:
+        counter += 10;
+        break;
+      case 3:
+        counter += 15;
+        break;
+      case 4:
+        counter += 20;
+        break;
+    }
+    const interval = setInterval(() => {
+      counter--;
+      if (counter < 0 ) {
+        clearInterval(interval);
+        this.disableBtn = false;
+      } else {
+        this.disableBtn = true;
+        this.titleTime = `Gửi lại mã OTP sau ${counter} giây`;
+      }
+      this.cdr.detectChanges();
+    }, 1000);
+    this.timeOut++;
+  }
+
   createOTPRequest(reCapchaVerifier: firebase.auth.RecaptchaVerifier) {
     this.ngxSpinnerService.show();
     this.authService
@@ -96,6 +132,7 @@ export class LoginAuthenticationComponent implements AfterViewInit {
             this.step = 2;
             this.reCapchaVerifierInvisible.render();
           }
+          this.setTimeOut();
           this.toastr.success(`Đã gửi mã OTP tới số điện thoại ${this.currentPhoneNumber}`);
         }),
         catchError((error) => {
