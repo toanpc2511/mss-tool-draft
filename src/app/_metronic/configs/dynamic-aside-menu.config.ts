@@ -254,6 +254,14 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
       permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
     },
     {
+      title: 'Quản lý lịch sử tác động',
+      root: true,
+      bullet: 'dot',
+      page: '/lich-su-tac-dong/danh-sach',
+      icon: 'fas fa-user-clock',
+      permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
+    },
+    {
       title: 'Quản lý cấu hình',
       icon: 'fas fa-hand-holding-usd',
       root: true,

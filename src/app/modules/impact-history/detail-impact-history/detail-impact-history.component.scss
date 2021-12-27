@@ -1,0 +1,23 @@
+.card.card-custom {
+  box-shadow: none !important;
+
+  .card-body,
+  .card-header {
+    border: 0;
+  }
+
+  .card-body {
+    padding-top: 1rem;
+  }
+
+  .form-detail {
+    .btn-sm {
+      border-radius: 50% !important;
+    }
+
+    .impact-history:hover {
+      background-color: #f3f6f9;
+      cursor: pointer;
+    }
+  }
+}

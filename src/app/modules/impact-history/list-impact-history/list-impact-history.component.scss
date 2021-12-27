@@ -1,0 +1,36 @@
+.card.card-custom {
+  box-shadow: none !important;
+
+  .card-body,
+  .card-header {
+    border: 0;
+  }
+
+  .card-body {
+    padding-top: 1rem;
+  }
+}
+
+.icon-arrow-up {
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url('../../../../assets/media/sun-oil/down-arrow.svg');
+  transition: transform 0.2s ease-in-out;
+  transform: rotate(-90deg);
+}
+
+.card-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background: #f3f6f9;
+  border: 1px solid #e3e7f1;
+  color: #3f4254;
+  cursor: pointer;
+  label {
+    cursor: pointer;
+  }
+}
