@@ -124,6 +124,12 @@ const routes: Routes = [
           ),
         canActivate: [AuthorizeGuard]
       },
+      {
+        path: 'lich-su-tac-dong',
+        loadChildren: () =>
+          import('../modules/impact-history/impact-history.module').then((m) => m.ImpactHistoryModule),
+        canActivate: [AuthorizeGuard]
+      },
 			{
 				path: '',
 				redirectTo: '/dashboard',

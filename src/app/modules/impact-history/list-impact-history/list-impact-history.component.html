@@ -1,0 +1,17 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Lịch sử tác động</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class='row px-3'>
+      <div class='col-lg-12 d-flex justify-content-between card-item' *ngFor='let item of listData' (click)='detailImpact(item)'>
+        <div class="d-flex align-items-center">
+          <label class="m-0 font-weight-bold ">{{item.value}}</label>
+        </div>
+        <div class='icon-arrow-up'></div>
+      </div>
+    </div>
+  </div>
+</div>
