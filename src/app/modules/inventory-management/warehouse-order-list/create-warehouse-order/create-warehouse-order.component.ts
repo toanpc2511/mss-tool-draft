@@ -16,7 +16,6 @@ import { forkJoin, Observable } from 'rxjs';
 import { IError } from '../../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { TValidators } from '../../../../shared/validators';
-import { log } from 'util';
 
 @Component({
   selector: 'app-create-warehouse-order',
@@ -307,7 +306,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
   checkStatusOrder(status: string) {
     if (status === 'CONFIRMED') {
-      this.orderInfoForm.disable();
+      this.orderInfoForm.disable({emitEvent: false, onlySelf: true});
       this.dataProductResponses.disable();
       this.transportInfoForm.get('internalCar').disable();
       this.transportInfoForm.get('vehicleCostMethod').disable();
