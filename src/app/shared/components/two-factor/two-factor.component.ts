@@ -30,6 +30,7 @@ export class TwoFactorComponent implements AfterViewInit {
 	step = 1;
   disableBtn: boolean;
   timeOut = 0;
+  titleTime: string;
 
 	constructor(
 		public modal: NgbActiveModal,
@@ -41,6 +42,7 @@ export class TwoFactorComponent implements AfterViewInit {
 	) {
 		this.currentPhoneNumber = this.authService.getCurrentUserValue()?.accountAuth?.profile?.phone;
     this.disableBtn = true;
+    this.titleTime = '';
 	}
 	ngAfterViewInit(): void {
 		this.reCapchaVerifier = new firebase.auth.RecaptchaVerifier('otp-captcha', {
@@ -68,20 +70,33 @@ export class TwoFactorComponent implements AfterViewInit {
 	}
 
   setTimeOut() {
-    let counter = 10;
+    let counter = 31;
+    switch (this.timeOut) {
+      case 1:
+        counter +=5;
+        break;
+      case 2:
+        counter += 10;
+        break;
+      case 3:
+        counter += 15;
+        break;
+      case 4:
+        counter += 20;
+        break;
+    }
     const interval = setInterval(() => {
       counter--;
-
       if (counter < 0 ) {
         clearInterval(interval);
         this.disableBtn = false;
-        document.getElementById('countdown').innerText = '';
       } else {
         this.disableBtn = true;
-        document.getElementById('countdown').innerText = `Gửi lại mã OTP sau ${counter} giây`;
+        this.titleTime = `Gửi lại mã OTP sau ${counter} giây`;
       }
       this.cdr.detectChanges();
     }, 1000);
+    this.timeOut++;
   }
 
 	sendOTP() {
