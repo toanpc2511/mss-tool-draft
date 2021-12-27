@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { AuthService, UserModel } from '../../../modules/auth/services/auth.service';
 import firebase from 'firebase/app';
 import { catchError, finalize, takeUntil, tap } from 'rxjs/operators';
@@ -91,7 +91,7 @@ export class LoginAuthenticationComponent implements AfterViewInit {
   }
 
   setTimeOut() {
-    let counter = 31;
+    let counter = 41;
     switch (this.timeOut) {
       case 1:
         counter +=5;

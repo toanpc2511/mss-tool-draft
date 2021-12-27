@@ -70,7 +70,7 @@ export class TwoFactorComponent implements AfterViewInit {
 	}
 
   setTimeOut() {
-    let counter = 31;
+    let counter = 41;
     switch (this.timeOut) {
       case 1:
         counter +=5;
