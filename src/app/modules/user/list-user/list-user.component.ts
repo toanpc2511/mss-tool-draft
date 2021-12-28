@@ -131,7 +131,36 @@ export class ListUserComponent extends BaseComponent implements OnInit {
 		});
 	}
 
-	openUserModal(accountId?: number) {
+	resetPassword(user: IUser): void {
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+			backdrop: 'static'
+		});
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn đặt lại mật khẩu cho tài khoản: ${user.username}?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
+
+		modalRef.result.then((result) => {
+			if (result) {
+				this.userService.resetPassword(user.accountId).subscribe(
+					(res) => {
+						if (res.data) {
+							this.init();
+							this.getUsers();
+              this.toastr.success('Đặt lại mật khẩu thành công')
+						}
+					},
+					(err: IError) => {
+						this.checkError(err);
+					}
+				);
+			}
+		});
+	}
+
+	openUserModal(accountId?: string) {
 		const modalRef = this.modalService.open(UserModalComponent, {
 			backdrop: 'static',
 			size: 'xl'

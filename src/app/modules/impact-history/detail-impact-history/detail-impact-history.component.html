@@ -1,0 +1,111 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Tìm kiếm tác động</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="searchForm" class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Thời gian tạo từ</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #startAt="ngbDatepicker"
+              formControlName='startAt'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="startAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.controls['startAt']"
+            [error]="'ngbDate'"
+            [message]="'Thời gian tạo không đúng định dạng'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Thời gian tạo đến</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #endAt="ngbDatepicker"
+              formControlName='endAt'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="endAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.controls['endAt']"
+            [error]="'ngbDate'"
+            [message]="'Thời gian tạo không đúng định dạng'"
+          ></app-validate>
+        </div>
+      </div>
+    </form>
+
+    <div class="form-group row py-3">
+      <button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+        <em class="fas fa-search"></em> Tìm kiếm
+      </button>
+      <button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
+    </div>
+  </div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Chi tiết lịch sử tác động</h3>
+    </div>
+  </div>
+
+  <div class="card-body form-detail">
+    <div class='row'>
+      <div class='col-lg-12 p-3 border-bottom activity-container form-inline' *ngFor='let item of dataTest'>
+        <div class='icon-activity'>
+          <p class="btn btn-icon btn-light btn-hover-danger btn-sm">
+            <span
+              [inlineSVG]="'./assets/media/svg/icons/Design/Edit.svg'"
+              cacheSVG="true"
+              class="svg-icon svg-icon-md svg-icon-danger"
+            >
+            </span>
+          </p>
+        </div>
+        <div class='content-activity'>
+          <div class='info-impact form-inline'>
+            <p class='font-weight-bold mx-5'>{{item.name}}</p>
+            <p class=''>{{item.action}} <strong> {{item.productName}}</strong></p>
+          </div>
+          <div class='time-impact mx-5 pt-5'>
+            <p>{{item.time}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="py-10 w-100 d-flex justify-content-center">
+      <button type="button" class="btn btn-outline-secondary w-100" (click)="seeMore()">Xem thêm</button>
+    </div>
+  </div>
+</div>

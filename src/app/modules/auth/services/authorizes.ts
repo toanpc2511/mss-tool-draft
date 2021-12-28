@@ -86,6 +86,7 @@ export enum EAuthorize {
   CREATE_ACCOUNT_BUTTON = 'create_account_button',
   UPDATE_ACCOUNT_BUTTON = 'update_account_button',
   DELETE_ACCOUNT_BUTTON = 'delete_account_button',
+  RESET_PASSWORD_BUTTON = 'reset_password_button',
   /* End */
 
   /* Quản lý phân quyền */
