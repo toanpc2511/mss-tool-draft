@@ -9,6 +9,14 @@ import { FileService } from '../../../../shared/services/file.service';
 import { DestroyService } from '../../../../shared/services/destroy.service';
 import { SubheaderService } from '../../../../_metronic/partials/layout';
 
+interface numOfStar {
+  oneStar: number;
+  twoStar: number;
+  threeStar: number;
+  fourStar: number;
+  fiveStar: number;
+}
+
 @Component({
   selector: 'app-detail-employee-assessment',
   templateUrl: './detail-employee-assessment.component.html',
@@ -19,6 +27,8 @@ export class DetailEmployeeAssessmentComponent implements OnInit, AfterViewInit 
 
   listDetailEmployeeAssessment: IDetailEmployeeAssessment;
   filter: IFilter;
+  numOfStar: numOfStar;
+  isFirstGet = true;
   paginatorState = new PaginatorState();
   votes = [
     {
@@ -62,6 +72,11 @@ export class DetailEmployeeAssessmentComponent implements OnInit, AfterViewInit 
     this.setBreadcumb();
   }
 
+  setNumOfStar(data): void {
+    const { oneStar, twoStar, threeStar, fourStar, fiveStar, ...rest } = data;
+    this.numOfStar = { oneStar, twoStar, threeStar, fourStar, fiveStar };
+  }
+
   pagingChange($event: IPaginatorState): void {
     this.paginatorState = $event as PaginatorState;
     this.getListDetailEmployeeAssessment();
@@ -77,6 +92,10 @@ export class DetailEmployeeAssessmentComponent implements OnInit, AfterViewInit 
     this.employeeService.getListDetailEmployeeAssessment(params)
       .subscribe((res: DataResponse<IDetailEmployeeAssessment>): void => {
         this.listDetailEmployeeAssessment = res.data;
+        if (this.isFirstGet) {
+          this.setNumOfStar(res.data);
+          this.isFirstGet = false;
+        }
         this.paginatorState.recalculatePaginator(res.data.totalElement);
         this.cdr.detectChanges();
       })
@@ -88,6 +107,25 @@ export class DetailEmployeeAssessmentComponent implements OnInit, AfterViewInit 
       ? ({ ...this.filter, vote: vote.start }) as IFilter
       : ({ ...this.filter, vote: '' }) as IFilter;
     this.getListDetailEmployeeAssessment();
+  }
+
+  exportFileExcel(): void {
+    const params = {
+      page: this.paginatorState.page,
+      size: this.paginatorState.pageSize,
+      filter: this.filter
+    }
+
+    this.employeeService.exportExcelEmployeeAssessmentDetail(params)
+      .pipe(
+        tap((res: DataResponse<string>) => {
+          if (res) {
+            this.fileService.downloadFromUrl(res.data);
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
   setBreadcumb(): void {

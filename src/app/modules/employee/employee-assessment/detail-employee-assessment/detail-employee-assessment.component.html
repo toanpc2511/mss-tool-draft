@@ -9,15 +9,15 @@
       <div class='vote'>
         <input type="checkbox" [(ngModel)]='vote.checked' (ngModelChange)='filterByVote(vote)' />
         <div class='star-wrapper'>
-          <ng-container *ngIf='i === 0' [ngTemplateOutlet]='start1' [ngTemplateOutletContext]='{ fiveStar: listDetailEmployeeAssessment?.fiveStar }'>
+          <ng-container *ngIf='i === 0' [ngTemplateOutlet]='start1' [ngTemplateOutletContext]='{ fiveStar: numOfStar?.fiveStar }'>
           </ng-container>
-          <ng-container *ngIf='i === 1' [ngTemplateOutlet]='start2' [ngTemplateOutletContext]='{ fourStar: listDetailEmployeeAssessment?.fourStar }'>
+          <ng-container *ngIf='i === 1' [ngTemplateOutlet]='start2' [ngTemplateOutletContext]='{ fourStar: numOfStar?.fourStar }'>
           </ng-container>
-          <ng-container *ngIf='i === 2' [ngTemplateOutlet]='start3' [ngTemplateOutletContext]='{ threeStar: listDetailEmployeeAssessment?.threeStar }'>
+          <ng-container *ngIf='i === 2' [ngTemplateOutlet]='start3' [ngTemplateOutletContext]='{ threeStar: numOfStar?.threeStar }'>
           </ng-container>
-          <ng-container *ngIf='i === 3' [ngTemplateOutlet]='start4' [ngTemplateOutletContext]='{ twoStar: listDetailEmployeeAssessment?.twoStar }'>
+          <ng-container *ngIf='i === 3' [ngTemplateOutlet]='start4' [ngTemplateOutletContext]='{ twoStar: numOfStar?.twoStar }'>
           </ng-container>
-          <ng-container *ngIf='i === 4' [ngTemplateOutlet]='start5' [ngTemplateOutletContext]='{ oneStar: listDetailEmployeeAssessment?.oneStar }'>
+          <ng-container *ngIf='i === 4' [ngTemplateOutlet]='start5' [ngTemplateOutletContext]='{ oneStar: numOfStar?.oneStar }'>
           </ng-container>
         </div>
       </div>
@@ -30,7 +30,7 @@
     <div class="card-title justify-content-between w-100">
       <h3 class="card-label">Danh sách đánh giá</h3>
 
-      <button *ngIf="listDetailEmployeeAssessment?.evaluationDetails.length !== 0" class='btn btn-primary'>Xuất file</button>
+      <button *ngIf="listDetailEmployeeAssessment?.evaluationDetails.length !== 0" class='btn btn-primary' (click)='exportFileExcel()'>Xuất file</button>
     </div>
   </div>
   <div class="card-body">
@@ -55,9 +55,9 @@
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item?.date"
+              [ngbTooltip]="item?.date | date: 'dd/MM/yyyy'"
             >
-              {{ item?.date }}
+              {{ item?.date | date: 'dd/MM/yyyy' }}
             </p>
           </td>
           <td class="station-employee">
