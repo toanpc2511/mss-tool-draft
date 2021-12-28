@@ -234,6 +234,10 @@ export class EmployeeService {
     return this.http.get<IDetailEmployeeAssessment>('evaluations/detail', { params: this.createParam(params) });
   }
 
+  exportExcelEmployeeAssessmentDetail(params: IParam): Observable<DataResponse<string>> {
+    return this.http.getFileUrl<string>('evaluations/export/excels', { params: this.createParam(params)});
+  }
+
   createParam(param: IParam): HttpParams {
     return new HttpParams()
       .set('page', param.page ? param.page.toString() : '')
