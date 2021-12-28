@@ -5,7 +5,7 @@ import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
 
 export interface IUser {
-	accountId: number;
+	accountId: string;
 	code: string;
 	name: string;
 	username: string;
@@ -73,7 +73,12 @@ export class UserService {
 		return this.http.put(`accounts/${id}`, user);
 	}
 
-	deleteUser(id: number) {
+	deleteUser(id: number | string) {
 		return this.http.delete(`accounts/${id}`);
+	}
+
+	resetPassword(accountId: string) {
+    const params = new HttpParams().set('account-id', accountId);
+		return this.http.put(`accounts/passwords/reset`, params);
 	}
 }

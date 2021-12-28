@@ -144,11 +144,12 @@ export class ListUserComponent extends BaseComponent implements OnInit {
 
 		modalRef.result.then((result) => {
 			if (result) {
-				this.userService.deleteUser(user.accountId).subscribe(
+				this.userService.resetPassword(user.accountId).subscribe(
 					(res) => {
 						if (res.data) {
 							this.init();
 							this.getUsers();
+              this.toastr.success('Đặt lại mật khẩu thành công')
 						}
 					},
 					(err: IError) => {
@@ -159,7 +160,7 @@ export class ListUserComponent extends BaseComponent implements OnInit {
 		});
 	}
 
-	openUserModal(accountId?: number) {
+	openUserModal(accountId?: string) {
 		const modalRef = this.modalService.open(UserModalComponent, {
 			backdrop: 'static',
 			size: 'xl'

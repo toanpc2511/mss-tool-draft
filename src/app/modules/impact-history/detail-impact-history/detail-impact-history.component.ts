@@ -25,12 +25,6 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
     this.dataTest = [
       {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 21/11/2021'},
       {id: 1, name: 'ToanPC', action: 'Thêm sản phẩm', productName: 'A95', time: '23:05 21/11/2021'},
-      {id: 1, name: 'ToanPC', action: 'Sửa sản phẩm', productName: 'A95', time: '23:05 11/12/2021'},
-      {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 21/09/2021'},
-      {id: 1, name: 'ToanPC', action: 'Thêm sản phẩm', productName: 'A95', time: '23:05 21/11/2021'},
-      {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 25/11/2021'},
-      {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 21/11/2021'},
-      {id: 1, name: 'ToanPC', action: 'Thêm sản phẩm', productName: 'A95', time: '23:05 21/11/2021'},
     ]
   }
 
@@ -78,6 +72,17 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
 
   onSearch() {
     console.log(this.searchForm.value);
+  }
+
+  seeMore() {
+    this.dataTest.push(
+      {id: 1, name: 'ToanPC', action: 'Sửa sản phẩm', productName: 'A95', time: '23:05 11/12/2021'},
+      {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 21/09/2021'},
+      {id: 1, name: 'ToanPC', action: 'Thêm sản phẩm', productName: 'A95', time: '23:05 21/11/2021'},
+      {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 21/09/2021'},
+      {id: 1, name: 'ToanPC', action: 'Thêm sản phẩm', productName: 'A95', time: '23:05 21/11/2021'},
+      {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 21/09/2021'},
+      {id: 1, name: 'ToanPC', action: 'Thêm sản phẩm', productName: 'A95', time: '23:05 21/11/2021'})
   }
 
 }

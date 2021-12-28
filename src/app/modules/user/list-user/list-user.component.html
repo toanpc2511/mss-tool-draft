@@ -92,6 +92,19 @@
 
 						<td class="text-center action">
 							<a
+								(click)="resetPassword(item)"
+								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								*ngIf="eAuthorize.UPDATE_ACCOUNT_BUTTON|canUseFeature"
+							>
+								<span
+									[inlineSVG]="'./assets/media/svg/icons/Code/Lock-overturning.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-primary"
+									[ngbTooltip]="'Đặt lại mật khẩu'"
+								>
+								</span>
+							</a>
+							<a
 								(click)="openUserModal(item.accountId)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 								*ngIf="eAuthorize.UPDATE_ACCOUNT_BUTTON|canUseFeature"
