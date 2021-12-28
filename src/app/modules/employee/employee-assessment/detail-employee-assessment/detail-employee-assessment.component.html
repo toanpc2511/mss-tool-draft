@@ -1,7 +1,7 @@
 <div class="card card-custom gutter-b mt-1">
   <div class="card-header">
     <div class="card-title justify-content-between w-100">
-      <h3 class="card-label">Chi tiết đánh giá {{listDetailEmployeeAssessment[0]?.codeEmployee}} {{listDetailEmployeeAssessment[0]?.nameEmployee}}</h3>
+      <h3 class="card-label">Chi tiết đánh giá {{listDetailEmployeeAssessment?.codeEmployee}} {{listDetailEmployeeAssessment?.nameEmployee}}</h3>
     </div>
   </div>
   <div class="card-body list-vote">
@@ -9,12 +9,16 @@
       <div class='vote'>
         <input type="checkbox" [(ngModel)]='vote.checked' (ngModelChange)='filterByVote(vote)' />
         <div class='star-wrapper'>
-          <ng-container *ngIf='i === 0' [ngTemplateOutlet]='start1'></ng-container>
-          <ng-container *ngIf='i === 1' [ngTemplateOutlet]='start2'></ng-container>
-          <ng-container *ngIf='i === 2' [ngTemplateOutlet]='start3'></ng-container>
-          <ng-container *ngIf='i === 3' [ngTemplateOutlet]='start4'></ng-container>
-          <ng-container *ngIf='i === 4' [ngTemplateOutlet]='start5'></ng-container>
-          <p class='text-center'>( 20 )</p>
+          <ng-container *ngIf='i === 0' [ngTemplateOutlet]='start1' [ngTemplateOutletContext]='{ fiveStar: listDetailEmployeeAssessment?.fiveStar }'>
+          </ng-container>
+          <ng-container *ngIf='i === 1' [ngTemplateOutlet]='start2' [ngTemplateOutletContext]='{ fourStar: listDetailEmployeeAssessment?.fourStar }'>
+          </ng-container>
+          <ng-container *ngIf='i === 2' [ngTemplateOutlet]='start3' [ngTemplateOutletContext]='{ threeStar: listDetailEmployeeAssessment?.threeStar }'>
+          </ng-container>
+          <ng-container *ngIf='i === 3' [ngTemplateOutlet]='start4' [ngTemplateOutletContext]='{ twoStar: listDetailEmployeeAssessment?.twoStar }'>
+          </ng-container>
+          <ng-container *ngIf='i === 4' [ngTemplateOutlet]='start5' [ngTemplateOutletContext]='{ oneStar: listDetailEmployeeAssessment?.oneStar }'>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -26,7 +30,7 @@
     <div class="card-title justify-content-between w-100">
       <h3 class="card-label">Danh sách đánh giá</h3>
 
-      <button *ngIf="listDetailEmployeeAssessment?.length !== 0" class='btn btn-primary'>Xuất file</button>
+      <button *ngIf="listDetailEmployeeAssessment?.evaluationDetails.length !== 0" class='btn btn-primary'>Xuất file</button>
     </div>
   </div>
   <div class="card-body">
@@ -41,7 +45,7 @@
         </thead>
 
         <tbody>
-        <tr *ngFor="let item of listDetailEmployeeAssessment">
+        <tr *ngFor="let item of listDetailEmployeeAssessment?.evaluationDetails">
           <td class="code-employee">
             <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item?.code">
               {{ item?.code }}
@@ -78,7 +82,7 @@
         </tr>
         </tbody>
 
-        <tfoot *ngIf="listDetailEmployeeAssessment?.length === 0">
+        <tfoot *ngIf="listDetailEmployeeAssessment?.evaluationDetails.length === 0">
         <tr>
           <td colspan="10" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
         </tr>
@@ -90,7 +94,7 @@
   </div>
 </div>
 
-<ng-template #start5>
+<ng-template #start5 let-oneStar=oneStar>
   <p>
     <span class='selected-star'><em class='fas fa-star'></em></span>
     <span class='unselected-star'><em class='far fa-star'></em></span>
@@ -98,9 +102,10 @@
     <span class='unselected-star'><em class='far fa-star'></em></span>
     <span class='unselected-star'><em class='far fa-star'></em></span>
   </p>
+  <p class='text-center'>( {{oneStar}} )</p>
 </ng-template>
 
-<ng-template #start4>
+<ng-template #start4 let-twoStar=twoStar>
   <p>
     <span class='selected-star'><em class='fas fa-star'></em></span>
     <span class='selected-star'><em class='fas fa-star'></em></span>
@@ -108,9 +113,10 @@
     <span class='unselected-star'><em class='far fa-star'></em></span>
     <span class='unselected-star'><em class='far fa-star'></em></span>
   </p>
+  <p class='text-center'>( {{twoStar || 0}} )</p>
 </ng-template>
 
-<ng-template #start3>
+<ng-template #start3 let-threeStar=threeStar>
   <p>
     <span class='selected-star'><em class='fas fa-star'></em></span>
     <span class='selected-star'><em class='fas fa-star'></em></span>
@@ -118,9 +124,10 @@
     <span class='unselected-star'><em class='far fa-star'></em></span>
     <span class='unselected-star'><em class='far fa-star'></em></span>
   </p>
+  <p class='text-center'>( {{threeStar || 0}} )</p>
 </ng-template>
 
-<ng-template #start2>
+<ng-template #start2 let-fourStar=fourStar>
   <p>
     <span class='selected-star'><em class='fas fa-star'></em></span>
     <span class='selected-star'><em class='fas fa-star'></em></span>
@@ -128,9 +135,10 @@
     <span class='selected-star'><em class='fas fa-star'></em></span>
     <span class='unselected-star'><em class='far fa-star'></em></span>
   </p>
+  <p class='text-center'>( {{fourStar || 0}} )</p>
 </ng-template>
 
-<ng-template #start1>
+<ng-template #start1 let-fiveStar=fiveStar>
   <p>
     <span class='selected-star'><em class='fas fa-star'></em></span>
     <span class='selected-star'><em class='fas fa-star'></em></span>
@@ -138,4 +146,5 @@
     <span class='selected-star'><em class='fas fa-star'></em></span>
     <span class='selected-star'><em class='fas fa-star'></em></span>
   </p>
+  <p class='text-center'>( {{fiveStar || 0}} )</p>
 </ng-template>

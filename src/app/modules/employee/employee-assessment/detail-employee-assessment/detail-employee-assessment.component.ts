@@ -17,7 +17,7 @@ import { SubheaderService } from '../../../../_metronic/partials/layout';
 })
 export class DetailEmployeeAssessmentComponent implements OnInit, AfterViewInit {
 
-  listDetailEmployeeAssessment: IDetailEmployeeAssessment[] = [];
+  listDetailEmployeeAssessment: IDetailEmployeeAssessment;
   filter: IFilter;
   paginatorState = new PaginatorState();
   votes = [
@@ -75,9 +75,9 @@ export class DetailEmployeeAssessmentComponent implements OnInit, AfterViewInit 
     }
 
     this.employeeService.getListDetailEmployeeAssessment(params)
-      .subscribe((res: DataResponse<IDetailEmployeeAssessment[]>): void => {
+      .subscribe((res: DataResponse<IDetailEmployeeAssessment>): void => {
         this.listDetailEmployeeAssessment = res.data;
-        this.paginatorState.recalculatePaginator(res.meta.total);
+        this.paginatorState.recalculatePaginator(res.data.totalElement);
         this.cdr.detectChanges();
       })
   }
@@ -86,7 +86,7 @@ export class DetailEmployeeAssessmentComponent implements OnInit, AfterViewInit 
     this.votes.filter(item => item.start !== vote.start).map(item => item.checked = false);
     this.filter = vote.checked
       ? ({ ...this.filter, vote: vote.start }) as IFilter
-      : ({ ...this.filter, vote: '' }) as IFilter
+      : ({ ...this.filter, vote: '' }) as IFilter;
     this.getListDetailEmployeeAssessment();
   }
 
@@ -95,7 +95,7 @@ export class DetailEmployeeAssessmentComponent implements OnInit, AfterViewInit 
       this.subheader.setBreadcrumbs([
         {
           title: 'Quản lý nhân viên',
-          linkText: 'Quản lý nhân vien',
+          linkText: 'Quản lý nhân viên',
           linkPath: 'nhan-vien'
         },
         {
