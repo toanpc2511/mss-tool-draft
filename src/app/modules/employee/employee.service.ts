@@ -230,8 +230,8 @@ export class EmployeeService {
     return this.http.getFileUrl<string>('evaluations/filters/excels', { params: this.createParam(params)});
   }
 
-  getListDetailEmployeeAssessment(params: IParam): Observable<DataResponse<IDetailEmployeeAssessment[]>> {
-    return this.http.get<IDetailEmployeeAssessment[]>('evaluations/detail', { params: this.createParam(params) });
+  getListDetailEmployeeAssessment(params: IParam): Observable<DataResponse<IDetailEmployeeAssessment>> {
+    return this.http.get<IDetailEmployeeAssessment>('evaluations/detail', { params: this.createParam(params) });
   }
 
   createParam(param: IParam): HttpParams {
