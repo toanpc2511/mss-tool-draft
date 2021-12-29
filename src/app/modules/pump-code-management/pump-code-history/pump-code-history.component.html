@@ -1,0 +1,141 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Tìm kiếm yêu cầu đặt hàng</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="searchForm" class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Tên trạm</label>
+          <select class="form-control form-control-solid w-75" formControlName='stationName'>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Tên cột</label>
+          <select class="form-control form-control-solid w-75" formControlName="pumpPoleName">
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Thời gian từ</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #startAt="ngbDatepicker"
+              formControlName='startAt'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="startAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.controls['startAt']"
+            [error]="'ngbDate'"
+            [message]="'Ngày yêu cầu không đúng định dạng'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Ngày yêu cầu đến</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #endAt="ngbDatepicker"
+              formControlName='endAt'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="endAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="searchForm.controls['endAt']"
+            [error]="'ngbDate'"
+            [message]="'Ngày yêu cầu đến không đúng định dạng'"
+          ></app-validate>
+        </div>
+      </div>
+    </form>
+
+    <div class="form-group row py-3">
+      <button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+        <em class="fas fa-search"></em> Tìm kiếm
+      </button>
+      <button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
+    </div>
+  </div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách mã bơm</h3>
+    </div>
+
+    <div class="card-toolbar row">
+      <a (click)="exportFileExcel()">
+        <button type="button" class="btn btn-primary btn-def">Xuất file</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <tr>
+          <th scope=''>Mã trạm</th>
+          <th scope=''>Mã vòi</th>
+          <th scope=''>Mã cột</th>
+          <th scope=''>Mã bơm</th>
+          <th scope=''>Nhiên liệu</th>
+          <th scope=''>Số lít</th>
+          <th scope=''>Đơn giá</th>
+          <th scope=''>Thành tiền</th>
+          <th scope=''>Lũy kế lít</th>
+          <th scope=''>Lũy kế tiền</th>
+          <th scope=''>Giờ thiết bị</th>
+          <th scope=''>Giờ máy chủ</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+
+        <tfoot *ngIf="dataSource?.length === 0">
+        <tr>
+          <td colspan="12" class="text-center" styleq="color: #ccc">Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+  </div>
+</div>
