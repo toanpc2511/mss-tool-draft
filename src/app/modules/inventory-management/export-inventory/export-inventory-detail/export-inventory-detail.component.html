@@ -188,7 +188,7 @@
             <input
               type='text'
               class="form-control form-control-sm w-75"
-              placeholder="Nhập tên tài xế"
+              placeholder="Nhập biển kiểm soát"
               maxlength="20"
               [formControl]='licensePlatesControl'
             />
@@ -470,7 +470,7 @@
 
   <div class="py-10 w-100 d-flex justify-content-center">
     <button
-      *ngIf='dataDetail?.status !== "EXPORTED" && eAuthorize.COMPLETE_WAREHOUSE_EXPORT_BUTTON | canUseFeature'
+      *ngIf='(dataDetail?.status !== "EXPORTED" && dataDetail?.status !== "WAITING") && eAuthorize.COMPLETE_WAREHOUSE_EXPORT_BUTTON | canUseFeature'
       class="btn btn-primary mr-3 button"
       (click)='onSubmit()'
     >
