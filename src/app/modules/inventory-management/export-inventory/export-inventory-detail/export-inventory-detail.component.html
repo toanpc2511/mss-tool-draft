@@ -222,7 +222,7 @@
             <th scope=''>Ngăn</th>
             <th scope='' class='amount-actually text-right'>Số lượng</th>
             <th scope=''>Bồn xuất</th>
-            <th scope=''>Bồn nhập</th>
+            <th scope='' *ngIf='dataDetail?.autoGender'>Bồn nhập</th>
             <th scope=''>Nhiệt độ thực tế tại kho (độ C)</th>
             <th scope=''>Tâm mức thực tại kho (cm)</th>
             <th scope=''>Số chì nắp</th>
@@ -416,7 +416,7 @@
                 {{ item.get('gasFieldOutName').value}}
               </p>
             </td>
-            <td class='gas-field-in-name'>
+            <td class='gas-field-in-name' *ngIf='dataDetail?.autoGender'>
               <p
                 class="cursor-pointer text-ellipsis"
                 placement="top"

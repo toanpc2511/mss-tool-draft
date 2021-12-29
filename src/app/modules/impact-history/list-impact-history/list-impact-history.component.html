@@ -6,9 +6,9 @@
   </div>
   <div class="card-body">
     <div class='row px-3'>
-      <div class='col-lg-12 d-flex justify-content-between card-item' *ngFor='let item of listData' (click)='detailImpact(item)'>
+      <div class='col-lg-12 d-flex justify-content-between card-item' *ngFor='let item of dataSource' (click)='detailImpact(item)'>
         <div class="d-flex align-items-center">
-          <label class="m-0 font-weight-bold ">{{item.value}}</label>
+          <label class="m-0 font-weight-bold ">{{item.name}}</label>
         </div>
         <div class='icon-arrow-up'></div>
       </div>

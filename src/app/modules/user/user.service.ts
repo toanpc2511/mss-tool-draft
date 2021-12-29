@@ -78,7 +78,6 @@ export class UserService {
 	}
 
 	resetPassword(accountId: string) {
-    const params = new HttpParams().set('account-id', accountId);
-		return this.http.put(`accounts/passwords/reset`, params);
+		return this.http.put(`accounts/passwords/reset/${accountId}`, {});
 	}
 }
