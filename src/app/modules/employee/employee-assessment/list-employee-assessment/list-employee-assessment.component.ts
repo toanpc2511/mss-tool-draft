@@ -26,6 +26,7 @@ export class ListEmployeeAssessmentComponent implements OnInit {
   listEmployee: IEmployees[];
   employeeAssessment: IEmployeeAssessment;
   today: string;
+  startOfMonth: string;
   paginatorState = new PaginatorState();
 
   constructor(private fb: FormBuilder,
@@ -40,6 +41,7 @@ export class ListEmployeeAssessmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.today = moment().format('DD/MM/YYYY');
+    this.startOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.initSearchForm();
     this.getEmployee();
     this.getStationToken();
@@ -71,7 +73,7 @@ export class ListEmployeeAssessmentComponent implements OnInit {
   }
 
   initDate(): void {
-    this.searchForm.get('dateFrom').patchValue(this.today);
+    this.searchForm.get('dateFrom').patchValue(this.startOfMonth);
     this.searchForm.get('dateTo').patchValue(this.today);
   }
 
