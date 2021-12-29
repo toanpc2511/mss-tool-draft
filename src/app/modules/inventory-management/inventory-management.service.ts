@@ -321,6 +321,12 @@ export interface IExportInventoryDetail {
   representativeTakeName: string;
   internalCar: boolean;
   carMethod: string;
+  autoGender: boolean;
+  receiver: {
+    addressTake: string;
+    nameTake: string;
+    representativeTakeName: string;
+  }
   acceptor: {
     code: string;
     id: number;

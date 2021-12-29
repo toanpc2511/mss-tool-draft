@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ILogGroups, ImpactHistoryService } from '../impact-history.service';
+import { IError } from '../../../shared/models/error.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-impact-history',
@@ -7,26 +10,39 @@ import { Router } from '@angular/router';
   styleUrls: ['./list-impact-history.component.scss']
 })
 export class ListImpactHistoryComponent implements OnInit {
-  listData;
+  dataSource: ILogGroups[] = [];
 
   constructor(
     private router: Router,
+    private impactHistoryService: ImpactHistoryService,
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef,
     ) {
-    this.listData = [
-      {id: 1, value: 'Quản lý lài khoản'},
-      {id: 2, value: 'Quản lý nhân viên'},
-      {id: 3, value: 'Quản lý hợp đồng'},
-      {id: 4, value: 'Quản lý nhân viên'},
-      {id: 5, value: 'Quản lý sản phẩm'},
-      {id: 6, value: 'Lịch sử sử dụng điểm'},
-    ]
+    this.dataSource = [];
   }
 
   ngOnInit(): void {
+    this.getLogGroups();
   }
 
-  detailImpact(item: {id: number, value: string}) {
-    this.router.navigate([`/lich-su-tac-dong/chi-tiet/${item.id}`]);
+  getLogGroups() {
+    this.impactHistoryService.getLogGroups()
+      .subscribe((res) => {
+        if (res) {
+          this.dataSource = res.data;
+          this.cdr.detectChanges();
+        }
+      },(err: IError) => {
+        this.checkError(err);
+      })
+  }
+
+  detailImpact(item: ILogGroups) {
+    this.router.navigate([`/lich-su-tac-dong/chi-tiet/${item.code}`]);
+  }
+
+  checkError(error: IError) {
+    this.toastr.error(error.code)
   }
 
 }

@@ -135,7 +135,7 @@ export class ImportingInventoryDetailComponent extends BaseComponent implements 
   }
 
   initFormValue(): void {
-    this.importInventoryDetailForm.controls['nameDriver'].patchValue(this.dataSource?.driver.name);
+    this.importInventoryDetailForm.controls['nameDriver'].patchValue(this.dataSource?.driver?.name || '');
     this.importInventoryDetailForm.controls['licensePlates'].patchValue(this.dataSource?.licensePlates);
 
     this.setValidate();
