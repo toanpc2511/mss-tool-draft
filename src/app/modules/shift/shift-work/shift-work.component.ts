@@ -55,11 +55,11 @@ import { EmployeeCheck } from './employee/employee.component';
 		>
 			<div class="event-container">
         <div class="month-title">
-          <span class='text-warning star' *ngIf='eventData.extendedProps.status === "SWAPPED" || eventData.extendedProps.status === "REPLACED"'>* </span>
+          <span class='text-warning star' *ngIf='eventData.extendedProps.status === "SWAPPED" || eventData.extendedProps.status === "REPLACED"'><em class='fas fa-user-tag'></em> </span>
           <span class=''> {{ eventData.title }}</span>
         </div>
         <div class="week-title">
-          <span class='text-warning star' *ngIf='eventData.extendedProps.status === "SWAPPED" || eventData.extendedProps.status === "REPLACED"'>* </span>
+          <span class='text-warning star' *ngIf='eventData.extendedProps.status === "SWAPPED" || eventData.extendedProps.status === "REPLACED"'><em class='fas fa-user-tag'></em> </span>
           <span>{{ eventData.extendedProps.weekTitle }}</span>
         </div>
 				<span class="week-content">{{ eventData.extendedProps.weekContent }}</span>
