@@ -57,6 +57,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		month: this.currentDate.getMonth() + 1,
 		year: this.currentDate.getFullYear()
 	};
+  minDate: NgbDateStruct = { year: new Date().getUTCFullYear() - 100, month: 12, day: 31 };
 
 	eFace = EFace;
 	eSex = ESex;
@@ -144,6 +145,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 					if (this.employeeId) {
 						this.isUpdate = true;
 						this.maxDate = null;
+            this.minDate = null;
 						this.setBreadcumb();
 						return this.employeeService.getEmployeeById(id);
 					}
