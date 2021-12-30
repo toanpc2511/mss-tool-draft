@@ -47,7 +47,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 		series: [],
 		chart: {
 			height: 400,
-			width: '100%',
 			type: 'line',
 			zoom: {
 				enabled: false
