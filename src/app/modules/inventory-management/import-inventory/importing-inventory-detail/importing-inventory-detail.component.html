@@ -67,7 +67,7 @@
             </div>
 
             <div class="col-lg-7" *ngIf='!status || status && dataSource?.carMethod !== "SUPPLIER"'>
-                <label class="form-label font-weight-bold">{{ dataSource?.driver.name }}</label>
+                <label class="form-label font-weight-bold">{{ dataSource?.driver?.name }}</label>
             </div>
 
               <div *ngIf='status && dataSource?.carMethod === "SUPPLIER"' class="col-lg-7">
@@ -124,7 +124,7 @@
             </div>
 
             <div class="col-lg-7" *ngIf='!status || status && dataSource?.carMethod !== "SUPPLIER"'>
-              <label class="form-label font-weight-bold">{{ dataSource?.driver.name }}</label>
+              <label class="form-label font-weight-bold">{{ dataSource?.driver?.name }}</label>
             </div>
 
               <div *ngIf='status && dataSource?.carMethod === "SUPPLIER"' class="col-lg-7">
@@ -548,7 +548,7 @@
       Hoàn thành
     </button>
     <button
-      *ngIf='!status && eAuthorize.EXPORT_FILE_WORD_WAREHOUSE_IMPORT'
+      *ngIf='!status && (dataSource?.status !== "WAITING") && eAuthorize.EXPORT_FILE_WORD_WAREHOUSE_IMPORT'
       class="btn btn-primary mr-3 button"
       (click)='exportFile()'
     >

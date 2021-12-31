@@ -1,7 +1,12 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SubheaderService } from '../../../_metronic/partials/layout';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
+import { DestroyService } from '../../../shared/services/destroy.service';
+import { ContractService, IContract, ISortData } from '../../contract/contract.service';
+import { IError } from '../../../shared/models/error.model';
+import { PaginatorState } from '../../../_metronic/shared/crud-table';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-detail-impact-history',
@@ -15,26 +20,72 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
   today: string;
   firstDayOfMonth: string;
   dataTest;
+  dataSource: Array<IContract> = [];
+  sortData: ISortData;
+  paginatorState = new PaginatorState();
+  totalRemain: number;
 
   constructor(
     private subheader: SubheaderService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private contractService:  ContractService,
+    private destroy$: DestroyService,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
     ) {
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
-    this.dataTest = [
-      {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 21/11/2021'},
-      {id: 1, name: 'ToanPC', action: 'Thêm sản phẩm', productName: 'A95', time: '23:05 21/11/2021'},
-    ]
+    this.dataSource = []
+    this.dataTest = []
+    this.totalRemain = 0;
   }
 
   ngOnInit(): void {
     this.buildFormSearch();
     this.initDate();
+    this.init();
+    this.getStationToken();
+  }
+
+  init() {
+    this.paginatorState.page = 1;
+    this.paginatorState.pageSize = 1;
+    this.sortData = null;
   }
 
   ngAfterViewInit(): void {
     this.setBreadcumb();
+  }
+
+  getStationToken() {
+    this.contractService
+      .getListContract(
+        this.paginatorState.page,
+        this.paginatorState.pageSize,
+        '',
+        this.sortData
+      )
+      .subscribe(
+        (res) => {
+          if (res.data) {
+            res.data.map((x) => {
+              this.dataTest.push(x);
+            });
+
+            this.paginatorState.recalculatePaginator(res.meta.total);
+
+            this.totalRemain = res.meta.total - this.dataTest.length;
+            this.cdr.detectChanges();
+          }
+        },
+        (err: IError) => {
+          this.checkError(err);
+        }
+      );
+  }
+
+  checkError(e: IError) {
+
   }
 
   setBreadcumb() {
@@ -74,15 +125,13 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
     console.log(this.searchForm.value);
   }
 
-  seeMore() {
-    this.dataTest.push(
-      {id: 1, name: 'ToanPC', action: 'Sửa sản phẩm', productName: 'A95', time: '23:05 11/12/2021'},
-      {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 21/09/2021'},
-      {id: 1, name: 'ToanPC', action: 'Thêm sản phẩm', productName: 'A95', time: '23:05 21/11/2021'},
-      {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 21/09/2021'},
-      {id: 1, name: 'ToanPC', action: 'Thêm sản phẩm', productName: 'A95', time: '23:05 21/11/2021'},
-      {id: 1, name: 'ToanPC', action: 'Xóa sản phẩm', productName: 'Ron95', time: '23:05 21/09/2021'},
-      {id: 1, name: 'ToanPC', action: 'Thêm sản phẩm', productName: 'A95', time: '23:05 21/11/2021'})
+  showMore() {
+    this.paginatorState.page++;
+    this.getStationToken();
+  }
+
+  onBack() {
+    this.router.navigate(['/lich-su-tac-dong/danh-sach']);
   }
 
 }
