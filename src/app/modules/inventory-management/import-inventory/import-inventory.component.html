@@ -85,8 +85,8 @@
           <label>Trạng thái</label>
           <select class="form-control form-control-solid w-75" formControlName='status'>
             <option [value]="''">Tất cả</option>
-            <option [value]="listStatus.ENTERED">Đã nhập</option>
-            <option [value]="listStatus.NOT_ENTER">Chưa nhập</option>
+            <option [value]="listStatus.ENTERED">Đã nhập kho</option>
+            <option [value]="listStatus.NOT_ENTER">Chưa nhập kho</option>
           </select>
         </div>
 
@@ -213,8 +213,8 @@
                 [class.label-light-success]="item.status === listStatus.ENTERED"
                 [class.label-light-warning]="item.status === listStatus.NOT_ENTER"
               >
-								<ng-container *ngIf="item.status === listStatus.ENTERED">Đã nhập</ng-container>
-								<ng-container *ngIf="item.status === listStatus.NOT_ENTER">Chưa nhập</ng-container>
+								<ng-container *ngIf="item.status === listStatus.ENTERED">Đã nhập kho</ng-container>
+								<ng-container *ngIf="item.status === listStatus.NOT_ENTER">Chưa nhập kho</ng-container>
 								<ng-container *ngIf="item.status === listStatus.WAITING">Tạm dừng</ng-container>
 							</span>
           </td>
