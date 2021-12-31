@@ -95,17 +95,22 @@
         <div class='content-activity'>
           <div class='info-impact form-inline'>
             <p class='font-weight-bold mx-5'>{{item.name}}</p>
-            <p class=''>{{item.action}} <strong> {{item.productName}}</strong></p>
+            <p class=''>{{item.status}} <strong> {{item.code}}</strong></p>
           </div>
           <div class='time-impact mx-5 pt-5'>
-            <p>{{item.time}}</p>
+            <p>{{item.createdAt | date:'HH:mm - dd/MM/yyyy'}}</p>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="py-10 w-100 d-flex justify-content-center">
-      <button type="button" class="btn btn-outline-secondary w-100" (click)="seeMore()">Xem thêm</button>
+    <div class="py-10 w-100 d-flex justify-content-center" *ngIf='totalRemain > 0 else btnBack'>
+      <button type="button" class="btn btn-outline-secondary text-muted w-100" (click)="showMore()">Xem thêm ( {{totalRemain}} )</button>
     </div>
+    <ng-template #btnBack>
+      <div class="py-10 w-100 d-flex justify-content-center">
+        <button type="button" class="btn btn-primary w-100" (click)="onBack()">Quay lại</button>
+      </div>
+    </ng-template>
   </div>
 </div>
