@@ -18,4 +18,139 @@
 			[colors]="chartOptions.colors"
 		></apx-chart>
 	</div>
+
+  <div class="tracking-price-chart w-100">
+    <form class='filter row justify-content-between w-100 px-5' [formGroup]='searchForm'>
+      <div class="col-lg-3 radio-inline radio-custom">
+        <label>
+          <input type="radio" value='DAY' name="type" formControlName='type' (change)='changeType()'/>
+          <div>Ngày</div>
+        </label>
+        <label>
+          <input type="radio" value='MONTH' name="type" formControlName='type' (change)='changeType()'/>
+          <div>Tháng</div>
+        </label>
+        <label>
+          <input type="radio" value='YEAR' name="type" formControlName='type' (change)='changeType()'/>
+          <div>Năm</div>
+        </label>
+      </div>
+
+      <div class='col-lg-9 row justify-content-between'>
+        <div class="col-lg-4 row">
+          <div class="col-12 d-flex align-items-center justify-content-between">
+            <label>Thời gian từ</label>
+
+            <div class="input-group w-75">
+              <input
+                class="form-control form-control-solid"
+                placeholder="DD/MM/YYYY"
+                ngbDatepicker
+                #startAt="ngbDatepicker"
+                formControlName='startDate'
+                [disabledControl]="searchForm.controls['type'].value === 'YEAR'"
+                (ngModelChange)='search()'
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary fa fa-calendar-alt"
+                  (click)="startAt.toggle()"
+                  type="button"
+                ></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <app-validate
+              [control]="searchForm.controls['startDate']"
+              [error]="'errorDate'"
+              [message]="'Thời gian từ ngày không lớn hơn thời gian đến ngày'"
+            ></app-validate>
+
+            <app-validate
+              [control]="searchForm.controls['startDate']"
+              [error]="'errDateRange'"
+              [message]="'Khoảng thời gian từ 30 ngày hoặc 12 tháng'"
+            ></app-validate>
+
+            <app-validate
+              [control]="searchForm.controls['startDate']"
+              [error]="'ngbDate'"
+              [message]="'Ngày không đúng định dạng'"
+            ></app-validate>
+          </div>
+        </div>
+
+        <div class="col-lg-4 row">
+          <div class="col-12 d-flex align-items-center justify-content-between">
+            <label>Đến</label>
+
+            <div class="input-group w-75">
+              <input
+                class="form-control form-control-solid"
+                placeholder="DD/MM/YYYY"
+                ngbDatepicker
+                #endAt="ngbDatepicker"
+                formControlName='endDate'
+                [disabledControl]="searchForm.controls['type'].value === 'YEAR'"
+                (ngModelChange)='search()'
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary fa fa-calendar-alt"
+                  (click)="endAt.toggle()"
+                  type="button"
+                ></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <app-validate
+              [control]="searchForm.controls['endDate']"
+              [error]="'errorDate'"
+              [message]="'Thời gian từ ngày không lớn hơn thời gian đến ngày'"
+            ></app-validate>
+
+            <app-validate
+              [control]="searchForm.controls['endDate']"
+              [error]="'errDateRange'"
+              [message]="'Khoảng thời gian từ 30 ngày hoặc 12 tháng'"
+            ></app-validate>
+
+            <app-validate
+              [control]="searchForm.controls['endDate']"
+              [error]="'ngbDate'"
+              [message]="'Ngày không đúng định dạng'"
+            ></app-validate>
+          </div>
+        </div>
+
+        <div class="col-lg-4 d-flex align-items-center justify-content-between">
+          <label class='mr-5 mt-2'>Trạm</label>
+          <select class="form-control form-control-solid ml-5" formControlName='stationId' (ngModelChange)='search()'>
+            <option [value]="''">Tất cả</option>
+            <option *ngFor='let station of listStationByToken' [value]="station.id">{{station.name}}</option>
+          </select>
+        </div>
+      </div>
+    </form>
+    <apx-chart
+      #quantityChart
+      style='display: inline-block; width: 100%'
+      [series]="quantityChartOptions.series"
+      [chart]="quantityChartOptions.chart"
+      [xaxis]="quantityChartOptions.xaxis"
+      [yaxis]="quantityChartOptions.yaxis"
+      [dataLabels]="quantityChartOptions.dataLabels"
+      [grid]="quantityChartOptions.grid"
+      [stroke]="quantityChartOptions.stroke"
+      [title]="quantityChartOptions.title"
+      [legend]="quantityChartOptions.legend"
+      [markers]="quantityChartOptions.marker"
+      [tooltip]="quantityChartOptions.tooltip"
+      [colors]="quantityChartOptions.colors"
+    ></apx-chart>
+  </div>
 </div>

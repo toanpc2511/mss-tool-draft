@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { HttpService } from './../../shared/services/http.service';
+import { HttpParams } from '@angular/common/http';
+import { convertDateToServer } from '../../shared/helpers/functions';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 
 export interface ITrackingPrice {
 	product: {
@@ -20,12 +23,38 @@ export interface ITrackingPrice {
 	}[];
 }
 
-export interface ISerieTrackingPriceData {
+export interface IListTrackingQuantity {
+  productName: string;
+  trackingQuantity: ITrackingQuantity[];
+}
+
+export interface ITrackingQuantity {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  stationCode: string;
+  productName: string;
+  productId: number;
+  date: string;
+  year: string;
+  month: string;
+  yearMonth: string;
+  literal: number;
+}
+
+export interface ISeriesTrackingData {
 	name: string;
 	data: {
 		x: string;
 		y: number;
 	}[];
+}
+
+export interface IFilter {
+  startDate?: string,
+  endDate?: string,
+  stationId?: string
+  type?: string;
 }
 
 @Injectable({
@@ -37,12 +66,40 @@ export class DashboardService {
 	getTrackingPriceData() {
 		return this.http
 			.get<ITrackingPrice[]>(`tracking-price`)
-			.pipe(switchMap((res) => of(this.convertToChartData(res.data))));
+			.pipe(
+        switchMap((res) => of(this.convertToChartData(res.data)))
+      );
 	}
 
+  getTrackingQuantityData(filter: IFilter) {
+    const params = this.createParam(filter);
+    return this.http
+      .get<IListTrackingQuantity[]>(`tracking-quantities/charts`, {params})
+      .pipe(
+        switchMap((res: DataResponse<IListTrackingQuantity[]>) => of(this.convertToQuantityChartData(res.data, filter.type)))
+      );
+  }
+
+  convertToQuantityChartData(data: IListTrackingQuantity[], type: string): ISeriesTrackingData[] {
+    return data.map((listQuantity: IListTrackingQuantity) => {
+      return {
+        name: listQuantity.productName,
+        data: listQuantity.trackingQuantity
+          .map((quantity: ITrackingQuantity) => {
+            const xy: { x: string; y: number } = {
+              x: type === 'DAY' ? moment(quantity.date).format('DD/MM/YYYY') : type === 'MONTH' ? moment(quantity.yearMonth).format('MM/YYYY') : quantity.year,
+              y: quantity.literal
+            };
+            return xy;
+          })
+          .reverse()
+      };
+    });
+  }
+
 	private convertToChartData(data: ITrackingPrice[]) {
-		const series: ISerieTrackingPriceData[] = data.map((tp) => {
-			const serie: ISerieTrackingPriceData = {
+		const series: ISeriesTrackingData[] = data.map((tp) => {
+			const serie: ISeriesTrackingData = {
 				name: tp.product.name,
 				data: tp.trackingPrices
 					.map((d) => {
@@ -58,4 +115,12 @@ export class DashboardService {
 		});
 		return series;
 	}
+
+  createParam(filter: IFilter): HttpParams {
+    return new HttpParams()
+      .set('date-from', convertDateToServer(filter.startDate))
+      .set('date-to', convertDateToServer(filter.endDate))
+      .set('station', filter.stationId || '')
+      .set('type', filter.type || '');
+  }
 }
