@@ -244,8 +244,8 @@ export class EmployeeService {
       .set('size', param.size ? param?.size.toString() : '')
       .set('date-from', convertDateToServer(param.filter.dateFrom))
       .set('date-to', convertDateToServer(param.filter.dateTo))
-      .set('employee-id', param.filter.employeeId || '')
-      .set('station-id', param.filter.stationId || '')
+      .set('employee-id', param.filter.employeeId ? param.filter.employeeId : '')
+      .set('station-id', param.filter.stationId ? param.filter.stationId : '')
       .set('vote', param.filter.vote || '')
   }
 }
