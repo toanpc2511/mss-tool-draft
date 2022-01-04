@@ -13,9 +13,9 @@
           <label>Tên trạm</label>
           <select class="form-control form-control-solid w-75"
                   formControlName='stationId'
-                  (change)='getEmployeeByStation()'
+                  (change)='getEmployeeByStation($event)'
           >
-            <option [value]="null">Tất cả</option>
+            <option [value]="''">Tất cả</option>
             <option *ngFor="let station of listStationByToken" [value]="station.id">{{station.name}}</option>
           </select>
         </div>
@@ -23,7 +23,7 @@
         <div class="col-lg-6">
           <label>Tên nhân viên</label>
           <select class="form-control form-control-solid w-75" formControlName='employeeId'>
-            <option [value]="null">Tất cả</option>
+            <option [value]="''">Tất cả</option>
             <option *ngFor="let employee of listEmployee" [value]="employee.id">{{employee.code}} - {{employee.name}}</option>
           </select>
         </div>

@@ -50,8 +50,8 @@ export class ListEmployeeAssessmentComponent implements OnInit {
 
   initSearchForm(): void {
     this.searchForm = this.fb.group({
-      stationId: [null],
-      employeeId: [null],
+      stationId: [''],
+      employeeId: [''],
       dateFrom: [null],
       dateTo: [null],
     });
@@ -117,11 +117,16 @@ export class ListEmployeeAssessmentComponent implements OnInit {
       });
   }
 
-  getEmployeeByStation() {
-    this.shiftService.getEmployeesByStation(this.searchForm.get('stationId').value).subscribe((res: DataResponse<IEmployees[]>): void => {
-      this.listEmployee = res.data;
-      this.cdr.detectChanges();
-    });
+  getEmployeeByStation(event): void {
+    if (event.target.value) {
+      this.shiftService.getEmployeesByStation(this.searchForm.get('stationId').value).subscribe((res: DataResponse<IEmployees[]>): void => {
+        this.listEmployee = res.data;
+        this.cdr.detectChanges();
+      });
+      return;
+    }
+
+    this.getEmployee();
   }
 
   getEmployee(): void {

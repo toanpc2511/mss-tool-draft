@@ -111,8 +111,6 @@ export class DetailEmployeeAssessmentComponent implements OnInit, AfterViewInit 
 
   exportFileExcel(): void {
     const params = {
-      page: this.paginatorState.page,
-      size: this.paginatorState.pageSize,
       filter: this.filter
     }
 
