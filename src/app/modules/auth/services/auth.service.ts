@@ -175,4 +175,8 @@ export class AuthService {
   authenticationOtps(dataReq) {
     return this.http.post('accounts/authentication/otps', dataReq);
   }
+
+  changePasswork(dataReq) {
+    return this.http.put('accounts/passwords/changers', dataReq);
+  }
 }
