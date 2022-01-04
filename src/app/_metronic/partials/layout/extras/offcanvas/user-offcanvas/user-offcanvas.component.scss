@@ -15,3 +15,21 @@
 .switch.switch-primary:not(.switch-outline) input:checked ~ span:before {
   background-color: #3699FF !important;
 }
+
+.password-wrapper {
+  form {
+    input {
+      padding-right: 50px !important;
+    }
+    em {
+      color: #b5b5c3;
+      position: absolute;
+      top: 24%;
+      right: 14px;
+      cursor: pointer;
+      &:hover {
+        color: #3f4254;
+      }
+    }
+  }
+}

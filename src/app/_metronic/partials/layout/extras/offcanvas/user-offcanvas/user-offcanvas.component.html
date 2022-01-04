@@ -65,6 +65,12 @@
             <strong>{{ _user.accountAuth?.profile?.email }}</strong>
           </div>
         </div>
+        <div class='row py-3'>
+          <div class='col-lg-5'>Mật khẩu</div>
+          <div class='col-lg-7'>
+            <a class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5 cursor-pointer" (click)="showChangePassworkModal($event)">Đổi mật khẩu</a>
+          </div>
+        </div>
         <div class="form-group row align-items-center py-3">
           <label class="col-5 col-form-label">Xác thực 2 bước</label>
           <div class="col-7 d-flex justify-content-start">
@@ -82,3 +88,127 @@
     </div>
   </ng-container>
 </div>
+
+<ng-template #changePasswork>
+  <div class="modal-header">
+    <h4 class="modal-title">Đổi mật khẩu</h4>
+  </div>
+  <div class="modal-body password-wrapper">
+    <form [formGroup]='changPasswordForm'>
+      <div class="form-group">
+        <div class="d-flex justify-content-between mt-n5">
+          <label class="font-size-h6 font-weight-bolder text-dark pt-5">Mật khẩu cũ</label>
+        </div>
+        <div class="position-relative">
+          <input
+            placeholder="Nhập mật khẩu cũ"
+            class="form-control form-control-solid h-auto"
+            [type]="isShowPasswordStatus ? 'text' : 'password'"
+            autocomplete="off"
+            formControlName="passwordOld"
+            (input)="onInputPassword($event)"
+            (keydown.space)="$event.preventDefault()"
+            maxlength="32"
+          />
+          <div [ngTemplateOutlet]='eye'></div>
+        </div>
+        <app-validate
+          [control]="changPasswordForm.controls['passwordOld']"
+          [error]="'required'"
+          [message]="'Mật khẩu cũ không được để trống'"
+        ></app-validate>
+        <app-validate
+          [control]="changPasswordForm.controls['passwordOld']"
+          [error]="'wrongOldPassword'"
+          [message]="'Mật khẩu cũ không đúng'"
+        ></app-validate>
+      </div>
+
+      <div class="form-group">
+        <div class="d-flex justify-content-between mt-n5">
+          <label class="font-size-h6 font-weight-bolder text-dark pt-5">Mật khẩu mới</label>
+        </div>
+        <div class="position-relative">
+          <input
+            placeholder="Nhập mật khẩu mới"
+            class="form-control form-control-solid h-auto"
+            [type]="isShowPasswordStatus ? 'text' : 'password'"
+            autocomplete="off"
+            formControlName="passwordNew"
+            (input)="onInputPassword($event)"
+            (keydown.space)="$event.preventDefault()"
+            maxlength="32"
+          />
+        </div>
+        <app-validate
+          [control]="changPasswordForm.controls['passwordNew']"
+          [error]="'required'"
+          [message]="'Mật khẩu mới không được để trống'"
+        ></app-validate>
+        <app-validate
+          [control]="changPasswordForm.controls['passwordNew']"
+          [error]="'pattern'"
+          [message]="'Mật khẩu mới không đúng định dạng'"
+        ></app-validate>
+      </div>
+
+      <div class="form-group">
+        <div class="d-flex justify-content-between mt-n5">
+          <label class="font-size-h6 font-weight-bolder text-dark pt-5">Nhập lại mật khẩu mới</label>
+        </div>
+        <div class="position-relative">
+          <input
+            placeholder="Nhập lại mật khẩu mới"
+            class="form-control form-control-solid h-auto"
+            [type]="isShowPasswordStatus ? 'text' : 'password'"
+            autocomplete="off"
+            formControlName="repeatPassword"
+            (input)="onInputPassword($event)"
+            (keydown.space)="$event.preventDefault()"
+            maxlength="32"
+          />
+        </div>
+        <app-validate
+          [control]="changPasswordForm.controls['repeatPassword']"
+          [error]="'required'"
+          [message]="'Mật khẩu nhập lại không được để trống'"
+        ></app-validate>
+        <app-validate
+          [control]="changPasswordForm.controls['repeatPassword']"
+          [error]="'incorrectPassword'"
+          [message]="'Mật khẩu xác nhận không khớp'"
+        ></app-validate>
+        <app-validate
+          [control]="changPasswordForm.controls['repeatPassword']"
+          [error]="'pattern'"
+          [message]="'Mật khẩu xác nhận không đúng định dạng'"
+        ></app-validate>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)='activeModal.close(false)'
+    >
+      Hủy
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)='confirmChangePassword()'
+    >
+      Xác nhận
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #eye>
+  <em
+    (click)="changeShowPasswordStatus()"
+    class="icon-lg-xl fa"
+    [class.fa-eye]="!isShowPasswordStatus"
+    [class.fa-eye-slash]="isShowPasswordStatus"
+  ></em>
+</ng-template>

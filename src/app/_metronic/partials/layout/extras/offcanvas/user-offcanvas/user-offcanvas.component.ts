@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
@@ -9,16 +9,21 @@ import { AuthService, UserModel } from 'src/app/modules/auth/services/auth.servi
 import { TwoFactorComponent } from 'src/app/shared/components/two-factor/two-factor.component';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { LayoutService } from '../../../../../core';
+import { IError } from '../../../../../../shared/models/error.model';
+import { TValidators } from '../../../../../../shared/validators';
 @Component({
 	selector: 'app-user-offcanvas',
 	templateUrl: './user-offcanvas.component.html',
 	styleUrls: ['./user-offcanvas.component.scss'],
-	providers: [DestroyService]
+	providers: [DestroyService, NgbActiveModal, FormBuilder]
 })
 export class UserOffcanvasComponent implements OnInit {
 	extrasUserOffcanvasDirection = 'offcanvas-right';
 	user$: Observable<UserModel>;
 	enableTwoAuthStepControl = new FormControl();
+  changPasswordForm: FormGroup;
+  isShowPasswordStatus = false;
+  @ViewChild('changePasswork') changePassworkModal: TemplateRef<any>;
 
 	activeModal: NgbActiveModal;
 	constructor(
@@ -28,11 +33,19 @@ export class UserOffcanvasComponent implements OnInit {
 		private toastr: ToastrService,
 		private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
+    private fb: FormBuilder
 	) {
     this.user$ = this.auth.currentUser$;
     this.user$.subscribe((x) => {
       this.enableTwoAuthStepControl.patchValue(x?.accountAuth.otp);
-    })
+    });
+
+    this.modalService.activeInstances
+      .pipe(
+        tap((modalRefs) => (this.activeModal = modalRefs[0])),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
 	ngOnInit(): void {
@@ -50,6 +63,14 @@ export class UserOffcanvasComponent implements OnInit {
 		// 	)
 		// 	.subscribe();
 	}
+
+  buildFormChangePass() {
+    this.changPasswordForm = this.fb.group({
+      passwordOld: ['', Validators.required],
+      passwordNew: ['', [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]],
+      repeatPassword: ['', [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]],
+    })
+  }
 
 	openModal() {
 		const modalRef = this.modalService.open(TwoFactorComponent, {
@@ -75,4 +96,49 @@ export class UserOffcanvasComponent implements OnInit {
 	logout() {
 		this.auth.logout().subscribe();
 	}
+
+  changeShowPasswordStatus() {
+    this.isShowPasswordStatus = !this.isShowPasswordStatus;
+  }
+
+  onInputPassword($event: Event) {
+    const element = $event.target as HTMLInputElement;
+    element.value = element.value.replace(/ /g, '');
+  }
+
+  showChangePassworkModal($event) {
+    $event.stopPropagation();
+    this.buildFormChangePass();
+    this.modalService.open(this.changePassworkModal, {
+      size: 'xs',
+      backdrop: 'static'
+    });
+  }
+
+  confirmChangePassword() {
+    this.changPasswordForm.markAllAsTouched();
+    if (this.changPasswordForm.invalid) {
+      return;
+    }
+
+    this.auth.changePasswork(this.changPasswordForm.value)
+      .subscribe((res) => {
+        if (res) {
+          this.toastr.success('Đổi mật khẩu thành công!');
+          this.activeModal.close(false);
+          this.auth.logout().subscribe();
+        }
+      },(err: IError) => this.checkError(err))
+  }
+
+  checkError(error: IError) {
+    if (error.code === 'SUN-OIL-4952') {
+      this.toastr.error('Mật khẩu xác nhận không khớp!');
+      this.changPasswordForm.get('repeatPassword').setErrors({ incorrectPassword: true });
+    }
+    if (error.code === 'SUN-OIL-4953' ||  error.code === 'SUN-OIL-4002') {
+      this.toastr.error('Mật khẩu cũ không đúng');
+      this.changPasswordForm.get('passwordOld').setErrors({ wrongOldPassword: true });
+    }
+  }
 }
