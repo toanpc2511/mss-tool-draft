@@ -148,7 +148,7 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 		const totalFinalInventory = valueHeadInventory + valueImport - valueExport;
 		const totalMoney = valueExport * price;
 
-    this.dataSourceTemp.filter(x => x.id === id).map(x => {
+    this.dataSourceTemp.filter(x => x.id === id).map(x =>  {
       x.finalInventory = totalFinalInventory;
       x.exportQuantity = valueExport;
       x.importQuantity = valueImport;
@@ -156,11 +156,17 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
       x.headInventory = valueHeadInventory;
     });
 
-    this.dataSourceForm.patchValue(this.dataSourceTemp);
+    this.dataSourceForm.at(index).patchValue({
+      finalInventory: totalFinalInventory,
+      exportQuantity: valueExport,
+      importQuantity: valueImport,
+      totalMoney: totalMoney,
+      headInventory: valueHeadInventory,
+    });
 	}
 
 	onSubmit() {
-    this.dataSourceForm.patchValue(this.dataSourceTemp);
+    this.dataSourceForm = this.convertToFormArray(this.dataSourceTemp);
 		this.dataSourceForm.markAllAsTouched();
 		if (this.dataSourceForm.invalid) {
 			return null;
