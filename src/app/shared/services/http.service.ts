@@ -166,7 +166,7 @@ export class HttpService {
 	}
 
 	postUpload<T>(url: string, body: any, type: EFileType): Observable<DataResponse<T>> {
-		const params = new HttpParams().set('type', type).set('callApiType', 'background');
+		const params = new HttpParams().set('type', type).set('callApiType', '');
 		const request = new HttpRequest('POST', url, body, {
 			reportProgress: true,
 			responseType: 'json',

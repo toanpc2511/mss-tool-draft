@@ -94,8 +94,8 @@
 						<option [value]="eStatus.ADJUST">Yêu cầu điều chỉnh</option>
 						<option [value]="eStatus.SWAP">Yêu cầu thay đổi</option>
 						<option [value]="eStatus.LOCK">Tạm dừng</option>
-						<option [value]="eStatus.IMPORTED">Đã nhập</option>
-						<option [value]="eStatus.EXPORTED">Đã xuất</option>
+						<option [value]="eStatus.IMPORTED">Đã nhập kho</option>
+						<option [value]="eStatus.EXPORTED">Đã xuất kho</option>
 					</select>
 				</div>
 			</div>
@@ -202,8 +202,8 @@
 								<ng-container *ngIf="item.status === eStatus.ADJUST">Yêu cầu điều chỉnh</ng-container>
 								<ng-container *ngIf="item.status === eStatus.SWAP">Yêu cầu thay đổi</ng-container>
 								<ng-container *ngIf="item.status === eStatus.LOCK">Tạm dừng</ng-container>
-								<ng-container *ngIf="item.status === eStatus.IMPORTED">Đã nhập</ng-container>
-								<ng-container *ngIf="item.status === eStatus.EXPORTED">Đã xuất</ng-container>
+								<ng-container *ngIf="item.status === eStatus.IMPORTED">Đã nhập kho</ng-container>
+								<ng-container *ngIf="item.status === eStatus.EXPORTED">Đã xuất kho</ng-container>
 							</span>
 						</td>
             <td class='icon-check text-center'>

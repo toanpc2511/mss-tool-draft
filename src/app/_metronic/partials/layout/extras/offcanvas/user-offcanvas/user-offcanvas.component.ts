@@ -10,7 +10,7 @@ import { TwoFactorComponent } from 'src/app/shared/components/two-factor/two-fac
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { LayoutService } from '../../../../../core';
 import { IError } from '../../../../../../shared/models/error.model';
-import { TValidators } from '../../../../../../shared/validators';
+
 @Component({
 	selector: 'app-user-offcanvas',
 	templateUrl: './user-offcanvas.component.html',
@@ -22,7 +22,7 @@ export class UserOffcanvasComponent implements OnInit {
 	user$: Observable<UserModel>;
 	enableTwoAuthStepControl = new FormControl();
   changPasswordForm: FormGroup;
-  isShowPasswordStatus = false;
+  isShowPasswordStatus: boolean;
   @ViewChild('changePasswork') changePassworkModal: TemplateRef<any>;
 
 	activeModal: NgbActiveModal;
@@ -62,14 +62,26 @@ export class UserOffcanvasComponent implements OnInit {
 		// 		}, takeUntil(this.destroy$))
 		// 	)
 		// 	.subscribe();
+
+    this.buildFormChangePass();
+    this.handleShowPassword();
 	}
 
   buildFormChangePass() {
     this.changPasswordForm = this.fb.group({
       passwordOld: ['', Validators.required],
-      passwordNew: ['', [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]],
-      repeatPassword: ['', [Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]],
+      passwordNew: ['', Validators.required],
+      repeatPassword: ['', Validators.required],
+      showPassword: [false]
     })
+    this.isShowPasswordStatus = this.changPasswordForm?.get('showPassword').value;
+  }
+
+  handleShowPassword() {
+    this.changPasswordForm?.get('showPassword').valueChanges
+      .subscribe((value) => {
+        this.isShowPasswordStatus = value;
+      })
   }
 
 	openModal() {
@@ -108,7 +120,7 @@ export class UserOffcanvasComponent implements OnInit {
 
   showChangePassworkModal($event) {
     $event.stopPropagation();
-    this.buildFormChangePass();
+    this.changPasswordForm.reset();
     this.modalService.open(this.changePassworkModal, {
       size: 'xs',
       backdrop: 'static'
@@ -120,11 +132,23 @@ export class UserOffcanvasComponent implements OnInit {
     if (this.changPasswordForm.invalid) {
       return;
     }
+    const passwordNewLenght = this.changPasswordForm.get('passwordNew').value.length;
+    const repeatPasswordLenght = this.changPasswordForm.get('repeatPassword').value.length;
+
+    if (passwordNewLenght < 8) {
+      this.toastr.error('Mật khẩu mới tối thiểu 8 ký tự');
+      this.changPasswordForm.get('passwordNew').setErrors({ regPasswordNew: true });
+      return;
+    }
+    if (passwordNewLenght !== repeatPasswordLenght) {
+      this.changPasswordForm.get('repeatPassword').setErrors({ incorrectPassword: true });
+      return;
+    }
 
     this.auth.changePasswork(this.changPasswordForm.value)
       .subscribe((res) => {
         if (res) {
-          this.toastr.success('Đổi mật khẩu thành công!');
+          this.toastr.success('Đổi mật khẩu thành công, vui lòng đăng nhập lại !');
           this.activeModal.close(false);
           this.auth.logout().subscribe();
         }
@@ -136,9 +160,12 @@ export class UserOffcanvasComponent implements OnInit {
       this.toastr.error('Mật khẩu xác nhận không khớp!');
       this.changPasswordForm.get('repeatPassword').setErrors({ incorrectPassword: true });
     }
-    if (error.code === 'SUN-OIL-4953' ||  error.code === 'SUN-OIL-4002') {
+    if (error.code === 'SUN-OIL-4002') {
       this.toastr.error('Mật khẩu cũ không đúng');
       this.changPasswordForm.get('passwordOld').setErrors({ wrongOldPassword: true });
+    }
+    if (error.code === 'SUN-OIL-4953') {
+      this.toastr.error('Mật khẩu không hợp lệ !');
     }
   }
 }
