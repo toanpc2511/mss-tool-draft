@@ -85,8 +85,8 @@
           <label>Trạng thái</label>
           <select class="form-control form-control-solid w-75" formControlName='status'>
             <option [value]="''">Tất cả</option>
-            <option [value]="listStatus.EXPORTED">Đã xuất</option>
-            <option [value]="listStatus.NOT_EXPORTED">Chưa xuất</option>
+            <option [value]="listStatus.EXPORTED">Đã xuất kho</option>
+            <option [value]="listStatus.NOT_EXPORTED">Chưa xuất kho</option>
           </select>
         </div>
       </div>
@@ -201,8 +201,8 @@
                 [class.label-light-success]="item.status === listStatus.EXPORTED"
                 [class.label-light-warning]="item.status === listStatus.NOT_EXPORTED"
               >
-								<ng-container *ngIf="item.status === listStatus.EXPORTED">Đã xuất</ng-container>
-								<ng-container *ngIf="item.status === listStatus.NOT_EXPORTED">Chưa xuất</ng-container>
+								<ng-container *ngIf="item.status === listStatus.EXPORTED">Đã xuất kho</ng-container>
+								<ng-container *ngIf="item.status === listStatus.NOT_EXPORTED">Chưa xuất kho</ng-container>
 								<ng-container *ngIf="item.status === listStatus.WAITING">Tạm dừng</ng-container>
 							</span>
           </td>
