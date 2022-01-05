@@ -41,6 +41,7 @@ export interface ICalendarResponse {
 	employeeId: number;
 	employeeName: string;
   status: string;
+  change: boolean;
 	backgroundColor: string;
 	color: string;
 	start: string;
