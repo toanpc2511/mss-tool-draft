@@ -1,14 +1,14 @@
 <div class="card card-custom gutter-b mt-1">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Tìm kiếm yêu cầu đặt hàng</h3>
+      <h3 class="card-label">Tìm kiếm lịch sử mã bơm</h3>
     </div>
   </div>
   <div class="card-body">
     <form [formGroup]="searchForm" class="form form-label-right">
       <div class="form-group row">
         <div class="col-lg-6">
-          <label>Tên trạm</label>
+          <label>Trạm</label>
           <select class="form-control form-control-solid w-75" formControlName='stationName'>
             <option [value]="''">Tất cả</option>
             <option [value]="''">Tất cả</option>
@@ -17,7 +17,27 @@
         </div>
 
         <div class="col-lg-6">
-          <label>Tên cột</label>
+          <label>Cột</label>
+          <select class="form-control form-control-solid w-75" formControlName="pumpPoleName">
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Vòi</label>
+          <select class="form-control form-control-solid w-75" formControlName='stationName'>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+            <option [value]="''">Tất cả</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Mã bơm</label>
           <select class="form-control form-control-solid w-75" formControlName="pumpPoleName">
             <option [value]="''">Tất cả</option>
             <option [value]="''">Tất cả</option>
