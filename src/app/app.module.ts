@@ -33,6 +33,10 @@ import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+import { environment as env } from '../environments/environment';
+import { IClientOptions } from 'mqtt';
+
 
 registerLocaleData(localeVi, 'vi', localeViExtra);
 
@@ -57,10 +61,22 @@ function appInitializer(authService: AuthService, router: Router) {
 	};
 }
 
+export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  connectOnCreate: true,
+  hostname: '27.71.230.16',
+  port: 9001,
+  path: '/mqtt',
+  protocol: 'ws',
+  username: 'namthanh',
+  password: '123456789'
+
+};
+
 @NgModule({
 	declarations: [AppComponent, DevComponent],
 	imports: [
-		AngularFireModule.initializeApp(environment.firebase),
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    AngularFireModule.initializeApp(environment.firebase),
 		AngularFireModule,
 		BrowserModule,
 		BrowserAnimationsModule,
