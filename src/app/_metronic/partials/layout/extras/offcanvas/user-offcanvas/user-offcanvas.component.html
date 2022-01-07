@@ -108,13 +108,17 @@
             formControlName="passwordOld"
             (input)="onInputPassword($event)"
             (keydown.space)="$event.preventDefault()"
-            maxlength="32"
           />
         </div>
         <app-validate
           [control]="changPasswordForm.controls['passwordOld']"
           [error]="'required'"
           [message]="'Mật khẩu cũ không được để trống'"
+        ></app-validate>
+        <app-validate
+          [control]="changPasswordForm.controls['passwordOld']"
+          [error]="'pattern'"
+          [message]="'Mật khẩu từ 8-32 kí tự, ngoại trừ dấu cách và tiếng Việt có dấu'"
         ></app-validate>
         <app-validate
           [control]="changPasswordForm.controls['passwordOld']"
@@ -136,7 +140,6 @@
             formControlName="passwordNew"
             (input)="onInputPassword($event)"
             (keydown.space)="$event.preventDefault()"
-            maxlength="32"
           />
         </div>
         <app-validate
@@ -146,8 +149,8 @@
         ></app-validate>
         <app-validate
           [control]="changPasswordForm.controls['passwordNew']"
-          [error]="'regPasswordNew'"
-          [message]="'Mật khẩu mới tối thiểu 8 ký tự'"
+          [error]="'pattern'"
+          [message]="'Mật khẩu từ 8-32 kí tự, ngoại trừ dấu cách và tiếng Việt có dấu'"
         ></app-validate>
       </div>
 
@@ -164,7 +167,6 @@
             formControlName="repeatPassword"
             (input)="onInputPassword($event)"
             (keydown.space)="$event.preventDefault()"
-            maxlength="32"
           />
         </div>
         <app-validate
@@ -174,18 +176,13 @@
         ></app-validate>
         <app-validate
           [control]="changPasswordForm.controls['repeatPassword']"
-          [error]="'incorrectPassword'"
-          [message]="'Mật khẩu xác nhận không khớp'"
-        ></app-validate>
-        <app-validate
-          [control]="changPasswordForm.controls['repeatPassword']"
           [error]="'pattern'"
-          [message]="'Mật khẩu xác nhận không đúng định dạng'"
+          [message]="'Mật khẩu từ 8-32 kí tự, ngoại trừ dấu cách và tiếng Việt có dấu'"
         ></app-validate>
         <app-validate
           [control]="changPasswordForm.controls['repeatPassword']"
-          [error]="'regPasswordNew'"
-          [message]="'Mật khẩu mới tối thiểu 8 ký tự'"
+          [error]="'mustMatch'"
+          [message]="'Mật khẩu xác nhận không khớp'"
         ></app-validate>
       </div>
 
