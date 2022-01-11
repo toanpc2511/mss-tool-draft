@@ -29,12 +29,14 @@ import { EPartnerStatus, IPartnerData, IVehicle, PartnerService } from '../partn
 })
 export class PartnerModalComponent implements OnInit {
 	@Input() partnerId: number;
+	@Input() viewDetail: number;
 	eStatus = EPartnerStatus;
 	vehicles: IVehicle[] = [];
 	partnerForm: FormGroup;
 	cashLimitOilFormArray: FormArray;
 	isLoadingFormSubject = new Subject<boolean>();
 	isLoadingForm$ = this.isLoadingFormSubject.asObservable();
+  dataDetail: IPartnerData;
 
 	isUpdate = false;
 	cashLimitMoneyChild = 0;
@@ -100,6 +102,7 @@ export class PartnerModalComponent implements OnInit {
 				tap((res) => {
 					if (res) {
 						this.patchInfoParterUpdate(res.data);
+            this.dataDetail = res.data;
 					}
 				}),
 				takeUntil(this.destroy$)
@@ -189,8 +192,6 @@ export class PartnerModalComponent implements OnInit {
 
 	onSubmit(): void {
 		this.partnerForm.markAllAsTouched();
-		console.log(this.partnerForm);
-
 		if (this.partnerForm.invalid) {
 			return;
 		}
