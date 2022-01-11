@@ -53,7 +53,7 @@
 					<th class="text-center" scope="">Tác động</th>
 				</thead>
 				<tbody>
-					<tr *ngFor="let item of dataSource">
+					<tr *ngFor="let item of dataSource" (click)='openPartnerModal(item.ticketId, true)'>
 						<td class="full-name">
 							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
 								{{ item.name }}
@@ -92,7 +92,8 @@
 						<td class="text-center action">
 							<a
 								*ngIf="item.status === eStatus.ACCEPTED"
-								(click)="openPartnerModal(item.ticketId)"
+								(click)="openPartnerModal(item.ticketId, false)"
+                href='javascript:'
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
 							>
 								<span

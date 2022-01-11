@@ -41,6 +41,19 @@
 			&.unit {
 				width: 240px;
 			}
+
+      &.product-name {
+        min-width: 170px;
+      }
+      &.cash-limit-oil {
+        min-width: 145px;
+      }
+      &.max-cash-limit-oil {
+        min-width: 300px;
+      }
+      &.unit-cash-limit-oil {
+        min-width: 120px;
+      }
 		}
 	}
 }
