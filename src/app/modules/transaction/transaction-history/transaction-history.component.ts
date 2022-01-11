@@ -244,9 +244,6 @@ export class TransactionHistoryComponent extends BaseComponent implements OnInit
 	}
 
 	viewModal($event?: Event, data?: IDataTransfer): void {
-		if(!this.currentActions.includes(this.eAuthorize.VIEW_TRANSACTION_HISTORY_DETAIL_BUTTON)) {
-			return;
-		}
 		if ($event) {
 			$event.stopPropagation();
 		}

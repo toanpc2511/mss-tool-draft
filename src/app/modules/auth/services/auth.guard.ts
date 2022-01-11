@@ -253,6 +253,10 @@ const SPECIAL_URL: SpecialUrl[] = [
 		url: '/lich-su-tac-dong/chi-tiet',
 		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
 	},
+	{
+		url: '/quan-ly-ma-bom/danh-sach',
+		permissionKey: EAuthorize.VIEW_DRIVER_DETAIL_SCREEN
+	},
 	/*End*/
 ];
 

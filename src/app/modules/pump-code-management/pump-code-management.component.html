@@ -1,0 +1,41 @@
+<div class="mt-1 card card-custom create-station-wrapper">
+  <div class="card-body">
+    <div class="wizard wizard-3" id="kt_wizard_v3">
+      <div class="kt-grid__item">
+        <div class="wizard-nav mb-lg-3">
+          <div class="px-8 wizard-steps">
+            <a
+              [class.active]="(stepData$ | async).currentStep === 1"
+              (click)="gotoStep(1)"
+              class="wizard-step can-active"
+              href="javascript:"
+            >
+              <div class="wizard-label">
+                <div class="wizard-title">Lịch sử mã bơm</div>
+                <div class="wizard-bar"></div>
+              </div>
+            </a>
+            <a
+              [class.active]="(stepData$ | async).currentStep === 2"
+              (click)="gotoStep(2)"
+              class="wizard-step can-active"
+              href="javascript:"
+            >
+              <div class="wizard-label">
+                <div class="wizard-title">Hoạt động của vòi bơm</div>
+                <div class="wizard-bar"></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row w-100">
+      <div class="col-lg-12">
+        <app-pump-code-history *ngIf="(stepData$ | async).currentStep === 1"></app-pump-code-history>
+        <app-pump-hose-operation *ngIf="(stepData$ | async).currentStep === 2"></app-pump-hose-operation>
+      </div>
+    </div>
+  </div>
+</div>

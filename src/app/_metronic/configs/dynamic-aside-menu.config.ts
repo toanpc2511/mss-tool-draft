@@ -65,6 +65,14 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
       ]
     },
     {
+      title: 'Quản lý mã bơm',
+      root: true,
+      bullet: 'dot',
+      page: '/quan-ly-ma-bom/danh-sach',
+      icon: 'fas fa-fill-drip',
+      permissionKey: EAuthorize.VIEW_TRANSACTION_HISTORY_MENU
+    },
+    {
       title: 'Lịch sử giao dịch',
       root: true,
       bullet: 'dot',

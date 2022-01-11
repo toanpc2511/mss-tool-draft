@@ -1,0 +1,51 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Vòi bơm</h3>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="form-group row p-3">
+      <div class="col-lg-6 d-flex align-items-center">
+        <label class='mr-5 mt-2'>Trạm</label>
+        <select class="form-control form-control-solid ml-5">
+          <option [value]="''">Tất cả</option>
+          <option [value]="''">Tất cả</option>
+          <option [value]="''">Tất cả</option>
+        </select>
+      </div>
+    </div>
+
+    <h1>{{msg}}</h1>
+
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <tr>
+          <th scope=''>Mã trạm</th>
+          <th scope=''>Mã cột</th>
+          <th scope=''>Mã vòi</th>
+          <th scope=''>Nhiên liệu</th>
+          <th scope=''>Kết nối</th>
+          <th scope=''>Trạng thái</th>
+          <th scope=''>Số lít</th>
+          <th scope=''>Đơn giá</th>
+          <th scope=''>Thành tiền</th>
+          <th scope=''>Tổng tích lũy tiền</th>
+          <th scope=''>Tổng tích lũy lít</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+
+        <tfoot *ngIf="dataSource?.length === 0">
+        <tr>
+          <td colspan="9" class="text-center" styleq="color: #ccc">Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

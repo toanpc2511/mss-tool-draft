@@ -2,8 +2,6 @@ import { AuthorizeGuard } from './../modules/auth/services/auth.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from './_layout/layout.component';
-import { HistoryOfUsingPointsModule } from '../modules/history-of-using-points/history-of-using-points.module';
-import { InventoryManagementModule } from '../modules/inventory-management/inventory-management.module';
 
 const routes: Routes = [
 	{
@@ -128,6 +126,12 @@ const routes: Routes = [
         path: 'lich-su-tac-dong',
         loadChildren: () =>
           import('../modules/impact-history/impact-history.module').then((m) => m.ImpactHistoryModule),
+        canActivate: [AuthorizeGuard]
+      },
+      {
+        path: 'quan-ly-ma-bom',
+        loadChildren: () =>
+          import('../modules/pump-code-management/pump-code-management.module').then((m) => m.PumpCodeManagementModule),
         canActivate: [AuthorizeGuard]
       },
 			{
