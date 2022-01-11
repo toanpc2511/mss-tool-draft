@@ -1,6 +1,14 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
@@ -22,6 +30,7 @@ export class UserOffcanvasComponent implements OnInit {
 	user$: Observable<UserModel>;
 	enableTwoAuthStepControl = new FormControl();
   changPasswordForm: FormGroup;
+  submitted: boolean;
   isShowPasswordStatus: boolean;
   @ViewChild('changePasswork') changePassworkModal: TemplateRef<any>;
 
@@ -46,6 +55,7 @@ export class UserOffcanvasComponent implements OnInit {
         takeUntil(this.destroy$)
       )
       .subscribe();
+    this.buildFormChangePass();
   }
 
 	ngOnInit(): void {
@@ -63,18 +73,34 @@ export class UserOffcanvasComponent implements OnInit {
 		// 	)
 		// 	.subscribe();
 
-    this.buildFormChangePass();
     this.handleShowPassword();
 	}
 
   buildFormChangePass() {
     this.changPasswordForm = this.fb.group({
-      passwordOld: ['', Validators.required],
-      passwordNew: ['', Validators.required],
-      repeatPassword: ['', Validators.required],
+      passwordOld: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{8,32}')]],
+      passwordNew: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{8,32}')]],
+      repeatPassword: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9]{8,32}')]],
       showPassword: [false]
-    })
+    }, { validators: this.mustMatch('passwordNew', 'repeatPassword') });
     this.isShowPasswordStatus = this.changPasswordForm?.get('showPassword').value;
+  }
+
+  mustMatch(controlName: string, matchingControlName: string): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const control = group.get(controlName);
+      const matchingControl = group.get(matchingControlName);
+
+      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+        return;
+      }
+
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({mustMatch: true});
+      } else {
+        matchingControl.setErrors(null);
+      }
+    }
   }
 
   handleShowPassword() {
@@ -128,20 +154,10 @@ export class UserOffcanvasComponent implements OnInit {
   }
 
   confirmChangePassword() {
+    this.submitted = true;
+    console.log(this.changPasswordForm.controls.repeatPassword.hasError('mustMatch'));
     this.changPasswordForm.markAllAsTouched();
     if (this.changPasswordForm.invalid) {
-      return;
-    }
-    const passwordNewLenght = this.changPasswordForm.get('passwordNew').value.length;
-    const repeatPasswordLenght = this.changPasswordForm.get('repeatPassword').value.length;
-
-    if (passwordNewLenght < 8) {
-      this.toastr.error('Mật khẩu mới tối thiểu 8 ký tự');
-      this.changPasswordForm.get('passwordNew').setErrors({ regPasswordNew: true });
-      return;
-    }
-    if (passwordNewLenght !== repeatPasswordLenght) {
-      this.changPasswordForm.get('repeatPassword').setErrors({ incorrectPassword: true });
       return;
     }
 
