@@ -2,6 +2,35 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { IStationActiveByToken } from '../inventory-management/inventory-management.service';
+import { IPumpHose, IPumpPole } from '../gas-station/gas-station.service';
+
+export interface IFilterHistoryPumpCode {
+  stationCode: string;
+  pumpPoleCode: string;
+  pumpHoseCode: string;
+  pumpCode: string;
+  dateFrom: string;
+  dateTo: string;
+}
+
+export interface IHistoryPumpCode {
+  connection: boolean;
+  deviceHours: string;
+  id: number;
+  intoMoney: number;
+  numberOfLit: number;
+  productName: string;
+  pumpHoseCode: string;
+  pumpPoleCode: string;
+  serverTime: string;
+  stationCode: string;
+  status: boolean;
+  totalAmountAccumulated: number;
+  totalCumulativeLiters: number;
+  unitPrice: number;
+  pumpCode:  string;
+}
 
 export class StepData {
   currentStep: number;
@@ -13,7 +42,6 @@ export class StepData {
     isValid: boolean;
   }
 }
-
 
 @Injectable({
   providedIn: 'root'
@@ -47,5 +75,40 @@ export class PumpCodeManagementService {
     return this.stepDataSubject.value;
   }
 
+  // Lấy ds trạm theo token login và trạng thái
+  getStationByToken(status, corporation) {
+    const params = new HttpParams()
+      .set('status', status)
+      .set('corporation', corporation)
+    return this.http.get<Array<IStationActiveByToken>>(`gas-stations/employee/status-corporation`, {params});
+  }
 
+  // Lấy danh sách cột theo trạm của nhân viên
+  getPumpPolesEmployee(gasStationId?: number | string) {
+    const params = new HttpParams()
+      .set('gas-station-id', gasStationId?.toString() || '')
+    return this.http.get<IPumpPole[]>('pump-poles/gas-stations/employee', {params});
+  }
+
+  // Lấy danh sách vòi theo trạm + cột của nhân viên
+  getPumpHoseEmployee(gasStationId?: number | string, pumpPoleId?: number | string) {
+    const params = new HttpParams()
+      .set('gas-station-id', gasStationId?.toString() || '')
+      .set('pump-pole-id', pumpPoleId?.toString() || '')
+    return this.http.get<IPumpHose[]>('pump-hoses/employee', {params});
+  }
+
+  // Lấy danh sách lịch sử mã bơm
+  getHistoryPumpCode(page: number, size: number, dataReq: IFilterHistoryPumpCode) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('station-code', dataReq.stationCode)
+      .set('pump-pole-code', dataReq.pumpPoleCode)
+      .set('pump-hose-code', dataReq.pumpHoseCode)
+      .set('pump-code', dataReq.pumpCode)
+      .set('date-from', dataReq.dateFrom)
+      .set('date-to', dataReq.dateTo)
+    return this.http.get<IHistoryPumpCode[]>('history-pump-code/filters', {params})
+  }
 }
