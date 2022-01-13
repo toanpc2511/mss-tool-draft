@@ -29,7 +29,7 @@
           <label>Vòi</label>
           <select class="form-control form-control-solid w-75" formControlName='pumpHoseCode'>
             <option [value]="''">Tất cả</option>
-            <option *ngFor='let pumpHose of pumpHoses' [value]="pumpHose.code">{{pumpHose.name}}</option>
+            <option *ngFor='let pumpHose of pumpHoses' [value]="pumpHose.code">{{pumpHose.code}} - {{pumpHose.name}}</option>
           </select>
         </div>
 
@@ -77,7 +77,7 @@
         </div>
 
         <div class="col-lg-6">
-          <label>Ngày yêu cầu đến</label>
+          <label>Thời gian đến</label>
 
           <div class="input-group w-75">
             <input
