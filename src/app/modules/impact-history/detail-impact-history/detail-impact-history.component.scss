@@ -19,6 +19,12 @@
       background-color: #f3f6f9;
       cursor: pointer;
     }
+    .row {
+      :hover {
+        background: #f3f6f9;
+        cursor: pointer;
+      }
+    }
 
     .activity-container {
       min-width: 400px;

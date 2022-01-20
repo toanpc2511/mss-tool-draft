@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { DataResponse } from '../../shared/models/data-response.model';
@@ -6,6 +6,14 @@ import { DataResponse } from '../../shared/models/data-response.model';
 export interface ILogGroups {
   code: string;
   name: string;
+}
+
+export interface ILogDetail {
+  code: string;
+  date: string;
+  description: string;
+  name: string;
+  userName: string;
 }
 
 @Injectable({
@@ -19,7 +27,18 @@ export class ImpactHistoryService {
   ) {}
 
   getLogGroups() {
-    return this.httpClient.get<DataResponse<ILogGroups[]>>('https://sunoil-management.firecloud.live/permissions/groups/log');
+    return this.httpClient.get<DataResponse<ILogGroups[]>>('https://sunoil-management.firecloud.live/permissions/histories/log');
+  }
+
+  getLogDetail(page: number, size: number,dataReq, entity: string) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('create-to', dataReq.startAt)
+      .set('create-form', dataReq.endAt)
+      .set('entity', entity)
+
+    return this.http.get<ILogDetail[]>('logs', {params})
   }
 
 }

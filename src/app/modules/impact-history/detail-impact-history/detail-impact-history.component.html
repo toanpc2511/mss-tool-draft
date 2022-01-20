@@ -81,7 +81,7 @@
 
   <div class="card-body form-detail">
     <div class='row'>
-      <div class='col-lg-12 p-3 border-bottom activity-container form-inline' *ngFor='let item of dataTest'>
+      <div class='col-lg-12 p-3 border-bottom activity-container form-inline' *ngFor='let item of dataSource'>
         <div class='icon-activity'>
           <p class="btn btn-icon btn-light btn-hover-danger btn-sm">
             <span
@@ -94,11 +94,11 @@
         </div>
         <div class='content-activity'>
           <div class='info-impact form-inline'>
-            <p class='font-weight-bold mx-5'>{{item.name}}</p>
-            <p class=''>{{item.status}} <strong> {{item.code}}</strong></p>
+            <p class='font-weight-bold mx-5'>{{item.userName}}</p>
+            <p class=''>{{item.description}} <strong> {{item.code}}</strong></p>
           </div>
           <div class='time-impact mx-5 pt-5'>
-            <p>{{item.createdAt | date:'HH:mm - dd/MM/yyyy'}}</p>
+            <p>{{item.date | date:'HH:mm - dd/MM/yyyy'}}</p>
           </div>
         </div>
       </div>

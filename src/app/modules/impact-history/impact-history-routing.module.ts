@@ -10,7 +10,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'chi-tiet/:id',
+    path: 'chi-tiet/:code',
     component: DetailImpactHistoryComponent
   },
 ];
