@@ -134,9 +134,9 @@ export class OrderRequestListComponent extends BaseComponent implements OnInit {
     this.router.navigate(['/kho/yeu-cau-dat-hang/them-moi']);
   }
 
-  viewDetailOrderRequest($event: Event, id: number): void {
+  viewDetailOrderRequest($event: Event, code: number): void {
     $event.stopPropagation();
-    this.router.navigate([`/kho/yeu-cau-dat-hang/chi-tiet/${id}`]);
+    this.router.navigate([`/kho/yeu-cau-dat-hang/chi-tiet/${code}`]);
   }
 
   getFilterData() {

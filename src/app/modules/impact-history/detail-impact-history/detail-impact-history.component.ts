@@ -6,7 +6,11 @@ import { DestroyService } from '../../../shared/services/destroy.service';
 import { ContractService, IContract, ISortData } from '../../contract/contract.service';
 import { IError } from '../../../shared/models/error.model';
 import { PaginatorState } from '../../../_metronic/shared/crud-table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IFilterTransaction } from '../../inventory-management/inventory-management.service';
+import { convertDateToServer } from '../../../shared/helpers/functions';
+import { ILogDetail, ImpactHistoryService } from '../impact-history.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-detail-impact-history',
@@ -20,10 +24,11 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
   today: string;
   firstDayOfMonth: string;
   dataTest;
-  dataSource: Array<IContract> = [];
+  dataSource: ILogDetail[] = [];
   sortData: ISortData;
   paginatorState = new PaginatorState();
   totalRemain: number;
+  codeLog: string;
 
   constructor(
     private subheader: SubheaderService,
@@ -32,6 +37,8 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
     private destroy$: DestroyService,
     private cdr: ChangeDetectorRef,
     private router: Router,
+    private activeRoute: ActivatedRoute,
+    private impactHistoryService: ImpactHistoryService
     ) {
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
@@ -44,48 +51,22 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
     this.buildFormSearch();
     this.initDate();
     this.init();
-    this.getStationToken();
+    this.activeRoute.params
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((queryParams) => {
+        this.codeLog = queryParams.code;
+      })
+    this.onSearch();
   }
 
   init() {
     this.paginatorState.page = 1;
-    this.paginatorState.pageSize = 1;
+    this.paginatorState.pageSize = 5;
     this.sortData = null;
   }
 
   ngAfterViewInit(): void {
     this.setBreadcumb();
-  }
-
-  getStationToken() {
-    this.contractService
-      .getListContract(
-        this.paginatorState.page,
-        this.paginatorState.pageSize,
-        '',
-        this.sortData
-      )
-      .subscribe(
-        (res) => {
-          if (res.data) {
-            res.data.map((x) => {
-              this.dataTest.push(x);
-            });
-
-            this.paginatorState.recalculatePaginator(res.meta.total);
-
-            this.totalRemain = res.meta.total - this.dataTest.length;
-            this.cdr.detectChanges();
-          }
-        },
-        (err: IError) => {
-          this.checkError(err);
-        }
-      );
-  }
-
-  checkError(e: IError) {
-
   }
 
   setBreadcumb() {
@@ -121,17 +102,39 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
     this.ngOnInit();
   }
 
+  getFilterData() {
+    const filterFormData = this.searchForm.value;
+    return {
+      ...filterFormData,
+      startAt: convertDateToServer(filterFormData.startAt),
+      endAt: convertDateToServer(filterFormData.endAt)
+    };
+  }
+
   onSearch() {
-    console.log(this.searchForm.value);
+    const filterData: IFilterTransaction = this.getFilterData();
+    this.impactHistoryService.getLogDetail(this.paginatorState.page, this.paginatorState.pageSize, filterData, this.codeLog)
+      .subscribe((res) => {
+        if (res) {
+          res.data.map(x => this.dataSource.push(x));
+        }
+        this.paginatorState.recalculatePaginator(res.meta.total);
+
+        this.totalRemain = res.meta.total - this.dataSource.length;
+        this.cdr.detectChanges();
+      }, (error: IError) => {this.checkError(error)})
   }
 
   showMore() {
     this.paginatorState.page++;
-    this.getStationToken();
+    this.onSearch()
   }
 
   onBack() {
     this.router.navigate(['/lich-su-tac-dong/danh-sach']);
   }
 
+  checkError(error: IError) {
+    console.log(error.code);
+  }
 }
