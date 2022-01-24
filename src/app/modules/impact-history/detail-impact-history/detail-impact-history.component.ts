@@ -56,7 +56,7 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
       .subscribe((queryParams) => {
         this.codeLog = queryParams.code;
       })
-    this.onSearch();
+    this.onSearch(true);
   }
 
   init() {
@@ -111,13 +111,14 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
     };
   }
 
-  onSearch() {
+  onSearch(resetData: boolean) {
+    resetData ? this.paginatorState.page = 1 : this.paginatorState.page
     const filterData: IFilterTransaction = this.getFilterData();
     this.impactHistoryService.getLogDetail(this.paginatorState.page, this.paginatorState.pageSize, filterData, this.codeLog)
       .subscribe((res) => {
-        if (res) {
-          res.data.map(x => this.dataSource.push(x));
-        }
+        resetData ? this.dataSource = [] : this.dataSource;
+
+        res?.data?.map(x => this.dataSource.push(x));
         this.paginatorState.recalculatePaginator(res.meta.total);
 
         this.totalRemain = res.meta.total - this.dataSource.length;
@@ -127,7 +128,7 @@ export class DetailImpactHistoryComponent implements OnInit, AfterViewInit {
 
   showMore() {
     this.paginatorState.page++;
-    this.onSearch()
+    this.onSearch(false);
   }
 
   onBack() {

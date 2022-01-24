@@ -22,6 +22,16 @@
   transform: rotate(-90deg);
 }
 
+.icon-arrow-down {
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url('../../../../assets/media/sun-oil/down-arrow.svg');
+  transition: transform 0.2s ease-in-out;
+}
+
 .card-item {
   padding: 10px;
   margin-bottom: 10px;

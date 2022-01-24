@@ -30,7 +30,7 @@
           <app-validate
             [control]="searchForm.controls['startAt']"
             [error]="'ngbDate'"
-            [message]="'Thời gian tạo không đúng định dạng'"
+            [message]="'Thời gian không đúng định dạng'"
           ></app-validate>
         </div>
 
@@ -57,14 +57,14 @@
           <app-validate
             [control]="searchForm.controls['endAt']"
             [error]="'ngbDate'"
-            [message]="'Thời gian tạo không đúng định dạng'"
+            [message]="'Thời gian không đúng định dạng'"
           ></app-validate>
         </div>
       </div>
     </form>
 
     <div class="form-group row py-3">
-      <button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+      <button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch(true)">
         <em class="fas fa-search"></em> Tìm kiếm
       </button>
       <button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
@@ -94,8 +94,8 @@
         </div>
         <div class='content-activity'>
           <div class='info-impact form-inline'>
-            <p class='font-weight-bold mx-5'>{{item.userName}}</p>
-            <p class=''>{{item.description}} <strong> {{item.code}}</strong></p>
+            <p clas s='font-weight-bold mx-5'>{{item.userName}}</p>
+            <p class=''>{{item.description}} <strong> {{item.code}} - {{item.name}}</strong></p>
           </div>
           <div class='time-impact mx-5 pt-5'>
             <p>{{item.date | date:'HH:mm - dd/MM/yyyy'}}</p>
@@ -104,13 +104,12 @@
       </div>
     </div>
 
-    <div class="py-10 w-100 d-flex justify-content-center" *ngIf='totalRemain > 0 else btnBack'>
+    <div class="pt-10 w-100 d-flex justify-content-center" *ngIf='totalRemain > 0'>
       <button type="button" class="btn btn-outline-secondary text-muted w-100" (click)="showMore()">Xem thêm ( {{totalRemain}} )</button>
     </div>
-    <ng-template #btnBack>
-      <div class="py-10 w-100 d-flex justify-content-center">
-        <button type="button" class="btn btn-primary w-100" (click)="onBack()">Quay lại</button>
-      </div>
-    </ng-template>
+
+    <div class="py-2 w-100 d-flex justify-content-center">
+      <button type="button" class="btn btn-primary w-100" (click)="onBack()">Quay lại</button>
+    </div>
   </div>
 </div>

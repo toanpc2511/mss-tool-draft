@@ -175,33 +175,33 @@
             </p>
           </td>
           <td class="number-of-lit text-right">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.numberOfLit">
-              {{ item.numberOfLit | number | vnCurrency }}
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.numberOfLit.toLocaleString('en-US') ">
+              {{ item.numberOfLit.toLocaleString('en-US')  }}
             </p>
           </td>
           <td class="unit-price text-right">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.unitPrice">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.unitPrice | number | vnCurrency">
               {{ item.unitPrice | number | vnCurrency }}
             </p>
           </td>
           <td class="into-money text-right">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.intoMoney">
-              {{ item.intoMoney | number | vnCurrency }}
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.intoMoney.toLocaleString('en-US') ">
+              {{ item.intoMoney.toLocaleString('en-US') }}
             </p>
           </td>
           <td class="total-cumulative-liters text-right">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.totalCumulativeLiters">
-              {{ item.totalCumulativeLiters | number | vnCurrency }}
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.totalCumulativeLiters.toLocaleString('en-US') ">
+              {{ item.totalCumulativeLiters.toLocaleString('en-US')  }}
             </p>
           </td>
           <td class="totalamount-accumulated text-right">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.totalAmountAccumulated">
-              {{ item.totalAmountAccumulated | number | vnCurrency }}
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.totalAmountAccumulated.toLocaleString('en-US') ">
+              {{ item.totalAmountAccumulated.toLocaleString('en-US')  }}
             </p>
           </td>
           <td class="device-hours">
-            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.deviceHours">
-              {{ item.deviceHours }}
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.deviceTime">
+              {{ item.deviceTime }}
             </p>
           </td>
           <td class="server-time">

@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ILogGroups, ImpactHistoryService } from '../impact-history.service';
+import { ILogGroups, ILogGroupsItem, ImpactHistoryService } from '../impact-history.service';
 import { IError } from '../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
+import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-list-impact-history',
@@ -10,6 +11,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./list-impact-history.component.scss']
 })
 export class ListImpactHistoryComponent implements OnInit {
+  moduleAccordion: NgbAccordion;
+  groupAccordions: Array<NgbAccordion>;
+  @ViewChild('moduleAccordion', { static: false }) set module(element: NgbAccordion) {
+    this.moduleAccordion = element;
+  }
   dataSource: ILogGroups[] = [];
 
   constructor(
@@ -17,9 +23,7 @@ export class ListImpactHistoryComponent implements OnInit {
     private impactHistoryService: ImpactHistoryService,
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
-    ) {
-    this.dataSource = [];
-  }
+    ) {}
 
   ngOnInit(): void {
     this.getLogGroups();
@@ -37,12 +41,16 @@ export class ListImpactHistoryComponent implements OnInit {
       })
   }
 
-  detailImpact(item: ILogGroups) {
+  detailImpact(item: ILogGroupsItem) {
     this.router.navigate([`/lich-su-tac-dong/chi-tiet/${item.code}`]);
   }
 
   checkError(error: IError) {
     this.toastr.error(error.code)
+  }
+
+  isOpenModule(moduleId) {
+    return this.moduleAccordion && this.moduleAccordion.activeIds.includes(moduleId);
   }
 
 }

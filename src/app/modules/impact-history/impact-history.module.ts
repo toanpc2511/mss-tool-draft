@@ -2,7 +2,7 @@ import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbDatepickerModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbDatepickerModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { InputTrimModule } from 'ng2-trim-directive';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
@@ -27,7 +27,8 @@ import { DetailImpactHistoryComponent } from './detail-impact-history/detail-imp
     InputTrimModule,
     AuthModule,
     NgbDatepickerModule,
-    DirectivesModule
+    DirectivesModule,
+    NgbAccordionModule
   ]
 })
 export class ImpactHistoryModule {}
