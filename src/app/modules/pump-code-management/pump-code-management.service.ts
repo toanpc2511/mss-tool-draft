@@ -16,7 +16,7 @@ export interface IFilterHistoryPumpCode {
 
 export interface IHistoryPumpCode {
   connection: boolean;
-  deviceHours: string;
+  deviceTime: string;
   id: number;
   intoMoney: number;
   numberOfLit: number;
@@ -30,6 +30,23 @@ export interface IHistoryPumpCode {
   totalCumulativeLiters: number;
   unitPrice: number;
   pumpCode:  string;
+}
+
+export interface IPumpCode {
+  connection: boolean;
+  deviceHours: string;
+  id: number;
+  intoMoney: number;
+  numberOfLit: number;
+  productName: string;
+  pumpHoseCode: string;
+  pumpPoleCode: string;
+  serverTime: string;
+  stationCode: string;
+  status: boolean;
+  totalAmountAccumulated: number;
+  totalCumulativeLiters: number;
+  unitPrice: number;
 }
 
 export class StepData {
@@ -110,5 +127,12 @@ export class PumpCodeManagementService {
       .set('date-from', dataReq.dateFrom)
       .set('date-to', dataReq.dateTo)
     return this.http.get<IHistoryPumpCode[]>('history-pump-code/filters', {params})
+  }
+
+  // hdf
+  getPumpCode(stationCode) {
+    const params = new HttpParams()
+      .set('station-code', stationCode)
+    return this.http.get<IPumpCode[]>('pump-code/filters', {params})
   }
 }
