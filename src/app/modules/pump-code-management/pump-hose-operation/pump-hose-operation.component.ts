@@ -66,8 +66,8 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
 
   getData(station: string) {
     let topic = '';
-    station ? topic = 'sunoil/#' : topic = `sunoil/${station}/#`
-    this.subscription = this.mqttService.observe('sunoil/#')
+    topic = !station ? topic = 'sunoil/pub/#' : topic = `sunoil/pub/${station}/#`
+    this.subscription = this.mqttService.observe(topic)
       .subscribe((message: IMqttMessage) => {
         this.msg = new TextDecoder('utf-8').decode(message.payload);
         // console.log(this.msg);
