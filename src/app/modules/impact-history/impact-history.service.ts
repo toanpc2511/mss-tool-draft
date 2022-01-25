@@ -4,7 +4,14 @@ import { HttpService } from 'src/app/shared/services/http.service';
 import { DataResponse } from '../../shared/models/data-response.model';
 
 export interface ILogGroups {
+  id: number;
   code: string;
+  name: string;
+  groups: [ILogGroupsItem]
+}
+export interface ILogGroupsItem {
+  code: string;
+  id: number;
   name: string;
 }
 

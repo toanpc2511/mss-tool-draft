@@ -4,13 +4,47 @@
       <h3 class="card-label">Lịch sử tác động</h3>
     </div>
   </div>
-  <div class="card-body">
-    <div class='row px-3'>
-      <div class='col-lg-12 d-flex justify-content-between card-item' *ngFor='let item of dataSource' (click)='detailImpact(item)'>
-        <div class="d-flex align-items-center">
-          <label class="m-0 font-weight-bold ">{{item.name}}</label>
-        </div>
-        <div class='icon-arrow-up'></div>
+<!--  <div class="card-body">-->
+<!--    <div class='row px-3'>-->
+<!--      <div class='col-lg-12 d-flex justify-content-between card-item' *ngFor='let item of dataSource' (click)='detailImpact(item)'>-->
+<!--        <div class="d-flex align-items-center">-->
+<!--          <label class="m-0 font-weight-bold ">{{item.name}}</label>-->
+<!--        </div>-->
+<!--        <div class='icon-arrow-up'></div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div class='card-body'>
+    <div class="row justify-content-center w-100">
+      <div class="form-group row d-inline w-100">
+        <ngb-accordion [destroyOnHide]="false" #moduleAccordion>
+          <ngb-panel
+            *ngFor="let module of dataSource, let i = index"
+            [id]='"module-panel-" + module.id'
+          >
+            <ng-template ngbPanelTitle>
+              <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <label class="m-0 font-weight-bold">
+                    {{module.name}}
+                  </label>
+                </div>
+                <div
+                  [ngClass]="{'icon-arrow-up': !isOpenModule('module-panel-' + module.id), 'icon-arrow-down': isOpenModule('module-panel-' + module.id)}"
+                ></div>
+              </div>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <div class='col-lg-12 d-flex justify-content-between card-item' *ngFor='let item of module.groups' (click)='detailImpact(item)'>
+                <div class="d-flex align-items-center">
+                  <label class="m-0 font-weight-bold ">{{item.name}}</label>
+                </div>
+                <div class='icon-arrow-up'></div>
+              </div>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
       </div>
     </div>
   </div>

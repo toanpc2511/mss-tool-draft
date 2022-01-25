@@ -9,10 +9,9 @@
     <div class="form-group row p-3">
       <div class="col-lg-6 d-flex align-items-center">
         <label class='mr-5 mt-2'>Trạm</label>
-        <select class="form-control form-control-solid ml-5">
+        <select class="form-control form-control-solid ml-5" [formControl]='station'>
           <option [value]="''">Tất cả</option>
-          <option [value]="''">Tất cả</option>
-          <option [value]="''">Tất cả</option>
+          <option *ngFor='let station of listStation' [value]="station.code">{{station.name}}</option>
         </select>
       </div>
     </div>
@@ -38,6 +37,47 @@
         </thead>
 
         <tbody>
+        <tr *ngFor='let item of pumpCodes'>
+          <td>
+            <p
+              class="cursor-pointer text-ellipsis price"
+              placement="top"
+              [ngbTooltip]="item.stationCode"
+            >
+              {{ item.stationCode }}
+            </p>
+          </td>
+          <td>
+            <p
+              class="cursor-pointer text-ellipsis price"
+              placement="top"
+              [ngbTooltip]="item.pumpPoleCode"
+            >
+              {{ item.pumpPoleCode }}
+            </p>
+          </td>
+          <td>
+            <p
+              class="cursor-pointer text-ellipsis price"
+              placement="top"
+              [ngbTooltip]="item.pumpHoseCode"
+            >
+              {{ item.pumpHoseCode }}
+            </p>
+          </td>
+          <td>
+            <p
+              class="cursor-pointer text-ellipsis price "
+              placement="top"
+              [ngbTooltip]="item.productName"
+            >
+              {{ item.productName }}
+            </p>
+          </td>
+          <td class='text-center'>
+            <p class=''><i class="fas fa-circle text-danger"></i></p>
+          </td>
+        </tr>
         </tbody>
 
         <tfoot *ngIf="dataSource?.length === 0">
