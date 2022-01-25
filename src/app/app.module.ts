@@ -66,7 +66,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: '27.71.230.16',
   port: 9001,
   path: '/mqtt',
-  protocol: 'ws',
+  protocol: 'wss',
   username: 'namthanh',
   password: '123456789'
 
