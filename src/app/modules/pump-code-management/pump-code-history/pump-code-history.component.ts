@@ -9,7 +9,7 @@ import {
 } from '../../inventory-management/inventory-management.service';
 import { GasStationService, IPumpHose, IPumpPole } from '../../gas-station/gas-station.service';
 import { IFilterHistoryPumpCode, IHistoryPumpCode, PumpCodeManagementService } from '../pump-code-management.service';
-import { convertDateToServer } from '../../../shared/helpers/functions';
+import { convertDateToServer, getHours, getMinutes, IHour, IMinute } from '../../../shared/helpers/functions';
 
 @Component({
   selector: 'app-pump-code-history',
@@ -22,6 +22,8 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
   pumpPoles: IPumpPole[] = [];
   pumpHoses: IPumpHose[] = [];
   dataSource: IHistoryPumpCode[] = [];
+  hours: Array<IHour> = [];
+  minutes: Array<IMinute> = [];
 
   firstDayOfMonth: string;
   today: string;
@@ -46,6 +48,8 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
     this.paginatorState.pageSize = 10;
     this.paginatorState.pageSizes = [5, 10, 15, 20];
     this.paginatorState.total = 0;
+    this.hours = getHours(24);
+    this.minutes = getMinutes();
 
     this.dataSource = [];
     this.today = moment().format('DD/MM/YYYY');
@@ -68,8 +72,6 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
   initDate(): void {
     this.searchForm.get('dateFrom').patchValue(this.firstDayOfMonth);
     this.searchForm.get('dateTo').patchValue(this.today);
-    this.searchForm.get('timeFrom').patchValue('01:00');
-    this.searchForm.get('timeTo').patchValue(moment().format('HH:mm'));
   }
 
   buildFormSearch() {
@@ -80,8 +82,10 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
       pumpCode: [''],
       dateFrom: [],
       dateTo: [],
-      timeFrom: [],
-      timeTo: []
+      hourFrom: ['00'],
+      hourTo: ['00'],
+      minuteFrom: ['00'],
+      minuteTo: ['00']
     })
   }
 
@@ -144,8 +148,12 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
 
   getFilterData() {
     const filterFormData = this.searchForm.value;
-    const timeFrom: string = this.searchForm.get('timeFrom').value.toString();
-    const timeTo: string = this.searchForm.get('timeTo').value;
+    const hourFrom: string = this.searchForm.get('hourFrom').value;
+    const hourTo: string = this.searchForm.get('hourTo').value;
+    const minuteFrom: string = this.searchForm.get('minuteFrom').value;
+    const minuteTo: string = this.searchForm.get('minuteTo').value;
+    const timeFrom = `${hourFrom}:${minuteFrom}`;
+    const timeTo = `${hourTo}:${minuteTo}`;
     return {
       ...filterFormData,
       dateFrom: `${convertDateToServer(filterFormData.dateFrom)} ${timeFrom}:00.000000`,
@@ -154,6 +162,10 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
   }
 
   onSearch() {
+    this.searchForm.markAllAsTouched();
+    if (this.searchForm.invalid) {
+      return;
+    }
     const filterData: IFilterHistoryPumpCode = this.getFilterData();
     this.pumpCodeMSv.getHistoryPumpCode(this.paginatorState.page, this.paginatorState.pageSize, filterData)
       .subscribe((res) => {
@@ -164,8 +176,7 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
   }
 
   onReset() {
-    // this.ngOnInit();
-    console.log(this.searchForm.get('timeFrom').value);
+    this.ngOnInit();
   }
 
   exportFileExcel() {}
