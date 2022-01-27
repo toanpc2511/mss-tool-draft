@@ -180,6 +180,9 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 			electronicEnd: convertMoney(d.electronicEnd?.toString())
 		}));
 
+    console.log(this.dataSourceForm.value[0].electronicEnd);
+    console.log(convertMoney(this.dataSourceForm.value[0].electronicEnd));
+
 		this.shiftService.updateFuelProductRevenue(this.lockShiftId, dataReq).subscribe(
 			(res) => {
 				this.checkRes(res);
