@@ -68,6 +68,8 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
   initDate(): void {
     this.searchForm.get('dateFrom').patchValue(this.firstDayOfMonth);
     this.searchForm.get('dateTo').patchValue(this.today);
+    this.searchForm.get('timeFrom').patchValue('01:00');
+    this.searchForm.get('timeTo').patchValue(moment().format('HH:mm'));
   }
 
   buildFormSearch() {
@@ -77,7 +79,9 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
       pumpHoseCode: [''],
       pumpCode: [''],
       dateFrom: [],
-      dateTo: []
+      dateTo: [],
+      timeFrom: [],
+      timeTo: []
     })
   }
 
@@ -140,10 +144,12 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
 
   getFilterData() {
     const filterFormData = this.searchForm.value;
+    const timeFrom: string = this.searchForm.get('timeFrom').value.toString();
+    const timeTo: string = this.searchForm.get('timeTo').value;
     return {
       ...filterFormData,
-      dateFrom: convertDateToServer(filterFormData.dateFrom),
-      dateTo: convertDateToServer(filterFormData.dateTo)
+      dateFrom: `${convertDateToServer(filterFormData.dateFrom)} ${timeFrom}:00.000000`,
+      dateTo: `${convertDateToServer(filterFormData.dateTo)} ${timeTo}:00.000000`
     };
   }
 
@@ -158,7 +164,8 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
   }
 
   onReset() {
-    this.ngOnInit();
+    // this.ngOnInit();
+    console.log(this.searchForm.get('timeFrom').value);
   }
 
   exportFileExcel() {}

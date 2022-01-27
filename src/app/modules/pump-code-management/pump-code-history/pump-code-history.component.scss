@@ -12,6 +12,9 @@
 .card-body {
   padding: 0 2.25rem !important;
 
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+  }
   .table {
     min-width: 1024px;
 
