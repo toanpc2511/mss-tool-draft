@@ -19,6 +19,7 @@ export interface ILogDetail {
   code: string;
   date: string;
   description: string;
+  descriptionDetail: string;
   name: string;
   userName: string;
 }

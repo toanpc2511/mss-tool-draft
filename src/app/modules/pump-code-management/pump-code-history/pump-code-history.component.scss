@@ -12,6 +12,23 @@
 .card-body {
   padding: 0 2.25rem !important;
 
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+  }
+
+  .option-time {
+    .input-group-text {
+      padding: 0.65rem 0 !important;
+      border: none;
+    }
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      text-indent: 1px;
+      text-overflow: '';
+      cursor: pointer;
+    }
+  }
   .table {
     min-width: 1024px;
 

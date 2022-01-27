@@ -52,9 +52,28 @@
         <div class="col-lg-6">
           <label>Thời gian từ</label>
 
-          <div class="input-group w-75">
+          <div class="input-group w-75 ">
+            <div class='input-group option-time w-50'>
+              <select
+                class="form-control form-control-solid text-center"
+                formControlName='hourFrom'
+              >
+                <option *ngFor="let item of hours" [value]="item.hour">{{item.valueHour}}</option>
+              </select>
+              <div class="input-group-prepend input-group-append">
+                <span class="input-group-text"> : </span>
+              </div>
+              <select
+                class="form-control form-control-solid text-center"
+                formControlName='minuteFrom'
+              >
+                <option *ngFor="let item of minutes" [value]="item.minute">
+                  {{item.valueMinute}}
+                </option>
+              </select>
+            </div>
             <input
-              class="form-control form-control-solid"
+              class="form-control form-control-solid input-group-append text-center"
               placeholder="DD/MM/YYYY"
               ngbDatepicker
               #fromDate="ngbDatepicker"
@@ -67,22 +86,39 @@
                 type="button"
               ></button>
             </div>
-            <input type='time' formControlName='dateFrom' class='form-control form-control-solid'>
+            <app-validate
+              [control]="searchForm.controls['dateFrom']"
+              [error]="'ngbDate'"
+              [message]="'Thời gian không đúng định dạng'"
+            ></app-validate>
           </div>
-
-          <app-validate
-            [control]="searchForm.controls['dateFrom']"
-            [error]="'ngbDate'"
-            [message]="'Ngày yêu cầu không đúng định dạng'"
-          ></app-validate>
         </div>
 
         <div class="col-lg-6">
           <label>Thời gian đến</label>
 
-          <div class="input-group w-75">
+          <div class="input-group w-75 ">
+            <div class='input-group option-time w-50'>
+              <select
+                class="form-control form-control-solid text-center"
+                formControlName='hourTo'
+              >
+                <option *ngFor="let item of hours" [value]="item.hour">{{item.valueHour}}</option>
+              </select>
+              <div class="input-group-prepend input-group-append">
+                <span class="input-group-text"> : </span>
+              </div>
+              <select
+                class="form-control form-control-solid text-center"
+                formControlName='minuteTo'
+              >
+                <option *ngFor="let item of minutes" [value]="item.minute">
+                  {{item.valueMinute}}
+                </option>
+              </select>
+            </div>
             <input
-              class="form-control form-control-solid"
+              class="form-control form-control-solid input-group-append text-center"
               placeholder="DD/MM/YYYY"
               ngbDatepicker
               #endAt="ngbDatepicker"
@@ -95,13 +131,13 @@
                 type="button"
               ></button>
             </div>
-          </div>
 
-          <app-validate
-            [control]="searchForm.controls['dateTo']"
-            [error]="'ngbDate'"
-            [message]="'Ngày yêu cầu đến không đúng định dạng'"
-          ></app-validate>
+            <app-validate
+              [control]="searchForm.controls['dateTo']"
+              [error]="'ngbDate'"
+              [message]="'Thời gian không đúng định dạng'"
+            ></app-validate>
+          </div>
         </div>
       </div>
     </form>
