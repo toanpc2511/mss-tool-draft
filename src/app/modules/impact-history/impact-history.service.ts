@@ -42,8 +42,8 @@ export class ImpactHistoryService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
-      .set('create-to', dataReq.startAt)
-      .set('create-form', dataReq.endAt)
+      .set('create-to', dataReq.endAt)
+      .set('create-form', dataReq.startAt)
       .set('entity', entity)
 
     return this.http.get<ILogDetail[]>('logs', {params})

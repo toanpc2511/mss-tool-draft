@@ -8,7 +8,9 @@ export const environment = {
 	USERDATA_KEY: 'authf649fc9a5f55',
 	isMockEnabled: false,
 	apiUrl: 'https://sunoil-management.firecloud.live/management',
-	apiUrlRoot: 'https://sunoil-management.firecloud.live',
+  apiUrlRoot: 'https://sunoil-management.firecloud.live',
+	// apiUrl: 'https://management.spision.com/management',
+	// apiUrlRoot: 'https://management.spision.com',
 	firebase: {
     apiKey: "AIzaSyBGDWDvuG1Wq6Wbu9fBhaU86WdD2B7Q6Mo",
     authDomain: "sun-oil-e747c.firebaseapp.com",

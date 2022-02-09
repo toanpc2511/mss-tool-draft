@@ -156,8 +156,8 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
     const timeTo = `${hourTo}:${minuteTo}`;
     return {
       ...filterFormData,
-      dateFrom: `${convertDateToServer(filterFormData.dateFrom)} ${timeFrom}:00.000000`,
-      dateTo: `${convertDateToServer(filterFormData.dateTo)} ${timeTo}:00.000000`
+      dateFrom: `${convertDateToServer(filterFormData.dateFrom)}T${timeFrom}:00.000000`,
+      dateTo: `${convertDateToServer(filterFormData.dateTo)}T${timeTo}:00.000000`
     };
   }
 
