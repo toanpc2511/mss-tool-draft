@@ -42,7 +42,7 @@ export class PumpPoleModalComponent implements OnInit {
       this.isUpdate = true;
       this.pumpPoleForm = this.fb.group({
         code: [
-          this.data.code,
+          {value: this.data.code, disabled: true},
           Validators.compose([
             Validators.required,
             TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)

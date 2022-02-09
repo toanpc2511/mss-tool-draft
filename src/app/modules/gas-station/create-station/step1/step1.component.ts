@@ -182,7 +182,7 @@ export class Step1Component implements OnInit, OnChanges {
 	initForm() {
 		return this.fb.group({
 			stationCode: [
-				'ST',
+        {value: 'ST', disabled: this.gasStationService.gasStationId},
 				[Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
 			],
 			name: ['', [Validators.required]],
@@ -211,7 +211,6 @@ export class Step1Component implements OnInit, OnChanges {
 		const lat = coordinates[0] || null;
 		const lon = coordinates[1].trim() || null;
 		const value = { ...this.stationForm.value, lat, lon };
-    console.log(value);
 
 		if (!this.isUpdate) {
 			this.gasStationService.createStation(value).subscribe(
