@@ -4,6 +4,8 @@ import { HttpService } from 'src/app/shared/services/http.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IStationActiveByToken } from '../inventory-management/inventory-management.service';
 import { IPumpHose, IPumpPole } from '../gas-station/gas-station.service';
+import { IFilterUsingPoint } from '../history-of-using-points/history-of-using-points.service';
+import { DataResponse } from '../../shared/models/data-response.model';
 
 export interface IFilterHistoryPumpCode {
   stationCode: string;
@@ -134,5 +136,17 @@ export class PumpCodeManagementService {
     const params = new HttpParams()
       .set('station-code', stationCode)
     return this.http.get<IPumpCode[]>('pump-code/filters', {params})
+  }
+
+  exportHistoryPumpCode(data: IFilterHistoryPumpCode): Observable<DataResponse<string>> {
+    const params = new HttpParams()
+      .set('station-code', data.stationCode)
+      .set('pump-pole-code', data.pumpPoleCode)
+      .set('date-from', data.dateFrom)
+      .set('date-to', data.dateTo)
+      .set('pump-hose-code', data.pumpHoseCode);
+    return this.http.getFileUrl<string>(`history-pump-code/excels`, {
+      params
+    });
   }
 }

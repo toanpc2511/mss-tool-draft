@@ -10,12 +10,15 @@ import {
 import { GasStationService, IPumpHose, IPumpPole } from '../../gas-station/gas-station.service';
 import { IFilterHistoryPumpCode, IHistoryPumpCode, PumpCodeManagementService } from '../pump-code-management.service';
 import { convertDateToServer, getHours, getMinutes, IHour, IMinute } from '../../../shared/helpers/functions';
+import { takeUntil, tap } from 'rxjs/operators';
+import { DestroyService } from '../../../shared/services/destroy.service';
+import { FileService } from '../../../shared/services/file.service';
 
 @Component({
   selector: 'app-pump-code-history',
   templateUrl: './pump-code-history.component.html',
   styleUrls: ['./pump-code-history.component.scss'],
-  providers: [ FormBuilder ]
+  providers: [ FormBuilder, DestroyService ]
 })
 export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
   stations: IStationActiveByToken[] = [];
@@ -38,6 +41,8 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
     private gasStationSv : GasStationService,
     private pumpCodeMSv: PumpCodeManagementService,
     private cdr: ChangeDetectorRef,
+    private destroy$: DestroyService,
+    private fileService: FileService
     ) {
     super();
     this.init();
@@ -179,11 +184,24 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
     this.ngOnInit();
   }
 
-  exportFileExcel() {}
-
   pagingChange($event: IPaginatorState) {
     this.paginatorState = $event as PaginatorState;
     this.onSearch();
+  }
+
+  exportFileExcel() {
+    const filterData: IFilterHistoryPumpCode = this.getFilterData();
+    this.pumpCodeMSv
+      .exportHistoryPumpCode(filterData)
+      .pipe(
+        tap((res) => {
+          if (res) {
+            this.fileService.downloadFromUrl(res.data);
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
 }
