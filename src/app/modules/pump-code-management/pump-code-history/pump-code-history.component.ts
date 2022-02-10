@@ -194,14 +194,11 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
     this.pumpCodeMSv
       .exportHistoryPumpCode(filterData)
       .pipe(
-        tap((res) => {
-          if (res) {
-            this.fileService.downloadFromUrl(res.data);
-          }
-        }),
         takeUntil(this.destroy$)
       )
-      .subscribe();
+      .subscribe(res => {
+        window.location.href = res.data;
+      });
   }
 
 }
