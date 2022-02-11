@@ -210,7 +210,7 @@ export class Step1Component implements OnInit, OnChanges {
 		const coordinates = (this.stationForm.value?.coordinates as string)?.split(',') || '';
 		const lat = coordinates[0] || null;
 		const lon = coordinates[1].trim() || null;
-		const value = { ...this.stationForm.value, lat, lon };
+		const value = { ...this.stationForm.getRawValue(), lat, lon };
 
 		if (!this.isUpdate) {
 			this.gasStationService.createStation(value).subscribe(
