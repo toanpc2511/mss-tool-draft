@@ -86,7 +86,7 @@ export class CreateGasBinComponent implements OnInit {
         );
     } else {
       this.gasStationService
-        .updateGasBin(this.data.id, this.gasBinForm.value)
+        .updateGasBin(this.data.id, this.gasBinForm.getRawValue())
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (res) => {
