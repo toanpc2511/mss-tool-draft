@@ -126,6 +126,21 @@ export const getMinutes = () => {
 	return minutes;
 };
 
+export const getAllMinutes = () => {
+  let minutes: any = [];
+
+  for (let i = 0; i < 60; i ++) {
+    minutes = [
+      ...minutes,
+      {
+        minute: i < 10 ? `0${i}` : i.toString(),
+        valueMinute: i < 10 ? `0${i} phút` : `${i} phút`
+      }
+    ];
+  }
+  return minutes;
+};
+
 export const convertTimeToString = (hour: number, minute: number) => {
 	const a = hour < 10 ? `0${hour}` : hour;
 	const b = minute < 10 ? `0${minute}` : minute;
