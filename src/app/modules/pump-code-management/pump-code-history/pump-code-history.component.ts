@@ -77,8 +77,8 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
   initDate(): void {
     this.searchForm.get('dateFrom').patchValue(this.firstDayOfMonth);
     this.searchForm.get('dateTo').patchValue(this.today);
-    this.searchForm.get('minuteTo').patchValue(moment().minutes());
-    this.searchForm.get('hourTo').patchValue(moment().hours());
+    this.searchForm.get('minuteTo').patchValue(moment().minutes() < 10 ? `0${moment().minutes()}` : moment().minutes());
+    this.searchForm.get('hourTo').patchValue(moment().hours() < 10 ? `0${moment().hours()}` : moment().hour());
   }
 
   buildFormSearch() {
