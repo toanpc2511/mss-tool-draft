@@ -9,7 +9,7 @@ import {
 } from '../../inventory-management/inventory-management.service';
 import { GasStationService, IPumpHose, IPumpPole } from '../../gas-station/gas-station.service';
 import { IFilterHistoryPumpCode, IHistoryPumpCode, PumpCodeManagementService } from '../pump-code-management.service';
-import { convertDateToServer, getHours, getMinutes, IHour, IMinute } from '../../../shared/helpers/functions';
+import { convertDateToServer, getAllMinutes, getHours, getMinutes, IHour, IMinute } from '../../../shared/helpers/functions';
 import { takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { FileService } from '../../../shared/services/file.service';
@@ -54,7 +54,7 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
     this.paginatorState.pageSizes = [5, 10, 15, 20];
     this.paginatorState.total = 0;
     this.hours = getHours(24);
-    this.minutes = getMinutes();
+    this.minutes = getAllMinutes();
 
     this.dataSource = [];
     this.today = moment().format('DD/MM/YYYY');
@@ -77,6 +77,8 @@ export class PumpCodeHistoryComponent extends BaseComponent  implements OnInit {
   initDate(): void {
     this.searchForm.get('dateFrom').patchValue(this.firstDayOfMonth);
     this.searchForm.get('dateTo').patchValue(this.today);
+    this.searchForm.get('minuteTo').patchValue(moment().minutes());
+    this.searchForm.get('hourTo').patchValue(moment().hours());
   }
 
   buildFormSearch() {
