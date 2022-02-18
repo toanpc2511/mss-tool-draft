@@ -229,7 +229,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       type: [this.currentType],
       startDate: [this.startOfMonth],
       endDate: [this.today],
-      stationId: ['']
+      stationCode: ['']
     });
   }
 
@@ -314,9 +314,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.searchForm.get('endDate').setErrors(null);
     }
 
-    if (diffDays > 30 && this.currentType === 'DAY' || diffMonths > 12 && this.currentType === 'MONTH') {
+    if (diffDays > 30 && this.currentType === 'DAY') {
       this.searchForm.get('startDate').setErrors({ errDateRange: true });
       this.searchForm.get('endDate').setErrors({ errDateRange: true });
+      return;
+    } else {
+      this.searchForm.get('startDate').setErrors(null);
+      this.searchForm.get('endDate').setErrors(null);
+    }
+
+    if (diffMonths > 12 && this.currentType === 'MONTH') {
+      this.searchForm.get('startDate').setErrors({ errMonthRange: true });
+      this.searchForm.get('endDate').setErrors({ errMonthRange: true });
       return;
     } else {
       this.searchForm.get('startDate').setErrors(null);
