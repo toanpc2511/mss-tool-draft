@@ -26,7 +26,7 @@
           <th scope=''>Mã cột</th>
           <th scope=''>Mã vòi</th>
           <th scope=''>Nhiên liệu</th>
-          <th scope=''>Kết nối</th>
+          <th scope='' class='text-center'>Kết nối</th>
           <th scope=''>Trạng thái</th>
           <th scope=''>Số lít</th>
           <th scope=''>Đơn giá</th>
@@ -74,8 +74,47 @@
               {{ item.productName }}
             </p>
           </td>
-          <td class='text-center'>
-            <p class=''><i class="fas fa-circle text-danger"></i></p>
+          <td class='text-center connect text-center'>
+            <p class=''>
+              <i
+                class="fas fa-circle"
+                [class.text-danger]='!item.connection'
+                [class.text-success]='item.connection'
+              ></i>
+            </p>
+          </td>
+          <td class="status">
+							<span
+                class="label label-lg label-inline"
+                [class.label-light-success]="item.statusPump === 2"
+                [class.label-light-danger]="item.statusPump === 3"
+              >
+								<ng-container *ngIf="item.statusPump === 2"
+                >Đang bơm</ng-container
+                >
+								<ng-container *ngIf="item.statusPump === 3"
+                >Dừng bơm</ng-container
+                >
+							</span>
+          </td>
+          <td></td>
+          <td>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.valuePumped | number | vnCurrency"
+            >
+              {{ item.valuePumped | number | vnCurrency }}
+            </p>
+          </td>
+          <td>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.moneyPumped | number | vnCurrency"
+            >
+              {{ item.moneyPumped | number | vnCurrency }}
+            </p>
           </td>
         </tr>
         </tbody>
