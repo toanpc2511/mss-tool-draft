@@ -1,16 +1,15 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { IMqttMessage, MqttConnectionState, MqttService } from 'ngx-mqtt';
 import { ToastrService } from 'ngx-toastr';
-import { error } from 'protractor';
 import { Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import {
   InventoryManagementService,
   IStationActiveByToken
 } from '../../inventory-management/inventory-management.service';
 import { DestroyService } from '../../../shared/services/destroy.service';
-import { IPumpCode, PumpCodeManagementService } from '../pump-code-management.service';
+import { IDataConnectMqtt, IPumpCode, PumpCodeManagementService } from '../pump-code-management.service';
 
 @Component({
   selector: 'app-pump-hose-operation',
@@ -25,6 +24,7 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
   listStation: IStationActiveByToken[] = []
   station = new FormControl('');
   pumpCodes: IPumpCode[] = [];
+  dataTest;
 
   constructor(
     private mqttService: MqttService,
@@ -33,24 +33,64 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
     private inventoryMSv: InventoryManagementService,
     private pumpCodeMSv: PumpCodeManagementService,
     private destroy$: DestroyService,
-  ) {}
+  ) {
+    this.connectMqtt();
+  }
 
   ngOnInit(): void {
-    this.mqttService.onConnect
-      .subscribe((connack) => {
-        this.toastr.success('Kết nối thành công!');
-        this.cdr.checkNoChanges()
-      }, () => this.toastr.error('Kết nối thất bại'));
     this.getListStation();
     this.getPumpCode('');
     this.changestation();
-    this.getData('');
+  }
+
+  connectMqtt() {
+    this.mqttService.onConnect.pipe(finalize(() => {
+      this.checkConnectMqtt();
+    }))
+      .subscribe(() => {
+        this.toastr.success('Kết nối thành công!');
+        this.getDataMqtt();
+        this.cdr.detectChanges();
+        });
+  }
+
+  checkConnectMqtt() {
+    this.mqttService.state.subscribe((s: MqttConnectionState) => {
+      const status = s === MqttConnectionState.CONNECTED ? 'CONNECTED' : 'DISCONNECTED';
+      if (s !== MqttConnectionState.CONNECTED) {
+        this.toastr.error(`Kết nối thất bại: ${status}`);
+      }
+    });
+  }
+
+  getDataMqtt(station?: string) {
+    const topic = !station ? 'sunoil/pub/#' : `sunoil/pub/${station}/#`;
+    this.subscription = this.mqttService.observe(topic)
+      .subscribe((message: IMqttMessage) => {
+        this.msg = new TextDecoder('utf-8').decode(message.payload);
+        this.dataTest = JSON.parse((this.msg))
+        this.bindData(this.pumpCodes, this.dataTest);
+        this.cdr.detectChanges()
+      });
+  }
+
+  bindData(listStation, dataMqtt) {
+    console.log(listStation);
+    dataMqtt.map((station) => {
+      station.map((pumpPole: IDataConnectMqtt) => {
+        console.log(pumpPole);
+        const a = listStation.find((x) => x.stationCodeChip === pumpPole.station && x.pumpHoseCodeChip === pumpPole.slave)
+        a.statusPump = pumpPole.statusPump
+        a.moneyPumped = pumpPole.moneyPumped
+        a.valuePumped = pumpPole.valuePumped
+      })
+    })
   }
 
   changestation() {
     this.station.valueChanges.subscribe((value: string) => {
-      this.getData(value);
       this.getPumpCode(value);
+      this.getDataMqtt(value);
     })
   }
 
@@ -59,21 +99,12 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         if (res) {
           this.pumpCodes = res.data;
+          this.pumpCodes.map(x => {
+            x.statusPump = 0;
+          })
           this.cdr.detectChanges();
         }
       })
-  }
-
-  getData(station: string) {
-    let topic = '';
-    topic = !station ? topic = 'sunoil/pub/#' : topic = `sunoil/pub/${station}/#`
-    this.subscription = this.mqttService.observe(topic)
-      .subscribe((message: IMqttMessage) => {
-        this.msg = new TextDecoder('utf-8').decode(message.payload);
-        // console.log(this.msg);
-        console.log(JSON.parse(this.msg));
-        this.cdr.detectChanges()
-      });
   }
 
   getListStation() {
@@ -89,5 +120,4 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-
 }

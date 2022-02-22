@@ -18,5 +18,13 @@
     th {
       text-transform: none;
     }
+    td {
+      &.connect {
+        min-width: 110px;
+      }
+      &.status {
+        min-width: 130px;
+      }
+    }
   }
 }
