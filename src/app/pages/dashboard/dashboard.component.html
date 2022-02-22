@@ -131,7 +131,7 @@
           <label class='mr-5 mt-2'>Trạm</label>
           <select class="form-control form-control-solid ml-5" formControlName='stationId' (ngModelChange)='search()'>
             <option [value]="''">Tất cả</option>
-            <option *ngFor='let station of listStationByToken' [value]="station.id">{{station.name}}</option>
+            <option *ngFor='let station of listStationByToken' [value]="station.code">{{station.name}}</option>
           </select>
         </div>
       </div>
