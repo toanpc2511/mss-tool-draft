@@ -6,19 +6,26 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { DashboardsModule } from '../../_metronic/partials/content/dashboards/dashboards.module';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import {SharedComponentsModule} from "../../shared/components/shared-components.module";
+import {CoreModule} from "../../_metronic/core";
 
 @NgModule({
 	declarations: [DashboardComponent],
-	imports: [
-		CommonModule,
-		RouterModule.forChild([
-			{
-				path: '',
-				component: DashboardComponent
-			}
-		]),
-		DashboardsModule,
-		NgApexchartsModule
-	]
+    imports: [
+        CommonModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: DashboardComponent
+            }
+        ]),
+        DashboardsModule,
+        NgApexchartsModule,
+        NgbDatepickerModule,
+        ReactiveFormsModule,
+        SharedComponentsModule,
+        CoreModule
+    ]
 })
 export class DashboardModule {}
