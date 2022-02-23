@@ -49,6 +49,23 @@ export interface IPumpCode {
   totalAmountAccumulated: number;
   totalCumulativeLiters: number;
   unitPrice: number;
+  stationCodeChip: string;
+  pumpHoseCodeChip: number;
+  statusPump: number;
+  moneyPumped: number;
+  valuePumped: number;
+  totalAmountAccumulatedChip: number;
+  totalCumulativeLitersChip: number;
+}
+
+export class IDataConnectMqtt {
+  station: string;
+  slave: number;
+  statusPump: number;
+  moneyPumped: number;
+  valuePumped: number;
+  totalAmountAccumulated: number;
+  totalCumulativeLiters: number;
 }
 
 export class StepData {

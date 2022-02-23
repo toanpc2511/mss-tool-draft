@@ -18,5 +18,24 @@
     th {
       text-transform: none;
     }
+    td {
+      &.connect {
+        min-width: 110px;
+      }
+      &.status {
+        min-width: 130px;
+      }
+      &.value-pump,
+      &.unit-price,
+      &.money-pump {
+        min-width: 130px;
+        max-width: 150px;
+      }
+      &.total-amount-accumulated,
+      &.total-cumulative-liters {
+        min-width: 160px;
+        max-width: 170px;
+      }
+    }
   }
 }
