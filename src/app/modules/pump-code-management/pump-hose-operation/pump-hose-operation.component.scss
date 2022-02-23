@@ -24,6 +24,9 @@
       }
       &.status {
         min-width: 130px;
+        i {
+          font-size: 14px;
+        }
       }
       &.value-pump,
       &.unit-price,

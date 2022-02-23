@@ -19,9 +19,10 @@ import { IDataConnectMqtt, IPumpCode, PumpCodeManagementService } from '../pump-
 })
 export class PumpHoseOperationComponent implements OnInit, OnDestroy {
   subscription: Subscription;
-  listStation: IStationActiveByToken[] = []
+  listStation: IStationActiveByToken[] = [];
   station = new FormControl('');
   pumpCodes: IPumpCode[] = [];
+
   // topic: string;
 
   constructor(
@@ -30,7 +31,7 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private inventoryMSv: InventoryManagementService,
     private pumpCodeMSv: PumpCodeManagementService,
-    private destroy$: DestroyService,
+    private destroy$: DestroyService
   ) {
     this.connectMqtt();
   }
@@ -49,7 +50,7 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
         this.toastr.success('Kết nối thành công!');
         this.getDataMqtt();
         this.cdr.detectChanges();
-        });
+      });
   }
 
   checkConnectMqtt() {
@@ -67,29 +68,31 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
     this.subscription = this.mqttService.observe(topic)
       .subscribe((message: IMqttMessage) => {
         const msg = new TextDecoder('utf-8').decode(message.payload);
-        this.bindData(this.pumpCodes, JSON.parse(msg));
-        this.cdr.detectChanges()
+        console.log(msg);
+        console.log(JSON.parse(msg));
+        this.bindData(JSON.parse(msg));
+        this.cdr.detectChanges();
       });
   }
 
-  bindData(listStation, dataMqtt) {
-    dataMqtt.map((station) => {
-      station.map((pumpPole: IDataConnectMqtt) => {
-        const a = listStation.find((x) => x.stationCodeChip === pumpPole.station && x.pumpHoseCodeChip === pumpPole.slave)
+  bindData(dataMqtt: any[]) {
+    dataMqtt.forEach((stationMqttData: any[]) => {
+      stationMqttData.forEach((pumpPole: IDataConnectMqtt) => {
+        const a = this.pumpCodes.find((x) => x.stationCodeChip === pumpPole.station && x.pumpHoseCodeChip === pumpPole.slave);
         a.statusPump = pumpPole.statusPump;
         a.valuePumped = Number(pumpPole.valuePumped / 1000).toLocaleString('en-US');
         a.moneyPumped = a.unitPrice * pumpPole.valuePumped / 1000;
         a.totalCumulativeLitersChip = pumpPole.totalCumulativeLiters?.toLocaleString('en-US');
         a.totalAmountAccumulatedChip = pumpPole.totalAmountAccumulated?.toLocaleString('en-US');
-      })
-    })
+      });
+    });
   }
 
   changestation() {
     this.station.valueChanges.subscribe((value: string) => {
       this.getPumpCode(value);
       this.getDataMqtt(value);
-    })
+    });
   }
 
   getPumpCode(stationValue: string) {
@@ -101,12 +104,12 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
             x.statusPump = 0;
             x.valuePumped = 0;
             x.moneyPumped = 0;
-            x.totalCumulativeLitersChip = 0;
-            x.totalAmountAccumulatedChip = 0;
-          })
+            x.totalCumulativeLitersChip = x.totalCumulativeLiters?.toLocaleString('en-US') || 0;
+            x.totalAmountAccumulatedChip = x.totalAmountAccumulated?.toLocaleString('en-US') || 0;
+          });
           this.cdr.detectChanges();
         }
-      })
+      });
   }
 
   getListStation() {
