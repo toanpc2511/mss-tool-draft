@@ -18,13 +18,11 @@ import { IDataConnectMqtt, IPumpCode, PumpCodeManagementService } from '../pump-
   providers: [DestroyService]
 })
 export class PumpHoseOperationComponent implements OnInit, OnDestroy {
-  dataSource;
-  msg;
   subscription: Subscription;
   listStation: IStationActiveByToken[] = []
   station = new FormControl('');
   pumpCodes: IPumpCode[] = [];
-  dataTest;
+  // topic: string;
 
   constructor(
     private mqttService: MqttService,
@@ -65,24 +63,24 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
 
   getDataMqtt(station?: string) {
     const topic = !station ? 'sunoil/pub/#' : `sunoil/pub/${station}/#`;
+    console.log(topic);
     this.subscription = this.mqttService.observe(topic)
       .subscribe((message: IMqttMessage) => {
-        this.msg = new TextDecoder('utf-8').decode(message.payload);
-        this.dataTest = JSON.parse((this.msg))
-        this.bindData(this.pumpCodes, this.dataTest);
+        const msg = new TextDecoder('utf-8').decode(message.payload);
+        this.bindData(this.pumpCodes, JSON.parse(msg));
         this.cdr.detectChanges()
       });
   }
 
   bindData(listStation, dataMqtt) {
-    console.log(listStation);
     dataMqtt.map((station) => {
       station.map((pumpPole: IDataConnectMqtt) => {
-        console.log(pumpPole);
         const a = listStation.find((x) => x.stationCodeChip === pumpPole.station && x.pumpHoseCodeChip === pumpPole.slave)
-        a.statusPump = pumpPole.statusPump
-        a.moneyPumped = pumpPole.moneyPumped
-        a.valuePumped = pumpPole.valuePumped
+        a.statusPump = pumpPole.statusPump;
+        a.valuePumped = Number(pumpPole.valuePumped / 1000).toLocaleString('en-US');
+        a.moneyPumped = a.unitPrice * pumpPole.valuePumped / 1000;
+        a.totalCumulativeLitersChip = pumpPole.totalCumulativeLiters?.toLocaleString('en-US');
+        a.totalAmountAccumulatedChip = pumpPole.totalAmountAccumulated?.toLocaleString('en-US');
       })
     })
   }
@@ -101,6 +99,10 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
           this.pumpCodes = res.data;
           this.pumpCodes.map(x => {
             x.statusPump = 0;
+            x.valuePumped = 0;
+            x.moneyPumped = 0;
+            x.totalCumulativeLitersChip = 0;
+            x.totalAmountAccumulatedChip = 0;
           })
           this.cdr.detectChanges();
         }
