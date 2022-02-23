@@ -53,9 +53,9 @@ export interface IPumpCode {
   pumpHoseCodeChip: number;
   statusPump: number;
   moneyPumped: number;
-  valuePumped: number;
-  totalAmountAccumulatedChip: number;
-  totalCumulativeLitersChip: number;
+  valuePumped: string | number;
+  totalAmountAccumulatedChip: string | number;
+  totalCumulativeLitersChip: string | number;
 }
 
 export class IDataConnectMqtt {

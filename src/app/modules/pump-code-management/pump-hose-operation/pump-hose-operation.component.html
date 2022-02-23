@@ -14,6 +14,11 @@
           <option *ngFor='let station of listStation' [value]="station.code">{{station.name}}</option>
         </select>
       </div>
+
+      <div class="col-lg-6 d-flex justify-content-around align-items-center">
+        <p><i class="fas fa-circle text-success pr-3"></i>Đã kết nối</p>
+        <p><i class="fas fa-circle text-danger pr-3"></i>Chưa kết nối</p>
+      </div>
     </div>
 
     <div class="table-responsive angular-bootstrap-table">
@@ -83,12 +88,12 @@
           </td>
           <td class="status text-center">
 							<span
-                class="label label-lg label-inline"
+                class="label label-lg label-inline flex align-items-center " style='gap: 10px'
                 [class.label-light-success]="item.statusPump === 2"
-                [class.label-light-danger]="item.statusPump !== 2"
+                [class.label-light-warning]="item.statusPump !== 2"
               >
 								<ng-container *ngIf="item.statusPump === 2"
-                >Đang bơm</ng-container
+                ><i class="fas fa-spinner fa-pulse text-success"></i> Đang bơm</ng-container
                 >
 								<ng-container *ngIf="item.statusPump !== 2"
                 >Dừng bơm</ng-container
@@ -108,9 +113,9 @@
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.unitPrice.toLocaleString('en-US')"
+              [ngbTooltip]="item.unitPrice?.toLocaleString('en-US')"
             >
-              {{ item.unitPrice.toLocaleString('en-US') }}
+              {{ item.unitPrice?.toLocaleString('en-US') }}
             </p>
           </td>
           <td class='money-pump text-right'>
