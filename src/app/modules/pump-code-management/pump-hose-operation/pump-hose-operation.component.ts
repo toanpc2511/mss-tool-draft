@@ -17,8 +17,7 @@ import { IDataConnectMqtt, IPumpCode, PumpCodeManagementService } from '../pump-
   styleUrls: ['./pump-hose-operation.component.scss'],
   providers: [DestroyService]
 })
-export class PumpHoseOperationComponent implements OnInit, OnDestroy {
-  subscription: Subscription;
+export class PumpHoseOperationComponent implements OnInit {
   listStation: IStationActiveByToken[] = [];
   station = new FormControl('');
   pumpCodes: IPumpCode[] = [];
@@ -45,7 +44,7 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
   connectMqtt() {
     this.mqttService.onConnect.pipe(finalize(() => {
       this.checkConnectMqtt();
-    }))
+    }), takeUntil(this.destroy$))
       .subscribe(() => {
         this.toastr.success('Kết nối thành công!');
         this.getDataMqtt();
@@ -54,7 +53,7 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
   }
 
   checkConnectMqtt() {
-    this.mqttService.state.subscribe((s: MqttConnectionState) => {
+    this.mqttService.state.pipe(takeUntil(this.destroy$)).subscribe((s: MqttConnectionState) => {
       const status = s === MqttConnectionState.CONNECTED ? 'CONNECTED' : 'DISCONNECTED';
       if (s !== MqttConnectionState.CONNECTED) {
         this.toastr.error(`Kết nối thất bại: ${status}`);
@@ -65,7 +64,7 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
   getDataMqtt(station?: string) {
     const topic = !station ? 'sunoil/pub/#' : `sunoil/pub/${station}/#`;
     console.log(topic);
-    this.subscription = this.mqttService.observe(topic)
+    this.mqttService.observe(topic).pipe(takeUntil(this.destroy$))
       .subscribe((message: IMqttMessage) => {
         const msg = new TextDecoder('utf-8').decode(message.payload);
         console.log(msg);
@@ -89,14 +88,14 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
   }
 
   changestation() {
-    this.station.valueChanges.subscribe((value: string) => {
+    this.station.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value: string) => {
       this.getPumpCode(value);
       this.getDataMqtt(value);
     });
   }
 
   getPumpCode(stationValue: string) {
-    this.pumpCodeMSv.getPumpCode(stationValue)
+    this.pumpCodeMSv.getPumpCode(stationValue).pipe(takeUntil(this.destroy$))
       .subscribe((res) => {
         if (res) {
           this.pumpCodes = res.data;
@@ -120,9 +119,5 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
         this.listStation = res.data;
         this.cdr.detectChanges();
       });
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

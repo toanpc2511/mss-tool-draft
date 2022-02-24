@@ -61,20 +61,20 @@ function appInitializer(authService: AuthService, router: Router) {
 }
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-  connectOnCreate: true,
-  hostname: 'sunoil-management.firecloud.live',
-  port: 9001,
-  path: '/mqtt',
-  protocol: 'wss',
-  username: 'namthanh',
-  password: '123456789'
+	connectOnCreate: true,
+	hostname: environment.mqtt.hostname,
+	port: environment.mqtt.port,
+	path: environment.mqtt.path,
+	protocol: 'wss',
+	username: environment.mqtt.username,
+	password: environment.mqtt.password
 };
 
 @NgModule({
 	declarations: [AppComponent, DevComponent],
 	imports: [
-    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
-    AngularFireModule.initializeApp(environment.firebase),
+		MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+		AngularFireModule.initializeApp(environment.firebase),
 		AngularFireModule,
 		BrowserModule,
 		BrowserAnimationsModule,
@@ -97,7 +97,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 		NgxSpinnerModule,
 		NgSelectModule,
 		FormsModule,
-    ReactiveFormsModule,
+		ReactiveFormsModule,
 		TextMaskModule,
 		FullCalendarModule
 	],
