@@ -57,6 +57,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		month: this.currentDate.getMonth() + 1,
 		year: this.currentDate.getFullYear()
 	};
+  minDate: NgbDateStruct = { year: new Date().getUTCFullYear() - 100, month: 12, day: 31 };
 
 	eFace = EFace;
 	eSex = ESex;
@@ -144,6 +145,7 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 					if (this.employeeId) {
 						this.isUpdate = true;
 						this.maxDate = null;
+            this.minDate = null;
 						this.setBreadcumb();
 						return this.employeeService.getEmployeeById(id);
 					}
@@ -192,7 +194,6 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 
 	patchUpdateValueToForm(data: IEmployeeDetail) {
 		this.employeeForm.patchValue(data, NO_EMIT_EVENT);
-		this.isStationAddressLoadedSubject.subscribe(() => console.log('zô'));
 		this.isStationAddressLoaded$
 			.pipe(
 				tap(() => {
@@ -452,8 +453,9 @@ export class EmployeeModalComponent implements OnInit, AfterViewInit {
 		const inputElement = $event.target as HTMLInputElement;
 		const files = Array.from(inputElement.files);
 
-		if (files[0].size > 2000000) {
-			this.toastr.error('Dung lượng ảnh quá lớn');
+		if (files[0].size > 15360000) {
+			this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 15MB');
+      return;
 		}
 
 		this.uploadImageFile(files[0], face);

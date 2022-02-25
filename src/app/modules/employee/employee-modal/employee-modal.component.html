@@ -47,7 +47,6 @@
 								(keydown.space)="$event.preventDefault()"
 								maxlength="20"
 								numbersOnly
-								[numberformControl]="employeeForm.controls['phone']"
 							/>
 
 							<app-validate
@@ -79,6 +78,7 @@
 									#dateOfBirth="ngbDatepicker"
 									formControlName="dateOfBirth"
 									[maxDate]="maxDate"
+                  [minDate]='minDate'
 								/>
 								<div class="input-group-append">
 									<button
@@ -209,7 +209,6 @@
 								(keydown.space)="$event.preventDefault()"
 								maxlength="20"
 								numbersOnly
-								[numberformControl]="employeeForm.controls['phone']"
 							/>
 
 							<app-validate
@@ -280,6 +279,7 @@
 									#dateOfBirth="ngbDatepicker"
 									formControlName="dateOfBirth"
 									[maxDate]="maxDate"
+                  [minDate]='minDate'
 								/>
 								<div class="input-group-append">
 									<button
@@ -421,7 +421,6 @@
 						(keydown.space)="$event.preventDefault()"
 						maxlength="12"
 						numbersOnly
-						[numberformControl]="employeeForm.controls['identityCardNumber']"
 					/>
 
 					<app-validate
@@ -452,6 +451,7 @@
 							#dateRange="ngbDatepicker"
 							formControlName="dateRange"
 							[maxDate]="maxDate"
+              [minDate]='minDate'
 						/>
 						<div class="input-group-append">
 							<button

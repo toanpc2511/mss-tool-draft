@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { EArea, EStatus } from 'src/app/shared/data-enum/enums';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { environment } from 'src/environments/environment';
+import { PumpPoleResponse } from '../shift/shift.service';
 
 export class StepData {
 	currentStep: number;
@@ -33,6 +34,10 @@ export interface GasStationResponse {
 	fullAddress: string;
 	areaType: EArea;
 	status: EStatus;
+	lat: string;
+	lon: string;
+	chip: boolean;
+	phone: string;
 }
 
 export interface CreateStation {
@@ -44,6 +49,10 @@ export interface CreateStation {
 	address: string;
 	fullAddress: string;
 	areaType: EArea;
+	lat: string;
+	lon: string;
+	chip: boolean;
+	phone: string;
 	status: EStatus;
 }
 // end gas station
@@ -163,6 +172,19 @@ export interface IAddress {
 	fullAddress: string;
 	provinceId: number;
 }
+
+export interface IInfoBarem {
+  capacity: string;
+  code: string;
+  height: string;
+  length: string;
+  name: string;
+  scales: [{
+    numberOfLit: number,
+    height: number
+  }];
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -200,18 +222,12 @@ export class GasStationService {
 	}
 
 	getDistrictsByProvince(provinceId: number) {
-		const params = new HttpParams().set(
-			'province-id',
-			provinceId.toString()
-		);
+		const params = new HttpParams().set('province-id', provinceId.toString());
 		return this.http.get<Array<IDistrict>>(`districts`, { params });
 	}
 
 	getWardsByDistrict(districtId: number) {
-		const params = new HttpParams().set(
-			'district-id',
-			districtId.toString()
-		);
+		const params = new HttpParams().set('district-id', districtId.toString());
 		return this.http.get<Array<IWard>>(`wards`, { params });
 	}
 
@@ -316,4 +332,30 @@ export class GasStationService {
 			step4: { isValid: false }
 		});
 	}
+
+	getPumpPolesActiveByGasStation(gasStationId: string | number) {
+		const params = new HttpParams({
+			fromString: `station-id=${gasStationId}`
+		});
+		return this.http.get<Array<IPumpPole>>(`pump-poles/stations`, {
+			params
+		});
+	}
+
+	getPumpolesActive(stationId: string) {
+		const params = new HttpParams().set('station-id', stationId);
+		return this.http.get<PumpPoleResponse[]>('pump-poles/stations', { params });
+	}
+
+  // Lấy thông tin Barem của bồn
+  getInfoBarem(gasBinId: number) {
+    const params = new HttpParams()
+      .set('gas-field-id', gasBinId.toString())
+    return this.http.get<IInfoBarem>(`scales`, {params})
+  }
+
+  // nhập barem bồn
+  impostBarem(dataReq) {
+    return this.http.post('scales', dataReq);
+  }
 }

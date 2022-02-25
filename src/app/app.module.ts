@@ -1,11 +1,20 @@
+import { environment } from 'src/environments/environment';
+import { registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import localeViExtra from '@angular/common/locales/extra/vi';
+import localeVi from '@angular/common/locales/vi';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { TextMaskModule } from 'angular2-text-mask';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { ClipboardModule } from 'ngx-clipboard';
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
@@ -15,25 +24,31 @@ import { finalize } from 'rxjs/operators';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/services/auth.service';
+import { DevComponent } from './modules/dev/dev.component';
 import { NgSelectModule } from './shared/components/ng-select/public-api';
+import { CustomAdapter, CustomDateParserFormatter } from './shared/helpers/datepicker-adapter';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 import { LoadingInterceptor } from './shared/interceptors/loading.interceptor';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
-
-import { registerLocaleData } from '@angular/common';
-import localeVi from '@angular/common/locales/vi';
-import localeViExtra from '@angular/common/locales/extra/vi';
-import { CustomAdapter, CustomDateParserFormatter } from './shared/helpers/datepicker-adapter';
-import { TextMaskModule } from 'angular2-text-mask';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+import { environment as env } from '../environments/environment';
+import { IClientOptions } from 'mqtt';
 
 registerLocaleData(localeVi, 'vi', localeViExtra);
+
+FullCalendarModule.registerPlugins([bootstrapPlugin, dayGridPlugin, timeGridPlugin]);
 
 function appInitializer(authService: AuthService, router: Router) {
 	return () => {
 		return new Promise((resolve) => {
 			authService.getLoggedUser().subscribe(
 				(currentUser) => {
+					if (!currentUser) {
+						authService.clearData();
+					}
 					if (currentUser?.changePassword) {
 						router.navigate(['/auth/first-login']);
 					}
@@ -45,9 +60,22 @@ function appInitializer(authService: AuthService, router: Router) {
 	};
 }
 
+export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+	connectOnCreate: true,
+	hostname: environment.mqtt.hostname,
+	port: environment.mqtt.port,
+	path: environment.mqtt.path,
+	protocol: 'wss',
+	username: environment.mqtt.username,
+	password: environment.mqtt.password
+};
+
 @NgModule({
-	declarations: [AppComponent],
+	declarations: [AppComponent, DevComponent],
 	imports: [
+		MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+		AngularFireModule.initializeApp(environment.firebase),
+		AngularFireModule,
 		BrowserModule,
 		BrowserAnimationsModule,
 		SplashScreenModule,
@@ -61,7 +89,7 @@ function appInitializer(authService: AuthService, router: Router) {
 		ToastrModule.forRoot({
 			closeButton: true,
 			progressBar: true,
-			timeOut: 3000,
+			timeOut: 3500,
 			maxOpened: 4,
 			positionClass: 'toast-bottom-right',
 			preventDuplicates: true
@@ -69,7 +97,9 @@ function appInitializer(authService: AuthService, router: Router) {
 		NgxSpinnerModule,
 		NgSelectModule,
 		FormsModule,
-		TextMaskModule
+		ReactiveFormsModule,
+		TextMaskModule,
+		FullCalendarModule
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'vi' },

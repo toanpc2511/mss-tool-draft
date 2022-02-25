@@ -1,0 +1,50 @@
+.card-header {
+  border-bottom: 0;
+}
+
+.card-body {
+  padding-top: 0 !important;
+}
+
+.btn-def {
+  min-width: 110px;
+}
+
+table {
+  min-width: 1024px;
+  thead {
+    tr {
+      &:hover {
+        background-color: #fff;
+      }
+
+      th {
+        text-transform: none;
+      }
+    }
+  }
+  th, td {
+    &.name,
+    &.gas-field-code,
+    &.create-at,
+    &.creator-name {
+      min-width: 170px;
+      max-width: 220px;
+    }
+    &.import-quantity,
+    &.head-meter,
+    &.final-meter,
+    &.difference {
+      min-width: 150px;
+      max-width: 170px;
+    }
+    &.with-meter {
+      min-width: 210px;
+      max-width: 220px;
+    }
+    &.note {
+      min-width: 200px;
+      max-width: 250px;
+    }
+  }
+}

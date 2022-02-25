@@ -136,10 +136,18 @@
 				type="button"
 				class="mr-6 btn btn-outline-secondary btn-dialog"
 				(click)="onReset(true)"
+				*ngIf="eAuthorize.UPDATE_POINT_BUTTON|canUseFeature"
 			>
 				Hủy
 			</button>
-			<button type="button" class="btn btn-primary btn-dialog" (click)="onSubmit()">Lưu</button>
+			<button
+				type="button"
+				class="btn btn-primary btn-dialog"
+				(click)="onSubmit()"
+				*ngIf="eAuthorize.UPDATE_POINT_BUTTON|canUseFeature"
+			>
+				Lưu
+			</button>
 		</div>
 	</div>
 </div>

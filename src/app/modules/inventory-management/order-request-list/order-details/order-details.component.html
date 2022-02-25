@@ -1,0 +1,309 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="title">Thông tin yêu cầu</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="form-group row">
+      <div class="col-lg-6 row">
+        <div class='col-lg-5'>
+          <label class='form-label'>Mã yêu cầu</label>
+        </div>
+        <div class='col-lg-7'>
+          <label class='form-label'>
+            <strong>{{dataSource?.code}}</strong>
+          </label>
+        </div>
+      </div>
+
+      <div class="col-lg-6 row">
+        <div class='col-lg-5'>
+          <label class='form-label'>Người yêu cầu</label>
+        </div>
+        <div class='col-lg-7'>
+          <label class='form-label'>
+            <strong>{{dataSource?.employeeRequest}}</strong>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-lg-6 row">
+        <div class='col-lg-5'>
+          <label class='form-label'>Trạm</label>
+        </div>
+        <div class='col-lg-7'>
+          <label class='form-label'>
+            <strong>{{dataSource?.stationName}}</strong>
+          </label>
+        </div>
+      </div>
+
+      <div class="col-lg-6 row">
+        <div class='col-lg-5'>
+          <label class='form-label'>Địa chỉ</label>
+        </div>
+        <div class='col-lg-7'>
+          <label class='form-label'>
+            <strong>{{dataSource?.address}}</strong>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-lg-6 row">
+        <div class='col-lg-5'>
+          <label class='form-label'>Ngày dự kiến nhập hàng</label>
+        </div>
+        <div class='col-lg-7'>
+          <label class='form-label'>
+            <strong>{{dataSource?.requestDate | date: 'dd/MM/yyyy'}}</strong>
+          </label>
+        </div>
+      </div>
+
+      <div class="col-lg-6 row">
+        <div class='col-lg-5'>
+          <label class='form-label'>Trạng thái</label>
+        </div>
+        <div class='col-lg-7'>
+          <label class='form-label'>
+            <strong *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM'>Chờ xác nhận</strong>
+            <strong *ngIf='dataSource?.status === listStatus.APPROVE'>Đã phê duyệt</strong>
+            <strong *ngIf='dataSource?.status === listStatus.CONFIRM'>Đã xác nhận</strong>
+            <strong *ngIf='dataSource?.status === listStatus.REFUSE'>Đã từ chối</strong>
+            <strong *ngIf='dataSource?.status === listStatus.IMPORTED'>Đã nhập kho</strong>
+            <strong *ngIf='dataSource?.status === listStatus.EXPORTED'>Đã xuất kho</strong>
+            <strong *ngIf='dataSource?.status === listStatus.REQUEST_CHANGE'>Yêu cầu thay đổi</strong>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-header pt-5">
+    <div class="card-title">
+      <h3 class="title">Danh sách hàng hóa</h3>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <tr>
+          <th scope=''>STT</th>
+          <th scope='' class=''>Tên sản phẩm</th>
+          <th scope='' class=''>Đơn vị</th>
+          <th scope='' class=''>Bồn</th>
+          <th scope='' class='text-right'>Lượng đề xuất</th>
+          <th scope='' class='text-right'>Lượng thực nhập</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor='let item of dataSource?.productResponses; let i = index'>
+          <td>{{i + 1}}</td>
+          <td class='product-name'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.productName"
+            >
+              {{ item.productName }}
+            </p>
+          </td>
+          <td class='unit'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.unit"
+            >
+              {{ item.unit }}
+            </p>
+          </td>
+          <td class='gas-field-name'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.gasFieldIn.name"
+            >
+              {{ item.gasFieldIn.name }}
+            </p>
+          </td>
+          <td class='amount-actually text-right'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.amountRecommended | number| vnCurrency"
+            >
+              {{ item.amountRecommended | number| vnCurrency }}
+            </p>
+          </td>
+          <td class='amount-actually text-right'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.amountActually | number| vnCurrency"
+            >
+              {{ item.amountActually | number| vnCurrency }}
+            </p>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p
+      class="text-danger mt-5"
+      *ngIf="dataSource?.status	 === listStatus.REFUSE"
+    >
+      Lý do từ chối: {{dataSource?.reason}}
+    </p>
+  </div>
+
+  <ng-container *ngIf='dataSource?.importRequestChange === "CHANGED"'>
+    <div class="card-header pt-5">
+      <div class="card-title">
+        <h3 class="title">Danh sách hàng hóa thay đổi</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive angular-bootstrap-table">
+        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+          <thead>
+          <tr>
+            <th scope=''>STT</th>
+            <th scope='' class=''>Tên sản phẩm</th>
+            <th scope='' class=''>Đơn vị</th>
+            <th scope='' class=''>Bồn</th>
+            <th scope='' class='text-right'>Lượng đề xuất</th>
+            <th scope='' class='text-right'>Lượng thực nhập</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr *ngFor='let item of dataSource?.productNewResponses ; let i = index'>
+            <td>{{i + 1}}</td>
+            <td class='product-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.productName"
+              >
+                {{ item.productName }}
+              </p>
+            </td>
+            <td class='unit'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.unit"
+              >
+                {{ item.unit }}
+              </p>
+            </td>
+            <td class='gas-field-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.gasFieldIn.name"
+              >
+                {{ item.gasFieldIn.name }}
+              </p>
+            </td>
+            <td class='amount-actually text-right'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.amountRecommended | number| vnCurrency"
+              >
+                {{ item.amountRecommended | number| vnCurrency }}
+              </p>
+            </td>
+            <td class='amount-actually text-right'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.amountActually | number| vnCurrency"
+              >
+                {{ item.amountActually | number| vnCurrency }}
+              </p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <p
+        class="text-danger font-weight-bold m-3"
+      >
+        Lý do thay đổi: {{dataSource?.reasonChange}}
+      </p>
+    </div>
+  </ng-container>
+
+  <div class="py-10 w-100 d-flex justify-content-center">
+    <button
+      *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM && eAuthorize.CONFIRM_OR_CANCEL_IMPORT_REQUEST | canUseFeature'
+      (click)="openRejectOrderRequestModal()"
+      class="btn btn-outline-primary mr-3 button"
+    >
+      Từ chối
+    </button>
+    <button
+      *ngIf='dataSource?.status === listStatus.WAIT_CONFIRM && eAuthorize.CONFIRM_OR_CANCEL_IMPORT_REQUEST | canUseFeature'
+    (click)="openApproveRequestModal(dataSource.code)"
+      class="btn btn-primary mr-3 button"
+    >
+      Xác nhận
+    </button>
+    <button
+      *ngIf='dataSource?.status === listStatus.REQUEST_CHANGE && eAuthorize.CONFIRM_OR_CANCEL_IMPORT_REQUEST | canUseFeature'
+    (click)="confirmChange(dataSource.code)"
+      class="btn btn-primary mr-3 button"
+    >
+      Xác nhận
+    </button>
+    <button
+      *ngIf='dataSource?.status !== listStatus.WAIT_CONFIRM'
+      class="btn btn-outline-primary mr-3 button"
+      (click)="onClose()"
+    >
+      Đóng
+    </button>
+  </div>
+</div>
+
+<ng-template #rejectRequest>
+	<div class="modal-header">
+		<h4 class="modal-title">Từ chối yêu cầu đặt hàng</h4>
+	</div>
+	<div class="modal-body">
+		<div class="w-100">
+			<label class="form-label required">Nhập lý do từ chối</label>
+			<input
+				[formControl]="reasonControl"
+				class="form-control form-control-solid"
+				trim="blur"
+				maxlength="255"
+			/>
+			<app-validate
+				[control]="reasonControl"
+				[error]="'required'"
+				[message]="'Lý do từ chối không được để trống'"
+			></app-validate>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary" (click)="reasonControl.reset(); activeModal.close(false)">
+			Hủy
+		</button>
+		<button type="button" class="btn btn-primary" (click)="activeModal.close(true)">
+			Từ chối
+		</button>
+	</div>
+</ng-template>

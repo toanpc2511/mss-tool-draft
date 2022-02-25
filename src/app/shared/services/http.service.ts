@@ -1,17 +1,40 @@
-import { HttpClient, HttpEventType, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
+import {
+	HttpClient,
+	HttpEventType,
+	HttpHeaders,
+	HttpParams,
+	HttpRequest
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { concatMap, switchMap } from 'rxjs/operators';
+import { concatMap, switchMap, timeout } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { DataPush } from '../models/data-push.model';
 import { DataResponse } from '../models/data-response.model';
 import { EFileType } from './file.service';
 
+export type HttpOptions = {
+	body?: any;
+	headers?: HttpHeaders | { [header: string]: string | string[] };
+	observe?: 'body';
+	params?: HttpParams | { [param: string]: string | string[] };
+	reportProgress?: boolean;
+	responseType: 'arraybuffer';
+	withCredentials?: boolean;
+};
 @Injectable({ providedIn: 'root' })
 export class HttpService {
 	apiUrl = environment.apiUrl;
 
 	constructor(private httpClient: HttpClient) {}
+
+	private makeRequest(
+		method: 'GET' | 'PUT' | 'POST' | 'DELETE',
+		url: string,
+		options: HttpOptions
+	) {
+		return this.httpClient.request(method, url, options).pipe(timeout(15000));
+	}
 
 	customGet<T>(
 		url: string,
@@ -33,6 +56,31 @@ export class HttpService {
 		return this.httpClient.get(url, options).pipe(
 			switchMap((response) => {
 				const res = new DataResponse<T>(response);
+				return of(res);
+			})
+		);
+	}
+
+	getFileUrl<T>(
+		endPoint: string,
+		options?: {
+			headers?:
+				| HttpHeaders
+				| {
+						[header: string]: string | string[];
+				  };
+			params?:
+				| HttpParams
+				| {
+						[param: string]: string | string[];
+				  };
+			reportProgress?: boolean;
+			withCredentials?: boolean;
+		}
+	): Observable<DataResponse<T>> {
+		return this.httpClient.get(`${this.apiUrl}/${endPoint}`, options).pipe(
+			switchMap((response) => {
+				const res = new DataResponse<T>(response, true);
 				return of(res);
 			})
 		);
@@ -118,7 +166,7 @@ export class HttpService {
 	}
 
 	postUpload<T>(url: string, body: any, type: EFileType): Observable<DataResponse<T>> {
-		const params = new HttpParams().set('type', type).set('callApiType', 'background');
+		const params = new HttpParams().set('type', type).set('callApiType', '');
 		const request = new HttpRequest('POST', url, body, {
 			reportProgress: true,
 			responseType: 'json',
@@ -127,7 +175,7 @@ export class HttpService {
 
 		return this.httpClient.request(request).pipe(
 			concatMap((response: any) => {
-				if(response.type === HttpEventType.Response) {
+				if (response.type === HttpEventType.Response) {
 					const res = new DataResponse<T>(response.body);
 					return of(res);
 				}

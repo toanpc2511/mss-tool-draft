@@ -13,6 +13,20 @@ export interface IProductInfo {
 	status: string;
 }
 
+export interface IInfoProduct {
+  categoryId: number;
+  code: string;
+  description: string;
+  entryPrice: number;
+  id: number;
+  name: string;
+  price: number;
+  qrCode: string;
+  status: string;
+  tax: number;
+  unit: string;
+}
+
 export interface IProduct {
 	id: number;
 	code: string;
@@ -115,6 +129,10 @@ export class ProductService {
 		return this.http.get<IProduct[]>(`products/category/${categoryId}`);
 	}
 
+	getListOilProduct() {
+		return this.http.get<IProduct[]>(`products/products-oils`);
+	}
+
 	deleteProduct(prodId: string | number) {
 		return this.http.delete(`products/${prodId}`);
 	}
@@ -165,5 +183,9 @@ export class ProductService {
 
 	deleteProductOther(productId: string | number) {
 		return this.http.delete(`products/except-oils/${productId}`);
+	}
+
+	getInfoProductOther(id: number) {
+		return this.http.get<IInfoProduct>(`products/other/${id}`);
 	}
 }

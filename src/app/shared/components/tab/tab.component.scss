@@ -1,0 +1,18 @@
+.tab {
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	background-color: #ffffff;
+	gap: 10px;
+    flex-wrap: wrap;
+	.tab-item {
+		width: auto;
+		color: #80808f;
+		&.active,
+		&:hover {
+			color: #3699ff;
+			background: #f3f6f9;
+		}
+	}
+}

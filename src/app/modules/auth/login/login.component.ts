@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { AuthService } from '../services/auth.service';
+import { AuthService, UserModel } from '../services/auth.service';
+import { LoginAuthenticationComponent } from '../../../shared/components/login-authentication/login-authentication.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 	selector: 'app-login',
@@ -21,14 +24,17 @@ export class LoginComponent implements OnInit {
 	returnUrl: string;
 	isLoading$: Observable<boolean>;
 	isShowPasswordStatus = false;
+  profileInfo;
 
 	constructor(
 		private fb: FormBuilder,
 		private authService: AuthService,
 		private route: ActivatedRoute,
 		private router: Router,
-		private destroy$: DestroyService
-	) // private toastr: ToastrService
+		private destroy$: DestroyService,
+    private modalService: NgbModal,
+    private toastr: ToastrService
+	)
 	{
 		this.isLoading$ = this.authService.isLoading$;
 		// redirect to home if already logged in
@@ -74,12 +80,9 @@ export class LoginComponent implements OnInit {
 			.subscribe(
 				(res) => {
 					if (res.data) {
-						this.authService.setCurrentUserValue(res.data);
-						if (!res.data.changePassword) {
-							this.router.navigate([this.returnUrl]);
-						} else {
-							this.router.navigate(['/auth/first-login']);
-						}
+            this.authService.setCurrentUserValue(res.data);
+            this.getProfileInfo(res.data);
+            this.checkChangePassword(res.data);
 					} else {
 						this.hasError = true;
 					}
@@ -89,6 +92,61 @@ export class LoginComponent implements OnInit {
 				}
 			);
 	}
+
+  checkChangePassword(data) {
+    if (!data.changePassword) {
+      this.checkVerifyOtp(data);
+    } else {
+      this.router.navigate(['/auth/first-login']);
+    }
+  }
+
+  checkVerifyOtp(data) {
+    data.accountAuth.otp ? this.openModal() : this.router.navigate([this.returnUrl]);
+  }
+
+  openModal() {
+    const modalRef = this.modalService.open(LoginAuthenticationComponent, {
+      size: 'xs',
+      backdrop: 'static'
+    });
+    modalRef.componentInstance.data = true;
+
+    modalRef.closed
+      .pipe(
+        tap((res: boolean) => {
+          if (!res) {
+            this.toastr.warning('Đã huỷ thao tác');
+            this.authService.logout().subscribe();
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
+
+  getProfileInfo(dataUser: UserModel) {
+    this.authService.getProfileInfo()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.profileInfo = res.data;
+
+        dataUser.accountAuth.verifyOtp = false;
+
+        dataUser.accountAuth.profile = {
+          name: this.profileInfo.name,
+          dateOfBirth: this.profileInfo.dateOfBirth,
+          idCard: this.profileInfo.idCard,
+          address: this.profileInfo.address,
+          avatar: this.profileInfo.avatar,
+          phone: this.profileInfo.phone,
+          code: this.profileInfo.code,
+          email: this.profileInfo.email
+        };
+
+        this.authService.setCurrentUserValue(dataUser);
+      })
+  }
 
 	changeShowPasswordStatus() {
 		this.isShowPasswordStatus = !this.isShowPasswordStatus;

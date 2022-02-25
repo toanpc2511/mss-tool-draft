@@ -1,5 +1,5 @@
 <div class="card card-custom">
-  <div class="card-header">
+  <div class="card-header" *ngIf="eAuthorize.VIEW_GAS_FIELD_SCREEN|canUseFeature">
     <div class="card-title">
       <h3 class="card-label">Danh sách bồn</h3>
     </div>
@@ -15,10 +15,10 @@
           [formControl]="searchFormControl"
         />
       </div>
-      <button type="button" class="btn btn-primary" (click)="openCreateModal()">Thêm mới</button>
+      <button type="button" class="btn btn-primary" (click)="openCreateModal()" *ngIf="eAuthorize.CREATE_GAS_FIELD_BUTTON |canUseFeature">Thêm mới</button>
     </div>
   </div>
-  <div class="card-body">
+  <div class="card-body" *ngIf="eAuthorize.VIEW_GAS_FIELD_SCREEN|canUseFeature">
     <div class="table-responsive angular-bootstrap-table">
       <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
@@ -137,12 +137,27 @@
 
             <td class="text-center action">
               <a
+                [ngbTooltip]="'Cài đặt barem'"
+                (click)='settingBarem(item)'
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                *ngIf="eAuthorize.UPDATE_GAS_FIELD_BUTTON |canUseFeature"
+              >
+                <span
+                  [inlineSVG]="'/assets/media/svg/icons/General/Settings-1.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                >
+                </span>
+              </a>
+
+              <a
                 [ngbTooltip]="'Sửa'"
                 (click)="update(item)"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                *ngIf="eAuthorize.UPDATE_GAS_FIELD_BUTTON |canUseFeature"
               >
                 <span
-                  [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                  [inlineSVG]="'/assets/media/svg/icons/Communication/Write.svg'"
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-primary"
                 >
@@ -152,9 +167,10 @@
                 (click)="deleteGasBin(item)"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
                 [ngbTooltip]="'Xóa'"
+                *ngIf="eAuthorize.DELETE_GAS_FIELD_BUTTON |canUseFeature"
               >
                 <span
-                  [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                  [inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-danger"
                 >

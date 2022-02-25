@@ -1,3 +1,4 @@
+import { NO_EMIT_EVENT } from './../../../../shared/app-constants';
 import {
 	ChangeDetectorRef,
 	Component,
@@ -164,9 +165,16 @@ export class Step1Component implements OnInit, OnChanges {
 			this.stationForm = this.initForm();
 		}
 		if (this.step1Data) {
+
 			this.isUpdate = true;
 			setTimeout(() => {
 				this.stationForm.patchValue(this.step1Data);
+				const coordinates =
+					this.step1Data.lat && this.step1Data.lon
+						? [this.step1Data.lat, this.step1Data.lon].join(', ')
+						: '';
+				this.stationForm.get('coordinates').patchValue(coordinates);
+				this.cdr.detectChanges();
 			});
 		}
 	}
@@ -174,7 +182,7 @@ export class Step1Component implements OnInit, OnChanges {
 	initForm() {
 		return this.fb.group({
 			stationCode: [
-				'ST',
+        {value: 'ST', disabled: this.gasStationService.gasStationId},
 				[Validators.required, TValidators.patternNotWhiteSpace(/^[A-Za-z0-9]*$/)]
 			],
 			name: ['', [Validators.required]],
@@ -184,7 +192,11 @@ export class Step1Component implements OnInit, OnChanges {
 			address: [''],
 			fullAddress: [null],
 			areaType: [null],
+			coordinates: [null, [TValidators.required, TValidators.coordinates]],
 			areaDisplay: [null],
+			phone: [null, [TValidators.noWhiteSpace, TValidators.phone, TValidators.required]],
+			chip: [false],
+      corporation: [false],
 			status: [this.listStatus.ACTIVE]
 		});
 	}
@@ -195,8 +207,10 @@ export class Step1Component implements OnInit, OnChanges {
 		if (this.stationForm.invalid) {
 			return;
 		}
-		const value = { ...this.stationForm.value };
-		delete value.areaDisplay;
+		const coordinates = (this.stationForm.value?.coordinates as string)?.split(',') || '';
+		const lat = coordinates[0] || null;
+		const lon = coordinates[1].trim() || null;
+		const value = { ...this.stationForm.getRawValue(), lat, lon };
 
 		if (!this.isUpdate) {
 			this.gasStationService.createStation(value).subscribe(
@@ -204,7 +218,7 @@ export class Step1Component implements OnInit, OnChanges {
 					if (res.data) {
 						this.stepSubmitted.next({
 							currentStep: 1,
-							step1: { data: this.stationForm.value as CreateStation, isValid: true }
+							step1: { data: value, isValid: true }
 						});
 						this.gasStationService.gasStationId = res.data.id;
 						this.gasStationService.gasStationStatus = res.data.status;
@@ -220,7 +234,7 @@ export class Step1Component implements OnInit, OnChanges {
 					if (res.data) {
 						this.stepSubmitted.next({
 							currentStep: 1,
-							step1: { data: this.stationForm.value as CreateStation, isValid: true }
+							step1: { data: value, isValid: true }
 						});
 						this.gasStationService.gasStationStatus = res.data.status;
 					}
@@ -238,6 +252,9 @@ export class Step1Component implements OnInit, OnChanges {
 		}
 		if (err.code === 'SUN-OIL-4148') {
 			this.stationForm.get('name').setErrors({ nameExisted: true });
+		}
+		if (err.code === 'SUN-OIL-4266') {
+			this.stationForm.get('phone').setErrors({ invalid: true });
 		}
 		this.cdr.detectChanges();
 	}

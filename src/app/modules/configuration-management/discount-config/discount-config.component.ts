@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +18,7 @@ import { ConfigurationManagementService, IDiscount } from '../configuration-mana
 	styleUrls: ['./discount-config.component.scss'],
 	providers: [DestroyService, SortService, FilterService]
 })
-export class DiscountConfigComponent implements OnInit {
+export class DiscountConfigComponent extends BaseComponent implements OnInit {
 	searchFormControl = new FormControl();
 	dataSource: FormArray = new FormArray([]);
 	dataSourceTemp: FormArray = new FormArray([]);
@@ -32,6 +33,7 @@ export class DiscountConfigComponent implements OnInit {
 		private toastr: ToastrService,
 		private destroy$: DestroyService
 	) {
+		super();
 		this.sorting = sortService.sorting;
 	}
 
@@ -109,11 +111,12 @@ export class DiscountConfigComponent implements OnInit {
 		if (this.dataSource.invalid) {
 			return;
 		}
+		
 		this.configurationManagementService
 			.updateDiscountConfig({
 				discountRequests: this.dataSource.getRawValue().map((d) => ({
 					id: d.id,
-					discount: Number(d.discount)
+					discount: convertMoney(d.discount) || 0
 				}))
 			})
 			.subscribe(

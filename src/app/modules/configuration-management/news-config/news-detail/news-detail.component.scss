@@ -1,0 +1,11 @@
+.img-news {
+  img {
+    max-width: 300px;
+    max-height: 300px;
+  }
+}
+
+::ng-deep i {
+  color: revert;
+  font-size: revert;
+}

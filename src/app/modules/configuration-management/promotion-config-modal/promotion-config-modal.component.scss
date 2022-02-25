@@ -1,10 +1,28 @@
 .modal-body {
-  min-height: 300px;
-  padding-top: 0;
+	min-height: 300px;
+	padding-top: 0;
 
-  .title-card {
-    text-transform: uppercase;
-    color: #4674eb;
-    font-size: 1.275rem;
-  }
+	.title-card {
+		text-transform: uppercase;
+		color: #4674eb;
+		font-size: 1.275rem;
+	}
+
+	.body-card {
+		.table {
+			th {
+				color: #1e1e1e !important;
+			}
+			td {
+				&.col1,
+				&.col2,
+				&.col4 {
+					width: 23%;
+				}
+				&.col3 {
+					width: 15%;
+				}
+			}
+		}
+	}
 }

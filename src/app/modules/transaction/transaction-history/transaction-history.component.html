@@ -47,10 +47,8 @@
 							class="form-control form-control-solid"
 							placeholder="DD/MM/YYYY"
 							ngbDatepicker
-							readonly
 							#startAt="ngbDatepicker"
-							[value]='formatDate(startDate, "dd/mm/yyyy")'
-							(dateSelect)="onSelectStartAt($event)"
+							formControlName="startAt"
 						/>
 						<div class="input-group-append">
 							<button
@@ -60,6 +58,12 @@
 							></button>
 						</div>
 					</div>
+
+          <app-validate
+            [control]="searchForm.controls['startAt']"
+            [error]="'ngbDate'"
+            [message]="'Từ ngày không đúng định dạng'"
+          ></app-validate>
 				</div>
 
 				<div class="col-lg-4">
@@ -70,10 +74,8 @@
 							class="form-control form-control-solid"
 							placeholder="DD/MM/YYYY"
 							ngbDatepicker
-							readonly
 							#endAt="ngbDatepicker"
-							[value]='formatDate(endDate, "dd/mm/yyyy")'
-							(dateSelect)="onSelectEndAt($event)"
+							formControlName="endAt"
 						/>
 						<div class="input-group-append">
 							<button
@@ -83,13 +85,21 @@
 							></button>
 						</div>
 					</div>
+
+          <app-validate
+            [control]="searchForm.controls['endAt']"
+            [error]="'ngbDate'"
+            [message]="'Đến ngày không đúng định dạng'"
+          ></app-validate>
 				</div>
 
 				<div class="col-lg-4">
 					<label>Nhân viên thực hiện</label>
 					<select class="form-control form-control-solid" formControlName="employee">
 						<option [value]="''">Tất cả</option>
-						<option *ngFor="let item of listEmployees" [value]="item.id">{{ item.name }}</option>
+						<option *ngFor="let item of listEmployees" [value]="item.id">
+							{{ item.code }} - {{item.name}}
+						</option>
 					</select>
 				</div>
 			</div>
@@ -142,23 +152,23 @@
 			<p class="item">Tổng số <strong>{{totalRecord}} giao dịch</strong></p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Tổng lít:
-				<strong>{{totalLiters?.toLocaleString("en-US")}} L</strong>
+				<strong>{{totalLiters.toLocaleString("en-US")}} L</strong>
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Tiền mặt:
-				<strong>{{totalMoney?.toLocaleString("en-US")}} VNĐ</strong>
+				<strong>{{totalMoney | number| vnCurrency}} VNĐ</strong>
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Điểm sunoil:
-				<strong>{{pointSunoil?.toLocaleString("en-US")}} VNĐ</strong>
+				<strong>{{pointSunoil | number| vnCurrency}} VNĐ</strong>
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Hạn mức nhiên liệu:
-				<strong>{{limitOil?.toLocaleString("en-US")}} L</strong>
+				<strong>{{limitOil | number| vnCurrency}} L</strong>
 			</p>
 			<p class="item">
 				<em class="fas fa-circle"></em>Hạn mức tiền:
-				<strong>{{totalPaymentMoney?.toLocaleString("en-US")}} VNĐ</strong>
+				<strong>{{totalPaymentMoney | number| vnCurrency}} VNĐ</strong>
 			</p>
 		</div>
 	</div>
@@ -171,7 +181,7 @@
 		</div>
 
 		<div class="card-toolbar row" *ngIf="totalRecord > 0">
-			<a href="{{dataFileExcel?.data}}">
+			<a (click)="exportFileExcel()" *ngIf="eAuthorize.EXPORT_FILE_TRANSATION_HISTORY_BUTTON|canUseFeature">
 				<button type="button" class="btn btn-primary btn-def">Xuất file</button>
 			</a>
 		</div>
@@ -182,22 +192,22 @@
 			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
 				<thead>
 					<tr>
-						<th rowspan="2" id="1" class="align-bottom">Mã đơn hàng</th>
-						<th rowspan="2" id="2" class="align-bottom">Thời gian</th>
-						<th rowspan="2" id="3" class="align-bottom">Trạm</th>
-						<th rowspan="2" id="4" class="align-bottom">Nhân viên</th>
-						<th rowspan="2" id="5" class="align-bottom">SĐT KH</th>
-						<th rowspan="2" id="6" class="align-bottom">Tên KH</th>
-						<th rowspan="2" id="7" class="align-bottom">Loại nhiên liệu</th>
-						<th rowspan="2" id="8" class="align-bottom">Hình thức thanh toán</th>
-						<th rowspan="2" id="9" class="align-bottom text-right pr-3">Tổng lít</th>
+						<th rowspan="2" id="1" class="a-1 align-bottom">Mã đơn hàng</th>
+						<th rowspan="2" id="2" class="a-2 align-bottom">Thời gian</th>
+						<th rowspan="2" id="3" class="a-3 align-bottom">Trạm</th>
+						<th rowspan="2" id="4" class="a-4 align-bottom">Nhân viên</th>
+						<th rowspan="2" id="5" class="a-5 align-bottom">SĐT KH</th>
+						<th rowspan="2" id="6" class="a-6 align-bottom">Tên KH</th>
+						<th rowspan="2" id="7" class="a-7 align-bottom">Loại nhiên liệu</th>
+						<th rowspan="2" id="8" class="a-8 align-bottom">Hình thức thanh toán</th>
+						<th rowspan="2" id="9" class="a-9 align-bottom text-right pr-3">Tổng lít</th>
 						<th colspan="4" id="10" class="text-center">Thanh toán bằng</th>
 					</tr>
 					<tr>
-						<th id="11" class="text-right">Tiền mặt</th>
-						<th id="12" class="text-right">Điểm sunoil</th>
-						<th id="13" class="text-right">Hạn mức NL</th>
-						<th id="14" class="text-right">Hạn mức tiền</th>
+						<th id="11" class="a-10 text-right">Tiền mặt</th>
+						<th id="12" class="a-11 text-right">Điểm sunoil</th>
+						<th id="13" class="a-12 text-right">Hạn mức NL</th>
+						<th id="14" class="a-13 text-right">Hạn mức tiền</th>
 					</tr>
 				</thead>
 
@@ -210,12 +220,8 @@
 						</td>
 
 						<td class="a-2">
-							<p
-								class="cursor-pointer text-ellipsis"
-								placement="top"
-								[ngbTooltip]="item.createdAt | dateCustom"
-							>
-								{{ item.createdAt | dateCustom}}
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.createdAt">
+								{{ item.createdAt }}
 							</p>
 						</td>
 
@@ -279,9 +285,9 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.actualityLiters?.toLocaleString('en-US') || 0"
+								[ngbTooltip]="item.actualityLiters.toLocaleString('en-US') || 0"
 							>
-								{{ item.actualityLiters?.toLocaleString('en-US') ||0 }}
+								{{ item.actualityLiters.toLocaleString('en-US') || 0}}
 							</p>
 						</td>
 
@@ -289,9 +295,9 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.cashPaid?.toLocaleString('en-US')|| 0"
+								[ngbTooltip]="item.cashPaid || '0' | number| vnCurrency"
 							>
-								{{ item.cashPaid?.toLocaleString('en-US') || 0}}
+								{{ item.cashPaid || '0' | number| vnCurrency}}
 							</p>
 						</td>
 
@@ -300,9 +306,9 @@
 								*ngIf='item.paymentMethodName !== "Hạn mức nhiên liệu"'
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.accumulationPointUse?.toLocaleString('en-US') || 0"
+								[ngbTooltip]="item.accumulationPointUse || '0' | number| vnCurrency"
 							>
-								{{ item.accumulationPointUse?.toLocaleString('en-US') || 0 }}
+								{{ item.accumulationPointUse || '0' | number| vnCurrency }}
 							</p>
 
 							<p
@@ -320,9 +326,9 @@
 								*ngIf='item.paymentMethodName === "Hạn mức nhiên liệu"'
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.paymentLimitOil?.toLocaleString('en-US') || 0"
+								[ngbTooltip]="item.paymentLimitOil || '0' | number| vnCurrency"
 							>
-								{{ item.paymentLimitOil?.toLocaleString('en-US') || 0 }}
+								{{ item.paymentLimitOil || '0' | number| vnCurrency }}
 							</p>
 
 							<p
@@ -340,9 +346,9 @@
 								*ngIf='item.paymentMethodName !== "Hạn mức nhiên liệu"'
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.paymentLimitMoney?.toLocaleString('en-US') || 0"
+								[ngbTooltip]="item.paymentLimitMoney || '0' | number| vnCurrency"
 							>
-								{{ item.paymentLimitMoney?.toLocaleString('en-US') || 0 }}
+								{{ item.paymentLimitMoney || '0' | number| vnCurrency }}
 							</p>
 
 							<p

@@ -4,6 +4,11 @@ import { IFile } from 'src/app/shared/services/file.service';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { SortState } from 'src/app/_metronic/shared/crud-table';
 import { GasStationResponse } from '../gas-station/gas-station.service';
+import { convertDateToServer } from '../../shared/helpers/functions';
+import { Observable } from 'rxjs';
+import { DataResponse } from '../../shared/models/data-response.model';
+import { IEmployeeAssessment } from './employee-assessment/models/employee-assessment.interface';
+import { IDetailEmployeeAssessment } from './employee-assessment/models/detail-employee-assessment.interface';
 
 export enum EMaritalStatus {
 	MARRIED = 'MARRIED',
@@ -144,11 +149,29 @@ export interface IEmployeeDetail {
 	attachment: IFile[];
 }
 
+export interface IFilter {
+  dateFrom?: string,
+  dateTo?: string,
+  employeeId?: string,
+  stationId?: string
+  vote?: string;
+}
+
+interface IParam {
+  page?: number;
+  size?: number;
+  filter?: IFilter;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
 export class EmployeeService {
 	constructor(private http: HttpService) {}
+
+	getAllEmployees() {
+		return this.http.get<IEmployee[]>('employees/staff');
+	}
 
 	getEmployees(
 		page: number,
@@ -198,4 +221,31 @@ export class EmployeeService {
 	deleteEmployee(id: number) {
 		return this.http.delete(`employees/${id}`);
 	}
+
+  getListEmployeeAssessment(params: IParam): Observable<DataResponse<IEmployeeAssessment>> {
+    return this.http.get<IEmployeeAssessment>('evaluations/filters', { params: this.createParam(params) })
+  }
+
+  exportExcelEmployeeAssessment(params: IParam): Observable<DataResponse<string>> {
+    return this.http.getFileUrl<string>('evaluations/filters/excels', { params: this.createParam(params)});
+  }
+
+  getListDetailEmployeeAssessment(params: IParam): Observable<DataResponse<IDetailEmployeeAssessment>> {
+    return this.http.get<IDetailEmployeeAssessment>('evaluations/detail', { params: this.createParam(params) });
+  }
+
+  exportExcelEmployeeAssessmentDetail(params: IParam): Observable<DataResponse<string>> {
+    return this.http.getFileUrl<string>('evaluations/export/excels', { params: this.createParam(params)});
+  }
+
+  createParam(param: IParam): HttpParams {
+    return new HttpParams()
+      .set('page', param.page ? param.page.toString() : '')
+      .set('size', param.size ? param?.size.toString() : '')
+      .set('date-from', convertDateToServer(param.filter.dateFrom))
+      .set('date-to', convertDateToServer(param.filter.dateTo))
+      .set('employee-id', param.filter.employeeId ? param.filter.employeeId : '')
+      .set('station-id', param.filter.stationId ? param.filter.stationId : '')
+      .set('vote', param.filter.vote || '')
+  }
 }

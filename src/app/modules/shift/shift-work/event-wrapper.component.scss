@@ -1,0 +1,36 @@
+.shift-detail-popover {
+	max-width: 450px;
+	width: 450px;
+	height: auto;
+	background: #ffffff;
+
+	.content-body {
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+	}
+}
+
+.event-container {
+	margin-left: 0.5rem;
+	span {
+		color: #ffffff;
+	}
+}
+
+.week-view-type .day-cell-custom {
+	.fc-daygrid-day-frame {
+		.fc-daygrid-day-events {
+			.fc-daygrid-event-harness {
+				a {
+					height: 50px;
+					strong {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+}

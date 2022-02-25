@@ -1,0 +1,82 @@
+<div class="mt-1 card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Chi tiết tin tức</h3>
+    </div>
+  </div>
+  <div class="card-body">
+      <div class="row align-items-center mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label'>Title</label>
+        </div>
+        <div class='col-lg-10'>
+          {{ newsDetail?.title }}
+        </div>
+      </div>
+
+      <div class="row align-items-center mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label'>Mô tả tóm tắt</label>
+        </div>
+        <div class='col-lg-10'>
+          {{ newsDetail?.description }}
+        </div>
+      </div>
+
+      <div class="row align-items-start mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label'>Nội dung</label>
+        </div>
+        <div class='col-lg-10' [innerHTML]='contentNews | safe:"html"'>
+        </div>
+      </div>
+
+      <div class="row my-5 img-news">
+        <div class='col-lg-6 row'>
+          <label class='col-lg-4 form-label'>Ảnh view chi tiết</label>
+          <div class='col-lg-8'>
+            <img
+              alt="Ảnh đính kèm"
+              class="detailImg"
+              width="300px"
+              [src]="newsDetail && newsDetail?.image[0].url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row my-5 img-news">
+        <div class='col-lg-6 row'>
+          <label class='col-lg-4 form-label'>Ảnh view list tin tức</label>
+          <div class='col-lg-8'>
+            <img
+              alt="Ảnh đính kèm"
+              class="img"
+              width="300px"
+              [src]="newsDetail && newsDetail?.image[1].url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label'>Hiện tin tức</label>
+        </div>
+        <div class='col-auto'>
+          <label class="checkbox checkbox-lg mr-2">
+            <input disabled type="checkbox" id="status" [checked]='newsDetail?.display' />
+            <span></span>
+          </label>
+        </div>
+      </div>
+
+    <div class="row justify-content-center w-100">
+      <div>
+        <a routerLink='/cau-hinh/tin-tuc' type="button" style='width: 100px' class="btn btn-primary mr-6" >
+          Quay lại
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

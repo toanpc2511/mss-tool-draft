@@ -12,19 +12,28 @@ import { FirstLoginComponent } from './first-login/first-login.component';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
 import { DirectivesModule } from 'src/app/shared/directives/directives.module';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { CanUseFeaturePipe } from './auth.pipe';
 
 @NgModule({
-  declarations: [LoginComponent, FirstLoginComponent, RegistrationComponent, AuthComponent, ForgotPasswordComponent],
-  imports: [
-    CommonModule,
-    TranslationModule,
-    AuthRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    SharedComponentsModule,
-    DirectivesModule
-  ],
-  providers: [DestroyService]
+	declarations: [
+		LoginComponent,
+		FirstLoginComponent,
+		RegistrationComponent,
+		AuthComponent,
+		ForgotPasswordComponent,
+		CanUseFeaturePipe
+	],
+	imports: [
+		CommonModule,
+		TranslationModule,
+		AuthRoutingModule,
+		FormsModule,
+		ReactiveFormsModule,
+		HttpClientModule,
+		SharedComponentsModule,
+		DirectivesModule
+	],
+	providers: [DestroyService],
+	exports: [CanUseFeaturePipe]
 })
 export class AuthModule {}

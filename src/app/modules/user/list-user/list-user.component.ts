@@ -1,3 +1,4 @@
+import { BaseComponent } from './../../../shared/components/base/base.component';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -21,7 +22,7 @@ import { ISortData, IUser, UserService } from '../user.service';
 	styleUrls: ['./list-user.component.scss'],
 	providers: [DestroyService]
 })
-export class ListUserComponent implements OnInit {
+export class ListUserComponent extends BaseComponent implements OnInit {
 	searchFormControl: FormControl = new FormControl();
 	sortData: ISortData;
 	status = LIST_STATUS;
@@ -35,6 +36,7 @@ export class ListUserComponent implements OnInit {
 		private modalService: NgbModal,
 		private toastr: ToastrService
 	) {
+		super();
 		this.init();
 	}
 
@@ -102,7 +104,6 @@ export class ListUserComponent implements OnInit {
 	}
 
 	deleteUser(user: IUser): void {
-		console.log(user);
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
 			backdrop: 'static'
 		});
@@ -130,7 +131,36 @@ export class ListUserComponent implements OnInit {
 		});
 	}
 
-	openUserModal(accountId?: number) {
+	resetPassword(user: IUser): void {
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+			backdrop: 'static'
+		});
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn đặt lại mật khẩu cho tài khoản: ${user.username}?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
+
+		modalRef.result.then((result) => {
+			if (result) {
+				this.userService.resetPassword(user.accountId).subscribe(
+					(res) => {
+						if (res.data) {
+							this.init();
+							this.getUsers();
+              this.toastr.success('Đặt lại mật khẩu thành công')
+						}
+					},
+					(err: IError) => {
+						this.checkError(err);
+					}
+				);
+			}
+		});
+	}
+
+	openUserModal(accountId?: string) {
 		const modalRef = this.modalService.open(UserModalComponent, {
 			backdrop: 'static',
 			size: 'xl'

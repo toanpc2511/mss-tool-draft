@@ -1,0 +1,125 @@
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Danh sách cấu hình ca</h3>
+		</div>
+
+		<div class="card-toolbar row">
+			<div class="search-form">
+				<em class="flaticon-search"></em>
+				<input
+					type="text"
+					name="searchText"
+					placeholder="Search..."
+					class="form-control"
+					[formControl]="searchFormControl"
+				/>
+			</div>
+			<button
+				type="button"
+				class="btn btn-primary"
+				(click)="createModal()"
+				*ngIf="eAuthorize.CREATE_SHIFT_CONFIG_BUTTON|canUseFeature"
+			>
+				Thêm mới
+			</button>
+		</div>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+				<thead>
+					<th scope="">
+						Tên ca
+						<app-sort-icon
+							column="name"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">Thời gian bắt đầu</th>
+					<th scope="">Thời gian kết thúc</th>
+					<th scope="">
+						Chi tiết ca
+						<app-sort-icon
+							column="description"
+							[activeColumn]="sorting.column"
+							[activeDirection]="sorting.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th class="text-center" scope="">Tác động</th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of dataSource">
+						<td class="name">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
+								{{ item.name }}
+							</p>
+						</td>
+
+						<td class="start">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="formatTime(item.startHour, item.startMinute)"
+							>
+								{{ formatTime(item.startHour, item.startMinute) }}
+							</p>
+						</td>
+
+						<td class="end">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="formatTime(item.endHour, item.endMinute)"
+							>
+								{{ formatTime(item.endHour, item.endMinute) }}
+							</p>
+						</td>
+
+						<td class="detail">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.description"
+							>
+								{{ item.description }}
+							</p>
+						</td>
+
+						<td class="text-center action">
+							<a
+								(click)="createModal($event, item)"
+								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								*ngIf="eAuthorize.UPDATE_SHIFT_CONFIG_BUTTON|canUseFeature"
+							>
+								<span
+									[inlineSVG]="'/assets/media/svg/icons/Communication/Write.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-primary"
+									[ngbTooltip]="'Sửa'"
+								>
+								</span>
+							</a>
+							<a
+								(click)="deleteShiftConfig($event, item)"
+								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+								*ngIf="eAuthorize.DELETE_SHIFT_CONFIG_BUTTON|canUseFeature"
+							>
+								<span
+									[inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-danger"
+									[ngbTooltip]="'Xóa'"
+								>
+								</span>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

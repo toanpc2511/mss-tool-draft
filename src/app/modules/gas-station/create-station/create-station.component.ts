@@ -1,7 +1,11 @@
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { CanUseFeaturePipe } from './../../auth/auth.pipe';
+import { BaseComponent } from './../../../shared/components/base/base.component';
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable no-case-declarations */
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { cloneDeep } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Observable, of } from 'rxjs';
 import { filter, map, pluck, switchMap, takeUntil } from 'rxjs/operators';
@@ -15,14 +19,18 @@ import {
 	GasStationService,
 	StepData
 } from '../gas-station.service';
+import { EAuthorize } from '../../auth/services/authorizes';
 
 @Component({
 	selector: 'app-create-station',
 	templateUrl: './create-station.component.html',
 	styleUrls: ['./create-station.component.scss'],
-	providers: [CanActiveStepPipe, DestroyService]
+	providers: [CanActiveStepPipe, DestroyService, CanUseFeaturePipe]
 })
-export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CreateStationComponent
+	extends BaseComponent
+	implements OnInit, AfterViewInit, OnDestroy
+{
 	stepData$: Observable<StepData>;
 	gasStationUpdateData: CreateStation;
 	constructor(
@@ -33,8 +41,10 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
 		private activeRoute: ActivatedRoute,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
-		private toastr: ToastrService
+		private toastr: ToastrService,
+		private authService: AuthService
 	) {
+		super();
 		this.stepData$ = gasStationService.stepData$;
 	}
 
@@ -151,13 +161,14 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
 	gotoStep(step: number) {
 		const currentStepData = this.gasStationService.getStepDataValue();
 		switch (step) {
-			case 1:
+			case 1: {
 				const canActiveStep1 = this.canActive.transform(currentStepData, 1);
 				if (canActiveStep1) {
 					this.gasStationService.setStepData({ ...currentStepData, currentStep: 1 });
 				}
 				break;
-			case 2:
+			}
+			case 2: {
 				const canActiveStep2 = this.canActive.transform(currentStepData, 2);
 				if (canActiveStep2) {
 					this.gasStationService.setStepData({ ...currentStepData, currentStep: 2 });
@@ -165,7 +176,8 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
 					this.toastr.error('Vui lòng thêm trạm trước khi thực hiện bước tiếp theo');
 				}
 				break;
-			case 3:
+			}
+			case 3: {
 				const canActiveStep3 = this.canActive.transform(currentStepData, 3);
 				if (canActiveStep3) {
 					this.gasStationService.setStepData({ ...currentStepData, currentStep: 3 });
@@ -173,7 +185,8 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
 					this.toastr.error('Vui lòng thêm bồn trước khi thực hiện bước tiếp theo');
 				}
 				break;
-			case 4:
+			}
+			case 4: {
 				const canActiveStep4 = this.canActive.transform(currentStepData, 4);
 				if (canActiveStep4) {
 					this.gasStationService.setStepData({ ...currentStepData, currentStep: 4 });
@@ -181,6 +194,7 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
 					this.toastr.error('Vui lòng thêm cột trước khi thực hiện bước tiếp theo');
 				}
 				break;
+			}
 		}
 	}
 
@@ -190,10 +204,11 @@ export class CreateStationComponent implements OnInit, AfterViewInit, OnDestroy 
 			return;
 		}
 		const nextStep = $event.currentStep + 1;
-		const currentStepData = this.gasStationService.getStepDataValue();
+		const currentStepData = cloneDeep(this.gasStationService.getStepDataValue());
+
 		switch ($event.currentStep) {
 			case 1:
-				currentStepData.step1.data = $event.step1?.data || currentStepData.step1.data;
+				currentStepData.step1.data = $event.step1.data;
 				this.gasStationUpdateData = currentStepData.step1.data;
 				currentStepData.step1.isValid = $event.step1.isValid;
 				break;

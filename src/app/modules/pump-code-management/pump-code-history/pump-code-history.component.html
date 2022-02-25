@@ -1,0 +1,262 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Tìm kiếm lịch sử mã bơm</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="searchForm" class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Trạm</label>
+          <select class="form-control form-control-solid w-75" formControlName='stationCode'>
+            <option [value]="''">Tất cả</option>
+            <option *ngFor='let station of stations' [value]="station.code">{{station.name}}</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Cột</label>
+          <select class="form-control form-control-solid w-75" formControlName="pumpPoleCode">
+            <option [value]="''">Tất cả</option>
+            <option *ngFor='let pumpPole of pumpPoles' [value]="pumpPole.code">{{pumpPole.code}} - {{pumpPole.name}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Vòi</label>
+          <select class="form-control form-control-solid w-75" formControlName='pumpHoseCode'>
+            <option [value]="''">Tất cả</option>
+            <option *ngFor='let pumpHose of pumpHoses' [value]="pumpHose.code">{{pumpHose.code}} - {{pumpHose.name}}</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Mã bơm</label>
+          <input
+            type="text"
+            class="form-control form-control-solid w-75"
+            placeholder="Nhập mã bơm"
+            autocomplete="off"
+            maxlength="199"
+            trim="blur"
+            formControlName="pumpCode"
+            (keydown.space)="$event.preventDefault()"
+          />
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Thời gian từ</label>
+
+          <div class="input-group w-75 ">
+            <div class='input-group option-time w-50'>
+              <select
+                class="form-control form-control-solid text-center"
+                formControlName='hourFrom'
+              >
+                <option *ngFor="let item of hours" [value]="item.hour">{{item.valueHour}}</option>
+              </select>
+              <div class="input-group-prepend input-group-append">
+                <span class="input-group-text"> : </span>
+              </div>
+              <select
+                class="form-control form-control-solid text-center"
+                formControlName='minuteFrom'
+              >
+                <option *ngFor="let item of minutes" [value]="item.minute">
+                  {{item.valueMinute}}
+                </option>
+              </select>
+            </div>
+            <input
+              class="form-control form-control-solid input-group-append text-center"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #fromDate="ngbDatepicker"
+              formControlName="dateFrom"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="fromDate.toggle()"
+                type="button"
+              ></button>
+            </div>
+            <app-validate
+              [control]="searchForm.controls['dateFrom']"
+              [error]="'ngbDate'"
+              [message]="'Thời gian không đúng định dạng'"
+            ></app-validate>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Thời gian đến</label>
+
+          <div class="input-group w-75 ">
+            <div class='input-group option-time w-50'>
+              <select
+                class="form-control form-control-solid text-center"
+                formControlName='hourTo'
+              >
+                <option *ngFor="let item of hours" [value]="item.hour">{{item.valueHour}}</option>
+              </select>
+              <div class="input-group-prepend input-group-append">
+                <span class="input-group-text"> : </span>
+              </div>
+              <select
+                class="form-control form-control-solid text-center"
+                formControlName='minuteTo'
+              >
+                <option *ngFor="let item of minutes" [value]="item.minute">
+                  {{item.valueMinute}}
+                </option>
+              </select>
+            </div>
+            <input
+              class="form-control form-control-solid input-group-append text-center"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #endAt="ngbDatepicker"
+              formControlName='dateTo'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="endAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+
+            <app-validate
+              [control]="searchForm.controls['dateTo']"
+              [error]="'ngbDate'"
+              [message]="'Thời gian không đúng định dạng'"
+            ></app-validate>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="form-group row py-3">
+      <button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+        <em class="fas fa-search"></em> Tìm kiếm
+      </button>
+      <button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
+    </div>
+  </div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách mã bơm</h3>
+    </div>
+
+    <div class="card-toolbar row">
+      <a (click)="exportFileExcel()">
+        <button type="button" class="btn btn-primary btn-def">Xuất file</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <tr>
+          <th scope='' class='station-code'>Mã trạm</th>
+          <th scope='' class='pump-hose-code'>Mã vòi</th>
+          <th scope='' class='pump-pole-code'>Mã cột</th>
+          <th scope='' class='pump-code'>Mã bơm</th>
+          <th scope='' class='product-name'>Nhiên liệu</th>
+          <th scope='' class='text-right number-of-lit'>Số lít</th>
+          <th scope='' class='text-right unit-price'>Đơn giá</th>
+          <th scope='' class='text-right into-money'>Thành tiền</th>
+          <th scope='' class='text-right total-cumulative-liters'>Lũy kế lít</th>
+          <th scope='' class='text-right totalamount-accumulated'>Lũy kế tiền</th>
+          <th scope='' class='device-hours'>Giờ thiết bị</th>
+          <th scope='' class='server-time'>Giờ máy chủ</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor='let item of dataSource'>
+          <td class="station-code">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.stationCode">
+              {{ item.stationCode }}
+            </p>
+          </td>
+          <td class="pump-hose-code">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.pumpHoseCode">
+              {{ item.pumpHoseCode }}
+            </p>
+          </td>
+          <td class="pump-pole-code">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.pumpPoleCode">
+              {{ item.pumpPoleCode }}
+            </p>
+          </td>
+          <td class="pump-code">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.pumpCode">
+              {{ item.pumpCode }}
+            </p>
+          </td>
+          <td class="product-name">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.productName">
+              {{ item.productName }}
+            </p>
+          </td>
+          <td class="number-of-lit text-right">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.numberOfLit.toLocaleString('en-US') ">
+              {{ item.numberOfLit.toLocaleString('en-US')  }}
+            </p>
+          </td>
+          <td class="unit-price text-right">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.unitPrice | number | vnCurrency">
+              {{ item.unitPrice | number | vnCurrency }}
+            </p>
+          </td>
+          <td class="into-money text-right">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.intoMoney.toLocaleString('en-US') ">
+              {{ item.intoMoney.toLocaleString('en-US') }}
+            </p>
+          </td>
+          <td class="total-cumulative-liters text-right">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.totalCumulativeLiters.toLocaleString('en-US') ">
+              {{ item.totalCumulativeLiters.toLocaleString('en-US')  }}
+            </p>
+          </td>
+          <td class="totalamount-accumulated text-right">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.totalAmountAccumulated.toLocaleString('en-US') ">
+              {{ item.totalAmountAccumulated.toLocaleString('en-US')  }}
+            </p>
+          </td>
+          <td class="device-hours">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.deviceTime">
+              {{ item.deviceTime }}
+            </p>
+          </td>
+          <td class="server-time">
+            <p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.serverTime">
+              {{ item.serverTime }}
+            </p>
+          </td>
+        </tr>
+        </tbody>
+
+        <tfoot *ngIf="dataSource?.length === 0">
+        <tr>
+          <td colspan="12" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+  </div>
+</div>

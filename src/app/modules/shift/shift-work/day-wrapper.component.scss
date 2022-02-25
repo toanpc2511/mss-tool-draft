@@ -1,0 +1,71 @@
+.week-view-type .day-cell-custom,
+.month-view-type .day-cell-custom {
+	height: 100%;
+	&:hover {
+		background-color: #f3f6f9;
+	}
+	div.cell-custom {
+		.warning-icon {
+			font-size: 1.1rem;
+			z-index: 1;
+		}
+	}
+
+	.fc-event-main,
+	.fc-daygrid-event-dot,
+	.fc-event-time,
+	.fc-event-title {
+		display: none;
+	}
+}
+
+.month-view-type .day-cell-custom {
+	div.cell-custom {
+		position: relative;
+		.warning-icon {
+			position: absolute;
+			top: 3px;
+			right: 1.7rem;
+		}
+	}
+	.week-title,
+	.week-content {
+		display: none !important;
+	}
+}
+
+.week-view-type .day-cell-custom {
+	div.cell-custom {
+		display: flex;
+		justify-content: flex-end;
+		.warning-icon {
+			margin-right: 5px;
+		}
+	}
+	.month-title {
+		display: none !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	}
+	.week-title {
+		font-weight: 400;
+		margin-bottom: 3px;
+	}
+
+	.week-title,
+	.week-content {
+		width: 100%;
+		display: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	}
+}
+
+.warning-tooltip {
+	div {
+		color: #f64e60;
+		z-index: 99999;
+	}
+}

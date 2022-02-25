@@ -1,0 +1,301 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+		<div class="close-icon" (click)="modal.close()"></div>
+	</div>
+	<div class="modal-body">
+		<div class="overlay overlay-block cursor-default modal-body">
+			<form class="form form-label-right" [formGroup]="calenderForm">
+				<div class="form-group row">
+					<div [ngClass]='data.dataEventCalendar ? "col-lg-6" : "col-lg-12"'>
+						<label class="form-label required">Ca làm việc</label>
+						<select
+							(change)="shiftConfigChange()"
+							class="form-control form-control-solid"
+							formControlName="shiftId"
+						>f
+							<option [value]="''" disabled>Chọn ca làm việc</option>
+							<option *ngFor="let item of dataShiftConfig" [value]="item.id">{{item.name}}</option>
+						</select>
+						<app-validate
+							[control]="calenderForm.controls['shiftId']"
+							[error]="'required'"
+							[message]="'Ca làm việc không được để trống'"
+						></app-validate>
+					</div>
+          <div class='col-lg-6' *ngIf='data.dataEventCalendar'>
+            <label class="form-label">Nhân viên</label>
+            <select
+              class="form-control form-control-solid"
+              formControlName="employeeId"
+            >
+              <option [value]="''">Chọn nhân viên</option>
+              <option *ngFor="let item of listEmployee" [value]="item.id">
+                {{item.code}} - {{item.name}}
+              </option>
+            </select>
+            <app-validate
+              [control]="calenderForm.get('employeeId')"
+              [error]="'required'"
+              [message]="'Nhân viên không được để trống'"
+            ></app-validate>
+          </div>
+				</div>
+
+        <div class="form-group row" *ngIf='data.dataEventCalendar'>
+          <div class='col-lg-6'>
+            <label class="form-label">Cột</label>
+            <ng-select
+              appendTo="body"
+              [placeholder]="'Chọn cột'"
+              [multiple]="true"
+              [closeOnSelect]="false"
+              [isGroupDisplay]="true"
+              [groupText]="'cột khác'"
+              [minLengthGroup]="2"
+              formControlName='pumpPoles'
+            >
+              <ng-option *ngFor="let pumpPoles of listPumpPole" [value]="pumpPoles.id"
+              >{{ pumpPoles.name }}</ng-option
+              >
+            </ng-select>
+          </div>
+
+          <div class='col-lg-6'>
+            <label class="form-label required">Thời gian nghỉ</label>
+            <ng-select
+              appendTo="body"
+              [placeholder]="'Chọn thời gian nghỉ'"
+              [multiple]="true"
+              [closeOnSelect]="false"
+              [isGroupDisplay]="true"
+              [groupText]="'thời gian khác'"
+              [minLengthGroup]="2"
+              formControlName='shiftOffIds'
+            >
+              <ng-option *ngFor="let item of listOffTime" [value]="item.id"
+              >{{ item|formatTime }}</ng-option
+              >
+            </ng-select>
+            <app-validate
+              [control]="calenderForm.get('shiftOffIds')"
+              [error]="'required'"
+              [message]="'Thời gian nghỉ không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+
+				<div class="pt-5" *ngIf='!data.dataEventCalendar'>
+					<div class="body-card">
+						<div class="table-responsive angular-bootstrap-table">
+							<table class="table table-vertical-center overflow-hidden" aria-label="">
+								<thead class="thead-light">
+									<tr>
+										<th id="stt">
+											<label class="form-label">STT</label>
+										</th>
+										<th id="employee">
+											<label class="form-label required">Nhân viên</label>
+										</th>
+										<th id="pump">
+											<label class="form-label">Cột</label>
+										</th>
+										<th id="time">
+											<label class="form-label required">Thời gian nghỉ</label>
+										</th>
+										<th id="action">
+											<label class="form-label">Xóa</label>
+										</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<ng-container formArrayName="employee">
+										<tr *ngFor="let itemFormGroup of assignFormArray.controls; let i = index">
+											<ng-container [formGroup]="itemFormGroup">
+												<td class="text-center stt">{{i + 1}}</td>
+												<td class="employee">
+													<select
+														class="form-control form-control-solid"
+														formControlName="employeeId"
+                            (change)='changeEmployee($event, i)'
+													>
+														<option [value]="null">Chọn nhân viên</option>
+														<option *ngFor="let item of listEmployee" [value]="item.id">
+															{{item.code}} - {{item.name}}
+														</option>
+													</select>
+													<app-validate
+														[control]="itemFormGroup.get('employeeId')"
+														[error]="'required'"
+														[message]="'Nhân viên không được để trống'"
+													></app-validate>
+												</td>
+
+												<td class="pump-pole">
+													<ng-select
+														appendTo="body"
+														[placeholder]="'Chọn cột'"
+														[multiple]="true"
+														formControlName="pumpPoles"
+														[closeOnSelect]="false"
+														[isGroupDisplay]="true"
+														[groupText]="'cột khác'"
+														[minLengthGroup]="2"
+													>
+														<ng-option *ngFor="let pumpPoles of listPumpPole" [value]="pumpPoles.id"
+															>{{ pumpPoles.name }}</ng-option
+														>
+													</ng-select>
+												</td>
+												<td class="shif-off">
+													<ng-select
+														appendTo="body"
+														[placeholder]="'Chọn thời gian nghỉ'"
+														[multiple]="true"
+														formControlName="shiftOffIds"
+														[closeOnSelect]="false"
+														[isGroupDisplay]="true"
+														[groupText]="'thời gian khác'"
+														[minLengthGroup]="2"
+													>
+														<ng-option *ngFor="let item of listOffTime" [value]="item.id"
+															>{{ item|formatTime }}</ng-option
+														>
+													</ng-select>
+													<app-validate
+														[control]="itemFormGroup.get('shiftOffIds')"
+														[error]="'required'"
+														[message]="'Thời gian nghỉ không được để trống'"
+													></app-validate>
+												</td>
+												<td class="action">
+													<a
+														*ngIf="i > 0 || assignFormArray.length >= 2"
+														(click)="deleteItem(i)"
+														class="btn btn-icon btn-light btn-hover-danger btn-sm"
+													>
+														<span
+															[inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
+															cacheSVG="true"
+															class="svg-icon svg-icon-md svg-icon-danger"
+															[ngbTooltip]="'Xóa'"
+														>
+														</span>
+													</a>
+												</td>
+											</ng-container>
+										</tr>
+									</ng-container>
+								</tbody>
+
+								<tfoot>
+									<tr>
+										<td>
+											<a
+												*ngIf="assignFormArray.length < 10"
+												(click)="addItem()"
+												class="btn btn-icon btn-light btn-hover-primary btn-sm"
+											>
+												<span
+													[inlineSVG]="'/assets/media/svg/icons/Code/Plus.svg'"
+													cacheSVG="true"
+													class="svg-icon svg-icon-md svg-icon-primary"
+													[ngbTooltip]="'Thêm'"
+												>
+												</span>
+											</a>
+										</td>
+
+										<td colspan="5"></td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+
+        <div class="form-group row pt-5">
+          <div class="col-lg-6">
+            <label>Lặp lại</label>
+
+            <select class="form-control form-control-solid"
+                    formControlName="type"
+                    (change)='changeTypeRepeat()'
+            >
+              <option *ngFor="let item of typeLoop" [value]="item.type">{{item.name}}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-6 list-check" *ngIf='this.calenderForm.get("type").value === "WEEKLY"'>
+            <label class="check" *ngFor="let item of listDayOfWeek">
+              <input
+                type="checkbox"
+                (click)="changeCheck(item)"
+                name="days"
+                [value]="item.type"
+                [checked]="selectedDayOfWeek |isChecked: item.type"
+              />
+              <span>{{item.name}}</span>
+            </label>
+          </div>
+        </div>
+
+				<div class="form-group row pt-3">
+					<div class="col-lg-6">
+						<label>Ngày bắt đầu</label>
+
+						<div class="input-group">
+							<input
+                (ngModelChange)='changeStartDate()'
+								class="form-control form-control-solid"
+								placeholder="DD/MM/YYYY"
+								ngbDatepicker
+								readonly
+								#startAt="ngbDatepicker"
+								formControlName="startDate"
+								[minDate]="minDate"
+							/>
+							<div class="input-group-append">
+								<button
+									class="btn btn-outline-secondary fa fa-calendar-alt"
+									(click)="startAt.toggle()"
+									type="button"
+								></button>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-6">
+						<label>Ngày kết thúc</label>
+
+						<div class="input-group">
+							<input
+								class="form-control form-control-solid"
+								placeholder="DD/MM/YYYY"
+								ngbDatepicker
+								readonly
+								#endAt="ngbDatepicker"
+								formControlName="endDate"
+								[minDate]="minDate"
+							/>
+							<div class="input-group-append">
+								<button
+									class="btn btn-outline-secondary fa fa-calendar-alt"
+									(click)="endAt.toggle()"
+									type="button"
+								></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+			Hủy
+		</button>
+		<button type="button" ngbAutofocus class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
+	</div>
+</div>

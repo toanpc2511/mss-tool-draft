@@ -1,50 +1,203 @@
 <div class="modal-content">
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
-    <div class="close-icon" (click)="modal.close()"></div>
-  </div>
-  <div class="modal-body">
-    <div class="overlay overlay-block cursor-default modal-body">
-      <form class="form form-label-right">
-        <div class="form-group row">
-          <div class="col-lg-6">
-            <label class="form-label required">Loại nhiên liệu</label>
-            <select class="form-control form-control-solid form-control-lg">
-              <option [value]="''">Chọn loại nhiên liệu</option>
-              <option [value]="''">Tất cả</option>
-              <option [value]="''">Tất cả</option>
-            </select>
-          </div>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+		<div class="close-icon" (click)="modal.close()"></div>
+	</div>
+	<div class="modal-body">
+		<div class="overlay overlay-block cursor-default modal-body">
+			<form [formGroup]="configForm" class="form form-label-right">
+				<div class="form-group row">
+					<div class="col-lg-6">
+						<label class="form-label required">Loại nhiên liệu</label>
+						<select
+							class="form-control form-control-lg form-control-solid"
+							formControlName="productOil"
+						>
+							<option [value]="''">Chọn loại nhiên liệu</option>
+							<option *ngFor="let prodType of productTypeOil" [value]="prodType.id">
+								{{prodType.name}}
+							</option>
+						</select>
+						<app-validate
+							[control]="configForm.get('productOil')"
+							[error]="'required'"
+							[message]="'Loại sản phẩm được để trống'"
+						></app-validate>
+					</div>
 
-          <div class="col-lg-6">
-            <label class="form-label required">Số lượng cần đạt/ giao dịch (Lít)</label>
-            <input
-              type="text"
-              class="form-control form-control-lg form-control-solid"
-              placeholder="Nhập số lít"
-              autocomplete="off"
-              maxlength="20"
-              (keydown.space)="$event.preventDefault()"
-            />
-          </div>
-        </div>
-      </form>
+					<div class="col-lg-6">
+						<label class="form-label required">Số lượng cần đạt/ giao dịch (Lít)</label>
+						<input
+							type="text"
+							class="form-control form-control-lg form-control-solid"
+							placeholder="Nhập số lít"
+							autocomplete="off"
+							maxlength="20"
+							formControlName="amout"
+							decimal-mask
+							(keydown.space)="$event.preventDefault()"
+						/>
+						<app-validate
+							[control]="configForm.get('amout')"
+							[error]="'required'"
+							[message]="'Số lượng cần đạt/ giao dịch không được để trống'"
+						></app-validate>
+					</div>
+				</div>
+			</form>
 
-      <div class="pt-5">
-        <div class="title-card pb-3 font-weight-bold">
-          <label>Danh sách sản phẩm nhận khuyến mại</label>
-        </div>
+			<div class="pt-5">
+				<div class="title-card pb-3 font-weight-bold">
+					<label>Danh sách sản phẩm nhận khuyến mại</label>
+				</div>
 
-        <div class="body-card px-5">
-          <h1>a</h1>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
-      Hủy
-    </button>
-    <button type="button" ngbAutofocus class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
-  </div>
+				<div class="body-card px-5">
+					<div class="table-responsive angular-bootstrap-table">
+						<form [formGroup]="promotionForm">
+							<table class="table table-vertical-center overflow-hidden" aria-label="">
+								<thead class="thead-light">
+									<tr>
+										<th scope="" class="text-center">
+											<label class="form-label">STT</label>
+										</th>
+										<th scope="">
+											<label class="form-label required">Nhóm sản phẩm</label>
+										</th>
+										<th scope="">
+											<label class="form-label required">Tên sản phẩm</label>
+										</th>
+										<th scope="">
+											<label class="form-label">Đơn vị</label>
+										</th>
+										<th scope="">
+											<label class="form-label required">Số lượng</label>
+										</th>
+										<th scope="">
+											<label class="form-label">Xóa</label>
+										</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<ng-container formArrayName="promotions">
+										<tr
+											*ngFor="let productInfoFromGroup of promotionFormArray.controls; let i = index"
+										>
+											<ng-container [formGroup]="productInfoFromGroup">
+												<td class="text-center">{{i + 1}}</td>
+												<td class="col1">
+													<select
+														(change)="productTypeChanged($event, i)"
+														class="form-control form-control-sm"
+														formControlName="categoryId"
+													>
+														<option [value]="''">Chọn nhóm sản phẩm</option>
+														<option
+															*ngFor="let prodType of productTypeOrther"
+															[value]="prodType.id"
+														>
+															{{prodType.name}}
+														</option>
+													</select>
+													<app-validate
+														[control]="productInfoFromGroup.get('categoryId')"
+														[error]="'required'"
+														[message]="'Loại sản phẩm được để trống'"
+													></app-validate>
+												</td>
+												<td class="col2">
+													<select
+														(change)="productChanged($event, i)"
+														class="form-control form-control-sm"
+														formControlName="productId"
+													>
+														<option [value]="''" disabled>Chọn sản phẩm</option>
+														<option *ngFor="let prod of promotions[i]" [value]="prod.id">
+															{{prod.name}}
+														</option>
+													</select>
+													<app-validate
+														[control]="productInfoFromGroup.get('productId')"
+														[error]="'required'"
+														[message]="'Sản phẩm được để trống'"
+													></app-validate>
+												</td>
+												<td
+													class="col3"
+													[textContent]="productInfoFromGroup.get('unit').value"
+												></td>
+												<td class="col4">
+													<input
+														placeholder="Nhập số lượng"
+														class="form-control form-control-sm"
+														formControlName="quantity"
+														maxlength="6"
+														numbersOnly
+													/>
+													<app-validate
+														[control]="productInfoFromGroup.get('quantity')"
+														[error]="'required'"
+														[message]="'Số lượng được để trống'"
+													></app-validate>
+													<app-validate
+														[control]="productInfoFromGroup.get('quantity')"
+														[error]="'min'"
+														[message]="'Số lượng phải lớn hơn 0'"
+													></app-validate>
+												</td>
+												<td class="col5">
+													<a
+														*ngIf="i > 0 || promotionFormArray.length >= 2"
+														(click)="deleteItem(i)"
+														class="btn btn-icon btn-light btn-hover-danger btn-sm"
+													>
+														<span
+															[inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
+															cacheSVG="true"
+															class="svg-icon svg-icon-md svg-icon-danger"
+															[ngbTooltip]="'Xóa'"
+														>
+														</span>
+													</a>
+												</td>
+											</ng-container>
+										</tr>
+									</ng-container>
+								</tbody>
+
+								<tfoot>
+									<tr>
+										<td class="text-center">
+											<a
+												*ngIf="promotionFormArray.length < 5"
+												(click)="addItem()"
+												class="btn btn-icon btn-light btn-hover-primary btn-sm"
+											>
+												<span
+													[inlineSVG]="'/assets/media/svg/icons/Code/Plus.svg'"
+													cacheSVG="true"
+													class="svg-icon svg-icon-md svg-icon-primary"
+													[ngbTooltip]="'Thêm'"
+												>
+												</span>
+											</a>
+										</td>
+
+										<td colspan="5"></td>
+									</tr>
+								</tfoot>
+							</table>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+			Hủy
+		</button>
+		<button type="button" ngbAutofocus class="btn btn-primary btn-dialog" #btnSave>Lưu</button>
+	</div>
 </div>

@@ -284,6 +284,10 @@ button.btn-dialog {
 	width: 80px;
 }
 
+button.btn-confirm-dialog {
+  width: 100px;
+}
+
 table {
 	p.text-ellipsis {
 		width: fit-content;
@@ -356,6 +360,10 @@ app-paginator {
 	}
 }
 
+.fc-toolbar {
+	text-transform: capitalize;
+}
+
 // hide shadow
 // .card.custom-card {
 //   box-shadow: none;
@@ -365,3 +373,17 @@ app-paginator {
 // .form-control.ng-invalid.ng-dirty {
 //   border: 1px solid #ee2d41;
 // }
+
+// Utility
+@import './assets/sass/utility.scss';
+
+.custom-modal-z-1070 {
+  z-index: 1070;
+}
+
+
+.title-card {
+	text-transform: uppercase;
+    color: #4674eb;
+    font-size: 1.3em;
+}

@@ -15,7 +15,14 @@
 					[formControl]="searchFormControl"
 				/>
 			</div>
-			<button type="button" class="btn btn-primary" (click)="openRoleRoute()">Thêm mới</button>
+			<button
+				type="button"
+				class="btn btn-primary"
+				(click)="openRoleRoute()"
+				*ngIf="eAuthorize.CREATE_ROLE_BUTTON|canUseFeature"
+			>
+				Thêm mới
+			</button>
 		</div>
 	</div>
 	<div class="card-body">
@@ -45,18 +52,23 @@
 							<a
 								(click)="openRoleRoute(item)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								*ngIf="eAuthorize.UPDATE_ROLE_BUTTON|canUseFeature"
 							>
 								<span
-									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+									[inlineSVG]="'/assets/media/svg/icons/Communication/Write.svg'"
 									cacheSVG="true"
 									class="svg-icon svg-icon-md svg-icon-primary"
 									[ngbTooltip]="'Sửa'"
 								>
 								</span>
 							</a>
-							<a (click)="deleteRole(item)" class="btn btn-icon btn-light btn-hover-danger btn-sm">
+							<a
+								(click)="deleteRole(item)"
+								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+								*ngIf="eAuthorize.DELETE_ROLE_BUTTON |canUseFeature"
+							>
 								<span
-									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+									[inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
 									cacheSVG="true"
 									class="svg-icon svg-icon-md svg-icon-danger"
 									[ngbTooltip]="'Xóa'"

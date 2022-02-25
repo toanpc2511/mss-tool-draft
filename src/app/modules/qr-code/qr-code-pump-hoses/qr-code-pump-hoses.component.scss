@@ -1,0 +1,80 @@
+.card-toolbar {
+  gap: 50px;
+
+  button {
+    width: 110px;
+  }
+
+  .option-type {
+    padding-top: 6px;
+
+    select {
+      width: 170px;
+    }
+  }
+}
+
+.card.card-custom {
+  box-shadow: none !important;
+
+  .card-body,
+  .card-header {
+    border: 0;
+  }
+}
+
+
+table {
+  min-width: 1024px;
+
+  th,
+  td {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  thead {
+    th {
+      text-transform: none;
+    }
+  }
+
+  .number {
+    padding-right: 24px;
+  }
+  td {
+    &.id {
+      min-width: 100px;
+      max-width: 130px;
+    }
+
+    &.station,
+    &.pump-pole,
+    &.pump-house,
+    &.fuel {
+      min-width: 150px;
+      max-width: 170px;
+      p {
+        padding-right: 15px;
+      }
+    }
+    &.price {
+      min-width: 110px;
+      max-width: 120px;
+      p {
+        padding-right: 35px;
+      }
+    }
+    &.qr-code {
+      min-width: 80px;
+    }
+    &.status {
+      min-width: 150px;
+      max-width: 170px;
+    }
+    &.action {
+      min-width: 100px;
+    }
+  }
+}
+

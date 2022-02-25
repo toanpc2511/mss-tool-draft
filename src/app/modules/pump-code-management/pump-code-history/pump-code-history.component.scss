@@ -1,0 +1,60 @@
+.card-header {
+  padding: 0 2.25rem !important;
+  border-bottom: none;
+  .title {
+    text-transform: uppercase;
+    color: #4674eb;
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+.card-body {
+  padding: 0 2.25rem !important;
+
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+  }
+
+  .option-time {
+    .input-group-text {
+      padding: 0.65rem 0 !important;
+      border: none;
+    }
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      text-indent: 1px;
+      text-overflow: '';
+      cursor: pointer;
+    }
+  }
+
+  .table {
+    min-width: 1024px;
+
+    th {
+      text-transform: none;
+    }
+    td, th {
+      &.station-code,
+      &.pump-hose-code,
+      &.pump-pole-code,
+      &.pump-code,
+      &.product-name,
+      &.device-hours,
+      &.server-time {
+        min-width: 150px;
+        max-width: 220px;
+      }
+      &.number-of-lit,
+      &.unit-price,
+      &.into-money,
+      &.total-cumulative-liters,
+      &.totalamount-accumulated {
+        min-width: 120px;
+        max-width: 200px;
+      }
+    }
+  }
+}

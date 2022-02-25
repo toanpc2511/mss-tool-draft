@@ -1,0 +1,98 @@
+.card-header {
+    padding: 0 2.25rem !important;
+    border-bottom: none;
+
+    .title {
+      text-transform: uppercase;
+      color: #4674EB;
+      font-weight: 500;
+      font-size: 14px;
+    }
+  }
+
+  .card-body {
+    padding: 0 3.25rem !important;
+
+    .input-phone {
+      padding-right: 30px;
+    }
+  }
+
+  .url {
+    color: #4674EB;
+    cursor: pointer;
+    padding-bottom: 10px;
+  }
+
+  .info-request,
+  .info-request-in,
+  .list-product,
+  .upload-file,
+  .reason-refusal {
+    padding: 15px 0 25px;
+  }
+
+  .info-contract {
+    .icon-add {
+      padding-top: 30px;
+    }
+  }
+
+  .info-request-in {
+    .table {
+
+      thead {
+        background: #e9ecef;
+
+        th {
+          text-transform: none;
+          color: #333 !important;
+        }
+      }
+
+      td, th {
+        &.stt {
+          min-width: 60px;
+        }
+        &.unit {
+          min-width: 80px;
+          max-width: 120px;
+        }
+        &.into-money {
+          min-width: 130px;
+          max-width: 150px;
+        }
+        &.product-name,
+        &.gas-field-out-name,
+        &.compartment,
+        &.gas-field-in-name,
+        &.supplie-name {
+          min-width: 150px;
+          max-width: 200px;
+        }
+        &.recommend,
+        &.price {
+          min-width: 150px;
+          max-width: 160px;
+          padding-right: 35px;
+        }
+
+      }
+
+      tfoot {
+        border-bottom: 1px solid #cccccc;
+      }
+    }
+  }
+
+  .link-file {
+    font-size: 18px;
+    color: #4674EB;
+    cursor: pointer;
+    padding-bottom: 10px;
+  }
+
+  .title-reason {
+    color: red;
+    font-size: 14px;
+  }

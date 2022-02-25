@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,7 +26,8 @@ import { PermissionComponent } from './permission.component';
     SharedComponentsModule,
     ReactiveFormsModule,
     InputTrimModule,
-    NgbAccordionModule
+    NgbAccordionModule,
+    AuthModule
   ]
 })
 export class PermissionModule {}

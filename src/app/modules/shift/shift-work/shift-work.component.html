@@ -1,0 +1,157 @@
+<div class="shift-wrapper">
+	<div class="header-tab">
+		<app-tab
+			*ngIf="(isLoadingStation$ | async) === false"
+			[valueKey]="'id'"
+			[displayKey]="'name'"
+			[tabs]="gasStationTabs"
+			[defaultActiveFirst]="true"
+			(tabChange)="gasStationTabChange($event)"
+		></app-tab>
+	</div>
+	<div class="content">
+		<div>
+			<div class="w-100 d-lg-flex">
+				<div class="w-15 d-inline-block h-100">
+					<!--begin::Card-->
+					<div class="card card-custom card-stretch">
+						<div class="card-header">
+							<div class="card-title">
+								<h3 class="card-label">Danh sách nhân viên</h3>
+							</div>
+						</div>
+						<div class="card-body my-4" style="padding: 1.3rem">
+							<app-employee
+								*ngIf="(isLoadingEmployee$ | async) === false"
+								[employees]="employees"
+								(selectedEmployeeChange)="selectedEmployeeChange($event)"
+							></app-employee>
+						</div>
+					</div>
+					<!--end::Card-->
+				</div>
+				<div class="w-85 d-inline-block h-100 pl-2">
+					<!--begin::Card-->
+					<div class="card card-custom card-stretch">
+						<div class="card-header justify-content-end">
+							<div class="card-toolbar">
+								<a
+									class="btn btn-light-danger font-weight-bold mr-3"
+									(click)="deleteCalendarAll($event)"
+									*ngIf="eAuthorize.DELETE_CALENDAR_CONDITION_BUTTON|canUseFeature"
+								>
+									Xóa lịch làm việc
+								</a>
+								<a
+									class="btn btn-light-primary font-weight-bold"
+									(click)="createCalendarModal($event)"
+									*ngIf="eAuthorize.CREATE_CALENDAR_BUTTON|canUseFeature"
+								>
+									<span class="ki ki-plus"></span> Thêm lịch làm việc
+								</a>
+							</div>
+						</div>
+						<div class="card-body">
+							<full-calendar
+								#calendar
+								defaultView="dayGridMonth"
+								[options]="calendarOptions"
+								class="shiftCalendar"
+							></full-calendar>
+						</div>
+					</div>
+					<!--end::Card-->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<ng-template #popoverTmpl let-event="event">
+	<div class="content">
+		<div class="content-header">
+			<div class="d-flex justify-content-end">
+				<a
+					*ngIf="(event.event.extendedProps.start |isFeatureDate) && (eAuthorize.UPDATE_CALENDAR_BUTTON|canUseFeature)"
+					class="btn btn-icon btn-light btn-hover-primary btn-sm"
+					(click)="createCalendarModal(event)"
+				>
+					<span
+						[inlineSVG]="'/assets/media/svg/icons/Communication/Write.svg'"
+						cacheSVG="true"
+						class="svg-icon svg-icon-md svg-icon-primary"
+						[ngbTooltip]="'Sửa'"
+					>
+					</span>
+				</a>
+				<a
+					*ngIf="(event.event.extendedProps.start |isFeatureDate) && (eAuthorize.DELETE_CALENDAR_BUTTON|canUseFeature)"
+					class="mx-3 btn btn-icon btn-light btn-hover-danger btn-sm"
+					(click)="deleteCalendarOfEmployee($event, event.event)"
+				>
+					<span
+						[inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
+						cacheSVG="true"
+						class="svg-icon svg-icon-md svg-icon-danger"
+						[ngbTooltip]="'Xóa'"
+					>
+					</span>
+				</a>
+				<a
+					class="btn btn-icon btn-light btn-hover-secondary btn-sm"
+					(click)="closeShiftDetail(event)"
+				>
+					<span
+						[inlineSVG]="'/assets/media/svg/icons/General/Close.svg'"
+						cacheSVG="true"
+						class="svg-icon svg-icon-md svg-icon-danger"
+						[ngbTooltip]="'Đóng'"
+					>
+					</span>
+				</a>
+			</div>
+		</div>
+		<div class="content-body">
+			<ul>
+				<li>
+					<div class="d-flex mt-2">
+						<div class="w-5 mr-2">
+							<strong class="fa fa-circle text-danger"></strong>
+						</div>
+						<div>
+							<h6>{{ event.event.title }} {{event.event.extendedProps|displayStartEndCalendar}}</h6>
+							<p *ngFor="let ofTime of event.event.extendedProps.offTimes">
+								Thời gian nghỉ: {{(ofTime.start |displayTime: ofTime.typeStart) + ' - ' +
+								(ofTime.end |displayTime: ofTime.typeEnd)}}
+							</p>
+							<p>{{event.event.start |dateString}}</p>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="d-flex mt-2">
+						<div class="w-5 mr-2">
+							<strong class="fa fa-circle text-danger"></strong>
+						</div>
+						<div>
+							<h6>{{event.event.extendedProps.pumpPoles |pumpPoleDisplay}}</h6>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="d-flex mt-4">
+						<div class="w-5 mr-2">
+							<strong class="fa fa-user text-primary" style="font-size: 18px"></strong>
+						</div>
+						<div>
+							<h6>
+								{{event.event.extendedProps.employeeName}}{{event.event.extendedProps.calendarChangedResponses
+								|shiftChangeDetail}}
+							</h6>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</ng-template>

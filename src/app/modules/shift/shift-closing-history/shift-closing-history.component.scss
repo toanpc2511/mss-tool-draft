@@ -1,0 +1,36 @@
+.card-header {
+	border-bottom: 0;
+}
+
+.card-body {
+	padding-top: 0 !important;
+}
+
+.table {
+	min-width: 1024px;
+	thead {
+		th {
+			text-transform: none;
+		}
+	}
+
+	td {
+		&.station-name,
+		&.shift-name {
+			min-width: 150px;
+			max-width: 200px;
+		}
+		&.time-start,
+		&.time-end {
+			min-width: 100px;
+			max-width: 150px;
+		}
+		&.status {
+			min-width: 80px;
+			max-width: 150px;
+		}
+		&.action {
+			max-width: 150px;
+		}
+	}
+}

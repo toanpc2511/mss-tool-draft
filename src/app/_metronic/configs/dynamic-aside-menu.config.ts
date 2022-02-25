@@ -1,165 +1,332 @@
-export const DynamicAsideMenuConfig = {
-  items: [
-    {
-      title: 'Dashboard',
-      root: true,
-      icon: 'fas fa-layer-group',
-      page: '/dashboard',
-      translate: 'MENU.DASHBOARD',
-      bullet: 'dot'
-    },
-    {
-      title: 'Quản lý trạm xăng',
-      icon: 'fa fa-gas-pump',
-      root: true,
-      page: '/tram-xang',
-      bullet: 'dot',
-      submenu: [
-        {
-          title: 'Danh sách trạm',
-          bullet: 'dot',
-          page: 'tram-xang/danh-sach',
-          notChild: true,
-          submenu: [
-            {
-              title: 'Thêm trạm',
-              bullet: 'dot',
-              page: 'tram-xang/danh-sach/them-tram',
-              hidden: true
-            }
-          ]
-        }
-      ]
-    },
-    {
-      title: 'Quản lý sản phẩm',
-      icon: 'fas fa-cubes',
-      root: true,
-      page: '/san-pham',
-      bullet: 'dot',
-      submenu: [
-        {
-          title: 'Quản lý nhóm sản phẩm',
-          bullet: 'dot',
-          page: 'san-pham/nhom-san-pham',
-          notChild: true
-        },
-        {
-          title: 'Sản phẩm nhiên liệu',
-          bullet: 'dot',
-          page: 'san-pham/san-pham-nhien-lieu',
-          notChild: true
-        },
-        {
-          title: 'Sản phẩm khác',
-          bullet: 'dot',
-          page: 'san-pham/san-pham-khac',
-          notChild: true
-        }
-      ]
-    },
-    {
-      title: 'Quản lý hợp đồng',
-      icon: 'fas fa-file-contract',
-      root: true,
-      page: '/hop-dong',
-      bullet: 'dot',
-    },
-    {
-      title: 'Quản lý QR code',
-      root: true,
-      bullet: 'dot',
-      page: '/qrcode',
-      icon: 'fas fa-qrcode'
-    },
-    {
-      title: 'Báo cáo',
-      root: true,
-      bullet: 'dot',
-      page: '/bao-cao',
-      icon: 'fas fa-file-alt'
-    },
-    {
-      title: 'Quản lý nhân viên',
-      root: true,
-      bullet: 'dot',
-      page: '/nhan-vien',
-      icon: 'fas fa-user'
-    },
-    {
-      title: 'Quản lý tài khoản',
-      root: true,
-      bullet: 'dot',
-      page: '/tai-khoan',
-      icon: 'fas fa-user-shield'
-    },
-    {
-      title: 'Quản lý phân quyền',
-      root: true,
-      bullet: 'dot',
-      page: '/phan-quyen',
-      icon: 'fas fa-lock'
-    },
+import { EAuthorize } from 'src/app/modules/auth/services/authorizes';
+import { IMenuConfigItem } from './menu-config';
+
+export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
+	items: [
+		{
+			title: 'Trang chủ',
+			root: true,
+			icon: 'fas fa-layer-group',
+			page: '/dashboard',
+			translate: 'MENU.DASHBOARD',
+			bullet: 'dot',
+			permissionKey: EAuthorize.DASH_BOARD
+		},
+		{
+			title: 'Quản lý trạm xăng',
+			icon: 'fa fa-gas-pump',
+			root: true,
+			bullet: 'dot',
+			page: '/tram-xang',
+			submenu: [
+				{
+					title: 'Danh sách trạm',
+					bullet: 'dot',
+					page: '/tram-xang/danh-sach',
+					permissionKey: EAuthorize.MENU_GAS_STAION_MANAGEMENT
+				}
+			]
+		},
     {
       title: 'Quản lý ca làm việc',
       root: true,
       bullet: 'dot',
+      icon: 'fas fa-calendar-check',
       page: '/ca-lam-viec',
-      icon: 'fas fa-calendar-check'
+      submenu: [
+        {
+          title: 'Cấu hình ca',
+          bullet: 'dot',
+          page: '/ca-lam-viec/cauhinh-ca',
+
+          permissionKey: EAuthorize.VIEW_SHIFT_CONFIG_SCREEN
+        },
+        {
+          title: 'Lên lịch làm việc',
+          bullet: 'dot',
+          page: '/ca-lam-viec/lich-lam-viec',
+
+          permissionKey: EAuthorize.VIEW_CALENDAR_SCREEN
+        },
+        {
+          title: 'Danh sách yêu cầu đổi ca',
+          bullet: 'dot',
+          page: '/ca-lam-viec/doi-ca',
+
+          permissionKey: EAuthorize.VIEW_SWAP_SHIFT_SCREEN
+        },
+        {
+          title: 'Lịch sử chốt ca',
+          bullet: 'dot',
+          page: '/ca-lam-viec/lich-su-chot-ca',
+
+          permissionKey: EAuthorize.VIEW_LOCK_SHIFT_LIST_SCREEN
+        }
+      ]
+    },
+    {
+      title: 'Quản lý mã bơm',
+      root: true,
+      bullet: 'dot',
+      page: '/quan-ly-ma-bom/danh-sach',
+      icon: 'fas fa-fill-drip',
+      permissionKey: EAuthorize.VIEW_TRANSACTION_HISTORY_MENU
+    },
+    {
+      title: 'Lịch sử giao dịch',
+      root: true,
+      bullet: 'dot',
+      page: '/lich-su-giao-dich/danh-sach',
+      icon: 'fas fa-history',
+      permissionKey: EAuthorize.VIEW_TRANSACTION_HISTORY_MENU
+    },
+    {
+      title: 'Lịch sử sử dụng điểm',
+      root: true,
+      bullet: 'dot',
+      page: '/lich-su-su-dung-diem/danh-sach',
+      icon: 'fas fa-business-time',
+      permissionKey: EAuthorize.VIEW_HISTORY_ACCUMULATE_SCREEN
+    },
+    {
+      title: 'Quản lý đổi điểm',
+      root: true,
+      bullet: 'dot',
+      page: '/doi-diem',
+      icon: 'fas fa-sync',
+      submenu: [
+        {
+          title: 'Đổi điểm',
+          bullet: 'dot',
+          page: '/doi-diem/chi-tiet',
+          permissionKey: EAuthorize.TRANSFER_POINT_BUTTON
+        },
+        {
+          title: 'Lịch sử đổi điểm',
+          bullet: 'dot',
+          page: '/doi-diem/lich-su',
+          permissionKey: EAuthorize.VIEW_TRANSFER_POINT_HISTORY_MENU
+        }
+      ]
     },
     {
       title: 'Quản lý khách hàng',
       root: true,
       bullet: 'dot',
-      page: '/khach-hang',
-      icon: 'fas fa-users'
+      page: '/khach-hang/danh-sach',
+      icon: 'fas fa-users',
+      permissionKey: EAuthorize.VIEW_DRIVER_LIST_SCREEN
     },
     {
-      title: 'Quản lý cấu hình',
-      icon: 'fas fa-hand-holding-usd',
+      title: 'Quản lý hợp đồng',
+      icon: 'fas fa-file-contract',
       root: true,
-      page: '/cau-hinh',
+      page: '/hop-dong/danh-sach',
       bullet: 'dot',
-      submenu: [
-        {
-          title: 'Cấu hình tích điểm',
-          bullet: 'dot',
-          page: 'cau-hinh/tich-diem',
-          notChild: true
-        },
-        {
-          title: 'Cấu hình chiết khấu',
-          bullet: 'dot',
-          page: 'cau-hinh/chiet-khau',
-          notChild: true
-        },
-        {
-          title: 'Cấu hình hạng',
-          bullet: 'dot',
-          page: 'cau-hinh/hang',
-          notChild: true
-        },
-        {
-          title: 'Cấu hình khuyến mãi',
-          bullet: 'dot',
-          page: 'cau-hinh/khuyen-mai',
-          notChild: true
-        }
-      ]
+      permissionKey: EAuthorize.VIEW_CONTRACT_LIST_SCREEN
     },
     {
       title: 'Quản lý kho',
       root: true,
       bullet: 'dot',
       page: '/kho',
-      icon: 'fas fa-warehouse'
+      icon: 'fas fa-warehouse',
+      submenu: [
+        {
+          title: 'Yêu cầu đặt hàng',
+          bullet: 'dot',
+          page: '/kho/yeu-cau-dat-hang',
+          permissionKey: EAuthorize.VIEW_LIST_IMPORT_REQUEST
+        },
+        {
+          title: 'Yêu cầu đặt kho',
+          bullet: 'dot',
+          page: '/kho/don-dat-kho',
+          permissionKey: EAuthorize.VIEW_WAREHOUSE_ORDERS_SCREEN
+        },
+        {
+          title: 'Xuất kho',
+          bullet: 'dot',
+          page: '/kho/xuat-kho',
+          permissionKey: EAuthorize.VIEW_WAREHOUSE_EXPORT_LIST_SCREEN
+        },
+        {
+          title: 'Nhập kho',
+          bullet: 'dot',
+          page: '/kho/nhap-kho',
+          permissionKey: EAuthorize.VIEW_WAREHOUSE_IMPORT_LIST_SCREEN
+        },
+        {
+          title: 'Tịnh kho đo bể',
+          bullet: 'dot',
+          page: '/kho/tinh-kho-do-be',
+          permissionKey: EAuthorize.VIEW_MEASURES_SCREEN
+        },
+        {
+          title: 'Tịnh kho kịch bơm',
+          bullet: 'dot',
+          page: '/kho/tinh-kho-kich-bom',
+          permissionKey: EAuthorize.VIEW_LIST_SHALLOW_SCREEN
+        }
+      ]
     },
     {
-      title: 'Lịch sử giao dịch',
+      title: 'Quản lý nhân viên',
       root: true,
       bullet: 'dot',
-      page: '/lich-su-giao-dich',
-      icon: 'fas fa-history'
-    }
-  ]
+      page: '/nhan-vien',
+      icon: 'fas fa-user',
+      submenu: [
+        {
+          title: 'Danh sách nhân viên',
+          bullet: 'dot',
+          page: '/nhan-vien/danh-sach',
+          permissionKey: EAuthorize.VIEW_EMPLOYEE_LIST_SCREEN
+        },
+        {
+          title: 'Đánh giá nhân viên',
+          bullet: 'dot',
+          page: '/nhan-vien/danh-gia',
+          permissionKey: EAuthorize.VIEW_LIST_EVALUATION
+        }
+      ]
+
+    },
+    {
+      title: 'Quản lý tài khoản',
+      root: true,
+      bullet: 'dot',
+      page: '/tai-khoan/danh-sach',
+      icon: 'fas fa-user-shield',
+      permissionKey: EAuthorize.VIEW_ACCOUNT_LIST_SCREEN
+    },
+    {
+      title: 'Quản lý sản phẩm',
+      icon: 'fas fa-cubes',
+      root: true,
+      bullet: 'dot',
+      page: '/san-pham',
+      submenu: [
+        {
+          title: 'Quản lý nhóm sản phẩm',
+          bullet: 'dot',
+          page: '/san-pham/nhom-san-pham',
+
+          permissionKey: EAuthorize.VIEW_CATEGORY_SCREEN
+        },
+        {
+          title: 'Sản phẩm nhiên liệu',
+          bullet: 'dot',
+          page: '/san-pham/san-pham-nhien-lieu',
+
+          permissionKey: EAuthorize.VIEW_OIL_LIST_SCREEN
+        },
+        {
+          title: 'Sản phẩm khác',
+          bullet: 'dot',
+          page: '/san-pham/san-pham-khac',
+
+          permissionKey: EAuthorize.VIEW_OTHER_PRODUCT_SCREEN
+        }
+      ]
+    },
+    {
+      title: 'Quản lý QR code',
+      root: true,
+      bullet: 'dot',
+      icon: 'fas fa-qrcode',
+      page: '/quan-ly-qr-code',
+      submenu: [
+        {
+          title: 'Qr code sản phẩm',
+          bullet: 'dot',
+          page: '/quan-ly-qr-code/qr-san-pham',
+
+          permissionKey: EAuthorize.VIEW_PRODUCT_QR_LIST_SCREEN
+        },
+        {
+          title: 'Qr code vòi bơm',
+          bullet: 'dot',
+          page: '/quan-ly-qr-code/qr-voi',
+
+          permissionKey: EAuthorize.VIEW_PUMP_HOSE_QR_LIST_SCREEN
+        }
+      ]
+    },
+    {
+      title: 'Quản lý phân quyền',
+      root: true,
+      bullet: 'dot',
+      page: '/phan-quyen',
+      icon: 'fas fa-lock',
+      permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
+    },
+    {
+      title: 'Quản lý lịch sử tác động',
+      root: true,
+      bullet: 'dot',
+      page: '/lich-su-tac-dong/danh-sach',
+      icon: 'fas fa-user-clock',
+      permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
+    },
+    {
+      title: 'Quản lý cấu hình',
+      icon: 'fas fa-hand-holding-usd',
+      root: true,
+      bullet: 'dot',
+      page: '/cau-hinh',
+      submenu: [
+        {
+          title: 'Cấu hình tích điểm',
+          bullet: 'dot',
+          page: '/cau-hinh/tich-diem',
+
+          permissionKey: EAuthorize.VIEW_POINT_LIST_SCREEN
+        },
+        {
+          title: 'Cấu hình chiết khấu',
+          bullet: 'dot',
+          page: '/cau-hinh/chiet-khau',
+
+          permissionKey: EAuthorize.VIEW_DISCOUNT_LIST_SCREEN
+        },
+        {
+          title: 'Cấu hình hạng',
+          bullet: 'dot',
+          page: '/cau-hinh/hang',
+
+          permissionKey: EAuthorize.VIEW_RANK_LIST_SCREEN
+        },
+        {
+          title: 'Cấu hình khuyến mãi',
+          bullet: 'dot',
+          page: '/cau-hinh/khuyen-mai',
+
+          permissionKey: EAuthorize.VIEW_PROMOTION_LIST_SCREEN
+        },
+        {
+          title: 'Cấu hình banner',
+          bullet: 'dot',
+          page: '/cau-hinh/banner',
+
+          permissionKey: EAuthorize.VIEW_BANNERS_SCREEN
+        },
+        {
+          title: 'Cấu hình tin tức',
+          bullet: 'dot',
+          page: '/cau-hinh/tin-tuc',
+
+          permissionKey: EAuthorize.VIEW_LIST_NEWS_SCREEN
+        }
+      ]
+    },
+		{
+			title: 'Báo cáo',
+			root: true,
+			bullet: 'dot',
+			page: '/bao-cao',
+			icon: 'fas fa-file-alt',
+			permissionKey: ''
+		},
+	]
 };

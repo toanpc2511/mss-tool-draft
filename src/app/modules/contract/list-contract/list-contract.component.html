@@ -15,7 +15,14 @@
 					[formControl]="searchFormControl"
 				/>
 			</div>
-			<button type="button" class="btn btn-primary" (click)="createContract()">Thêm mới</button>
+			<button
+				type="button"
+				class="btn btn-primary"
+				(click)="createContract()"
+				*ngIf="(eAuthorize.CREATE_CONTRACT_BUTTON|canUseFeature) || (eAuthorize.CREATE_CONTRACT_PLAN_BUTTON|canUseFeature)"
+			>
+				Thêm mới
+			</button>
 		</div>
 	</div>
 	<div class="card-body">
@@ -132,28 +139,28 @@
 								<ng-container *ngIf="item.status === contractStatus.DRAFT">Lưu nháp</ng-container>
 							</span>
 						</td>
-						<td class="text-center action">
+						<td class="action">
 							<a
-								*ngIf="item.status === contractStatus.DRAFT"
+								*ngIf="item.status === contractStatus.DRAFT && ((item.contractType.code === 'PRE_PAY' && (eAuthorize.UPDATE_CONTRACT_BUTTON|canUseFeature)) || (item.contractType.code === 'PLAN' && (eAuthorize.UPDATE_CONTRACT_PLAN_BUTTON|canUseFeature)))"
 								(click)="updateContract($event,item.id)"
-								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-1"
 								[ngbTooltip]="'Sửa'"
 							>
 								<span
-									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+									[inlineSVG]="'/assets/media/svg/icons/Communication/Write.svg'"
 									cacheSVG="true"
 									class="svg-icon svg-icon-md svg-icon-primary"
 								>
 								</span>
 							</a>
 							<a
-								*ngIf="item.status === contractStatus.DRAFT"
+								*ngIf="item.status === contractStatus.DRAFT && (eAuthorize.DELETE_CONTRACT_BUTTON|canUseFeature)"
 								(click)="deleteContract($event, item)"
-								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+								class="btn btn-icon btn-light btn-hover-danger btn-sm mx-1"
 								[ngbTooltip]="'Xóa'"
 							>
 								<span
-									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+									[inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
 									cacheSVG="true"
 									class="svg-icon svg-icon-md svg-icon-danger"
 								>

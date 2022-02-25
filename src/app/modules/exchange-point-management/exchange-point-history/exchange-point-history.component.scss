@@ -1,0 +1,57 @@
+.card-header {
+  border-bottom: 0;
+}
+
+.card-body {
+  padding-top: 0 !important;
+}
+
+.input-group-text {
+  border: 0;
+}
+
+table {
+  min-width: 1024px;
+
+  th,
+  td {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    &.phone {
+      min-width: 110px;
+      max-width: 130px;
+    }
+
+    &.image {
+      min-width: 110px;
+      max-width: 130px;
+    }
+
+    &.name {
+      min-width: 120px;
+      max-width: 140px;
+    }
+
+    &.point-swap {
+      min-width: 130px;
+      max-width: 140px;
+    }
+
+    &.price_received {
+      min-width: 140px;
+      max-width: 150px;
+    }
+  }
+
+  thead {
+    th {
+      text-transform: none;
+    }
+  }
+
+  .fa-images {
+    color: #4674EB;
+  }
+
+}

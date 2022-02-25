@@ -1,0 +1,57 @@
+<div class="modal-header">
+  <h4 class="modal-title">Xác thực 2 yếu tố</h4>
+</div>
+
+<div class="modal-body" [hidden]="step !== 1">
+  <div class="w-100">
+    <h4>Gửi mã xác thực tới số điện thoại {{currentPhoneNumber}}</h4>
+    <div class="mt-4" id="otp-captcha"></div>
+    <p class="text-danger" *ngIf="reCapchaError">Vui lòng xác minh rằng bạn không phải robot.</p>
+  </div>
+</div>
+<div class="modal-body" [hidden]="step !== 2">
+  <h3>Nhập mã</h3>
+  <p>Nhập mã xác thực 6 chữ số được gửi tới số điện thoại <strong>{{currentPhoneNumber}}</strong> để thay đổi trạng thái xác thực 2 yếu
+    tố</p>
+  <div class="w-100 py-5">
+    <input
+      class="form-control form-control-solid"
+      [formControl]="verificationCodeControl"
+      trim="blur" numbersOnly
+      maxlength="6"
+      (keydown.space)="$event.preventDefault()"
+      placeholder='Nhập mã OTP'
+    />
+    <app-validate [control]="verificationCodeControl" [error]="'required'"
+      [message]="'Mã xác thực không được để trống'">
+    </app-validate>
+    <app-validate [control]="verificationCodeControl" [error]="'verificationCode'"
+      [message]="'Mã xác thực bao gồm 6 số'">
+    </app-validate>
+  </div>
+  <button class="btn btn-link mt-3" id="resend-otp-btn" [textContent]="'Gửi lại OTP'"  [hidden]='disableBtn'></button>
+
+  <div class='font-weight-bold cursor-default mt-3' [innerText]='titleTime' [hidden]='!disableBtn' style='color: #8c8ea4'></div>
+</div>
+<div class="modal-body pt-3" [hidden]="step !== 3" *ngIf='data'>
+  <h3>Đã bật xác thực 2 yếu tố</h3>
+  <p>Các lần đăng nhập tiếp theo sẽ yêu cầu xác thực với OTP</p>
+</div>
+<div class="modal-body pt-3" [hidden]="step !== 3" *ngIf='!data'>
+  <h3>Đã tắt xác thực 2 yếu tố</h3>
+  <p>Các lần đăng nhập tiếp theo sẽ không cần xác thực với OTP</p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="verificationCodeControl.reset(); modal.close(false)" *ngIf="step !== 3">
+    Hủy
+  </button>
+  <button *ngIf="step=== 1" type="button" (click)="sendOTP()" class="btn btn-primary">
+    Gửi OTP
+  </button>
+  <button *ngIf="step === 2" type="button" class="btn btn-primary" [disabled]='!disableBtn' (click)="verifyOTP()">
+    Xác nhận
+  </button>
+  <button *ngIf="step === 3" type="button" class="btn btn-primary" (click)="complete()">
+    Xong
+  </button>
+</div>

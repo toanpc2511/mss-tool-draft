@@ -15,7 +15,7 @@
 					[formControl]="searchFormControl"
 				/>
 			</div>
-			<button type="button" class="btn btn-primary" (click)="createModal()">Thêm mới</button>
+			<button type="button" class="btn btn-primary" (click)="createModal()" *ngIf="eAuthorize.CREATE_PROMOTION_BUTTON|canUseFeature">Thêm mới</button>
 		</div>
 	</div>
 	<div class="card-body">
@@ -40,15 +40,7 @@
 							(sort)="sort($event)"
 						></app-sort-icon>
 					</th>
-					<th class="promotion" scope="">
-						Khuyến mại được nhận
-						<app-sort-icon
-							column="promotion"
-							[activeColumn]="sorting.column"
-							[activeDirection]="sorting.direction"
-							(sort)="sort($event)"
-						></app-sort-icon>
-					</th>
+					<th class="promotion" scope="">Khuyến mại được nhận</th>
 					<th class="text-center" scope="">Tác động</th>
 				</thead>
 
@@ -68,15 +60,19 @@
 							<p
 								class="cursor-pointer text-ellipsis"
 								placement="top"
-								[ngbTooltip]="item.amountLiterOrder"
+								[ngbTooltip]="item.amountLiterOrder?.toLocaleString('en-US')"
 							>
-								{{ item.amountLiterOrder }}
+								{{ item.amountLiterOrder?.toLocaleString('en-US') }}
 							</p>
 						</td>
 
 						<td class="promotion">
-							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.promotion">
-								{{ item.promotion }}
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="getListPromotions(item)"
+							>
+								{{ getListPromotions(item) }}
 							</p>
 						</td>
 
@@ -84,9 +80,10 @@
 							<a
 								(click)="createModal($event, item)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								*ngIf="eAuthorize.UPDATE_PROMOTION_BUTTON|canUseFeature"
 							>
 								<span
-									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+									[inlineSVG]="'/assets/media/svg/icons/Communication/Write.svg'"
 									cacheSVG="true"
 									class="svg-icon svg-icon-md svg-icon-primary"
 									[ngbTooltip]="'Sửa'"
@@ -96,9 +93,10 @@
 							<a
 								(click)="deleteConfig($event, item)"
 								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+								*ngIf="eAuthorize.DELETE_PROMOTION_BUTTON|canUseFeature"
 							>
 								<span
-									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+									[inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
 									cacheSVG="true"
 									class="svg-icon svg-icon-md svg-icon-danger"
 									[ngbTooltip]="'Xóa'"
@@ -108,6 +106,12 @@
 						</td>
 					</tr>
 				</tbody>
+
+				<tfoot *ngIf="dataSource?.length === 0">
+					<tr>
+						<td colspan="4" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 	</div>

@@ -236,4 +236,9 @@ export class CustomerManagementService {
 			step4: { isValid: false }
 		});
 	}
+
+  // Thay đổi hạng khách hàng
+  changeRank(dataReq: {rankId: number, driverId: string}) {
+    return this.http.put('customers/ranks', dataReq)
+  }
 }

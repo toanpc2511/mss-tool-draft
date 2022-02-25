@@ -1,0 +1,558 @@
+<div class="card card-custom gutter-b mt-1" *ngIf='dataDetail?.status === "WAIT_CONFIRM" else orther'>
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="title">Thông tin yêu cầu</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form class="form form-label-right" [formGroup]='requestForm'>
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label class="form-label required">Trạm</label>
+          <select
+            class="form-control form-control-solid w-75"
+            formControlName='stationId'
+            (input)='handleStationChange()'
+          >
+            <option [value]="''">Chọn trạm</option>
+            <option *ngFor="let item of stationByToken" [value]="item.id">{{item.name}}</option>
+          </select>
+
+          <app-validate
+            [control]="requestForm.controls['stationId']"
+            [error]="'required'"
+            [message]="'Trạm không được để trống'"
+          ></app-validate>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Địa chỉ</label>
+          <input
+            type="text"
+            class="form-control form-control-solid w-75"
+            placeholder="Địa chỉ trạm"
+            formControlName='fullAddress'
+          />
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label class='form-label required'>Ngày dự kiến nhập hàng</label>
+
+          <div class="input-group w-75">
+            <input
+              class="form-control form-control-solid"
+              placeholder="DD/MM/YYYY"
+              ngbDatepicker
+              #startAt="ngbDatepicker"
+              formControlName='expectedDate'
+              [minDate]='minDate'
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary fa fa-calendar-alt"
+                (click)="startAt.toggle()"
+                type="button"
+              ></button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="requestForm.controls['expectedDate']"
+            [error]="'ngbDate'"
+            [message]="'Ngày dự kiến không đúng định dạng'"
+          ></app-validate>
+          <app-validate
+            [control]="requestForm.controls['expectedDate']"
+            [error]="'required'"
+            [message]="'Ngày dự kiến không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="card-header pt-5">
+    <div class="card-title">
+      <h3 class="title">Danh sách hàng hóa</h3>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <form [formGroup]="productForm">
+        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+          <thead>
+          <tr>
+            <th scope='' class='text-center'>STT</th>
+            <th scope='' class='form-label required'>Tên sản phẩm</th>
+            <th scope=''>Đơn vị</th>
+            <th scope='' class='form-label required'>Bồn</th>
+            <th scope='' class='form-label required'>Lượng đề xuất</th>
+            <th scope=''>Xóa</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <ng-container formArrayName='products'>
+            <tr
+              *ngFor="let productInfoFromGroup of productFormArray.controls; let i = index"
+            >
+              <ng-container [formGroup]="productInfoFromGroup">
+                <td class="text-center">{{i + 1}}</td>
+                <td>
+                  <select
+                    (change)="productChanged($event, i)"
+                    class="form-control form-control-sm w-75"
+                    formControlName="id"
+                  >
+                    <option [value]="''">Chọn sản phẩm nhiên liệu</option>
+                    <option
+                      *ngFor="let prodType of productFuels"
+                      [value]="prodType.id"
+                    >
+                      {{prodType.name}}
+                    </option>
+                  </select>
+                  <app-validate
+                    [control]="productInfoFromGroup.get('id')"
+                    [error]="'required'"
+                    [message]="'Sản phẩm được để trống'"
+                  ></app-validate>
+                </td>
+                <td
+                  class=""
+                  [textContent]="productInfoFromGroup.get('unit').value"
+                ></td>
+                <td>
+                  <select
+                    class="form-control form-control-sm w-75"
+                    formControlName="gasFieldId"
+                  >
+                    <option [value]="''">Chọn bồn</option>
+                    <option
+                      *ngFor="let item of products[i]"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </option>
+                  </select>
+                  <app-validate
+                    [control]="productInfoFromGroup.get('gasFieldId')"
+                    [error]="'required'"
+                    [message]="'Bồn không được để trống'"
+                  ></app-validate>
+                </td>
+                <td>
+                  <input
+                    placeholder="Nhập số lượng đề xuất"
+                    class="form-control form-control-sm w-75"
+                    formControlName="amountRecommended"
+                    maxlength="13"
+                    decimal-mask
+                  />
+                  <app-validate
+                    [control]="productInfoFromGroup.get('amountRecommended')"
+                    [error]="'required'"
+                    [message]="'Số lượng đề xuất không được để trống'"
+                  ></app-validate>
+                  <app-validate
+                    [control]="productInfoFromGroup.get('amountRecommended')"
+                    [error]="'min'"
+                    [message]="'Số lượng đề xuất phải lớn hơn 0'"
+                  ></app-validate>
+                </td>
+                <td>
+                  <a
+                    *ngIf="i > 0 || productFormArray.length >= 2"
+                    (click)="deleteItem(i)"
+                    class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                  >
+                    <span
+                      [inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
+                      cacheSVG="true"
+                      class="svg-icon svg-icon-md svg-icon-danger"
+                      [ngbTooltip]="'Xóa'"
+                    >
+                    </span>
+                  </a>
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+          </tbody>
+
+          <tfoot>
+          <tr>
+            <td class="text-center">
+              <a
+                (click)="addItem()"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm"
+              >
+                <span
+                  [inlineSVG]="'/assets/media/svg/icons/Code/Plus.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Thêm'"
+                >
+                </span>
+              </a>
+            </td>
+
+            <td colspan="5"></td>
+          </tr>
+          </tfoot>
+        </table>
+      </form>
+    </div>
+  </div>
+
+  <div class="py-10 w-100 d-flex justify-content-center">
+    <button
+      class="m-2 btn btn-outline-primary font-weight-bold btn-def"
+      (click)="onSubmit()"
+    >
+      Lưu
+    </button>
+    <button
+      class="m-2 btn btn-primary font-weight-bold btn-def"
+      (click)="onBack()"
+    >
+      Hủy
+    </button>
+  </div>
+</div>
+
+<ng-template #orther>
+  <div class="card card-custom gutter-b mt-1">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Thông tin yêu cầu</h3>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class='col-lg-5'>
+            <label class='form-label'>Mã yêu cầu</label>
+          </div>
+          <div class='col-lg-7'>
+            <label class='form-label'>
+              <strong>{{dataDetail?.code}}</strong>
+            </label>
+          </div>
+        </div>
+
+        <div class="col-lg-6 row">
+          <div class='col-lg-4'>
+            <label class='form-label'>Người yêu cầu</label>
+          </div>
+          <div class='col-lg-8'>
+            <label class='form-label'>
+              <strong>{{dataDetail?.employeeRequest}}</strong>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class='col-lg-5'>
+            <label class='form-label'>Trạm</label>
+          </div>
+          <div class='col-lg-7'>
+            <label class='form-label'>
+              <strong>{{dataDetail?.stationName}}</strong>
+            </label>
+          </div>
+        </div>
+
+        <div class="col-lg-6 row">
+          <div class='col-lg-4'>
+            <label class='form-label'>Địa chỉ</label>
+          </div>
+          <div class='col-lg-8'>
+            <label class='form-label'>
+              <strong>{{dataDetail?.address}}</strong>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class='col-lg-5'>
+            <label class='form-label'>Ngày dự kiến nhập hàng</label>
+          </div>
+          <div class='col-lg-7'>
+            <label class='form-label'>
+              <strong>{{dataDetail?.requestDate | date: 'dd/MM/yyyy'}}</strong>
+            </label>
+          </div>
+        </div>
+
+        <div class="col-lg-6 row">
+          <div class='col-lg-4'>
+            <label class='form-label'>Trạng thái</label>
+          </div>
+          <div class='col-lg-8'>
+            <label class='form-label'>
+              <strong *ngIf='dataDetail?.status === listStatus.WAIT_CONFIRM'>Chờ xác nhận</strong>
+              <strong *ngIf='dataDetail?.status === listStatus.APPROVE'>Đã phê duyệt</strong>
+              <strong *ngIf='dataDetail?.status === listStatus.CONFIRM'>Đã xác nhận</strong>
+              <strong *ngIf='dataDetail?.status === listStatus.REFUSE'>Đã từ chối</strong>
+              <strong *ngIf='dataDetail?.status === listStatus.IMPORTED'>Đã nhập kho</strong>
+              <strong *ngIf='dataDetail?.status === listStatus.EXPORTED'>Đã xuất kho</strong>
+              <strong *ngIf='dataDetail?.status === listStatus.REQUEST_CHANGE'>Yêu cầu thay đổi</strong>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Danh sách hàng hóa</h3>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive angular-bootstrap-table">
+        <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+          <thead>
+          <tr>
+            <th scope=''>STT</th>
+            <th scope='' class=''>Tên sản phẩm</th>
+            <th scope='' class=''>Đơn vị</th>
+            <th scope='' class=''>Bồn</th>
+            <th scope='' class='text-right'>Lượng đề xuất</th>
+            <th scope='' class='text-right'>Lượng thực nhập</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr *ngFor='let item of dataDetail?.productResponses; let i = index'>
+            <td>{{i + 1}}</td>
+            <td class='product-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.productName"
+              >
+                {{ item.productName }}
+              </p>
+            </td>
+            <td class='unit'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.unit"
+              >
+                {{ item.unit }}
+              </p>
+            </td>
+            <td class='gas-field-name'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.gasFieldIn.name"
+              >
+                {{ item.gasFieldIn.name }}
+              </p>
+            </td>
+            <td class='amount-actually text-right'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.amountRecommended | number| vnCurrency"
+              >
+                {{ item.amountRecommended | number| vnCurrency }}
+              </p>
+            </td>
+            <td class='amount-actually text-right'>
+              <p
+                class="cursor-pointer text-ellipsis"
+                placement="top"
+                [ngbTooltip]="item.amountActually | number| vnCurrency"
+              >
+                {{ item.amountActually | number| vnCurrency }}
+              </p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-custom gutter-b mt-1">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Danh sách hàng hóa thay đổi</h3>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive angular-bootstrap-table">
+        <form [formGroup]="productForm">
+          <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+            <thead>
+            <tr>
+              <th scope='' class='text-center'>STT</th>
+              <th scope='' class='form-label required'>Tên sản phẩm</th>
+              <th scope=''>Đơn vị</th>
+              <th scope='' class='form-label required'>Bồn</th>
+              <th scope='' class='form-label required'>Lượng đề xuất</th>
+              <th scope=''>Xóa</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <ng-container formArrayName='products'>
+              <tr
+                *ngFor="let productInfoFromGroup of productFormArray.controls; let i = index"
+              >
+                <ng-container [formGroup]="productInfoFromGroup">
+                  <td class="text-center">{{i + 1}}</td>
+                  <td>
+                    <select
+                      (change)="productChanged($event, i)"
+                      class="form-control form-control-sm w-75"
+                      formControlName="id"
+                    >
+                      <option [value]="''">Chọn sản phẩm nhiên liệu</option>
+                      <option
+                        *ngFor="let prodType of productFuels"
+                        [value]="prodType.id"
+                      >
+                        {{prodType.name}}
+                      </option>
+                    </select>
+                    <app-validate
+                      [control]="productInfoFromGroup.get('id')"
+                      [error]="'required'"
+                      [message]="'Sản phẩm được để trống'"
+                    ></app-validate>
+                  </td>
+                  <td
+                    class=""
+                    [textContent]="productInfoFromGroup.get('unit').value"
+                  ></td>
+                  <td>
+                    <select
+                      class="form-control form-control-sm w-75"
+                      formControlName="gasFieldId"
+                    >
+                      <option [value]="''">Chọn bồn</option>
+                      <option
+                        *ngFor="let item of products[i]"
+                        [value]="item.id"
+                      >
+                        {{item.name}}
+                      </option>
+                    </select>
+                    <app-validate
+                      [control]="productInfoFromGroup.get('gasFieldId')"
+                      [error]="'required'"
+                      [message]="'Bồn không được để trống'"
+                    ></app-validate>
+                  </td>
+                  <td>
+                    <input
+                      placeholder="Nhập số lượng đề xuất"
+                      class="form-control form-control-sm w-75"
+                      formControlName="amountRecommended"
+                      maxlength="13"
+                      decimal-mask
+                    />
+                    <app-validate
+                      [control]="productInfoFromGroup.get('amountRecommended')"
+                      [error]="'required'"
+                      [message]="'Số lượng đề xuất không được để trống'"
+                    ></app-validate>
+                    <app-validate
+                      [control]="productInfoFromGroup.get('amountRecommended')"
+                      [error]="'min'"
+                      [message]="'Số lượng đề xuất phải lớn hơn 0'"
+                    ></app-validate>
+                  </td>
+                  <td>
+                    <a
+                      *ngIf="i > 0 || productFormArray.length >= 2"
+                      (click)="deleteItem(i)"
+                      class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                    >
+                    <span
+                      [inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
+                      cacheSVG="true"
+                      class="svg-icon svg-icon-md svg-icon-danger"
+                      [ngbTooltip]="'Xóa'"
+                    >
+                    </span>
+                    </a>
+                  </td>
+                </ng-container>
+              </tr>
+            </ng-container>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <td class="text-center">
+                <a
+                  (click)="addItem()"
+                  class="btn btn-icon btn-light btn-hover-primary btn-sm"
+                >
+                <span
+                  [inlineSVG]="'/assets/media/svg/icons/Code/Plus.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                  [ngbTooltip]="'Thêm'"
+                >
+                </span>
+                </a>
+              </td>
+
+              <td colspan="5"></td>
+            </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-12">
+          <label class="form-label required">Lý do thay đổi</label>
+          <input
+            type="text"
+            class="form-control form-control-solid"
+            placeholder="Nhập lý do thay đổi"
+            [formControl]='reasonChange'
+            autocomplete="off"
+            maxlength="500"
+            trim="blur"
+          />
+          <app-validate
+            [control]="reasonChange"
+            [error]="'required'"
+            [message]="'Lý do thay đổi không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+    </div>
+
+    <div class="py-10 w-100 d-flex justify-content-center">
+      <button
+        class="m-2 btn btn-outline-primary font-weight-bold btn-def"
+        (click)="onSubmit()"
+      >
+        Yêu cầu thay đổi
+      </button>
+      <button
+        class="m-2 btn btn-primary font-weight-bold btn-def"
+        (click)="onBack()"
+      >
+        Hủy
+      </button>
+    </div>
+  </div>
+</ng-template>

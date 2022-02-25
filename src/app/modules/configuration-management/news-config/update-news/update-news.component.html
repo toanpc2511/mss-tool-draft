@@ -1,0 +1,143 @@
+<div class="mt-1 card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Chỉnh sửa cấu hình tin tức</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]='updateForm'>
+      <div class="row align-items-center mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label required'>Title</label>
+        </div>
+        <div class='col-lg-10'>
+          <input
+            class="form-control form-control-solid form-control-lg"
+            placeholder="Nhập title"
+            formControlName='title'
+            autocomplete="off"
+            maxlength='100'
+            trim='blur'
+          />
+          <app-validate
+            [control]="updateForm.controls['title']"
+            [error]="'required'"
+            [message]="'Title không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="row align-items-center mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label required'>Mô tả tóm tắt</label>
+        </div>
+        <div class='col-lg-10'>
+          <input
+            class="form-control form-control-solid form-control-lg"
+            placeholder="Nhập tóm tắt"
+            formControlName='description'
+            autocomplete="off"
+            maxlength='100'
+            trim='blur'
+          />
+          <app-validate
+            [control]="updateForm.controls['description']"
+            [error]="'required'"
+            [message]="'Mô tả không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="row align-items-start mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label required'>Nội dung</label>
+        </div>
+        <div class='col-lg-10'>
+          <angular-editor
+            id="editor"
+            [config]="config"
+            formControlName='content'
+          ></angular-editor>
+          <app-validate
+            [control]="updateForm.controls['content']"
+            [error]="'required'"
+            [message]="'Nội dung không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="row my-5 img-news">
+        <div class='col-lg-6 row'>
+          <label class='col-lg-4 form-label required'>Ảnh view chi tiết</label>
+          <div class='col-lg-8'>
+            <input
+              hidden
+              type="file"
+              id='detailImg'
+              accept="image/*"
+              #detailImg
+              (change)="addImage($event, eLocationImg.DETAIL)"
+            />
+            <img
+              alt="Ảnh đính kèm"
+              class="detailImg"
+              (click)="detailImg.click()"
+              width="300px"
+              style='margin-left: 0.5rem;'
+              [src]="imgDetail && imgDetail?.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row my-5 img-news">
+        <div class='col-lg-6 row'>
+          <label class='col-lg-4 form-label required'>Ảnh view list tin tức</label>
+          <div class='col-lg-8'>
+            <input
+              hidden
+              type="file"
+              id='newsImg'
+              accept="image/*"
+              #contentImg
+              (change)="addImage($event, eLocationImg.CONTENT)"
+            />
+            <img
+              alt="Ảnh đính kèm"
+              class="img"
+              (click)="contentImg.click()"
+              width="300px"
+              style='margin-left: 0.5rem;'
+              [src]="imgContent && imgContent.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center mb-5">
+        <div class='col-lg-2'>
+          <label class='form-label'>Hiện tin tức</label>
+        </div>
+        <div class='col-auto'>
+          <label class="checkbox checkbox-lg mr-2">
+            <input type="checkbox" id="status" formControlName="display" />
+            <span></span>
+          </label>
+        </div>
+      </div>
+    </form>
+
+    <div class="row justify-content-center w-100">
+      <div>
+        <a routerLink='/cau-hinh/tin-tuc' type="button" style='width: 100px' class="btn btn-outline-secondary mr-6" >
+          Hủy
+        </a>
+      </div>
+      <div>
+        <button type="button" style='width: 100px' class="btn btn-primary" (click)="onSubmit()">
+          Xác nhận
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

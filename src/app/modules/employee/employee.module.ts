@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,9 +20,11 @@ import { EmployeeModalComponent } from './employee-modal/employee-modal.componen
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { EmployeeComponent } from './employee.component';
 import { ListEmployeeComponent } from './list-employee/list-employee.component';
+import { ListEmployeeAssessmentComponent } from './employee-assessment/list-employee-assessment/list-employee-assessment.component';
+import { DetailEmployeeAssessmentComponent } from './employee-assessment/detail-employee-assessment/detail-employee-assessment.component';
 
 @NgModule({
-	declarations: [EmployeeComponent, ListEmployeeComponent, EmployeeModalComponent, EmployeeDetailModalComponent],
+	declarations: [EmployeeComponent, ListEmployeeComponent, EmployeeModalComponent, EmployeeDetailModalComponent, ListEmployeeAssessmentComponent, DetailEmployeeAssessmentComponent],
 	imports: [
 		CommonModule,
 		EmployeeRoutingModule,
@@ -37,7 +40,8 @@ import { ListEmployeeComponent } from './list-employee/list-employee.component';
 		TextMaskModule,
 		PipesModule,
 		NgbProgressbarModule,
-		DirectivesModule
+		DirectivesModule,
+		AuthModule
 	]
 })
 export class EmployeeModule {}

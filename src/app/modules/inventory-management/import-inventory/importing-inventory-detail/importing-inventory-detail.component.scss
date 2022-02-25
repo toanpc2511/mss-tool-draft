@@ -1,0 +1,56 @@
+.card-header {
+  padding: 0 2.25rem !important;
+  border-bottom: none;
+  .title {
+    text-transform: uppercase;
+    color: #4674eb;
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+.button {
+  min-width: 110px;
+}
+
+.card-body {
+  padding: 0 2.25rem !important;
+
+  .table {
+    min-width: 1024px;
+
+    th {
+      text-transform: none;
+    }
+
+    td {
+      &.product-name {
+        min-width: 130px;
+      }
+
+      &.unit {
+        min-width: 80px;
+      }
+
+      &.amount-actually {
+        min-width: 120px;
+      }
+
+      &.gas-field-out-name, &.gas-field-in-name, &.difference {
+        min-width: 150px;
+      }
+      &.compartment {
+        min-width: 200px;
+      }
+
+      &.temperature-export, &.quota-export, &.temperature-import, &.quota-import {
+        min-width: 245px;
+      }
+
+      &.cap-lead, &.cap-valve {
+        min-width: 200px;
+      }
+    }
+
+  }
+}

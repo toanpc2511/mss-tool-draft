@@ -1,0 +1,189 @@
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title w-100">
+			<h3 class="card-label">Danh sách yêu cầu đổi ca</h3>
+		</div>
+
+		<form class="row form-group w-100 my-10" [formGroup]="searchFormGroup">
+			<div class="col-lg-4 d-flex align-items-center">
+				<label class="w-35 w-xl-100px mb-0">Loại yêu cầu</label>
+				<select class="w-60 form-control form-control-solid" formControlName="type">
+					<option [value]="''">Tất cả</option>
+					<option [value]="eShiftChangRequestType.CHANGE">Đổi ca</option>
+					<option [value]="eShiftChangRequestType.REPLACE">Thay ca</option>
+				</select>
+			</div>
+			<div class="col-lg-4 d-flex align-items-center">
+				<label class="w-30 w-xl-100px mb-0">Trạng thái</label>
+				<select class="w-60 form-control form-control-solid" formControlName="status">
+					<option [value]="''">Tất cả</option>
+					<option [value]="eShiftChangRequestStatus.WAITING">Chờ phê duyệt</option>
+					<option [value]="eShiftChangRequestStatus.REJECTED">Đã từ chối</option>
+					<option [value]="eShiftChangRequestStatus.SWAPPED">Đã phê duyệt</option>
+				</select>
+			</div>
+			<div class="col-lg-3">
+				<div class="search-form">
+					<em class="flaticon-search"></em>
+					<input
+						type="text"
+						name="searchText"
+						placeholder="Search..."
+						class="form-control"
+						formControlName="searchText"
+					/>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+				<thead>
+					<th scope="">
+						Người yêu cầu
+						<app-sort-icon
+							column="employeeNameFrom"
+							[activeColumn]="sorting?.column"
+							[activeDirection]="sorting?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">Loại yêu cầu</th>
+					<th scope="">
+						Trạm
+						<app-sort-icon
+							column="stationName"
+							[activeColumn]="sorting?.column"
+							[activeDirection]="sorting?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Ngày cần đổi
+						<app-sort-icon
+							column="dateFrom"
+							[activeColumn]="sorting?.column"
+							[activeDirection]="sorting?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Ca yêu cầu đổi
+						<app-sort-icon
+							column="shiftName"
+							[activeColumn]="sorting?.column"
+							[activeDirection]="sorting?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Lý do đổi
+						<app-sort-icon
+							column="content"
+							[activeColumn]="sorting?.column"
+							[activeDirection]="sorting?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">
+						Ngày tạo đơn
+						<app-sort-icon
+							column="createdAt"
+							[activeColumn]="sorting?.column"
+							[activeDirection]="sorting?.direction"
+							(sort)="sort($event)"
+						></app-sort-icon>
+					</th>
+					<th scope="">Trạng thái</th>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of dataSource" (click)="gotoDetail(item.id)">
+						<td class="name">
+							<p
+								placement="top"
+								[ngbTooltip]="item.employeeNameFrom"
+								class="cursor-pointer text-ellipsis"
+							>
+								{{item.employeeNameFrom}}
+							</p>
+						</td>
+
+						<td class="type">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.type === eShiftChangRequestType.CHANGE ? 'Đổi ca': 'Thay ca'"
+							>
+								{{item.type === eShiftChangRequestType.CHANGE ? 'Đổi ca': 'Thay ca'}}
+							</p>
+						</td>
+
+						<td class="station">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.stationName"
+							>
+								{{item.stationName}}
+							</p>
+						</td>
+
+						<td class="date">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.dateFrom | date: 'dd/MM/yyyy'"
+							>
+								{{item.dateFrom | date: 'dd/MM/yyyy'}}
+							</p>
+						</td>
+
+						<td class="shift">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.shiftName">
+								{{item.shiftName}}
+							</p>
+						</td>
+
+						<td class="reason">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.content">
+								{{item.content}}
+							</p>
+						</td>
+
+						<td class="create-at">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.createAt | date: 'dd/MM/YYYY'"
+							>
+								{{item.createAt | date: 'dd/MM/YYYY'}}
+							</p>
+						</td>
+
+						<td class="status">
+							<span
+								class="label label-lg label-inline"
+								[class.label-light-success]="item.status === eShiftChangRequestStatus.SWAPPED || item.status === eShiftChangRequestStatus.REPLACED"
+								[class.label-light-danger]="item.status === eShiftChangRequestStatus.REJECTED"
+								[class.label-light-warning]="item.status === eShiftChangRequestStatus.WAITING"
+							>
+								<ng-container
+									*ngIf="item.status === eShiftChangRequestStatus.SWAPPED || item.status === eShiftChangRequestStatus.REPLACED"
+									>Đã duyệt</ng-container
+								>
+								<ng-container *ngIf="item.status === eShiftChangRequestStatus.REJECTED"
+									>Đã từ chối</ng-container
+								>
+								<ng-container *ngIf="item.status === eShiftChangRequestStatus.WAITING"
+									>Chờ phê duyệt</ng-container
+								>
+							</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+	</div>
+</div>

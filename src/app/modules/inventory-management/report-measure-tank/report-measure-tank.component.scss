@@ -1,0 +1,61 @@
+.card-header {
+  border-bottom: 0;
+}
+
+.card-body {
+  padding-top: 0 !important;
+}
+
+.search-result {
+  padding: 0 1em;
+  line-height: 35px;
+  background: #e3f1ff;
+  .card-toolbar {
+    gap: 50px;
+  }
+}
+
+.btn-def {
+  min-width: 110px;
+}
+
+table {
+  min-width: 1024px;
+  thead {
+    tr {
+      &:hover {
+        background-color: #fff;
+      }
+
+      th {
+        text-transform: none;
+      }
+    }
+  }
+  th, td {
+    &.code,
+    &.gas-field,
+    &.create-at,
+    &.creator {
+      min-width: 170px;
+      max-width: 220px;
+    }
+    &.head-inventory,
+    &.import-quantity,
+    &.export-quantity,
+    &.final-inventory,
+    &.difference {
+      min-width: 130px;
+      max-width: 150px;
+    }
+    &.height,
+    &.actual-final {
+      min-width: 185px;
+      max-width: 190px;
+    }
+    &.note {
+      min-width: 200px;
+      max-width: 250px;
+    }
+  }
+}

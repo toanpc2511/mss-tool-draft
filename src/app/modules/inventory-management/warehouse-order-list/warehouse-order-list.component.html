@@ -1,0 +1,247 @@
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Tìm kiếm yêu cầu đặt kho</h3>
+		</div>
+	</div>
+	<div class="card-body">
+		<form [formGroup]="searchForm" class="form form-label-right">
+			<div class="form-group row">
+				<div class="col-lg-6">
+					<label>Tên trạm</label>
+					<select class="form-control form-control-solid w-75" formControlName="stationId">
+						<option [value]="''">Tất cả</option>
+						<option *ngFor="let item of stationByToken" [value]="item.id">{{item.name}}</option>
+					</select>
+				</div>
+
+				<div class="col-lg-6">
+					<label>Người gửi duyệt</label>
+					<select class="form-control form-control-solid w-75" formControlName="employeeId">
+						<option [value]="''">Tất cả</option>
+						<option *ngFor="let item of listEmployees" [value]="item.id">
+							{{ item.code }} - {{item.name}}
+						</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-lg-6">
+					<label>Ngày gửi duyệt từ</label>
+
+					<div class="input-group w-75">
+						<input
+							class="form-control form-control-solid"
+							placeholder="DD/MM/YYYY"
+							ngbDatepicker
+							#startAt="ngbDatepicker"
+							formControlName="dateFrom"
+						/>
+						<div class="input-group-append">
+							<button
+								class="btn btn-outline-secondary fa fa-calendar-alt"
+								(click)="startAt.toggle()"
+								type="button"
+							></button>
+						</div>
+					</div>
+
+					<app-validate
+						[control]="searchForm.controls['dateFrom']"
+						[error]="'ngbDate'"
+						[message]="'Ngày không đúng định dạng'"
+					></app-validate>
+				</div>
+
+				<div class="col-lg-6">
+					<label>Ngày gửi duyệt đến</label>
+
+					<div class="input-group w-75">
+						<input
+							class="form-control form-control-solid"
+							placeholder="DD/MM/YYYY"
+							ngbDatepicker
+							#endAt="ngbDatepicker"
+							formControlName="dateTo"
+						/>
+						<div class="input-group-append">
+							<button
+								class="btn btn-outline-secondary fa fa-calendar-alt"
+								(click)="endAt.toggle()"
+								type="button"
+							></button>
+						</div>
+					</div>
+
+					<app-validate
+						[control]="searchForm.controls['dateTo']"
+						[error]="'ngbDate'"
+						[message]="'Ngày không đúng định dạng'"
+					></app-validate>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-lg-6">
+					<label>Trạng thái</label>
+					<select class="form-control form-control-solid w-75" formControlName="status">
+						<option [value]="''">Tất cả</option>
+						<option [value]="eStatus.NEW">Mới</option>
+						<option [value]="eStatus.WAITING">Chờ phê duyệt</option>
+						<option [value]="eStatus.CONFIRMED">Đã phê duyệt</option>
+						<option [value]="eStatus.REFUSED">Đã từ chối</option>
+						<option [value]="eStatus.ADJUST">Yêu cầu điều chỉnh</option>
+						<option [value]="eStatus.SWAP">Yêu cầu thay đổi</option>
+						<option [value]="eStatus.LOCK">Tạm dừng</option>
+						<option [value]="eStatus.IMPORTED">Đã nhập kho</option>
+						<option [value]="eStatus.EXPORTED">Đã xuất kho</option>
+					</select>
+				</div>
+			</div>
+		</form>
+
+		<div class="form-group row py-3">
+			<button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+				<em class="fas fa-search"></em> Tìm kiếm
+			</button>
+			<button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
+		</div>
+	</div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Danh sách yêu cầu đặt kho</h3>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+				<thead>
+					<tr>
+						<th scope="">Mã đặt kho</th>
+						<th scope="">Trạm</th>
+						<th scope="">Người gửi duyệt</th>
+						<th scope="">Ngày gửi duyệt</th>
+						<th scope="">Người duyệt</th>
+						<th scope="">Ngày duyệt</th>
+						<th scope="">Trạng thái</th>
+            <th scope=''>Thay đổi đặt hàng</th>
+						<th scope="" class="text-center">Tác động</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr *ngFor="let item of dataSource" (click)="goToDetail($event, item.id)">
+						<td class="code">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code ">
+								{{ item.code }}
+							</p>
+						</td>
+						<td class="station-name">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.stationName"
+							>
+								{{ item.stationName }}
+							</p>
+						</td>
+						<td class="employee-request">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.senderName"
+							>
+								{{ item.senderName }}
+							</p>
+						</td>
+						<td class="request-date">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.submitDate | date: 'dd/MM/yyyy'"
+							>
+								{{ item.submitDate | date: 'dd/MM/yyyy' }}
+							</p>
+						</td>
+						<td class="employee-approve">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.acceptorName"
+							>
+								{{ item.acceptorName }}
+							</p>
+						</td>
+						<td class="approve-date">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.approvalDate | date: 'dd/MM/yyyy'"
+							>
+								{{ item.approvalDate | date: 'dd/MM/yyyy' }}
+							</p>
+						</td>
+						<td class="status">
+							<span
+								class="label label-lg label-inline"
+								[class.label-light-info]="item.status === eStatus.NEW"
+								[class.label-light-warning]="item.status === eStatus.WAITING"
+								[class.label-light-success]="item.status === eStatus.CONFIRMED || item.status === eStatus.IMPORTED || item.status === eStatus.EXPORTED"
+								[class.label-light-danger]="item.status === eStatus.REFUSED"
+								[class.label-light-primary]="item.status === eStatus.ADJUST || item.status === eStatus.SWAP"
+							>
+								<ng-container *ngIf="item.status === eStatus.NEW">Mới</ng-container>
+								<ng-container *ngIf="item.status === eStatus.WAITING">Chờ phê duyệt</ng-container>
+								<ng-container *ngIf="item.status === eStatus.CONFIRMED">Đã phê duyệt</ng-container>
+								<ng-container *ngIf="item.status === eStatus.REFUSED">Đã từ chối</ng-container>
+								<ng-container *ngIf="item.status === eStatus.ADJUST">Yêu cầu điều chỉnh</ng-container>
+								<ng-container *ngIf="item.status === eStatus.SWAP">Yêu cầu thay đổi</ng-container>
+								<ng-container *ngIf="item.status === eStatus.LOCK">Tạm dừng</ng-container>
+								<ng-container *ngIf="item.status === eStatus.IMPORTED">Đã nhập kho</ng-container>
+								<ng-container *ngIf="item.status === eStatus.EXPORTED">Đã xuất kho</ng-container>
+							</span>
+						</td>
+            <td class='icon-check text-center'>
+              <a
+                *ngIf='item.checkUpdate'
+                class="btn btn-icon  btn-hover-success btn-sm"
+                [ngbTooltip]="'Đã thay đổi'"
+              >
+                <i class="fas fa-check-circle icon-xl text-success"></i>
+              </a>
+            </td>
+
+						<td class="text-center action">
+							<a
+								*ngIf="(item.status !== eStatus.REFUSED && item.status !== eStatus.CONFIRMED && item.status !== eStatus.LOCK && item.status !== eStatus.EXPORTED && item.status !== eStatus.IMPORTED ) || (item.status === 'CONFIRMED')"
+								(click)="createWarehouseOrder($event,item.id)"
+								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								[ngbTooltip]="item.status === 'CONFIRMED' ? 'Sửa thông tin tài xế' : 'Sửa đơn đặt kho'"
+							>
+								<span
+									[inlineSVG]="'/assets/media/svg/icons/Communication/Write.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-primary"
+								>
+								</span>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+
+				<tfoot *ngIf="dataSource?.length === 0">
+					<tr>
+						<td colspan="8" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+		<app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+	</div>
+</div>

@@ -1,0 +1,462 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+    <div class="close-icon" (click)="modal.close()"></div>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 300px">
+      <ng-container *ngIf='!data.dataDetail'>
+        <form class="form form-label-right" [formGroup]='measureTankForm'>
+          <div class="form-group px-5 row">
+            <div class="col-lg-6 row">
+              <div class='col-lg-4'>
+                <label class="form-label required">Tên kỳ tịnh kho</label>
+              </div>
+              <div class='col-lg-8'>
+                <input
+                  type="text"
+                  class="form-control form-control-solid w-75"
+                  placeholder="Nhập tên kỳ tịnh kho"
+                  autocomplete="off"
+                  maxlength="50"
+                  formControlName='name'
+                  trim='blur'
+                />
+                <app-validate
+                  [control]="measureTankForm.controls['name']"
+                  [error]="'required'"
+                  [message]="'Tên kỳ tịnh kho không được để trống'"
+                ></app-validate>
+                <app-validate
+                  [control]="measureTankForm.controls['name']"
+                  [error]="'nameExisted'"
+                  [message]="'Tên kỳ tịnh kho đã tồn tại'"
+                ></app-validate>
+              </div>
+            </div>
+
+            <div class="col-lg-6 row custom-pl-100">
+              <div class='col-lg-5'>
+                <label class="form-label">Dung tích</label>
+              </div>
+              <div class='col-lg-7'>
+                <label class="form-label font-weight-bold">{{measureTankForm.get('capacity').value || 0}}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group px-5 row">
+            <div class="col-lg-6 row">
+              <div class='col-lg-4'>
+                <label class="form-label required">Chọn trạm</label>
+              </div>
+              <div class='col-lg-8'>
+                <select class="form-control form-control-solid w-75" formControlName='stationId'>
+                  <option [value]="''">Chọn trạm</option>
+                  <option *ngFor="let item of stationByToken" [value]="item.id">{{item.name}}</option>
+                </select>
+                <app-validate
+                  [control]="measureTankForm.controls['stationId']"
+                  [error]="'required'"
+                  [message]="'Trạm không được để trống'"
+                ></app-validate>
+              </div>
+            </div>
+
+            <div class="col-lg-6 row custom-pl-100">
+              <div class='col-lg-5'>
+                <label class="form-label">Chiều cao</label>
+              </div>
+              <div class='col-lg-7'>
+                <label class="form-label font-weight-bold">{{measureTankForm.get('heightGasFieldInfo').value || 0}}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group px-5 row">
+            <div class="col-lg-6 row">
+              <div class='col-lg-4'>
+                <label class="form-label required">Chọn bồn</label>
+              </div>
+              <div class='col-lg-8'>
+                <select class="form-control form-control-solid w-75" formControlName="gasFieldId">
+                  <option [value]="''">Chọn bồn</option>
+                  <option *ngFor="let item of listGasField" [value]="item.id">
+                    {{ item.code }} - {{item.name}}
+                  </option>
+                </select>
+                <app-validate
+                  [control]="measureTankForm.controls['gasFieldId']"
+                  [error]="'required'"
+                  [message]="'Bồn không được để trống'"
+                ></app-validate>
+              </div>
+            </div>
+
+            <div class="col-lg-6 row custom-pl-100">
+              <div class='col-lg-5'>
+                <label class="form-label">Chiều dài</label>
+              </div>
+              <div class='col-lg-7'>
+                <label class="form-label font-weight-bold">{{measureTankForm.get('length').value || 0 }}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group px-5 row">
+            <div class="col-lg-6 row">
+              <div class='col-lg-4'>
+                <label class="form-label">Mã bồn</label>
+              </div>
+              <div class='col-lg-8'>
+                <label class="form-label font-weight-bold">{{measureTankForm.get('gasFieldCode').value || '- -'}}</label>
+              </div>
+            </div>
+
+            <div class="col-lg-6 row custom-pl-100">
+              <div class='col-lg-5'>
+                <label class="form-label">Nhiên liệu đang chứa</label>
+              </div>
+              <div class='col-lg-7'>
+                <label class="form-label font-weight-bold">{{measureTankForm.get('productName').value || '- -'}}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive angular-bootstrap-table pt-5">
+            <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+              <thead>
+              <tr>
+                <th scope='' class='text-right'>Đầu kỳ</th>
+                <th scope='' colspan='2' class='text-center'>Trong kỳ</th>
+                <th scope='' class='text-right'>Cuối kỳ</th>
+                <th scope='' colspan='2' class='text-center'>Cuối kỳ thực tế</th>
+                <th scope='' rowspan='2' class='difference align-bottom text-right'>Âm dương</th>
+                <th scope='' rowspan='2' class='note align-bottom'>Ghi chú</th>
+              </tr>
+              <tr>
+                <th scope='' class='head-inventory text-right'>Tồn đầu</th>
+                <th scope='' class='import-quantity import-quantity text-right'>Nhập</th>
+                <th scope='' class='export-quantity form-label' [class.text-right]='isChip' [class.required]='!isChip'>Xuất</th>
+                <th scope='' class='final-inventory text-right'>Tồn cuối</th>
+                <th scope='' class='height form-label required'>Chiều cao đo bể (cm)</th>
+                <th scope='' class='actual-final text-right'>Tồn cuối thực tế</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr>
+                <td class='head-inventory text-right'>
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [ngbTooltip]="measureTankForm.get('headInventory').value || 0 | number | vnCurrency"
+                  >
+                    {{ measureTankForm.get('headInventory').value || 0 | number | vnCurrency }}
+                  </p>
+                </td>
+                <td class='import-quantity text-right'>
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [ngbTooltip]="measureTankForm.get('importQuantity').value || 0 | number | vnCurrency"
+                  >
+                    {{ measureTankForm.get('importQuantity').value || 0 | number | vnCurrency }}
+                  </p>
+                </td>
+                <td class='export-quantity' [class.text-right]='isChip'>
+                  <ng-container *ngIf='isChip'>
+                    <p
+                      class="cursor-pointer text-ellipsis"
+                      placement="top"
+                      [ngbTooltip]="measureTankForm.get('exportQuantity').value || 0 | number | vnCurrency"
+                    >
+                      {{ measureTankForm.get('exportQuantity').value || 0 | number | vnCurrency }}
+                    </p>
+                  </ng-container>
+
+                  <ng-container *ngIf='!isChip'>
+                    <input
+                      class="form-control"
+                      placeholder="Xuất trong kỳ"
+                      formControlName='exportQuantity'
+                      maxlength="13"
+                      decimal-mask
+                    />
+                    <app-validate
+                      [control]="measureTankForm.controls['exportQuantity']"
+                      [error]="'required'"
+                      [message]="'Xuất trong kỳ không được để trống'"
+                    ></app-validate>
+                  </ng-container>
+                </td>
+                <td class='final-inventory text-right'>
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [ngbTooltip]="measureTankForm.get('finalInventory').value || 0 | number | vnCurrency"
+                  >
+                    {{ measureTankForm.get('finalInventory').value || 0 | number | vnCurrency }}
+                  </p>
+                </td>
+                <td class='height'>
+                  <input
+                    class="form-control"
+                    placeholder="Nhập chiều cao đo bể"
+                    formControlName='height'
+                    maxlength="13"
+                    decimal-mask
+                  />
+                  <app-validate
+                    [control]="measureTankForm.controls['height']"
+                    [error]="'required'"
+                    [message]="'Chiều cao đo bể không được để trống'"
+                  ></app-validate>
+                  <app-validate
+                    [control]="measureTankForm.controls['height']"
+                    [error]="'gasFieldNull'"
+                    [message]="'Vui lòng chọn bồn'"
+                  ></app-validate>
+                  <app-validate
+                    [control]="measureTankForm.controls['height']"
+                    [error]="'heightNull'"
+                    [message]="'Không tìm thấy thể tích tương ứng'"
+                  ></app-validate>
+                </td>
+                <td class='actual-final text-right'>
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [ngbTooltip]="measureTankForm.get('actualFinal').value || 0 | number | vnCurrency"
+                  >
+                    {{ measureTankForm.get('actualFinal').value || 0 | number | vnCurrency }}
+                  </p>
+                </td>
+                <td class='difference text-right'>
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [class.text-primary]='measureTankForm.get("difference").value > 0'
+                    [class.text-danger]='measureTankForm.get("difference").value < 0'
+                    [ngbTooltip]="measureTankForm.get('difference').value || 0 | number | vnCurrency"
+                  >
+                    {{measureTankForm.get('difference').value > 0 ? ("+ " + measureTankForm.get('difference').value) : measureTankForm.get('difference').value || 0}}
+                  </p>
+                </td>
+                <td class='note'>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Nhập ghi chú"
+                    autocomplete="off"
+                    maxlength="200"
+                    formControlName='note'
+                    trim='blur'
+                  />
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </ng-container>
+
+      <ng-container *ngIf='data.dataDetail'>
+        <form class="form form-label-right">
+          <div class="form-group row">
+            <div class="col-lg-6 row">
+              <div class='col-lg-4'>
+                <label class="form-label">Tên kỳ tịnh kho</label>
+              </div>
+              <div class='col-lg-8'>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.name}}</label>
+              </div>
+            </div>
+
+            <div class="col-lg-6 row ml-5">
+              <div class='col-lg-4'>
+                <label class="form-label">Dung tích</label>
+              </div>
+              <div class='col-lg-8'>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.gasField.capacity}}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-6 row">
+              <div class='col-lg-4'>
+                <label class="form-label">Tên trạm</label>
+              </div>
+              <div class='col-lg-8'>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.station?.name}}</label>
+              </div>
+            </div>
+
+            <div class="col-lg-6 row ml-5">
+              <div class='col-lg-4'>
+                <label class="form-label">Chiều cao</label>
+              </div>
+              <div class='col-lg-8'>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.gasField.height}}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-6 row">
+              <div class='col-lg-4'>
+                <label class="form-label">Tên bồn</label>
+              </div>
+              <div class='col-lg-8'>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.gasField.name}}</label>
+              </div>
+            </div>
+
+            <div class="col-lg-6 row ml-5">
+              <div class='col-lg-4'>
+                <label class="form-label">Chiều dài</label>
+              </div>
+              <div class='col-lg-8'>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.gasField.length}}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-lg-6 row">
+              <div class='col-lg-4'>
+                <label class="form-label">Mã bồn</label>
+              </div>
+              <div class='col-lg-8'>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.gasField.code}}</label>
+              </div>
+            </div>
+
+            <div class="col-lg-6 row ml-5">
+              <div class='col-lg-4'>
+                <label class="form-label">Nhiên liệu đang chứa</label>
+              </div>
+              <div class='col-lg-8'>
+                <label class="form-label font-weight-bold">{{data.dataDetail?.gasField.productName}}</label>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="table-responsive angular-bootstrap-table pt-5">
+          <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+            <thead>
+            <tr>
+              <th scope='' class='text-right'>Đầu kỳ</th>
+              <th scope='' colspan='2' class='text-center'>Trong kỳ</th>
+              <th scope='' class='text-right'>Cuối kỳ</th>
+              <th scope='' colspan='2' class='text-center'>Cuối kỳ thực tế</th>
+              <th scope='' rowspan='2' class='difference align-bottom text-right'>Âm dương</th>
+              <th scope='' rowspan='2' class='note align-bottom'>Ghi chú</th>
+            </tr>
+            <tr>
+              <th scope='' class='head-inventory text-right'>Tồn đầu</th>
+              <th scope='' class='import-quantity import-quantity text-right'>Nhập</th>
+              <th scope='' class='export-quantity text-right'>Xuất</th>
+              <th scope='' class='final-inventory text-right'>Tồn cuối</th>
+              <th scope='' class='height text-right'>Chiều cao đo bể (cm)</th>
+              <th scope='' class='actual-final text-right'>Tồn cuối thực tế</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+              <td class='head-inventory text-right'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="data.dataDetail?.headInventory | number | vnCurrency"
+                >
+                  {{ data.dataDetail?.headInventory | number | vnCurrency }}
+                </p>
+              </td>
+              <td class='import-quantity text-right'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="data.dataDetail?.importQuantity | number | vnCurrency"
+                >
+                  {{ data.dataDetail?.importQuantity | number | vnCurrency }}
+                </p>
+              </td>
+              <td class='export-quantity text-right'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="data.dataDetail?.exportQuantity | number | vnCurrency"
+                >
+                  {{ data.dataDetail?.exportQuantity | number | vnCurrency }}
+                </p>
+              </td>
+              <td class='final-inventory text-right'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="data.dataDetail?.finalInventory | number | vnCurrency"
+                >
+                  {{ data.dataDetail?.finalInventory | number | vnCurrency }}
+                </p>
+              </td>
+              <td class='height text-right'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="data.dataDetail?.height | number |  vnCurrency"
+                >
+                  {{ data.dataDetail?.height | number |  vnCurrency }}
+                </p>
+              </td>
+              <td class='actual-final text-right'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="data.dataDetail?.actualFinal | number | vnCurrency"
+                >
+                  {{ data.dataDetail?.actualFinal | number | vnCurrency }}
+                </p>
+              </td>
+              <td class='difference text-right'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [class.text-primary]='data.dataDetail?.difference > 0'
+                  [class.text-danger]='data.dataDetail?.difference < 0'
+                  [ngbTooltip]="data.dataDetail?.difference"
+                >
+                  {{data.dataDetail?.difference > 0 ? ("+ " + data.dataDetail?.difference) : data.dataDetail?.difference}}
+                </p>
+              </td>
+              <td class='note'>
+                <p
+                  class="cursor-pointer text-ellipsis"
+                  placement="top"
+                  [ngbTooltip]="data.dataDetail?.note"
+                >
+                  {{ data.dataDetail?.note }}
+                </p>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" [class.btn-155]='data.dataDetail' (click)="onClose()">
+      Hủy
+    </button>
+    <ng-container *ngIf='!data.dataDetail'>
+      <button type="button" class="btn btn-primary btn-dialog" (click)='onSubmit()'>Lưu</button>
+    </ng-container>
+    <ng-container *ngIf='data.dataDetail'>
+      <button type="button" class="btn btn-primary btn-dialog" [class.btn-155]='data.dataDetail' (click)='downloadFile()'>Xuất phiếu tịnh kho</button>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,179 @@
+import { TransactionService } from '../../transaction/transaction.service';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { concatMap, takeUntil, tap } from 'rxjs/operators';
+import { NO_EMIT_EVENT } from '../../../shared/app-constants';
+import { convertDateToServer } from '../../../shared/helpers/functions';
+import { IError } from '../../../shared/models/error.model';
+import { DestroyService } from '../../../shared/services/destroy.service';
+import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
+import {
+  EWarehouseOrderStatus,
+  IEmployees,
+  IFilterWarehouseOrder,
+  InventoryManagementService, IStationActiveByToken,
+  IWarehouseOrderRequest
+} from '../inventory-management.service';
+import { BaseComponent } from '../../../shared/components/base/base.component';
+
+@Component({
+	selector: 'app-warehouse-order-list',
+	templateUrl: './warehouse-order-list.component.html',
+	styleUrls: ['./warehouse-order-list.component.scss'],
+	providers: [FormBuilder, DestroyService]
+})
+export class WareHouseOrderListComponent extends BaseComponent implements OnInit {
+	today: string;
+	firstDayOfMonth: string;
+	paginatorState = new PaginatorState();
+	searchForm: FormGroup;
+	dataSource: IWarehouseOrderRequest[];
+	stationByToken: Array<IStationActiveByToken> = [];
+	listEmployees: Array<IEmployees> = [];
+	eStatus = EWarehouseOrderStatus;
+  disableBtn:  boolean;
+
+	constructor(
+		private fb: FormBuilder,
+		private inventoryManagementService: InventoryManagementService,
+		private router: Router,
+		private destroy$: DestroyService,
+		private cdr: ChangeDetectorRef,
+		private toastr: ToastrService,
+		private transactionService: TransactionService
+	) {
+		super();
+		this.init();
+	}
+	init() {
+		this.paginatorState.page = 1;
+		this.paginatorState.pageSize = 10;
+		this.paginatorState.pageSizes = [5, 10, 15, 20];
+		this.paginatorState.total = 0;
+
+		this.dataSource = [];
+	}
+
+	ngOnInit(): void {
+		this.buildForm();
+		this.getStationToken();
+		this.getAllEmployee();
+		this.onSearch();
+
+		this.handleStationChange();
+	}
+
+	buildForm() {
+		this.searchForm = this.fb.group({
+			stationId: [''],
+			employeeId: [''],
+			dateFrom: [null],
+			dateTo: [null],
+			status: ['']
+		});
+	}
+
+  getStationToken() {
+    this.inventoryManagementService
+      .getStationByToken('NOT_DELETE', 'false')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.stationByToken = res.data;
+        this.cdr.detectChanges();
+      });
+  }
+
+	getAllEmployee() {
+		this.inventoryManagementService
+			.getAllEmployee()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((res) => {
+				this.listEmployees = res.data;
+				this.cdr.detectChanges();
+			});
+	}
+
+	handleStationChange() {
+		this.searchForm
+			.get('stationId')
+			.valueChanges.pipe(
+				concatMap((stationId: string) => {
+					const stationName =
+						this.stationByToken.find((s) => s.id === Number(stationId))?.name || '';
+					this.listEmployees = [];
+					this.searchForm.get('employeeId').reset('', NO_EMIT_EVENT);
+					if (stationName) {
+						return this.transactionService.getEmployeeStation(stationName);
+					}
+					return this.inventoryManagementService.getAllEmployee();
+				}),
+				tap((res: any) => {
+					this.listEmployees = res.data;
+					this.cdr.detectChanges();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	getFilterData(): IFilterWarehouseOrder {
+		const filterFormData: IFilterWarehouseOrder = this.searchForm.value;
+		return {
+			...filterFormData,
+			dateFrom: convertDateToServer(filterFormData.dateFrom) || '',
+			dateTo: convertDateToServer(filterFormData.dateTo) || ''
+		};
+	}
+
+	onSearch() {
+		if (this.searchForm.invalid) {
+			return;
+		}
+		const filterData: IFilterWarehouseOrder = this.getFilterData();
+
+		this.inventoryManagementService
+			.searchWarehouseOrderRequest(
+				this.paginatorState.page,
+				this.paginatorState.pageSize,
+				filterData
+			)
+			.subscribe(
+				(res) => {
+					if (res.data) {
+						this.dataSource = res.data;
+
+						this.paginatorState.recalculatePaginator(res.meta.total);
+						this.cdr.detectChanges();
+					}
+				},
+				(err: IError) => {
+					this.checkError(err);
+				}
+			);
+	}
+
+	onReset() {
+		this.ngOnInit();
+	}
+
+	goToDetail($event: Event, id: string) {
+		$event.stopPropagation();
+		this.router.navigate([`/kho/don-dat-kho/chi-tiet/${id}`])
+	}
+
+	createWarehouseOrder($event: Event, id: string) {
+		$event.stopPropagation();
+		this.router.navigate([`/kho/don-dat-kho/tao-yeu-cau/${id}`])
+	}
+
+	pagingChange($event: IPaginatorState) {
+		this.paginatorState = $event as PaginatorState;
+		this.onSearch();
+	}
+
+	checkError(error: IError) {
+		this.toastr.error(error.code);
+	}
+}

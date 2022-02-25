@@ -131,7 +131,7 @@
 		</div>
 
 		<div class="card-toolbar row">
-			<button type="button" class="btn btn-primary" (click)="createModal()">Thêm mới</button>
+			<button type="button" class="btn btn-primary" (click)="createModal()" *ngIf="eAuthorize.CREATE_OTHER_PRODUCT_SCREEN|canUseFeature">Thêm mới</button>
 		</div>
 	</div>
 
@@ -302,9 +302,10 @@
 							<a
 								(click)="createModal($event, item)"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								*ngIf="eAuthorize.UPDATE_OTHER_PRODUCT_SCREEN|canUseFeature"
 							>
 								<span
-									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+									[inlineSVG]="'/assets/media/svg/icons/Communication/Write.svg'"
 									cacheSVG="true"
 									class="svg-icon svg-icon-md svg-icon-primary"
 									[ngbTooltip]="'Sửa'"
@@ -314,9 +315,10 @@
 							<a
 								(click)="deleteProduct($event, item)"
 								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+								*ngIf="eAuthorize.DELETE_OTHER_PRODUCT_SCREEN|canUseFeature"
 							>
 								<span
-									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+									[inlineSVG]="'/assets/media/svg/icons/General/Trash.svg'"
 									cacheSVG="true"
 									class="svg-icon svg-icon-md svg-icon-danger"
 									[ngbTooltip]="'Xóa'"

@@ -1,0 +1,90 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-title">{{ data.title }}</h4>
+		<div class="close-icon" (click)="modal.close()"></div>
+	</div>
+	<div class="modal-body" style="padding: 0 1.75rem">
+		<div class="overlay overlay-block cursor-default modal-body" style="min-height: 150px">
+			<form class="form form-label-right" [formGroup]="formConfirmDelete">
+				<div class="form-group row">
+					<div class="col-lg-6">
+						<label>Ngày bắt đầu</label>
+
+						<div class="input-group">
+							<input
+								class="form-control form-control-solid"
+								placeholder="DD/MM/YYYY"
+								ngbDatepicker
+								readonly
+								#startAt="ngbDatepicker"
+								formControlName="timeStart"
+								[minDate]="minDate"
+							/>
+							<div class="input-group-append">
+								<button
+									class="btn btn-outline-secondary fa fa-calendar-alt"
+									(click)="startAt.toggle()"
+									type="button"
+								></button>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-6">
+						<label>Ngày kết thúc</label>
+
+						<div class="input-group">
+							<input
+								class="form-control form-control-solid"
+								placeholder="DD/MM/YYYY"
+								ngbDatepicker
+								readonly
+								#endAt="ngbDatepicker"
+								formControlName="timeEnd"
+								[minDate]="minDate"
+							/>
+							<div class="input-group-append">
+								<button
+									class="btn btn-outline-secondary fa fa-calendar-alt"
+									(click)="endAt.toggle()"
+									type="button"
+								></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-lg-12">
+						<label>Nhân viên</label>
+						<ng-select
+							appendTo="body"
+							[placeholder]="'Chọn nhân viên'"
+							[multiple]="true"
+							[closeOnSelect]="false"
+							[isGroupDisplay]="true"
+							[groupText]="'nhân viên khác'"
+							[minLengthGroup]="2"
+							formControlName="employeeIds"
+						>
+							<ng-option *ngFor="let item of listEmployee" [value]="item.id"
+								>{{item.code}} - {{item.name}}</ng-option
+							>
+						</ng-select>
+						<app-validate
+							[control]="formConfirmDelete.get('employeeIds')"
+							[error]="'required'"
+							[message]="'Nhân viên không được để trống'"
+						></app-validate>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary btn-confirm-dialog" (click)="onClose()">
+			Hủy
+		</button>
+		<button type="button" class="btn btn-primary btn-confirm-dialog" #btnSave>Xác nhận</button>
+	</div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, isDevMode } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LayoutService } from '../../../../_metronic/core';
 import KTLayoutQuickSearch from '../../../../../assets/js/layout/extended/quick-search';
@@ -17,6 +17,7 @@ import { AuthService, UserModel } from 'src/app/modules/auth/services/auth.servi
   styleUrls: ['./topbar.component.scss'],
 })
 export class TopbarComponent implements OnInit, AfterViewInit {
+  isDevMode = isDevMode();
   user$: Observable<UserModel>;
   // tobbar extras
   extraSearchDisplay: boolean;

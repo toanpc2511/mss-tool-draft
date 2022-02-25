@@ -1,0 +1,48 @@
+.card-header {
+  padding: 0 2.25rem !important;
+  border-bottom: none;
+  .title {
+    text-transform: uppercase;
+    color: #4674eb;
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+.button {
+  min-width: 110px;
+}
+
+.card-body {
+  padding: 0 2.25rem !important;
+
+  .table {
+    min-width: 1024px;
+
+    th {
+      text-transform: none;
+    }
+
+    td {
+      &.stt {
+        min-width: 35px;
+      }
+      &.unit {
+        min-width: 100px;
+        max-width: 120px;
+      }
+      &.product-name,
+      &.amount-actually,
+      &.gas-field-out-name,
+      &.compartment,
+      &.gas-field-in-name,
+      &.price,
+      &.recommend,
+      &.supplier-name,
+      &.into-money {
+        min-width: 200px;
+        max-width: 220px;
+      }
+    }
+  }
+}

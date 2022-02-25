@@ -1,4 +1,6 @@
+import firebase from 'firebase/app';
 import {
+	AfterViewInit,
 	ChangeDetectionStrategy,
 	Component,
 	OnDestroy,
@@ -19,7 +21,7 @@ import { TableExtendedService } from './_metronic/shared/crud-table';
 	styleUrls: ['./app.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 	private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
 	constructor(
@@ -30,6 +32,11 @@ export class AppComponent implements OnInit, OnDestroy {
 	) {
 		// register translations
 		this.translationService.loadTranslations(viLang, enLang);
+	}
+	ngAfterViewInit(): void {
+		setTimeout(() => {
+			firebase.auth().languageCode = 'vi';
+		}, 3000);
 	}
 
 	ngOnInit() {

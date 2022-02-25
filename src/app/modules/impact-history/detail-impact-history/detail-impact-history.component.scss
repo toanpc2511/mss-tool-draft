@@ -1,0 +1,40 @@
+.card.card-custom {
+  box-shadow: none !important;
+
+  .card-body,
+  .card-header {
+    border: 0;
+  }
+
+  .card-body {
+    padding-top: 1rem;
+  }
+
+  .form-detail {
+    .btn-sm {
+      border-radius: 50% !important;
+    }
+
+    .impact-history:hover {
+      background-color: #f3f6f9;
+      cursor: pointer;
+    }
+    .row {
+      :hover {
+        background: #f3f6f9;
+        cursor: pointer;
+      }
+    }
+
+    .activity-container {
+      min-width: 400px;
+      .icon-activity {
+        padding-bottom: 32px;
+      }
+      .content-activity {
+        display: inline-block;
+        padding: 0 0 0 12px;
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { AuthModule } from './../auth/auth.module';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +16,15 @@ import { DiscountConfigComponent } from './discount-config/discount-config.compo
 import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 import { PromotionConfigComponent } from './promotion-config/promotion-config.component';
 import { PromotionConfigModalComponent } from './promotion-config-modal/promotion-config-modal.component';
+import { BannerConfigComponent } from './banner-config/banner-config.component';
+import { CreateBannerDialogComponent } from './banner-config/dialog/create-banner-dialog/create-banner-dialog.component';
+import { UpdateBannerDialogComponent } from './banner-config/dialog/update-banner-dialog/update-banner-dialog.component';
+import { NewsConfigComponent } from './news-config/news-config.component';
+import { CreateNewsComponent } from './news-config/create-news/create-news.component';
+import { AngularEditorModule } from './news-config/editor-config/angular-editor.module';
+import { UpdateNewsComponent } from './news-config/update-news/update-news.component';
+import { NewsDetailComponent } from './news-config/news-detail/news-detail.component';
+import { CoreModule } from '../../_metronic/core';
 
 @NgModule({
   declarations: [
@@ -23,21 +33,31 @@ import { PromotionConfigModalComponent } from './promotion-config-modal/promotio
     PointsConfigComponent,
     DiscountConfigComponent,
     PromotionConfigComponent,
-    PromotionConfigModalComponent
+    PromotionConfigModalComponent,
+    BannerConfigComponent,
+    CreateBannerDialogComponent,
+    UpdateBannerDialogComponent,
+    NewsConfigComponent,
+    CreateNewsComponent,
+    UpdateNewsComponent,
+    NewsDetailComponent
   ],
-  imports: [
-    CommonModule,
-    ConfigurationManagementRoutingModule,
-    NgbTooltipModule,
-    NgbAccordionModule,
-    InlineSVGModule,
-    CRUDTableModule,
-    FormsModule,
-    SharedComponentsModule,
-    ReactiveFormsModule,
-    InputTrimModule,
-    DirectivesModule,
-    PipesModule
-  ]
+	imports: [
+		CommonModule,
+		ConfigurationManagementRoutingModule,
+		NgbTooltipModule,
+		NgbAccordionModule,
+		InlineSVGModule,
+		CRUDTableModule,
+		FormsModule,
+		SharedComponentsModule,
+		ReactiveFormsModule,
+		InputTrimModule,
+		DirectivesModule,
+		PipesModule,
+		AuthModule,
+		AngularEditorModule,
+		CoreModule
+	]
 })
 export class ConfigurationManagementModule {}

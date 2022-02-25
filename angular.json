@@ -45,7 +45,10 @@
               "camelize",
               "ng2-trim-directive",
               "angular2-text-mask",
-              "file-saver"
+              "file-saver",
+              "moment-timezone",
+              "@firebase/app-check",
+              "xlsx"
             ],
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -67,6 +70,12 @@
           },
           "configurations": {
             "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.stag.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,

@@ -80,7 +80,7 @@
 					</div>
 
 					<div class="col-lg-10">
-						<label class="form-label font-weight-bold">{{data?.customer.address}}</label>
+						<label class="form-label font-weight-bold">{{data?.customer.location}}</label>
 					</div>
 				</div>
 			</div>
@@ -273,9 +273,6 @@
 								<label class="form-label">STT</label>
 							</th>
 							<th scope="">
-								<label class="form-label">Loại sản phẩm</label>
-							</th>
-							<th scope="">
 								<label class="form-label">Tên sản phẩm</label>
 							</th>
 							<th scope="">
@@ -299,7 +296,6 @@
 					<tbody>
 						<tr *ngFor="let prod of data?.product, let i = index">
 							<td>{{i + 1}}</td>
-							<td>{{prod.categoryResponse.name}}</td>
 							<td>{{prod.productResponse.name}}</td>
 							<td>{{prod.productResponse.unit}}</td>
 							<td class='text-right'>{{prod.productResponse.amount}}</td>
@@ -313,7 +309,7 @@
 
 					<tfoot>
 						<tr class='py-3'>
-							<td colspan="4"></td>
+							<td colspan="3"></td>
 							<td colspan="3" class="text-right"><strong>Tổng tiền thanh toán</strong></td>
 							<td colspan="1" class="text-right"><strong>{{data?.totalPayment?.toLocaleString('en-US')}}</strong></td>
 						</tr>
@@ -355,10 +351,10 @@
     <button *ngIf='data?.status !== "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="goToListContract()">
       Quay lại
     </button>
-    <button *ngIf='data?.status === "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="refuseContract($event, data)">
+    <button *ngIf='data?.status === "WAITING_ACCEPT" && (eAuthorize.REJECT_CONTRACT_BUTTION|canUseFeature)' type="button" class="btn btn-outline-primary mr-3" (click)="refuseContract($event, data)">
       Từ chối
     </button>
-    <button *ngIf='data?.status === "WAITING_ACCEPT"' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
+    <button *ngIf='data?.status === "WAITING_ACCEPT" && (eAuthorize.ACCEPT_CONTRACT_BUTTON|canUseFeature)' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
       Phê duyệt
     </button>
 	</div>

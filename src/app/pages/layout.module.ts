@@ -21,6 +21,7 @@ import { CoreModule } from '../_metronic/core';
 import { SubheaderModule } from '../_metronic/partials/layout/subheader/subheader.module';
 import { AsideDynamicComponent } from './_layout/components/aside-dynamic/aside-dynamic.component';
 import { HeaderMenuDynamicComponent } from './_layout/components/header/header-menu-dynamic/header-menu-dynamic.component';
+import { CanShowMenuPipe, CanShowParrentMenuPipe } from './_layout/components/aside-dynamic/can-show-menu.pipe';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,8 @@ import { HeaderMenuDynamicComponent } from './_layout/components/header/header-m
     LanguageSelectorComponent,
     AsideDynamicComponent,
     HeaderMenuDynamicComponent,
+    CanShowMenuPipe,
+    CanShowParrentMenuPipe
   ],
   imports: [
     CommonModule,

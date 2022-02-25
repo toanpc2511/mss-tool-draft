@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { BaseComponent } from './../../../shared/components/base/base.component';
+import { ChangeDetectorRef, Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ContractService, EContractStatus } from '../contract.service';
@@ -9,6 +10,7 @@ import {
   RejectContractModalComponent
 } from './reject-contract-modal/reject-contract-modal.component';
 import { FileService } from 'src/app/shared/services/file.service';
+import { SubheaderService } from 'src/app/_metronic/partials/layout';
 
 @Component({
   selector: 'app-details-contract',
@@ -16,7 +18,7 @@ import { FileService } from 'src/app/shared/services/file.service';
   styleUrls: ['./details-contract.component.scss'],
   providers: [DestroyService]
 })
-export class DetailsContractComponent implements OnInit {
+export class DetailsContractComponent extends BaseComponent implements OnInit, AfterViewInit {
   eContractStatus = EContractStatus;
   data;
   dataDetail;
@@ -30,12 +32,35 @@ export class DetailsContractComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private destroy$: DestroyService,
     private fileService: FileService,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private subheader: SubheaderService,
   ) {
+    super();
   }
+
+  setBreadcumb() {
+		setTimeout(() => {
+			this.subheader.setBreadcrumbs([
+				{
+					title: 'Quản lý ca làm việc',
+					linkText: 'Quản lý ca làm việc',
+					linkPath: '/ca-lam-viec'
+				},
+				{
+					title: 'Chi tiết hợp đồng',
+					linkText: 'Chi tiết hợp đồng',
+					linkPath: null
+				}
+			]);
+		}, 1);
+	}
 
   ngOnInit(): void {
     this.getContractById();
+  }
+
+  ngAfterViewInit(): void {
+    this.setBreadcumb();
   }
 
   getContractById() {
