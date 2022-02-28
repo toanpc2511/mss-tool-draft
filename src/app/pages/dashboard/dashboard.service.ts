@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 import { HttpService } from './../../shared/services/http.service';
 import { HttpParams } from '@angular/common/http';
 import { convertDateToServer } from '../../shared/helpers/functions';
@@ -67,7 +67,7 @@ export class DashboardService {
 		return this.http
 			.get<ITrackingPrice[]>(`tracking-price`)
 			.pipe(
-        switchMap((res) => of(this.convertToChartData(res.data)))
+        switchMap((res: DataResponse<ITrackingPrice[]>) => of(this.convertToChartData(res.data)))
       );
 	}
 
@@ -76,8 +76,24 @@ export class DashboardService {
     return this.http
       .get<IListTrackingQuantity[]>(`tracking-quantities/charts`, {params})
       .pipe(
-        switchMap((res: DataResponse<IListTrackingQuantity[]>) => of(this.convertToQuantityChartData(res.data, filter.type)))
+        map((res: DataResponse<IListTrackingQuantity[]>): IListTrackingQuantity[] => {
+          return this.sortTrackingQuantityData(res, filter.type);
+        }),
+        switchMap((res: IListTrackingQuantity[]) => of(this.convertToQuantityChartData(res, filter.type)))
       );
+  }
+
+  sortTrackingQuantityData(res: DataResponse<IListTrackingQuantity[]>, type: string): IListTrackingQuantity[] {
+    return res.data.map((data: IListTrackingQuantity) => {
+      return {
+        productName: data.productName,
+        trackingQuantity: data.trackingQuantity.sort((first: ITrackingQuantity, second: ITrackingQuantity) => {
+          const firstDate = type === 'DAY' ? moment(first.date) : type === 'MONTH' ? moment(first.yearMonth) : moment(first.year);
+          const secondDate = type === 'DAY' ? moment(second.date) : type === 'MONTH' ? moment(second.yearMonth) : moment(second.year);
+          return firstDate.diff(secondDate, 'days');
+        })
+      }
+    })
   }
 
   convertToQuantityChartData(data: IListTrackingQuantity[], type: string): ISeriesTrackingData[] {
@@ -92,7 +108,6 @@ export class DashboardService {
             };
             return xy;
           })
-          .reverse()
       };
     });
   }
