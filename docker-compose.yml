@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  sunoil-admin:
+    image: sunoil-admin:1.02
+    name: sunoil-admin
+    ports:
+       - "3000:80"
+    restart: unless-stopped
