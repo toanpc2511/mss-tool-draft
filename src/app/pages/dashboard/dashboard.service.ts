@@ -53,7 +53,7 @@ export interface ISeriesTrackingData {
 export interface IFilter {
   startDate?: string,
   endDate?: string,
-  stationId?: string
+  stationCode?: string
   type?: string;
 }
 
@@ -132,10 +132,11 @@ export class DashboardService {
 	}
 
   createParam(filter: IFilter): HttpParams {
+    console.log(filter);
     return new HttpParams()
       .set('date-from', convertDateToServer(filter.startDate))
       .set('date-to', convertDateToServer(filter.endDate))
-      .set('station', filter.stationId || '')
+      .set('station', filter.stationCode || '')
       .set('type', filter.type || '');
   }
 }
