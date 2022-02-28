@@ -1,4 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { AuthGuard } from './modules/auth/services/auth.guard';
 import { DevComponent } from './modules/dev/dev.component';
 
