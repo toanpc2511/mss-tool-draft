@@ -1,8 +1,8 @@
-version: "3.9"
+version: "3"
 services:
   sunoil-driver:
     image: sunoil-driver:1.02
-    name: sunoil-admin
+    container_name: sunoil-driver
     ports:
-       - "3001:80"
+       - "3006:80"
     restart: unless-stopped

@@ -5,7 +5,7 @@ RUN yarn install --frozen-lockfile
 RUN yarn build-prod
 
 FROM nginx:alpine
-COPY --from=node /app/dist/sun-oil-admin /usr/share/nginx/html
+COPY --from=node /app/dist/sun-oil /usr/share/nginx/html
 RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY default.conf /etc/nginx/conf.d/default.conf
 
