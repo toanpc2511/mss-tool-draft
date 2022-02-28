@@ -58,7 +58,7 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 			.subscribe((value) => {
 				if (value) {
 					this.shiftService
-						.getCalendarEmployeeInfos(value, this.data.stationId, this.today)
+						.getCalendarEmployeeInfos(value, this.data.stationId, this.getTimeShift(value))
 						.subscribe((res) => {
 							this.dataSource = this.dataSourceTemp = this.convertToFormArray(res.data);
 							this.cdr.detectChanges();
@@ -129,6 +129,11 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 				}, (error => this.checkError(error)));
 			});
 	}
+
+	getTimeShift(value) {
+    const shift = this.listShifts?.find((x) => x.id === Number(value));
+    return shift.dateWork || '';
+  }
 
 	changeShiftLead(index: number) {
 		this.dataSource.value.map((x) => {
