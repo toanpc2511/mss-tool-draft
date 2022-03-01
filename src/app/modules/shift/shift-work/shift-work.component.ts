@@ -33,10 +33,7 @@ import { IError } from '../../../shared/models/error.model';
 import { CreateCalendarModalComponent } from '../create-calendar-modal/create-calendar-modal.component';
 import { IDataEventCalendar, IStationActiveByToken, ShiftService } from '../shift.service';
 import { convertDateValueToServer } from '../../../shared/helpers/functions';
-import {
-	GasStationService,
-	IPumpPole
-} from '../../gas-station/gas-station.service';
+import { GasStationService, IPumpPole } from '../../gas-station/gas-station.service';
 import { ICalendarResponse, IEmployee, IShiftConfig } from '../shift.service';
 import { DeleteCalendarAllComponent } from './delete-calendar-all/delete-calendar-all.component';
 import { DetailWarningDialogComponent } from './detail-warning-dialog/detail-warning-dialog.component';
@@ -54,14 +51,18 @@ import { EmployeeCheck } from './employee/employee.component';
 			[autoClose]="'outside'"
 		>
 			<div class="event-container">
-        <div class="month-title">
-          <span class='text-warning star' *ngIf='eventData.extendedProps.change'><em class='fas fa-user-tag'></em> </span>
-          <span class=''> {{ eventData.title }}</span>
-        </div>
-        <div class="week-title">
-          <span class='text-warning star' *ngIf='eventData.extendedProps.change'><em class='fas fa-user-tag'></em> </span>
-          <span>{{ eventData.extendedProps.weekTitle }}</span>
-        </div>
+				<div class="month-title">
+					<span class="text-warning star" *ngIf="eventData.extendedProps.change"
+						><em class="fas fa-user-tag"></em>
+					</span>
+					<span class=""> {{ eventData.title }}</span>
+				</div>
+				<div class="week-title">
+					<span class="text-warning star" *ngIf="eventData.extendedProps.change"
+						><em class="fas fa-user-tag"></em>
+					</span>
+					<span>{{ eventData.extendedProps.weekTitle }}</span>
+				</div>
 				<span class="week-content">{{ eventData.extendedProps.weekContent }}</span>
 			</div>
 		</div>
@@ -349,8 +350,8 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 								warning: calendar.checked,
 								weekTitle: calendar.shiftName,
 								weekContent: calendar.employeeName,
-                status: calendar.status,
-                change: calendar.change,
+								status: calendar.status,
+								change: calendar.change,
 								start: moment(calendar.start).format('YYYY-MM-DD HH:mm:ss'),
 								end: moment(calendar.end).format('YYYY-MM-DD HH:mm:ss'),
 								calendarChangedResponses: calendar.calendarChangedResponses
@@ -371,7 +372,7 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 
 	getStations() {
 		this.shiftService
-      .getStationByToken('ALL', 'false')
+			.getStationByToken('ALL', 'false')
 			.pipe(
 				tap((res) => {
 					this.gasStationTabs = res.data;
@@ -533,23 +534,26 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 
 	dayCellRender(event) {
 		const currentRenderDate = moment(event.date).format('YYYY-MM-DD');
-		const isWarning = this.warningDate.get(currentRenderDate);
 
-		const projectableNodes = Array.from(event.el.childNodes);
 
-		const compWrapperRef = this.dayWrapperFactory.create(
-			this.injector,
-			[projectableNodes],
-			event.el
-		);
+			const projectableNodes = Array.from(event.el.childNodes);
 
-		if (isWarning) {
-			compWrapperRef.instance.tooltipWarning = 'Trạm có ca chưa được gán nhân viên';
-			compWrapperRef.instance.currentDate = currentRenderDate;
-			compWrapperRef.instance.stationId = this.currentGasStationId;
-		}
-		this.appRef.attachView(compWrapperRef.hostView);
-		this.dayWrappersMap.set(event.el, compWrapperRef);
+			const compWrapperRef = this.dayWrapperFactory.create(
+				this.injector,
+				[projectableNodes],
+				event.el
+			);
+
+			setTimeout(() => {
+				const isWarning = this.warningDate.get(currentRenderDate);
+				if (isWarning) {
+					compWrapperRef.instance.tooltipWarning = 'Trạm có ca chưa được gán nhân viên';
+					compWrapperRef.instance.currentDate = currentRenderDate;
+					compWrapperRef.instance.stationId = this.currentGasStationId;
+				}
+				this.appRef.attachView(compWrapperRef.hostView);
+				this.dayWrappersMap.set(event.el, compWrapperRef);
+			}, 200);
 	}
 
 	destroyDayCell(event) {
@@ -654,8 +658,8 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 	}
 
 	checkError(error: IError) {
-    if (error.code === 'SUN-OIL-4918') {
-      this.toastr.error('Không được xoá lịch làm việc trong quá khứ')
-    }
+		if (error.code === 'SUN-OIL-4918') {
+			this.toastr.error('Không được xoá lịch làm việc trong quá khứ');
+		}
 	}
 }
