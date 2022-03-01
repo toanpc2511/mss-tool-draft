@@ -8,6 +8,7 @@ import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
 import { BannerConfigService } from '../../banner-config.service';
 import { DataResponse } from '../../../../../shared/models/data-response.model';
+import { IError } from '../../../../../shared/models/error.model';
 
 @Component({
   selector: 'app-create-banner-dialog',
@@ -47,6 +48,8 @@ export class CreateBannerDialogComponent {
     }
     this.bannerService.create(this.createForm.getRawValue()).subscribe((res: DataResponse<boolean>): void => {
       this.modal.close(true);
+    }, (err: IError) => {
+      this.checkError(err);
     });
   }
 
@@ -86,6 +89,21 @@ export class CreateBannerDialogComponent {
     this.uploadImageFile(files[0]);
 
     inputElement.value = null;
+  }
+
+  checkError(err: IError): void {
+    switch (err?.code) {
+      case 'SUN-OIL-4789':
+        this.createForm.get('title').setErrors({ required: true });
+        break;
+      case 'SUN-OIL-4788':
+        this.createForm.get('title').setErrors({ invalid: true });
+        break;
+      case 'SUN-OIL-4975':
+        this.createForm.get('title').setErrors({ existed: true });
+        break;
+    }
+    this.cdr.detectChanges();
   }
 
 }

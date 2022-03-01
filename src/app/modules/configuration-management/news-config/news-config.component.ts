@@ -63,7 +63,7 @@ export class NewsConfigComponent extends BaseComponent implements OnInit {
     modalRef.result.then((result) => {
       if (result) {
         this.newsService.delete(news.id).subscribe((res: DataResponse<boolean>): void => {
-          this.toastr.success('Bạn đã xóa cấu hình banner thành công');
+          this.toastr.success('Bạn đã xóa cấu hình tin tức thành công');
           this.getList();
         });
       }

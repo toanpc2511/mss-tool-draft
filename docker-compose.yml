@@ -1,8 +1,8 @@
-version: "3.9"
+version: "3"
 services:
   sunoil-admin:
     image: sunoil-admin:1.02
-    name: sunoil-admin
+    container_name: sunoil-admin
     ports:
-       - "3000:80"
+       - "3005:80"
     restart: unless-stopped
