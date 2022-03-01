@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { DataResponse } from '../../shared/models/data-response.model';
+import { environment } from '../../../environments/environment';
 
 export interface ILogGroups {
   id: number;
@@ -35,7 +36,7 @@ export class ImpactHistoryService {
   ) {}
 
   getLogGroups() {
-    return this.httpClient.get<DataResponse<ILogGroups[]>>('https://sunoil-management.firecloud.live/permissions/histories/log');
+    return this.httpClient.get<DataResponse<ILogGroups[]>>(`${environment.apiUrlRoot}/permissions/histories/log`);
   }
 
   getLogDetail(page: number, size: number,dataReq, entity: string) {

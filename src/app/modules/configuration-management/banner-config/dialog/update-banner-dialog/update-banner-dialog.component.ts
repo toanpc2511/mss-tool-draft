@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BannerConfigService } from '../../banner-config.service';
 import { takeUntil } from 'rxjs/operators';
 import { DataResponse } from '../../../../../shared/models/data-response.model';
+import { IError } from '../../../../../shared/models/error.model';
 
 interface IImage {
   id: number;
@@ -63,6 +64,8 @@ export class UpdateBannerDialogComponent implements OnInit {
     }
     this.bannerService.update(this.updateForm.getRawValue(), this.data.id).subscribe((res: DataResponse<boolean>): void => {
       this.modal.close(true);
+    }, (err: IError): void => {
+      this.checkError(err);
     });
   }
 
@@ -108,4 +111,21 @@ export class UpdateBannerDialogComponent implements OnInit {
     inputElement.value = null;
   }
 
+  checkError(err: IError): void {
+    switch (err?.code) {
+      case 'SUN-OIL-4789':
+        this.updateForm.get('title').setErrors({ required: true });
+        break;
+      case 'SUN-OIL-4788':
+        this.updateForm.get('title').setErrors({ invalid: true });
+        break;
+      case 'SUN-OIL-4975':
+        this.updateForm.get('title').setErrors({ existed: true });
+        break;
+      case 'SUN-OIL-4293':
+        this.updateForm.get('title').setErrors({ not_existed: true });
+        break;
+    }
+    this.cdr.detectChanges();
+  }
 }
