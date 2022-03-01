@@ -24,6 +24,21 @@
             [error]="'required'"
             [message]="'Title không được để trống'"
           ></app-validate>
+          <app-validate
+            [control]="updateForm.controls['title']"
+            [error]="'existed'"
+            [message]="'Title đã tồn tại'"
+          ></app-validate>
+          <app-validate
+            [control]="updateForm.controls['title']"
+            [error]="'invalid'"
+            [message]="'Tiêu đề banner không được quá 100 ký tự'"
+          ></app-validate>
+          <app-validate
+            [control]="updateForm.controls['title']"
+            [error]="'not_existed'"
+            [message]="'Banner tồn tại'"
+          ></app-validate>
         </div>
       </div>
 

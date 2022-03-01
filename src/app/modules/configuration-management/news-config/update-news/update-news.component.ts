@@ -11,6 +11,7 @@ import { DataResponse } from '../../../../shared/models/data-response.model';
 import { ELocationImg, IImage, IImageNews, INews } from '../model';
 import { SubheaderService } from '../../../../_metronic/partials/layout';
 import { getConfigEditor } from '../config-editor';
+import { IError } from '../../../../shared/models/error.model';
 
 @Component({
   selector: 'app-update-news',
@@ -53,14 +54,14 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
       content: ['', Validators.required],
       description: ['', Validators.required],
       image: [null, Validators.required],
-      display: [true]
+      display: [null]
     });
   }
 
   getDetailNews(): void {
     this.newsService.getDetail(this.idNews).subscribe((res: DataResponse<INews>) => {
-      const { title, content, description, image } = {...res.data};
-      this.updateForm.patchValue({ title, description, content: this.transformContentToWebView(content), image });
+      const { title, content, description, image, display } = {...res.data};
+      this.updateForm.patchValue({ title, description, content: this.transformContentToWebView(content), image, display });
       this.imgContent = res.data.image[1];
       this.imgDetail = res.data.image[0];
     });
@@ -159,6 +160,8 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
 
     this.newsService.update(this.updateForm.getRawValue(), this.idNews).subscribe((res: DataResponse<boolean>) => {
       this.router.navigate(['cau-hinh/tin-tuc']);
+    }, (err: IError): void => {
+      this.checkError(err);
     });
   }
 
@@ -182,5 +185,14 @@ export class UpdateNewsComponent implements OnInit, AfterViewInit {
         }
       ]);
     }, 1);
+  }
+
+  checkError(err: IError): void {
+    switch (err?.code) {
+      case 'SUN-OIL-4975':
+        this.updateForm.get('title').setErrors({ existed: true });
+        break;
+    }
+    this.cdr.detectChanges();
   }
 }
