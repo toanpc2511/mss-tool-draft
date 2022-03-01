@@ -38,8 +38,9 @@
         </label>
       </div>
 
-      <div class='col-lg-9 mb-3 row justify-content-between'>
-        <div class="col-lg-4 col-md-12 row align-items-center justify-content-between">
+      <div class='col-lg-9 mb-3 row justify-content-end'>
+        <div                 [hidden]="searchForm.controls['type'].value === 'YEAR'"
+                             class="col-lg-4 col-md-12 row align-items-center justify-content-between">
           <label class="col-lg-4 col-12">Thời gian từ</label>
 
           <div class="col-lg-8 col-12">
@@ -50,7 +51,6 @@
                 ngbDatepicker
                 #startAt="ngbDatepicker"
                 formControlName='startDate'
-                [disabledControl]="searchForm.controls['type'].value === 'YEAR'"
                 (ngModelChange)='search()'
               />
               <div class="input-group-append">
@@ -88,7 +88,8 @@
           </div>
         </div>
 
-        <div class="col-lg-4 col-md-12 row align-items-center justify-content-between">
+        <div                 [hidden]="searchForm.controls['type'].value === 'YEAR'"
+                             class="col-lg-4 col-md-12 row align-items-center justify-content-between">
           <label class="col-lg-4 col-12">Đến</label>
 
           <div class="col-lg-8 col-12">
@@ -99,7 +100,6 @@
                 ngbDatepicker
                 #endAt="ngbDatepicker"
                 formControlName='endDate'
-                [disabledControl]="searchForm.controls['type'].value === 'YEAR'"
                 (ngModelChange)='search()'
               />
               <div class="input-group-append">
