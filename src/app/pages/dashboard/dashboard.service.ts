@@ -132,7 +132,6 @@ export class DashboardService {
 	}
 
   createParam(filter: IFilter): HttpParams {
-    console.log(filter);
     return new HttpParams()
       .set('date-from', convertDateToServer(filter.startDate))
       .set('date-to', convertDateToServer(filter.endDate))
