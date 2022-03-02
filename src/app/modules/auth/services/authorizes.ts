@@ -153,6 +153,7 @@ export enum EAuthorize {
   COMPLETE_WAREHOUSE_IMPORT_BUTTON = 'complete_warehouse_import_button',
   VIEW_MEASURES_SCREEN = 'view_measures_screen',
   VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN = 'view_warehouse_import_detail_screen',
+  CREATE_WAREHOUSE = 'create_warehouse',
   /* End */
 
   // Exchange point roles

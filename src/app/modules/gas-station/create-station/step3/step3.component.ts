@@ -30,7 +30,6 @@ export class Step3Component extends BaseComponent implements OnInit {
     code: string;
     name: string;
     description: string;
-    status: string;
   }>;
   listStatus = LIST_STATUS;
 
@@ -52,7 +51,6 @@ export class Step3Component extends BaseComponent implements OnInit {
       code: null,
       name: null,
       description: null,
-      status: null
     });
   }
 

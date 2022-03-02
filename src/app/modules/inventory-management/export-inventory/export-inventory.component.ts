@@ -15,6 +15,7 @@ import { convertDateToServer } from '../../../shared/helpers/functions';
 import { LIST_STATUS_EXPORT } from '../../../shared/data-enum/list-status';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 
 @Component({
   selector: 'app-export-inventory',
@@ -22,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./export-inventory.component.scss'],
   providers: [FormBuilder]
 })
-export class ExportInventoryComponent implements OnInit {
+export class ExportInventoryComponent extends BaseComponent implements OnInit {
   today: string;
   firstDayOfMonth: string;
   paginatorState = new PaginatorState();
@@ -42,6 +43,7 @@ export class ExportInventoryComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
   ) {
+    super();
     this.firstDayOfMonth = moment().startOf('month').format('DD/MM/YYYY');
     this.today = moment().format('DD/MM/YYYY');
     this.init();
