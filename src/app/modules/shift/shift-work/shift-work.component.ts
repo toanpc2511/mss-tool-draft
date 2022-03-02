@@ -661,5 +661,8 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 		if (error.code === 'SUN-OIL-4918') {
 			this.toastr.error('Không được xoá lịch làm việc trong quá khứ');
 		}
+    if (error.code === 'SUN-OIL-4269') {
+      this.toastr.error('Không được xóa lịch làm việc vì đã có yêu cầu đổi / thay ca');
+    }
 	}
 }

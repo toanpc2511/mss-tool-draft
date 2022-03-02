@@ -27,7 +27,15 @@ export class Step2Component extends BaseComponent implements OnInit {
   dataSourceTemp: GasBinResponse[] = [];
   sorting: SortState;
   searchFormControl: FormControl;
-  filterField: FilterField<GasBinResponse>;
+  filterField: FilterField<{
+    code: null,
+    name: null,
+    description: null,
+    height: null,
+    length: null,
+    capacity: null,
+    productName: null
+  }>;
   stationId: number;
   listStatus = LIST_STATUS;
 
@@ -41,6 +49,7 @@ export class Step2Component extends BaseComponent implements OnInit {
     private toastr: ToastrService
   ) {
     super();
+    this.dataSource = this.dataSourceTemp = [];
     this.sorting = sortService.sorting;
     this.filterField = new FilterField({
       code: null,
@@ -49,13 +58,14 @@ export class Step2Component extends BaseComponent implements OnInit {
       height: null,
       length: null,
       capacity: null,
-      status: null,
       productName: null
     });
     this.searchFormControl = new FormControl();
   }
 
   ngOnInit() {
+    this.stationId = this.gasStationService.gasStationId;
+    this.getListGasBin(this.stationId);
     // Filter
     this.searchFormControl.valueChanges
       .pipe(debounceTime(500), takeUntil(this.destroy$))
@@ -72,8 +82,7 @@ export class Step2Component extends BaseComponent implements OnInit {
         this.cdr.detectChanges();
       });
 
-    this.stationId = this.gasStationService.gasStationId;
-    this.getListGasBin(this.stationId);
+
   }
 
   initDatasource(dataSource: Array<GasBinResponse>) {

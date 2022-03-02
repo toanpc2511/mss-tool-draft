@@ -32,7 +32,6 @@ export class Step4Component extends BaseComponent implements OnInit {
     description: string;
     gasFieldName: string;
     pumpPoleName: string;
-    status: string;
   }>;
   listStatus = LIST_STATUS;
 
@@ -56,7 +55,6 @@ export class Step4Component extends BaseComponent implements OnInit {
       description: null,
       gasFieldName: null,
       pumpPoleName: null,
-      status: null
     });
   }
 
@@ -80,8 +78,6 @@ export class Step4Component extends BaseComponent implements OnInit {
   }
 
   initDatasource(dataSource: Array<IPumpHose>) {
-    console.log(dataSource);
-
     return dataSource.map((data) => ({
       ...data,
       gasFieldName: data.gasField.name,
