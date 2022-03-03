@@ -122,7 +122,9 @@ export class PartnerService {
 		return this.http.put<any>(`ticket-assign/childes/${partnerId}`, body);
 	}
 
-	deletePartner(partnerId: number) {
-		return this.http.delete(`enterprises/${partnerId}`);
+	deletePartner(partnerId: number, status: string) {
+    const params = new HttpParams()
+      .set('status', status)
+		return this.http.delete(`enterprises/${partnerId}`, {params});
 	}
 }
