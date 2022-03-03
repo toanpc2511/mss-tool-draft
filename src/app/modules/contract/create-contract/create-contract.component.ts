@@ -508,7 +508,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.infoForm.get('dateOfBirth').patchValue(convertDateToDisplay(infoData.dateOfBirth));
 		this.infoForm.get('idCard').patchValue(infoData.idCard);
 		this.infoForm.get('email').patchValue(infoData.email);
-		this.infoForm.get('address').patchValue(infoData.address);
+		this.infoForm.get('address').patchValue(infoData.location);
 		this.infoForm.get('phone').setErrors(null);
 		this.cdr.detectChanges();
 	}
