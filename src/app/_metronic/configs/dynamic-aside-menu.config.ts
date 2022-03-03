@@ -22,13 +22,13 @@ export const DynamicAsideMenuConfig = {
 			page: '/tai-xe',
 			bullet: 'dot'
 		},
-		{
-			title: 'Báo cáo',
-			root: true,
-			bullet: 'dot',
-			page: '/bao-cao',
-			icon: 'fas fa-file-alt'
-		},
+		// {
+		// 	title: 'Báo cáo',
+		// 	root: true,
+		// 	bullet: 'dot',
+		// 	page: '/bao-cao',
+		// 	icon: 'fas fa-file-alt'
+		// },
 		{
 			title: 'Lịch sử giao dịch',
 			root: true,
