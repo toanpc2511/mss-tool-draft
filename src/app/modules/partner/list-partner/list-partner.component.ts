@@ -138,7 +138,7 @@ export class ListPartnerComponent implements OnInit {
 
 		modalRef.result.then((result) => {
 			if (result) {
-				this.partnerService.deletePartner(partner.driverId).subscribe((res) => {
+				this.partnerService.deletePartner(partner.driverId, partner.status).subscribe((res) => {
 					if (res.data) {
 						this.getPartners();
 					}
