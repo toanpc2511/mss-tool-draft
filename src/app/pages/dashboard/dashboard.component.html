@@ -20,6 +20,8 @@
 	</div>
 
   <div class="tracking-price-chart w-100">
+    <h3 class="m-5 pt-5 title">Biểu đồ sản lượng</h3>
+
     <form class='filter row justify-content-between w-100 px-5' [formGroup]='searchForm'>
       <div class="col-lg-3 radio-inline radio-custom">
         <label>
@@ -36,19 +38,19 @@
         </label>
       </div>
 
-      <div class='col-lg-9 row justify-content-between'>
-        <div class="col-lg-4 row">
-          <div class="col-12 d-flex align-items-center justify-content-between">
-            <label>Thời gian từ</label>
+      <div class='col-lg-9 mb-3 row justify-content-end'>
+        <div                 [hidden]="searchForm.controls['type'].value === 'YEAR'"
+                             class="col-lg-4 col-md-12 row align-items-center justify-content-between">
+          <label class="col-lg-4 col-12">Thời gian từ</label>
 
-            <div class="input-group w-75">
+          <div class="col-lg-8 col-12">
+            <div class="input-group">
               <input
                 class="form-control form-control-solid"
                 placeholder="DD/MM/YYYY"
                 ngbDatepicker
                 #startAt="ngbDatepicker"
                 formControlName='startDate'
-                [disabledControl]="searchForm.controls['type'].value === 'YEAR'"
                 (ngModelChange)='search()'
               />
               <div class="input-group-append">
@@ -59,9 +61,7 @@
                 ></button>
               </div>
             </div>
-          </div>
 
-          <div class="col-12">
             <app-validate
               [control]="searchForm.controls['startDate']"
               [error]="'errorDate'"
@@ -71,7 +71,13 @@
             <app-validate
               [control]="searchForm.controls['startDate']"
               [error]="'errDateRange'"
-              [message]="'Khoảng thời gian từ 30 ngày hoặc 12 tháng'"
+              [message]="'Thời gian tìm kiếm không vượt quá 30 ngày'"
+            ></app-validate>
+
+            <app-validate
+              [control]="searchForm.controls['startDate']"
+              [error]="'errMonthRange'"
+              [message]="'Thời gian tìm kiếm không vượt quá 12 tháng'"
             ></app-validate>
 
             <app-validate
@@ -82,18 +88,18 @@
           </div>
         </div>
 
-        <div class="col-lg-4 row">
-          <div class="col-12 d-flex align-items-center justify-content-between">
-            <label>Đến</label>
+        <div                 [hidden]="searchForm.controls['type'].value === 'YEAR'"
+                             class="col-lg-4 col-md-12 row align-items-center justify-content-between">
+          <label class="col-lg-4 col-12">Đến</label>
 
-            <div class="input-group w-75">
+          <div class="col-lg-8 col-12">
+            <div class="input-group">
               <input
                 class="form-control form-control-solid"
                 placeholder="DD/MM/YYYY"
                 ngbDatepicker
                 #endAt="ngbDatepicker"
                 formControlName='endDate'
-                [disabledControl]="searchForm.controls['type'].value === 'YEAR'"
                 (ngModelChange)='search()'
               />
               <div class="input-group-append">
@@ -104,9 +110,7 @@
                 ></button>
               </div>
             </div>
-          </div>
 
-          <div class="col-12">
             <app-validate
               [control]="searchForm.controls['endDate']"
               [error]="'errorDate'"
@@ -116,7 +120,13 @@
             <app-validate
               [control]="searchForm.controls['endDate']"
               [error]="'errDateRange'"
-              [message]="'Khoảng thời gian từ 30 ngày hoặc 12 tháng'"
+              [message]="'Thời gian tìm kiếm không vượt quá 30 ngày'"
+            ></app-validate>
+
+            <app-validate
+              [control]="searchForm.controls['endDate']"
+              [error]="'errMonthRange'"
+              [message]="'Thời gian tìm kiếm không vượt quá 12 tháng'"
             ></app-validate>
 
             <app-validate
@@ -127,9 +137,9 @@
           </div>
         </div>
 
-        <div class="col-lg-4 d-flex align-items-center justify-content-between">
-          <label class='mr-5 mt-2'>Trạm</label>
-          <select class="form-control form-control-solid ml-5" formControlName='stationId' (ngModelChange)='search()'>
+        <div class="col-lg-4 col-md-12 row align-items-center justify-content-between">
+          <label class='col-lg-4 col-12'>Trạm</label>
+          <select class="form-control form-control-solid col-lg-8 col-12" formControlName='stationCode' (change)='search()'>
             <option [value]="''">Tất cả</option>
             <option *ngFor='let station of listStationByToken' [value]="station.code">{{station.name}}</option>
           </select>

@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { ELocationImg, IImage } from '../model';
 import { SubheaderService } from '../../../../_metronic/partials/layout';
 import { getConfigEditor } from '../config-editor';
+import { IError } from '../../../../shared/models/error.model';
 
 @Component({
   selector: 'app-create-news',
@@ -138,6 +139,8 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
 
     this.newsService.create(this.createForm.getRawValue()).subscribe((res: DataResponse<boolean>) => {
       this.router.navigate(['cau-hinh/tin-tuc']);
+    }, (error: IError): void => {
+      this.checkError(error);
     });
   }
 
@@ -161,5 +164,14 @@ export class CreateNewsComponent implements OnInit, AfterViewInit {
         }
       ]);
     }, 1);
+  }
+
+  checkError(err: IError): void {
+    switch (err?.code) {
+      case 'SUN-OIL-4975':
+        this.createForm.get('title').setErrors({ existed: true });
+        break;
+    }
+    this.cdr.detectChanges();
   }
 }

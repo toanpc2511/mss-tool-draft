@@ -133,9 +133,9 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('gaugeStart').value| number| vnCurrency"
+										[ngbTooltip]="item.get('gaugeStart').value.toLocaleString('en-US')"
 									>
-										{{ item.get('gaugeStart').value| number| vnCurrency }}
+										{{ item.get('gaugeStart').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="gauge-end text-right">
@@ -166,9 +166,9 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('electronicStart').value| number| vnCurrency"
+										[ngbTooltip]="item.get('electronicStart').value.toLocaleString('en-US')"
 									>
-										{{ item.get('electronicStart').value| number| vnCurrency }}
+										{{ item.get('electronicStart').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="electronic-end text-right">

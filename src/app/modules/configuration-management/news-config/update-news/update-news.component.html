@@ -24,6 +24,11 @@
             [error]="'required'"
             [message]="'Title không được để trống'"
           ></app-validate>
+          <app-validate
+            [control]="updateForm.controls['title']"
+            [error]="'existed'"
+            [message]="'Title đã tồn tại'"
+          ></app-validate>
         </div>
       </div>
 

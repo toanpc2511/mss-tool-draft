@@ -9,8 +9,8 @@ export const environment = {
 	isMockEnabled: false,
 	// apiUrl: 'https://sunoil-management.firecloud.live/management',
 	// apiUrlRoot: 'https://sunoil-management.firecloud.live',
-	apiUrl: 'https://sunoil-management.firecloud.live/management',
-	apiUrlRoot: 'https://sunoil-management.firecloud.live',
+	apiUrl: 'https://api-management.sunoil.com.vn/management',
+	apiUrlRoot: 'https://api-management.sunoil.com.vn',
 	firebase: {
 		apiKey: 'AIzaSyBGDWDvuG1Wq6Wbu9fBhaU86WdD2B7Q6Mo',
 		authDomain: 'sun-oil-e747c.firebaseapp.com',
