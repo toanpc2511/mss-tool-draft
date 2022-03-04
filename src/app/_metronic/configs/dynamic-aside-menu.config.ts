@@ -22,12 +22,26 @@ export const DynamicAsideMenuConfig = {
 			page: '/tai-xe',
 			bullet: 'dot'
 		},
+		// {
+		// 	title: 'Báo cáo',
+		// 	root: true,
+		// 	bullet: 'dot',
+		// 	page: '/bao-cao',
+		// 	icon: 'fas fa-file-alt'
+		// },
 		{
-			title: 'Báo cáo',
+			title: 'Lịch sử giao dịch',
 			root: true,
 			bullet: 'dot',
-			page: '/bao-cao',
-			icon: 'fas fa-file-alt'
-		}
+			page: '/lich-su-giao-dich',
+			icon: 'fas fa-history'
+		  },
+		{
+			title: 'Lịch sử sử dụng điểm',
+			root: true,
+			bullet: 'dot',
+			page: '/lich-su-su-dung-diem',
+			icon: 'fas fa-business-time'
+    }
 	]
 };

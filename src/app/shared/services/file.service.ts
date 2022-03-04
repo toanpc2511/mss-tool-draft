@@ -48,6 +48,10 @@ export class FileService {
 			);
 	}
 
+	downloadFromUrl(fileUrl: string) {
+		window.open(fileUrl, '_blank');
+	}
+
 	uploadFile(fileFormData: FormData, type: EFileType) {
 		return this.http.postUpload<Array<IFile>>(
 			`${environment.apiUrlRoot}/files`,

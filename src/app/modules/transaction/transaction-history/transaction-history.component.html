@@ -1,0 +1,368 @@
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Tìm kiếm giao dịch</h3>
+		</div>
+	</div>
+	<div class="card-body">
+		<form [formGroup]="searchForm" class="form form-label-right">
+			<div class="form-group row">
+				<div class="col-lg-4">
+					<label for="code">Mã đơn hàng</label>
+					<input
+						type="text"
+						id="code"
+						class="form-control form-control-solid"
+						placeholder="Nhập mã đơn hàng"
+						formControlName="orderCode"
+						autocomplete="off"
+						maxlength="199"
+						trim="blur"
+					/>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Loại nhiên liệu</label>
+					<select class="form-control form-control-solid" formControlName="product">
+						<option [value]="''">Tất cả</option>
+						<option *ngFor="let item of dataProduct" [value]="item.name">{{item.name}}</option>
+					</select>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Trạm</label>
+					<select class="form-control form-control-solid" formControlName="station">
+						<option [value]="''">Tất cả</option>
+						<option *ngFor="let item of stations" [value]="item.name">{{item.name}}</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-lg-4">
+					<label>Từ ngày</label>
+
+					<div class="input-group">
+						<input
+							class="form-control form-control-solid"
+							placeholder="DD/MM/YYYY"
+							ngbDatepicker
+							#startAt="ngbDatepicker"
+							formControlName="startAt"
+						/>
+						<div class="input-group-append">
+							<button
+								class="btn btn-outline-secondary fa fa-calendar-alt"
+								(click)="startAt.toggle()"
+								type="button"
+							></button>
+						</div>
+					</div>
+
+					<app-validate
+						[control]="searchForm.controls['startAt']"
+						[error]="'ngbDate'"
+						[message]="'Từ ngày không đúng định dạng'"
+					></app-validate>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Đến ngày</label>
+
+					<div class="input-group">
+						<input
+							class="form-control form-control-solid"
+							placeholder="DD/MM/YYYY"
+							ngbDatepicker
+							#endAt="ngbDatepicker"
+							formControlName="endAt"
+						/>
+						<div class="input-group-append">
+							<button
+								class="btn btn-outline-secondary fa fa-calendar-alt"
+								(click)="endAt.toggle()"
+								type="button"
+							></button>
+						</div>
+					</div>
+
+					<app-validate
+						[control]="searchForm.controls['endAt']"
+						[error]="'ngbDate'"
+						[message]="'Đến ngày không đúng định dạng'"
+					></app-validate>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Hình thức thanh toán</label>
+					<select class="form-control form-control-solid" formControlName="payMethod">
+						<option [value]="''">Tất cả</option>
+						<option *ngFor="let item of paymentMethods" [value]="item.code">{{ item.name }}</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-lg-4">
+					<label>Loại tài khoản</label>
+					<select class="form-control form-control-solid" formControlName="accountType">
+						<option [value]="''">Tất cả</option>
+						<option value="DRIVER">Cá nhân</option>
+						<option value="ENTERPRISE">Tài khoản con</option>
+					</select>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Số điện thoại tài xế</label>
+					<input
+						type="text"
+						class="form-control form-control-solid"
+						placeholder="Nhập số điện thoại tài xế"
+						autocomplete="off"
+						maxlength="199"
+						trim="blur"
+						formControlName="phone"
+					/>
+				</div>
+
+				<div class="col-lg-4">
+					<label>Tên tài xế</label>
+					<input
+						type="text"
+						class="form-control form-control-solid"
+						placeholder="Nhập tên tài xế"
+						autocomplete="off"
+						maxlength="199"
+						trim="blur"
+						formControlName="userName"
+					/>
+				</div>
+			</div>
+		</form>
+
+		<div class="form-group row py-3">
+			<button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+				<em class="fas fa-search"></em> Tìm kiếm
+			</button>
+			<button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
+		</div>
+
+		<div class="form-group row search-result">
+			<p class="item">Tổng số <strong>{{totalRecord}} giao dịch</strong></p>
+			<p class="item">
+				<em class="fas fa-circle"></em>Tổng lít:
+				<strong>{{totalLiters?.toLocaleString("en-US")}} L</strong>
+			</p>
+			<p class="item">
+				<em class="fas fa-circle"></em>Tiền mặt:
+				<strong>{{totalMoney?.toLocaleString("en-US")}} VNĐ</strong>
+			</p>
+			<p class="item">
+				<em class="fas fa-circle"></em>Điểm sunoil:
+				<strong>{{pointSunoil?.toLocaleString("en-US")}} VNĐ</strong>
+			</p>
+			<p class="item">
+				<em class="fas fa-circle"></em>Hạn mức nhiên liệu:
+				<strong>{{limitOil?.toLocaleString("en-US")}} L</strong>
+			</p>
+			<p class="item">
+				<em class="fas fa-circle"></em>Hạn mức tiền:
+				<strong>{{totalPaymentMoney?.toLocaleString("en-US")}} VNĐ</strong>
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Danh sách giao dịch</h3>
+		</div>
+
+		<div class="card-toolbar row" *ngIf="totalRecord > 0">
+			<a (click)="exportFileExcel()">
+				<button type="button" class="btn btn-primary btn-def">Xuất file</button>
+			</a>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+				<thead>
+					<tr>
+						<th rowspan="2" id="1" class="align-bottom">Mã đơn hàng</th>
+						<th rowspan="2" id="2" class="align-bottom">Thời gian</th>
+						<th rowspan="2" id="3" class="align-bottom">Trạm</th>
+						<th rowspan="2" id="5" class="align-bottom">SĐT tài xế</th>
+						<th rowspan="2" id="6" class="align-bottom">Tên tài xế</th>
+						<th rowspan="2" id="7" class="align-bottom">Loại nhiên liệu</th>
+						<th rowspan="2" id="8" class="align-bottom">Hình thức thanh toán</th>
+						<th rowspan="2" id="9" class="align-bottom text-right pr-3">Tổng lít</th>
+						<th colspan="4" id="10" class="text-center">Thanh toán bằng</th>
+					</tr>
+					<tr>
+						<th id="11" class="text-right">Tiền mặt</th>
+						<th id="12" class="text-right">Điểm sunoil</th>
+						<th id="13" class="text-right">Hạn mức NL</th>
+						<th id="14" class="text-right">Hạn mức tiền</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr *ngFor="let item of dataSource" (click)="viewModal($event, item)">
+						<td class="a-1">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.code">
+								{{ item.code }}
+							</p>
+						</td>
+
+						<td class="a-2">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.createdAt"
+							>
+								{{ item.createdAt}}
+							</p>
+						</td>
+
+						<td class="a-3">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.stationName"
+							>
+								{{ item.stationName }}
+							</p>
+						</td>
+
+						<td class="a-5">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.phone">
+								{{ item.phone }}
+							</p>
+						</td>
+
+						<td class="a-6">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.nameDriver"
+							>
+								{{ item.nameDriver }}
+							</p>
+						</td>
+
+						<td class="a-7">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.productName"
+							>
+								{{ item.productName }}
+							</p>
+						</td>
+
+						<td class="a-8">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.paymentMethodName"
+							>
+								{{ item.paymentMethodName }}
+							</p>
+						</td>
+
+						<td class="a-9 text-right pr-3">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.actualityLiters?.toLocaleString('en-US') || 0"
+							>
+								{{ item.actualityLiters?.toLocaleString('en-US') ||0 }}
+							</p>
+						</td>
+
+						<td class="a-10 text-right">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.cashPaid?.toLocaleString('en-US')|| 0"
+							>
+								{{ item.cashPaid?.toLocaleString('en-US') || 0}}
+							</p>
+						</td>
+
+						<td class="a-11 text-right">
+							<p
+								*ngIf='item.paymentMethodName !== "Hạn mức nhiên liệu"'
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.accumulationPointUse?.toLocaleString('en-US') || 0"
+							>
+								{{ item.accumulationPointUse?.toLocaleString('en-US') || 0 }}
+							</p>
+
+							<p
+								*ngIf='item.paymentMethodName === "Hạn mức nhiên liệu"'
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								ngbTooltip="-"
+							>
+								-
+							</p>
+						</td>
+
+						<td class="a-12 text-right">
+							<p
+								*ngIf='item.paymentMethodName === "Hạn mức nhiên liệu"'
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.paymentLimitOil?.toLocaleString('en-US') || 0"
+							>
+								{{ item.paymentLimitOil?.toLocaleString('en-US') || 0 }}
+							</p>
+
+							<p
+								*ngIf='item.paymentMethodName !== "Hạn mức nhiên liệu"'
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								ngbTooltip="-"
+							>
+								-
+							</p>
+						</td>
+
+						<td class="a-13 text-right">
+							<p
+								*ngIf='item.paymentMethodName !== "Hạn mức nhiên liệu"'
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.paymentLimitMoney?.toLocaleString('en-US') || 0"
+							>
+								{{ item.paymentLimitMoney?.toLocaleString('en-US') || 0 }}
+							</p>
+
+							<p
+								*ngIf='item.paymentMethodName === "Hạn mức nhiên liệu"'
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								ngbTooltip="-"
+							>
+								-
+							</p>
+						</td>
+					</tr>
+				</tbody>
+
+				<tfoot *ngIf="dataSource?.length === 0">
+					<tr>
+						<td colspan="13" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+		<app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+	</div>
+</div>

@@ -4,12 +4,10 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/co
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { of, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import {
-	catchError,
-	concatMap,
-	debounceTime,
 	finalize,
 	pluck,
 	switchMap,
@@ -33,7 +31,7 @@ import { ConfirmDeleteComponent } from '../../../shared/components/confirm-delet
 import { IError } from '../../../shared/models/error.model';
 import { DestroyService } from '../../../shared/services/destroy.service';
 import { AuthService } from '../../auth/services/auth.service';
-import { IProduct, IProductType, ProductService } from '../../product/product.service';
+import { IProduct, ProductService } from '../../product/product.service';
 import {
 	ContractService,
 	EContractStatus,
@@ -62,9 +60,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	productFormArray: FormArray;
 	stationAddress: Array<IAddress> = [];
 	addressSelected: IAddress;
-
-	productTypes: Array<IProductType> = [];
-	products: Array<Array<IProduct>> = [];
+	products: Array<IProduct> = [];
 
 	transportMethods: Array<IProperties>;
 	contractTypes: Array<IProperties>;
@@ -72,7 +68,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	paymentMethods: Array<IProperties>;
 
 	eContractType = EContractType;
-	currentDate = new Date();
+	currentDate = moment().add({ day: 1 });
 
 	contractSubscription = new Subscription();
 
@@ -80,9 +76,9 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	filesUploadProgress: Array<number> = [];
 
 	minDate: NgbDateStruct = {
-		day: this.currentDate.getDate() + 1,
-		month: this.currentDate.getMonth() + 1,
-		year: this.currentDate.getFullYear()
+		day: this.currentDate.date(),
+		month: this.currentDate.month() + 1,
+		year: this.currentDate.year()
 	};
 	payPlanDateCount = 1;
 	isUpdate = false;
@@ -108,15 +104,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 
 	ngOnInit(): void {
 		this.init();
-
-		this.productService
-			.getListProductType()
-			.pipe(takeUntil(this.destroy$))
-			.subscribe((res) => {
-				this.productTypes = res.data;
-				this.cdr.detectChanges();
-			});
-
 		const phoneNumber = this.authService.getCurrentUserValue().driverAuth.phone;
 
 		this.contractService
@@ -193,9 +180,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 			if (i >= 1) {
 				this.addProduct();
 			}
-			this.productFormArray.at(i).get('categoryProductId').patchValue(product.categoryResponse.id);
 			this.productFormArray.at(i).get('productId').patchValue(product.productResponse.id);
-			this.getListProduct(product.categoryResponse.id, i);
 			this.productFormArray.at(i).get('amount').patchValue(product.productResponse.amount);
 			this.patchInfoProduct(product.productResponse.id, i);
 		});
@@ -254,6 +239,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.buildInfoForm();
 		this.buildContractForm(EContractType.PREPAID_CONTRACT);
 		this.buildProductForm();
+		this.getListProduct();
 		this.getAllStationAddress();
 		this.getTransportMethods();
 		this.getContractTypes();
@@ -436,7 +422,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.productForm = this.fb.group({
 			products: this.fb.array([
 				this.fb.group({
-					categoryProductId: [null, Validators.required],
 					productId: [null, Validators.required],
 					unit: [null],
 					amount: [null, [Validators.required, Validators.min(1)]],
@@ -450,17 +435,12 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.cdr.detectChanges();
 	}
 
-	productTypeChanged($event: Event, index: number) {
-		const value = ($event.target as HTMLSelectElement).value;
-		this.getListProduct(value, index);
-	}
-
-	getListProduct(categoryId, index: number) {
+	getListProduct() {
 		this.productService
-			.getListProduct(Number(categoryId))
+			.getListOilProduct()
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((res) => {
-				this.products[index] = res.data;
+				this.products = res.data;
 				this.cdr.detectChanges();
 			});
 	}
@@ -528,7 +508,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 		this.infoForm.get('dateOfBirth').patchValue(convertDateToDisplay(infoData.dateOfBirth));
 		this.infoForm.get('idCard').patchValue(infoData.idCard);
 		this.infoForm.get('email').patchValue(infoData.email);
-		this.infoForm.get('address').patchValue(infoData.address);
+		this.infoForm.get('address').patchValue(infoData.location);
 		this.infoForm.get('phone').setErrors(null);
 		this.cdr.detectChanges();
 	}
@@ -614,7 +594,6 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	addProduct() {
 		this.productFormArray.push(
 			this.fb.group({
-				categoryProductId: [null, Validators.required],
 				productId: [null, Validators.required],
 				unit: [null],
 				amount: [null, [Validators.required, Validators.min(1)]],
@@ -741,7 +720,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 				fullAddress: contractData.fullAddress,
 				productInfoRequests: productData,
 				totalPayment: this.getTotal(),
-				attachmentRequests: this.filesUploaded.map((f) => f.id),
+				attachmentRequests: this.filesUploaded?.map((f) => f.id) || [],
 				statusType: status
 			};
 			if (!this.isUpdate) {
@@ -791,7 +770,7 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 					paymentTimeFive: convertDateToServer(contractData.payPlanDate5)
 				},
 				countPayment: this.payPlanDateCount,
-				attachmentRequests: this.filesUploaded.map((f) => f.id),
+				attachmentRequests: this.filesUploaded?.map((f) => f.id) || [],
 				statusType: status
 			};
 

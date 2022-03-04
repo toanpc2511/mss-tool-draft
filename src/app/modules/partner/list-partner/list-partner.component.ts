@@ -106,7 +106,7 @@ export class ListPartnerComponent implements OnInit {
 		this.cdr.detectChanges();
 	}
 
-	openPartnerModal(ticketId?: number) {
+	openPartnerModal(ticketId?: number, detail?: boolean) {
 		const modalRef = this.modalService.open(PartnerModalComponent, {
 			backdrop: 'static',
 			size: 'xl'
@@ -114,6 +114,7 @@ export class ListPartnerComponent implements OnInit {
 		// Sử dụng api get user by id để lấy data fill vào form sửa
 		if (ticketId) {
 			modalRef.componentInstance.partnerId = ticketId;
+      modalRef.componentInstance.viewDetail = detail;
 		}
 		modalRef.result.then((result) => {
 			if (result) {
@@ -137,7 +138,7 @@ export class ListPartnerComponent implements OnInit {
 
 		modalRef.result.then((result) => {
 			if (result) {
-				this.partnerService.deletePartner(partner.driverId).subscribe((res) => {
+				this.partnerService.deletePartner(partner.driverId, partner.status).subscribe((res) => {
 					if (res.data) {
 						this.getPartners();
 					}
