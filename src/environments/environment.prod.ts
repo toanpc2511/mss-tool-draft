@@ -1,8 +1,8 @@
 export const environment = {
 	production: true,
 	appVersion: 'v1.0.0',
-	apiUrl: 'https://sunoil-driver.firecloud.live/drivers',
-	apiDriverRoot: 'https://sunoil-driver.firecloud.live',
-	apiManagementUrl: 'https://sunoil-management.firecloud.live/management',
-	apiUrlRoot: 'https://sunoil-management.firecloud.live'
+	apiUrl: 'https://api-driver.sunoil.com.vn/drivers',
+	apiDriverRoot: 'https://api-driver.sunoil.com.vn',
+	apiManagementUrl: 'https://api-management.sunoil.com.vn/management',
+	apiUrlRoot: 'https://api-management.sunoil.com.vn'
 };
