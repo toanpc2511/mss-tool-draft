@@ -70,7 +70,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
       bullet: 'dot',
       page: '/quan-ly-ma-bom/danh-sach',
       icon: 'fas fa-fill-drip',
-      permissionKey: EAuthorize.VIEW_TRANSACTION_HISTORY_MENU
+      permissionKey: EAuthorize.VIEW_HISTORY_PUMP_CODE || EAuthorize.VIEW_PUMP_CODE
     },
     {
       title: 'Lịch sử giao dịch',

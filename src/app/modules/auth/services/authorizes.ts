@@ -177,5 +177,9 @@ export enum EAuthorize {
   DELETE_NEWS_BUTTON = 'delete_news_button',
 
   // Lịch sử tác động
-  VIEW_LOG = 'view_log'
+  VIEW_LOG = 'view_log',
+
+  // Hoạt động vòi bơm
+  VIEW_HISTORY_PUMP_CODE = 'view_history_pump_code',
+  VIEW_PUMP_CODE = 'view_pump_code'
 }
