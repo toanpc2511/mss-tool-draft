@@ -267,7 +267,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
       bullet: 'dot',
       page: '/lich-su-tac-dong/danh-sach',
       icon: 'fas fa-user-clock',
-      permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
+      permissionKey: EAuthorize.VIEW_LOG
     },
     {
       title: 'Quản lý cấu hình',
