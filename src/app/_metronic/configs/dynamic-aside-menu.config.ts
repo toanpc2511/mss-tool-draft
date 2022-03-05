@@ -70,7 +70,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
       bullet: 'dot',
       page: '/quan-ly-ma-bom/danh-sach',
       icon: 'fas fa-fill-drip',
-      permissionKey: EAuthorize.VIEW_TRANSACTION_HISTORY_MENU
+      permissionKey: EAuthorize.VIEW_HISTORY_PUMP_CODE || EAuthorize.VIEW_PUMP_CODE
     },
     {
       title: 'Lịch sử giao dịch',
@@ -267,7 +267,7 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
       bullet: 'dot',
       page: '/lich-su-tac-dong/danh-sach',
       icon: 'fas fa-user-clock',
-      permissionKey: EAuthorize.VIEW_ROLE_LIST_SCREEN
+      permissionKey: EAuthorize.VIEW_LOG
     },
     {
       title: 'Quản lý cấu hình',

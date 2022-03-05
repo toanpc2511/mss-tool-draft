@@ -174,5 +174,12 @@ export enum EAuthorize {
   VIEW_LIST_NEWS_SCREEN = 'view_list_news_screen',
   CREATE_NEWS_BUTTON = 'create_news_button',
   UPDATE_NEWS_BUTTON = 'update_news_button',
-  DELETE_NEWS_BUTTON = 'delete_news_button'
+  DELETE_NEWS_BUTTON = 'delete_news_button',
+
+  // Lịch sử tác động
+  VIEW_LOG = 'view_log',
+
+  // Hoạt động vòi bơm
+  VIEW_HISTORY_PUMP_CODE = 'view_history_pump_code',
+  VIEW_PUMP_CODE = 'view_pump_code'
 }

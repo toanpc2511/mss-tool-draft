@@ -157,9 +157,9 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('quantityGauge').value| number| vnCurrency"
+										[ngbTooltip]="item.get('quantityGauge').value.toLocaleString('en-US')"
 									>
-										{{ item.get('quantityGauge').value| number| vnCurrency }}
+										{{ item.get('quantityGauge').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="electronic-start text-right">
@@ -190,36 +190,36 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('quantityElectronic').value| number| vnCurrency"
+										[ngbTooltip]="item.get('quantityElectronic').value.toLocaleString('en-US')"
 									>
-										{{ item.get('quantityElectronic').value| number| vnCurrency }}
+										{{ item.get('quantityElectronic').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="quantity-transaction text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('quantityTransaction').value| number| vnCurrency"
+										[ngbTooltip]="item.get('quantityTransaction').value.toLocaleString('en-US')"
 									>
-										{{ item.get('quantityTransaction').value| number| vnCurrency }}
+										{{ item.get('quantityTransaction').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="price text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('price').value| number| vnCurrency"
+										[ngbTooltip]="item.get('price').value.toLocaleString('en-US')"
 									>
-										{{ item.get('price').value| number| vnCurrency }}
+										{{ item.get('price').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('totalMoney').value| number| vnCurrency"
+										[ngbTooltip]="item.get('totalMoney').value.toLocaleString('en-US')"
 									>
-										{{ item.get('totalMoney').value| number| vnCurrency }}
+										{{ item.get('totalMoney').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-liter text-right">
@@ -235,36 +235,36 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('provisionalMoney').value| number| vnCurrency"
+										[ngbTooltip]="item.get('provisionalMoney').value.toLocaleString('en-US')"
 									>
-										{{ item.get('provisionalMoney').value| number| vnCurrency }}
+										{{ item.get('provisionalMoney').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="limit-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('limitMoney').value| number| vnCurrency"
+										[ngbTooltip]="item.get('limitMoney').value.toLocaleString('en-US')"
 									>
-										{{ item.get('limitMoney').value| number| vnCurrency }}
+										{{ item.get('limitMoney').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="cash-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('cashMoney').value| number| vnCurrency"
+										[ngbTooltip]="item.get('cashMoney').value.toLocaleString('en-US')"
 									>
-										{{ item.get('cashMoney').value| number| vnCurrency }}
+										{{ item.get('cashMoney').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-point text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.get('totalPoint').value| number| vnCurrency"
+										[ngbTooltip]="item.get('totalPoint').value.toLocaleString('en-US')"
 									>
-										{{ item.get('totalPoint').value| number| vnCurrency }}
+										{{ item.get('totalPoint').value.toLocaleString('en-US') }}
 									</p>
 								</td>
 							</tr>
@@ -275,36 +275,36 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalPrice| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalPrice.toLocaleString('en-US')"
 										*ngIf="dataItem?.chip"
 									>
-										{{ dataItem?.totalPrice| number| vnCurrency }}
+										{{ dataItem?.totalPrice.toLocaleString('en-US') }}
 									</p>
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="sumTotalMoney| number| vnCurrency"
+										[ngbTooltip]="sumTotalMoney.toLocaleString('en-US')"
 										*ngIf="!dataItem?.chip"
 									>
-										{{ sumTotalMoney| number| vnCurrency }}
+										{{ sumTotalMoney.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td colspan="2" class="total-provisional-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalProvisionalMoney| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalProvisionalMoney.toLocaleString('en-US')"
 									>
-										{{ dataItem?.totalProvisionalMoney| number| vnCurrency }}
+										{{ dataItem?.totalProvisionalMoney.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-limit-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalLimitMoney || '0' | number| vnCurrency "
+										[ngbTooltip]="dataItem?.totalLimitMoney.toLocaleString('en-US') || '0' "
 									>
-										{{ dataItem?.totalLimitMoney || '0' | number| vnCurrency}}
+										{{ dataItem?.totalLimitMoney.toLocaleString('en-US') || '0'}}
 									</p>
 								</td>
 								<td class="total-cash-paid text-right">
@@ -312,27 +312,27 @@
 										class="cursor-pointer text-ellipsis"
 										placement="top"
                     *ngIf="dataItem?.chip"
-										[ngbTooltip]="dataItem?.totalCashPaid| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalCashPaid.toLocaleString('en-US')"
 									>
-										{{ dataItem?.totalCashPaid| number| vnCurrency }}
+										{{ dataItem?.totalCashPaid.toLocaleString('en-US') }}
 									</p>
 
                   <p
                     class="cursor-pointer text-ellipsis"
                     placement="top"
-                    [ngbTooltip]="sumCashMoney| number| vnCurrency"
+                    [ngbTooltip]="sumCashMoney.toLocaleString('en-US')"
                     *ngIf="!dataItem?.chip"
                   >
-                    {{ sumCashMoney| number| vnCurrency }}
+                    {{ sumCashMoney.toLocaleString('en-US') }}
                   </p>
 								</td>
 								<td class="total-point text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalPoints| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalPoints.toLocaleString('en-US')"
 									>
-										{{ dataItem?.totalPoints| number| vnCurrency }}
+										{{ dataItem?.totalPoints.toLocaleString('en-US') }}
 									</p>
 								</td>
 							</tr>
@@ -369,77 +369,77 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.gaugeStart| number| vnCurrency"
+										[ngbTooltip]="item.gaugeStart.toLocaleString('en-US')"
 									>
-										{{ item.gaugeStart| number| vnCurrency }}
+										{{ item.gaugeStart.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="gauge-end text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.gaugeEnd| number| vnCurrency"
+										[ngbTooltip]="item.gaugeEnd.toLocaleString('en-US')"
 									>
-										{{ item.gaugeEnd| number| vnCurrency }}
+										{{ item.gaugeEnd.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="quantity-gauge text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.quantityGauge| number| vnCurrency"
+										[ngbTooltip]="item.quantityGauge.toLocaleString('en-US')"
 									>
-										{{ item.quantityGauge| number| vnCurrency }}
+										{{ item.quantityGauge.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="electronic-start text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.electronicStart| number| vnCurrency"
+										[ngbTooltip]="item.electronicStart.toLocaleString('en-US')"
 									>
-										{{ item.electronicStart| number| vnCurrency }}
+										{{ item.electronicStart.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="electronic-end text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.electronicEnd| number| vnCurrency"
+										[ngbTooltip]="item.electronicEnd.toLocaleString('en-US')"
 									>
-										{{ item.electronicEnd| number| vnCurrency }}
+										{{ item.electronicEnd.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="quantity-electronic text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.quantityElectronic| number| vnCurrency"
+										[ngbTooltip]="item.quantityElectronic.toLocaleString('en-US')"
 									>
-										{{ item.quantityElectronic| number| vnCurrency }}
+										{{ item.quantityElectronic.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="quantity-transaction text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.quantityTransaction| number| vnCurrency"
+										[ngbTooltip]="item.quantityTransaction.toLocaleString('en-US')"
 									>
-										{{ item.quantityTransaction| number| vnCurrency }}
+										{{ item.quantityTransaction.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="price text-right">
-									<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.price| number| vnCurrency">
-										{{ item.price| number| vnCurrency }}
+									<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.price.toLocaleString('en-US')">
+										{{ item.price.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.totalMoney| number| vnCurrency"
+										[ngbTooltip]="item.totalMoney.toLocaleString('en-US')"
 									>
-										{{ item.totalMoney| number| vnCurrency }}
+										{{ item.totalMoney.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-liter text-right">
@@ -455,36 +455,36 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.provisionalMoney| number| vnCurrency"
+										[ngbTooltip]="item.provisionalMoney.toLocaleString('en-US')"
 									>
-										{{ item.provisionalMoney| number| vnCurrency }}
+										{{ item.provisionalMoney.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="limit-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.limitMoney| number| vnCurrency"
+										[ngbTooltip]="item.limitMoney.toLocaleString('en-US')"
 									>
-										{{ item.limitMoney| number| vnCurrency }}
+										{{ item.limitMoney.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="cash-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.cashMoney| number| vnCurrency"
+										[ngbTooltip]="item.cashMoney.toLocaleString('en-US')"
 									>
-										{{ item.cashMoney| number| vnCurrency }}
+										{{ item.cashMoney.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-point text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="item.totalPoint| number| vnCurrency"
+										[ngbTooltip]="item.totalPoint.toLocaleString('en-US')"
 									>
-										{{ item.totalPoint| number| vnCurrency }}
+										{{ item.totalPoint.toLocaleString('en-US') }}
 									</p>
 								</td>
 							</tr>
@@ -495,45 +495,45 @@
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalPrice| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalPrice.toLocaleString('en-US')"
 									>
-										{{ dataItem?.totalPrice| number| vnCurrency }}
+										{{ dataItem?.totalPrice.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td colspan="2" class="total-provisional-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalProvisionalMoney| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalProvisionalMoney.toLocaleString('en-US')"
 									>
-										{{ dataItem?.totalProvisionalMoney| number| vnCurrency }}
+										{{ dataItem?.totalProvisionalMoney.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-limit-money text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalLimitMoney| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalLimitMoney.toLocaleString('en-US')"
 									>
-										{{ dataItem?.totalLimitMoney| number| vnCurrency }}
+										{{ dataItem?.totalLimitMoney.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-cash-paid text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalCashPaid| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalCashPaid.toLocaleString('en-US')"
 									>
-										{{ dataItem?.totalCashPaid| number| vnCurrency }}
+										{{ dataItem?.totalCashPaid.toLocaleString('en-US') }}
 									</p>
 								</td>
 								<td class="total-point text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
-										[ngbTooltip]="dataItem?.totalPoints| number| vnCurrency"
+										[ngbTooltip]="dataItem?.totalPoints.toLocaleString('en-US')"
 									>
-										{{ dataItem?.totalPoints| number| vnCurrency }}
+										{{ dataItem?.totalPoints.toLocaleString('en-US') }}
 									</p>
 								</td>
 							</tr>
