@@ -1,7 +1,7 @@
 export const DynamicAsideMenuConfig = {
 	items: [
 		{
-			title: 'Dashboard',
+			title: 'Trang chủ',
 			root: true,
 			icon: 'fas fa-layer-group',
 			page: '/dashboard',
