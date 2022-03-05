@@ -13,7 +13,7 @@ export const environment = {
 		measurementId: 'G-DB7RBLVY70'
 	},
 	mqtt: {
-		hostname: 'sunoil-management.firecloud.live',
+		hostname: 'admin.sunoil.com.vn',
 		port: 9001,
 		path: '/mqtt',
 		username: 'namthanh',
