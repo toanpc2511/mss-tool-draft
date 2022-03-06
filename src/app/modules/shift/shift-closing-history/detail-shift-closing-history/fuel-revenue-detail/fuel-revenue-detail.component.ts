@@ -25,6 +25,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 	dataItem: IFuelRevenue;
 	sumCashMoney: number;
   sumTotalMoney: number;
+  decimalPattern = /^[0-9]+(\.[0-9]+)?$/;
 
 	constructor(
 		private shiftService: ShiftService,
@@ -80,10 +81,10 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 			return this.fb.group({
 				chip: [d.chip],
 				code: [d.code],
-				electronicEnd: [{ value: d.electronicEnd, disabled: d.chip }, Validators.required],
+				electronicEnd: [{ value: d.electronicEnd, disabled: d.chip }, [Validators.pattern(this.decimalPattern), Validators.required]],
 				electronicStart: [d.electronicStart],
 				employeeName: [d.employeeName],
-				gaugeEnd: [ d.gaugeEnd, Validators.required],
+				gaugeEnd: [ d.gaugeEnd, [Validators.pattern(this.decimalPattern), Validators.required]],
 				gaugeStart: [d.gaugeStart],
 				id: [d.id],
 				limitMoney: [d.limitMoney],

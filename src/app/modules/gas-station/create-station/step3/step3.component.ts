@@ -199,6 +199,9 @@ export class Step3Component extends BaseComponent implements OnInit {
     if (error.code === 'SUN-OIL-4208') {
       this.toastr.error('Mã cột không tồn tại');
     }
+    if (error.code === 'SUN-OIL-4259') {
+      this.toastr.error('Cột đã được gán lịch cho nhân viên, không thể xóa cột !');
+    }
   }
 
   submit() {
