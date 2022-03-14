@@ -359,11 +359,11 @@
             <th class='text-right plan-money' scope="">
               <label class="form-label">Số tiền</label>
             </th>
-            <th class="plan-note" scope="">
-              <label class="form-label">Ghi chú</label>
-            </th>
             <th class="plan-image text-center" scope="">
               <label class="form-label">Ảnh</label>
+            </th>
+            <th class="plan-note" scope="">
+              <label class="form-label">Ghi chú</label>
             </th>
           </tr>
           </thead>
@@ -373,34 +373,32 @@
             <td>{{i + 1}}</td>
             <td>{{payment.date | date: 'dd/MM/yyyy'}}</td>
             <td class="text-right">{{payment.money.toLocaleString('en-US')}}</td>
-            <td>{{payment.note}}</td>
             <td class="image text-center">
               <p>
                 <em class='fas fa-images' (click)='viewImages(imageDetailTpl, payment)'></em>
               </p>
             </td>
+            <td>{{payment.note}}</td>
           </tr>
           </tbody>
-
-          <tfoot>
-          <tr>
-            <td colspan="3"></td>
-            <td class="text-left money-plan-detail-title">Tổng số tiền:</td>
-            <td class="text-right">{{data?.totalMoney?.toLocaleString('en-US') || 0}}</td>
-          </tr>
-          <tr>
-            <td colspan="3"></td>
-            <td class="text-left money-plan-detail-title">Số tiền đã thanh toán:</td>
-            <td class="text-right">{{data?.amountPaid?.toLocaleString('en-US') || 0}}</td>
-
-          </tr>
-          <tr>
-            <td colspan="3"></td>
-            <td class="text-left money-plan-detail-title">Số tiền còn phải thanh toán:</td>
-            <td class="text-right">{{data?.amountOwed?.toLocaleString('en-US') || 0}}</td>
-          </tr>
-          </tfoot>
         </table>
+      </div>
+
+      <div class="row justify-content-end font-weight-bold">
+        <div class="col-4 pr-4">
+          <div class="row justify-content-between pb-3">
+            <p class="col-6">Tổng số tiền:</p>
+            <p class="col-6 text-right">{{data?.totalMoney?.toLocaleString('en-US') || 0}}</p>
+          </div>
+          <div class="row justify-content-between pb-3">
+            <p class="col-6">Số tiền đã thanh toán: </p>
+            <p class="col-6 text-right">{{data?.amountPaid?.toLocaleString('en-US') || 0}}</p>
+          </div>
+          <div class="row justify-content-between pb-3">
+            <p class="col-6">Số tiền còn phải thanh toán: </p>
+            <p class="col-6 text-right">{{data?.amountOwed?.toLocaleString('en-US') || 0}}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -425,7 +423,7 @@
       Phê duyệt
     </button>
     <button *ngIf='data?.status === "ACCEPTED" && data?.contractType.code === "PLAN"' type="button" class="btn btn-primary mr-3" (click)="openUpdatePlanContractDialog(data)">
-      Thanh toán
+      Cập nhật thanh toán
     </button>
 	</div>
 </div>
