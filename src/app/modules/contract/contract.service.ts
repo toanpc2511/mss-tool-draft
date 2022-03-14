@@ -265,7 +265,12 @@ export class ContractService {
 	acceptContract(id: number) {
 		return this.http.put(`contracts/acceptances/${id}`, {});
 	}
+
 	rejectContract(id: number, body) {
 		return this.http.put(`contracts/rejections/${id}`, body);
 	}
+
+  createPaymentPlanContract(paymentData) {
+    return this.http.post(`contract-payment`, paymentData);
+  }
 }

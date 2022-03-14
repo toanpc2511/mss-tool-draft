@@ -94,8 +94,8 @@
         </div>
         <div class='content-activity'>
           <div class='info-impact '>
-            <p class='font-weight-bold mx-5'>{{item.userName}}</p>
-            <p class=''>{{item.description}} <strong> {{item.code}}</strong> <strong *ngIf='item.name'> - {{ item.name}} </strong> <span *ngIf='item.descriptionDetail'>{{item.descriptionDetail}}</span></p>
+            <span class='font-weight-bold mx-5'>{{item.userName}}</span>
+            <span class=''>{{item.description}} <strong> {{item.code}}</strong> <strong *ngIf='item.name'> - {{ item.name}} </strong> <span *ngIf='item.descriptionDetail'>{{item.descriptionDetail}}</span></span>
           </div>
           <div class='time-impact mx-5 pt-5'>
             <p>{{item.date | date:'HH:mm - dd/MM/yyyy'}}</p>

@@ -11,6 +11,8 @@ import {
 } from './reject-contract-modal/reject-contract-modal.component';
 import { FileService } from 'src/app/shared/services/file.service';
 import { SubheaderService } from 'src/app/_metronic/partials/layout';
+import {UpdatePlanContractComponent} from "./update-plan-contract/update-plan-contract.component";
+import {IAttachment, IExchangePoint} from "../../exchange-point-management/models/exchange-point.interface";
 
 @Component({
   selector: 'app-details-contract',
@@ -24,6 +26,7 @@ export class DetailsContractComponent extends BaseComponent implements OnInit, A
   dataDetail;
   customerId;
   contractId;
+  detailImage: IAttachment;
 
   constructor(
     private router: Router,
@@ -41,11 +44,11 @@ export class DetailsContractComponent extends BaseComponent implements OnInit, A
   setBreadcumb() {
 		setTimeout(() => {
 			this.subheader.setBreadcrumbs([
-				{
-					title: 'Quản lý ca làm việc',
-					linkText: 'Quản lý ca làm việc',
-					linkPath: '/ca-lam-viec'
-				},
+				// {
+				// 	title: 'Quản lý ca làm việc',
+				// 	linkText: 'Quản lý ca làm việc',
+				// 	linkPath: '/ca-lam-viec'
+				// },
 				{
 					title: 'Chi tiết hợp đồng',
 					linkText: 'Chi tiết hợp đồng',
@@ -124,6 +127,26 @@ export class DetailsContractComponent extends BaseComponent implements OnInit, A
       type: 'ACCEPTED',
       customerId: this.customerId
     };
+  }
+
+  openUpdatePlanContractDialog(data): void {
+    const modalRef = this.modalService.open(UpdatePlanContractComponent, {
+      backdrop: 'static',
+      size: 'xl'
+    });
+
+    modalRef.componentInstance.data = data;
+
+    modalRef.result.then((result) => {
+      if (result) {
+        this.getContractById();
+      }
+    })
+  }
+
+  viewImages(content, item): void {
+    this.modalService.open(content, { size: 'lg' });
+    this.detailImage = item.file !== null ? item.file[0] : null;
   }
 
   downloadFile(fileId: string, fileName: string) {
