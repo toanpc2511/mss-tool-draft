@@ -94,7 +94,7 @@ export class UpdatePlanContractComponent extends BaseComponent implements OnInit
     });
 
     modalRef.componentInstance.data = {
-      message: `<div class="text-left pl-5"><p>Số tiền thanh toán là : ${money.toLocaleString('en-US')}</p><p>Bạn có chắc chăn muốn lưu thông tin thanh toán?</p></div>`,
+      message: `<div class="text-left pl-5"><p>Số tiền thanh toán là : ${money.toLocaleString('en-US')}</p><p>Bạn có chắc chắn muốn lưu thông tin thanh toán?</p></div>`,
     }
 
     modalRef.result.then((result) => {

@@ -1,8 +1,11 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { EArea, EStatus } from 'src/app/shared/data-enum/enums';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 import { IFile } from 'src/app/shared/services/file.service';
 import { HttpService } from 'src/app/shared/services/http.service';
+import {IContractLiquidation, ILiquidationDetail} from './contract-liquidation/contract-liquidation.interface';
 
 export enum ECreatorType {
 	EMPLOYEE = 'EMPLOYEE',
@@ -18,6 +21,8 @@ export interface IContract {
 	code: string;
 	name: string;
 	attachment: IFile[];
+  liquidationStatus: string;
+  liquidated: boolean;
 	customer: {
 		address: string;
 		dateOfBirth: string;
@@ -116,7 +121,11 @@ export enum EContractStatus {
 	ACCEPTED = 'ACCEPTED',
 	REJECT = 'REJECT',
 	WAITING_ACCEPT = 'WAITING_ACCEPT',
-	DRAFT = 'DRAFT'
+	DRAFT = 'DRAFT',
+  PAID = 'PAID',
+  REFUSED = 'REFUSED',
+  WAIT_FOR_CONFIRMATION = 'WAIT_FOR_CONFIRMATION',
+  CONFIRMED = 'CONFIRMED'
 }
 export interface ISortData {
 	fieldSort: string;
@@ -272,5 +281,29 @@ export class ContractService {
 
   createPaymentPlanContract(paymentData) {
     return this.http.post(`contract-payment`, paymentData);
+  }
+
+  getLiquidationContract(contractId: string): Observable<DataResponse<IContractLiquidation>> {
+    const params = new HttpParams().set('contract-id', contractId);
+    return this.http.get<IContractLiquidation>(`liquidation/info`, {params});
+  }
+
+  getDetailLiquidationContract(contractId: string): Observable<DataResponse<ILiquidationDetail[]>> {
+    const params = new HttpParams().set('contract-id', contractId);
+    return this.http.get<ILiquidationDetail[]>(`liquidation`, {params});
+  }
+
+  acceptLiquidationContract(contractId: string): Observable<DataResponse<boolean>> {
+    const params = new HttpParams().set('contract-id', contractId);
+    return this.http.put(`liquidation/acceptances`, {}, {params});
+  }
+
+  rejectLiquidationContract(contractId: string, data): Observable<DataResponse<boolean>> {
+    const params = new HttpParams().set('contract-id', contractId);
+    return this.http.put(`liquidation/rejections`, data, {params});
+  }
+
+  createLiquidationContract(data: IContractLiquidation): Observable<DataResponse<boolean>> {
+    return this.http.post<boolean>(`liquidation`, data);
   }
 }
