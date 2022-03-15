@@ -5,42 +5,42 @@
   <div class="modal-body">
     <div class="overlay overlay-block cursor-default" style="min-height: 100px">
       <form [formGroup]="updateForm" class="form form-label-right">
-        <div class="form-group row">
-          <div class="col-lg-6 row">
-            <div class="col-lg-5">
+        <div class="form-group row justify-content-between">
+          <div class="col-lg-5 row pr-0">
+            <div class="col-lg-6">
               <label class="form-label">Tổng tiền hợp đồng: </label>
             </div>
 
-            <div class="col-lg-7">
+            <div class="col-lg-6 text-right pr-0">
               <label class="form-label font-weight-bold">{{data?.totalMoney?.toLocaleString('en-US') || 0}}</label>
             </div>
           </div>
 
-          <div class="col-lg-6 row">
-            <div class="col-lg-5">
+          <div class="col-lg-5 row pl-0">
+            <div class="col-lg-6 pl-0">
               <label class="form-label">Số tiền đã thanh toán: </label>
             </div>
 
-            <div class="col-lg-7">
+            <div class="col-lg-6 text-right">
               <label class="form-label font-weight-bold">{{data?.amountPaid?.toLocaleString('en-US') || 0}}</label>
             </div>
           </div>
         </div>
 
         <div class="form-group row">
-          <div class="col-lg-6 row">
-            <div class="col-lg-5">
+          <div class="col-lg-5 row pr-0">
+            <div class="col-lg-6">
               <label class="form-label">Số tiền cần phải thanh toán: </label>
             </div>
 
-            <div class="col-lg-7">
+            <div class="col-lg-6 text-right pr-0">
               <label class="form-label font-weight-bold">{{data?.amountOwed?.toLocaleString('en-US') || 0}}</label>
             </div>
           </div>
         </div>
 
-        <div class="form-group row">
-          <div class="col-lg-6">
+        <div class="form-group row justify-content-between">
+          <div class="col-lg-5">
             <label class="form-label">Ngày</label>
 
             <div class="input-group">
@@ -51,6 +51,7 @@
                 #date="ngbDatepicker"
                 formControlName="date"
                 [autofocus]="false"
+                [maxDate]="maxDate"
               />
               <div class="input-group-append">
                 <button
@@ -68,7 +69,7 @@
             ></app-validate>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-5">
             <label class="form-label required">Số tiền</label>
             <input
               type="text"
@@ -88,6 +89,11 @@
               [control]="updateForm.controls['money']"
               [error]="'invalidMoney'"
               [message]="'Số tiền thanh toán không được lớn hơn số tiền cần phải thanh toán'"
+            ></app-validate>
+            <app-validate
+              [control]="updateForm.controls['money']"
+              [error]="'invalidValueMoney'"
+              [message]="'Số tiền thanh toán không được nhỏ hơn hoặc bằng 0'"
             ></app-validate>
           </div>
         </div>

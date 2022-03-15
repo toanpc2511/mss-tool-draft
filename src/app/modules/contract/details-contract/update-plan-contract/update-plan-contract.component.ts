@@ -1,13 +1,12 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {ContractService} from "../../contract.service";
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
-import {convertDateToServer, convertMoney, renameUniqueFileName} from "../../../../shared/helpers/functions";
-import {EFileType, FileService, IFile} from "../../../../shared/services/file.service";
+import {convertDateToServer, convertMoney} from "../../../../shared/helpers/functions";
+import {EFileType, FileService} from "../../../../shared/services/file.service";
 import {finalize, takeUntil} from "rxjs/operators";
-import {HttpEventType} from "@angular/common/http";
 import {DestroyService} from "../../../../shared/services/destroy.service";
 import * as moment from 'moment';
 import { IError } from 'src/app/shared/models/error.model';
@@ -28,6 +27,13 @@ export class UpdatePlanContractComponent extends BaseComponent implements OnInit
   dataContract;
   @Input() data;
   attachmentImg: IImage;
+  currentDate = new Date();
+  maxDate: NgbDateStruct = {
+    day: this.currentDate.getDate(),
+    month: this.currentDate.getMonth() + 1,
+    year: this.currentDate.getFullYear()
+  };
+
 
   constructor(
     public modal: NgbActiveModal,
@@ -60,8 +66,11 @@ export class UpdatePlanContractComponent extends BaseComponent implements OnInit
 
   validateMoney(amountOwed: number): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (convertMoney(control.value) > amountOwed) {
+      const money = convertMoney(control.value);
+      if (money > amountOwed) {
         return { invalidMoney: true }
+      } else if (money <= 0 || money > 9999999999999) {
+        return { invalidValueMoney: true }
       }
       return null;
     }
@@ -78,18 +87,23 @@ export class UpdatePlanContractComponent extends BaseComponent implements OnInit
       return;
     }
 
-    const money: string = this.updateForm.get('money').value;
+    const money: number = convertMoney(this.updateForm.get('money').value);
 
     const modalRef = this.modalService.open(ConfirmDialogComponent, {
       backdrop: 'static'
     });
 
     modalRef.componentInstance.data = {
-      message: `<p>Số tiền thanh toán là : ${money}</p><p>Bạn có chắc chăn muốn lưu thông tin thanh toán</p>`,
+      message: `<div class="text-left pl-5"><p>Số tiền thanh toán là : ${money.toLocaleString('en-US')}</p><p>Bạn có chắc chăn muốn lưu thông tin thanh toán?</p></div>`,
     }
 
     modalRef.result.then((result) => {
-      const data = { ...this.updateForm.getRawValue(), money: convertMoney(this.updateForm.get('money').value), date: convertDateToServer(this.updateForm.get('date').value) };
+      const data = {
+        ...this.updateForm.getRawValue(),
+        money: convertMoney(this.updateForm.get('money').value),
+        date: convertDateToServer(this.updateForm.get('date').value)
+      };
+
       if (result) {
         this.contractService
           .createPaymentPlanContract(data)
@@ -113,6 +127,7 @@ export class UpdatePlanContractComponent extends BaseComponent implements OnInit
   onReset(): void {
     this.updateForm.reset();
     this.updateForm.get('date').patchValue(moment().format('DD/MM/YYYY'));
+    this.attachmentImg = null;
   }
 
   addImage($event) {
