@@ -338,6 +338,73 @@
 		</div>
 	</div>
 
+  <div class="list-product" *ngIf='data?.contractType.code === "PLAN"'>
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">thông tin thanh toán</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive angular-bootstrap-table">
+        <table class="table table-vertical-center overflow-hidden" aria-label="">
+          <thead class="thead-light">
+          <tr>
+            <th class="plan-stt" scope="">
+              <label class="form-label">STT</label>
+            </th>
+            <th class="plan-date" scope="">
+              <label class="form-label">Ngày</label>
+            </th>
+            <th class='text-right plan-money' scope="">
+              <label class="form-label">Số tiền</label>
+            </th>
+            <th class="plan-note" scope="">
+              <label class="form-label">Ghi chú</label>
+            </th>
+            <th class="plan-image text-center" scope="">
+              <label class="form-label">Ảnh</label>
+            </th>
+          </tr>
+          </thead>
+
+          <tbody *ngIf="data?.contractPayment?.length > 0">
+          <tr *ngFor="let payment of data?.contractPayment, let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{payment.date | date: 'dd/MM/yyyy'}}</td>
+            <td class="text-right">{{payment.money.toLocaleString('en-US')}}</td>
+            <td>{{payment.note}}</td>
+            <td class="image text-center">
+              <p>
+                <em class='fas fa-images' (click)='viewImages(imageDetailTpl, payment)'></em>
+              </p>
+            </td>
+          </tr>
+          </tbody>
+
+          <tfoot>
+          <tr>
+            <td colspan="3"></td>
+            <td class="text-left money-plan-detail-title">Tổng số tiền:</td>
+            <td class="text-right">{{data?.totalMoney?.toLocaleString('en-US') || 0}}</td>
+          </tr>
+          <tr>
+            <td colspan="3"></td>
+            <td class="text-left money-plan-detail-title">Số tiền đã thanh toán:</td>
+            <td class="text-right">{{data?.amountPaid?.toLocaleString('en-US') || 0}}</td>
+
+          </tr>
+          <tr>
+            <td colspan="3"></td>
+            <td class="text-left money-plan-detail-title">Số tiền còn phải thanh toán:</td>
+            <td class="text-right">{{data?.amountOwed?.toLocaleString('en-US') || 0}}</td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
 	<div class="reason-refusal" *ngIf="data?.status === eContractStatus.REJECT">
 		<div class="card-header">
 			<div class="card-title">
@@ -357,5 +424,28 @@
     <button *ngIf='data?.status === "WAITING_ACCEPT" && (eAuthorize.ACCEPT_CONTRACT_BUTTON|canUseFeature)' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
       Phê duyệt
     </button>
+    <button *ngIf='data?.status === "ACCEPTED" && data?.contractType.code === "PLAN"' type="button" class="btn btn-primary mr-3" (click)="openUpdatePlanContractDialog(data)">
+      Thanh toán
+    </button>
 	</div>
 </div>
+
+<ng-template #imageDetailTpl let-c='close' let-d='dismiss'>
+  <div class='modal-header'>
+    <h4 class='modal-title'>Ảnh chi tiết:</h4>
+    <button type='button' class='close' aria-label='Close' (click)="d('Cross click')">
+      <span aria-hidden='true' class='fas fa-times'></span>
+    </button>
+  </div>
+  <div class='modal-body text-center'>
+    <div *ngIf='detailImage !== null; else imageNull'>
+      <img src='{{detailImage.url}}' class='img-fluid' alt=''>
+    </div>
+    <ng-template #imageNull>Không có ảnh</ng-template>
+  </div>
+  <div class='modal-footer'>
+    <button type='button' class='btn btn-outline-primary' (click)="c('Close click')" style='min-width: 135px'>
+      Đóng
+    </button>
+  </div>
+</ng-template>
