@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ILiquidationDetail} from "../contract-liquidation.interface";
-import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {convertMoney, renameUniqueFileName} from "../../../../shared/helpers/functions";
 import {EFileType, FileService, IFile} from "../../../../shared/services/file.service";
@@ -43,7 +43,7 @@ export class CreateContractLiquidationComponent implements OnInit {
       storageFee: [null],
       otherFees: [null],
       totalMoney: [null],
-      note: [null],
+      note: [null, Validators.maxLength(500)],
       file: [null],
       liquidation: this.fb.array([
         this.fb.group({
@@ -57,7 +57,7 @@ export class CreateContractLiquidationComponent implements OnInit {
           cashLimitOil: [null],
           liquidationAmount: [null],
           amount: [null],
-          liquidationUnitPrice: [null],
+          liquidationUnitPrice: [null, Validators.required],
           intoLiquidationMoney: [0]
         })
       ])
