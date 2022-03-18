@@ -74,6 +74,11 @@
                     decimal-mask
                     (input)="calculateLiquidationMoney(i)"
                   />
+                  <app-validate
+                    [control]="createForm.controls['liquidationUnitPrice']"
+                    [error]="'required'"
+                    [message]="'Đơn giá thanh lý không được để trống'"
+                  ></app-validate>
                 </td>
                 <td class="text-right">
                   {{control?.get('intoLiquidationMoney').value?.toLocaleString('en-US') || 0}}
@@ -141,6 +146,12 @@
                 placeholder=''
                 maxlength="500"
               />
+
+              <app-validate
+                [control]="createForm.controls['note']"
+                [error]="'maxlength'"
+                [message]="'Ghi chú không được quá 500 ký tự'"
+              ></app-validate>
             </p>
           </div>
         </div>

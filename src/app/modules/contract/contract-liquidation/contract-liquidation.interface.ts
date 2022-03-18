@@ -14,6 +14,7 @@ export interface IContractLiquidation {
   dateCreated: string;
   submitDate: string;
   rejectReason: string;
+  liquidationStatus: string;
 }
 
 export interface ILiquidationDetail {
