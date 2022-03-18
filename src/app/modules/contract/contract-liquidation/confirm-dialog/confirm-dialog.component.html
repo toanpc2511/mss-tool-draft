@@ -1,0 +1,56 @@
+<div class="modal-content">
+  <div class="modal-header text-uppercase text-bold">
+    <h4 class="modal-title" *ngIf="data.type === 'REJECT'">từ chối thanh lý</h4>
+    <h4 class="modal-title" *ngIf="data.type === 'ACCEPTED'">xác nhận</h4>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default" style="min-height: 100px">
+      <form [formGroup]="rejectForm" class="form form-label-right">
+        <div class="form-group row">
+          <div class="col-lg-12" *ngIf='data.type === "REJECT"'>
+            <label class="form-label required">Từ chối</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nhập lý do từ chối"
+              formControlName="rejectReason"
+              autocomplete="off"
+              maxlength="199"
+              trim="blur"
+            />
+            <app-validate
+              [control]="rejectForm.controls['rejectReason']"
+              [error]="'required'"
+              [message]="'Lý do từ chối không được để trống'"
+            ></app-validate>
+          </div>
+        </div>
+      </form>
+
+      <div class="text-center" *ngIf="data.type === 'ACCEPTED'">
+        <p>Bạn có chắc chắn muốn phê duyệt thanh lý hợp đồng</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <button
+      type="submit"
+      class="btn btn-primary btn-dialog"
+      *ngIf='data.type === "REJECT"'
+      (click)="rejectContract()"
+    >
+      Từ chối
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary btn-dialog"
+      *ngIf='data.type === "ACCEPTED"'
+      (click)="acceptContract()"
+    >
+      Đồng ý
+    </button>
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+  </div>
+</div>

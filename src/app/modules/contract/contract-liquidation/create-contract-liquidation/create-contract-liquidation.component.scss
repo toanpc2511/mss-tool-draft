@@ -50,24 +50,8 @@
       }
     }
 
-    .plan-stt {
-      width: 100px;
-    }
-
-    .plan-date {
-      width:150px;
-    }
-
-    .plan-money, .plan-image {
-      width: 100px;
-    }
-
     tfoot {
       border-bottom: 1px solid #cccccc;
-
-      .money-plan-detail-title {
-        padding-left: 500px;
-      }
     }
   }
 }
@@ -86,8 +70,4 @@
 
 ::ng-deep .mat-tab-body-content {
   padding-top: 0px !important;
-}
-
-.fa-images {
-  color: #4674EB;
 }
