@@ -182,10 +182,10 @@
     <button type="button" class="btn btn-outline-primary mr-3" routerLink="/hop-dong/danh-sach">
       Quay lại
     </button>
-    <button *ngIf="contractLiquidation.liquidationStatus === 'WAIT_FOR_CONFIRMATION'" type="button" class="btn btn-outline-primary mr-3" (click)="openConfirmDialog(eContractStatus.REJECT)">
+    <button *ngIf="contractLiquidation?.liquidationStatus === 'WAIT_FOR_CONFIRMATION'" type="button" class="btn btn-outline-primary mr-3" (click)="openConfirmDialog(eContractStatus.REJECT)">
       Từ chối
     </button>
-    <button *ngIf="contractLiquidation.liquidationStatus === 'WAIT_FOR_CONFIRMATION'" type="button" class="btn btn-primary mr-3" (click)="openConfirmDialog(eContractStatus.ACCEPTED)">
+    <button *ngIf="contractLiquidation?.liquidationStatus === 'WAIT_FOR_CONFIRMATION'" type="button" class="btn btn-primary mr-3" (click)="openConfirmDialog(eContractStatus.ACCEPTED)">
       Phê duyệt
     </button>
   </div>

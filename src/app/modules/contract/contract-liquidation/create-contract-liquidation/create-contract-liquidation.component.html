@@ -49,7 +49,7 @@
             </thead>
 
             <tbody formArrayName="liquidation">
-            <tr *ngFor="let control of getListProduct()?.controls, let i = index">
+            <tr *ngFor="let control of liquidation?.controls, let i = index">
               <ng-container [formGroupName]="i">
                 <td>{{i + 1}}</td>
                 <td>{{control?.get('name').value}}</td>
@@ -75,7 +75,7 @@
                     (input)="calculateLiquidationMoney(i)"
                   />
                   <app-validate
-                    [control]="createForm.controls['liquidationUnitPrice']"
+                    [control]="control?.get('liquidationUnitPrice')"
                     [error]="'required'"
                     [message]="'Đơn giá thanh lý không được để trống'"
                   ></app-validate>
@@ -105,6 +105,7 @@
                   trim="blur"
                   placeholder=''
                   decimal-mask
+                  autofocus="off"
                   (input)="calculateTotalMoney()"
                 />
               </div>
@@ -179,10 +180,10 @@
         </div>
         <div class="col-10">
           <input #fileChoose multiple type="file" (change)="addFiles($event)" hidden />
-          <button class="mr-3 btn btn-outline-primary" (click)="fileChoose.click()">
+          <button type="button" class="mr-3 btn btn-outline-primary" (click)="fileChoose.click()">
             Đính kèm file
           </button>
-          <button class="ml-3 btn btn-outline-primary" (click)="removeFile('ALL')">Xóa tất cả</button>
+          <button type="button" class="ml-3 btn btn-outline-primary" (click)="removeFile('ALL')">Xóa tất cả</button>
         </div>
         <div class="mt-2 col-lg-12">
           <div
