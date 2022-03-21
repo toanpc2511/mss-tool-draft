@@ -353,7 +353,7 @@
       </div>
     </div>
 
-    <div class="list-product" *ngIf='data?.contractType.code === "PLAN"'>
+    <div class="list-product" *ngIf='data?.contractType.code === "PLAN" && data?.amountPaid > 0'>
       <div class="card-header">
         <div class="card-title">
           <h3 class="title">thông tin thanh toán</h3>
@@ -441,7 +441,7 @@
         Thanh lý
       </button>
       <button *ngIf="data?.status === 'ACCEPTED' && data?.contractType.code === 'PLAN'" type="button" class="btn btn-primary mr-3" (click)="openUpdatePlanContractDialog(data)">
-        Cập nhật thanh lý
+        Cập nhật thanh toán
       </button>
     </div>
   </div>

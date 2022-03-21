@@ -24,6 +24,7 @@ export class CreateContractLiquidationComponent implements OnInit {
   filesUploadProgress: Array<number> = [];
   @Input() data: string;
   liquidationDetails: ILiquidationDetail[];
+  dataSource: FormArray;
 
   constructor(private fb: FormBuilder,
               private modal: NgbActiveModal,
@@ -45,27 +46,33 @@ export class CreateContractLiquidationComponent implements OnInit {
       totalMoney: [null],
       note: [null, Validators.maxLength(500)],
       file: [null],
-      liquidation: this.fb.array([
-        this.fb.group({
-          id: [null],
-          discount: [null],
-          name: [null],
-          totalMoney: [null],
-          price: [null],
-          unit: [null],
-          theRemainingAmount: [null],
-          cashLimitOil: [null],
-          liquidationAmount: [null],
-          amount: [null],
-          liquidationUnitPrice: [null, Validators.required],
-          intoLiquidationMoney: [0]
-        })
-      ])
+      liquidation: new FormArray([])
     });
   }
 
   ngOnInit(): void {
     this.getDetailLiquidationContract();
+  }
+
+  initForm(data: ILiquidationDetail[]): void {
+    data.forEach((d: ILiquidationDetail) => {
+      const test: FormGroup = this.fb.group({
+        id: [d.id],
+        discount: [d.discount],
+        name: [d.name],
+        totalMoney: [d.totalMoney],
+        price: [d.price],
+        unit: [d.unit],
+        theRemainingAmount: [d.theRemainingAmount],
+        cashLimitOil: [d.cashLimitOil],
+        liquidationAmount: [Math.min(d.amount, d.liquidationAmount)],
+        amount: [d.amount],
+        liquidationUnitPrice: [d.liquidationUnitPrice, Validators.required],
+        intoLiquidationMoney: [0]
+      });
+
+      (this.createForm.get('liquidation') as FormArray).push(test);
+    });
   }
 
   getDetailLiquidationContract(): void {
@@ -75,14 +82,7 @@ export class CreateContractLiquidationComponent implements OnInit {
       })
   }
 
-  initForm(data): void {
-    const liquidation: ILiquidationDetail = data.map((l: ILiquidationDetail) => {
-      return { ...l, liquidationAmount: Math.min(...[l.amount, l.liquidationAmount])}
-    });
-    this.createForm.get('liquidation').patchValue(liquidation);
-  }
-
-  getListProduct(): FormArray {
+  get liquidation(): FormArray {
     return this.createForm.get('liquidation') as FormArray;
   }
 
@@ -91,18 +91,17 @@ export class CreateContractLiquidationComponent implements OnInit {
   }
 
   calculateLiquidationMoney(index: number): void {
-    const liquidationPrice: number = convertMoney((this.createForm.controls['liquidation'] as FormArray).at(index).get('liquidationUnitPrice').value);
-    const liquidationAmount: number = +(this.createForm.controls['liquidation'] as FormArray).at(index).get('liquidationAmount').value;
+    const liquidationPrice: number = convertMoney((this.createForm.controls['liquidation'] as FormArray).at(index)?.get('liquidationUnitPrice').value);
+    const liquidationAmount: number = +(this.createForm.controls['liquidation'] as FormArray).at(index)?.get('liquidationAmount').value;
     const totalMoney: number = liquidationPrice * liquidationAmount;
 
-    (this.createForm.controls['liquidation'] as FormArray).at(index).get('intoLiquidationMoney').patchValue(totalMoney);
-    (this.createForm.controls['liquidation'] as FormArray).at(index).get('liquidationUnitPrice').patchValue(liquidationPrice);
+    (this.createForm.controls['liquidation'] as FormArray).at(index)?.get('intoLiquidationMoney').patchValue(totalMoney);
     this.calculateLiquidationTotal();
     this.calculateTotalMoney();
   }
 
   calculateLiquidationTotal(): void {
-    const liquidation: ILiquidationDetail[] = (this.createForm.controls['liquidation'] as FormArray).getRawValue();;
+    const liquidation: ILiquidationDetail[] = (this.createForm.controls['liquidation'] as FormArray).getRawValue();
     const total = liquidation.reduce((acc, cur) => {
       return acc + cur.intoLiquidationMoney;
     }, 0);
@@ -113,7 +112,7 @@ export class CreateContractLiquidationComponent implements OnInit {
     const liquidationTotal: number = this.createForm.controls['totalLiquidationOfFuel'].value;
     const otherFees: number = convertMoney(this.createForm.controls['otherFees'].value);
     const storageFee: number = convertMoney(this.createForm.controls['storageFee'].value);
-    const totalMoney: number = liquidationTotal + otherFees + storageFee;
+    const totalMoney: number = liquidationTotal - otherFees - storageFee;
 
     this.createForm.get('totalMoney').patchValue(Number(totalMoney));
   }
@@ -183,12 +182,16 @@ export class CreateContractLiquidationComponent implements OnInit {
       return;
     }
 
+    (this.createForm.get('liquidation') as FormArray).controls.forEach(d => {
+      d.get('liquidationUnitPrice').patchValue(convertMoney(d.get('liquidationUnitPrice').value));
+    })
+
     const data = {
       ...this.createForm.getRawValue(),
       contractId: this.data,
       otherFees: convertMoney(this.createForm.get('otherFees').value),
       storageFee: convertMoney(this.createForm.get('storageFee').value),
-      file: this.filesUploaded.map((f) => f.id)
+      file: this.filesUploaded.map((f: IFile) => f.id),
     }
 
     this.contractService.createLiquidationContract(data)
