@@ -54,6 +54,23 @@
           </div>
         </div>
       </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-5">
+            <label class="form-label">Trạng thái: </label>
+          </div>
+
+          <div class="col-lg-7">
+            <label *ngIf="contractLiquidation?.liquidationStatus === eContractStatus.REFUSED" class="form-label font-weight-bold"
+            >Đã từ chối</label>
+            <label *ngIf="contractLiquidation?.liquidationStatus === eContractStatus.CONFIRMED" class="form-label font-weight-bold"
+            >Đã phê duyệt</label>
+            <label *ngIf="contractLiquidation?.liquidationStatus === eContractStatus.WAIT_FOR_CONFIRMATION" class="form-label font-weight-bold"
+            >Chờ phê duyệt</label>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -58,6 +58,11 @@ table {
     &.station-employee {
       width: 300px;
     }
+
+    &.comment {
+      max-width: 500px;
+      min-width: 300px;
+    }
   }
 
   thead {
