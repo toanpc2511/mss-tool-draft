@@ -178,6 +178,17 @@
     </div>
   </div>
 
+  <div class="reject-reason" *ngIf="contractLiquidation?.rejectReason">
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-2 font-weight-bold title-reason">Lý do từ chối:</div>
+        <div class="col-lg-10 title-reason">
+          <p>{{contractLiquidation?.rejectReason}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="w-100 d-flex justify-content-center pb-10">
     <button type="button" class="btn btn-outline-primary mr-3" routerLink="/hop-dong/danh-sach">
       Quay lại
@@ -187,6 +198,9 @@
     </button>
     <button *ngIf="contractLiquidation?.liquidationStatus === 'WAIT_FOR_CONFIRMATION'" type="button" class="btn btn-primary mr-3" (click)="openConfirmDialog(eContractStatus.ACCEPTED)">
       Phê duyệt
+    </button>
+    <button *ngIf="contractLiquidation?.liquidationStatus === 'REFUSED'" type="button" class="btn btn-primary mr-3" (click)="openCreateLiquidation('REFUSED')">
+      Cập nhật yêu cầu thanh lý
     </button>
   </div>
 </div>

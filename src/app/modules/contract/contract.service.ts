@@ -288,9 +288,9 @@ export class ContractService {
     return this.http.get<IContractLiquidation>(`liquidation/info`, {params});
   }
 
-  getDetailLiquidationContract(contractId: string): Observable<DataResponse<ILiquidationDetail[]>> {
+  getDetailLiquidationContract(contractId: string): Observable<DataResponse<IContractLiquidation>> {
     const params = new HttpParams().set('contract-id', contractId);
-    return this.http.get<ILiquidationDetail[]>(`liquidation`, {params});
+    return this.http.get<IContractLiquidation>(`liquidation`, {params});
   }
 
   acceptLiquidationContract(contractId: string): Observable<DataResponse<boolean>> {
@@ -305,5 +305,9 @@ export class ContractService {
 
   createLiquidationContract(data: IContractLiquidation): Observable<DataResponse<boolean>> {
     return this.http.post<boolean>(`liquidation`, data);
+  }
+
+  updateLiquidationContract(data: IContractLiquidation): Observable<DataResponse<boolean>> {
+    return this.http.put<boolean>(`liquidation`, data);
   }
 }

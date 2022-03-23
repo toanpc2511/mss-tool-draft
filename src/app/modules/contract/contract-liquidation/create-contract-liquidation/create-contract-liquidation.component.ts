@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {ILiquidationDetail} from "../contract-liquidation.interface";
+import {IContractLiquidation, ILiquidationDetail} from "../contract-liquidation.interface";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {convertMoney, renameUniqueFileName} from "../../../../shared/helpers/functions";
@@ -10,6 +10,7 @@ import {HttpEventType} from "@angular/common/http";
 import {DestroyService} from "../../../../shared/services/destroy.service";
 import { ContractService } from '../../contract.service';
 import {DataResponse} from "../../../../shared/models/data-response.model";
+import {ITransferData} from "../../details-contract/details-contract.component";
 
 @Component({
   selector: 'app-create-contract-liquidation',
@@ -22,9 +23,7 @@ export class CreateContractLiquidationComponent implements OnInit {
   createForm: FormGroup;
   filesUploaded: Array<IFile> = [];
   filesUploadProgress: Array<number> = [];
-  @Input() data: string;
-  liquidationDetails: ILiquidationDetail[];
-  dataSource: FormArray;
+  @Input() data: ITransferData;
 
   constructor(private fb: FormBuilder,
               private modal: NgbActiveModal,
@@ -45,7 +44,7 @@ export class CreateContractLiquidationComponent implements OnInit {
       otherFees: [null],
       totalMoney: [null],
       note: [null, Validators.maxLength(500)],
-      file: [null],
+      file: [null, Validators.required],
       liquidation: new FormArray([])
     });
   }
@@ -54,9 +53,22 @@ export class CreateContractLiquidationComponent implements OnInit {
     this.getDetailLiquidationContract();
   }
 
-  initForm(data: ILiquidationDetail[]): void {
-    data.forEach((d: ILiquidationDetail) => {
-      const test: FormGroup = this.fb.group({
+  getDetailLiquidationContract(): void {
+    this.contractService.getDetailLiquidationContract(this.data.contractId)
+      .subscribe((res: DataResponse<IContractLiquidation>): void => {
+        this.initForm(res.data);
+      });
+  }
+
+  initForm(data: IContractLiquidation): void {
+    if (this.data.status === 'REFUSED') {
+      const {liquidation, storageFee, otherFees, ...liquidationInfo} = {...data};
+      this.createForm.patchValue({...liquidationInfo, storageFee: storageFee.toLocaleString('en-US'), otherFees: otherFees.toLocaleString('en-US')});
+      this.filesUploaded = liquidationInfo.file;
+    }
+
+    data.liquidation.forEach((d: ILiquidationDetail) => {
+      const product: FormGroup = this.fb.group({
         id: [d.id],
         discount: [d.discount],
         name: [d.name],
@@ -67,19 +79,12 @@ export class CreateContractLiquidationComponent implements OnInit {
         cashLimitOil: [d.cashLimitOil],
         liquidationAmount: [Math.min(d.amount, d.liquidationAmount)],
         amount: [d.amount],
-        liquidationUnitPrice: [d.liquidationUnitPrice, Validators.required],
-        intoLiquidationMoney: [0]
+        liquidationUnitPrice: [d.liquidationUnitPrice?.toLocaleString('en-US'), Validators.required],
+        intoLiquidationMoney: [d.intoLiquidationMoney]
       });
 
-      (this.createForm.get('liquidation') as FormArray).push(test);
+      (this.createForm.get('liquidation') as FormArray).push(product);
     });
-  }
-
-  getDetailLiquidationContract(): void {
-    this.contractService.getDetailLiquidationContract(this.data)
-      .subscribe((res: DataResponse<ILiquidationDetail[]>): void => {
-        this.initForm(res.data);
-      })
   }
 
   get liquidation(): FormArray {
@@ -177,29 +182,36 @@ export class CreateContractLiquidationComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.createForm.patchValue({file: this.filesUploaded.map((f: IFile) => f.id)})
     this.createForm.markAllAsTouched();
     if (this.createForm.invalid) {
       return;
     }
 
+    this.formatData();
+
+    if (this.data.status === 'REFUSED') {
+      this.contractService.updateLiquidationContract(this.createForm.getRawValue())
+        .subscribe((res: DataResponse<boolean>): void => {
+          this.modal.close(true);
+        });
+    } else {
+      this.contractService.createLiquidationContract(this.createForm.getRawValue())
+        .subscribe((res: DataResponse<boolean>): void => {
+          if (res.data) {
+            this.modal.close(1);
+          }
+        });
+    }
+  }
+
+  formatData(): void {
     (this.createForm.get('liquidation') as FormArray).controls.forEach(d => {
       d.get('liquidationUnitPrice').patchValue(convertMoney(d.get('liquidationUnitPrice').value));
     })
 
-    const data = {
-      ...this.createForm.getRawValue(),
-      contractId: this.data,
-      otherFees: convertMoney(this.createForm.get('otherFees').value),
-      storageFee: convertMoney(this.createForm.get('storageFee').value),
-      file: this.filesUploaded.map((f: IFile) => f.id),
-    }
-
-    this.contractService.createLiquidationContract(data)
-      .subscribe((res: DataResponse<boolean>): void => {
-        if (res.data) {
-          this.modal.close(1);
-        }
-      })
+    this.createForm.get('otherFees').patchValue(convertMoney(this.createForm.get('otherFees').value));
+    this.createForm.get('storageFee').patchValue(convertMoney(this.createForm.get('storageFee').value));
+    this.createForm.get('contractId').patchValue(this.data.contractId);
   }
-
 }

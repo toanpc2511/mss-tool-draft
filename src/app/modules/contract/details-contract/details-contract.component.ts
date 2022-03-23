@@ -15,7 +15,11 @@ import { CreateContractLiquidationComponent } from '../contract-liquidation/crea
 import {UpdatePlanContractComponent} from "./update-plan-contract/update-plan-contract.component";
 import {IAttachment} from "../../exchange-point-management/models/exchange-point.interface";
 import {MatTabGroup} from "@angular/material/tabs";
-import { result } from 'lodash';
+
+export interface ITransferData {
+  contractId: string;
+  status: string;
+}
 
 @Component({
   selector: 'app-details-contract',
@@ -137,13 +141,16 @@ export class DetailsContractComponent extends BaseComponent implements OnInit, A
     };
   }
 
-  openCreateLiquidation(idContract: string): void {
+  openCreateLiquidation(idContract: string, status?: string): void {
     const modalRef = this.modalService.open(CreateContractLiquidationComponent, {
       backdrop: 'static',
       size: 'xl',
     });
 
-    modalRef.componentInstance.data = idContract;
+    modalRef.componentInstance.data = {
+      contractId: idContract,
+      status
+    };
 
     modalRef.result.then((result) => {
       if (result) {

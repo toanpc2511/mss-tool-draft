@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import { FileService } from 'src/app/shared/services/file.service';
 import {BaseComponent} from "../../../shared/components/base/base.component";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -6,6 +6,7 @@ import {ContractService, EContractStatus} from "../contract.service";
 import { IContractLiquidation } from './contract-liquidation.interface';
 import {ConfirmDialogComponent} from "./confirm-dialog/confirm-dialog.component";
 import { DataResponse } from 'src/app/shared/models/data-response.model';
+import {CreateContractLiquidationComponent} from "./create-contract-liquidation/create-contract-liquidation.component";
 
 export interface IDataTransfer {
   title: string;
@@ -24,7 +25,8 @@ export class ContractLiquidationComponent extends BaseComponent implements OnIni
 
   constructor(private fileService: FileService,
               private modalService: NgbModal,
-              private contractService: ContractService
+              private contractService: ContractService,
+              private cdr: ChangeDetectorRef
   ) {
     super();
   }
@@ -37,6 +39,7 @@ export class ContractLiquidationComponent extends BaseComponent implements OnIni
     this.contractService.getLiquidationContract(this.contractId)
       .subscribe((res: DataResponse<IContractLiquidation>): void => {
         this.contractLiquidation = res.data;
+        this.cdr.detectChanges();
       })
   }
 
@@ -50,6 +53,24 @@ export class ContractLiquidationComponent extends BaseComponent implements OnIni
       type: type,
       contractId: this.contractId
     };
+  }
+
+  openCreateLiquidation(status: string): void {
+    const modalRef = this.modalService.open(CreateContractLiquidationComponent, {
+      backdrop: 'static',
+      size: 'xl',
+    });
+
+    modalRef.componentInstance.data = {
+      contractId: this.contractId,
+      status: status
+    };
+
+    modalRef.result.then((result) => {
+      if (result) {
+        this.getLiquidationContract();
+      }
+    })
   }
 
   downloadFile(fileId: number, fileName: string) {
