@@ -10,6 +10,12 @@ import {
 } from './reject-contract-modal/reject-contract-modal.component';
 import { FileService } from 'src/app/shared/services/file.service';
 
+export interface IAttachment {
+  id: number;
+  url: string;
+  name: string;
+}
+
 @Component({
 	selector: 'app-details-contract',
 	templateUrl: './details-contract.component.html',
@@ -20,8 +26,10 @@ export class DetailsContractComponent implements OnInit {
 	eContractStatus = EContractStatus;
 	data;
 	dataDetail;
+  detailImage: IAttachment;
+  contractId;
 
-	constructor(
+  constructor(
 		private router: Router,
 		private modalService: NgbModal,
 		private contractService: ContractService,
@@ -36,12 +44,15 @@ export class DetailsContractComponent implements OnInit {
 	}
 
 	getContractById() {
-		this.activeRoute.params
+
+    this.activeRoute.params
 			.pipe(
 				pluck('id'),
 				filter((contractId: number) => !!contractId),
 				switchMap((contractId: number) => {
+          this.contractId = contractId;
 					return this.contractService.getContractById(contractId);
+
 				}),
 				takeUntil(this.destroy$)
 			)
@@ -98,6 +109,11 @@ export class DetailsContractComponent implements OnInit {
 			}
 		});
 	}
+
+  viewImages(content, item): void {
+    this.modalService.open(content, { size: 'lg' });
+    this.detailImage = item.file !== null ? item.file[0] : null;
+  }
 
 	downloadFile(fileId: string, fileName: string) {
 		return this.fileService.downloadFile(fileId, fileName);

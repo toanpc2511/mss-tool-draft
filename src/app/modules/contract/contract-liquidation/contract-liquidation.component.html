@@ -1,0 +1,215 @@
+<div class="card card-custom">
+  <div class="info-customer">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">Thông tin thanh lý</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-5">
+            <label class="form-label">Người tạo: </label>
+          </div>
+
+          <div class="col-lg-7">
+            <label class="form-label font-weight-bold">{{contractLiquidation?.creator}}</label>
+          </div>
+        </div>
+
+        <div class="col-lg-6 row">
+          <div class="col-lg-5">
+            <label class="form-label">Người duyệt: </label>
+          </div>
+
+          <div class="col-lg-7">
+            <label class="form-label font-weight-bold">{{contractLiquidation?.employeeApprove}}</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-5">
+            <label class="form-label">Ngày tạo: </label>
+          </div>
+
+          <div class="col-lg-7">
+            <label class="form-label font-weight-bold"
+            >{{contractLiquidation?.dateCreated | date: 'dd/MM/yyyy '}}</label
+            >
+          </div>
+        </div>
+
+        <div class="col-lg-6 row">
+          <div class="col-lg-5">
+            <label class="form-label">Ngày phê duyệt: </label>
+          </div>
+
+          <div class="col-lg-7">
+            <label class="form-label font-weight-bold"
+            >{{contractLiquidation?.submitDate | date: 'dd/MM/yyyy '}}</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6 row">
+          <div class="col-lg-5">
+            <label class="form-label">Trạng thái: </label>
+          </div>
+
+          <div class="col-lg-7">
+            <label *ngIf="contractLiquidation?.liquidationStatus === eContractStatus.REFUSED" class="form-label font-weight-bold"
+            >Đã từ chối</label>
+            <label *ngIf="contractLiquidation?.liquidationStatus === eContractStatus.CONFIRMED" class="form-label font-weight-bold"
+            >Đã xác nhận</label>
+            <label *ngIf="contractLiquidation?.liquidationStatus === eContractStatus.WAIT_FOR_CONFIRMATION" class="form-label font-weight-bold"
+            >Chờ xác nhận</label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="list-product">
+    <div class="card-header">
+      <div class="card-title">
+        <h3 class="title">thanh lý</h3>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive angular-bootstrap-table">
+        <table class="table table-vertical-center overflow-hidden" aria-label="">
+          <thead class="thead-light">
+          <tr>
+            <th scope="">
+              <label class="form-label">STT</label>
+            </th>
+            <th scope="">
+              <label class="form-label">Tên sản phẩm</label>
+            </th>
+            <th scope="">
+              <label class="form-label">Đơn vị</label>
+            </th>
+            <th class='text-right' scope="">
+              <label class="form-label">Số lượng</label>
+            </th>
+            <th class="text-right" scope="">
+              <label class="form-label">Đơn giá (VNĐ)</label>
+            </th>
+            <th class="text-right" scope="">
+              <label class="form-label">Đơn giá chiết khấu (VNĐ)</label>
+            </th>
+            <th class="text-right" scope="">
+              <label class="form-label">Thành tiền (Hạn mức nhiên liệu)</label>
+            </th>
+            <th class="text-right" scope="">
+              <label class="form-label">Số lượng còn</label>
+            </th>
+            <th class="text-right" scope="">
+              <label class="form-label">Số lượng thanh lý</label>
+            </th>
+            <th class="text-right" scope="">
+              <label class="form-label">Đơn giá thanh lý</label>
+            </th>
+            <th class="text-right" scope="">
+              <label class="form-label">Thành tiền thanh lý</label>
+            </th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr *ngFor="let prod of contractLiquidation?.liquidation, let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{prod?.name}}</td>
+            <td>{{prod?.unit}}</td>
+            <td class='text-right'>{{prod?.amount}}</td>
+            <td class="text-right">{{prod?.price?.toLocaleString('en-US')}}</td>
+            <td class="text-right">{{prod?.discount?.toLocaleString('en-US')}}</td>
+            <td class="text-right">{{prod?.totalMoney?.toLocaleString('en-US')}}</td>
+            <td class="text-right">
+              {{prod?.theRemainingAmount?.toLocaleString('en-US')}}
+            </td>
+            <td class="text-right">
+              {{prod?.liquidationAmount?.toLocaleString('en-US')}}
+            </td>
+            <td class="text-right">
+              {{prod?.liquidationUnitPrice?.toLocaleString('en-US')}}
+            </td>
+            <td class="text-right">
+              {{prod?.intoLiquidationMoney?.toLocaleString('en-US')}}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row justify-content-end font-weight-bold">
+        <div class="col-4 pr-4">
+          <div class="row justify-content-between pb-3">
+            <p class="col-6">Tổng tiền thanh lý nhiên liệu:</p>
+            <p class="col-6 text-right">{{contractLiquidation?.totalLiquidationOfFuel?.toLocaleString('en-US')}}</p>
+          </div>
+          <div class="row justify-content-between pb-3">
+            <p class="col-6">Phí lưu kho: </p>
+            <p class="col-6 text-right">{{contractLiquidation?.storageFee?.toLocaleString('en-US')}}</p>
+          </div>
+          <div class="row justify-content-between pb-3">
+            <p class="col-6">Phí khác: </p>
+            <p class="col-6 text-right">{{contractLiquidation?.otherFees?.toLocaleString('en-US')}}</p>
+          </div>
+          <div class="row justify-content-between pb-3">
+            <p class="col-6">Tổng tiền phải thanh toán: </p>
+            <p class="col-6 text-right">{{contractLiquidation?.totalMoney?.toLocaleString('en-US')}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="upload-file">
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-2">Ghi chú</div>
+        <div class="col-lg-10 font-weight-bold">
+          <p>{{contractLiquidation?.note}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="upload-file">
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-2 ">File đính kèm</div>
+        <div class="col-lg-10">
+          <div *ngFor="let f of contractLiquidation?.file">
+            <p class="url" (click)="downloadFile(f.id, f.name)">{{f.name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reject-reason" *ngIf="contractLiquidation?.rejectReason">
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-lg-2 font-weight-bold title-reason">Lý do từ chối:</div>
+        <div class="col-lg-10 title-reason">
+          <p>{{contractLiquidation?.rejectReason}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-100 d-flex justify-content-center pb-10">
+    <button type="button" class="btn btn-outline-primary mr-3" routerLink="/hop-dong/danh-sach">
+      Quay lại
+    </button>
+  </div>
+</div>

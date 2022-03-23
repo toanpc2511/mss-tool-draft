@@ -18,9 +18,11 @@ import { DirectivesModule } from '../../shared/directives/directives.module';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 import { RejectContractModalComponent } from './details-contract/reject-contract-modal/reject-contract-modal.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ContractLiquidationComponent } from './contract-liquidation/contract-liquidation.component';
 
 @NgModule({
-	declarations: [ListContractComponent, CreateContractComponent, DetailsContractComponent, RejectContractModalComponent],
+	declarations: [ListContractComponent, CreateContractComponent, DetailsContractComponent, RejectContractModalComponent, ContractLiquidationComponent],
 	imports: [
 		CommonModule,
 		ContractRoutingModule,
@@ -35,7 +37,8 @@ import { RejectContractModalComponent } from './details-contract/reject-contract
 		NgbDatepickerModule,
 		TextMaskModule,
 		PipesModule,
-		NgbProgressbarModule
+		NgbProgressbarModule,
+		MatTabsModule
 	]
 })
 export class ContractModule {}

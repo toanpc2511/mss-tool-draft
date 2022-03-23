@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { EArea, EStatus } from 'src/app/shared/data-enum/enums';
 import { IFile } from 'src/app/shared/services/file.service';
 import { HttpService } from 'src/app/shared/services/http.service';
+import { Observable } from 'rxjs';
+import { IContractLiquidation } from './contract-liquidation/contract-liquidation.interface';
+import { DataResponse } from '../../shared/models/data-response.model';
 
 export enum ECreatorType {
 	EMPLOYEE = 'EMPLOYEE',
@@ -17,6 +20,7 @@ export interface IContract {
 	id: number;
 	code: string;
 	name: string;
+  liquidationStatus: string;
 	attachment: IFile[];
 	customer: {
 		address: string;
@@ -115,7 +119,11 @@ export enum EContractStatus {
 	ACCEPTED = 'ACCEPTED',
 	REJECT = 'REJECT',
 	WAITING_ACCEPT = 'WAITING_ACCEPT',
-	DRAFT = 'DRAFT'
+	DRAFT = 'DRAFT',
+  PAID = 'PAID',
+  REFUSED = 'REFUSED',
+  WAIT_FOR_CONFIRMATION = 'WAIT_FOR_CONFIRMATION',
+  CONFIRMED = 'CONFIRMED'
 }
 export interface ISortData {
 	fieldSort: string;
@@ -276,4 +284,9 @@ export class ContractService {
 	rejectContract(id: number, body) {
 		return this.http.put(`contracts/rejections/${id}`, body);
 	}
+
+  getLiquidationContract(contractId: string): Observable<DataResponse<IContractLiquidation>> {
+    const params = new HttpParams().set('contract-id', contractId);
+    return this.http.get<IContractLiquidation>(`liquidation/info`, {params});
+  }
 }
