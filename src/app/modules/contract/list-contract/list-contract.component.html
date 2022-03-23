@@ -76,6 +76,9 @@
 							(sort)="sort($event)"
 						></app-sort-icon>
 					</th>
+          <th scope="">
+            Trạng thái thanh lý
+          </th>
 					<th class="text-center" scope="">Tác động</th>
 				</thead>
 				<tbody>
@@ -138,8 +141,27 @@
 									>Chờ phê duyệt</ng-container
 								>
 								<ng-container *ngIf="item.status === contractStatus.DRAFT">Lưu nháp</ng-container>
+                <ng-container *ngIf="item.status === contractStatus.PAID">Đã thanh toán</ng-container>
 							</span>
 						</td>
+            <td class="status">
+							<span
+                [ngClass]="item.liquidationStatus ? 'label label-lg label-inline' : ''"
+                [class.label-light-success]="item.liquidationStatus === contractStatus.CONFIRMED"
+                [class.label-light-danger]="item.liquidationStatus === contractStatus.REFUSED"
+                [class.label-light-warning]="item.liquidationStatus === contractStatus.WAIT_FOR_CONFIRMATION"
+              >
+								<ng-container *ngIf="item.liquidationStatus === contractStatus.CONFIRMED"
+                >Đã phê duyệt</ng-container
+                >
+								<ng-container *ngIf="item.liquidationStatus === contractStatus.REFUSED"
+                >Đã từ chối</ng-container
+                >
+								<ng-container *ngIf="item.liquidationStatus === contractStatus.WAIT_FOR_CONFIRMATION"
+                >Chờ phê duyệt</ng-container
+                >
+							</span>
+            </td>
 						<td class="text-center action">
 							<a
 								*ngIf="item.status === contractStatus.DRAFT"
