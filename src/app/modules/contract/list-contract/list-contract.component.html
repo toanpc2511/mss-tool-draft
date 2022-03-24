@@ -152,13 +152,13 @@
                 [class.label-light-warning]="item.liquidationStatus === contractStatus.WAIT_FOR_CONFIRMATION"
               >
 								<ng-container *ngIf="item.liquidationStatus === contractStatus.CONFIRMED"
-                >Đã xác nhận</ng-container
+                >Đã phê duyệt</ng-container
                 >
 								<ng-container *ngIf="item.liquidationStatus === contractStatus.REFUSED"
                 >Đã từ chối</ng-container
                 >
 								<ng-container *ngIf="item.liquidationStatus === contractStatus.WAIT_FOR_CONFIRMATION"
-                >Chờ xác nhận</ng-container
+                >Chờ phê duyệt</ng-container
                 >
 							</span>
             </td>
