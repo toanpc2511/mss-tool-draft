@@ -210,13 +210,13 @@
     <button type="button" class="btn btn-outline-primary mr-3" routerLink="/hop-dong/danh-sach">
       Quay lại
     </button>
-    <button *ngIf="contractLiquidation?.liquidationStatus === 'WAIT_FOR_CONFIRMATION'" type="button" class="btn btn-outline-primary mr-3" (click)="openConfirmDialog(eContractStatus.REJECT)">
+    <button *ngIf="contractLiquidation?.liquidationStatus === 'WAIT_FOR_CONFIRMATION' && (eAuthorize.REJECTIONS_LIQUIDATION_BUTTON|canUseFeature)" type="button" class="btn btn-outline-primary mr-3" (click)="openConfirmDialog(eContractStatus.REJECT)">
       Từ chối
     </button>
-    <button *ngIf="contractLiquidation?.liquidationStatus === 'WAIT_FOR_CONFIRMATION'" type="button" class="btn btn-primary mr-3" (click)="openConfirmDialog(eContractStatus.ACCEPTED)">
+    <button *ngIf="contractLiquidation?.liquidationStatus === 'WAIT_FOR_CONFIRMATION' && (eAuthorize.ACCEPTANCES_LIQUIDATION_BUTTON|canUseFeature)" type="button" class="btn btn-primary mr-3" (click)="openConfirmDialog(eContractStatus.ACCEPTED)">
       Phê duyệt
     </button>
-    <button *ngIf="contractLiquidation?.liquidationStatus === 'REFUSED'" type="button" class="btn btn-primary mr-3" (click)="openCreateLiquidation('REFUSED')">
+    <button *ngIf="contractLiquidation?.liquidationStatus === 'REFUSED' && (eAuthorize.UPDATE_LIQUIDATION_BUTTON|canUseFeature)" type="button" class="btn btn-primary mr-3" (click)="openCreateLiquidation('REFUSED')">
       Cập nhật yêu cầu thanh lý
     </button>
   </div>

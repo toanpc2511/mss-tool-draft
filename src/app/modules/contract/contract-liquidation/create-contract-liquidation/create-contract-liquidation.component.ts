@@ -80,11 +80,13 @@ export class CreateContractLiquidationComponent implements OnInit {
         liquidationAmount: [Math.min(d.amount, d.liquidationAmount)],
         amount: [d.amount],
         liquidationUnitPrice: [d.liquidationUnitPrice?.toLocaleString('en-US'), Validators.required],
-        intoLiquidationMoney: [d.intoLiquidationMoney]
+        intoLiquidationMoney: [d?.liquidationAmount * d?.liquidationUnitPrice]
       });
 
       (this.createForm.get('liquidation') as FormArray).push(product);
     });
+
+    this.calculateTotalMoney();
   }
 
   get liquidation(): FormArray {
@@ -120,6 +122,17 @@ export class CreateContractLiquidationComponent implements OnInit {
     const totalMoney: number = liquidationTotal - otherFees - storageFee;
 
     this.createForm.get('totalMoney').patchValue(Number(totalMoney));
+    this.validateTotalMoney(totalMoney);
+  }
+
+  validateTotalMoney(totalMoney: number): void {
+    if (totalMoney < 0) {
+      this.createForm.get('totalMoney').setErrors({ 'incorrect': true });
+      this.createForm.get('totalMoney').markAsTouched();
+      return;
+    }
+
+    this.createForm.get('totalMoney').setErrors(null);
   }
 
   addFiles($event: Event): void {

@@ -70,6 +70,11 @@ export enum EAuthorize {
   DELETE_CONTRACT_BUTTON = 'delete_contract_button',
   ACCEPT_CONTRACT_BUTTON = 'accept_contract_button',
   REJECT_CONTRACT_BUTTION = 'reject_contract_button',
+  UPDATE_CONTRACT_PAYMENT_BUTTON = 'update_contract_payment_button',
+  CREATE_LIQUIDATION_BUTTON = 'create_liquidation_button',
+  ACCEPTANCES_LIQUIDATION_BUTTON = 'acceptances_liquidation_button',
+  REJECTIONS_LIQUIDATION_BUTTON = 'rejections_liquidation_button',
+  UPDATE_LIQUIDATION_BUTTON = 'update_liquidation_button',
   /* End */
 
   /* Quản lý nhân viên */
