@@ -63,7 +63,7 @@ export class CreateContractLiquidationComponent implements OnInit {
   initForm(data: IContractLiquidation): void {
     if (this.data.status === 'REFUSED') {
       const {liquidation, storageFee, otherFees, ...liquidationInfo} = {...data};
-      this.createForm.patchValue({...liquidationInfo, storageFee: storageFee.toLocaleString('en-US'), otherFees: otherFees.toLocaleString('en-US')});
+      this.createForm.patchValue({...liquidationInfo, storageFee: storageFee?.toLocaleString('en-US'), otherFees: otherFees?.toLocaleString('en-US')});
       this.filesUploaded = liquidationInfo.file;
     }
 
