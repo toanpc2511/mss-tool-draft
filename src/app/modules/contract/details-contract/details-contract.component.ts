@@ -176,7 +176,7 @@ export class DetailsContractComponent extends BaseComponent implements OnInit, A
   }
 
   viewImages(content, item): void {
-    this.modalService.open(content, { size: 'lg' });
+    this.modalService.open(content, { size: 'xl' });
     this.detailImage = item.file !== null ? item.file[0] : null;
   }
 

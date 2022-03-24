@@ -74,6 +74,7 @@
                     placeholder=''
                     decimal-mask
                     (input)="calculateLiquidationMoney(i)"
+                    maxlength="13"
                   />
                   <app-validate
                     [control]="control?.get('liquidationUnitPrice')"
@@ -107,6 +108,7 @@
                   trim="blur"
                   placeholder=''
                   decimal-mask
+                  maxlength="13"
                   (input)="calculateTotalMoney()"
                 />
               </div>
@@ -122,6 +124,7 @@
                   trim="blur"
                   placeholder=''
                   decimal-mask
+                  maxlength="13"
                   (input)="calculateTotalMoney()"
                 />
               </div>
