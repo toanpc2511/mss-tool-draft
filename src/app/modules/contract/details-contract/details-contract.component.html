@@ -437,10 +437,10 @@
       <button *ngIf='data?.status === "WAITING_ACCEPT" && (eAuthorize.ACCEPT_CONTRACT_BUTTON|canUseFeature)' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
         Phê duyệt
       </button>
-      <button *ngIf="data?.contractType.code === 'PRE_PAY' && !data?.liquidated && data?.status === 'ACCEPTED'" type="button" class="btn btn-primary mr-3" (click)="openCreateLiquidation(data.id)">
+      <button *ngIf="data?.contractType.code === 'PRE_PAY' && !data?.liquidated && data?.status === 'ACCEPTED' && (eAuthorize.CREATE_LIQUIDATION_BUTTON|canUseFeature)" type="button" class="btn btn-primary mr-3" (click)="openCreateLiquidation(data.id)">
         Thanh lý
       </button>
-      <button *ngIf="data?.status === 'ACCEPTED' && data?.contractType.code === 'PLAN'" type="button" class="btn btn-primary mr-3" (click)="openUpdatePlanContractDialog(data)">
+      <button *ngIf="data?.status === 'ACCEPTED' && data?.contractType.code === 'PLAN' && (eAuthorize.UPDATE_CONTRACT_PAYMENT_BUTTON|canUseFeature)" type="button" class="btn btn-primary mr-3" (click)="openUpdatePlanContractDialog(data)">
         Cập nhật thanh toán
       </button>
     </div>

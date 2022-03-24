@@ -74,7 +74,7 @@
                     placeholder=''
                     decimal-mask
                     (input)="calculateLiquidationMoney(i)"
-                    maxlength="13"
+                    maxlength="16"
                   />
                   <app-validate
                     [control]="control?.get('liquidationUnitPrice')"
@@ -98,8 +98,8 @@
               <p class="col-4 text-right">{{createForm?.get('totalLiquidationOfFuel').value?.toLocaleString('en-US') || 0}}</p>
             </div>
             <div class="row justify-content-between pb-3">
-              <p class="col-8">Phí lưu kho: </p>
-              <div class="col-4">
+              <p class="col-7">Phí lưu kho: </p>
+              <div class="col-5">
                 <input
                   type="text"
                   class="form-control"
@@ -108,30 +108,36 @@
                   trim="blur"
                   placeholder=''
                   decimal-mask
-                  maxlength="13"
+                  maxlength="16"
                   (input)="calculateTotalMoney()"
                 />
               </div>
             </div>
             <div class="row justify-content-between pb-3">
-              <p class="col-8">Phí khác: </p>
-              <div class="col-4">
+              <p class="col-7">Phí khác: </p>
+              <div class="col-5">
                 <input
                   type="text"
                   class="form-control"
                   formControlName='otherFees'
                   autocomplete="off"
-                  trim="blur"
                   placeholder=''
                   decimal-mask
-                  maxlength="13"
+                  maxlength="16"
                   (input)="calculateTotalMoney()"
                 />
               </div>
             </div>
             <div class="row justify-content-between pb-3">
               <p class="col-7">Tổng tiền phải thanh toán: </p>
-              <p class="col-5 text-right">{{createForm?.get('totalMoney').value?.toLocaleString('en-US') || 0}}</p>
+              <div class="col-5">
+                <p class="text-right">{{createForm?.get('totalMoney').value?.toLocaleString('en-US') || 0}}</p>
+                <app-validate
+                  [control]="createForm.controls['totalMoney']"
+                  [error]="'incorrect'"
+                  [message]="'Tổng tiền phải thanh toán không được nhỏ hơn 0'"
+                ></app-validate>
+              </div>
             </div>
           </div>
         </div>
