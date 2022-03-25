@@ -11,6 +11,7 @@ import {ContractService} from "../../contract.service";
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import { DataResponse } from 'src/app/shared/models/data-response.model';
+import {IError} from "../../../../shared/models/error.model";
 
 export interface IDataTransfer {
   type: string;
@@ -75,6 +76,14 @@ export class ConfirmDialogComponent implements OnInit {
           this.modal.close();
           this.router.navigate(['/hop-dong/danh-sach']);
         }
+      }, (err: IError) => {
+        this.checkError(err);
       });
+  }
+
+  checkError(err: IError) {
+    if (err.code === 'SUN-OIL-4306') {
+      this.toastr.error('Hạn mức nhiên liệu còn lại không đủ để thanh lý');
+    }
   }
 }
