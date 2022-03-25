@@ -188,7 +188,7 @@
         <div class="col-lg-2 ">File đính kèm</div>
         <div class="col-lg-10">
           <div *ngFor="let f of contractLiquidation?.file">
-            <p class="url" (click)="downloadFile(f.id, f.name)">{{f.name}}</p>
+            <span class="url" (click)="downloadFile(f.id, f.name)">{{f.name}}</span>
           </div>
         </div>
       </div>
@@ -210,7 +210,7 @@
     <button type="button" class="btn btn-outline-primary mr-3" routerLink="/hop-dong/danh-sach">
       Quay lại
     </button>
-    <button *ngIf="contractLiquidation?.liquidationStatus === 'WAIT_FOR_CONFIRMATION' && (eAuthorize.REJECTIONS_LIQUIDATION_BUTTON|canUseFeature)" type="button" class="btn btn-outline-primary mr-3" (click)="openConfirmDialog(eContractStatus.REJECT)">
+    <button *ngIf="contractLiquidation?.liquidationStatus === 'WAIT_FOR_CONFIRMATION' && (eAuthorize.REJECTIONS_LIQUIDATION_BUTTON|canUseFeature)" type="button" class="btn btn-primary mr-3" (click)="openConfirmDialog(eContractStatus.REJECT)">
       Từ chối
     </button>
     <button *ngIf="contractLiquidation?.liquidationStatus === 'WAIT_FOR_CONFIRMATION' && (eAuthorize.ACCEPTANCES_LIQUIDATION_BUTTON|canUseFeature)" type="button" class="btn btn-primary mr-3" (click)="openConfirmDialog(eContractStatus.ACCEPTED)">
