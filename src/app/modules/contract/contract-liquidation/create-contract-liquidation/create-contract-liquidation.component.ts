@@ -1,4 +1,9 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import {IContractLiquidation, ILiquidationDetail} from "../contract-liquidation.interface";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
@@ -86,6 +91,7 @@ export class CreateContractLiquidationComponent implements OnInit {
       (this.createForm.get('liquidation') as FormArray).push(product);
     });
 
+    this.calculateLiquidationTotal();
     this.calculateTotalMoney();
   }
 
