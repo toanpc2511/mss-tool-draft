@@ -16,6 +16,7 @@ import {DestroyService} from "../../../../shared/services/destroy.service";
 import { ContractService } from '../../contract.service';
 import {DataResponse} from "../../../../shared/models/data-response.model";
 import {ITransferData} from "../../details-contract/details-contract.component";
+import {IError} from "../../../../shared/models/error.model";
 
 @Component({
   selector: 'app-create-contract-liquidation',
@@ -213,6 +214,8 @@ export class CreateContractLiquidationComponent implements OnInit {
       this.contractService.updateLiquidationContract(this.createForm.getRawValue())
         .subscribe((res: DataResponse<boolean>): void => {
           this.modal.close(true);
+        }, (err: IError) => {
+          this.checkError(err);
         });
     } else {
       this.contractService.createLiquidationContract(this.createForm.getRawValue())
@@ -220,6 +223,8 @@ export class CreateContractLiquidationComponent implements OnInit {
           if (res.data) {
             this.modal.close(1);
           }
+        }, (err: IError) => {
+          this.checkError(err);
         });
     }
   }
@@ -232,5 +237,11 @@ export class CreateContractLiquidationComponent implements OnInit {
     this.createForm.get('otherFees').patchValue(convertMoney(this.createForm.get('otherFees').value));
     this.createForm.get('storageFee').patchValue(convertMoney(this.createForm.get('storageFee').value));
     this.createForm.get('contractId').patchValue(this.data.contractId);
+  }
+
+  checkError(err: IError) {
+    if (err.code === 'SUN-OIL-4306') {
+      this.toastr.error('Hạn mức nhiên liệu còn lại không đủ để thanh lý');
+    }
   }
 }
