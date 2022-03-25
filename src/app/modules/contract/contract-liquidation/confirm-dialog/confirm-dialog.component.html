@@ -7,9 +7,10 @@
     <div class="overlay overlay-block cursor-default" style="min-height: 100px">
       <form [formGroup]="rejectForm" class="form form-label-right">
         <div class="form-group row justify-content-center">
-          <div class="col-lg-8" *ngIf='data.type === "REJECT"'>
+          <div class="col-lg-10" *ngIf='data.type === "REJECT"'>
             <label class="form-label required">Từ chối</label>
             <input
+              #rejectInput
               type="text"
               class="form-control"
               placeholder="Nhập lý do từ chối"
@@ -28,13 +29,13 @@
       </form>
 
       <div class="text-center" *ngIf="data.type === 'ACCEPTED'">
-        <p>Bạn có chắc chắn muốn phê duyệt thanh lý hợp đồng</p>
+        <p>Bạn có chắc chắn muốn phê duyệt thanh lý hợp đồng?</p>
       </div>
     </div>
   </div>
   <div class="modal-footer justify-content-center">
     <button
-      type="submit"
+      type="button"
       class="btn btn-primary btn-dialog"
       *ngIf='data.type === "REJECT"'
       (click)="rejectContract()"

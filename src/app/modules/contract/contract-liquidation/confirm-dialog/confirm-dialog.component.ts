@@ -1,4 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {ContractService} from "../../contract.service";
@@ -19,13 +25,14 @@ export interface IDataTransfer {
 export class ConfirmDialogComponent implements OnInit {
   rejectForm: FormGroup;
   @Input() data: IDataTransfer;
+  @ViewChild('rejectInput') rejectInput: ElementRef<HTMLInputElement>;
 
   constructor(
     public modal: NgbActiveModal,
     private fb: FormBuilder,
     private contractService: ContractService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {

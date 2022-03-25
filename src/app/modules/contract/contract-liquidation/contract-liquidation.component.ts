@@ -46,7 +46,7 @@ export class ContractLiquidationComponent extends BaseComponent implements OnIni
   openConfirmDialog(type?:string): void {
     const modalRef = this.modalService.open(ConfirmDialogComponent, {
       backdrop: 'static',
-      size: '500px'
+      size: '700px',
     });
 
     modalRef.componentInstance.data = {
