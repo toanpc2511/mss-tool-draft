@@ -158,7 +158,9 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 			);
 			const cashMoney: number = totalMoney - provisionalMoney - limitMoney - totalPoint;
 
-			this.dataSourceTemp.at(index).get('quantityTransaction').patchValue(quantityElectronic);
+      if (!isChip) {
+        this.dataSourceTemp.at(index).get('quantityTransaction').patchValue(quantityElectronic);
+      }
 
 			this.dataSourceTemp.at(index).get('totalMoney').patchValue(totalMoney);
 
