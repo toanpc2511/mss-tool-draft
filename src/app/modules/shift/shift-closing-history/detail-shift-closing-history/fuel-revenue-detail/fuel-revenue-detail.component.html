@@ -280,19 +280,21 @@
 								<td colspan="10"></td>
 								<td class="text-right">Tổng</td>
 								<td class="total-money text-right">
-									<p
-										class="cursor-pointer text-ellipsis"
-										placement="top"
-										[ngbTooltip]="dataItem?.totalPrice?.toLocaleString('en-US')"
-										*ngIf="dataItem?.chip"
-									>
-										{{ dataItem?.totalPrice?.toLocaleString('en-US') }}
-									</p>
+                  <ng-template #totalPrice>
+                    <p
+                      class="cursor-pointer text-ellipsis"
+                      placement="top"
+                      [ngbTooltip]="dataItem?.totalPrice?.toLocaleString('en-US')"
+                    >
+                      {{ dataItem?.totalPrice?.toLocaleString('en-US') }}
+                    </p>
+                  </ng-template>
+
 									<p
 										class="cursor-pointer text-ellipsis"
 										placement="top"
 										[ngbTooltip]="sumTotalMoney?.toLocaleString('en-US')"
-										*ngIf="!dataItem?.chip"
+										*ngIf="this.hasChangeEndElectronicPermission ? this.hasChangeEndElectronicPermission : !dataItem?.chip; else totalPrice"
 									>
 										{{ sumTotalMoney?.toLocaleString('en-US') }}
 									</p>
@@ -316,20 +318,21 @@
 									</p>
 								</td>
 								<td class="total-cash-paid text-right">
-									<p
-										class="cursor-pointer text-ellipsis"
-										placement="top"
-                    *ngIf="dataItem?.chip"
-										[ngbTooltip]="dataItem?.totalCashPaid?.toLocaleString('en-US')"
-									>
-										{{ dataItem?.totalCashPaid?.toLocaleString('en-US') }}
-									</p>
+                  <ng-template #totalCashPaid>
+                    <p
+                      class="cursor-pointer text-ellipsis"
+                      placement="top"
+                      [ngbTooltip]="dataItem?.totalCashPaid?.toLocaleString('en-US')"
+                    >
+                      {{ dataItem?.totalCashPaid?.toLocaleString('en-US') }}
+                    </p>
+                  </ng-template>
 
                   <p
                     class="cursor-pointer text-ellipsis"
                     placement="top"
                     [ngbTooltip]="sumCashMoney?.toLocaleString('en-US')"
-                    *ngIf="!dataItem?.chip"
+                    *ngIf="this.hasChangeEndElectronicPermission ? this.hasChangeEndElectronicPermission : !dataItem?.chip; else totalCashPaid"
                   >
                     {{ sumCashMoney?.toLocaleString('en-US') }}
                   </p>
