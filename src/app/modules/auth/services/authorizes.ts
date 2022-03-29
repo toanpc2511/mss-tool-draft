@@ -121,6 +121,7 @@ export enum EAuthorize {
   CONFIRMED_REQUEST_LOCK_SHIFT = 'confirmed_request_lock_shift',
   DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button',
   ROLL_BACK_SWAP_SHIFT = 'roll_back_swap_shift',
+  UPDATE_PRODUCT_REVENUE_ADMIN = 'update_product_revenue_admin',
   /* End */
 
   /* Quản lý cấu hình */

@@ -454,8 +454,10 @@ export class ShiftService {
 	}
 
 	// Sửa doanh thu nhiên liệu
-	updateFuelProductRevenue(id: number, dataReq) {
-		return this.http.put(`product-revenue/${id}`, dataReq);
+	updateFuelProductRevenue(id: number, dataReq, hasPermission?: boolean) {
+    console.log(dataReq);
+    const endpoint: string = hasPermission ? `product-revenue/edit?lock-shift-id=${id}` : `product-revenue/${id}`;
+		return this.http.put(endpoint, dataReq);
 	}
 
 	// Lấy ds doanh thu hàng hóa

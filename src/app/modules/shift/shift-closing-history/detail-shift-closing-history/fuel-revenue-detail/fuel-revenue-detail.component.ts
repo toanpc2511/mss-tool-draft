@@ -8,6 +8,7 @@ import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs/operators';
 import { convertMoney } from '../../../../../shared/helpers/functions';
 import { IError } from '../../../../../shared/models/error.model';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
 	selector: 'app-fuel-revenue-detail',
@@ -26,6 +27,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 	sumCashMoney: number;
   sumTotalMoney: number;
   decimalPattern = /^[0-9]+(\.[0-9]+)?$/;
+  hasChangeEndElectronicPermission: boolean;
 
 	constructor(
 		private shiftService: ShiftService,
@@ -33,12 +35,15 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private toastr: ToastrService,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+    private authService: AuthService
 	) {
 		super();
 	}
 
 	ngOnInit(): void {
+    this.hasChangeEndElectronicPermission = this.authService.canUseFeature(this.eAuthorize.UPDATE_PRODUCT_REVENUE_ADMIN);
+
     this.activeRoute.params
       .pipe(takeUntil(this.destroy$))
       .subscribe((param) => {
@@ -81,7 +86,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 			return this.fb.group({
 				chip: [d.chip],
 				code: [d.code],
-				electronicEnd: [{ value: d.electronicEnd, disabled: d.chip }, [Validators.pattern(this.decimalPattern), Validators.required]],
+				electronicEnd: [{ value: d.electronicEnd, disabled: this.hasChangeEndElectronicPermission ? !this.hasChangeEndElectronicPermission : d.chip }, [Validators.pattern(this.decimalPattern), Validators.required]],
 				electronicStart: [d.electronicStart],
 				employeeName: [d.employeeName],
 				gaugeEnd: [ d.gaugeEnd, [Validators.pattern(this.decimalPattern), Validators.required]],
@@ -136,7 +141,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 
 		this.dataSourceTemp.at(index).get('quantityElectronic').patchValue(quantityElectronic);
 
-		if (!isChip) {
+		if (!isChip || this.hasChangeEndElectronicPermission) {
 			const price: number = convertMoney(
 				this.dataSourceForm.at(index).get('price').value.toString()
 			);
@@ -178,13 +183,18 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 		const dataReq = this.dataSourceForm.getRawValue().map((d) => ({
 			code: d.code,
 			gaugeEnd: convertMoney(d.gaugeEnd?.toString()),
-			electronicEnd: convertMoney(d.electronicEnd?.toString())
+			electronicEnd: convertMoney(d.electronicEnd?.toString()),
+      stationId: d.stationId,
+      totalLiter: d.totalLiter,
+      limitMoney: d.limitMoney,
+      totalPoint: d.totalPoint
 		}));
 
-    console.log(this.dataSourceForm.value[0].electronicEnd);
-    console.log(convertMoney(this.dataSourceForm.value[0].electronicEnd));
+    const data = this.hasChangeEndElectronicPermission ?
+      { productOilInfos: dataReq } : dataReq;
 
-		this.shiftService.updateFuelProductRevenue(this.lockShiftId, dataReq).subscribe(
+
+		this.shiftService.updateFuelProductRevenue(this.lockShiftId, data, this.hasChangeEndElectronicPermission).subscribe(
 			(res) => {
 				this.checkRes(res);
 			},
