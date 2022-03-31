@@ -12,9 +12,9 @@
 		<div class="offcanvas-content pr-5 mr-n5">
 			<div class="d-flex align-items-center mt-5">
 				<div class="symbol symbol-100 mr-5">
-          <div class="symbol-label" *ngIf='_user.driverAuth?.profile?.avatar[0]?.url'
+          <div class="symbol-label" *ngIf='_user.driverAuth?.profile?.avatar?.length > 0'
                [ngStyle]="{ 'background-image': 'url(' + _user.driverAuth?.profile?.avatar[0]?.url + ')'}"></div>
-          <div class="symbol-label" *ngIf='!_user.driverAuth?.profile?.avatar[0]?.url'
+          <div class="symbol-label" *ngIf='_user.driverAuth?.profile?.avatar?.length === 0'
                [ngStyle]="{ 'background-image': 'url(assets/media/sun-oil/employee/placeholder-user.png'}"></div>
           <em class="symbol-badge bg-success"></em>
 				</div>
