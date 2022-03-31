@@ -31,6 +31,7 @@ export interface IProfile {
   dateOfBirth: string;
   idCard: string;
   address: string;
+  location: string;
   avatar: [
     {
       face: string;

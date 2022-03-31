@@ -94,7 +94,8 @@ export class LoginComponent implements OnInit {
           dateOfBirth: this.infoProfile.dateOfBirth,
           idCard: this.infoProfile.idCard,
           address: this.infoProfile.address,
-          avatar: this.infoProfile.avatar
+          avatar: this.infoProfile.avatar,
+          location: this.infoProfile.location
         }
 
         dataUser.driverAuth.profile = dataProfile;
