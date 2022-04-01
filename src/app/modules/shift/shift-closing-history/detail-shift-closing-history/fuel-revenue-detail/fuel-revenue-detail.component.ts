@@ -55,8 +55,16 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
         this.statusLockShift = queryParams.status;
       })
 
+    if (this.statusLockShift !== 'CLOSE') {
+      this.refreshDetailRevenue();
+    }
 		this.getFuelProductRevenue();
 	}
+
+  refreshDetailRevenue(): void {
+    const data = { lockShiftId: this.lockShiftId };
+    this.shiftService.createFuelProductRevenue(data).subscribe();
+  }
 
 	getFuelProductRevenue() {
 		this.shiftService
