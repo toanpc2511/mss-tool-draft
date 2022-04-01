@@ -149,7 +149,7 @@ export class ListUserComponent extends BaseComponent implements OnInit {
 						if (res.data) {
 							this.init();
 							this.getUsers();
-              this.toastr.success('Đặt lại mật khẩu thành công')
+              this.toastr.success('Đặt lại mật khẩu thành công. Mật khẩu mới của bạn là:123456789')
 						}
 					},
 					(err: IError) => {
