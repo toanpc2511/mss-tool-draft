@@ -20,6 +20,7 @@ export class DetailShiftClosingHistoryComponent implements OnInit, AfterViewInit
 	lockShiftId: number;
 	statusLockShift: string;
   stationId: number;
+  isTransitionStep: boolean;
 
 	constructor(
 		private subheader: SubheaderService,
@@ -83,6 +84,7 @@ export class DetailShiftClosingHistoryComponent implements OnInit, AfterViewInit
 
 	gotoStep(step: number) {
 		const currentStep = this.shiftService.getCurrentStepValue();
+    this.isTransitionStep = true;
 		switch (step) {
 			case 1:
 				this.step = step;
