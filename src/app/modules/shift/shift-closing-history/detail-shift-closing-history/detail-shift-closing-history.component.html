@@ -60,6 +60,7 @@
 					<app-fuel-revenue-detail
 						(stepSubmitted)="gotoStep(2)"
 						*ngIf="step === 1"
+            [isTransition]="isTransitionStep"
 					></app-fuel-revenue-detail>
 					<app-other-revenue-detail
 						(stepSubmitted)="gotoStep(3)"

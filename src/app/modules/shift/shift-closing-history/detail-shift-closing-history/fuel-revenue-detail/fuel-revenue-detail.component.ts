@@ -28,6 +28,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
   sumTotalMoney: number;
   decimalPattern = /^[0-9]+(\.[0-9]+)?$/;
   hasChangeEndElectronicPermission: boolean;
+  @Input() isTransition;
 
 	constructor(
 		private shiftService: ShiftService,
@@ -55,7 +56,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
         this.statusLockShift = queryParams.status;
       })
 
-    if (this.statusLockShift !== 'CLOSE') {
+    if (this.statusLockShift !== 'CLOSE' && !this.isTransition) {
       this.refreshDetailRevenue();
     }
 		this.getFuelProductRevenue();
@@ -197,14 +198,16 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       stationId: d.stationId,
       totalLiter: d.totalLiter,
       limitMoney: d.limitMoney,
-      totalPoint: d.totalPoint
+      totalPoint: d.totalPoint,
+      totalMoney: d.totalMoney,
+      quantityElectronic: d.quantityElectronic
 		}));
 
     const data = this.hasChangeEndElectronicPermission ?
       { productOilInfos: dataReq } : dataReq;
 
 
-		this.shiftService.updateFuelProductRevenue(this.lockShiftId, data, this.hasChangeEndElectronicPermission).subscribe(
+		this.shiftService.updateFuelProductRevenue(this.lockShiftId, data, this.hasChangeEndElectronicPermission, this.dataItem.chip).subscribe(
 			(res) => {
 				this.checkRes(res);
 			},
