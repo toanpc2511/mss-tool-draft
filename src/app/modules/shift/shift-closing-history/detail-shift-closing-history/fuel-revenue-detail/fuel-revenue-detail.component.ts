@@ -202,9 +202,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       quantityElectronic: d.quantityElectronic
 		}));
 
-    const data = this.hasChangeEndElectronicPermission && this.dataItem.chip ?
-      { productOilInfos: dataReq } : dataReq;
-
+    const data = { productOilInfos: dataReq };
 
 		this.shiftService.updateFuelProductRevenue(this.lockShiftId, data, this.hasChangeEndElectronicPermission, this.dataItem.chip).subscribe(
 			(res) => {
