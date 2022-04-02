@@ -144,7 +144,7 @@
 										formControlName="gaugeEnd"
 										placeholder="Nhập số máy cơ cuối"
 										maxlength="13"
-										(input)='changeValue(i, item.get("chip").value)'
+										(input)='updateQuantityGauge(i)'
 									/>
 									<app-validate
 										[control]="item.get('gaugeEnd')"
@@ -181,7 +181,7 @@
 										formControlName="electronicEnd"
 										placeholder="Nhập số điện tử cuối ca"
 										maxlength="13"
-										(input)='changeValue(i, item.get("chip").value)'
+										(input)='changeElectronicEnd(i, item.get("chip").value)'
 									/>
 									<app-validate
 										[control]="item.get('electronicEnd')"

@@ -129,15 +129,18 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 		return this.fb.array(controls);
 	}
 
-	changeValue(index: number, isChip: boolean) {
-		const gaugeStart: number = convertMoney(
-			this.dataSourceForm.at(index).get('gaugeStart').value.toString()
-		);
-		const gaugeEnd: number = convertMoney(
-			this.dataSourceForm.at(index).get('gaugeEnd').value.toString()
-		);
-		const quantityGauge = gaugeEnd - gaugeStart;
+  updateQuantityGauge(index: number): void {
+    const gaugeStart: number = convertMoney(
+      this.dataSourceForm.at(index).get('gaugeStart').value.toString()
+    );
+    const gaugeEnd: number = convertMoney(
+      this.dataSourceForm.at(index).get('gaugeEnd').value.toString()
+    );
 
+    this.dataSourceTemp.at(index).get('quantityGauge').patchValue(gaugeEnd - gaugeStart);
+  }
+
+  changeElectronicEnd(index: number, isChip: boolean): void {
 		const electronicEnd: number = convertMoney(
 			this.dataSourceForm.at(index).get('electronicEnd').value.toString()
 		);
@@ -146,42 +149,38 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 		);
 		const quantityElectronic = electronicEnd - electronicStart;
 
-		this.dataSourceTemp.at(index).get('quantityGauge').patchValue(quantityGauge);
-
 		this.dataSourceTemp.at(index).get('quantityElectronic').patchValue(quantityElectronic);
 
-		if (!isChip || this.hasChangeEndElectronicPermission) {
-			const price: number = convertMoney(
-				this.dataSourceForm.at(index).get('price').value.toString()
-			);
-			const totalMoney = price * quantityElectronic;
+    const price: number = convertMoney(
+      this.dataSourceForm.at(index).get('price').value.toString()
+    );
+    const totalMoney = price * quantityElectronic;
 
-			const provisionalMoney: number = convertMoney(
-				this.dataSourceForm.at(index).get('provisionalMoney').value.toString()
-			);
-			const limitMoney: number = convertMoney(
-				this.dataSourceForm.at(index).get('limitMoney').value.toString()
-			);
-			const totalPoint: number = convertMoney(
-				this.dataSourceForm.at(index).get('totalPoint').value.toString()
-			);
-			const cashMoney: number = totalMoney - provisionalMoney - limitMoney - totalPoint;
+    const provisionalMoney: number = convertMoney(
+      this.dataSourceForm.at(index).get('provisionalMoney').value.toString()
+    );
+    const limitMoney: number = convertMoney(
+      this.dataSourceForm.at(index).get('limitMoney').value.toString()
+    );
+    const totalPoint: number = convertMoney(
+      this.dataSourceForm.at(index).get('totalPoint').value.toString()
+    );
+    const cashMoney: number = totalMoney - provisionalMoney - limitMoney - totalPoint;
 
-      if (!isChip) {
-        this.dataSourceTemp.at(index).get('quantityTransaction').patchValue(quantityElectronic);
-      }
+    if (!isChip) {
+      this.dataSourceTemp.at(index).get('quantityTransaction').patchValue(quantityElectronic);
+    }
 
-			this.dataSourceTemp.at(index).get('totalMoney').patchValue(totalMoney);
+    this.dataSourceTemp.at(index).get('totalMoney').patchValue(totalMoney);
 
-			this.dataSourceTemp.at(index).get('cashMoney').patchValue(cashMoney);
+    this.dataSourceTemp.at(index).get('cashMoney').patchValue(cashMoney);
 
-			this.sumCashMoney = 0;
-			this.sumTotalMoney = 0;
-			for (let i = 0; i < this.dataSourceForm.value.length; i++) {
-				this.sumCashMoney += this.dataSourceForm.value[i].cashMoney;
-				this.sumTotalMoney += this.dataSourceForm.value[i].totalMoney;
-			}
-		}
+    this.sumCashMoney = 0;
+    this.sumTotalMoney = 0;
+    for (let i = 0; i < this.dataSourceForm.value.length; i++) {
+      this.sumCashMoney += this.dataSourceForm.value[i].cashMoney;
+      this.sumTotalMoney += this.dataSourceForm.value[i].totalMoney;
+    }
 	}
 
 	onSubmit() {
@@ -203,7 +202,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       quantityElectronic: d.quantityElectronic
 		}));
 
-    const data = this.hasChangeEndElectronicPermission ?
+    const data = this.hasChangeEndElectronicPermission && this.dataItem.chip ?
       { productOilInfos: dataReq } : dataReq;
 
 
