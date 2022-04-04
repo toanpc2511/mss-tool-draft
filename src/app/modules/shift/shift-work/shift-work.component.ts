@@ -327,17 +327,17 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 				tap((res) => {
 					this.calendars = [...res.data].map((calendar): EventInput => {
 						const start = moment(calendar.start).format('YYYY-MM-DD');
-						const end = moment(calendar.end).format('YYYY-MM-DD');
+						// const end = moment(calendar.end).format('YYYY-MM-DD');
 
 						this.warningDate.set(start, !calendar.checked);
-						if (start !== end) {
-							this.warningDate.set(end, !calendar.checked);
-						}
+						// if (start !== end) {
+						// 	this.warningDate.set(end, !calendar.checked);
+						// }
 
 						return {
 							id: calendar.calendarId.toString(),
 							start: moment(calendar.start).format('YYYY-MM-DD HH:mm:ss'),
-							end: moment(calendar.end).add({ hour: 24 }).format('YYYY-MM-DD HH:mm:ss'),
+							// end: moment(calendar.end).add({ hour: 24 }).format('YYYY-MM-DD HH:mm:ss'),
 							title: `${calendar.shiftName} - ${calendar.employeeName}`,
 							backgroundColor: calendar.backgroundColor,
 							color: '#ffffff',
@@ -535,25 +535,24 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 	dayCellRender(event) {
 		const currentRenderDate = moment(event.date).format('YYYY-MM-DD');
 
+		const projectableNodes = Array.from(event.el.childNodes);
 
-			const projectableNodes = Array.from(event.el.childNodes);
+		const compWrapperRef = this.dayWrapperFactory.create(
+			this.injector,
+			[projectableNodes],
+			event.el
+		);
 
-			const compWrapperRef = this.dayWrapperFactory.create(
-				this.injector,
-				[projectableNodes],
-				event.el
-			);
-
-			setTimeout(() => {
-				const isWarning = this.warningDate.get(currentRenderDate);
-				if (isWarning) {
-					compWrapperRef.instance.tooltipWarning = 'Trạm có ca chưa được gán nhân viên';
-					compWrapperRef.instance.currentDate = currentRenderDate;
-					compWrapperRef.instance.stationId = this.currentGasStationId;
-				}
-				this.appRef.attachView(compWrapperRef.hostView);
-				this.dayWrappersMap.set(event.el, compWrapperRef);
-			}, 200);
+		setTimeout(() => {
+			const isWarning = this.warningDate.get(currentRenderDate);
+			if (isWarning) {
+				compWrapperRef.instance.tooltipWarning = 'Trạm có ca chưa được gán nhân viên';
+				compWrapperRef.instance.currentDate = currentRenderDate;
+				compWrapperRef.instance.stationId = this.currentGasStationId;
+			}
+			this.appRef.attachView(compWrapperRef.hostView);
+			this.dayWrappersMap.set(event.el, compWrapperRef);
+		}, 500);
 	}
 
 	destroyDayCell(event) {
@@ -661,8 +660,8 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 		if (error.code === 'SUN-OIL-4918') {
 			this.toastr.error('Không được xoá lịch làm việc trong quá khứ');
 		}
-    if (error.code === 'SUN-OIL-4269') {
-      this.toastr.error('Không được xóa lịch làm việc vì đã có yêu cầu đổi / thay ca');
-    }
+		if (error.code === 'SUN-OIL-4269') {
+			this.toastr.error('Không được xóa lịch làm việc vì đã có yêu cầu đổi / thay ca');
+		}
 	}
 }
