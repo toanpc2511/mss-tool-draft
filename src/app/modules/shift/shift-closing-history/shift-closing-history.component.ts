@@ -132,7 +132,7 @@ export class ShiftClosingHistoryComponent extends BaseComponent implements OnIni
 		this.shiftService.statusLockShift = status;
 		this.shiftService.stationId = item.stationId;
 		this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${item.id}`], {
-			queryParams: { status: item.status, stationId: item.stationId, shiftId: item.shiftId, chip: item.chip }
+			queryParams: { status: item.status, stationId: item.stationId, shiftId: item.shiftId }
 		});
 	}
 
@@ -163,7 +163,7 @@ export class ShiftClosingHistoryComponent extends BaseComponent implements OnIni
 					(res) => {
 						if (res.data) {
 							this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${data.id}`], {
-								queryParams: { status: data.status, stationId: data.stationId, shiftId: data.shiftId, chip: data.chip }
+								queryParams: { status: data.status, stationId: data.stationId, shiftId: data.shiftId }
 							});
 						}
 					},
