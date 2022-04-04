@@ -56,7 +56,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
         this.statusLockShift = queryParams.status;
       })
 
-    if (this.statusLockShift !== 'CLOSE' && !this.isTransition) {
+    if (this.statusLockShift !== 'CLOSE' && !this.isTransition && this.dataItem.chip) {
       this.refreshDetailRevenue();
     }
 		this.getFuelProductRevenue();
@@ -199,7 +199,8 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       limitMoney: d.limitMoney,
       totalPoint: d.totalPoint,
       totalMoney: d.totalMoney,
-      quantityElectronic: d.quantityElectronic
+      quantityElectronic: d.quantityElectronic,
+      quantityGauge: d.quantityGauge,
 		}));
 
     const data = { productOilInfos: dataReq };
