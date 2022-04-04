@@ -28,6 +28,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
   sumTotalMoney: number;
   decimalPattern = /^[0-9]+(\.[0-9]+)?$/;
   hasChangeEndElectronicPermission: boolean;
+  hasChip: boolean;
   @Input() isTransition;
 
 	constructor(
@@ -54,9 +55,10 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       .pipe(takeUntil(this.destroy$))
       .subscribe((queryParams) => {
         this.statusLockShift = queryParams.status;
+        this.hasChip = queryParams.chip;
       })
 
-    if (this.statusLockShift !== 'CLOSE' && !this.isTransition && this.dataItem.chip) {
+    if (this.statusLockShift !== 'CLOSE' && !this.isTransition && this.hasChip) {
       this.refreshDetailRevenue();
     }
 		this.getFuelProductRevenue();

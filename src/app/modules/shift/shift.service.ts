@@ -172,6 +172,7 @@ export interface ILockShift {
 	status: string;
 	timeEnd: string;
 	timeStart: string;
+  chip: boolean;
 }
 
 export interface IOrderOfShift {
