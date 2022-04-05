@@ -255,6 +255,7 @@ export interface IFuelRevenue {
 	cashMoney: number;
 	price: number;
 	chip: boolean;
+	dischargeE: number;
 }
 
 export interface ITotalMoneyRevenue {

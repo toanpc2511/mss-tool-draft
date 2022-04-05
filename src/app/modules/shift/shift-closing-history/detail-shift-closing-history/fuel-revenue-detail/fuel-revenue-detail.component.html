@@ -83,6 +83,7 @@
 							<th rowspan="3" scope="" class="quantity-transaction align-bottom text-right number-p-15">
 								Lượng xuất theo giao dịch
 							</th>
+              <th rowspan="3" scope="" class="price align-bottom text-right number-p-15">Xả E</th>
 							<th rowspan="3" scope="" class="price align-bottom text-right number-p-15">Đơn giá</th>
 							<th rowspan="3" scope="" class="total-money align-bottom text-right number-p-15">Tổng tiền</th>
 							<th colspan="5" scope="" class="text-center p-0">Doanh thu trong ca</th>
@@ -143,7 +144,8 @@
 										class="form-control"
 										formControlName="gaugeEnd"
 										placeholder="Nhập số máy cơ cuối"
-										maxlength="13"
+										maxlength="16"
+                    decimal-mask
 										(input)='updateQuantityGauge(i)'
 									/>
 									<app-validate
@@ -151,11 +153,6 @@
 										[error]="'required'"
 										[message]="'Số máy cơ cuối không được để trống'"
 									></app-validate>
-                  <app-validate
-                    [control]="item.get('gaugeEnd')"
-                    [error]="'pattern'"
-                    [message]="'Sai định dạng'"
-                  ></app-validate>
 								</td>
 								<td class="quantity-gauge text-right">
 									<p
@@ -180,19 +177,15 @@
 										class="form-control"
 										formControlName="electronicEnd"
 										placeholder="Nhập số điện tử cuối ca"
-										maxlength="13"
-										(input)='changeElectronicEnd(i, item.get("chip").value)'
+										maxlength="16"
+                    decimal-mask
+										(input)='calculateTotalMoney(i, item.get("chip").value)'
 									/>
 									<app-validate
 										[control]="item.get('electronicEnd')"
 										[error]="'required'"
 										[message]="'Số điện tử cuối ca không được để trống'"
 									></app-validate>
-                  <app-validate
-                    [control]="item.get('electronicEnd')"
-                    [error]="'pattern'"
-                    [message]="'Sai định dạng'"
-                  ></app-validate>
 								</td>
 								<td class="quantity-electronic text-right">
 									<p
@@ -212,6 +205,18 @@
 										{{ item.get('quantityTransaction').value?.toLocaleString('en-US') }}
 									</p>
 								</td>
+
+                <td class="discharging-e text-right">
+                  <input
+                    class="form-control"
+                    formControlName="dischargeE"
+                    placeholder="Nhập số xả e"
+                    decimal-mask
+                    maxlength="16"
+                    (input)='calculateTotalMoney(i, item.get("chip").value)'
+                  />
+                </td>
+
 								<td class="price text-right">
 									<p
 										class="cursor-pointer text-ellipsis"
@@ -277,7 +282,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td colspan="10"></td>
+								<td colspan="11"></td>
 								<td class="text-right">Tổng</td>
 								<td class="total-money text-right">
                   <ng-template #totalPrice>
@@ -439,6 +444,15 @@
 										{{ item.quantityTransaction?.toLocaleString('en-US') }}
 									</p>
 								</td>
+                <td class="discharging-e text-right">
+                  <p
+                    class="cursor-pointer text-ellipsis"
+                    placement="top"
+                    [ngbTooltip]="item.dischargingE?.toLocaleString('en-US')"
+                  >
+                    {{ item.dischargingE?.toLocaleString('en-US') }}
+                  </p>
+                </td>
 								<td class="price text-right">
 									<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.price?.toLocaleString('en-US')">
 										{{ item.price?.toLocaleString('en-US') }}
@@ -500,7 +514,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td colspan="10"></td>
+								<td colspan="11"></td>
 								<td class="text-right">Tổng</td>
 								<td class="total-money text-right">
 									<p
