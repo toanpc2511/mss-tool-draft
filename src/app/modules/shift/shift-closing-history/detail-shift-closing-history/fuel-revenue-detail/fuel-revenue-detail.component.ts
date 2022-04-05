@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import {delay, switchMap, takeUntil, tap} from 'rxjs/operators';
+import {switchMap, takeUntil, tap} from 'rxjs/operators';
 import { convertMoney } from '../../../../../shared/helpers/functions';
 import { IError } from '../../../../../shared/models/error.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
@@ -104,10 +104,10 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 			return this.fb.group({
 				chip: [d.chip],
 				code: [d.code],
-				electronicEnd: [{ value: d.electronicEnd, disabled: this.hasChangeEndElectronicPermission ? !this.hasChangeEndElectronicPermission : d.chip }, [Validators.pattern(this.decimalPattern), Validators.required]],
+				electronicEnd: [{ value: d.electronicEnd, disabled: this.hasChangeEndElectronicPermission ? !this.hasChangeEndElectronicPermission : d.chip }, [Validators.required]],
 				electronicStart: [d.electronicStart],
 				employeeName: [d.employeeName],
-				gaugeEnd: [ d.gaugeEnd, [Validators.pattern(this.decimalPattern), Validators.required]],
+				gaugeEnd: [ d.gaugeEnd, [Validators.required]],
 				gaugeStart: [d.gaugeStart],
 				id: [d.id],
 				limitMoney: [d.limitMoney],
@@ -132,7 +132,8 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 				totalPrice: [d.totalPrice],
 				totalProvisionalMoney: [d.totalProvisionalMoney],
 				cashMoney: [d.cashMoney],
-				price: [d.price]
+				price: [d.price],
+        dischargeE: [d.dischargeE | 0]
 			});
 		});
 		return this.fb.array(controls);
@@ -140,55 +141,64 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 
   updateQuantityGauge(index: number): void {
     const gaugeStart: number = convertMoney(
-      this.dataSourceForm.at(index).get('gaugeStart').value.toString()
+      this.dataSourceForm.at(index).get('gaugeStart').value?.toString()
     );
     const gaugeEnd: number = convertMoney(
-      this.dataSourceForm.at(index).get('gaugeEnd').value.toString()
+      this.dataSourceForm.at(index).get('gaugeEnd').value?.toString()
     );
+
+    this.dataSourceTemp.at(index).get('gaugeEnd').patchValue(gaugeEnd?.toLocaleString());
 
     this.dataSourceTemp.at(index).get('quantityGauge').patchValue(gaugeEnd - gaugeStart);
   }
 
-  changeElectronicEnd(index: number, isChip: boolean): void {
+  calculateTotalMoney(index: number, isChip: boolean): void {
 		const electronicEnd: number = convertMoney(
-			this.dataSourceForm.at(index).get('electronicEnd').value.toString()
+			this.dataSourceForm.at(index).get('electronicEnd').value?.toString()
 		);
+
 		const electronicStart: number = convertMoney(
-			this.dataSourceForm.at(index).get('electronicStart').value.toString()
+			this.dataSourceForm.at(index).get('electronicStart').value?.toString()
 		);
+    const dischargeE: number = convertMoney(
+      this.dataSourceForm.at(index).get('dischargeE').value?.toString()
+    );
+
 		const quantityElectronic = electronicEnd - electronicStart;
 
-		this.dataSourceTemp.at(index).get('quantityElectronic').patchValue(quantityElectronic);
-
     const price: number = convertMoney(
-      this.dataSourceForm.at(index).get('price').value.toString()
+      this.dataSourceForm.at(index).get('price').value?.toString()
     );
-    const totalMoney = price * quantityElectronic;
+    const totalMoney = price * (quantityElectronic -  dischargeE);
 
     const provisionalMoney: number = convertMoney(
-      this.dataSourceForm.at(index).get('provisionalMoney').value.toString()
+      this.dataSourceForm.at(index).get('provisionalMoney').value?.toString()
     );
     const limitMoney: number = convertMoney(
-      this.dataSourceForm.at(index).get('limitMoney').value.toString()
+      this.dataSourceForm.at(index).get('limitMoney').value?.toString()
     );
     const totalPoint: number = convertMoney(
-      this.dataSourceForm.at(index).get('totalPoint').value.toString()
+      this.dataSourceForm.at(index).get('totalPoint').value?.toString()
     );
     const cashMoney: number = totalMoney - provisionalMoney - limitMoney - totalPoint;
 
     if (!isChip) {
-      this.dataSourceTemp.at(index).get('quantityTransaction').patchValue(quantityElectronic);
+      this.dataSourceTemp.at(index).get('quantityTransaction').patchValue(quantityElectronic?.toLocaleString());
     }
 
-    this.dataSourceTemp.at(index).get('totalMoney').patchValue(totalMoney);
-
-    this.dataSourceTemp.at(index).get('cashMoney').patchValue(cashMoney);
+    this.dataSourceTemp.at(index).patchValue({
+      totalMoney: totalMoney > 0 ? totalMoney?.toLocaleString() : 0,
+      cashMoney: cashMoney?.toLocaleString(),
+      quantityElectronic: quantityElectronic?.toLocaleString(),
+      dischargeE: dischargeE?.toLocaleString(),
+      electronicEnd: electronicEnd?.toLocaleString()
+    })
 
     this.sumCashMoney = 0;
     this.sumTotalMoney = 0;
     for (let i = 0; i < this.dataSourceForm.value.length; i++) {
-      this.sumCashMoney += this.dataSourceForm.value[i].cashMoney;
-      this.sumTotalMoney += this.dataSourceForm.value[i].totalMoney;
+      this.sumCashMoney += convertMoney(this.dataSourceForm.value[i].cashMoney?.toString());
+      this.sumTotalMoney += convertMoney(this.dataSourceForm.value[i].totalMoney?.toString());
     }
 	}
 
@@ -207,9 +217,10 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       totalLiter: d.totalLiter,
       limitMoney: d.limitMoney,
       totalPoint: d.totalPoint,
-      totalMoney: d.totalMoney,
-      quantityElectronic: d.quantityElectronic,
+      totalMoney: convertMoney(d.totalMoney?.toString()),
+      quantityElectronic: convertMoney(d.quantityElectronic?.toString()),
       quantityGauge: d.quantityGauge,
+      dischargeE: convertMoney(d.dischargeE?.toString())
 		}));
 
     const data = { productOilInfos: dataReq };
