@@ -5,10 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import { takeUntil, tap } from 'rxjs/operators';
+import {delay, switchMap, takeUntil, tap} from 'rxjs/operators';
 import { convertMoney } from '../../../../../shared/helpers/functions';
 import { IError } from '../../../../../shared/models/error.model';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 
 @Component({
 	selector: 'app-fuel-revenue-detail',
@@ -58,17 +59,26 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 
     if (this.statusLockShift !== 'CLOSE' && !this.isTransition) {
       this.refreshDetailRevenue();
+    } else {
+      this.getFuelProductRevenue$().subscribe();
     }
-		this.getFuelProductRevenue();
 	}
 
   refreshDetailRevenue(): void {
     const data = { lockShiftId: this.lockShiftId };
-    this.shiftService.createFuelProductRevenue(data).subscribe();
+    this.shiftService.createFuelProductRevenue(data)
+      .pipe(
+        switchMap((res: DataResponse<boolean>) => {
+          if(res.data) {
+            return this.getFuelProductRevenue$()
+          }
+        })
+      )
+      .subscribe();
   }
 
-	getFuelProductRevenue() {
-		this.shiftService
+	getFuelProductRevenue$() {
+		return this.shiftService
 			.getFuelProductRevenue(this.lockShiftId)
 			.pipe(
 				tap((res) => {
@@ -87,7 +97,6 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 				}),
 				takeUntil(this.destroy$)
 			)
-			.subscribe();
 	}
 
 	convertToFormArray(data): FormArray {
