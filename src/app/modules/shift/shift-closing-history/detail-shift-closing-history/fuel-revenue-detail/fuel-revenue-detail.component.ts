@@ -153,6 +153,8 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
   }
 
   calculateTotalMoney(index: number, isChip: boolean): void {
+    const isElectronicEndChanged = this.dataSourceForm.at(index).get('electronicEnd').pristine;
+
 		const electronicEnd: number = convertMoney(
 			this.dataSourceForm.at(index).get('electronicEnd').value?.toString()
 		);
@@ -160,8 +162,13 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 		const electronicStart: number = convertMoney(
 			this.dataSourceForm.at(index).get('electronicStart').value?.toString()
 		);
+
     const dischargeE: number = convertMoney(
       this.dataSourceForm.at(index).get('dischargeE').value?.toString()
+    );
+
+    const quantityTransaction = convertMoney(
+      this.dataSourceForm.at(index).get('quantityTransaction').value?.toString()
     );
 
 		const quantityElectronic = electronicEnd - electronicStart;
@@ -169,7 +176,13 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
     const price: number = convertMoney(
       this.dataSourceForm.at(index).get('price').value?.toString()
     );
-    const totalMoney = price * (quantityElectronic -  dischargeE);
+
+    let totalMoney;
+    if (isElectronicEndChanged && this.hasChangeEndElectronicPermission && isChip) {
+      totalMoney = price * (quantityTransaction -  dischargeE);
+    } else {
+      totalMoney = price * (quantityElectronic -  dischargeE);
+    }
 
     const provisionalMoney: number = convertMoney(
       this.dataSourceForm.at(index).get('provisionalMoney').value?.toString()
