@@ -253,7 +253,7 @@ export class UpdateOrderComponent extends BaseComponent implements OnInit, After
     const isSelectedGasField: boolean = listGasFieldSelected.some(product => Number(product.gasFieldId) === Number(value));
 
     if (isSelectedGasField) {
-      this.toastr.error('Trạm này đã được chọn');
+      this.toastr.error('Bồn này đã được chọn');
       this.productFormArray.at(i).get('gasFieldId').patchValue('');
       return;
     }
