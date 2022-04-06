@@ -130,6 +130,7 @@
                   <select
                     class="form-control form-control-sm w-75"
                     formControlName="gasFieldId"
+                    (change)="gasFiledChanged($event, i)"
                   >
                     <option [value]="''">Chọn bồn</option>
                     <option

@@ -233,7 +233,8 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       totalMoney: convertMoney(d.totalMoney?.toString()),
       quantityElectronic: convertMoney(d.quantityElectronic?.toString()),
       quantityGauge: d.quantityGauge,
-      dischargeE: convertMoney(d.dischargeE?.toString())
+      dischargeE: convertMoney(d.dischargeE?.toString()),
+      cashMoney: convertMoney(d.cashMoney?.toString()),
 		}));
 
     const data = { productOilInfos: dataReq };
