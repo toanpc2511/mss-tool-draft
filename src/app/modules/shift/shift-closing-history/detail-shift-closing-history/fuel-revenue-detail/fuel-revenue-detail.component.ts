@@ -204,7 +204,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       cashMoney: cashMoney?.toLocaleString(),
       quantityElectronic: quantityElectronic?.toLocaleString(),
       dischargeE: dischargeE?.toLocaleString(),
-      electronicEnd: electronicEnd?.toLocaleString()
+      electronicEnd: electronicEnd?.toLocaleString(),
     })
 
     this.sumCashMoney = 0;
@@ -235,6 +235,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       quantityGauge: d.quantityGauge,
       dischargeE: convertMoney(d.dischargeE?.toString()),
       cashMoney: convertMoney(d.cashMoney?.toString()),
+      quantityTransaction: convertMoney(d.quantityTransaction?.toString()),
 		}));
 
     const data = { productOilInfos: dataReq };
