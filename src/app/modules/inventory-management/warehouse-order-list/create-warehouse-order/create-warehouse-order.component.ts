@@ -554,5 +554,8 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     if (error.code === 'SUN-OIL-4934') {
       this.toastr.error('Cước vận tải/lit không được để trống')
     }
+    if (error.code === 'SUN-OIL-4978') {
+      this.toastr.error('Bồn xuất không được để trống')
+    }
   }
 }
