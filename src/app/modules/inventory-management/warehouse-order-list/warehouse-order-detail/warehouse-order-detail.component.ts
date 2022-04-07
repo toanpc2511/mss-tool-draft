@@ -182,6 +182,7 @@ export class WareHouseOrderDetailComponent extends BaseComponent implements OnIn
 			backdrop: 'static',
 			size: 'xs'
 		});
+
 		modalRef.closed
 			.pipe(
 				filter((res) => res),
@@ -206,6 +207,15 @@ export class WareHouseOrderDetailComponent extends BaseComponent implements OnIn
 			.subscribe();
 	}
 
+  confirmDialogTemplate(): void {
+    this.reasonControl.markAsTouched();
+    if (this.reasonControl.invalid) {
+      return;
+    }
+
+    this.activeModal.close(true)
+  }
+
 	goBack() {
 		this.router.navigate(['/kho/don-dat-kho']);
 	}
@@ -213,6 +223,8 @@ export class WareHouseOrderDetailComponent extends BaseComponent implements OnIn
 	checkError(error: IError) {
     if (error.code === 'SUN-OIL-4271') {
       this.toastr.error('Lý do không được để trống');
+    } else {
+      this.toastr.error(`${error.code} - ${error.message}`);
     }
 	}
 }

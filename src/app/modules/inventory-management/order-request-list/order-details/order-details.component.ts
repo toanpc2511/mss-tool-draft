@@ -197,12 +197,23 @@ export class OrderDetailsComponent extends BaseComponent implements OnInit, Afte
 			.subscribe();
 	}
 
+  confirmDialogTemplate(): void {
+    this.reasonControl.markAsTouched();
+    if (this.reasonControl.invalid) {
+      return;
+    }
+
+    this.activeModal.close(true)
+  }
+
 	checkError(error: IError) {
 		if (error.code === 'SUN-OIL-4893' || error.code === 'SUN-OIL-4909') {
 			this.toastr.error('Unknown error');
+		} else if (error.code === 'SUN-OIL-4271') {
+      this.toastr.error('Lý do không được để trống');
 		} else {
-			this.toastr.error(`${error.code} - ${error.message}`);
-		}
+      this.toastr.error(`${error.code} - ${error.message}`);
+    }
 	}
 
 	goBack() {
