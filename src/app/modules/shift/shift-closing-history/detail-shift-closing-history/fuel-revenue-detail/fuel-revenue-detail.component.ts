@@ -104,7 +104,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 			return this.fb.group({
 				chip: [d.chip],
 				code: [d.code],
-				electronicEnd: [{ value: d.electronicEnd, disabled: this.hasChangeEndElectronicPermission ? !this.hasChangeEndElectronicPermission : d.chip }, [Validators.required]],
+				electronicEnd: [{ value: d.electronicEnd.toLocaleString('en-US'), disabled: this.hasChangeEndElectronicPermission ? !this.hasChangeEndElectronicPermission : d.chip }, [Validators.required]],
 				electronicStart: [d.electronicStart],
 				employeeName: [d.employeeName],
 				gaugeEnd: [ d.gaugeEnd, [Validators.required]],
@@ -201,7 +201,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 
     this.dataSourceTemp.at(index).patchValue({
       totalMoney: totalMoney > 0 ? totalMoney?.toLocaleString() : 0,
-      cashMoney: cashMoney?.toLocaleString(),
+      cashMoney: cashMoney > 0 ? cashMoney?.toLocaleString() : 0,
       quantityElectronic: quantityElectronic?.toLocaleString(),
       dischargeE: dischargeE?.toLocaleString(),
       electronicEnd: electronicEnd?.toLocaleString(),
