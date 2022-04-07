@@ -178,7 +178,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
     );
 
     let totalMoney;
-    if (isElectronicEndChanged && this.hasChangeEndElectronicPermission && isChip) {
+    if (isElectronicEndChanged && this.hasChangeEndElectronicPermission && isChip || isChip && !this.hasChangeEndElectronicPermission) {
       totalMoney = price * (quantityTransaction -  dischargeE);
     } else {
       totalMoney = price * (quantityElectronic -  dischargeE);
