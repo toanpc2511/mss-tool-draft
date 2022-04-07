@@ -16,6 +16,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { IError } from '../../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { TValidators } from '../../../../shared/validators';
+import {preventLetter} from "../../../../shared/utitlies/prevent-letter";
 
 @Component({
   selector: 'app-create-warehouse-order',
@@ -36,9 +37,10 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   selectCapacity: boolean;
   stationByToken: IStationActiveByToken[] = [];
   reasonChange: FormControl;
-
+  preventLetter = preventLetter;
   exportedWarehouseNameId: number;
   oderForm: string;
+  decimalPattern = /^[0-9]+(\.[0-9]+)?$/;
 
   orderInfoForm: FormGroup;
   transportInfoForm: FormGroup;
@@ -221,6 +223,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
         if (x === 'RENTAL') {
           this.transportInfoForm.get('capacity').enable();
           this.transportInfoForm.get('capacity').setValidators(Validators.required)
+          this.transportInfoForm.get('capacity').setValidators(Validators.pattern(this.decimalPattern));
         }
         if (x === 'STORE') {
           this.transportInfoForm.get('capacity').disable();
@@ -449,6 +452,8 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   }
 
   onSubmit() {
+    this.transportInfoForm.updateValueAndValidity();
+    console.log(this.transportInfoForm.get('capacity').hasError('pattern'));
     this.orderInfoForm.markAllAsTouched();
     this.dataProductResponses.markAllAsTouched();
     this.transportInfoForm.markAllAsTouched();
