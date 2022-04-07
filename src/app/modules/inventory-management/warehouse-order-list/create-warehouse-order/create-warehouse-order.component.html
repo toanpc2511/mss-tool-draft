@@ -770,7 +770,7 @@
                 placeholder="Dung tích"
                 formControlName='capacity'
                 maxlength="11"
-                decimal-mask
+                (keydown)='preventLetter($event)'
               />
             </div>
           </div>
@@ -816,14 +816,19 @@
                 placeholder="Nhập dung tích xe"
                 formControlName='capacity'
                 maxlength="10"
-                decimal-mask
-                (keydown.space)="$event.preventDefault()"
+                (keydown)='preventLetter($event)'
               />
+              <app-validate
+                [control]="transportInfoForm.controls['capacity']"
+                [error]="'pattern'"
+                [message]="'Dung tích sai định dạng'"
+              ></app-validate>
               <app-validate
                 [control]="transportInfoForm.controls['capacity']"
                 [error]="'required'"
                 [message]="'Dung tích xe không được để trống'"
               ></app-validate>
+
             </div>
           </div>
 

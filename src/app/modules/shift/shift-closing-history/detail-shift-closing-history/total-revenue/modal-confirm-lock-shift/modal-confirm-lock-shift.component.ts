@@ -134,7 +134,7 @@ export class ModalConfirmLockShiftComponent implements OnInit {
     });
 
     modalRef.componentInstance.data = {
-      message: `<div class="text-left pl-5"><p>Đang tồn tại cột chưa được gán cho nhân viên?</p><p>Bạn có muốn tiếp tục?</p></div>`
+      message: `<div class="text-left text-danger pl-5"><p>Đang tồn tại cột chưa được gán cho nhân viên?</p><p>Bạn có muốn tiếp tục?</p></div>`
     };
 
     modalRef.result.then((result) => {
