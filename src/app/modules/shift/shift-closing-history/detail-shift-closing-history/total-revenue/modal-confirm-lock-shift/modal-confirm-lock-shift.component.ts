@@ -122,6 +122,8 @@ export class ModalConfirmLockShiftComponent implements OnInit {
           this.createReConfirmModal();
           return;
         }
+
+        this.createLockShift();
 			});
 	}
 
@@ -137,35 +139,39 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 
     modalRef.result.then((result) => {
       if (result) {
-        this.dataSource.value.map((x) => {
-          delete x.pumpPole;
-          delete x.offTimes;
-          x.id = Number(x.id);
-        });
-
-        this.data.listEmployee.map((x) => {
-          delete x.moneyFromFuel;
-          delete x.moneyFromOtherProduct;
-          delete x.totalEmployeeMoney;
-        });
-
-        const dataReq = {
-          lockShiftOldId: Number(this.data.lockShiftOldId),
-          shiftId: Number(this.confirmForm.get('shiftId').value),
-          stationId: Number(this.data.stationId),
-          oldShiftEmployee: this.data.listEmployee,
-          newShiftEmployee: this.dataSource.value
-        };
-
-        this.shiftService.confirmLockShift(dataReq).subscribe((res) => {
-          if (res.data) {
-            this.modal.close();
-            this.router.navigate([`/ca-lam-viec/lich-su-chot-ca`]);
-            this.toastr.success('Chốt ca thành công');
-          }
-        }, (error => this.checkError(error)));
+        this.createLockShift();
       }
     });
+  }
+
+  createLockShift(): void {
+    this.dataSource.value.map((x) => {
+      delete x.pumpPole;
+      delete x.offTimes;
+      x.id = Number(x.id);
+    });
+
+    this.data.listEmployee.map((x) => {
+      delete x.moneyFromFuel;
+      delete x.moneyFromOtherProduct;
+      delete x.totalEmployeeMoney;
+    });
+
+    const dataReq = {
+      lockShiftOldId: Number(this.data.lockShiftOldId),
+      shiftId: Number(this.confirmForm.get('shiftId').value),
+      stationId: Number(this.data.stationId),
+      oldShiftEmployee: this.data.listEmployee,
+      newShiftEmployee: this.dataSource.value
+    };
+
+    this.shiftService.confirmLockShift(dataReq).subscribe((res) => {
+      if (res.data) {
+        this.modal.close();
+        this.router.navigate([`/ca-lam-viec/lich-su-chot-ca`]);
+        this.toastr.success('Chốt ca thành công');
+      }
+    }, (error => this.checkError(error)));
   }
 
 	getTimeShift(value) {
