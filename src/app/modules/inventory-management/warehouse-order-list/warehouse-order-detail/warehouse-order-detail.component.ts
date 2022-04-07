@@ -211,6 +211,8 @@ export class WareHouseOrderDetailComponent extends BaseComponent implements OnIn
 	}
 
 	checkError(error: IError) {
-		this.toastr.error(`${error.code} - ${error.message}`);
+    if (error.code === 'SUN-OIL-4271') {
+      this.toastr.error('Lý do không được để trống');
+    }
 	}
 }
