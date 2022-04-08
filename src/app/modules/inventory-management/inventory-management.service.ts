@@ -436,6 +436,7 @@ export interface IOrderRequest {
   stationId: number;
   stationName: string;
   status: string;
+  rejectWareHouseOrder: boolean;
 }
 
 @Injectable({
