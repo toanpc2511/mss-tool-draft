@@ -232,6 +232,7 @@
               || item.status === listStatus.CONFIRM
               || item.status === listStatus.APPROVE)
               && item.importRequestChange === 'NOT_CHANGE') || item.status === listStatus.REQUEST_CHANGE)
+              && !item.rejectWareHouseOrder
               && eAuthorize.UPDATE_IMPORT_REQUEST | canUseFeature"
               (click)="updateOrderRequest($event,item.id)"
               class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"

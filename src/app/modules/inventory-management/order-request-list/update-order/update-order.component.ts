@@ -340,6 +340,9 @@ export class UpdateOrderComponent extends BaseComponent implements OnInit, After
     if (error.code === 'SUN-OIL-4720') {
       this.toastr.error('Bạn không thể cập nhật đơn hàng vì không phải là người tạo!');
     }
+    if (error.code === 'SUN-OIL-4268') {
+      this.toastr.error('');
+    }
   }
 
   onBack() {
