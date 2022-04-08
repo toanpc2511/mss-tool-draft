@@ -172,6 +172,26 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       });
   }
 
+  selectGasFieldOut(index: number): void {
+    const listProduct = this.dataProductResponses.getRawValue() as any[];
+    const productSelected = this.dataProductResponses.at(index).value;
+    const listDuplicatedProduct = listProduct.filter((product, i) => product.productName === productSelected.productName && index !== i);
+    const isSelectedGasFieldOut = listDuplicatedProduct.some(product => Number(product.gasFieldOut) === Number(productSelected.gasFieldOut))
+
+    if (isSelectedGasFieldOut) {
+      this.toastr.error('Không được chọn trùng bồn xuất')
+      this.dataProductResponses.at(index).get('gasFieldOut').patchValue('');
+    }
+
+    this.isRequired
+      ? (this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.required),
+        this.dataProductResponses.at(index).get('gasFieldOut').updateValueAndValidity())
+      : (this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.nullValidator),
+        this.dataProductResponses.at(index).get('gasFieldOut').updateValueAndValidity());
+
+    return;
+  }
+
   hanldChangeWarehouse() {
     this.exportedWarehouseNameId = this.orderInfoForm.get('exportedWarehouseName').value;
     this.oderForm = this.orderInfoForm.get('oderForm').value;
@@ -453,7 +473,6 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
 
   onSubmit() {
     this.transportInfoForm.updateValueAndValidity();
-    console.log(this.transportInfoForm.get('capacity').hasError('pattern'));
     this.orderInfoForm.markAllAsTouched();
     this.dataProductResponses.markAllAsTouched();
     this.transportInfoForm.markAllAsTouched();

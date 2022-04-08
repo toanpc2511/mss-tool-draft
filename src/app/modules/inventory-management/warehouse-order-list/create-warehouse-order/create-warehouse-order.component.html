@@ -367,7 +367,7 @@
                 ></app-validate>
               </td>
               <td class="gas-field-out-name">
-                <select class="form-control" formControlName='gasFieldOut'>
+                <select class="form-control" formControlName='gasFieldOut' (change)="selectGasFieldOut(i)">
                   <option [value]="''">Chọn bồn xuất</option>
                   <option *ngFor="let item of listItemGas[i]" [value]="item.id">{{item.name}}</option>
                 </select>
@@ -587,7 +587,7 @@
                 ></app-validate>
               </td>
               <td class="gas-field-out-name">
-                <select class="form-control" formControlName='gasFieldOut'>
+                <select class="form-control" formControlName='gasFieldOut' (change)="selectGasFieldOut(i)">
                   <option [value]="''">Chọn bồn xuất</option>
                   <option *ngFor="let item of listItemGas[i]" [value]="item.id">{{item.name}}</option>
                 </select>
