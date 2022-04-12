@@ -137,7 +137,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
     this.measureTankForm.get('productId').patchValue(value ? value.productId : '');
     this.measureTankForm.get('gasFieldName').patchValue(value ? value.gasFieldName : '');
 
-    this.measureTankForm.get('height').patchValue('');
+    // this.measureTankForm.get('height').patchValue('');
 
     this.sumFinalInventoryValue();
   }
