@@ -129,7 +129,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
     this.measureTankForm.get('length').patchValue(value ? value.length : '');
     this.measureTankForm.get('productName').patchValue(value ? value.productName : '');
 
-    this.measureTankForm.get('headInventory').patchValue(value ? value.headInventory : '');
+    this.measureTankForm.get('headInventory').patchValue(value ? value.actualFinal : '');
     this.measureTankForm.get('importQuantity').patchValue(value ? value.importQuantity : '');
     this.measureTankForm.get('exportQuantity').patchValue(value ? value.exportQuantity : '');
     this.measureTankForm.get('actualFinal').patchValue(value ? value.actualFinal : 0);
