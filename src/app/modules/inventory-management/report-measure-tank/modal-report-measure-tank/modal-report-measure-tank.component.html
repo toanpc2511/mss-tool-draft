@@ -150,9 +150,9 @@
                   <p
                     class="cursor-pointer text-ellipsis"
                     placement="top"
-                    [ngbTooltip]="measureTankForm.get('actualFinal').value || 0 | number | vnCurrency"
+                    [ngbTooltip]="measureTankForm.get('headInventory').value || 0 | number | vnCurrency"
                   >
-                    {{ measureTankForm.get('actualFinal').value || 0 | number | vnCurrency }}
+                    {{ measureTankForm.get('headInventory').value || 0 | number | vnCurrency }}
                   </p>
                 </td>
                 <td class='import-quantity text-right'>
@@ -371,9 +371,9 @@
                 <p
                   class="cursor-pointer text-ellipsis"
                   placement="top"
-                  [ngbTooltip]="data.dataDetail?.actualFinal | number | vnCurrency"
+                  [ngbTooltip]="data.dataDetail?.headInventory | number | vnCurrency"
                 >
-                  {{ data.dataDetail?.actualFinal | number | vnCurrency }}
+                  {{ data.dataDetail?.headInventory | number | vnCurrency }}
                 </p>
               </td>
               <td class='import-quantity text-right'>
