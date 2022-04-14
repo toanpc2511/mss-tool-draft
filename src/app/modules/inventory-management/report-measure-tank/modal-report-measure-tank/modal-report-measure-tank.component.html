@@ -169,9 +169,9 @@
                     <p
                       class="cursor-pointer text-ellipsis"
                       placement="top"
-                      [ngbTooltip]="measureTankForm.get('exportQuantity').value || 0 | number | vnCurrency"
+                      [ngbTooltip]="measureTankForm.get('exportQuantity').value || 0 "
                     >
-                      {{ measureTankForm.get('exportQuantity').value || 0 | number | vnCurrency }}
+                      {{ measureTankForm.get('exportQuantity').value || 0  }}
                     </p>
                   </ng-container>
 
@@ -194,9 +194,9 @@
                   <p
                     class="cursor-pointer text-ellipsis"
                     placement="top"
-                    [ngbTooltip]="measureTankForm.get('finalInventory').value || 0 "
+                    [ngbTooltip]="measureTankForm.get('finalInventory').value.toLocaleString('en-US') || 0 "
                   >
-                    {{ measureTankForm.get('finalInventory').value || 0  }}
+                    {{ measureTankForm.get('finalInventory').value.toLocaleString('en-US') || 0  }}
                   </p>
                 </td>
                 <td class='height'>
@@ -238,7 +238,7 @@
                     placement="top"
                     [class.text-primary]='measureTankForm.get("difference").value > 0'
                     [class.text-danger]='measureTankForm.get("difference").value < 0'
-                    [ngbTooltip]="measureTankForm.get('difference').value || 0 | number | vnCurrency"
+                    [ngbTooltip]="measureTankForm.get('difference').value || 0 "
                   >
                     {{measureTankForm.get('difference').value > 0 ? ("+ " + measureTankForm.get('difference').value) : measureTankForm.get('difference').value || 0}}
                   </p>
