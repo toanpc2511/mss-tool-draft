@@ -52,6 +52,7 @@ export class FuelInventoryListComponent implements OnInit {
     this.buildFormSearch();
     this.handleListGasField();
     this.onSearch();
+    this.listGasField = []
   }
 
   buildFormSearch() {
@@ -80,11 +81,15 @@ export class FuelInventoryListComponent implements OnInit {
     this.searchForm.get('stationId').valueChanges
       .subscribe((value) => {
         this.searchForm.get('gasFieldId').patchValue('');
-        this.inventoryManagementService.getGasFields(value, 'NOT_DELETE')
-          .subscribe((res) => {
-            this.listGasField = res.data;
-            this.cdr.detectChanges();
-          })
+        if (value) {
+          this.inventoryManagementService.getGasFields(value, 'NOT_DELETE')
+            .subscribe((res) => {
+              this.listGasField = res.data;
+              this.cdr.detectChanges();
+            })
+        }else {
+          this.listGasField = []
+        }
       })
   }
 
