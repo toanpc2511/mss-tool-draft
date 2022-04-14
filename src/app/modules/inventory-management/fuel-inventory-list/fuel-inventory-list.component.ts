@@ -103,6 +103,8 @@ export class FuelInventoryListComponent implements OnInit {
     this.inventoryManagementService.getListFuelInventory(this.paginatorState.page, this.paginatorState.pageSize, valueFormSearch)
       .subscribe((res) =>{
           if (res) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             this.dataSource = res.data;
             this.paginatorState.recalculatePaginator(res.meta.total);
             this.cdr.detectChanges();
