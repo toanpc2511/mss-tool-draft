@@ -133,6 +133,12 @@ export const DynamicAsideMenuConfig: { items: IMenuConfigItem[] } = {
       icon: 'fas fa-warehouse',
       submenu: [
         {
+          title: 'Tồn kho nhiên liệu',
+          bullet: 'dot',
+          page: '/kho/ton-kho-nhien-lieu',
+          permissionKey: EAuthorize.VIEW_FUEL_INVENTORY
+        },
+        {
           title: 'Yêu cầu đặt hàng',
           bullet: 'dot',
           page: '/kho/yeu-cau-dat-hang',

@@ -5,6 +5,7 @@ import { GasStationResponse } from '../gas-station/gas-station.service';
 import { IInfoGasField } from './report-min-tank/modal-report-min-tank/modal-report-min-tank.component';
 import { Observable } from 'rxjs';
 import { DataResponse } from '../../shared/models/data-response.model';
+import {IValueSearchFuelInventory} from "./fuel-inventory-list/fuel-inventory-list.component";
 
 export enum EWarehouseOrderStatus {
 	NEW = 'NEW',
@@ -439,6 +440,20 @@ export interface IOrderRequest {
   rejectWareHouseOrder: boolean;
 }
 
+export interface IFuelInventory {
+  capacity: string;
+  gasFieldCode: string;
+  gasFieldName: string;
+  headInventory: number;
+  id: number;
+  nowInventory: number;
+  periodExport: number;
+  periodImport: number;
+  productName: string;
+  stationName: string;
+  unit: string;
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -745,4 +760,14 @@ export class InventoryManagementService {
     return this.http.put(`warehouse-orders/driver/${id}`, dataReq)
   }
 
+  // Lấy danh sách tồn kho nhiên liệu
+  getListFuelInventory(page: number, size: number,valueFormSearch: IValueSearchFuelInventory) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('station-id', valueFormSearch.stationId)
+      .set('gas-Field-id', valueFormSearch.gasFieldId)
+      .set('product-id', valueFormSearch.productId)
+    return this.http.get(`fuel-inventories/filters`, {params})
+  }
 }

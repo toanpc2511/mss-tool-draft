@@ -160,6 +160,7 @@ export enum EAuthorize {
   VIEW_MEASURES_SCREEN = 'view_measures_screen',
   VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN = 'view_warehouse_import_detail_screen',
   CREATE_WAREHOUSE = 'create_warehouse',
+  VIEW_FUEL_INVENTORY = 'view_fuel_inventory',
   /* End */
 
   // Exchange point roles

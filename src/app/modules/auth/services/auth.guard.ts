@@ -132,6 +132,10 @@ const SPECIAL_URL: SpecialUrl[] = [
     permissionKey: EAuthorize.VIEW_PUMP_HOSE_QR_LIST_SCREEN
   },
   {
+    url: '/kho/ton-kho-nhien-lieu',
+    permissionKey: EAuthorize.VIEW_FUEL_INVENTORY
+  },
+  {
     url: '/kho/yeu-cau-dat-hang',
     permissionKey: EAuthorize.CREATE_IMPORT_REQUEST
   },
