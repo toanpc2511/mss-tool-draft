@@ -149,7 +149,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
     const exportQuantityValue = convertMoney(this.measureTankForm.get('exportQuantity').value?.toString());
     const finalInventoryValue = headInventoryValue + importQuantityValue - exportQuantityValue;
 
-    this.measureTankForm.get('finalInventory').patchValue(finalInventoryValue);
+    this.measureTankForm.get('finalInventory').patchValue(finalInventoryValue.toLocaleString('en-US'));
 
     const differenceValue = actualFinalValue - finalInventoryValue;
 
