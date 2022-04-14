@@ -15,12 +15,17 @@ import { ReportMeasureTankComponent } from './report-measure-tank/report-measure
 import { ReportMinTankComponent } from './report-min-tank/report-min-tank.component';
 import { UpdateOrderComponent } from './order-request-list/update-order/update-order.component';
 import { CreateExportInventoryComponent } from './export-inventory/create-export-inventory/create-export-inventory.component';
+import {FuelInventoryListComponent} from "./fuel-inventory-list/fuel-inventory-list.component";
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full'
+  },
+  {
+    path: 'ton-kho-nhien-lieu',
+    component: FuelInventoryListComponent
   },
   {
     path: 'yeu-cau-dat-hang',
