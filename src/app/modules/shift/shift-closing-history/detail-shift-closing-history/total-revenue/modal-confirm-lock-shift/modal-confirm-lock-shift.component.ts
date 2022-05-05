@@ -66,6 +66,7 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 			.valueChanges.pipe(debounceTime(300), takeUntil(this.destroy$))
 			.subscribe((value) => {
 				if (value) {
+          this.calendarIds = []
 					this.shiftService
 						.getCalendarEmployeeInfos(value, this.data.stationId, this.getTimeShift(value))
 						.subscribe((res) => {
