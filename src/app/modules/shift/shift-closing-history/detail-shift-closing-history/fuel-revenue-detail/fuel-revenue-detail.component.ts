@@ -240,7 +240,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 
     const data = { productOilInfos: dataReq };
 
-		this.shiftService.updateFuelProductRevenue(this.lockShiftId, data, this.hasChangeEndElectronicPermission, this.dataItem.chip).subscribe(
+		this.shiftService.updateFuelProductRevenue(this.lockShiftId, data, this.hasChangeEndElectronicPermission, this.dataItem?.chip).subscribe(
 			(res) => {
 				this.checkRes(res);
 			},

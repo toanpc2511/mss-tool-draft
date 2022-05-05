@@ -81,6 +81,7 @@ export interface IShiftConfig {
 	offTimes: [ITime];
 	codeColor: string;
 	dateWork: string;
+  date: string;
 
 	startTime?: string;
 	endTime?: string;
