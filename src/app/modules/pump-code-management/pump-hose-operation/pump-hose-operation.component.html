@@ -122,9 +122,9 @@
             <p
               class="cursor-pointer text-ellipsis"
               placement="top"
-              [ngbTooltip]="item.moneyPumped | number | vnCurrency"
+              [ngbTooltip]="item.moneyPumped.toLocaleString('en-US')"
             >
-              {{ item.moneyPumped | number | vnCurrency }}
+              {{ item.moneyPumped.toLocaleString('en-US') }}
             </p>
           </td>
           <td class='total-amount-accumulated text-right'>

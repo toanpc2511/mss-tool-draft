@@ -35,6 +35,7 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 	isShiftLead = false;
   totalPumpPoles: number;
   totalPumpPolesAssigned: number;
+  calendarIds: any[]= []
 
 	constructor(
 		public modal: NgbActiveModal,
@@ -68,6 +69,9 @@ export class ModalConfirmLockShiftComponent implements OnInit {
 					this.shiftService
 						.getCalendarEmployeeInfos(value, this.data.stationId, this.getTimeShift(value))
 						.subscribe((res) => {
+              res.data?.map((x) => {
+                this.calendarIds.push(x.calendarId);
+              })
 							this.dataSource = this.dataSourceTemp = this.convertToFormArray(res.data);
               this.totalPumpPolesAssigned = res.data.reduce((total, item) => {
                 return total += item.pumpPoleResponses.length;
@@ -160,6 +164,7 @@ export class ModalConfirmLockShiftComponent implements OnInit {
     const dataReq = {
       lockShiftOldId: Number(this.data.lockShiftOldId),
       shiftId: Number(this.confirmForm.get('shiftId').value),
+      calendarIds: this.calendarIds,
       stationId: Number(this.data.stationId),
       oldShiftEmployee: this.data.listEmployee,
       newShiftEmployee: this.dataSource.value

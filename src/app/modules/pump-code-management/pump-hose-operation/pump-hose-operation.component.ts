@@ -38,7 +38,7 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getListStation();
     this.getPumpCode('');
-    this.changestation();
+    this.changeStation();
     this.checkConnectMqtt();
   }
   ngOnDestroy() {
@@ -75,6 +75,7 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
   }
 
   bindData(dataMqtt: any[]) {
+    console.log(dataMqtt)
     dataMqtt.forEach((stationMqttData: any[]) => {
       stationMqttData.forEach((pumpPole: IDataConnectMqtt) => {
         const a = this.pumpCodes.find((x) => x.stationCodeChip === pumpPole.station && x.pumpHoseCodeChip === pumpPole.slave);
@@ -87,7 +88,7 @@ export class PumpHoseOperationComponent implements OnInit, OnDestroy {
     });
   }
 
-  changestation() {
+  changeStation() {
     this.station.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value: string) => {
       this.getPumpCode(value);
       this.getDataMqtt(value);
