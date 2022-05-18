@@ -5,9 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { DestroyService } from '../../../../../shared/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import { takeUntil, tap } from 'rxjs/operators';
+import {switchMap, takeUntil, tap} from 'rxjs/operators';
 import { convertMoney } from '../../../../../shared/helpers/functions';
 import { IError } from '../../../../../shared/models/error.model';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { DataResponse } from 'src/app/shared/models/data-response.model';
 
 @Component({
 	selector: 'app-fuel-revenue-detail',
@@ -26,6 +28,8 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 	sumCashMoney: number;
   sumTotalMoney: number;
   decimalPattern = /^[0-9]+(\.[0-9]+)?$/;
+  hasChangeEndElectronicPermission: boolean;
+  @Input() isTransition;
 
 	constructor(
 		private shiftService: ShiftService,
@@ -33,12 +37,15 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
 		private toastr: ToastrService,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+    private authService: AuthService
 	) {
 		super();
 	}
 
 	ngOnInit(): void {
+    this.hasChangeEndElectronicPermission = this.authService.canUseFeature(this.eAuthorize.UPDATE_PRODUCT_REVENUE_ADMIN);
+
     this.activeRoute.params
       .pipe(takeUntil(this.destroy$))
       .subscribe((param) => {
@@ -50,11 +57,28 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
         this.statusLockShift = queryParams.status;
       })
 
-		this.getFuelProductRevenue();
+    if (this.statusLockShift !== 'CLOSE' && !this.isTransition) {
+      this.refreshDetailRevenue();
+    } else {
+      this.getFuelProductRevenue$().subscribe();
+    }
 	}
 
-	getFuelProductRevenue() {
-		this.shiftService
+  refreshDetailRevenue(): void {
+    const data = { lockShiftId: this.lockShiftId };
+    this.shiftService.createFuelProductRevenue(data)
+      .pipe(
+        switchMap((res: DataResponse<boolean>) => {
+          if(res.data) {
+            return this.getFuelProductRevenue$()
+          }
+        })
+      )
+      .subscribe();
+  }
+
+	getFuelProductRevenue$() {
+		return this.shiftService
 			.getFuelProductRevenue(this.lockShiftId)
 			.pipe(
 				tap((res) => {
@@ -73,7 +97,6 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 				}),
 				takeUntil(this.destroy$)
 			)
-			.subscribe();
 	}
 
 	convertToFormArray(data): FormArray {
@@ -81,10 +104,10 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 			return this.fb.group({
 				chip: [d.chip],
 				code: [d.code],
-				electronicEnd: [{ value: d.electronicEnd, disabled: d.chip }, [Validators.pattern(this.decimalPattern), Validators.required]],
+				electronicEnd: [{ value: d.electronicEnd.toLocaleString('en-US'), disabled: this.hasChangeEndElectronicPermission ? !this.hasChangeEndElectronicPermission : d.chip }, [Validators.required]],
 				electronicStart: [d.electronicStart],
 				employeeName: [d.employeeName],
-				gaugeEnd: [ d.gaugeEnd, [Validators.pattern(this.decimalPattern), Validators.required]],
+				gaugeEnd: [ d.gaugeEnd, [Validators.required]],
 				gaugeStart: [d.gaugeStart],
 				id: [d.id],
 				limitMoney: [d.limitMoney],
@@ -109,63 +132,87 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 				totalPrice: [d.totalPrice],
 				totalProvisionalMoney: [d.totalProvisionalMoney],
 				cashMoney: [d.cashMoney],
-				price: [d.price]
+				price: [d.price],
+        dischargeE: [d.dischargeE | 0]
 			});
 		});
 		return this.fb.array(controls);
 	}
 
-	changeValue(index: number, isChip: boolean) {
-		const gaugeStart: number = convertMoney(
-			this.dataSourceForm.at(index).get('gaugeStart').value.toString()
-		);
-		const gaugeEnd: number = convertMoney(
-			this.dataSourceForm.at(index).get('gaugeEnd').value.toString()
-		);
-		const quantityGauge = gaugeEnd - gaugeStart;
+  updateQuantityGauge(index: number): void {
+    const gaugeStart: number = convertMoney(
+      this.dataSourceForm.at(index).get('gaugeStart').value?.toString()
+    );
+    const gaugeEnd: number = convertMoney(
+      this.dataSourceForm.at(index).get('gaugeEnd').value?.toString()
+    );
+
+    this.dataSourceTemp.at(index).get('gaugeEnd').patchValue(gaugeEnd?.toLocaleString());
+
+    this.dataSourceTemp.at(index).get('quantityGauge').patchValue(gaugeEnd - gaugeStart);
+  }
+
+  calculateTotalMoney(index: number, isChip: boolean): void {
+    const isElectronicEndChanged = this.dataSourceForm.at(index).get('electronicEnd').pristine;
 
 		const electronicEnd: number = convertMoney(
-			this.dataSourceForm.at(index).get('electronicEnd').value.toString()
+			this.dataSourceForm.at(index).get('electronicEnd').value?.toString()
 		);
+
 		const electronicStart: number = convertMoney(
-			this.dataSourceForm.at(index).get('electronicStart').value.toString()
+			this.dataSourceForm.at(index).get('electronicStart').value?.toString()
 		);
+
+    const dischargeE: number = convertMoney(
+      this.dataSourceForm.at(index).get('dischargeE').value?.toString()
+    );
+
+    const quantityTransaction = convertMoney(
+      this.dataSourceForm.at(index).get('quantityTransaction').value?.toString()
+    );
+
 		const quantityElectronic = electronicEnd - electronicStart;
 
-		this.dataSourceTemp.at(index).get('quantityGauge').patchValue(quantityGauge);
+    const price: number = convertMoney(
+      this.dataSourceForm.at(index).get('price').value?.toString()
+    );
 
-		this.dataSourceTemp.at(index).get('quantityElectronic').patchValue(quantityElectronic);
+    let totalMoney;
+    if (isElectronicEndChanged && this.hasChangeEndElectronicPermission && isChip || isChip && !this.hasChangeEndElectronicPermission) {
+      totalMoney = price * (quantityTransaction -  dischargeE);
+    } else {
+      totalMoney = price * (quantityElectronic -  dischargeE);
+    }
 
-		if (!isChip) {
-			const price: number = convertMoney(
-				this.dataSourceForm.at(index).get('price').value.toString()
-			);
-			const totalMoney = price * quantityElectronic;
+    const provisionalMoney: number = convertMoney(
+      this.dataSourceForm.at(index).get('provisionalMoney').value?.toString()
+    );
+    const limitMoney: number = convertMoney(
+      this.dataSourceForm.at(index).get('limitMoney').value?.toString()
+    );
+    const totalPoint: number = convertMoney(
+      this.dataSourceForm.at(index).get('totalPoint').value?.toString()
+    );
+    const cashMoney: number = totalMoney - provisionalMoney - limitMoney - totalPoint;
 
-			const provisionalMoney: number = convertMoney(
-				this.dataSourceForm.at(index).get('provisionalMoney').value.toString()
-			);
-			const limitMoney: number = convertMoney(
-				this.dataSourceForm.at(index).get('limitMoney').value.toString()
-			);
-			const totalPoint: number = convertMoney(
-				this.dataSourceForm.at(index).get('totalPoint').value.toString()
-			);
-			const cashMoney: number = totalMoney - provisionalMoney - limitMoney - totalPoint;
+    if (!isChip) {
+      this.dataSourceTemp.at(index).get('quantityTransaction').patchValue(quantityElectronic?.toLocaleString());
+    }
 
-			this.dataSourceTemp.at(index).get('quantityTransaction').patchValue(quantityElectronic);
+    this.dataSourceTemp.at(index).patchValue({
+      totalMoney: totalMoney > 0 ? totalMoney?.toLocaleString() : 0,
+      cashMoney: cashMoney > 0 ? cashMoney?.toLocaleString() : 0,
+      quantityElectronic: quantityElectronic?.toLocaleString(),
+      dischargeE: dischargeE?.toLocaleString(),
+      electronicEnd: electronicEnd?.toLocaleString(),
+    })
 
-			this.dataSourceTemp.at(index).get('totalMoney').patchValue(totalMoney);
-
-			this.dataSourceTemp.at(index).get('cashMoney').patchValue(cashMoney);
-
-			this.sumCashMoney = 0;
-			this.sumTotalMoney = 0;
-			for (let i = 0; i < this.dataSourceForm.value.length; i++) {
-				this.sumCashMoney += this.dataSourceForm.value[i].cashMoney;
-				this.sumTotalMoney += this.dataSourceForm.value[i].totalMoney;
-			}
-		}
+    this.sumCashMoney = 0;
+    this.sumTotalMoney = 0;
+    for (let i = 0; i < this.dataSourceForm.value.length; i++) {
+      this.sumCashMoney += convertMoney(this.dataSourceForm.value[i].cashMoney?.toString());
+      this.sumTotalMoney += convertMoney(this.dataSourceForm.value[i].totalMoney?.toString());
+    }
 	}
 
 	onSubmit() {
@@ -178,13 +225,22 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 		const dataReq = this.dataSourceForm.getRawValue().map((d) => ({
 			code: d.code,
 			gaugeEnd: convertMoney(d.gaugeEnd?.toString()),
-			electronicEnd: convertMoney(d.electronicEnd?.toString())
+			electronicEnd: convertMoney(d.electronicEnd?.toString()),
+      stationId: d.stationId,
+      totalLiter: d.totalLiter,
+      limitMoney: d.limitMoney,
+      totalPoint: d.totalPoint,
+      totalMoney: convertMoney(d.totalMoney?.toString()),
+      quantityElectronic: convertMoney(d.quantityElectronic?.toString()),
+      quantityGauge: d.quantityGauge,
+      dischargeE: convertMoney(d.dischargeE?.toString()),
+      cashMoney: convertMoney(d.cashMoney?.toString()),
+      quantityTransaction: convertMoney(d.quantityTransaction?.toString()),
 		}));
 
-    console.log(this.dataSourceForm.value[0].electronicEnd);
-    console.log(convertMoney(this.dataSourceForm.value[0].electronicEnd));
+    const data = { productOilInfos: dataReq };
 
-		this.shiftService.updateFuelProductRevenue(this.lockShiftId, dataReq).subscribe(
+		this.shiftService.updateFuelProductRevenue(this.lockShiftId, data, this.hasChangeEndElectronicPermission, this.dataItem?.chip).subscribe(
 			(res) => {
 				this.checkRes(res);
 			},

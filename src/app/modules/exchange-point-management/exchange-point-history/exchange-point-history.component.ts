@@ -104,7 +104,7 @@ export class ExchangePointHistoryComponent extends BaseComponent implements OnIn
   }
 
   viewImages(content, item: IExchangePoint): void {
-    this.modalService.open(content, { size: 'sm' });
+    this.modalService.open(content, { size: 'lg' });
     this.detailImage = item.attachment !== null ? item.attachment[0] : null;
   }
 

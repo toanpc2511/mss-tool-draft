@@ -17,7 +17,7 @@ import { IDataConnectMqtt, IPumpCode, PumpCodeManagementService } from '../pump-
   styleUrls: ['./pump-hose-operation.component.scss'],
   providers: [DestroyService]
 })
-export class PumpHoseOperationComponent implements OnInit {
+export class PumpHoseOperationComponent implements OnInit, OnDestroy {
   listStation: IStationActiveByToken[] = [];
   station = new FormControl('');
   pumpCodes: IPumpCode[] = [];
@@ -38,12 +38,15 @@ export class PumpHoseOperationComponent implements OnInit {
   ngOnInit(): void {
     this.getListStation();
     this.getPumpCode('');
-    this.changestation();
+    this.changeStation();
+    this.checkConnectMqtt();
+  }
+  ngOnDestroy() {
+    this.mqttService.disconnect(true)
   }
 
   connectMqtt() {
     this.mqttService.onConnect.pipe(finalize(() => {
-      this.checkConnectMqtt();
     }), takeUntil(this.destroy$))
       .subscribe(() => {
         this.toastr.success('Kết nối thành công!');
@@ -56,25 +59,23 @@ export class PumpHoseOperationComponent implements OnInit {
     this.mqttService.state.pipe(takeUntil(this.destroy$)).subscribe((s: MqttConnectionState) => {
       const status = s === MqttConnectionState.CONNECTED ? 'CONNECTED' : 'DISCONNECTED';
       if (s !== MqttConnectionState.CONNECTED) {
-        this.toastr.error(`Kết nối thất bại: ${status}`);
+        this.toastr.error(`Kết nối thất bại!`);
       }
     });
   }
 
   getDataMqtt(station?: string) {
     const topic = !station ? 'sunoil/pub/#' : `sunoil/pub/${station}/#`;
-    console.log(topic);
     this.mqttService.observe(topic).pipe(takeUntil(this.destroy$))
       .subscribe((message: IMqttMessage) => {
         const msg = new TextDecoder('utf-8').decode(message.payload);
-        console.log(msg);
-        console.log(JSON.parse(msg));
         this.bindData(JSON.parse(msg));
         this.cdr.detectChanges();
       });
   }
 
   bindData(dataMqtt: any[]) {
+    console.log(dataMqtt)
     dataMqtt.forEach((stationMqttData: any[]) => {
       stationMqttData.forEach((pumpPole: IDataConnectMqtt) => {
         const a = this.pumpCodes.find((x) => x.stationCodeChip === pumpPole.station && x.pumpHoseCodeChip === pumpPole.slave);
@@ -87,7 +88,7 @@ export class PumpHoseOperationComponent implements OnInit {
     });
   }
 
-  changestation() {
+  changeStation() {
     this.station.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value: string) => {
       this.getPumpCode(value);
       this.getDataMqtt(value);

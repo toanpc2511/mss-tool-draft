@@ -1,0 +1,232 @@
+<form [formGroup]="createForm">
+  <div class="card card-custom">
+    <div class="list-product">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">thanh lý</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive angular-bootstrap-table">
+          <table class="table table-vertical-center overflow-hidden" aria-label="">
+            <thead class="thead-light">
+            <tr>
+              <th scope="">
+                <label class="form-label">STT</label>
+              </th>
+              <th scope="">
+                <label class="form-label">Tên sản phẩm</label>
+              </th>
+              <th scope="">
+                <label class="form-label">Đơn vị</label>
+              </th>
+              <th class='text-right' scope="">
+                <label class="form-label">Số lượng</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Đơn giá (VNĐ)</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Đơn giá chiết khấu (VNĐ)</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Thành tiền (Hạn mức nhiên liệu)</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Số lượng còn</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Số lượng thanh lý</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Đơn giá thanh lý</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Thành tiền thanh lý</label>
+              </th>
+            </tr>
+            </thead>
+
+            <tbody formArrayName="liquidation">
+            <tr *ngFor="let control of liquidation?.controls, let i = index">
+              <ng-container [formGroupName]="i">
+                <td>{{i + 1}}</td>
+                <td>{{control?.get('name').value}}</td>
+                <td>{{control?.get('unit').value}}</td>
+                <td class='text-right'>{{control?.get('amount').value}}</td>
+                <td class="text-right">{{control?.get('price').value?.toLocaleString('en-US')}}</td>
+                <td class="text-right">{{control?.get('cashLimitOil').value?.toLocaleString('en-US')}}</td>
+                <td class="text-right">{{control?.get('totalMoney').value?.toLocaleString('en-US')}}</td>
+                <td class="text-right">
+                  {{control?.get('theRemainingAmount').value?.toLocaleString('en-US')}}
+                </td>
+                <td class="text-right">
+                  {{control?.get('liquidationAmount').value?.toLocaleString('en-US')}}
+                </td>
+                <td class="text-right">
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName='liquidationUnitPrice'
+                    autocomplete="off"
+                    trim="blur"
+                    placeholder=''
+                    decimal-mask
+                    (input)="calculateLiquidationMoney(i)"
+                    maxlength="16"
+                  />
+                  <app-validate
+                    [control]="control?.get('liquidationUnitPrice')"
+                    [error]="'required'"
+                    [message]="'Đơn giá thanh lý không được để trống'"
+                  ></app-validate>
+                </td>
+                <td class="text-right">
+                  {{control?.get('intoLiquidationMoney').value?.toLocaleString('en-US') || 0}}
+                </td>
+              </ng-container>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row justify-content-end font-weight-bold">
+          <div class="col-5 pr-4">
+            <div class="row justify-content-between pb-3">
+              <p class="col-8">Tổng tiền thanh lý nhiên liệu:</p>
+              <p class="col-4 text-right">{{createForm?.get('totalLiquidationOfFuel').value?.toLocaleString('en-US') || 0}}</p>
+            </div>
+            <div class="row justify-content-between pb-3">
+              <p class="col-7">Phí lưu kho: </p>
+              <div class="col-5">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName='storageFee'
+                  autocomplete="off"
+                  trim="blur"
+                  placeholder=''
+                  decimal-mask
+                  maxlength="16"
+                  (input)="calculateTotalMoney()"
+                />
+              </div>
+            </div>
+            <div class="row justify-content-between pb-3">
+              <p class="col-7">Phí khác: </p>
+              <div class="col-5">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName='otherFees'
+                  autocomplete="off"
+                  placeholder=''
+                  decimal-mask
+                  maxlength="16"
+                  (input)="calculateTotalMoney()"
+                />
+              </div>
+            </div>
+            <div class="row justify-content-between pb-3">
+              <p class="col-7">Tổng tiền phải thanh toán: </p>
+              <div class="col-5">
+                <p class="text-right">{{createForm?.get('totalMoney').value?.toLocaleString('en-US') || 0}}</p>
+                <app-validate
+                  [control]="createForm.controls['totalMoney']"
+                  [error]="'incorrect'"
+                  [message]="'Tổng tiền phải thanh toán không được nhỏ hơn 0'"
+                ></app-validate>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <div class="card-body">
+        <div class="form-group row align-items-center">
+          <div class="col-lg-2 font-weight-bold">Ghi chú</div>
+          <div class="col-lg-10">
+            <p class="text-bold">
+              <input
+                class="form-control"
+                formControlName='note'
+                autocomplete="off"
+                trim="blur"
+                placeholder=''
+                maxlength="500"
+              />
+
+              <app-validate
+                [control]="createForm.controls['note']"
+                [error]="'maxlength'"
+                [message]="'Ghi chú không được quá 500 ký tự'"
+              ></app-validate>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="font-weight-bold">
+        <h3 class="title-reason">Lưu ý:</h3>
+        <p class="title-reason">Số lượng thanh lý không vượt quá số lượng trong hợp đồng và số lượng còn lại trong tài khoản cá nhân của doanh nghiệp</p>
+        <p class="title-reason">Nếu số lượng (hạn mức) chủ xe đã chia cho tài xế thì số lượng đó không được thanh lý. Chỉ thanh lý tài khoản còn lại của chủ xe. Muốn thanh lý cả số lượng chia cho tài xế thì cần cập nhật lại số lượng (hạn mức) chia cho tài xế về 0</p>
+      </div>
+    </div>
+
+    <div class="upload-file">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Đính kèm file</h3>
+        </div>
+      </div>
+
+      <div class="card-body row align-items-center">
+        <div class="col-2 form-label required">
+          File đính kèm
+        </div>
+        <div class="col-10">
+          <input #fileChoose multiple type="file" (change)="addFiles($event)" hidden />
+          <button type="button" class="mr-3 btn btn-outline-primary" (click)="fileChoose.click()">
+            Đính kèm file
+          </button>
+          <button type="button" class="ml-3 btn btn-outline-primary" (click)="removeFile('ALL')">Xóa tất cả</button>
+        </div>
+        <div class="mt-2 col-lg-12">
+          <div
+            class="mt-2 mb-2 file form-control form-control-lg form-control-solid w-50"
+            *ngFor="let file of filesUploaded; let i = index"
+            [ngbTooltip]="file.name"
+            [placement]="'right'"
+          >
+            <div *ngIf="filesUploadProgress[i] < 100">
+              <ngb-progressbar type="success" [value]="filesUploadProgress[i]"></ngb-progressbar>
+            </div>
+            <em class="fa fa-times pr-2" (click)="removeFile('ONE',file.id)"></em>
+            <span>{{file.name|stringMaxLength: 35}}</span>
+          </div>
+          <app-validate
+            [control]="createForm.controls['file']"
+            [error]="'required'"
+            [message]="'File không được để trống'"
+          ></app-validate>
+          <span class="mt-3 text-warning">Dung lượng file tối đa 5Mb và tối đa 10 file</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-100 d-flex justify-content-center pb-10">
+      <button type="button" ngbAutofocus class="btn btn-primary mr-3" (click)="onSubmit()">
+        Gửi duyệt
+      </button>
+      <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+        Hủy
+      </button>
+    </div>
+  </div>
+
+</form>

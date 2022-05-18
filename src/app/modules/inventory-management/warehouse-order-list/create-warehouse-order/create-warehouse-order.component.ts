@@ -16,6 +16,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { IError } from '../../../../shared/models/error.model';
 import { ToastrService } from 'ngx-toastr';
 import { TValidators } from '../../../../shared/validators';
+import {preventLetter} from "../../../../shared/utitlies/prevent-letter";
 
 @Component({
   selector: 'app-create-warehouse-order',
@@ -36,9 +37,10 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   selectCapacity: boolean;
   stationByToken: IStationActiveByToken[] = [];
   reasonChange: FormControl;
-
+  preventLetter = preventLetter;
   exportedWarehouseNameId: number;
   oderForm: string;
+  decimalPattern = /^[0-9]+(\.[0-9]+)?$/;
 
   orderInfoForm: FormGroup;
   transportInfoForm: FormGroup;
@@ -170,6 +172,26 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
       });
   }
 
+  // selectGasFieldOut(index: number): void {
+  //   const listProduct = this.dataProductResponses.getRawValue() as any[];
+  //   const productSelected = this.dataProductResponses.at(index).value;
+  //   const listDuplicatedProduct = listProduct.filter((product, i) => product.productName === productSelected.productName && index !== i);
+  //   const isSelectedGasFieldOut = listDuplicatedProduct.some(product => Number(product.gasFieldOut) === Number(productSelected.gasFieldOut))
+  //
+  //   if (isSelectedGasFieldOut) {
+  //     this.toastr.error('Bồn xuất đã được chọn')
+  //     this.dataProductResponses.at(index).get('gasFieldOut').patchValue('');
+  //   }
+  //
+  //   this.isRequired
+  //     ? (this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.required),
+  //       this.dataProductResponses.at(index).get('gasFieldOut').updateValueAndValidity())
+  //     : (this.dataProductResponses.at(index).get('gasFieldOut').setValidators(Validators.nullValidator),
+  //       this.dataProductResponses.at(index).get('gasFieldOut').updateValueAndValidity());
+  //
+  //   return;
+  // }
+
   hanldChangeWarehouse() {
     this.exportedWarehouseNameId = this.orderInfoForm.get('exportedWarehouseName').value;
     this.oderForm = this.orderInfoForm.get('oderForm').value;
@@ -221,6 +243,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
         if (x === 'RENTAL') {
           this.transportInfoForm.get('capacity').enable();
           this.transportInfoForm.get('capacity').setValidators(Validators.required)
+          this.transportInfoForm.get('capacity').setValidators(Validators.pattern(this.decimalPattern));
         }
         if (x === 'STORE') {
           this.transportInfoForm.get('capacity').disable();
@@ -449,6 +472,7 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
   }
 
   onSubmit() {
+    this.transportInfoForm.updateValueAndValidity();
     this.orderInfoForm.markAllAsTouched();
     this.dataProductResponses.markAllAsTouched();
     this.transportInfoForm.markAllAsTouched();
@@ -548,6 +572,9 @@ export class CreateWarehouseOrderComponent extends BaseComponent implements OnIn
     }
     if (error.code === 'SUN-OIL-4934') {
       this.toastr.error('Cước vận tải/lit không được để trống')
+    }
+    if (error.code === 'SUN-OIL-4978') {
+      this.toastr.error('Bồn xuất không được để trống')
     }
   }
 }

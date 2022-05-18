@@ -50,8 +50,24 @@
       }
     }
 
+    .plan-stt {
+      width: 100px;
+    }
+
+    .plan-date, .plan-money {
+      width:150px;
+    }
+
+    .plan-image {
+      width: 200px
+    }
+
     tfoot {
       border-bottom: 1px solid #cccccc;
+
+      .money-plan-detail-title {
+        padding-left: 500px;
+      }
     }
   }
 }
@@ -66,4 +82,12 @@
 .title-reason {
   color: red;
   font-size: 14px;
+}
+
+::ng-deep .mat-tab-body-content {
+  padding-top: 0px !important;
+}
+
+.fa-images {
+  color: #4674EB;
 }

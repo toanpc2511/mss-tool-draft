@@ -124,6 +124,19 @@ export class DayWrapperComponent implements OnInit {
 		private destroy$: DestroyService
 	) {}
 	ngOnInit(): void {
+		this.shiftService.warningDateShifts$
+			.pipe(
+				tap((value) => {
+					if (value.some((data) => !data.checked && this.currentDate === data.date)) {
+						this.tooltipWarning = 'Trạm có ca chưa được gán nhân viên';
+					} else {
+						this.tooltipWarning = '';
+					}
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+
 		const calendars$ = this.shiftService
 			.getShiftWorksByDate(this.stationId, this.currentDate)
 			.pipe(map((res) => res.data));
@@ -219,7 +232,6 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 	currentGasStationId: string;
 
 	calendars: EventInput[];
-	warningDate: Map<string, boolean> = new Map();
 	totalPumpPoles = 0;
 
 	calendarOptions: CalendarOptions = {
@@ -320,24 +332,25 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 
 	getCalendarData(start: string, end: string, employeeIds: number[], stationId: string) {
 		this.calendarApi.removeAllEventSources();
-		this.warningDate.clear();
+		this.shiftService.setWarningDateShiftValue([]);
+		let warningDateData: { date: string; checked: boolean }[] = [];
 		this.shiftService
 			.getShiftWorks(start, end, employeeIds, stationId)
 			.pipe(
 				tap((res) => {
 					this.calendars = [...res.data].map((calendar): EventInput => {
 						const start = moment(calendar.start).format('YYYY-MM-DD');
-						const end = moment(calendar.end).format('YYYY-MM-DD');
+						// const end = moment(calendar.end).format('YYYY-MM-DD');
 
-						this.warningDate.set(start, !calendar.checked);
-						if (start !== end) {
-							this.warningDate.set(end, !calendar.checked);
-						}
+						warningDateData = [...warningDateData, { date: start, checked: calendar.checked }];
+						// if (start !== end) {
+						// 	this.warningDate.set(end, !calendar.checked);
+						// }
 
 						return {
 							id: calendar.calendarId.toString(),
 							start: moment(calendar.start).format('YYYY-MM-DD HH:mm:ss'),
-							end: moment(calendar.end).add({ hour: 24 }).format('YYYY-MM-DD HH:mm:ss'),
+							// end: moment(calendar.end).add({ hour: 24 }).format('YYYY-MM-DD HH:mm:ss'),
 							title: `${calendar.shiftName} - ${calendar.employeeName}`,
 							backgroundColor: calendar.backgroundColor,
 							color: '#ffffff',
@@ -360,6 +373,7 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 						};
 					});
 					this.calendarApi.addEventSource(this.calendars);
+					this.shiftService.setWarningDateShiftValue(warningDateData);
 
 					// Trick to fix re render daycell to validate day station
 					this.calendarApi.next();
@@ -519,7 +533,7 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 			// Clear all data calendar
 			this.selectedEmployeeIds = null;
 			this.calendarApi.removeAllEventSources();
-			this.warningDate.clear();
+			this.shiftService.setWarningDateShiftValue([]);
 			// Trigger rerender day cell fullcalendar
 			this.calendarApi.next();
 			this.calendarApi.prev();
@@ -535,25 +549,20 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 	dayCellRender(event) {
 		const currentRenderDate = moment(event.date).format('YYYY-MM-DD');
 
+		const projectableNodes = Array.from(event.el.childNodes);
 
-			const projectableNodes = Array.from(event.el.childNodes);
+		const compWrapperRef = this.dayWrapperFactory.create(
+			this.injector,
+			[projectableNodes],
+			event.el
+		);
 
-			const compWrapperRef = this.dayWrapperFactory.create(
-				this.injector,
-				[projectableNodes],
-				event.el
-			);
+		compWrapperRef.instance.tooltipWarning = 'Trạm có ca chưa được gán nhân viên';
+		compWrapperRef.instance.currentDate = currentRenderDate;
+		compWrapperRef.instance.stationId = this.currentGasStationId;
 
-			setTimeout(() => {
-				const isWarning = this.warningDate.get(currentRenderDate);
-				if (isWarning) {
-					compWrapperRef.instance.tooltipWarning = 'Trạm có ca chưa được gán nhân viên';
-					compWrapperRef.instance.currentDate = currentRenderDate;
-					compWrapperRef.instance.stationId = this.currentGasStationId;
-				}
-				this.appRef.attachView(compWrapperRef.hostView);
-				this.dayWrappersMap.set(event.el, compWrapperRef);
-			}, 200);
+		this.appRef.attachView(compWrapperRef.hostView);
+		this.dayWrappersMap.set(event.el, compWrapperRef);
 	}
 
 	destroyDayCell(event) {
@@ -661,8 +670,8 @@ export class ShiftWorkComponent extends BaseComponent implements OnInit, AfterVi
 		if (error.code === 'SUN-OIL-4918') {
 			this.toastr.error('Không được xoá lịch làm việc trong quá khứ');
 		}
-    if (error.code === 'SUN-OIL-4269') {
-      this.toastr.error('Không được xóa lịch làm việc vì đã có yêu cầu đổi / thay ca');
-    }
+		if (error.code === 'SUN-OIL-4269') {
+			this.toastr.error('Không được xóa lịch làm việc vì đã có yêu cầu đổi / thay ca');
+		}
 	}
 }

@@ -79,7 +79,7 @@ export class ImportingInventoryDetailComponent extends BaseComponent implements 
         amountRecommended: [d.amountRecommended],
         treasurerRecommend:[d.treasurerRecommend],
         temperatureExport: [{ value: d.temperatureExport, disabled: !this.isSupplier }, [this.isSupplier ? Validators.compose([Validators.pattern(this.decimalPattern), Validators.required]) : Validators.nullValidator]],
-        quotaExport: [{ value: d.quotaExport, disabled: !this.isSupplier }, [this.isSupplier ? Validators.compose([Validators.required, Validators.pattern(this.decimalPattern)]) : Validators.nullValidator]],
+        quotaExport: [{ value: d.quotaExport, disabled: !this.isSupplier }, [this.isSupplier ? Validators.compose([Validators.pattern(this.decimalPattern)]) : Validators.nullValidator]],
         quotaImport: [d.quotaImport, [Validators.required, Validators.pattern(this.decimalPattern)]],
         capLead: [{ value: d.capLead, disabled: !this.isSupplier }, [this.isSupplier ? Validators.required : Validators.nullValidator]],
         capValve: [{ value: d.capValve, disabled: !this.isSupplier }, [this.isSupplier ? Validators.required : Validators.nullValidator]],

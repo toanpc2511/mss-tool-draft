@@ -1,0 +1,190 @@
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Tìm kiếm tồn kho nhiên liệu</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="searchForm" class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Trạm</label>
+          <select class="form-control form-control-solid w-75" formControlName='stationId'>
+            <option [value]="''">Tất cả</option>
+            <option *ngFor="let item of stationByToken" [value]="item.id">{{item.name}}</option>
+          </select>
+        </div>
+
+        <div class="col-lg-6">
+          <label>Bồn</label>
+          <select class="form-control form-control-solid w-75" formControlName="gasFieldId">
+            <option [value]="''">Tất cả</option>
+            <option *ngFor="let item of listGasField" [value]="item.id">
+              {{ item.code }} - {{item.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label>Loại nhiên liệu</label>
+          <select class="form-control form-control-solid w-75" formControlName="productId">
+            <option [value]="''">Tất cả</option>
+            <option *ngFor="let item of products" [value]="item.id">{{item.name}}</option>
+          </select>
+        </div>
+      </div>
+    </form>
+
+    <div class="form-group row py-3">
+      <button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+        <em class="fas fa-search"></em> Tìm kiếm
+      </button>
+      <button type="button" class="btn btn-secondary btn-def" (click)="onReset()">Nhập lại</button>
+    </div>
+  </div>
+</div>
+
+<div class="card card-custom gutter-b mt-1">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách tồn kho nhiên liệu</h3>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+        <thead>
+        <tr>
+          <th scope='' class="stt text-center">STT</th>
+          <th scope='' class="station-name">Tên trạm</th>
+          <th scope='' class="gas-field-name">Mã bồn</th>
+          <th scope='' class="gas-field-name">Tên bồn</th>
+          <th scope='' class="product-name">Loại nhiên liệu</th>
+          <th scope='' class="unit">Đơn vị</th>
+          <th scope='' class="text-right capacity">Dung tích</th>
+          <th scope='' class="text-right head-inventory">Tồn đầu kỳ</th>
+          <th scope='' class="text-right period-import">Nhập trong kỳ</th>
+          <th scope='' class="text-right period-export">Xuất trong kỳ</th>
+          <th scope='' class="text-right now-inventory">Tồn hiện tại</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor='let item of dataSource, let i = index'>
+          <td class='stt text-center'>
+            <p
+              class="cursor-pointer text-ellipsis"
+            >
+              {{ i+1 }}
+            </p>
+          </td>
+          <td class='station-name'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.stationName"
+            >
+              {{ item.stationName }}
+            </p>
+          </td>
+          <td class='gas-field-name'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.gasFieldCode"
+            >
+              {{ item.gasFieldCode }}
+            </p>
+          </td>
+          <td class='gas-field-name'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.gasFieldName"
+            >
+              {{ item.gasFieldName }}
+            </p>
+          </td>
+          <td class='product-name'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.productName"
+            >
+              {{ item.productName }}
+            </p>
+          </td>
+          <td class='unit'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.unit"
+            >
+              {{ item.unit }}
+            </p>
+          </td>
+          <td class='text-right capacity'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.capacity | number | vnCurrency"
+            >
+              {{ item.capacity | number | vnCurrency }}
+            </p>
+          </td>
+          <td class='text-right head-inventory'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.headInventory.toString()"
+            >
+              {{ item.headInventory }}
+            </p>
+          </td>
+          <td class='text-right period-import'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.periodImport.toString()"
+            >
+              {{ item.periodImport }}
+            </p>
+          </td>
+          <td class='text-right period-export'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.periodExport.toString()"
+            >
+              {{ item.periodExport }}
+            </p>
+          </td>
+          <td class='text-right now-inventory'>
+            <p
+              class="cursor-pointer text-ellipsis"
+              placement="top"
+              [ngbTooltip]="item.nowInventory.toString()"
+            >
+              {{ item.nowInventory }}
+            </p>
+          </td>
+
+        </tr>
+        </tbody>
+
+        <tfoot *ngIf="dataSource?.length === 0">
+        <tr>
+          <td colspan="11" class="text-center" style="color: #ccc">Không có bản ghi nào</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+
+    <p class="text-danger mt-5">Lưu ý: Đối với trường hợp cột không gắn chip thì số lượng tồn kho được tính đến lần chốt ca gần nhất của bồn.</p>
+  </div>
+</div>
