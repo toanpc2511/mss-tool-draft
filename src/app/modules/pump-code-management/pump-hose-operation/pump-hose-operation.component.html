@@ -1,159 +1,167 @@
 <div class="card card-custom gutter-b mt-1">
-  <div class="card-header">
-    <div class="card-title">
-      <h3 class="card-label">Vòi bơm</h3>
-    </div>
-  </div>
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">
+				Vòi bơm
+				<span class="text-warning" style="font-size: 12px" *ngIf="mqttHasError"
+					>(Chưa kết nối!
+					<a class="text-link" style="cursor: pointer" (click)="connectMqtt()">Kết nối lại</a
+					>)</span
+				>
+			</h3>
+		</div>
+	</div>
 
-  <div class="card-body">
-    <div class="form-group row p-3">
-      <div class="col-lg-6 d-flex align-items-center">
-        <label class='mr-5 mt-2'>Trạm</label>
-        <select class="form-control form-control-solid ml-5" [formControl]='station'>
-          <option [value]="''">Tất cả</option>
-          <option *ngFor='let station of listStation' [value]="station.code">{{station.name}}</option>
-        </select>
-      </div>
+	<div class="card-body">
+		<div class="form-group row p-3">
+			<div class="col-lg-6 d-flex align-items-center">
+				<label class="mr-5 mt-2">Trạm</label>
+				<select class="form-control form-control-solid ml-5" [formControl]="station">
+					<option [value]="''">Tất cả</option>
+					<option *ngFor="let station of listStation" [value]="station.code">
+						{{station.name}}
+					</option>
+				</select>
+			</div>
 
-      <div class="col-lg-6 d-flex justify-content-around align-items-center">
-        <p><i class="fas fa-circle text-success pr-3"></i>Đã kết nối</p>
-        <p><i class="fas fa-circle text-danger pr-3"></i>Chưa kết nối</p>
-      </div>
-    </div>
+			<div class="col-lg-6 d-flex justify-content-around align-items-center">
+				<p><i class="fas fa-circle text-success pr-3"></i>Đã kết nối</p>
+				<p><i class="fas fa-circle text-danger pr-3"></i>Chưa kết nối</p>
+			</div>
+		</div>
 
-    <div class="table-responsive angular-bootstrap-table">
-      <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
-        <thead>
-        <tr>
-          <th scope=''>Mã trạm</th>
-          <th scope=''>Mã cột</th>
-          <th scope=''>Mã vòi</th>
-          <th scope=''>Nhiên liệu</th>
-          <th scope='' class='text-center'>Kết nối</th>
-          <th scope='' class='text-center'>Trạng thái</th>
-          <th scope='' class='value-pump text-right'>Số lít</th>
-          <th scope='' class='unit-price text-right'>Đơn giá</th>
-          <th scope='' class='money-pump text-right'>Thành tiền</th>
-          <th scope='' class='text-right'>Tổng tích lũy tiền</th>
-          <th scope='' class='text-right'>Tổng tích lũy lít</th>
-        </tr>
-        </thead>
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
+				<thead>
+					<tr>
+						<th scope="">Mã trạm</th>
+						<th scope="">Mã cột</th>
+						<th scope="">Mã vòi</th>
+						<th scope="">Nhiên liệu</th>
+						<th scope="" class="text-center">Kết nối</th>
+						<th scope="" class="text-center">Trạng thái</th>
+						<th scope="" class="value-pump text-right">Số lít</th>
+						<th scope="" class="unit-price text-right">Đơn giá</th>
+						<th scope="" class="money-pump text-right">Thành tiền</th>
+						<th scope="" class="text-right">Tổng tích lũy tiền</th>
+						<th scope="" class="text-right">Tổng tích lũy lít</th>
+					</tr>
+				</thead>
 
-        <tbody>
-        <tr *ngFor='let item of pumpCodes'>
-          <td>
-            <p
-              class="cursor-pointer text-ellipsis price"
-              placement="top"
-              [ngbTooltip]="item.stationCode"
-            >
-              {{ item.stationCode }}
-            </p>
-          </td>
-          <td>
-            <p
-              class="cursor-pointer text-ellipsis price"
-              placement="top"
-              [ngbTooltip]="item.pumpPoleCode"
-            >
-              {{ item.pumpPoleCode }}
-            </p>
-          </td>
-          <td>
-            <p
-              class="cursor-pointer text-ellipsis price"
-              placement="top"
-              [ngbTooltip]="item.pumpHoseCode"
-            >
-              {{ item.pumpHoseCode }}
-            </p>
-          </td>
-          <td>
-            <p
-              class="cursor-pointer text-ellipsis price "
-              placement="top"
-              [ngbTooltip]="item.productName"
-            >
-              {{ item.productName }}
-            </p>
-          </td>
-          <td class='text-center connect text-center'>
-            <p class=''>
-              <i
-                class="fas fa-circle"
-                [class.text-danger]='!item.connection'
-                [class.text-success]='item.connection'
-              ></i>
-            </p>
-          </td>
-          <td class="status text-center">
+				<tbody>
+					<tr *ngFor="let item of pumpCodes">
+						<td>
+							<p
+								class="cursor-pointer text-ellipsis price"
+								placement="top"
+								[ngbTooltip]="item.stationCode"
+							>
+								{{ item.stationCode }}
+							</p>
+						</td>
+						<td>
+							<p
+								class="cursor-pointer text-ellipsis price"
+								placement="top"
+								[ngbTooltip]="item.pumpPoleCode"
+							>
+								{{ item.pumpPoleCode }}
+							</p>
+						</td>
+						<td>
+							<p
+								class="cursor-pointer text-ellipsis price"
+								placement="top"
+								[ngbTooltip]="item.pumpHoseCode"
+							>
+								{{ item.pumpHoseCode }}
+							</p>
+						</td>
+						<td>
+							<p
+								class="cursor-pointer text-ellipsis price"
+								placement="top"
+								[ngbTooltip]="item.productName"
+							>
+								{{ item.productName }}
+							</p>
+						</td>
+						<td class="text-center connect text-center">
+							<p class="">
+								<i
+									class="fas fa-circle"
+									[class.text-danger]="!item.connection"
+									[class.text-success]="item.connection"
+								></i>
+							</p>
+						</td>
+						<td class="status text-center">
 							<span
-                class="label label-lg label-inline flex align-items-center " style='gap: 10px'
-                [class.label-light-success]="item.statusPump === 2"
-                [class.label-light-warning]="item.statusPump !== 2"
-              >
+								class="label label-lg label-inline flex align-items-center"
+								style="gap: 10px"
+								[class.label-light-success]="item.statusPump === 2"
+								[class.label-light-warning]="item.statusPump !== 2"
+							>
 								<ng-container *ngIf="item.statusPump === 2"
-                ><i class="fas fa-spinner fa-pulse text-success"></i> Đang bơm</ng-container
-                >
-								<ng-container *ngIf="item.statusPump !== 2"
-                >Dừng bơm</ng-container
-                >
+									><i class="fas fa-spinner fa-pulse text-success"></i> Đang bơm</ng-container
+								>
+								<ng-container *ngIf="item.statusPump !== 2">Dừng bơm</ng-container>
 							</span>
-          </td>
-          <td class='value-pump text-right'>
-            <p
-              class="cursor-pointer text-ellipsis"
-              placement="top"
-              [ngbTooltip]="item.valuePumped"
-            >
-              {{ item.valuePumped }}
-            </p>
-          </td>
-          <td class='unit-price text-right'>
-            <p
-              class="cursor-pointer text-ellipsis"
-              placement="top"
-              [ngbTooltip]="item.unitPrice?.toLocaleString('en-US')"
-            >
-              {{ item.unitPrice?.toLocaleString('en-US') }}
-            </p>
-          </td>
-          <td class='money-pump text-right'>
-            <p
-              class="cursor-pointer text-ellipsis"
-              placement="top"
-              [ngbTooltip]="item.moneyPumped.toLocaleString('en-US')"
-            >
-              {{ item.moneyPumped.toLocaleString('en-US') }}
-            </p>
-          </td>
-          <td class='total-amount-accumulated text-right'>
-            <p
-              class="cursor-pointer text-ellipsis"
-              placement="top"
-              [ngbTooltip]="item.totalAmountAccumulatedChip"
-            >
-              {{ item.totalAmountAccumulatedChip }}
-            </p>
-          </td>
-          <td class='total-cumulative-liters text-right'>
-            <p
-              class="cursor-pointer text-ellipsis"
-              placement="top"
-              [ngbTooltip]="item.totalCumulativeLitersChip"
-            >
-              {{ item.totalCumulativeLitersChip }}
-            </p>
-          </td>
-        </tr>
-        </tbody>
+						</td>
+						<td class="value-pump text-right">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.valuePumped"
+							>
+								{{ item.valuePumped }}
+							</p>
+						</td>
+						<td class="unit-price text-right">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.unitPrice?.toLocaleString('en-US')"
+							>
+								{{ item.unitPrice?.toLocaleString('en-US') }}
+							</p>
+						</td>
+						<td class="money-pump text-right">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.moneyPumped.toLocaleString('en-US')"
+							>
+								{{ item.moneyPumped.toLocaleString('en-US') }}
+							</p>
+						</td>
+						<td class="total-amount-accumulated text-right">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.totalAmountAccumulatedChip"
+							>
+								{{ item.totalAmountAccumulatedChip }}
+							</p>
+						</td>
+						<td class="total-cumulative-liters text-right">
+							<p
+								class="cursor-pointer text-ellipsis"
+								placement="top"
+								[ngbTooltip]="item.totalCumulativeLitersChip"
+							>
+								{{ item.totalCumulativeLitersChip }}
+							</p>
+						</td>
+					</tr>
+				</tbody>
 
-        <tfoot *ngIf="pumpCodes?.length === 0">
-        <tr>
-          <td colspan="9" class="text-center" styleq="color: #ccc">Không có bản ghi nào</td>
-        </tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
+				<tfoot *ngIf="pumpCodes?.length === 0">
+					<tr>
+						<td colspan="9" class="text-center" styleq="color: #ccc">Không có bản ghi nào</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
 </div>

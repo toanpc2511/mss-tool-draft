@@ -25,7 +25,8 @@ export const environment = {
 		port: 9001,
 		path: '/mqtt',
 		username: 'namthanh',
-		password: '123456789'
+		password: '123456789',
+		protocol: 'wss'
 	}
 };
 
