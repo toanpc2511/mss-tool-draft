@@ -70,6 +70,11 @@ export enum EAuthorize {
   DELETE_CONTRACT_BUTTON = 'delete_contract_button',
   ACCEPT_CONTRACT_BUTTON = 'accept_contract_button',
   REJECT_CONTRACT_BUTTION = 'reject_contract_button',
+  UPDATE_CONTRACT_PAYMENT_BUTTON = 'update_contract_payment_button',
+  CREATE_LIQUIDATION_BUTTON = 'create_liquidation_button',
+  ACCEPTANCES_LIQUIDATION_BUTTON = 'acceptances_liquidation_button',
+  REJECTIONS_LIQUIDATION_BUTTON = 'rejections_liquidation_button',
+  UPDATE_LIQUIDATION_BUTTON = 'update_liquidation_button',
   /* End */
 
   /* Quản lý nhân viên */
@@ -116,6 +121,7 @@ export enum EAuthorize {
   CONFIRMED_REQUEST_LOCK_SHIFT = 'confirmed_request_lock_shift',
   DELETE_CALENDAR_CONDITION_BUTTON = 'delete_calendar_condition_button',
   ROLL_BACK_SWAP_SHIFT = 'roll_back_swap_shift',
+  UPDATE_PRODUCT_REVENUE_ADMIN = 'update_product_revenue_admin',
   /* End */
 
   /* Quản lý cấu hình */
@@ -154,6 +160,7 @@ export enum EAuthorize {
   VIEW_MEASURES_SCREEN = 'view_measures_screen',
   VIEW_WAREHOUSE_IMPORT_DETAIL_SCREEN = 'view_warehouse_import_detail_screen',
   CREATE_WAREHOUSE = 'create_warehouse',
+  VIEW_FUEL_INVENTORY = 'view_fuel_inventory',
   /* End */
 
   // Exchange point roles

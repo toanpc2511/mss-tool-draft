@@ -157,7 +157,7 @@
       <h3 class="card-label">Danh sách mã bơm</h3>
     </div>
 
-    <div class="card-toolbar row">
+    <div *ngIf="dataSource?.length > 0" class="card-toolbar row">
       <a (click)="exportFileExcel()">
         <button type="button" class="btn btn-primary btn-def">Xuất file</button>
       </a>

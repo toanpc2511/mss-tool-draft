@@ -1,0 +1,164 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Cập nhật thông tin thanh toán</h4>
+  </div>
+  <div class="modal-body">
+    <div class="overlay overlay-block cursor-default" style="min-height: 100px">
+      <form [formGroup]="updateForm" class="form form-label-right">
+        <div class="form-group row justify-content-between">
+          <div class="col-lg-5 row pr-0">
+            <div class="col-lg-6">
+              <label class="form-label">Tổng tiền hợp đồng: </label>
+            </div>
+
+            <div class="col-lg-6 text-right pr-0">
+              <label class="form-label font-weight-bold">{{data?.totalMoney?.toLocaleString('en-US') || 0}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-5 row pl-0">
+            <div class="col-lg-6 pl-0">
+              <label class="form-label">Số tiền đã thanh toán: </label>
+            </div>
+
+            <div class="col-lg-6 text-right">
+              <label class="form-label font-weight-bold">{{data?.amountPaid?.toLocaleString('en-US') || 0}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-5 row pr-0">
+            <div class="col-lg-6">
+              <label class="form-label">Số tiền cần phải thanh toán: </label>
+            </div>
+
+            <div class="col-lg-6 text-right pr-0">
+              <label class="form-label font-weight-bold">{{data?.amountOwed?.toLocaleString('en-US') || 0}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row justify-content-between">
+          <div class="col-lg-5">
+            <label class="form-label">Ngày</label>
+
+            <div class="input-group">
+              <input
+                class="form-control form-control-solid"
+                placeholder="DD/MM/YYYY"
+                ngbDatepicker
+                #date="ngbDatepicker"
+                formControlName="date"
+                [autofocus]="false"
+                [maxDate]="maxDate"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary fa fa-calendar-alt"
+                  (click)="date.toggle()"
+                  type="button"
+                ></button>
+              </div>
+            </div>
+
+            <app-validate
+              [control]="updateForm.controls['date']"
+              [error]="'ngbDate'"
+              [message]="'Từ ngày không đúng định dạng'"
+            ></app-validate>
+          </div>
+
+          <div class="col-lg-5">
+            <label class="form-label required">Số tiền</label>
+            <input
+              type="text"
+              class="form-control form-control-solid"
+              placeholder="Nhập số tiền"
+              autocomplete="off"
+              trim="blur"
+              formControlName="money"
+              maxlength="16"
+              decimal-mask
+            />
+            <app-validate
+              [control]="updateForm.controls['money']"
+              [error]="'required'"
+              [message]="'Số tiền thanh toán không được để trống'"
+            ></app-validate>
+            <app-validate
+              [control]="updateForm.controls['money']"
+              [error]="'invalidMoney'"
+              [message]="'Số tiền thanh toán không được lớn hơn số tiền cần phải thanh toán'"
+            ></app-validate>
+            <app-validate
+              [control]="updateForm.controls['money']"
+              [error]="'invalidValueMoney'"
+              [message]="'Số tiền thanh toán phải lớn hơn 0'"
+            ></app-validate>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div>
+            <label class="form-label">Ghi chú</label>
+            <input
+              type="text"
+              class="form-control form-control-solid"
+              placeholder="Ghi chú"
+              autocomplete="off"
+              trim="blur"
+              formControlName="note"
+            />
+          </div>
+        </div>
+
+        <div class="upload-file">
+          <div class="form-group">
+            <div class="form-label required mb-1">Ảnh đính kèm</div>
+            <div class="ml-1">
+              <input
+                hidden
+                type="file"
+                id='img'
+                accept="image/*"
+                #uploadImg
+                (change)="addImage($event)"
+                formControlName='file'
+              />
+              <img
+                alt="Ảnh đính kèm"
+                class="attachment-img"
+                (click)="uploadImg.click()"
+                width="300px"
+                [src]="attachmentImg && attachmentImg?.url || 'assets/media/sun-oil/employee/cmnd-placeholder.svg'"
+              />
+              <app-validate
+                [control]="updateForm.controls['file']"
+                [error]="'required'"
+                [message]="'Vui lòng cập nhật ảnh'"
+              ></app-validate>
+              <app-validate
+                [control]="updateForm.controls['file']"
+                [error]="'file'"
+                [message]="'Vui lòng chọn ảnh'"
+              ></app-validate>
+              </div>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary btn-dialog" (click)="onClose()">
+      Hủy
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary btn-dialog"
+      (click)="onSubmit()"
+    >
+      Lưu
+    </button>
+  </div>
+</div>

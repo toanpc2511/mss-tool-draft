@@ -218,16 +218,6 @@ export class UpdateOrderComponent extends BaseComponent implements OnInit, After
   }
 
   patchInfoProduct(productId: string | number, i: number) {
-    const allProduct = this.productFormArray.value as Array<any>;
-    const checkExisted = allProduct.some(
-      (p, index) => p.id && i !== index && Number(p.id) === Number(productId)
-    );
-
-    if (checkExisted) {
-      this.toastr.error('Sản phẩm này đã được thêm');
-      this.productFormArray.at(i).get('id').patchValue('');
-      return;
-    }
     if (!productId) {
       this.productFormArray.at(i).get('unit').patchValue(0);
     }
@@ -248,6 +238,25 @@ export class UpdateOrderComponent extends BaseComponent implements OnInit, After
       this.productFormArray.at(i).get('unit').patchValue(productInfo.unit);
       this.cdr.detectChanges();
     });
+  }
+
+  gasFiledChanged($event, i: number): void {
+    const value = ($event.target as HTMLSelectElement).value;
+
+    const productMatchId = this.productFormArray.at(i).get('id').value;
+    const allProduct = this.productFormArray.value as Array<any>;
+
+    const listGasFieldSelected = allProduct.filter(
+      (p, index) => p.gasFieldId && i !== index && Number(p.id) === Number(productMatchId)
+    );
+
+    const isSelectedGasField: boolean = listGasFieldSelected.some(product => Number(product.gasFieldId) === Number(value));
+
+    if (isSelectedGasField) {
+      this.toastr.error('Bồn này đã được chọn');
+      this.productFormArray.at(i).get('gasFieldId').patchValue('');
+      return;
+    }
   }
 
   addItem() {
@@ -330,6 +339,9 @@ export class UpdateOrderComponent extends BaseComponent implements OnInit, After
     }
     if (error.code === 'SUN-OIL-4720') {
       this.toastr.error('Bạn không thể cập nhật đơn hàng vì không phải là người tạo!');
+    }
+    if (error.code === 'SUN-OIL-4268') {
+      this.toastr.error('');
     }
   }
 

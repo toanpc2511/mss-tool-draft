@@ -61,11 +61,11 @@ function appInitializer(authService: AuthService, router: Router) {
 }
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-	connectOnCreate: true,
+	connectOnCreate: false,
 	hostname: environment.mqtt.hostname,
 	port: environment.mqtt.port,
 	path: environment.mqtt.path,
-	protocol: 'wss',
+	protocol: (environment.mqtt.protocol as 'wss') || 'ws',
 	username: environment.mqtt.username,
 	password: environment.mqtt.password
 };

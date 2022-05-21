@@ -2,7 +2,7 @@ import {Directive, Input} from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  selector: '([formControlName], [formControl])[appDisableControl]'
+  selector: '([formControlName], [formControl])[disabledControl]'
 })
 export class DisableControlDirective {
 

@@ -420,7 +420,7 @@
 					</div>
 
 					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{dataDetail?.capacity | number | vnCurrency}}</label>
+						<label class="form-label font-weight-bold">{{dataDetail?.capacity}}</label>
 					</div>
 				</div>
 			</div>
@@ -510,7 +510,7 @@
 		>
 			Hủy
 		</button>
-		<button type="button" class="btn btn-primary" (click)="activeModal.close(true)">Xác nhận</button>
+		<button type="button" class="btn btn-primary" (click)="confirmDialogTemplate()">Xác nhận</button>
 	</div>
 </ng-template>
 
@@ -547,7 +547,8 @@
 		<button
       type="button"
       class="btn btn-primary"
-      (click)="activeModal.close(true)"
+      NgbAutofocus
+      (click)="confirmDialogTemplate()"
     >Từ chối</button>
 	</div>
 </ng-template>

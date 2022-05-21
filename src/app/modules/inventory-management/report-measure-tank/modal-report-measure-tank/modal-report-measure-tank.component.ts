@@ -129,9 +129,9 @@ export class ModalReportMeasureTankComponent implements OnInit {
     this.measureTankForm.get('length').patchValue(value ? value.length : '');
     this.measureTankForm.get('productName').patchValue(value ? value.productName : '');
 
-    this.measureTankForm.get('headInventory').patchValue(value ? value.headInventory : '');
+    this.measureTankForm.get('headInventory').patchValue(value ? value.actualFinal : '');
     this.measureTankForm.get('importQuantity').patchValue(value ? value.importQuantity : '');
-    this.measureTankForm.get('exportQuantity').patchValue(value ? value.exportQuantity : '');
+    this.measureTankForm.get('exportQuantity').patchValue(value ? value.exportQuantity?.toLocaleString('en-US') : '');
     this.measureTankForm.get('actualFinal').patchValue(value ? value.actualFinal : 0);
     this.measureTankForm.get('difference').patchValue(value ? value.difference : '');
     this.measureTankForm.get('productId').patchValue(value ? value.productId : '');
@@ -181,7 +181,7 @@ export class ModalReportMeasureTankComponent implements OnInit {
           const finalInventoryValue = Number(this.measureTankForm.get('finalInventory').value);
           const differenceValue = infoHeightGas?.numberOfLit - finalInventoryValue;
 
-          this.measureTankForm.get('difference').patchValue(differenceValue);
+          this.measureTankForm.get('difference').patchValue(differenceValue.toFixed(3));
           this.cdr.detectChanges();
         } else {
           this.measureTankForm.get('height').setErrors({gasFieldNull: true})

@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpService } from 'src/app/shared/services/http.service';
 import { convertDateToServer } from '../../shared/helpers/functions';
 import { GasStationResponse, IPumpPole } from '../gas-station/gas-station.service';
@@ -40,8 +40,8 @@ export interface ICalendarResponse {
 	calendarId: number;
 	employeeId: number;
 	employeeName: string;
-  status: string;
-  change: boolean;
+	status: string;
+	change: boolean;
 	backgroundColor: string;
 	color: string;
 	start: string;
@@ -80,10 +80,11 @@ export interface IShiftConfig {
 	endMinute: number;
 	offTimes: [ITime];
 	codeColor: string;
-  dateWork: string;
+	dateWork: string;
+  date: string;
 
-  startTime?: string;
-  endTime?: string;
+	startTime?: string;
+	endTime?: string;
 }
 
 export interface ITime {
@@ -172,6 +173,7 @@ export interface ILockShift {
 	status: string;
 	timeEnd: string;
 	timeStart: string;
+	chip: boolean;
 }
 
 export interface IOrderOfShift {
@@ -223,37 +225,38 @@ export interface ICalendarEmployeeInfos {
 }
 
 export interface IFuelRevenue {
-  code: string;
-  electronicEnd: number;
-  electronicStart: number;
-  employeeName: string;
-  gaugeEnd: number;
-  gaugeStart: number;
-  id: number;
-  limitMoney: number;
-  lockShiftId: number;
-  productName: string;
-  provisionalMoney: number;
-  quantityElectronic: number;
-  quantityGauge: number;
-  quantityTransaction: number;
-  shiftId: number;
-  shiftName: string;
-  stationId: number;
-  stationName: string;
-  timeEnd: string;
-  timeStart: string;
-  totalCashPaid: number;
-  totalLimitMoney: number;
-  totalLiter: number;
-  totalMoney: number;
-  totalPoint: number;
-  totalPoints: number;
-  totalPrice: number;
-  totalProvisionalMoney: number;
-  cashMoney: number;
-  price: number;
-  chip: boolean;
+	code: string;
+	electronicEnd: number;
+	electronicStart: number;
+	employeeName: string;
+	gaugeEnd: number;
+	gaugeStart: number;
+	id: number;
+	limitMoney: number;
+	lockShiftId: number;
+	productName: string;
+	provisionalMoney: number;
+	quantityElectronic: number;
+	quantityGauge: number;
+	quantityTransaction: number;
+	shiftId: number;
+	shiftName: string;
+	stationId: number;
+	stationName: string;
+	timeEnd: string;
+	timeStart: string;
+	totalCashPaid: number;
+	totalLimitMoney: number;
+	totalLiter: number;
+	totalMoney: number;
+	totalPoint: number;
+	totalPoints: number;
+	totalPrice: number;
+	totalProvisionalMoney: number;
+	cashMoney: number;
+	price: number;
+	chip: boolean;
+	dischargeE: number;
 }
 
 export interface ITotalMoneyRevenue {
@@ -266,7 +269,7 @@ export interface ITotalMoneyRevenue {
 	totalProvisionalRevenue: number;
 	employeeMoneyRevenues: [IEmployeeMoneyRevenues];
 	productRevenueResponses: [IProductRevenue];
-  totalRevenue: number;
+	totalRevenue: number;
 }
 
 export interface IEmployeeMoneyRevenues {
@@ -285,22 +288,22 @@ export interface IProductRevenue {
 }
 
 export interface IStationActiveByToken {
-  address: string;
-  areaType: string;
-  chip: boolean;
-  code: string;
-  corporation: boolean;
-  distance: string;
-  districtId: number;
-  fullAddress: string;
-  id: number;
-  lat: number;
-  lon: number;
-  name: string;
-  phone: string;
-  provinceId: number;
-  status: string;
-  wardId: number;
+	address: string;
+	areaType: string;
+	chip: boolean;
+	code: string;
+	corporation: boolean;
+	distance: string;
+	districtId: number;
+	fullAddress: string;
+	id: number;
+	lat: number;
+	lon: number;
+	name: string;
+	phone: string;
+	provinceId: number;
+	status: string;
+	wardId: number;
 }
 
 @Injectable({
@@ -311,11 +314,22 @@ export class ShiftService {
 	stationId: number;
 	statusLockShift: string;
 
+	private warningDateShiftsSubject = new BehaviorSubject<{ date: string; checked: boolean }[]>([]);
+	warningDateShifts$ = this.warningDateShiftsSubject.asObservable();
+
 	private currentStepSubject: BehaviorSubject<number>;
 	currentStep$: Observable<number>;
 	constructor(private http: HttpService) {
 		this.currentStepSubject = new BehaviorSubject<number>(1);
 		this.currentStep$ = this.currentStepSubject.asObservable();
+	}
+
+	setWarningDateShiftValue(value: { date: string; checked: boolean }[]) {
+		this.warningDateShiftsSubject.next(value);
+	}
+
+	getWarningDateShiftValue() {
+		return this.warningDateShiftsSubject.value;
 	}
 
 	getStationByAccount() {
@@ -346,14 +360,14 @@ export class ShiftService {
 		return this.http.get<Array<IShiftConfig>>(`shifts`);
 	}
 
-  // ds cấu hình ca tiếp theo
-  getListShiftConfigNext(shiftId: number, stationId: number, time: string) {
-    const params = new HttpParams()
-      .set('shift-id', shiftId.toString())
-      .set('station-id', stationId.toString())
-      .set('time', time)
-    return this.http.get<Array<IShiftConfig>>(`shifts/days`, {params});
-  }
+	// ds cấu hình ca tiếp theo
+	getListShiftConfigNext(shiftId: number, stationId: number, time: string) {
+		const params = new HttpParams()
+			.set('shift-id', shiftId.toString())
+			.set('station-id', stationId.toString())
+			.set('time', time);
+		return this.http.get<Array<IShiftConfig>>(`shifts/days`, { params });
+	}
 
 	// thêm cấu hình ca
 	createShiftConfig(shiftConfigData: IShiftConfig) {
@@ -411,7 +425,7 @@ export class ShiftService {
 	}
 
 	setCurrentStep(step: number) {
-		if(step > this.currentStepSubject.value) {
+		if (step > this.currentStepSubject.value) {
 			this.currentStepSubject.next(step);
 		}
 	}
@@ -438,8 +452,7 @@ export class ShiftService {
 
 	// lấy ds giao dịch của ca
 	getOrdersOfShift(lockShiftId: number) {
-		const params = new HttpParams()
-			.set('lock-shift-id', lockShiftId.toString());
+		const params = new HttpParams().set('lock-shift-id', lockShiftId.toString());
 		return this.http.get<Array<IOrderOfShift>>('orders/shift-order', { params });
 	}
 
@@ -454,14 +467,17 @@ export class ShiftService {
 	}
 
 	// Sửa doanh thu nhiên liệu
-	updateFuelProductRevenue(id: number, dataReq) {
-		return this.http.put(`product-revenue/${id}`, dataReq);
+	updateFuelProductRevenue(id: number, dataReq, hasPermission?: boolean, hasChip?: boolean) {
+		const endpoint: string =
+			hasPermission && hasChip
+				? `product-revenue/edit?lock-shift-id=${id}`
+				: `product-revenue/${id}`;
+		return this.http.put(endpoint, dataReq);
 	}
 
 	// Lấy ds doanh thu hàng hóa
 	getOtherProductRevenue(id: number) {
-		const params = new HttpParams()
-			.set('lock-shift-id', id.toString())
+		const params = new HttpParams().set('lock-shift-id', id.toString());
 		return this.http.get<Array<IOtherRevenue>>('other-product-revenue', { params });
 	}
 
@@ -500,17 +516,16 @@ export class ShiftService {
 		return this.http.get<ITotalMoneyRevenue>(`product-revenue/total-money/${id}`);
 	}
 
-  // Xác nhận chốt ca
-  confirmLockShift(dataReq) {
-    return this.http.post('lock-shifts', dataReq);
-  }
+	// Xác nhận chốt ca
+	confirmLockShift(dataReq) {
+		return this.http.post('lock-shifts', dataReq);
+	}
 
-  // in báo cáo chốt ca
-  exportFileExcel(lockShiftId: number) {
-    const params = new HttpParams()
-      .set('lock-shift-id', lockShiftId.toString());
-    return this.http.getFileUrl<string>('excel-exporters/total-revenues', {params});
-  }
+	// in báo cáo chốt ca
+	exportFileExcel(lockShiftId: number) {
+		const params = new HttpParams().set('lock-shift-id', lockShiftId.toString());
+		return this.http.getFileUrl<string>('excel-exporters/total-revenues', { params });
+	}
 
 	/*
 		Đổi ca/thay ca
@@ -547,11 +562,16 @@ export class ShiftService {
 		});
 	}
 
-  rollBackShift(id: number) {
-    return this.http.put(`swap-shifts/roll-back/${id}`,{})
-  }
+	rollBackShift(id: number) {
+		return this.http.put(`swap-shifts/roll-back/${id}`, {});
+	}
 
-	rejectShiftRequestChange(id: string, reason: string, type: EShiftChangRequestType, employeeIdFrom: string) {
+	rejectShiftRequestChange(
+		id: string,
+		reason: string,
+		type: EShiftChangRequestType,
+		employeeIdFrom: string
+	) {
 		return this.http.put(`swap-shifts/status/${id}`, {
 			status: EShiftChangRequestStatus.REJECTED,
 			reason,
@@ -560,11 +580,11 @@ export class ShiftService {
 		});
 	}
 
-  // Lấy ds trạm theo token login và trạng thái
-  getStationByToken(status, corporation) {
-    const params = new HttpParams()
-      .set('status', status)
-      .set('corporation', corporation)
-    return this.http.get<Array<IStationActiveByToken>>(`gas-stations/employee/status-corporation`, {params});
-  }
+	// Lấy ds trạm theo token login và trạng thái
+	getStationByToken(status, corporation) {
+		const params = new HttpParams().set('status', status).set('corporation', corporation);
+		return this.http.get<Array<IStationActiveByToken>>(`gas-stations/employee/status-corporation`, {
+			params
+		});
+	}
 }

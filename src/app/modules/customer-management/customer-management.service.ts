@@ -98,6 +98,7 @@ export interface IContract {
 	};
 	status: string;
 	effectEndDate: string;
+  liquidationStatus: string;
 }
 
 export class StepData {

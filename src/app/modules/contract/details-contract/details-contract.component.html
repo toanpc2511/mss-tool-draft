@@ -1,361 +1,468 @@
-<div class="card card-custom gutter-b mt-1">
-	<div class="info-customer">
-		<div class="card-header">
-			<div class="card-title">
-				<h3 class="title">Thông tin khách hàng</h3>
-			</div>
-		</div>
+<div *ngIf="data?.contractType.code === 'PRE_PAY' && data?.liquidated && data?.status === 'ACCEPTED'; else detailContract">
+  <mat-tab-group class="card test" [selectedIndex]="selectedIndex">
+    <mat-tab label="Hợp đồng">
+      <ng-container *ngTemplateOutlet="detailContract"></ng-container>
+    </mat-tab>
 
-		<div class="card-body">
-			<div class="form-group row">
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">Số điện thoại: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.customer.phone}}</label>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">Tên khách hàng: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.customer.name}}</label>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">Tên doanh nghiệp: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.customer.enterpriseName}}</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">Ngày sinh: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold"
-							>{{data?.customer.dateOfBirth | date: 'dd/MM/yyyy '}}</label
-						>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">CMND/CCCD: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.customer.idCard}}</label>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">Email: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.customer.email}}</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<div class="col-lg-8 row">
-					<div class="col-lg-2">
-						<label class="form-label">Địa chỉ: </label>
-					</div>
-
-					<div class="col-lg-10">
-						<label class="form-label font-weight-bold">{{data?.customer.location}}</label>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="info-contract">
-		<div class="card-header">
-			<div class="card-title">
-				<h3 class="title">Thông tin hợp đồng</h3>
-			</div>
-		</div>
-
-		<div class="card-body">
-			<div class="form-group row">
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">Loại hợp đồng: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.contractType.name}}</label>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">Mã hợp đồng: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.code}}</label>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">Tên hợp đồng: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.name}}</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">Ngày phê duyệt: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold"
-							>{{data?.approveDate | date: 'dd/MM/yyyy'}}</label
-						>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">Ngày hết hạn: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold"
-							>{{data?.effectEndDate | date: 'dd/MM/yyyy'}}</label
-						>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">HT thanh toán: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.payMethod.name}}</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="form-group row">
-				<div class="col-lg-4 row">
-					<div class="col-lg-5">
-						<label class="form-label">HT giao nhận: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.transportMethod?.name}}</label>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row" *ngIf='data?.contractType.code === "PRE_PAY"'>
-					<div class="col-lg-5">
-						<label class="form-label">Địa chỉ ký HĐ: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.station.name}}</label>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row" *ngIf='data?.contractType.code === "PRE_PAY"'>
-					<div class="col-lg-5">
-						<label class="form-label">Địa chỉ chi tiết: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.station.fullAddress}}</label>
-					</div>
-				</div>
-
-				<div class="col-lg-4 row" *ngIf='data?.contractType.code === "PLAN"'>
-					<div class="col-lg-5">
-						<label class="form-label">Hạn mức: </label>
-					</div>
-
-					<div class="col-lg-7">
-						<label class="form-label font-weight-bold">{{data?.limitMoney?.toLocaleString('en-US')}}</label>
-					</div>
-				</div>
-
-        <div class="col-lg-4 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeOne'>
-          <div class="col-lg-5">
-            <label class="form-label">Ngày dự kiến lần 1: </label>
-          </div>
-
-          <div class="col-lg-7">
-            <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeOne | date: 'dd/MM/yyyy'}}</label>
-          </div>
-        </div>
-
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeTwo'>
-          <div class="col-lg-5">
-            <label class="form-label">Ngày dự kiến lần 2: </label>
-          </div>
-
-          <div class="col-lg-7">
-            <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeTwo | date: 'dd/MM/yyyy'}}</label>
-          </div>
-        </div>
-
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeThree'>
-          <div class="col-lg-5">
-            <label class="form-label">Ngày dự kiến lần 3: </label>
-          </div>
-
-          <div class="col-lg-7">
-            <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeThree | date: 'dd/MM/yyyy'}}</label>
-          </div>
-        </div>
-
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeFour'>
-          <div class="col-lg-5">
-            <label class="form-label">Ngày dự kiến lần 4: </label>
-          </div>
-
-          <div class="col-lg-7">
-            <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeFour | date: 'dd/MM/yyyy'}}</label>
-          </div>
-        </div>
-
-        <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeFive'>
-          <div class="col-lg-5">
-            <label class="form-label">Ngày dự kiến lần 5: </label>
-          </div>
-
-          <div class="col-lg-7">
-            <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeFive | date: 'dd/MM/yyyy'}}</label>
-          </div>
-        </div>
-			</div>
-		</div>
-	</div>
-
-	<div class="list-product" *ngIf='data?.contractType.code === "PRE_PAY"'>
-		<div class="card-header">
-			<div class="card-title">
-				<h3 class="title">danh sách hàng hóa</h3>
-			</div>
-		</div>
-
-		<div class="card-body">
-			<div class="table-responsive angular-bootstrap-table">
-				<table class="table table-vertical-center overflow-hidden" aria-label="">
-					<thead class="thead-light">
-						<tr>
-							<th scope="">
-								<label class="form-label">STT</label>
-							</th>
-							<th scope="">
-								<label class="form-label">Tên sản phẩm</label>
-							</th>
-							<th scope="">
-								<label class="form-label">Đơn vị</label>
-							</th>
-							<th class='text-right' scope="">
-								<label class="form-label">Số lượng</label>
-							</th>
-							<th class="text-right" scope="">
-								<label class="form-label">Đơn giá hiện tại (VNĐ)</label>
-							</th>
-							<th class="text-right" scope="">
-								<label class="form-label">Đơn giá chiết khấu (VNĐ)</label>
-							</th>
-							<th class="text-right" scope="">
-								<label class="form-label">Thành tiền (Hạn mức nhiên liệu)</label>
-							</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						<tr *ngFor="let prod of data?.product, let i = index">
-							<td>{{i + 1}}</td>
-							<td>{{prod.productResponse.name}}</td>
-							<td>{{prod.productResponse.unit}}</td>
-							<td class='text-right'>{{prod.productResponse.amount}}</td>
-							<td class="text-right">{{prod.productResponse.price.toLocaleString('en-US')}}</td>
-							<td class="text-right">{{prod.productResponse.discount.toLocaleString('en-US')}}</td>
-							<td class="text-right">
-								{{prod.productResponse.totalMoney.toLocaleString('en-US')}}
-							</td>
-						</tr>
-					</tbody>
-
-					<tfoot>
-						<tr class='py-3'>
-							<td colspan="3"></td>
-							<td colspan="3" class="text-right"><strong>Tổng tiền thanh toán</strong></td>
-							<td colspan="1" class="text-right"><strong>{{data?.totalPayment?.toLocaleString('en-US')}}</strong></td>
-						</tr>
-					</tfoot>
-				</table>
-			</div>
-		</div>
-	</div>
-
-	<div class="upload-file">
-		<div class="card-header">
-			<div class="card-title">
-				<h3 class="title">Thông tin hồ sơ</h3>
-			</div>
-		</div>
-
-		<div class="card-body">
-			<div class="form-group row">
-				<div class="col-lg-2">File đính kèm</div>
-				<div class="col-lg-10">
-					<div *ngFor="let file of data?.attachment">
-						<p class="url" (click)="downloadFile(file.id, file.name)">{{file.name}}</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="reason-refusal" *ngIf="data?.status === eContractStatus.REJECT">
-		<div class="card-header">
-			<div class="card-title">
-				<h3 class="title-reason">Lý do từ chối:</h3>
-				<p class="title-reason pl-5">{{data?.rejectReason}}</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="w-100 d-flex justify-content-center pb-10">
-    <button *ngIf='data?.status !== "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="goToListContract()">
-      Quay lại
-    </button>
-    <button *ngIf='data?.status === "WAITING_ACCEPT" && (eAuthorize.REJECT_CONTRACT_BUTTION|canUseFeature)' type="button" class="btn btn-outline-primary mr-3" (click)="refuseContract($event, data)">
-      Từ chối
-    </button>
-    <button *ngIf='data?.status === "WAITING_ACCEPT" && (eAuthorize.ACCEPT_CONTRACT_BUTTON|canUseFeature)' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
-      Phê duyệt
-    </button>
-	</div>
+    <mat-tab label="Thanh lý hợp đồng">
+      <ng-template matTabContent>
+        <app-contract-liquidation [contractId]="contractId"></app-contract-liquidation>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
 </div>
+
+<ng-template #detailContract>
+  <div class="card card-custom">
+    <div class="info-customer">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Thông tin khách hàng</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="form-group row">
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">Số điện thoại: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.customer.phone}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">Tên khách hàng: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.customer.name}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">Tên doanh nghiệp: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.customer.enterpriseName}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">Ngày sinh: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold"
+              >{{data?.customer.dateOfBirth | date: 'dd/MM/yyyy '}}</label
+              >
+            </div>
+          </div>
+
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">CMND/CCCD: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.customer.idCard}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">Email: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.customer.email}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-8 row">
+            <div class="col-lg-2">
+              <label class="form-label">Địa chỉ: </label>
+            </div>
+
+            <div class="col-lg-10">
+              <label class="form-label font-weight-bold">{{data?.customer.location}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-contract">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Thông tin hợp đồng</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="form-group row">
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">Loại hợp đồng: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.contractType.name}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">Mã hợp đồng: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.code}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">Tên hợp đồng: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.name}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">Ngày phê duyệt: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold"
+              >{{data?.approveDate | date: 'dd/MM/yyyy'}}</label
+              >
+            </div>
+          </div>
+
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">Ngày hết hạn: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold"
+              >{{data?.effectEndDate | date: 'dd/MM/yyyy'}}</label
+              >
+            </div>
+          </div>
+
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">HT thanh toán: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.payMethod.name}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-4 row">
+            <div class="col-lg-5">
+              <label class="form-label">HT giao nhận: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.transportMethod?.name}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 row" *ngIf='data?.contractType.code === "PRE_PAY"'>
+            <div class="col-lg-5">
+              <label class="form-label">Địa chỉ ký HĐ: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.station.name}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 row" *ngIf='data?.contractType.code === "PRE_PAY"'>
+            <div class="col-lg-5">
+              <label class="form-label">Địa chỉ chi tiết: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.station.fullAddress}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 row" *ngIf='data?.contractType.code === "PLAN"'>
+            <div class="col-lg-5">
+              <label class="form-label">Hạn mức: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.limitMoney?.toLocaleString('en-US')}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeOne'>
+            <div class="col-lg-5">
+              <label class="form-label">Ngày dự kiến lần 1: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeOne | date: 'dd/MM/yyyy'}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeTwo'>
+            <div class="col-lg-5">
+              <label class="form-label">Ngày dự kiến lần 2: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeTwo | date: 'dd/MM/yyyy'}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeThree'>
+            <div class="col-lg-5">
+              <label class="form-label">Ngày dự kiến lần 3: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeThree | date: 'dd/MM/yyyy'}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeFour'>
+            <div class="col-lg-5">
+              <label class="form-label">Ngày dự kiến lần 4: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeFour | date: 'dd/MM/yyyy'}}</label>
+            </div>
+          </div>
+
+          <div class="col-lg-4 pt-5 row" *ngIf='data?.contractType.code === "PLAN" && data?.dateOfPayment.paymentTimeFive'>
+            <div class="col-lg-5">
+              <label class="form-label">Ngày dự kiến lần 5: </label>
+            </div>
+
+            <div class="col-lg-7">
+              <label class="form-label font-weight-bold">{{data?.dateOfPayment.paymentTimeFive | date: 'dd/MM/yyyy'}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-product" *ngIf='data?.contractType.code === "PRE_PAY"'>
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">danh sách hàng hóa</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive angular-bootstrap-table">
+          <table class="table table-vertical-center overflow-hidden" aria-label="">
+            <thead class="thead-light">
+            <tr>
+              <th scope="">
+                <label class="form-label">STT</label>
+              </th>
+              <th scope="">
+                <label class="form-label">Tên sản phẩm</label>
+              </th>
+              <th scope="">
+                <label class="form-label">Đơn vị</label>
+              </th>
+              <th class='text-right' scope="">
+                <label class="form-label">Số lượng</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Đơn giá hiện tại (VNĐ)</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Đơn giá chiết khấu (VNĐ)</label>
+              </th>
+              <th class="text-right" scope="">
+                <label class="form-label">Thành tiền (Hạn mức nhiên liệu)</label>
+              </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr *ngFor="let prod of data?.product, let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{prod.productResponse.name}}</td>
+              <td>{{prod.productResponse.unit}}</td>
+              <td class='text-right'>{{prod.productResponse.amount}}</td>
+              <td class="text-right">{{prod.productResponse.price.toLocaleString('en-US')}}</td>
+              <td class="text-right">{{prod.productResponse.discount.toLocaleString('en-US')}}</td>
+              <td class="text-right">
+                {{prod.productResponse.totalMoney.toLocaleString('en-US')}}
+              </td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr class='py-3'>
+              <td colspan="3"></td>
+              <td colspan="3" class="text-right"><strong>Tổng tiền thanh toán</strong></td>
+              <td colspan="1" class="text-right"><strong>{{data?.totalPayment?.toLocaleString('en-US')}}</strong></td>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="upload-file">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">Thông tin hồ sơ</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="form-group row">
+          <div class="col-lg-2">File đính kèm</div>
+          <div class="col-lg-10">
+            <div *ngFor="let file of data?.attachment">
+              <p class="url" (click)="downloadFile(file.id, file.name)">{{file.name}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-product" *ngIf='data?.contractType.code === "PLAN" && data?.amountPaid > 0'>
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title">thông tin thanh toán</h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive angular-bootstrap-table">
+          <table class="table table-vertical-center overflow-hidden" aria-label="">
+            <thead class="thead-light">
+            <tr>
+              <th class="plan-stt" scope="">
+                <label class="form-label">STT</label>
+              </th>
+              <th class="plan-date" scope="">
+                <label class="form-label">Ngày</label>
+              </th>
+              <th class='text-right plan-money' scope="">
+                <label class="form-label">Số tiền</label>
+              </th>
+              <th class="plan-image text-center" scope="">
+                <label class="form-label">Ảnh</label>
+              </th>
+              <th class="plan-note" scope="">
+                <label class="form-label">Ghi chú</label>
+              </th>
+            </tr>
+            </thead>
+
+            <tbody *ngIf="data?.contractPayment?.length > 0">
+            <tr *ngFor="let payment of data?.contractPayment, let i = index">
+              <td>{{i + 1}}</td>
+              <td>{{payment.date | date: 'dd/MM/yyyy'}}</td>
+              <td class="text-right">{{payment.money.toLocaleString('en-US')}}</td>
+              <td class="image text-center">
+                <p>
+                  <em class='fas fa-images' (click)='viewImages(imageDetailTpl, payment)'></em>
+                </p>
+              </td>
+              <td>{{payment.note}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row justify-content-end font-weight-bold">
+          <div class="col-6 pr-4">
+            <div class="row justify-content-between pb-3">
+              <p class="col-7">Tổng số tiền:</p>
+              <p class="col-5 text-right">{{data?.totalMoney?.toLocaleString('en-US') || 0}}</p>
+            </div>
+            <div class="row justify-content-between pb-3">
+              <p class="col-7">Số tiền đã thanh toán: </p>
+              <p class="col-5 text-right">{{data?.amountPaid?.toLocaleString('en-US') || 0}}</p>
+            </div>
+            <div class="row justify-content-between pb-3">
+              <p class="col-7">Số tiền còn phải thanh toán: </p>
+              <p class="col-5 text-right">{{data?.amountOwed?.toLocaleString('en-US') || 0}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reason-refusal" *ngIf="data?.status === eContractStatus.REJECT">
+      <div class="card-header">
+        <div class="card-title">
+          <h3 class="title-reason">Lý do từ chối:</h3>
+          <p class="title-reason pl-5">{{data?.rejectReason}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-100 d-flex justify-content-center pb-10">
+      <button *ngIf='data?.status !== "WAITING_ACCEPT"' type="button" class="btn btn-outline-primary mr-3" (click)="goToListContract()">
+        Quay lại
+      </button>
+      <button *ngIf='data?.status === "WAITING_ACCEPT" && (eAuthorize.REJECT_CONTRACT_BUTTION|canUseFeature)' type="button" class="btn btn-outline-primary mr-3" (click)="refuseContract($event, data)">
+        Từ chối
+      </button>
+      <button *ngIf='data?.status === "WAITING_ACCEPT" && (eAuthorize.ACCEPT_CONTRACT_BUTTON|canUseFeature)' type="button" class="btn btn-primary mr-3" (click)="acceptContract($event, data)">
+        Phê duyệt
+      </button>
+      <button *ngIf="data?.contractType.code === 'PRE_PAY' && !data?.liquidated && data?.status === 'ACCEPTED' && (eAuthorize.CREATE_LIQUIDATION_BUTTON|canUseFeature)" type="button" class="btn btn-primary mr-3" (click)="openCreateLiquidation(data.id)">
+        Thanh lý
+      </button>
+      <button *ngIf="data?.status === 'ACCEPTED' && data?.contractType.code === 'PLAN' && (eAuthorize.UPDATE_CONTRACT_PAYMENT_BUTTON|canUseFeature)" type="button" class="btn btn-primary mr-3" (click)="openUpdatePlanContractDialog(data)">
+        Cập nhật thanh toán
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #imageDetailTpl let-c='close' let-d='dismiss'>
+  <div class='modal-header'>
+    <h4 class='modal-title'>Ảnh chi tiết:</h4>
+    <button type='button' class='close' aria-label='Close' (click)="d('Cross click')">
+      <span aria-hidden='true' class='fas fa-times'></span>
+    </button>
+  </div>
+  <div class='modal-body text-center'>
+    <div *ngIf='detailImage !== null; else imageNull'>
+      <img src='{{detailImage.url}}' class='img-fluid' alt=''>
+    </div>
+    <ng-template #imageNull>Không có ảnh</ng-template>
+  </div>
+  <div class='modal-footer'>
+    <button type='button' class='btn btn-outline-primary' (click)="c('Close click')" style='min-width: 135px'>
+      Đóng
+    </button>
+  </div>
+</ng-template>
