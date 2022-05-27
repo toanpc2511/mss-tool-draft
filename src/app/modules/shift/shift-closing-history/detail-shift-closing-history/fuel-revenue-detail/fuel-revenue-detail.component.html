@@ -178,7 +178,7 @@
 										formControlName="electronicEnd"
 										placeholder="Nhập số điện tử cuối ca"
 										maxlength="16"
-                    decimal-mask
+                    (keydown)='preventLetter($event)'
 										(input)='calculateTotalMoney(i, item.get("chip").value)'
 									/>
 									<app-validate
@@ -186,6 +186,11 @@
 										[error]="'required'"
 										[message]="'Số điện tử cuối ca không được để trống'"
 									></app-validate>
+                  <app-validate
+                    [control]="item.get('electronicEnd')"
+                    [error]="'pattern'"
+                    [message]="'Sai định dạng'"
+                  ></app-validate>
 								</td>
 								<td class="quantity-electronic text-right">
 									<p
@@ -211,10 +216,15 @@
                     class="form-control"
                     formControlName="dischargeE"
                     placeholder="Nhập số xả e"
-                    decimal-mask
+                    (keydown)='preventLetter($event)'
                     maxlength="16"
                     (input)='calculateTotalMoney(i, item.get("chip").value)'
                   />
+                  <app-validate
+                    [control]="item.get('dischargeE')"
+                    [error]="'pattern'"
+                    [message]="'Sai định dạng'"
+                  ></app-validate>
                 </td>
 
 								<td class="price text-right">
