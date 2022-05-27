@@ -220,7 +220,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 		const dataReq = this.dataSourceForm.getRawValue().map((d) => ({
 			code: d.code,
 			gaugeEnd: convertMoney(d.gaugeEnd?.toString()),
-			electronicEnd: d.electronicEnd,
+			electronicEnd: Number(d.electronicEnd),
       stationId: d.stationId,
       totalLiter: d.totalLiter,
       limitMoney: d.limitMoney,
@@ -228,7 +228,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       totalMoney: convertMoney(d.totalMoney?.toString()),
       quantityElectronic: convertMoney(d.quantityElectronic?.toString()),
       quantityGauge: d.quantityGauge,
-      dischargeE: d.dischargeE,
+      dischargeE: Number(d.dischargeE),
       cashMoney: convertMoney(d.cashMoney?.toString()),
       quantityTransaction: convertMoney(d.quantityTransaction?.toString()),
 		}));
