@@ -136,9 +136,10 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 				totalProvisionalMoney: [d.totalProvisionalMoney],
 				cashMoney: [d.cashMoney],
 				price: [d.price],
-        dischargeE: [d.dischargeE | 0]
+        dischargeE: [d.dischargeE || 0]
 			});
 		});
+    console.log(controls[0].value)
 		return this.fb.array(controls);
 	}
 
