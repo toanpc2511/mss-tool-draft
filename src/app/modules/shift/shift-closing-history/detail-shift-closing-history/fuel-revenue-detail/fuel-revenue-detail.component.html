@@ -148,11 +148,16 @@
                     decimal-mask
 										(input)='updateQuantityGauge(i)'
 									/>
-									<app-validate
-										[control]="item.get('gaugeEnd')"
-										[error]="'required'"
-										[message]="'Số máy cơ cuối không được để trống'"
-									></app-validate>
+                  <app-validate
+                    [control]="item.get('gaugeEnd')"
+                    [error]="'required'"
+                    [message]="'Số máy cơ cuối không được để trống'"
+                  ></app-validate>
+                  <app-validate
+                    [control]="item.get('gaugeEnd')"
+                    [error]="'errorGaugeEnd'"
+                    [message]="'Số máy cơ cuối phải lớn hơn hoặc bằng số máy cơ đầu'"
+                  ></app-validate>
 								</td>
 								<td class="quantity-gauge text-right">
 									<p

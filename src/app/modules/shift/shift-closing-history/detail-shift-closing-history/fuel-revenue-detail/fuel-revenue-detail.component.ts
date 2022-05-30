@@ -136,7 +136,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 				totalProvisionalMoney: [d.totalProvisionalMoney],
 				cashMoney: [d.cashMoney],
 				price: [d.price],
-        dischargeE: [d.dischargeE | 0]
+        dischargeE: [d.dischargeE || 0]
 			});
 		});
 		return this.fb.array(controls);
@@ -213,6 +213,12 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 	onSubmit() {
 		this.dataSourceForm = this.dataSourceTemp;
 		this.dataSourceForm.markAllAsTouched();
+    this.dataSourceForm.getRawValue().map((x, index) => {
+      if (convertMoney(x.gaugeEnd.toString()) < convertMoney(x.gaugeStart.toString())) {
+        this.dataSourceForm.controls[index].get('gaugeEnd').setErrors({errorGaugeEnd: true})
+        return
+      }
+    })
 		if (this.dataSourceForm.invalid) {
 			return null;
 		}
