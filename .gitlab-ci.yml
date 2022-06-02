@@ -1,5 +1,6 @@
 stages:
   - build
+  - build_docker
   - deploy
 
 build_master:
@@ -21,6 +22,24 @@ build_master:
     expire_in: 1 day
     paths:
       - dist/
+
+build_docker_master:
+  only:
+    - master
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: ['']
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --cache=true
+      --destination "${CI_REGISTRY_IMAGE}:${CURRENT_ROOT_VERSION}.${CI_PIPELINE_IID}"
+      --destination "${CI_REGISTRY_IMAGE}:latest"
 
 deploy_master:
   only:
