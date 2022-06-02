@@ -1,6 +1,5 @@
 stages:
   - build
-  - build_docker
   - deploy
 
 build_master:
