@@ -20,6 +20,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
 import { IProduct } from '../../product/product.service';
 import { EPartnerStatus, IPartnerData, IVehicle, PartnerService } from '../partner.service';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
 	selector: 'app-partner-modal',
@@ -47,7 +48,8 @@ export class PartnerModalComponent implements OnInit {
 		private fb: FormBuilder,
 		private partnerService: PartnerService,
 		private cdr: ChangeDetectorRef,
-		private destroy$: DestroyService
+		private destroy$: DestroyService,
+    private toastr: ToastrService
 	) {}
 
 	ngOnInit(): void {
@@ -246,6 +248,9 @@ export class PartnerModalComponent implements OnInit {
 		if (err?.code === 'SUN-OIL-4870' || err?.code === 'SUN-OIL-4869') {
 			this.partnerForm.get('phone').setErrors({ existed: true });
 		}
+    if (err?.code === 'SUN-OIL-4209') {
+      this.toastr.error('Tài xế chưa cập nhật thông tin cá nhân');
+    }
 		this.cdr.detectChanges();
 	}
 
