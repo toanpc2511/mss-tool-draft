@@ -100,7 +100,7 @@
 						</tr>
 					</thead>
 
-					<ng-container *ngIf='statusLockShift !== "CLOSE"'>
+					<ng-container *ngIf='statusLockShift !== "CLOSE" && statusLockShift !== "VIEWING"'>
 						<tbody>
 							<tr *ngFor="let item of dataSourceForm.controls; let i = index" [formGroup]="item">
 								<td class="code">
@@ -370,7 +370,7 @@
 						</tbody>
 					</ng-container>
 
-					<ng-container *ngIf='statusLockShift === "CLOSE"'>
+					<ng-container *ngIf='statusLockShift === "CLOSE" || statusLockShift === "VIEWING"'>
 						<tbody>
 							<tr *ngFor="let item of dataSource; let i = index">
 								<td class="code">

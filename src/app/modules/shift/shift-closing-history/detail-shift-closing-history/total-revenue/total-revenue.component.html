@@ -232,7 +232,7 @@
 	</div>
 
 	<div class="py-5 w-100 d-flex justify-content-center">
-		<button class="m-2 btn btn-primary font-weight-bold" (click)="exportFileExcel()">
+		<button *ngIf="statusLockShift !== 'VIEWING'" class="m-2 btn btn-primary font-weight-bold" (click)="exportFileExcel()">
 			In báo cáo chốt ca
 		</button>
 
@@ -240,7 +240,7 @@
 			class="m-2 btn btn-primary font-weight-bold"
 			[disabled]="hideButton"
 			(click)="createModal($event)"
-      *ngIf='statusLockShift !== "CLOSE" && eAuthorize.CONFIRM_CLOSE_SHIFT_BUTTON | canUseFeature'
+      *ngIf='statusLockShift !== "CLOSE" && statusLockShift !== "VIEWING" && eAuthorize.CONFIRM_CLOSE_SHIFT_BUTTON | canUseFeature'
 		>
 			Xác nhận
 		</button>
@@ -248,7 +248,7 @@
 		<button
 			class="m-2 btn btn-primary font-weight-bold"
 			(click)="backHome()"
-      *ngIf='statusLockShift === "CLOSE"'
+      *ngIf='statusLockShift === "CLOSE" || statusLockShift === "VIEWING"'
 		>
 			Quay lại
 		</button>

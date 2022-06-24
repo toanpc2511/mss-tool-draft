@@ -171,14 +171,22 @@
 							</span>
 						</td>
 						<td class="text-center action">
-							<button
-								type="button"
-								class="btn btn-primary"
-								*ngIf='item.status === "OPEN" && eAuthorize.CONFIRMED_REQUEST_LOCK_SHIFT | canUseFeature'
-								(click)="modalConfirm($event, item)"
-							>
-								Yêu cầu chốt ca
-							</button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                *ngIf='item.status === "OPEN" && eAuthorize.CONFIRMED_REQUEST_LOCK_SHIFT | canUseFeature'
+                (click)="modalConfirm($event, item)"
+              >
+                Yêu cầu chốt ca
+              </button>
+              <button
+                *ngIf="item.status !== 'CLOSE'"
+                type="button"
+                class="btn btn-primary"
+                (click)="test($event, item)"
+              >
+                Xem doanh thu
+              </button>
 						</td>
 					</tr>
 				</tbody>
