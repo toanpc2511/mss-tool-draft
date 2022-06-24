@@ -68,7 +68,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
   }
 
   refreshDetailRevenue(): void {
-    const data = { lockShiftId: this.lockShiftId };
+    const data = { lockShiftId: this.lockShiftId, type: this.statusLockShift === 'VIEWING' ? 'READ' : 'WRITE' };
     this.shiftService.createFuelProductRevenue(data)
       .pipe(
         switchMap((res: DataResponse<boolean>) => {
@@ -90,6 +90,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
 						this.dataItem = this.dataSource[0];
 						this.cdr.detectChanges();
 					} else {
+            this.dataSource = res.data;
 						this.dataSourceForm = this.dataSourceTemp = this.convertToFormArray(res.data);
 						this.dataItem = this.dataSourceForm?.controls[0]?.value;
 
@@ -219,7 +220,8 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
         return
       }
     })
-		if (this.dataSourceForm.invalid) {
+
+		if (this.dataSourceForm.invalid && this.statusLockShift !== 'VIEWING') {
 			return null;
 		}
 
@@ -239,7 +241,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       quantityTransaction: convertMoney(d.quantityTransaction?.toString()),
 		}));
 
-    const data = { productOilInfos: dataReq };
+    const data = { productOilInfos: dataReq, type: this.statusLockShift === 'VIEWING' ? 'READ' : 'WRITE' };
 
 		this.shiftService.updateFuelProductRevenue(this.lockShiftId, data, this.hasChangeEndElectronicPermission, this.dataItem?.chip).subscribe(
 			(res) => {

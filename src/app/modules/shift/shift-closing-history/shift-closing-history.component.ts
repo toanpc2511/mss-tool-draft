@@ -136,6 +136,13 @@ export class ShiftClosingHistoryComponent extends BaseComponent implements OnIni
 		});
 	}
 
+  test(event, item: ILockShift) {
+    event.stopPropagation();
+    this.router.navigate([`/ca-lam-viec/lich-su-chot-ca/chi-tiet/${item.id}`], {
+      queryParams: { status: 'VIEWING', stationId: item.stationId, shiftId: item.shiftId }
+    });
+  }
+
 	modalConfirm($event?: Event, data?: ILockShift): void {
 		if ($event) {
 			$event.stopPropagation();

@@ -54,6 +54,7 @@ export class PromotionDetailComponent extends BaseComponent implements OnInit {
 						this.dataSource = res.data;
 						this.cdr.detectChanges();
 					} else {
+            this.dataSource = res.data;
 						this.dataSourceForm = this.dataSourceTemp = this.convertToFormArray(res.data);
 						this.cdr.detectChanges();
 					}
@@ -121,7 +122,8 @@ export class PromotionDetailComponent extends BaseComponent implements OnInit {
 				importQuantity: convertMoney(d.importQuantity.toString()),
 				exportQuantity: convertMoney(d.exportQuantity.toString()),
 				actualInventoryQuantity: convertMoney(d.actualInventoryQuantity.toString())
-			}))
+			})),
+      type: this.statusLockShift === 'VIEWING' ? 'READ' : 'WRITE'
 		};
 
 		this.shiftService.updatePromotionalRevenue(dataReq).subscribe(

@@ -104,6 +104,7 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 						this.dataSource = this.dataSourceCopy = res.data;
 						this.cdr.detectChanges();
 					} else {
+            this.dataSource = this.dataSourceCopy = res.data;
 						this.dataSourceForm = this.convertToFormArray(res.data);
             this.dataSourceTemp = res.data;
 						this.cdr.detectChanges();
@@ -174,6 +175,7 @@ export class OtherRevenueDetailComponent extends BaseComponent implements OnInit
 
 		const dataReq = {
 			lockShiftId: this.lockShiftId,
+      type: this.statusLockShift === 'VIEWING' ? 'READ' : 'WRITE',
 			productRevenueRequests: this.dataSourceForm.value.map((d) => ({
 				otherProductRevenueId: d.id,
 				importQuantity: convertMoney(d.importQuantity.toString()),
