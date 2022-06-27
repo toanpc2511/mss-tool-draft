@@ -173,7 +173,7 @@
 						<td class="text-center action">
               <button
                 type="button"
-                class="btn btn-primary"
+                class="btn btn-primary m-3"
                 *ngIf='item.status === "OPEN" && eAuthorize.CONFIRMED_REQUEST_LOCK_SHIFT | canUseFeature'
                 (click)="modalConfirm($event, item)"
               >
