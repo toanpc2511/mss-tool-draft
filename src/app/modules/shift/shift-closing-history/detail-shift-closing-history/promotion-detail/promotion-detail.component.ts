@@ -111,7 +111,7 @@ export class PromotionDetailComponent extends BaseComponent implements OnInit {
 	onSubmit() {
 		this.dataSourceForm = this.dataSourceTemp;
 		this.dataSourceForm.markAllAsTouched();
-		if (this.dataSourceForm.invalid) {
+		if (this.dataSourceForm.invalid && this.statusLockShift !== 'VIEWING') {
 			return null;
 		}
 

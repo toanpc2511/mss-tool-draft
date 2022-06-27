@@ -221,7 +221,7 @@ export class FuelRevenueDetailComponent extends BaseComponent implements OnInit 
       }
     })
 
-		if (this.dataSourceForm.invalid) {
+		if (this.dataSourceForm.invalid && this.statusLockShift !== 'VIEWING') {
 			return null;
 		}
 
