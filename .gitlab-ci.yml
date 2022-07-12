@@ -87,8 +87,8 @@ build_docker_develop:
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile-dev"
       --cache=true
-      --destination "${CI_REGISTRY_IMAGE}-dev:${CURRENT_ROOT_VERSION}.${CI_PIPELINE_IID}"
-      --destination "${CI_REGISTRY_IMAGE}-dev:latest"
+      --destination "${CI_REGISTRY_IMAGE}:${CURRENT_ROOT_VERSION}.${CI_PIPELINE_IID}-dev"
+      --destination "${CI_REGISTRY_IMAGE}:latest-dev"
 
 deploy_develop:
   only:
