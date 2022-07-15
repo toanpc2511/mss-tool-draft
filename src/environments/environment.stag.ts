@@ -1,8 +1,8 @@
 export const environment = {
 	production: false,
 	appVersion: '1.0.0',
-	apiUrl: 'https://sunoil-driver.firecloud.live/management',
-	apiUrlRoot: 'https://sunoil-driver.firecloud.live',
+	apiUrl: 'https://sunoil-management.firecloud.live/management',
+	apiUrlRoot: 'https://sunoil-management.firecloud.live',
 	firebase: {
 		apiKey: 'AIzaSyBGDWDvuG1Wq6Wbu9fBhaU86WdD2B7Q6Mo',
 		authDomain: 'sun-oil-e747c.firebaseapp.com',
@@ -13,8 +13,8 @@ export const environment = {
 		measurementId: 'G-DB7RBLVY70'
 	},
 	mqtt: {
-		hostname: 'mqtt-dev.sunoil.com.vn',
-		port: 9092,
+		hostname: 'sunoil-management.firecloud.live',
+		port: 9001,
 		path: '/mqtt',
 		username: 'namthanh',
 		password: '123456789',
