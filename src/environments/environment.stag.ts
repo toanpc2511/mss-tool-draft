@@ -1,8 +1,8 @@
 export const environment = {
 	production: false,
 	appVersion: '1.0.0',
-	apiUrl: 'https://api-management-dev.sunoil.com.vn/management',
-	apiUrlRoot: 'https://api-management-dev.sunoil.com.vn',
+	apiUrl: 'https://sunoil-driver.firecloud.live/management',
+	apiUrlRoot: 'https://sunoil-driver.firecloud.live',
 	firebase: {
 		apiKey: 'AIzaSyBGDWDvuG1Wq6Wbu9fBhaU86WdD2B7Q6Mo',
 		authDomain: 'sun-oil-e747c.firebaseapp.com',
