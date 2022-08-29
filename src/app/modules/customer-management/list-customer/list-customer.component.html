@@ -25,6 +25,9 @@
 				aria-describedby="list-customer"
 			>
 				<thead id="thead">
+					<th id="code" class="text-center">
+						Mã khách hàng
+					</th>
 					<th id="name">
 						Tên khách hàng
 						<app-sort-icon
@@ -84,6 +87,11 @@
 
 				<tbody>
 					<tr *ngFor="let item of dataSource" (click)="viewDetalCustomer($event, item)">
+						<td class="id text-center">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.id">
+								{{ item.profileId }}
+							</p>
+						</td>
 						<td class="name">
 							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.name">
 								{{ item.name }}
@@ -140,21 +148,21 @@
 							</span>
 						</td>
 						<td class="text-center action">
-              <a
-                href="javascript:;"
-                [ngbTooltip]="'Cài đặt hạng'"
-                (click)='settingRankModal($event, item)'
-                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-                *ngIf="eAuthorize.UPDATE_RANK_CUSTOMER |canUseFeature"
-              >
-                <span
-                  [inlineSVG]="'/assets/media/svg/icons/General/Settings-1.svg'"
-                  cacheSVG="true"
-                  class="svg-icon svg-icon-md svg-icon-primary"
-                >
-                </span>
-              </a>
-            </td>
+							<a
+								href="javascript:;"
+								[ngbTooltip]="'Cài đặt hạng'"
+								(click)="settingRankModal($event, item)"
+								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+								*ngIf="eAuthorize.UPDATE_RANK_CUSTOMER |canUseFeature"
+							>
+								<span
+									[inlineSVG]="'/assets/media/svg/icons/General/Settings-1.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-primary"
+								>
+								</span>
+							</a>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -164,37 +172,29 @@
 </div>
 
 <ng-template #settingRank>
-  <div class="modal-header">
-    <h4 class="modal-title">Cập nhật hạng khách hàng: {{dataCustomer.phone}}</h4>
-  </div>
-  <div class="modal-body">
-    <div class="w-100">
-      <label class="form-label required">Hạng khách hàng</label>
-      <select class="form-control form-control-lg form-control-solid" [formControl]="rankControl">
-        <option [value]="null" disabled>Chọn hạng</option>
-        <option *ngFor='let item of listRank' [value]='item.id'>{{item.name}}</option>
-      </select>
-      <app-validate
-        [control]="rankControl"
-        [error]="'required'"
-        [message]="'Hạng khách hàng không được để trống'"
-      ></app-validate>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-outline-secondary"
-      (click)='activeModal.close(false)'
-    >
-      Hủy
-    </button>
-    <button
-      type="button"
-      class="btn btn-primary"
-      (click)='confirmChange(dataCustomer)'
-    >
-      Xác nhận
-    </button>
-  </div>
+	<div class="modal-header">
+		<h4 class="modal-title">Cập nhật hạng khách hàng: {{dataCustomer.phone}}</h4>
+	</div>
+	<div class="modal-body">
+		<div class="w-100">
+			<label class="form-label required">Hạng khách hàng</label>
+			<select class="form-control form-control-lg form-control-solid" [formControl]="rankControl">
+				<option [value]="null" disabled>Chọn hạng</option>
+				<option *ngFor="let item of listRank" [value]="item.id">{{item.name}}</option>
+			</select>
+			<app-validate
+				[control]="rankControl"
+				[error]="'required'"
+				[message]="'Hạng khách hàng không được để trống'"
+			></app-validate>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-secondary" (click)="activeModal.close(false)">
+			Hủy
+		</button>
+		<button type="button" class="btn btn-primary" (click)="confirmChange(dataCustomer)">
+			Xác nhận
+		</button>
+	</div>
 </ng-template>

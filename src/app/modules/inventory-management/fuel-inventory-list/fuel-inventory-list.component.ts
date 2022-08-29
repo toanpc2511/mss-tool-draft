@@ -121,6 +121,7 @@ export class FuelInventoryListComponent implements OnInit {
     this.paginatorState = $event as PaginatorState;
     this.onSearch();
   }
+  exportFileExcel() {}
 }
 
 export interface IValueSearchFuelInventory {

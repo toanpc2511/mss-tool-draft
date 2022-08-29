@@ -48,8 +48,9 @@
 
 <div class="card card-custom gutter-b mt-1">
   <div class="card-header">
-    <div class="card-title">
+    <div class="card-title justify-content-between w-100">
       <h3 class="card-label">Danh sách tồn kho nhiên liệu</h3>
+      <button *ngIf='dataSource?.length' class='btn btn-primary' (click)='exportFileExcel()'>Xuất file</button>
     </div>
   </div>
 

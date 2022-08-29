@@ -25,7 +25,7 @@ table {
 	}
 
 	td {
-		&.name {
+		&.code,&.name {
 			max-width: 200px;
 		}
 		&.phone {

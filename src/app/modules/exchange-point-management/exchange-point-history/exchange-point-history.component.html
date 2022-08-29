@@ -119,11 +119,12 @@
     </div>
   </div>
   <div class="card-body">
-    <div class="table-responsive angular-bootstrap-table">
+    <div class="table-responsive angular-bootstrap-table">  
       <table class="table table-head-custom table-vertical-center overflow-hidden" aria-label="">
         <thead>
           <th class="created-at" scope="">Thời gian</th>
           <th class="phone" scope="">Số điện thoại</th>
+          <th class="code text-center" scope="">Mã khách hàng</th>
           <th class="name" scope="">Tên khách hàng</th>
           <th class="point-swap text-right" scope="">Số điểm quy đổi</th>
           <th class="price-received text-right" scope="">Số tiền nhận được</th>
@@ -146,6 +147,11 @@
               [ngbTooltip]="item.phone"
             >
               {{ item.phone }}
+            </p>
+          </td>
+          <td class="code text-center">
+            <p class="text-ellipsis" placement="top" [ngbTooltip]="item.profile.id">
+              {{ item.profile.id }}
             </p>
           </td>
           <td class="name">
