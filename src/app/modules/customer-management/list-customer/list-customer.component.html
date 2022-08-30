@@ -88,7 +88,7 @@
 				<tbody>
 					<tr *ngFor="let item of dataSource" (click)="viewDetalCustomer($event, item)">
 						<td class="id text-center">
-							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.id">
+							<p class="cursor-pointer text-ellipsis" placement="top" [ngbTooltip]="item.profileId">
 								{{ item.profileId }}
 							</p>
 						</td>
