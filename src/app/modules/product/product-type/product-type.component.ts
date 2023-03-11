@@ -16,132 +16,131 @@ import { IDataTransfer, ProductModalComponent } from '../product-modal/product-m
 import { IProductType, ProductService } from '../product.service';
 
 @Component({
-  selector: 'app-product-type',
-  templateUrl: './product-type.component.html',
-  styleUrls: ['./product-type.component.scss'],
-  providers: [SortService, FilterService, DestroyService]
+	selector: 'app-product-type',
+	templateUrl: './product-type.component.html',
+	styleUrls: ['./product-type.component.scss'],
+	providers: [SortService, FilterService, DestroyService]
 })
-
 export class ProductTypeComponent implements OnInit {
-  searchFormControl: FormControl;
-  listStatus = LIST_STATUS;
-  dataSource: Array<IProductType>;
-  dataSourceTemp: Array<IProductType>;
-  sorting: SortState;
+	searchFormControl: FormControl;
+	listStatus = LIST_STATUS;
+	dataSource: Array<IProductType>;
+	dataSourceTemp: Array<IProductType>;
+	sorting: SortState;
 
-  filterField: FilterField<{
-    code: null;
-    name: null;
-    description: null;
-  }>;
+	filterField: FilterField<{
+		code: null;
+		name: null;
+		description: null;
+	}>;
 
-  constructor(
-    private productService: ProductService,
-    private sortService: SortService<IProductType>,
-    private filterService: FilterService<IProductType>,
-    private cdr: ChangeDetectorRef,
-    private destroy$: DestroyService,
-    private modalService: NgbModal,
-    private toastr: ToastrService,
-    private router: Router,
-  ) {
-    this.dataSource = this.dataSourceTemp = [];
-    this.sorting = sortService.sorting;
-    this.filterField = new FilterField({
-      code: null,
-      name: null,
-      description: null
-    });
-    this.searchFormControl = new FormControl();
-  }
+	constructor(
+		private productService: ProductService,
+		private sortService: SortService<IProductType>,
+		private filterService: FilterService<IProductType>,
+		private cdr: ChangeDetectorRef,
+		private destroy$: DestroyService,
+		private modalService: NgbModal,
+		private toastr: ToastrService,
+		private router: Router
+	) {
+		this.dataSource = this.dataSourceTemp = [];
+		this.sorting = sortService.sorting;
+		this.filterField = new FilterField({
+			code: null,
+			name: null,
+			description: null
+		});
+		this.searchFormControl = new FormControl();
+	}
 
-  ngOnInit() {
-    this.getListProductType();
+	ngOnInit() {
+		this.getListProductType();
 
-    // Filter
-    this.searchFormControl.valueChanges
-      .pipe(debounceTime(500), takeUntil(this.destroy$))
-      .subscribe((value) => {
-        if (value.trim()) {
-          this.filterField.setFilterFieldValue(value.trim());
-        } else {
-          this.filterField.setFilterFieldValue(null);
-        }
-        // Set data after filter and apply current sorting
-        this.dataSource = this.sortService.sort(
-          this.filterService.filter(this.dataSourceTemp, this.filterField.field)
-        );
-        this.cdr.detectChanges();
-      });
-  }
+		// Filter
+		this.searchFormControl.valueChanges
+			.pipe(debounceTime(500), takeUntil(this.destroy$))
+			.subscribe((value) => {
+				if (value.trim()) {
+					this.filterField.setFilterFieldValue(value.trim());
+				} else {
+					this.filterField.setFilterFieldValue(null);
+				}
+				// Set data after filter and apply current sorting
+				this.dataSource = this.sortService.sort(
+					this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+				);
+				this.cdr.detectChanges();
+			});
+	}
 
-  // Get list product type
-  getListProductType() {
-    this.productService.getListProductType().subscribe((res) => {
-      this.dataSource = this.dataSourceTemp = res.data;
-      // Set data after filter and apply current sorting
-      this.dataSource = this.sortService.sort(
-        this.filterService.filter(this.dataSourceTemp, this.filterField.field)
-      );
-      this.cdr.detectChanges();
-    });
-  }
+	// Get list product type
+	getListProductType() {
+		this.productService.getListProductType().subscribe((res) => {
+			this.dataSource = this.dataSourceTemp = res.data;
+			// Set data after filter and apply current sorting
+			this.dataSource = this.sortService.sort(
+				this.filterService.filter(this.dataSourceTemp, this.filterField.field)
+			);
+			this.cdr.detectChanges();
+		});
+	}
 
-  sort(column: string) {
-    this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
-  }
+	sort(column: string) {
+		this.dataSource = this.sortService.sort(this.dataSourceTemp, column);
+	}
 
-  deleteProductType($event: Event, item: IProductType): void {
-    $event.stopPropagation();
-    const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-      backdrop: 'static'
-    });
-    const data: IConfirmModalData = {
-      title: 'Xác nhận',
-      message: `Bạn có chắc chắn muốn xoá thông tin nhóm sản phẩm  ${item.code} - ${item.name} ?`,
-      button: { class: 'btn-primary', title: 'Xác nhận' }
-    };
-    modalRef.componentInstance.data = data;
+	deleteProductType($event: Event, item: IProductType): void {
+		$event.stopPropagation();
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+			backdrop: 'static'
+		});
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn xoá thông tin nhóm sản phẩm  ${item.code} - ${item.name} ?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
+		modalRef.componentInstance.data = data;
 
-    modalRef.result.then((result) => {
-      if (result) {
-        this.productService.deleteProductType(item.id).subscribe(
-          (res) => {
-            if (res.data) {
-              this.getListProductType();
-            }
-          },
-          (err: IError) => {
-            this.checkError(err);
-          }
-        );
-      }
-    });
-  }
-  createModal($event?: Event, data?: IDataTransfer): void {
-    if ($event) {
-      $event.stopPropagation();
-    }
-    const modalRef = this.modalService.open(ProductModalComponent, {
-      backdrop: 'static',
-      size: 'xl'
-    });
+		modalRef.result.then((result) => {
+			if (result) {
+				this.productService.deleteProductType(item.id).subscribe(
+					(res) => {
+						if (res.data) {
+							this.getListProductType();
+						}
+					},
+					(err: IError) => {
+						this.checkError(err);
+					}
+				);
+			}
+		});
+	}
+	createModal($event?: Event, data?: IDataTransfer): void {
+		if ($event) {
+			$event.stopPropagation();
+		}
+		const modalRef = this.modalService.open(ProductModalComponent, {
+			backdrop: 'static',
+			size: 'xl'
+		});
 
-    modalRef.componentInstance.data = {
-      title: data ? 'Sửa nhóm sản phẩm' : 'Thêm nhóm sản phẩm',
-      product: data
-    };
+		modalRef.componentInstance.data = {
+			title: data ? 'Sửa nhóm sản phẩm' : 'Thêm nhóm sản phẩm',
+			product: data
+		};
 
-    modalRef.result.then((result) => {
-      if (result) {
-        this.getListProductType();
-      }
-    });
-  }
+		modalRef.result.then((result) => {
+			if (result) {
+				this.getListProductType();
+			}
+		});
+	}
 
-  checkError(error: IError) {
-    if (error.code === 'SUN-OIL-4124') {
-      this.toastr.error('Nhóm sản phẩm không thể chỉnh sửa');
-    }
-  }
+	checkError(error: IError) {
+		if (error.code === 'base-cms-4124') {
+			this.toastr.error('Nhóm sản phẩm không thể chỉnh sửa');
+		}
+	}
 }

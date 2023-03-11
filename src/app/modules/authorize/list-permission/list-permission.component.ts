@@ -115,7 +115,7 @@ export class ListPermissionComponent implements OnInit {
 	}
 
 	checkError(error: IError) {
-		if (error.code === 'SUN-OIL-4193') {
+		if (error.code === 'base-cms-4193') {
 			this.toastr.error('Không thể xóa vì có người dùng đang được gắn nhóm quyền này');
 		}
 	}

@@ -192,7 +192,7 @@ export class PermissionModalComponent implements OnInit, AfterViewInit {
 	}
 
 	checkError(err: IError) {
-		if (err.code === 'SUN-OIL-4131') {
+		if (err.code === 'base-cms-4131') {
 			this.permissionForm.get('name').setErrors({ existed: true });
 		}
 		this.cdr.detectChanges();

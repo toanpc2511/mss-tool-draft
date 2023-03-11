@@ -1,15 +1,15 @@
 {  
   "projects": {
-    "default": "sun-oil"
+    "default": "base-cms"
   },
   "targets": {
-    "sun-oil": {
+    "base-cms": {
       "hosting": {
         "production": [
-          "sun-oil"
+          "base-cms"
         ],
         "staging": [
-          "sun-oil-staging"
+          "base-cms-staging"
         ]
       }
     }

@@ -20,7 +20,7 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { TValidators } from 'src/app/shared/validators';
 import { IProduct } from '../../product/product.service';
 import { EPartnerStatus, IPartnerData, IVehicle, PartnerService } from '../partner.service';
-import {ToastrService} from "ngx-toastr";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 	selector: 'app-partner-modal',
@@ -37,7 +37,7 @@ export class PartnerModalComponent implements OnInit {
 	cashLimitOilFormArray: FormArray;
 	isLoadingFormSubject = new Subject<boolean>();
 	isLoadingForm$ = this.isLoadingFormSubject.asObservable();
-  dataDetail: IPartnerData;
+	dataDetail: IPartnerData;
 
 	isUpdate = false;
 	cashLimitMoneyChild = 0;
@@ -49,7 +49,7 @@ export class PartnerModalComponent implements OnInit {
 		private partnerService: PartnerService,
 		private cdr: ChangeDetectorRef,
 		private destroy$: DestroyService,
-    private toastr: ToastrService
+		private toastr: ToastrService
 	) {}
 
 	ngOnInit(): void {
@@ -104,7 +104,7 @@ export class PartnerModalComponent implements OnInit {
 				tap((res) => {
 					if (res) {
 						this.patchInfoParterUpdate(res.data);
-            this.dataDetail = res.data;
+						this.dataDetail = res.data;
 					}
 				}),
 				takeUntil(this.destroy$)
@@ -236,21 +236,21 @@ export class PartnerModalComponent implements OnInit {
 	}
 
 	checkError(err: IError) {
-		if (err?.code === 'SUN-OIL-4005' || err?.code === 'SUN-OIL-4834') {
+		if (err?.code === 'base-cms-4005' || err?.code === 'base-cms-4834') {
 			this.partnerForm.get('phone').setErrors({ notFound: true });
 		}
-		if (err?.code === 'SUN-OIL-4866') {
+		if (err?.code === 'base-cms-4866') {
 			this.partnerForm.get('phone').setErrors({ current: true });
 		}
-		if (err?.code === 'SUN-OIL-4868') {
+		if (err?.code === 'base-cms-4868') {
 			this.partnerForm.get('phone').setErrors({ isEnterprise: true });
 		}
-		if (err?.code === 'SUN-OIL-4870' || err?.code === 'SUN-OIL-4869') {
+		if (err?.code === 'base-cms-4870' || err?.code === 'base-cms-4869') {
 			this.partnerForm.get('phone').setErrors({ existed: true });
 		}
-    if (err?.code === 'SUN-OIL-4209') {
-      this.toastr.error('Tài xế chưa cập nhật thông tin cá nhân');
-    }
+		if (err?.code === 'base-cms-4209') {
+			this.toastr.error('Tài xế chưa cập nhật thông tin cá nhân');
+		}
 		this.cdr.detectChanges();
 	}
 

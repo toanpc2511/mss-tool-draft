@@ -86,10 +86,10 @@ export class RejectContractModalComponent implements OnInit {
 	}
 
 	checkError(err: IError) {
-		if (err.code === 'SUN-OIL-4718') {
+		if (err.code === 'base-cms-4718') {
 			this.toastr.error('Lý do từ chối hợp đồng không được bỏ trống');
 		}
-		if (err.code === 'SUN-OIL-4720') {
+		if (err.code === 'base-cms-4720') {
 			this.toastr.error('Không có nhân viên nào tương ứng với tài khoản này');
 		}
 	}

@@ -7,14 +7,7 @@ import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription } from 'rxjs';
-import {
-	finalize,
-	pluck,
-	switchMap,
-	take,
-	takeUntil,
-	tap
-} from 'rxjs/operators';
+import { finalize, pluck, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import {
 	convertDateToDisplay,
 	convertDateToServer,
@@ -605,13 +598,13 @@ export class CreateContractComponent implements OnInit, AfterViewInit {
 	}
 
 	checkError(err: IError) {
-		if (err?.code === 'SUN-OIL-4811') {
+		if (err?.code === 'base-cms-4811') {
 			this.infoForm.get('phone').setErrors({ invalid: true });
 		}
-		if (err?.code === 'SUN-OIL-4821') {
+		if (err?.code === 'base-cms-4821') {
 			this.infoForm.get('phone').setErrors({ notExisted: true });
 		}
-		if (err?.code === 'SUN-OIL-4205') {
+		if (err?.code === 'base-cms-4205') {
 			this.contractForm.get('name').setErrors({ existed: true });
 		}
 		this.cdr.detectChanges();

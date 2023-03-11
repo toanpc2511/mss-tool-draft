@@ -40,18 +40,18 @@ export class ErrorInterceptor implements HttpInterceptor {
 
 				if (err.status === 401 && this.authService.getCurrentUserValue()) {
 					if (
-						errors.code === 'SUN-OIL-4812' ||
-						errors.code === 'SUN-OIL-4823' ||
-						errors.code === 'SUN-OIL-4852'
+						errors.code === 'base-cms-4812' ||
+						errors.code === 'base-cms-4823' ||
+						errors.code === 'base-cms-4852'
 					) {
 						this.toastr.error('Tài khoản của bạn đã bị xoá. Không thể thực hiện được');
 					}
-					if (errors.code === 'SUN-OIL') {
+					if (errors.code === 'base-cms') {
 						this.toastr.error(
 							'Tài khoản của bạn vừa được chỉnh nhóm quyền, vui lòng đăng nhập lại'
 						);
 					}
-					if (errors.code === 'SUN-OIL-4008') {
+					if (errors.code === 'base-cms-4008') {
 						this.toastr.error('Bạn cần đăng nhập lại để truy cập nội dung này');
 					}
 					this.authService.logout().subscribe();

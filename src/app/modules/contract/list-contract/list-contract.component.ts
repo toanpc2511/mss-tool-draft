@@ -121,7 +121,7 @@ export class ListContractComponent implements OnInit {
 	}
 
 	checkError(error: IError) {
-		if (error.code === 'SUN-OIL-4791') {
+		if (error.code === 'base-cms-4791') {
 			this.toastr.error('Trường dữ liệu cần sắp xếp của hợp đồng không đúng ');
 		}
 	}

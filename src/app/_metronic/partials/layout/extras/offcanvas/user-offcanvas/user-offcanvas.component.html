@@ -1,9 +1,7 @@
 <div id="kt_quick_user" class="offcanvas p-10" [ngClass]="extrasUserOffcanvasDirection">
 	<ng-container *ngIf="user$ | async as _user">
 		<div class="offcanvas-header d-flex align-items-center justify-content-between pb-5">
-			<h3 class="font-weight-bold m-0">
-				Thông tin cá nhân
-			</h3>
+			<h3 class="font-weight-bold m-0">Thông tin cá nhân</h3>
 			<a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
 				<em class="ki ki-close icon-xs text-muted"></em>
 			</a>
@@ -12,11 +10,17 @@
 		<div class="offcanvas-content pr-5 mr-n5">
 			<div class="d-flex align-items-center mt-5">
 				<div class="symbol symbol-100 mr-5">
-          <div class="symbol-label" *ngIf='_user.driverAuth?.profile?.avatar?.length > 0'
-               [ngStyle]="{ 'background-image': 'url(' + _user.driverAuth?.profile?.avatar[0]?.url + ')'}"></div>
-          <div class="symbol-label" *ngIf='_user.driverAuth?.profile?.avatar?.length === 0'
-               [ngStyle]="{ 'background-image': 'url(assets/media/sun-oil/employee/placeholder-user.png'}"></div>
-          <em class="symbol-badge bg-success"></em>
+					<div
+						class="symbol-label"
+						*ngIf="_user.driverAuth?.profile?.avatar?.length > 0"
+						[ngStyle]="{ 'background-image': 'url(' + _user.driverAuth?.profile?.avatar[0]?.url + ')'}"
+					></div>
+					<div
+						class="symbol-label"
+						*ngIf="_user.driverAuth?.profile?.avatar?.length === 0"
+						[ngStyle]="{ 'background-image': 'url(assets/media/base-cms/employee/placeholder-user.png'}"
+					></div>
+					<em class="symbol-badge bg-success"></em>
 				</div>
 				<div class="d-flex flex-column">
 					<a class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">
@@ -35,30 +39,30 @@
 			<div class="separator separator-dashed mt-8 mb-5"></div>
 
 			<div class="navi navi-spacer-x-0 p-0">
-        <div class='row py-3'>
-          <div class='col-lg-5'>Họ tên</div>
-          <div class='col-lg-7'>
-            <strong>{{ _user.driverAuth?.profile?.name }}</strong>
-          </div>
-        </div>
-        <div class='row py-3'>
-          <div class='col-lg-5'>Ngày sinh</div>
-          <div class='col-lg-7'>
-            <strong>{{ _user.driverAuth?.profile?.dateOfBirth | date: 'dd/MM/yyyy' }}</strong>
-          </div>
-        </div>
-        <div class='row py-3'>
-          <div class='col-lg-5'>CMND/CCCD</div>
-          <div class='col-lg-7'>
-            <strong>{{ _user.driverAuth?.profile?.idCard }}</strong>
-          </div>
-        </div>
-        <div class='row py-3'>
-          <div class='col-lg-5'>Địa chỉ</div>
-          <div class='col-lg-7'>
-            <strong>{{ _user.driverAuth?.profile?.location }}</strong>
-          </div>
-        </div>
+				<div class="row py-3">
+					<div class="col-lg-5">Họ tên</div>
+					<div class="col-lg-7">
+						<strong>{{ _user.driverAuth?.profile?.name }}</strong>
+					</div>
+				</div>
+				<div class="row py-3">
+					<div class="col-lg-5">Ngày sinh</div>
+					<div class="col-lg-7">
+						<strong>{{ _user.driverAuth?.profile?.dateOfBirth | date: 'dd/MM/yyyy' }}</strong>
+					</div>
+				</div>
+				<div class="row py-3">
+					<div class="col-lg-5">CMND/CCCD</div>
+					<div class="col-lg-7">
+						<strong>{{ _user.driverAuth?.profile?.idCard }}</strong>
+					</div>
+				</div>
+				<div class="row py-3">
+					<div class="col-lg-5">Địa chỉ</div>
+					<div class="col-lg-7">
+						<strong>{{ _user.driverAuth?.profile?.location }}</strong>
+					</div>
+				</div>
 			</div>
 
 			<div class="separator separator-dashed my-7"></div>

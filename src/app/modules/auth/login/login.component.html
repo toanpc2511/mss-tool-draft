@@ -1,88 +1,88 @@
 <div class="login-wrapper">
-  <form
-    class="form"
-    [formGroup]="loginForm"
-    novalidate="novalidate"
-    id="kt_login_signin_form"
-    (ngSubmit)="submit()"
-  >
-    <div class="pb-13 pt-lg-0 pt-5 login-header">
-      <img width="154px" height="118px" src="assets/media/sun-oil/logo.svg" alt="" />
-      <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg text-center">
-        Đăng nhập
-      </h3>
-    </div>
-    <ng-container *ngIf="hasError">
-      <div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
-        <div class="alert-text font-weight-bold">
-          Số điện thoại hoặc mật khẩu không đúng. Vui lòng đăng nhập lại
-        </div>
-      </div>
-    </ng-container>
-    <div class="form-group">
-      <label class="font-size-h6 font-weight-bolder text-dark">Số điện thoại</label>
-      <div class="position-relative">
-        <input
-          placeholder="Nhập số điện thoại"
-          class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-          type="text"
-          name="username"
-          formControlName="username"
-          autocomplete="off"
-          (input)="onInputUsername($event)"
-        />
-      </div>
-      <app-validate
-        [control]="loginForm.controls['username']"
-        [error]="'required'"
-        [message]="'Số điện thoại không được để trống'"
-      ></app-validate>
-    </div>
-    <div class="form-group">
-      <div class="d-flex justify-content-between mt-n5">
-        <label class="font-size-h6 font-weight-bolder text-dark pt-5">Mật khẩu</label>
-        <label
-          class="font-size-h6 font-weight-bolder text-primary pt-5 cursor-pointer"
-          (click)="gotoForgotPassword()"
-          >Quên mật khẩu</label
-        >
-      </div>
-      <div class="position-relative">
-        <input
-          placeholder="Nhập mật khẩu"
-          class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-          [type]="isShowPasswordStatus ? 'text' : 'password'"
-          name="password"
-          autocomplete="off"
-          formControlName="password"
-          (input)="onInputPassword($event)"
-          maxlength="32"
-        />
-        <em
-          (click)="changeShowPasswordStatus()"
-          class="icon-lg-xl fa"
-          [class.fa-eye]="!isShowPasswordStatus"
-          [class.fa-eye-slash]="isShowPasswordStatus"
-        ></em>
-      </div>
-      <app-validate
-        [control]="loginForm.controls['password']"
-        [error]="'required'"
-        [message]="'Mật khẩu không được để trống'"
-      ></app-validate>
-    </div>
-    <div class="pb-lg-0 pb-5 text-center">
-      <button
-        type="submit"
-        id="kt_login_signin_submit"
-        class="btn btn-dark font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3"
-      >
-        Đăng nhập
-      </button>
+	<form
+		class="form"
+		[formGroup]="loginForm"
+		novalidate="novalidate"
+		id="kt_login_signin_form"
+		(ngSubmit)="submit()"
+	>
+		<div class="pb-13 pt-lg-0 pt-5 login-header">
+			<img width="154px" height="118px" src="assets/media/base-cms/logo.svg" alt="" />
+			<h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg text-center">
+				Đăng nhập
+			</h3>
+		</div>
+		<ng-container *ngIf="hasError">
+			<div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
+				<div class="alert-text font-weight-bold">
+					Số điện thoại hoặc mật khẩu không đúng. Vui lòng đăng nhập lại
+				</div>
+			</div>
+		</ng-container>
+		<div class="form-group">
+			<label class="font-size-h6 font-weight-bolder text-dark">Số điện thoại</label>
+			<div class="position-relative">
+				<input
+					placeholder="Nhập số điện thoại"
+					class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
+					type="text"
+					name="username"
+					formControlName="username"
+					autocomplete="off"
+					(input)="onInputUsername($event)"
+				/>
+			</div>
+			<app-validate
+				[control]="loginForm.controls['username']"
+				[error]="'required'"
+				[message]="'Số điện thoại không được để trống'"
+			></app-validate>
+		</div>
+		<div class="form-group">
+			<div class="d-flex justify-content-between mt-n5">
+				<label class="font-size-h6 font-weight-bolder text-dark pt-5">Mật khẩu</label>
+				<label
+					class="font-size-h6 font-weight-bolder text-primary pt-5 cursor-pointer"
+					(click)="gotoForgotPassword()"
+					>Quên mật khẩu</label
+				>
+			</div>
+			<div class="position-relative">
+				<input
+					placeholder="Nhập mật khẩu"
+					class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
+					[type]="isShowPasswordStatus ? 'text' : 'password'"
+					name="password"
+					autocomplete="off"
+					formControlName="password"
+					(input)="onInputPassword($event)"
+					maxlength="32"
+				/>
+				<em
+					(click)="changeShowPasswordStatus()"
+					class="icon-lg-xl fa"
+					[class.fa-eye]="!isShowPasswordStatus"
+					[class.fa-eye-slash]="isShowPasswordStatus"
+				></em>
+			</div>
+			<app-validate
+				[control]="loginForm.controls['password']"
+				[error]="'required'"
+				[message]="'Mật khẩu không được để trống'"
+			></app-validate>
+		</div>
+		<div class="pb-lg-0 pb-5 text-center">
+			<button
+				type="submit"
+				id="kt_login_signin_submit"
+				class="btn btn-dark font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3"
+			>
+				Đăng nhập
+			</button>
 
-      <ng-container *ngIf="isLoading$ | async">
-        <span class="spinner spinner-primary ml-5"></span>
-      </ng-container>
-    </div>
-  </form>
+			<ng-container *ngIf="isLoading$ | async">
+				<span class="spinner spinner-primary ml-5"></span>
+			</ng-container>
+		</div>
+	</form>
 </div>
