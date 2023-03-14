@@ -85,10 +85,11 @@ export class HttpService {
 			reportProgress?: boolean;
 			withCredentials?: boolean;
 		}
-	): Observable<DataResponse<T>> {
+	): any {
 		return this.httpClient.get(`${this.apiUrl}/${endPoint}`, options).pipe(
 			switchMap((response) => {
-				const res = new DataResponse<T>(response);
+				// const res = new DataResponse<T>(response);
+				const res = response;
 				return of(res);
 			})
 		);
@@ -159,10 +160,11 @@ export class HttpService {
 		return this.httpClient.request(request).pipe(
 			concatMap((response: any) => {
 				if (response.type === HttpEventType.Response) {
-					const res = new DataResponse<T>(response.body);
+					// const res = new DataResponse<T>(response.body);
+					const res = response.body;
 					return of(res);
 				}
-				return of(response);
+				return of(null);
 			})
 		);
 	}

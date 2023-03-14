@@ -1,0 +1,116 @@
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Tìm kiếm sản phẩm</h3>
+    </div>
+    <div class="card-toolbar">
+      <button type="button" class="btn btn-primary" (click)="create()">Thêm mới</button>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="searchForm">
+      <div class="form-group row">
+        <div class="col-lg-4">
+          <label class="form-label">Mã sản phẩm</label>
+          <input
+            type="text"
+            class="form-control form-control-solid"
+            name="code"
+            placeholder="Nhập mã sản phẩm"
+            autocomplete="off"
+            formControlName="code"
+          />
+        </div>
+        <div class="col-lg-4">
+          <label class="form-label">Tên sản phẩm</label>
+          <input
+            type="text"
+            class="form-control form-control-solid"
+            name="lastName"
+            placeholder="Nhập tên sản phẩm"
+            formControlName="name"
+            autocomplete="off"
+          />
+        </div>
+        <div class="col-lg-4">
+          <label class="form-label">Loại sản phẩm</label>
+
+          <select class="form-control form-control-solid" name="type" formControlName="type">
+            <option value="">Tất cả</option>
+            <option *ngFor="let item of categorys" [value]="item.code">{{ item.name }}</option>
+          </select>
+        </div>
+      </div>
+    </form>
+
+    <div class="form-group row py-3 m-auto">
+      <button type="button" class="btn btn-primary btn-def mr-3" (click)="onSearch()">
+        <em class="fas fa-search"></em> Tìm kiếm
+      </button>
+      <button type="button" class="btn btn-secondary btn-def" (click)="onReset()">
+        <i class="fa-solid fa-rotate-left"></i>Nhập lại
+      </button>
+    </div>
+  </div>
+</div>
+<div class="card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Danh sách sản phẩm</h3>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden">
+        <thead>
+          <tr>
+            <th class="text-center">STT</th>
+            <th>Id</th>
+            <th>Tên danh mục</th>
+            <th>Mã danh mục</th>
+            <th class="text-center">Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let category of categorys; let i = index">
+            <td class="text-center">{{ i + 1 }}</td>
+            <td class="">{{ category.id }}</td>
+            <td class="">{{ category.name }}</td>
+            <td class="">{{ category.code }}</td>
+            <td class="text-center">
+              <a
+                title="Edit customer"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                (click)="edit(category)"
+              >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-primary"
+                >
+                </span>
+              </a>
+
+              <a
+                title="Delete customer"
+                class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                (click)="delete(category.id)"
+              >
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
+                  cacheSVG="true"
+                  class="svg-icon svg-icon-md svg-icon-danger"
+                >
+                </span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
+</div>

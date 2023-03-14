@@ -54,7 +54,8 @@ export class ErrorInterceptor implements HttpInterceptor {
 					if (errors.code === 'base-cms-4008') {
 						this.toastr.error('Bạn cần đăng nhập lại để truy cập nội dung này');
 					}
-					this.authService.logout().subscribe();
+					this.authService.logout();
+					// this.authService.logout().subscribe();
 				}
 
 				const error = err.error.error;

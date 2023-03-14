@@ -3,24 +3,23 @@ import { Observable } from 'rxjs';
 import { AuthService, UserModel } from 'src/app/modules/auth/services/auth.service';
 import { LayoutService } from '../../../../../core';
 @Component({
-  selector: 'app-user-dropdown-inner',
-  templateUrl: './user-dropdown-inner.component.html',
-  styleUrls: ['./user-dropdown-inner.component.scss'],
+	selector: 'app-user-dropdown-inner',
+	templateUrl: './user-dropdown-inner.component.html',
+	styleUrls: ['./user-dropdown-inner.component.scss']
 })
 export class UserDropdownInnerComponent implements OnInit {
-  extrasUserDropdownStyle: 'light' | 'dark' = 'light';
-  user$: Observable<UserModel>;
+	extrasUserDropdownStyle: 'light' | 'dark' = 'light';
+	user$: Observable<UserModel>;
 
-  constructor(private layout: LayoutService, private auth: AuthService) {}
+	constructor(private layout: LayoutService, private auth: AuthService) {}
 
-  ngOnInit(): void {
-    this.extrasUserDropdownStyle = this.layout.getProp(
-      'extras.user.dropdown.style'
-    );
-    this.user$ = this.auth.currentUser$;
-  }
+	ngOnInit(): void {
+		this.extrasUserDropdownStyle = this.layout.getProp('extras.user.dropdown.style');
+		this.user$ = this.auth.currentUser$;
+	}
 
-  logout() {
-    this.auth.logout().subscribe();
-  }
+	logout() {
+		this.auth.logout();
+		// this.auth.logout().subscribe();
+	}
 }

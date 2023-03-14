@@ -2,10 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from '../../../../../core';
 import { Observable } from 'rxjs';
-import {
-	AuthService,
-	UserModel
-} from 'src/app/modules/auth/services/auth.service';
+import { AuthService, UserModel } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
 	selector: 'app-user-offcanvas',
@@ -26,6 +23,7 @@ export class UserOffcanvasComponent implements OnInit {
 	}
 
 	logout() {
-		this.auth.logout().subscribe();
+		this.auth.logout();
+		// this.auth.logout().subscribe();
 	}
 }

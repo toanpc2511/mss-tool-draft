@@ -12,26 +12,33 @@ const routes: Routes = [
 				loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardModule)
 			},
 			{
-				path: 'builder',
-				loadChildren: () => import('./builder/builder.module').then((m) => m.BuilderModule)
-			},
-			{
-				path: 'hop-dong',
+				path: 'don-hang',
 				loadChildren: () =>
-					import('../modules/contract/contract.module').then((m) => m.ContractModule)
+					import('../modules/order-management/order-management.module').then(
+						(m) => m.OrderManagementModule
+					)
 			},
 			{
-				path: 'tai-xe',
-				loadChildren: () => import('../modules/partner/partner.module').then((m) => m.PartnerModule)
+				path: 'san-pham',
+				loadChildren: () =>
+					import('./../modules/product-management/product-management.module').then(
+						(m) => m.ProductManagementModule
+					)
 			},
 			{
-				path: 'lich-su-giao-dich',
-				loadChildren: () => import('../modules/transaction/transaction.module').then((m) => m.TransactionModule)
-      },
+				path: 'danh-muc',
+				loadChildren: () =>
+					import('./../modules/category-management/category-management.module').then(
+						(m) => m.CategoryManagementModule
+					)
+			},
 			{
-        path: 'lich-su-su-dung-diem',
-        loadChildren: () => import('../modules/using-points/using-points.module').then((m) => m.UsingPointsModule)
-      },
+				path: 'quang-cao',
+				loadChildren: () =>
+					import('../modules/banner-management/banner-management.module').then(
+						(m) => m.BannerManagementModule
+					)
+			},
 			{
 				path: '',
 				redirectTo: '/dashboard',

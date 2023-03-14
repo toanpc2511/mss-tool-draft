@@ -1,4 +1,11 @@
-import { HttpClient, HttpEventType, HttpParams } from '@angular/common/http';
+import { skipWhile, map } from 'rxjs/operators';
+import {
+	HttpClient,
+	HttpEventType,
+	HttpParams,
+	HttpRequest,
+	HttpResponse
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpService } from './http.service';
@@ -54,9 +61,30 @@ export class FileService {
 
 	uploadFile(fileFormData: FormData, type: EFileType) {
 		return this.http.postUpload<Array<IFile>>(
-			`${environment.apiUrlRoot}/files`,
+			`${environment.apiUrl}/products/upload-image`,
 			fileFormData,
 			type
+		);
+	}
+
+	uploadImage(body: FormData) {
+		const params = new HttpParams().set('type', 'IMAGE').set('callApiType', 'background');
+		const request = new HttpRequest('POST', environment.apiUrl, body, {
+			reportProgress: true,
+			responseType: 'json',
+			params
+		});
+
+		return this.httpClient.request(request).pipe(
+			map((response: any) => {
+				if (response.type === HttpEventType.Response) {
+					const data = { imageUrl: response.body.data[0].url };
+					const init = { body: data };
+					const res = new HttpResponse({ body: data });
+					return res;
+				}
+			}),
+			skipWhile((x) => !x)
 		);
 	}
 }

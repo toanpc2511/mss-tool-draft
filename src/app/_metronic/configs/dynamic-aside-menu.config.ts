@@ -9,39 +9,32 @@ export const DynamicAsideMenuConfig = {
 			bullet: 'dot'
 		},
 		{
-			title: 'Quản lý hợp đồng',
-			icon: 'fas fa-file-contract',
+			title: 'Quản lý đơn hàng',
 			root: true,
-			page: '/hop-dong',
-			bullet: 'dot'
+			icon: 'flaticon2-expand',
+			svg: './assets/media/svg/icons/Shopping/Cart1.svg',
+			page: '/don-hang'
 		},
 		{
-			title: 'Quản lý tài xế',
-			icon: 'fas fa-users',
+			title: 'Quản lý danh mục',
 			root: true,
-			page: '/tai-xe',
-			bullet: 'dot'
+			icon: 'flaticon2-expand',
+			svg: './assets/media/svg/icons/Home/Book.svg',
+			page: '/danh-muc'
 		},
-		// {
-		// 	title: 'Báo cáo',
-		// 	root: true,
-		// 	bullet: 'dot',
-		// 	page: '/bao-cao',
-		// 	icon: 'fas fa-file-alt'
-		// },
 		{
-			title: 'Lịch sử giao dịch',
+			title: 'Quản lý sản phẩm',
 			root: true,
-			bullet: 'dot',
-			page: '/lich-su-giao-dich',
-			icon: 'fas fa-history'
-		  },
+			icon: 'flaticon2-expand',
+			svg: './assets/media/svg/icons/Shopping/Box2.svg',
+			page: '/san-pham'
+		},
 		{
-			title: 'Lịch sử sử dụng điểm',
+			title: 'Quản lý quảng cáo',
 			root: true,
-			bullet: 'dot',
-			page: '/lich-su-su-dung-diem',
-			icon: 'fas fa-business-time'
-    }
+			icon: 'flaticon2-expand',
+			svg: './assets/media/svg/icons/Shopping/Chart-line1.svg',
+			page: '/quang-cao'
+		}
 	]
 };

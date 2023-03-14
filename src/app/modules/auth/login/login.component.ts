@@ -6,8 +6,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IError } from 'src/app/shared/models/error.model';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { AuthService, IProfile, UserModel } from '../services/auth.service';
-import { IUser } from '../../user/user.service';
+import { AuthService, UserModel } from '../services/auth.service';
 
 @Component({
 	selector: 'app-login',
@@ -24,7 +23,7 @@ export class LoginComponent implements OnInit {
 	returnUrl: string;
 	isLoading$: Observable<boolean>;
 	isShowPasswordStatus = false;
-  infoProfile;
+	infoProfile;
 
 	constructor(
 		private fb: FormBuilder,
@@ -59,50 +58,66 @@ export class LoginComponent implements OnInit {
 			return;
 		}
 		this.hasError = false;
-		this.authService
-			.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
-			.pipe(takeUntil(this.destroy$))
-			.subscribe(
-				(res) => {
-					if (res.data) {
-						this.authService.setCurrentUserValue(res.data);
-            this.getViewProfile(res.data);
-						this.router.navigate([this.returnUrl]);
-					} else {
-						this.hasError = true;
-						setTimeout(() => {
-							this.hasError = false;
-							this.cdr.detectChanges();
-						}, 2500);
-					}
-				},
-				(error: IError) => {
-					this.hasError = true;
-					this.checkError(error);
-				}
-			);
+		const cur = {
+			driverAuth: {
+				createdAt: '',
+				updatedAt: '',
+				profile: null,
+				phone: '',
+				driverId: '',
+				role: '',
+				type: ''
+			},
+			token:
+				'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkcml2ZXJfaWQiOiI0YjU4ZTBmOS05ZWY0LTRhMGItOThlMC1mOTllZjQ4YTBiZGYiLCJwaG9uZSI6IjA5NzIzNTgzNTAiLCJpYXQiOjE2MzE1MDgyMTF9.zy68JdhhcO67dwlKX9TMY6smxq0--20ofzZnd7n3suQ'
+		};
+		this.authService.setCurrentUserValue(cur);
+		this.router.navigate([this.returnUrl]);
+		// this.authService
+		// 	.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
+		// 	.pipe(takeUntil(this.destroy$))
+		// 	.subscribe(
+		// 		(res) => {
+		// 			if (res.data) {
+		// 				this.authService.setCurrentUserValue(res.data);
+		// 				this.getViewProfile(res.data);
+		// 				this.router.navigate([this.returnUrl]);
+		// 			} else {
+		// 				this.hasError = true;
+		// 				setTimeout(() => {
+		// 					this.hasError = false;
+		// 					this.cdr.detectChanges();
+		// 				}, 2500);
+		// 			}
+		// 		},
+		// 		(error: IError) => {
+		// 			this.hasError = true;
+		// 			this.checkError(error);
+		// 		}
+		// 	);
 	}
 
-  getViewProfile(dataUser: UserModel) {
-    this.authService.getProfile()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.infoProfile = res.data;
+	getViewProfile(dataUser: UserModel) {
+		this.authService
+			.getProfile()
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((res) => {
+				this.infoProfile = res.data;
 
-        const dataProfile = {
-          name: this.infoProfile.name,
-          dateOfBirth: this.infoProfile.dateOfBirth,
-          idCard: this.infoProfile.idCard,
-          address: this.infoProfile.address,
-          avatar: this.infoProfile.avatar,
-          location: this.infoProfile.location
-        }
+				const dataProfile = {
+					name: this.infoProfile.name,
+					dateOfBirth: this.infoProfile.dateOfBirth,
+					idCard: this.infoProfile.idCard,
+					address: this.infoProfile.address,
+					avatar: this.infoProfile.avatar,
+					location: this.infoProfile.location
+				};
 
-        dataUser.driverAuth.profile = dataProfile;
+				dataUser.driverAuth.profile = dataProfile;
 
-        this.authService.setCurrentUserValue(dataUser);
-      })
-  }
+				this.authService.setCurrentUserValue(dataUser);
+			});
+	}
 
 	checkError(error: IError) {
 		console.error(error);

@@ -26,7 +26,6 @@ import localeVi from '@angular/common/locales/vi';
 import localeViExtra from '@angular/common/locales/extra/vi';
 import { CustomAdapter, CustomDateParserFormatter } from './shared/helpers/datepicker-adapter';
 import { TextMaskModule } from 'angular2-text-mask';
-import { DevModule } from './modules/dev/dev.module';
 
 registerLocaleData(localeVi, 'vi', localeViExtra);
 
@@ -51,7 +50,6 @@ function appInitializer(authService: AuthService, router: Router) {
 @NgModule({
 	declarations: [AppComponent],
 	imports: [
-		DevModule,
 		BrowserModule,
 		BrowserAnimationsModule,
 		SplashScreenModule,

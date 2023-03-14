@@ -1,0 +1,82 @@
+<div class="mt-1 card card-custom gutter-b">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">{{ data ? 'Sửa sản phẩm' : 'Thêm sản phẩm' }}</h3>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="dataForm">
+      <div class="row align-items-center mb-5">
+        <div class="col-lg-4">
+          <label class="form-label required">Loại sản phẩm</label>
+          <select
+            class="form-control"
+            name="type"
+            formControlName="type"
+            aria-placeholder="-- Chọn loại sản phẩm --"
+          >
+            <option *ngFor="let item of categorys" [value]="item.code">{{ item.name }}</option>
+          </select>
+          <app-validate
+            [control]="dataForm.get('type')"
+            [error]="'required'"
+            [message]="'Loại danh mục không được để trống'"
+          ></app-validate>
+        </div>
+        <div class="col-lg-4">
+          <label class="form-label required">Mã sản phẩm </label>
+          <input
+            class="form-control"
+            placeholder="Nhập mã sản phẩm"
+            formControlName="code"
+            autocomplete="off"
+            trim="blur"
+          />
+          <app-validate
+            [control]="dataForm.get('code')"
+            [error]="'required'"
+            [message]="'Mã sản phẩm không được để trống'"
+          ></app-validate>
+        </div>
+        <div class="col-lg-4">
+          <label class="form-label required">Tên sản phẩm</label>
+          <input
+            class="form-control"
+            placeholder="Nhập tên sản phẩm"
+            formControlName="name"
+            autocomplete="off"
+            trim="blur"
+          />
+          <app-validate
+            [control]="dataForm.get('name')"
+            [error]="'required'"
+            [message]="'Tên sản không được để trống'"
+          ></app-validate>
+        </div>
+      </div>
+    </form>
+
+    <div class="row justify-content-center w-100">
+      <div>
+        <button
+          type="button"
+          style="width: 100px"
+          class="btn btn-outline-secondary mr-6"
+          (click)="modal.close(false)"
+        >
+          Hủy
+        </button>
+      </div>
+      <div>
+        <button type="button" style="width: 100px" class="btn btn-primary" (click)="onSubmit()">
+          Xác nhận
+        </button>
+      </div>
+      <div>
+        <button type="button" style="width: 100px" class="btn btn-primary" (click)="onReset()">
+          reset
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

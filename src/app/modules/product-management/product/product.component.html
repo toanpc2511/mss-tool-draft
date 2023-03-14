@@ -1,0 +1,135 @@
+<div class="card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Thêm mới sản phẩm</h3>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<form [formGroup]="productForm">
+			<div class="form-group row">
+				<div class="col-lg-4">
+					<label class="form-label">Mã sản phẩm</label>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Nhập mã sản phẩm"
+						autocomplete="off"
+						formControlName="model"
+					/>
+					<app-validate
+						[control]="productForm.controls['model']"
+						error="required"
+						message="Chưa nhập mã sản phẩm"
+					></app-validate>
+				</div>
+				<div class="col-lg-4">
+					<label class="form-label">Tên sản phẩm</label>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Nhập tên sản phẩm"
+						autocomplete="off"
+						formControlName="name"
+					/>
+					<app-validate
+						[control]="productForm.controls['name']"
+						error="required"
+						message="Chưa nhập tên sản phẩm"
+					></app-validate>
+				</div>
+				<div class="col-lg-4">
+					<label class="form-label">Loại sản phẩm</label>
+					<select class="form-control" formControlName="category">
+						<option value="">-- Chọn loại sản phẩm --</option>
+						<option *ngFor="let item of categories" [value]="item.id">{{ item.name }}</option>
+					</select>
+					<app-validate
+						[control]="productForm.controls['category']"
+						error="required"
+						message="Chưa chọn loại sản phẩm"
+					></app-validate>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-lg-4">
+					<label class="form-label">Giá sản phẩm</label>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Nhập giá sản phẩm"
+						autocomplete="off"
+						formControlName="price"
+					/>
+				</div>
+				<div class="col-lg-4">
+					<label class="form-label">Giá sản phẩm mới</label>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Nhập giá sản phẩm mới"
+						autocomplete="off"
+						formControlName="priceNew"
+					/>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-12">
+					<label for="img" class="form-label">Ảnh sản phẩm</label>
+					<input
+						hidden
+						type="file"
+						id="img"
+						accept="image/*"
+						#bannerImg
+						(change)="addImage($event)"
+						formControlName="imageId"
+						multiple
+					/>
+					<img
+						alt="Ảnh đính kèm"
+						class="img"
+						(click)="bannerImg.click()"
+						width="300px"
+						[src]="url || 'http://placehold.it/180'"
+					/>
+					<div class="" *ngFor="let url of urls">
+						<img [src]="url" alt="" width="100" height="80" />
+					</div>
+
+					<app-validate
+						[control]="productForm.controls['imageId']"
+						[error]="'required'"
+						[message]="'Ảnh sản phẩm không được để trống'"
+					></app-validate>
+				</div>
+			</div>
+			<div id="preview"></div>
+
+			<div class="form-group row">
+				<div class="col-12">
+					<label class="form-label">Mô tả</label>
+					<angular-editor
+						id="editor"
+						[config]="config"
+						formControlName="description"
+					></angular-editor>
+					<app-validate
+						[control]="productForm.controls['description']"
+						[error]="'required'"
+						[message]="'Nội dung không được để trống'"
+					></app-validate>
+				</div>
+			</div>
+		</form>
+
+		<div class="row py-3 m-auto footer">
+			<button type="button" class="btn btn-secondary btn-def mx-2" (click)="onBack()">
+				Quay lại
+			</button>
+			<button type="button" class="btn btn-primary btn-def mx-2" (click)="onSave()">Lưu</button>
+		</div>
+	</div>
+</div>
