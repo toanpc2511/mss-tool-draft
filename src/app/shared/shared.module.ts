@@ -1,3 +1,4 @@
+import { DirectivesModule } from './directives/directives.module';
 import { ConfirmDeleteComponent } from './components/confirm-delete/confirm-delete.component';
 import { AngularEditorModule } from './components/editor-config/angular-editor.module';
 
@@ -18,7 +19,8 @@ const components = [ValidateComponent, ConfirmDeleteComponent];
 		ReactiveFormsModule,
 		InlineSVGModule,
 		CRUDTableModule,
-		AngularEditorModule
+		AngularEditorModule,
+		DirectivesModule
 	],
 	providers: [],
 	exports: [
@@ -27,6 +29,7 @@ const components = [ValidateComponent, ConfirmDeleteComponent];
 		InlineSVGModule,
 		CRUDTableModule,
 		AngularEditorModule,
+		DirectivesModule,
 		...components
 	]
 })

@@ -6,10 +6,10 @@ import { takeUntil } from 'rxjs/operators';
 import { FileService, EFileType } from './../../../shared/services/file.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { IImage } from 'src/app/shared/models/shared.interface';
 import { getConfigEditor } from 'src/app/shared/components/editor-config/config-editor';
+import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 
 @Component({
 	selector: 'app-product',
@@ -19,9 +19,7 @@ import { getConfigEditor } from 'src/app/shared/components/editor-config/config-
 })
 export class ProductComponent implements OnInit {
 	productForm: FormGroup;
-
-	attachmentImg: IImage;
-
+	id: string;
 	categories: any[] = [];
 	files: File[];
 	url: any;
@@ -39,7 +37,8 @@ export class ProductComponent implements OnInit {
 		private productService: ProductService,
 		private fileService: FileService,
 		private destroy$: DestroyService,
-		private cdr: ChangeDetectorRef
+		private cdr: ChangeDetectorRef,
+		private activeRoute: ActivatedRoute
 	) {
 		this.initForm();
 	}
@@ -51,12 +50,19 @@ export class ProductComponent implements OnInit {
 			category: ['', [Validators.required]],
 			price: ['', [Validators.required]],
 			priceNew: [{ value: '', disabled: true }],
-			imageId: [''],
 			description: ['', [Validators.required]]
 		});
 	}
 
 	ngOnInit(): void {
+		this.activeRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+			this.id = params.id;
+			if (this.id) {
+				this.productService.getDetailProduct(this.id).subscribe((res) => {
+					console.log(res);
+				});
+			}
+		});
 		this.getListCategory();
 	}
 
@@ -74,44 +80,32 @@ export class ProductComponent implements OnInit {
 	}
 
 	onSave(): void {
-		console.log(this.productForm.value);
-
-		// this.productForm.markAllAsTouched();
-		// if (this.productForm.invalid) {
-		// 	this.toastr.error('Thông tin sai', 'lôix');
-		// 	return;
-		// }
+		this.productForm.markAllAsTouched();
+		if (this.productForm.invalid) {
+			this.toastr.error('Thông tin sai', 'lôix');
+			return;
+		}
 
 		this.uploadImageFile(this.files);
 	}
 
 	addImage($event) {
 		this.files = [];
-		const preview = document.querySelector('#preview');
 		const inputElement = $event.target as HTMLInputElement;
 		this.files = Array.from(inputElement.files);
-		console.log(this.files);
-		if (this.files.length <= 0) {
-			console.log('ngu');
-
-			this.productForm.controls['imageId'].setErrors({ required: true });
-		}
 
 		this.files.forEach((file) => {
 			if (file.size > 15360000) {
 				this.toastr.error('Dung lượng ảnh quá lớn. Vui lòng chọn ảnh có dung lượng thấp hơn 15MB');
-				this.productForm.controls['imageId'].patchValue('');
 				return;
 			}
-
 			if (file.type.split('/')[0] !== 'image') {
-				this.productForm.controls['imageId'].setErrors({ file: true });
-				this.attachmentImg = null;
+				this.files = [];
+				this.toastr.warning('Không phải định dạng ảnh!');
 				return;
 			}
 		});
 
-		this.productForm.controls['imageId'].setErrors({ file: false });
 		inputElement.value = null;
 
 		this.files.forEach((item) => {
@@ -135,7 +129,10 @@ export class ProductComponent implements OnInit {
 	uploadImageFile(files: File[]) {
 		const formData = new FormData();
 		let valueForm = this.productForm.value;
-		delete valueForm.imageId;
+		if (!files || files.length <= 0) {
+			this.toastr.warning('Bạn chưa chọn ảnh cho sản phẩm, vui lòng chọn và thử lại!', 'Thông báo');
+			return;
+		}
 		files.forEach((file) => formData.append('images', file));
 		this.fileService
 			.uploadFile(formData, EFileType.IMAGE)
@@ -145,19 +142,14 @@ export class ProductComponent implements OnInit {
 					valueForm = {
 						...valueForm,
 						images: event.join(','),
-						quantity: 100
+						quantity: 100,
+						price: Number(valueForm.price.split(',').join(''))
 					};
-
-					this.attachmentImg = event[0];
-					this.productForm.get('imageId').patchValue(event[0], { emitModelToViewChange: false });
-					console.log(valueForm);
 
 					this.productService.createProduct(valueForm).subscribe((res) => {
 						if (res) {
+							this.router.navigate(['/san-pham']);
 							this.toastr.success('Thêm sản phẩm thành công', 'Thông báo');
-							this.initForm();
-							this.attachmentImg = null;
-							this.files = [];
 						}
 					});
 				}

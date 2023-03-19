@@ -1,3 +1,6 @@
+import { ToastrService } from 'ngx-toastr';
+import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
+import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
 import { IProduct, ProductService } from './../../shared/services/product.service';
 import { ICategory, CategoryService } from './../../shared/services/category.service';
 import { Router } from '@angular/router';
@@ -6,9 +9,8 @@ import {
 	IPaginatorState
 } from './../../_metronic/shared/crud-table/models/paginator.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ModalProductComponent } from './modal-product/modal-product.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
@@ -22,6 +24,9 @@ export class ProductManagementComponent implements OnInit {
 	now = moment();
 	isLoading: boolean;
 	paginatorState = new PaginatorState();
+	images: string[];
+
+	@ViewChild('modal_image', { static: true }) modalImage: ElementRef;
 
 	searchForm: FormGroup;
 	constructor(
@@ -30,7 +35,8 @@ export class ProductManagementComponent implements OnInit {
 		private router: Router,
 		private categorySev: CategoryService,
 		private productService: ProductService,
-		private cdr: ChangeDetectorRef
+		private cdr: ChangeDetectorRef,
+		private toastr: ToastrService
 	) {
 		this.initPaginator();
 		this.initSearchForm();
@@ -38,15 +44,15 @@ export class ProductManagementComponent implements OnInit {
 
 	initSearchForm(): void {
 		this.searchForm = this.fb.group({
-			code: [''],
+			model: [''],
 			name: [''],
-			type: ['']
+			category: ['']
 		});
 	}
 
 	initPaginator() {
 		this.paginatorState.page = 1;
-		this.paginatorState.pageSize = 15;
+		this.paginatorState.pageSize = 10;
 		this.paginatorState.pageSizes = [5, 10, 15, 20];
 		this.paginatorState.total = 0;
 	}
@@ -65,11 +71,21 @@ export class ProductManagementComponent implements OnInit {
 
 	onSearch() {
 		const valueForm = this.searchForm.value;
-		const params = {};
+		const params = {
+			page: this.paginatorState.page,
+			size: this.paginatorState.pageSize,
+			...valueForm
+		};
 		this.productService.getListProduct(params).subscribe((res) => {
-			console.log(res);
-			this.products = res;
-			this.paginatorState.total = res.length;
+			this.products = res.data.map((item) => ({
+				...item,
+				images: item.images.split(',')?.map((item: string) => {
+					return (item = `http://${item}`);
+				})
+			}));
+
+			this.paginatorState.total = res.meta.total;
+
 			this.cdr.detectChanges();
 		});
 	}
@@ -78,25 +94,46 @@ export class ProductManagementComponent implements OnInit {
 		this.initSearchForm();
 	}
 
-	create() {
-		this.router.navigate(['san-pham/them-moi']);
+	create(id?: string) {
+		id
+			? this.router.navigate([`san-pham/sua-san-pham/${id}`])
+			: this.router.navigate(['san-pham/them-moi']);
 	}
 
-	edit(data: any) {
-		const modalRef = this.modalService.open(ModalProductComponent, {
-			centered: true,
-			size: 'lg'
+	delete(product: IProduct) {
+		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
+			backdrop: 'static'
 		});
+		const data: IConfirmModalData = {
+			title: 'Xác nhận',
+			message: `Bạn có chắc chắn muốn xoá sản phẩm <strong>${product.name} </strong>?`,
+			button: { class: 'btn-primary', title: 'Xác nhận' }
+		};
 		modalRef.componentInstance.data = data;
 
 		modalRef.result.then((result) => {
 			if (result) {
-				console.log(result);
+				this.productService.deleteProduct(product.id).subscribe(
+					() => {
+						this.getListCategory();
+						this.toastr.success('Xoá sản phẩm thành công!', 'Thông báo');
+					},
+					(error) => {
+						console.log(error);
+					}
+				);
 			}
 		});
 	}
 
-	delete(id: string) {}
+	viewImages(product) {
+		this.images = product.images;
+		this.modalService.open(this.modalImage, {
+			backdrop: true,
+			size: 'xs',
+			animation: true
+		});
+	}
 
 	pagingChange($event: IPaginatorState) {
 		this.paginatorState = $event as PaginatorState;

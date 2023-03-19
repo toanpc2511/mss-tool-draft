@@ -16,10 +16,10 @@
 					<input
 						type="text"
 						class="form-control form-control-solid"
-						name="code"
+						name="model"
 						placeholder="Nhập mã sản phẩm"
 						autocomplete="off"
-						formControlName="code"
+						formControlName="model"
 					/>
 				</div>
 				<div class="col-lg-4">
@@ -36,9 +36,13 @@
 				<div class="col-lg-4">
 					<label class="form-label">Loại sản phẩm</label>
 
-					<select class="form-control form-control-solid" name="type" formControlName="type">
+					<select
+						class="form-control form-control-solid"
+						name="category"
+						formControlName="category"
+					>
 						<option value="">Tất cả</option>
-						<option *ngFor="let item of categories" [value]="item.code">{{ item.name }}</option>
+						<option *ngFor="let item of categories" [value]="item.id">{{ item.name }}</option>
 					</select>
 				</div>
 			</div>
@@ -86,14 +90,18 @@
 						<td class="">{{ product.category?.name }}</td>
 						<td class="text-right">{{ product.price | number }}</td>
 						<td class="text-center image">
-							<img src="./../../../assets/media/svg/icons/Files/Pictures1.svg" alt="icon-images" />
+							<img
+								src="./../../../assets/media/svg/icons/Files/Pictures1.svg"
+								alt="icon-images"
+								(click)="viewImages(product)"
+							/>
 						</td>
-						<td class="">{{ product.updated_at | date: 'dd/MM/yyyy HH:mm' }}</td>
+						<td class="">{{ product.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
 						<td class="text-center">
 							<a
 								title="Edit customer"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-								(click)="edit(product)"
+								(click)="create(product.id)"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -117,9 +125,18 @@
 							</a>
 						</td>
 					</tr>
+					<tr *ngIf="products.length <= 0">
+						<td colspan="9" class="text-center">Không tìm thấy dữ liệu</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
 		<app-paginator [paginator]="paginatorState" (paginate)="pagingChange($event)"></app-paginator>
 	</div>
 </div>
+
+<ng-template #modal_image>
+	<div class="modal-content">
+		<img *ngFor="let img of images" [src]="img" alt="image" />
+	</div>
+</ng-template>

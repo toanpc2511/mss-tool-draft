@@ -87,10 +87,12 @@ export class HttpService {
 		}
 	): any {
 		return this.httpClient.get(`${this.apiUrl}/${endPoint}`, options).pipe(
-			switchMap((response) => {
-				// const res = new DataResponse<T>(response);
-				const res = response;
-				return of(res);
+			switchMap((response: IRespornseHttp) => {
+				if (response.data) {
+					return of(new DataResponse<T>(response));
+				} else {
+					return of(response);
+				}
 			})
 		);
 	}
@@ -272,4 +274,10 @@ export class HttpService {
 			})
 		);
 	}
+}
+
+export interface IRespornseHttp {
+	statusCode: string;
+	data: any;
+	meta: any;
 }

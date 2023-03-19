@@ -7,12 +7,20 @@ import { Injectable } from '@angular/core';
 })
 export class ProductService {
 	constructor(private http: HttpService) {}
-	getListProduct(params): Observable<IProduct[]> {
+	getListProduct(params) {
 		return this.http.get<IProduct[]>('products', { params });
+	}
+
+	deleteProduct(id: string) {
+		return this.http.delete(`products/${id}`);
 	}
 
 	createProduct(body): Observable<any> {
 		return this.http.post('products', body);
+	}
+
+	getDetailProduct(id: string) {
+		return this.http.get<IProduct>(`product/${id}`);
 	}
 }
 
