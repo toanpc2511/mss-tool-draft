@@ -1,8 +1,9 @@
-import { ProductService } from './../../../shared/services/product.service';
+import { IError } from 'src/app/shared/models/error.model';
+import { ProductService, IProduct } from './../../../shared/services/product.service';
 import { CategoryService } from './../../../shared/services/category.service';
 import { AngularEditorConfig } from './../../../shared/components/editor-config/config';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { FileService, EFileType } from './../../../shared/services/file.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -49,7 +50,7 @@ export class ProductComponent implements OnInit {
 			name: ['', [Validators.required]],
 			category: ['', [Validators.required]],
 			price: ['', [Validators.required]],
-			priceNew: [{ value: '', disabled: true }],
+			sales: ['0', [Validators.required]],
 			description: ['', [Validators.required]]
 		});
 	}
@@ -58,9 +59,25 @@ export class ProductComponent implements OnInit {
 		this.activeRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
 			this.id = params.id;
 			if (this.id) {
-				this.productService.getDetailProduct(this.id).subscribe((res) => {
-					console.log(res);
-				});
+				this.productService
+					.getDetailProduct(this.id)
+					.pipe(
+						tap((res: IProduct) => {
+							this.urls = res.images.split(',').map((img) => {
+								return `http://${img}`;
+							});
+							this.productForm.get('model').disable;
+							this.productForm.patchValue({
+								model: res.model,
+								name: res.name,
+								category: res.category.id,
+								price: res.price,
+								description: res.description,
+								sales: res.sales
+							});
+						})
+					)
+					.subscribe();
 			}
 		});
 		this.getListCategory();
@@ -82,8 +99,11 @@ export class ProductComponent implements OnInit {
 	onSave(): void {
 		this.productForm.markAllAsTouched();
 		if (this.productForm.invalid) {
-			this.toastr.error('Thông tin sai', 'lôix');
+			this.toastr.warning('Vui lòng nhập đủ thông tin', 'Cảnh báo');
 			return;
+		}
+		if (Number(this.productForm.get('sales').value) > 100) {
+			this.productForm.get('sales').setErrors({ maxSale: true });
 		}
 
 		this.uploadImageFile(this.files);
@@ -128,32 +148,56 @@ export class ProductComponent implements OnInit {
 
 	uploadImageFile(files: File[]) {
 		const formData = new FormData();
-		let valueForm = this.productForm.value;
 		if (!files || files.length <= 0) {
-			this.toastr.warning('Bạn chưa chọn ảnh cho sản phẩm, vui lòng chọn và thử lại!', 'Thông báo');
+			this.toastr.warning('Vui lòng chọn ảnh và thử lại!', 'Thông báo');
 			return;
 		}
 		files.forEach((file) => formData.append('images', file));
 		this.fileService
 			.uploadFile(formData, EFileType.IMAGE)
 			.pipe(takeUntil(this.destroy$))
-			.subscribe((event: any) => {
-				if (event) {
-					valueForm = {
-						...valueForm,
-						images: event.join(','),
-						quantity: 100,
-						price: Number(valueForm.price.split(',').join(''))
-					};
-
-					this.productService.createProduct(valueForm).subscribe((res) => {
-						if (res) {
-							this.router.navigate(['/san-pham']);
-							this.toastr.success('Thêm sản phẩm thành công', 'Thông báo');
-						}
-					});
+			.subscribe((urlImgs: any) => {
+				if (urlImgs) {
+					this.createProduct(urlImgs);
 				}
 				this.cdr.detectChanges();
 			});
+	}
+
+	createProduct(urlImage) {
+		let valueForm = this.productForm.value;
+		valueForm = {
+			...valueForm,
+			images: urlImage.join(','),
+			quantity: 100,
+			price: Number(valueForm.price.split(',').join('')),
+			sales: Number(valueForm.sales)
+		};
+
+		if (this.id) {
+			this.productService.updateProduct(valueForm, this.id).subscribe(
+				(res) => {
+					if (res) {
+						this.router.navigate(['/san-pham']);
+						this.toastr.success('Cập nhật sản phẩm thành công', 'Thông báo');
+					}
+				},
+				(err: IError) => this.checkError(err)
+			);
+		} else {
+			this.productService.createProduct(valueForm).subscribe(
+				(res) => {
+					if (res) {
+						this.router.navigate(['/san-pham']);
+						this.toastr.success('Thêm sản phẩm thành công', 'Thông báo');
+					}
+				},
+				(err: IError) => this.checkError(err)
+			);
+		}
+	}
+
+	checkError(error: IError) {
+		console.log(error);
 	}
 }

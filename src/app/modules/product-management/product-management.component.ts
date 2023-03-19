@@ -106,7 +106,7 @@ export class ProductManagementComponent implements OnInit {
 		});
 		const data: IConfirmModalData = {
 			title: 'Xác nhận',
-			message: `Bạn có chắc chắn muốn xoá sản phẩm <strong>${product.name} </strong>?`,
+			message: `Bạn có chắc chắn muốn xoá sản phẩm ${product.name} ?`,
 			button: { class: 'btn-primary', title: 'Xác nhận' }
 		};
 		modalRef.componentInstance.data = data;
@@ -115,7 +115,7 @@ export class ProductManagementComponent implements OnInit {
 			if (result) {
 				this.productService.deleteProduct(product.id).subscribe(
 					() => {
-						this.getListCategory();
+						this.onSearch();
 						this.toastr.success('Xoá sản phẩm thành công!', 'Thông báo');
 					},
 					(error) => {

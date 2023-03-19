@@ -15,12 +15,16 @@ export class ProductService {
 		return this.http.delete(`products/${id}`);
 	}
 
-	createProduct(body): Observable<any> {
+	createProduct(body) {
 		return this.http.post('products', body);
 	}
 
+	updateProduct(body, id: string) {
+		return this.http.put(`products/${id}`, body, {});
+	}
+
 	getDetailProduct(id: string) {
-		return this.http.get<IProduct>(`product/${id}`);
+		return this.http.get<IProduct>(`products/${id}`);
 	}
 }
 
@@ -30,7 +34,10 @@ export interface IProduct {
 	images: string;
 	model: string;
 	name: string;
-	price: string;
+	price: number;
 	quantity: number;
 	updatedAt: string;
+	category: any;
+	description: string;
+	sales: number;
 }
