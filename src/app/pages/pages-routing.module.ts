@@ -40,6 +40,13 @@ const routes: Routes = [
 					)
 			},
 			{
+				path: 'hang-san-xuat',
+				loadChildren: () =>
+					import('../modules/brand-management/brand-management.module').then(
+						(m) => m.BrandManagementModule
+					)
+			},
+			{
 				path: '',
 				redirectTo: '/dashboard',
 				pathMatch: 'full'

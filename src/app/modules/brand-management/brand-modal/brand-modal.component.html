@@ -1,0 +1,73 @@
+<div class="mt-1 card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">{{ data ? 'Sửa hãng sản xuất' : 'Thêm hãng sản xuất' }}</h3>
+		</div>
+	</div>
+	<div class="card-body">
+		<form [formGroup]="dataForm">
+			<div class="row align-items-center mb-5">
+				<div class="col-lg-3">
+					<label class="form-label required">Tên hãng</label>
+				</div>
+				<div class="col-lg-9">
+					<input
+						class="form-control"
+						placeholder="Nhập tên hãng"
+						formControlName="name"
+						autocomplete="off"
+						trim="blur"
+					/>
+					<app-validate
+						[control]="dataForm.get('name')"
+						[error]="'required'"
+						[message]="'Tên hãng không được để trống'"
+					></app-validate>
+				</div>
+			</div>
+			<div class="row align-items-center mb-5">
+				<div class="col-lg-3">
+					<label class="form-label required">Danh mục</label>
+				</div>
+				<div class="col-lg-9">
+					<ng-select
+						name="category"
+						formControlName="categoryIds"
+						[closeOnSelect]="true"
+						notFoundText="Không có dữ liệu"
+						[multiple]="true"
+						[placeholder]="'Chọn danh mục'"
+						[isGroupDisplay]="true"
+						[groupText]="'danh mục khác'"
+						[minLengthGroup]="2"
+					>
+						<ng-option *ngFor="let item of categories" [value]="item.id">{{ item.name }}</ng-option>
+					</ng-select>
+					<app-validate
+						[control]="dataForm.get('categoryIds')"
+						[error]="'required'"
+						[message]="'Tên hãng không được để trống'"
+					></app-validate>
+				</div>
+			</div>
+		</form>
+
+		<div class="row justify-content-center w-100">
+			<div>
+				<button
+					type="button"
+					style="width: 100px"
+					class="btn btn-outline-secondary mr-6"
+					(click)="modal.close(false)"
+				>
+					Hủy
+				</button>
+			</div>
+			<div>
+				<button type="button" style="width: 100px" class="btn btn-primary" (click)="onSubmit()">
+					Xác nhận
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

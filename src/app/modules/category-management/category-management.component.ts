@@ -1,4 +1,4 @@
-import { CategoryService, ICategory } from './../../shared/services/category.service';
+import { SharedService } from 'src/app/shared/services/shared.service';
 import { IConfirmModalData } from './../../shared/models/confirm-delete.interface';
 import { ConfirmDeleteComponent } from './../../shared/components/confirm-delete/confirm-delete.component';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
@@ -7,6 +7,7 @@ import { ModalCategoryComponent } from './modal-category/modal-category.componen
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { ICategory } from 'src/app/shared/models/shared.interface';
 
 @Component({
 	selector: 'app-category-management',
@@ -18,7 +19,7 @@ export class CategoryManagementComponent implements OnInit {
 	categories: ICategory[] = [];
 	constructor(
 		private modalService: NgbModal,
-		private categoryService: CategoryService,
+		private sharedService: SharedService,
 		private authService: AuthService,
 		private cdr: ChangeDetectorRef,
 		private toastr: ToastrService
@@ -31,7 +32,7 @@ export class CategoryManagementComponent implements OnInit {
 	}
 
 	getListCategory() {
-		this.categoryService.getListCategory().subscribe((res) => {
+		this.sharedService.getListCategory().subscribe((res) => {
 			this.categories = res;
 			this.cdr.detectChanges();
 		});
@@ -61,14 +62,14 @@ export class CategoryManagementComponent implements OnInit {
 		});
 		const data: IConfirmModalData = {
 			title: 'Xác nhận',
-			message: `Bạn có chắc chắn muốn xoá danh mục <strong>${categogy.name} </strong>?`,
+			message: `Bạn có chắc chắn muốn xoá danh mục ${categogy.name}?`,
 			button: { class: 'btn-primary', title: 'Xác nhận' }
 		};
 		modalRef.componentInstance.data = data;
 
 		modalRef.result.then((result) => {
 			if (result) {
-				this.categoryService.deleteCategory(categogy.id).subscribe(
+				this.sharedService.deleteCategory(categogy.id).subscribe(
 					() => {
 						this.getListCategory();
 						this.toastr.success('Xoá danh mục thành công!', 'Thông báo');

@@ -28,9 +28,9 @@
 // Metronic styles (replace these path when using RTL css below)
 @import './assets/sass/style.angular.scss';
 
+@import './custom-style.scss';
 // For RTL, check this documentation https://keenthemes.com/metronic/?page=docs&section=angular-rtl
 // @import "./assets/sass/style.angular.rtl.css";
-
 // Default Layout themes
 @import './assets/sass/themes/layout/header/base/light.scss';
 @import './assets/sass/themes/layout/header/menu/light.scss';

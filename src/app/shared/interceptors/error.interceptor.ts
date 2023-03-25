@@ -25,6 +25,8 @@ export class ErrorInterceptor implements HttpInterceptor {
 		return next.handle(request).pipe(
 			catchError((err: HttpErrorResponse) => {
 				const errors: IError = err.error.meta;
+				console.log(errors);
+
 				if (err.status >= 500) {
 					this.toastr.error('Hệ thống đang bận! Vui lòng thử lại sau');
 				}
@@ -34,6 +36,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 				}
 
 				if (err.status === 404) {
+					this.toastr.error('Đường dẫn không tồn tại');
 					Swal.fire('Không tồn tại!', null, 'error');
 					this.router.navigate(['/']);
 				}

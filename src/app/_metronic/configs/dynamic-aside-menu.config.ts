@@ -35,6 +35,13 @@ export const DynamicAsideMenuConfig = {
 			icon: 'flaticon2-expand',
 			svg: './assets/media/svg/icons/Shopping/Chart-line1.svg',
 			page: '/quang-cao'
+		},
+		{
+			title: 'Quản lý hãng sản xuất',
+			root: true,
+			icon: 'flaticon2-expand',
+			svg: './assets/media/svg/icons/Home/Book.svg',
+			page: '/hang-san-xuat'
 		}
 	]
 };

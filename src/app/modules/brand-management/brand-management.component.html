@@ -1,7 +1,7 @@
 <div class="card card-custom gutter-b">
 	<div class="card-header">
 		<div class="card-title">
-			<h3 class="card-label">Danh sách danh mục</h3>
+			<h3 class="card-label">Danh sách hãng sản xuất</h3>
 		</div>
 		<div class="card-toolbar">
 			<button type="button" class="btn btn-primary" (click)="create()">Thêm mới</button>
@@ -14,19 +14,19 @@
 				<thead>
 					<tr>
 						<th class="text-center">STT</th>
-						<th>Tên danh mục</th>
+						<th>Tên hãng</th>
 						<th class="text-center">Hành động</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let category of categories; let i = index">
+					<tr *ngFor="let brand of listBrand; let i = index">
 						<td class="text-center">{{ i + 1 }}</td>
-						<td class="">{{ category.name }}</td>
+						<td class="">{{ brand.name }}</td>
 						<td class="text-center">
 							<a
 								title="Edit customer"
 								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-								(click)="edit(category)"
+								(click)="edit(brand)"
 							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
@@ -36,11 +36,7 @@
 								</span>
 							</a>
 
-							<a
-								title="Delete customer"
-								class="btn btn-icon btn-light btn-hover-danger btn-sm"
-								(click)="delete(category)"
-							>
+							<a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm">
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
 									cacheSVG="true"
@@ -51,7 +47,7 @@
 						</td>
 					</tr>
 				</tbody>
-				<tfoot *ngIf="categories?.length <= 0">
+				<tfoot *ngIf="listBrand?.length <= 0">
 					<td colspan="5" class="text-center py-4">Không có bản ghi nào</td>
 				</tfoot>
 			</table>

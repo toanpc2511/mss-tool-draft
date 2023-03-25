@@ -1,3 +1,4 @@
+import { DestroyService } from './services/destroy.service';
 import { DirectivesModule } from './directives/directives.module';
 import { ConfirmDeleteComponent } from './components/confirm-delete/confirm-delete.component';
 import { AngularEditorModule } from './components/editor-config/angular-editor.module';
@@ -8,6 +9,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ValidateComponent } from './components/validate/validate.component';
+import { NgSelectModule } from './components/ng-select/public-api';
 
 const components = [ValidateComponent, ConfirmDeleteComponent];
 
@@ -20,9 +22,10 @@ const components = [ValidateComponent, ConfirmDeleteComponent];
 		InlineSVGModule,
 		CRUDTableModule,
 		AngularEditorModule,
-		DirectivesModule
+		DirectivesModule,
+		NgSelectModule
 	],
-	providers: [],
+	providers: [DestroyService],
 	exports: [
 		FormsModule,
 		ReactiveFormsModule,
@@ -30,6 +33,7 @@ const components = [ValidateComponent, ConfirmDeleteComponent];
 		CRUDTableModule,
 		AngularEditorModule,
 		DirectivesModule,
+		NgSelectModule,
 		...components
 	]
 })

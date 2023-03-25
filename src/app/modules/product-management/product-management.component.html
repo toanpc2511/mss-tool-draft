@@ -71,32 +71,30 @@
 				<thead>
 					<tr>
 						<th class="text-center">STT</th>
-						<th class="text-center">Id</th>
 						<th class="text-center">Tên sản phẩm</th>
 						<th class="text-center">Mã sản phẩm</th>
-						<th class="text-center">Mã danh mục</th>
+						<th class="text-center">Tên danh mục</th>
 						<th class="text-center">Giá sản phẩm</th>
-						<th>Hình ảnh</th>
-						<th>Ngày cập nhật</th>
+						<th class="text-center">Hình ảnh</th>
+						<th class="text-center">Ngày cập nhật</th>
 						<th class="text-center">Hành động</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr *ngFor="let product of products; let i = index">
 						<td class="text-center">{{ i + 1 }}</td>
-						<td class="">{{ product.id }}</td>
-						<td class="">{{ product.name }}</td>
-						<td class="">{{ product.model }}</td>
-						<td class="">{{ product.category?.name }}</td>
-						<td class="text-right">{{ product.price | number }}</td>
-						<td class="text-center image">
+						<td class="w-300">{{ product.name }}</td>
+						<td class="w-200">{{ product.model }}</td>
+						<td class="w-200">{{ product.category?.name }}</td>
+						<td class="text-right w-150">{{ product.price | number }}</td>
+						<td class="text-center image w-120">
 							<img
 								src="./../../../assets/media/svg/icons/Files/Pictures1.svg"
 								alt="icon-images"
 								(click)="viewImages(product)"
 							/>
 						</td>
-						<td class="">{{ product.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+						<td class="w-180 text-center">{{ product.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
 						<td class="text-center">
 							<a
 								title="Edit customer"
@@ -126,7 +124,7 @@
 						</td>
 					</tr>
 					<tr *ngIf="products.length <= 0">
-						<td colspan="9" class="text-center">Không tìm thấy dữ liệu</td>
+						<td colspan="8" class="text-center">Không tìm thấy dữ liệu</td>
 					</tr>
 				</tbody>
 			</table>

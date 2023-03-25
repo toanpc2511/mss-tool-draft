@@ -1,8 +1,7 @@
+import { SharedService } from 'src/app/shared/services/shared.service';
 import { ToastrService } from 'ngx-toastr';
 import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interface';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
-import { IProduct, ProductService } from './../../shared/services/product.service';
-import { ICategory, CategoryService } from './../../shared/services/category.service';
 import { Router } from '@angular/router';
 import {
 	PaginatorState,
@@ -12,6 +11,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as moment from 'moment';
+import { ICategory, IProduct } from 'src/app/shared/models/shared.interface';
 
 @Component({
 	selector: 'app-product-management',
@@ -33,8 +33,7 @@ export class ProductManagementComponent implements OnInit {
 		private modalService: NgbModal,
 		private fb: FormBuilder,
 		private router: Router,
-		private categorySev: CategoryService,
-		private productService: ProductService,
+		private sharedService: SharedService,
 		private cdr: ChangeDetectorRef,
 		private toastr: ToastrService
 	) {
@@ -63,7 +62,7 @@ export class ProductManagementComponent implements OnInit {
 	}
 
 	getListCategory(): void {
-		this.categorySev.getListCategory().subscribe((res) => {
+		this.sharedService.getListCategory().subscribe((res) => {
 			this.categories = res;
 			this.cdr.detectChanges();
 		});
@@ -76,12 +75,10 @@ export class ProductManagementComponent implements OnInit {
 			size: this.paginatorState.pageSize,
 			...valueForm
 		};
-		this.productService.getListProduct(params).subscribe((res) => {
+		this.sharedService.getListProduct(params).subscribe((res) => {
 			this.products = res.data.map((item) => ({
 				...item,
-				images: item.images.split(',')?.map((item: string) => {
-					return (item = `http://${item}`);
-				})
+				images: item.images.split(',')
 			}));
 
 			this.paginatorState.total = res.meta.total;
@@ -113,7 +110,7 @@ export class ProductManagementComponent implements OnInit {
 
 		modalRef.result.then((result) => {
 			if (result) {
-				this.productService.deleteProduct(product.id).subscribe(
+				this.sharedService.deleteProduct(product.id).subscribe(
 					() => {
 						this.onSearch();
 						this.toastr.success('Xoá sản phẩm thành công!', 'Thông báo');

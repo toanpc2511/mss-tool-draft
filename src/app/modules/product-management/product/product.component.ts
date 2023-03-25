@@ -1,6 +1,5 @@
+import { SharedService } from 'src/app/shared/services/shared.service';
 import { IError } from 'src/app/shared/models/error.model';
-import { ProductService, IProduct } from './../../../shared/services/product.service';
-import { CategoryService } from './../../../shared/services/category.service';
 import { AngularEditorConfig } from './../../../shared/components/editor-config/config';
 import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -11,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { getConfigEditor } from 'src/app/shared/components/editor-config/config-editor';
 import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
+import { IProduct } from 'src/app/shared/models/shared.interface';
 
 @Component({
 	selector: 'app-product',
@@ -34,8 +34,7 @@ export class ProductComponent implements OnInit {
 		private router: Router,
 		private fb: FormBuilder,
 		private toastr: ToastrService,
-		private categoryService: CategoryService,
-		private productService: ProductService,
+		private sharedService: SharedService,
 		private fileService: FileService,
 		private destroy$: DestroyService,
 		private cdr: ChangeDetectorRef,
@@ -59,13 +58,11 @@ export class ProductComponent implements OnInit {
 		this.activeRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
 			this.id = params.id;
 			if (this.id) {
-				this.productService
+				this.sharedService
 					.getDetailProduct(this.id)
 					.pipe(
 						tap((res: IProduct) => {
-							this.urls = res.images.split(',').map((img) => {
-								return `http://${img}`;
-							});
+							this.urls = res.images.split(',');
 							this.productForm.get('model').disable;
 							this.productForm.patchValue({
 								model: res.model,
@@ -84,7 +81,7 @@ export class ProductComponent implements OnInit {
 	}
 
 	getListCategory(): void {
-		this.categoryService.getListCategory().subscribe((res) => {
+		this.sharedService.getListCategory().subscribe((res) => {
 			if (res) {
 				this.categories = res;
 				this.cdr.detectChanges();
@@ -175,7 +172,7 @@ export class ProductComponent implements OnInit {
 		};
 
 		if (this.id) {
-			this.productService.updateProduct(valueForm, this.id).subscribe(
+			this.sharedService.updateProduct(valueForm, this.id).subscribe(
 				(res) => {
 					if (res) {
 						this.router.navigate(['/san-pham']);
@@ -185,7 +182,7 @@ export class ProductComponent implements OnInit {
 				(err: IError) => this.checkError(err)
 			);
 		} else {
-			this.productService.createProduct(valueForm).subscribe(
+			this.sharedService.createProduct(valueForm).subscribe(
 				(res) => {
 					if (res) {
 						this.router.navigate(['/san-pham']);
