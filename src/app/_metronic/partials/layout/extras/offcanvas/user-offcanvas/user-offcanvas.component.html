@@ -17,8 +17,8 @@
 					></div>
 					<div
 						class="symbol-label"
-						*ngIf="_user.driverAuth?.profile?.avatar?.length === 0"
-						[ngStyle]="{ 'background-image': 'url(assets/media/base-cms/employee/placeholder-user.png'}"
+						*ngIf="!_user.driverAuth?.profile"
+						[ngStyle]="{ 'background-image': 'url(assets/media/placeholder-user.png)'}"
 					></div>
 					<em class="symbol-badge bg-success"></em>
 				</div>

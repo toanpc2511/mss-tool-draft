@@ -69,7 +69,7 @@ export class AsideDynamicComponent implements OnInit, OnDestroy {
     if (this.brandSkin === 'light') {
       return './assets/media/logos/logo-dark.png';
     } else {
-      return './assets/media/logos/logo-light.png';
+			return './assets/media/logos/logo-dien-may-365.png';
     }
   }
 

@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
 				createdAt: '',
 				updatedAt: '',
 				profile: null,
-				phone: '',
+				phone: 'Admin',
 				driverId: '',
 				role: '',
 				type: ''

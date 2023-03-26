@@ -1,12 +1,5 @@
 /* eslint-disable no-prototype-builtins */
-import {
-	Component,
-	OnInit,
-	ViewChild,
-	ElementRef,
-	AfterViewInit,
-	OnDestroy
-} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import {
 	Router,
 	NavigationStart,
@@ -40,8 +33,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('ktHeaderMenu', { static: true }) ktHeaderMenu: ElementRef;
 	loader$: Observable<number>;
 
-	private loaderSubject: BehaviorSubject<number> =
-		new BehaviorSubject<number>(0);
+	private loaderSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 	private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
 	constructor(private layout: LayoutService, private router: Router) {
@@ -58,10 +50,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (event instanceof RouteConfigLoadEnd) {
 				this.loaderSubject.next(90);
 			}
-			if (
-				event instanceof NavigationEnd ||
-				event instanceof NavigationCancel
-			) {
+			if (event instanceof NavigationEnd || event instanceof NavigationCancel) {
 				// set page progress bar loading to end on NavigationEnd event router
 				this.loaderSubject.next(100);
 				if (this.routerLoaderTimout) {
@@ -76,21 +65,14 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.headerContainerCSSClasses =
-			this.layout.getStringCSSClasses('header_container');
-		this.headerMenuSelfDisplay = this.layout.getProp(
-			'header.menu.self.display'
-		);
-		this.headerMenuSelfStatic = this.layout.getProp(
-			'header.menu.self.static'
-		);
+		this.headerContainerCSSClasses = this.layout.getStringCSSClasses('header_container');
+		this.headerMenuSelfDisplay = this.layout.getProp('header.menu.self.display');
+		this.headerMenuSelfStatic = this.layout.getProp('header.menu.self.static');
 		this.asideSelfDisplay = this.layout.getProp('aside.self.display');
 		this.headerSelfTheme = this.layout.getProp('header.self.theme') || '';
 		this.headerLogo = this.getLogoURL();
-		this.headerMenuCSSClasses =
-			this.layout.getStringCSSClasses('header_menu');
-		this.headerMenuHTMLAttributes =
-			this.layout.getHTMLAttributes('header_menu');
+		this.headerMenuCSSClasses = this.layout.getStringCSSClasses('header_menu');
+		this.headerMenuHTMLAttributes = this.layout.getHTMLAttributes('header_menu');
 	}
 
 	private getLogoURL(): string {
@@ -111,8 +93,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (this.ktHeaderMenu) {
 			for (const key in this.headerMenuHTMLAttributes) {
 				if (this.headerMenuHTMLAttributes.hasOwnProperty(key)) {
-					this.ktHeaderMenu.nativeElement.attributes[key] =
-						this.headerMenuHTMLAttributes[key];
+					this.ktHeaderMenu.nativeElement.attributes[key] = this.headerMenuHTMLAttributes[key];
 				}
 			}
 		}
