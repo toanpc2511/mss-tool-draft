@@ -16,7 +16,7 @@ import { IConfirmModalData } from 'src/app/shared/models/confirm-delete.interfac
 })
 export class BrandManagementComponent implements OnInit {
 	isLoading$: Observable<boolean>;
-	listBrand: any[] = [];
+	listBrand: IBrand[] = [];
 	constructor(
 		private modalService: NgbModal,
 		private sharedService: SharedService,
@@ -43,6 +43,12 @@ export class BrandManagementComponent implements OnInit {
 			...item,
 			catagories: item.categoryBrands.map((categoryBrand) => {
 				return categoryBrand.category;
+			}),
+			categoryNames: item.categoryBrands.map((categoryBrand) => {
+				return categoryBrand.category.name;
+			}),
+			categoryIds: item.categoryBrands.map((categoryBrand) => {
+				return categoryBrand.category.name;
 			})
 		}));
 		console.log(this.listBrand);

@@ -37,6 +37,8 @@ export interface IBrand {
 	name: string;
 	categoryBrands: ICategoryBrand[];
 	catagories?: ICategory[];
+	categoryNames: string[];
+	categoryIds: string[];
 }
 
 export interface ICategoryBrand {

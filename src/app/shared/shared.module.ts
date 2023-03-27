@@ -1,3 +1,4 @@
+import { PipesModule } from './pipes/pipes.module';
 import { DestroyService } from './services/destroy.service';
 import { DirectivesModule } from './directives/directives.module';
 import { ConfirmDeleteComponent } from './components/confirm-delete/confirm-delete.component';
@@ -23,7 +24,8 @@ const components = [ValidateComponent, ConfirmDeleteComponent];
 		CRUDTableModule,
 		AngularEditorModule,
 		DirectivesModule,
-		NgSelectModule
+		NgSelectModule,
+		PipesModule
 	],
 	providers: [DestroyService],
 	exports: [
@@ -34,6 +36,7 @@ const components = [ValidateComponent, ConfirmDeleteComponent];
 		AngularEditorModule,
 		DirectivesModule,
 		NgSelectModule,
+		PipesModule,
 		...components
 	]
 })

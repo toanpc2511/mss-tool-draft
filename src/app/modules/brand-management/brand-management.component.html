@@ -15,6 +15,7 @@
 					<tr>
 						<th class="text-center">STT</th>
 						<th>Tên hãng</th>
+						<th>Danh mục gán</th>
 						<th class="text-center">Hành động</th>
 					</tr>
 				</thead>
@@ -22,6 +23,7 @@
 					<tr *ngFor="let brand of listBrand; let i = index">
 						<td class="text-center">{{ i + 1 }}</td>
 						<td class="">{{ brand.name }}</td>
+						<td class="">{{ brand.categoryNames | transformList}}</td>
 						<td class="text-center">
 							<a
 								title="Edit customer"
