@@ -142,7 +142,7 @@ export class HttpService {
 			withCredentials?: boolean;
 		}
 	): Observable<DataResponse<T>> {
-		const bodyOrigin = new DataPush(body);
+		// const bodyOrigin = new DataPush(body);
 		// return this.httpClient.post(`${this.apiUrl}/${endPoint}`, bodyOrigin.data, options).pipe(
 		return this.httpClient.post(`${this.apiUrl}/${endPoint}`, body, options).pipe(
 			switchMap((response) => {
@@ -217,8 +217,9 @@ export class HttpService {
 			withCredentials?: boolean;
 		}
 	): Observable<DataResponse<T>> {
-		const bodyOrigin = new DataPush(body);
-		return this.httpClient.put(`${this.apiUrl}/${endPoint}`, bodyOrigin.data, options).pipe(
+		// const bodyOrigin = new DataPush(body);
+		// return this.httpClient.put(`${this.apiUrl}/${endPoint}`, bodyOrigin.data, options).pipe(
+		return this.httpClient.put(`${this.apiUrl}/${endPoint}`, body, options).pipe(
 			switchMap((response) => {
 				const res = new DataResponse<T>(response);
 				return of(res);

@@ -36,7 +36,11 @@
 								</span>
 							</a>
 
-							<a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm">
+							<a
+								title="Delete customer"
+								class="btn btn-icon btn-light btn-hover-danger btn-sm"
+								(click)="delete(brand)"
+							>
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
 									cacheSVG="true"

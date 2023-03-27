@@ -1,3 +1,4 @@
+import { IBrand } from './../../shared/models/shared.interface';
 import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
@@ -32,9 +33,19 @@ export class BrandManagementComponent implements OnInit {
 
 	getListBrand() {
 		this.sharedService.getBrands().subscribe((res) => {
-			this.listBrand = res.data;
+			this.handleData(res.data);
 			this.cdr.detectChanges();
 		});
+	}
+
+	handleData(data: IBrand[]) {
+		this.listBrand = data.map((item) => ({
+			...item,
+			catagories: item.categoryBrands.map((categoryBrand) => {
+				return categoryBrand.category;
+			})
+		}));
+		console.log(this.listBrand);
 	}
 
 	create() {
@@ -55,13 +66,13 @@ export class BrandManagementComponent implements OnInit {
 		});
 	}
 
-	delete(brand: { id: string; name: string }) {
+	delete(brand: IBrand) {
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
 			backdrop: 'static'
 		});
 		const data: IConfirmModalData = {
 			title: 'Xác nhận',
-			message: `Bạn có chắc chắn muốn xoá danh mục <strong>${brand.name} </strong>?`,
+			message: `Bạn có chắc chắn muốn xoá hãng sản xuất ${brand.name}?`,
 			button: { class: 'btn-primary', title: 'Xác nhận' }
 		};
 		modalRef.componentInstance.data = data;

@@ -13,7 +13,6 @@ export enum EFace {
 
 export interface ICategory {
 	id: string;
-	code: string;
 	name: string;
 	createdA: string;
 	updatedAt: string;
@@ -36,4 +35,11 @@ export interface IProduct {
 export interface IBrand {
 	id: string;
 	name: string;
+	categoryBrands: ICategoryBrand[];
+	catagories?: ICategory[];
+}
+
+export interface ICategoryBrand {
+	id: string;
+	category: ICategory;
 }

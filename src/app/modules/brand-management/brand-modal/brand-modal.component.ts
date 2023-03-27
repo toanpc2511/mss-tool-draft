@@ -1,3 +1,4 @@
+import { IBrand } from './../../../shared/models/shared.interface';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +13,7 @@ import { ICategory } from 'src/app/shared/models/shared.interface';
 	providers: [FormBuilder]
 })
 export class BrandModalComponent implements OnInit {
-	@Input() data: any;
+	@Input() data: IBrand;
 
 	dataForm: FormGroup;
 	categories: ICategory[] = [];
@@ -23,22 +24,27 @@ export class BrandModalComponent implements OnInit {
 		private sharedService: SharedService,
 		private toastr: ToastrService,
 		private cdr: ChangeDetectorRef
-	) {
-		this.initForm();
-	}
+	) {}
 
 	initForm() {
-		this.dataForm = this.fb.group({
-			name: ['', [Validators.required]],
-			categoryIds: ['', [Validators.required]]
-		});
+		if (!this.data) {
+			this.dataForm = this.fb.group({
+				name: ['', [Validators.required]],
+				categoryIds: ['', [Validators.required]]
+			});
+		} else {
+			const ids: string[] = this.data.catagories.map((item) => item.id);
+
+			this.dataForm = this.fb.group({
+				name: [this.data.name, [Validators.required]],
+				categoryIds: [ids, [Validators.required]]
+			});
+		}
 	}
 
 	ngOnInit(): void {
 		this.getListCategory();
-		if (this.data) {
-			this.dataForm.patchValue({ name: this.data.name });
-		}
+		this.initForm();
 	}
 
 	getListCategory() {
@@ -55,10 +61,9 @@ export class BrandModalComponent implements OnInit {
 			...this.dataForm.value,
 			categoryIds: this.dataForm.value.categoryIds.join(',')
 		};
-		console.log(valueForm);
 
 		if (this.data) {
-			this.sharedService.editBrand(valueForm, this.data.id).subscribe(
+			this.sharedService.editBrand(this.data.id, valueForm).subscribe(
 				(res) => {
 					if (res) {
 						this.modal.close(true);
