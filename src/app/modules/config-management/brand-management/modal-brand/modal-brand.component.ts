@@ -1,18 +1,17 @@
-import { IBrand } from './../../../shared/models/shared.interface';
-import { SharedService } from 'src/app/shared/services/shared.service';
 import { ToastrService } from 'ngx-toastr';
+import { SharedService } from 'src/app/shared/services/shared.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { ICategory } from 'src/app/shared/models/shared.interface';
+import { IBrand } from './../../../../shared/models/shared.interface';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 
 @Component({
-	selector: 'app-brand-modal',
-	templateUrl: './brand-modal.component.html',
-	styleUrls: ['./brand-modal.component.scss'],
+	selector: 'app-modal-brand',
+	templateUrl: './modal-brand.component.html',
 	providers: [FormBuilder]
 })
-export class BrandModalComponent implements OnInit {
+export class ModalBrandComponent implements OnInit {
 	@Input() data: IBrand;
 
 	dataForm: FormGroup;

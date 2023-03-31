@@ -37,11 +37,24 @@ export const DynamicAsideMenuConfig = {
 			page: '/quang-cao'
 		},
 		{
-			title: 'Quản lý hãng sản xuất',
-			root: true,
+			title: 'Quản lý cấu hình',
 			icon: 'flaticon2-expand',
-			svg: './assets/media/svg/icons/Home/Book.svg',
-			page: '/hang-san-xuat'
+			svg: './assets/media/svg/icons/Shopping/Chart-line1.svg',
+			root: true,
+			bullet: 'dot',
+			page: '/cau-hinh',
+			submenu: [
+				{
+					title: 'Danh sách hãng sản xuất',
+					bullet: 'dot',
+					page: '/cau-hinh/hang-san-xuat'
+				},
+				{
+					title: 'Danh sách thuộc tính',
+					bullet: 'dot',
+					page: '/cau-hinh/thuoc-tinh'
+				}
+			]
 		}
 	]
 };

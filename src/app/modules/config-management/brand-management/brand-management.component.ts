@@ -1,9 +1,9 @@
-import { IBrand } from './../../shared/models/shared.interface';
+import { ModalBrandComponent } from './modal-brand/modal-brand.component';
+import { IBrand } from './../../../shared/models/shared.interface';
 import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { BrandModalComponent } from './brand-modal/brand-modal.component';
 import { ConfirmDeleteComponent } from 'src/app/shared/components/confirm-delete/confirm-delete.component';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SharedService } from 'src/app/shared/services/shared.service';
@@ -51,7 +51,6 @@ export class BrandManagementComponent implements OnInit {
 				return categoryBrand.category.name;
 			})
 		}));
-		console.log(this.listBrand);
 	}
 
 	create() {
@@ -59,7 +58,7 @@ export class BrandManagementComponent implements OnInit {
 	}
 
 	edit(data: any) {
-		const modalRef = this.modalService.open(BrandModalComponent, {
+		const modalRef = this.modalService.open(ModalBrandComponent, {
 			centered: true,
 			size: 'lg'
 		});

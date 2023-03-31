@@ -1,6 +1,7 @@
+import { DestroyService } from './shared/services/destroy.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
@@ -109,7 +110,9 @@ function appInitializer(authService: AuthService, router: Router) {
 			provide: HTTP_INTERCEPTORS,
 			useClass: LoadingInterceptor,
 			multi: true
-		}
+		},
+		FormBuilder,
+		DestroyService
 	],
 	bootstrap: [AppComponent]
 })

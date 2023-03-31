@@ -1,0 +1,123 @@
+<div class="mt-1 card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">{{ data ? 'Sửa thuộc tính' : 'Thêm thuộc tính' }}</h3>
+		</div>
+	</div>
+	<div class="card-body">
+		<form [formGroup]="dataForm">
+			<div class="row">
+				<div class="col-12 mb-5">
+					<label class="form-label required">Danh mục</label>
+					<ng-select
+						name="category"
+						formControlName="categoryIds"
+						[closeOnSelect]="true"
+						notFoundText="Không có dữ liệu"
+						[multiple]="true"
+						[placeholder]="'Chọn danh mục'"
+						[isGroupDisplay]="true"
+						[groupText]="'danh mục khác'"
+						[minLengthGroup]="2"
+					>
+						<ng-option *ngFor="let item of categories" [value]="item.id">{{ item.name }}</ng-option>
+					</ng-select>
+					<app-validate
+						[control]="dataForm.get('categoryIds')"
+						[error]="'required'"
+						[message]="'Tên hãng không được để trống'"
+					></app-validate>
+				</div>
+				<div class="col-12 mb-5">
+					<label class="form-label required">Tên thuộc tính</label>
+					<input
+						class="form-control"
+						placeholder="Nhập tên thuộc tính"
+						formControlName="name"
+						autocomplete="off"
+						trim="blur"
+					/>
+					<app-validate
+						[control]="dataForm.get('name')"
+						[error]="'required'"
+						[message]="'Tên thuộc tính không được để trống'"
+					></app-validate>
+				</div>
+				<ng-container *ngFor="let itemForm of valueArray.controls; let i = index">
+					<ng-container [formGroup]="itemForm">
+						<div class="col-6 mb-5">
+							<label class="form-label required">Giá trị {{ i + 1}}</label>
+							<div class="d-flex">
+								<input
+								class="form-control"
+								placeholder="Nhập giá trị"
+								formControlName="valueProperty"
+								autocomplete="off"
+								trim="blur"
+								style="width: 80%;"
+							/>
+								<button
+								class="btn btn-icon"
+								*ngIf="valueArray.length > 1"
+								placement="top"
+								ngbTooltip="Xóa giờ nghỉ"
+								(click)="deleteItem(i)"
+							>
+								<span
+									[inlineSVG]="'./assets/media/svg/icons/Code/Error-circle.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-danger"
+								>
+								</span>
+							</button>
+							</div>
+							
+							<app-validate
+								[control]="itemForm.get('valueProperty')"
+								[error]="'required'"
+								[message]="'Giá trị không được để trống'"
+							></app-validate>
+
+							
+						</div>
+					</ng-container>
+				</ng-container>
+
+				<div class="col-lg-12">
+					<button
+						*ngIf="valueArray.length < 10"
+						class="btn plus-icon"
+						placement="top"
+						ngbTooltip="Thêm giờ nghỉ"
+						(click)="addItem()"
+					>
+					<span
+					[inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'"
+					cacheSVG="true"
+					class="svg-icon svg-icon-md svg-icon-primary"
+				>
+				</span>
+					</button>
+				</div>
+			</div>
+		</form>
+
+		<div class="row justify-content-center w-100">
+			<div>
+				<button
+					type="button"
+					style="width: 100px"
+					class="btn btn-outline-secondary mr-6"
+					(click)="modal.close(false)"
+				>
+					Hủy
+				</button>
+			</div>
+			<div>
+				<button type="button" style="width: 100px" class="btn btn-primary" (click)="onSubmit()">
+					Xác nhận
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

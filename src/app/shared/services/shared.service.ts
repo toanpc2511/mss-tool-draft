@@ -60,4 +60,21 @@ export class SharedService {
 	getDetailProduct(id: string) {
 		return this.http.get<IProduct>(`products/${id}`);
 	}
+
+	// Service property
+	getListProperty() {
+		return this.http.get<any>('product-attribute');
+	}
+
+	createProperty(body: any) {
+		return this.http.post('product-attribute', body);
+	}
+
+	updateProperty(body: any, id: string) {
+		return this.http.put(`product-attribute/${id}`, body, {});
+	}
+
+	deleteProperty(id: string) {
+		return this.http.delete(`product-attribute/${id}`);
+	}
 }

@@ -40,10 +40,10 @@ const routes: Routes = [
 					)
 			},
 			{
-				path: 'hang-san-xuat',
+				path: 'cau-hinh',
 				loadChildren: () =>
-					import('../modules/brand-management/brand-management.module').then(
-						(m) => m.BrandManagementModule
+					import('../modules/config-management/config-management.module').then(
+						(m) => m.ConfigManagementModule
 					)
 			},
 			{
