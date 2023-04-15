@@ -59,6 +59,8 @@ export class PropertyManagementComponent implements OnInit {
 	edit(data: any) {
 		const modalRef = this.modalService.open(ModalPropertyComponent, {
 			centered: true,
+			backdrop: false,
+			backdropClass: 'back-drop',
 			size: 'lg'
 		});
 		modalRef.componentInstance.data = data;
@@ -72,7 +74,8 @@ export class PropertyManagementComponent implements OnInit {
 
 	delete(property) {
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-			backdrop: 'static'
+			backdrop: false,
+			centered: true
 		});
 		const data: IConfirmModalData = {
 			title: 'Xác nhận',

@@ -1,3 +1,4 @@
+import { toNonAccentVietnamese } from './../../../../shared/helpers/functions';
 import { ToastrService } from 'ngx-toastr';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -63,6 +64,10 @@ export class ModalPropertyComponent implements OnInit {
 		});
 	}
 
+	handlerQueryName(value: string): string {
+		return toNonAccentVietnamese(value).replace(/ /g, '-').toLowerCase();
+	}
+
 	onSubmit() {
 		this.dataForm.markAllAsTouched();
 		this.valueArray.markAllAsTouched();
@@ -70,6 +75,7 @@ export class ModalPropertyComponent implements OnInit {
 		const valueForm = {
 			...this.dataForm.value,
 			categoryIds: this.dataForm.value.categoryIds.join(','),
+			queryName: this.handlerQueryName(this.dataForm.value.name),
 			values: this.dataForm.value.values.map((item) => {
 				return item.valueProperty;
 			})

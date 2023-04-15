@@ -86,5 +86,6 @@ export class ModalBrandComponent implements OnInit {
 
 	checkError(error) {
 		console.log(error);
+		this.toastr.error(error.message, 'Error');
 	}
 }

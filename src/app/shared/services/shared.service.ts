@@ -70,11 +70,16 @@ export class SharedService {
 		return this.http.post('product-attribute', body);
 	}
 
-	updateProperty(body: any, id: string) {
+	updateProperty(id: string, body: any) {
 		return this.http.put(`product-attribute/${id}`, body, {});
 	}
 
 	deleteProperty(id: string) {
 		return this.http.delete(`product-attribute/${id}`);
+	}
+
+	// Service Order
+	getListOrder(params: any) {
+		return this.http.get<any>('orders', { params });
 	}
 }

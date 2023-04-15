@@ -24,7 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 	intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 		return next.handle(request).pipe(
 			catchError((err: HttpErrorResponse) => {
-				const errors: IError = err.error.meta;
+				const errors: IError = err.error.meta ? err.error.meta : err.error;
 				console.log(errors);
 
 				if (err.status >= 500) {

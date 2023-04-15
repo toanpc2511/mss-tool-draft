@@ -5,11 +5,10 @@ import { DestroyService } from 'src/app/shared/services/destroy.service';
 import { takeUntil, tap } from 'rxjs/operators';
 import { FileService, EFileType } from './../../../shared/services/file.service';
 import { ToastrService } from 'ngx-toastr';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { getConfigEditor } from 'src/app/shared/components/editor-config/config-editor';
-import { IPaginatorState, PaginatorState } from '../../../_metronic/shared/crud-table';
 import { IProduct } from 'src/app/shared/models/shared.interface';
 
 @Component({
@@ -29,6 +28,9 @@ export class ProductComponent implements OnInit {
 
 	imageSrc = '';
 	imageSrcs: any[] = [];
+	brands: any[] = [];
+	properties: any[] = [];
+	propertyGroup: FormArray = new FormArray([]);
 
 	constructor(
 		private router: Router,
@@ -49,8 +51,10 @@ export class ProductComponent implements OnInit {
 			name: ['', [Validators.required]],
 			category: ['', [Validators.required]],
 			price: ['', [Validators.required]],
-			sales: ['0', [Validators.required]],
-			description: ['', [Validators.required]]
+			sales: ['', [Validators.required]],
+			description: ['', [Validators.required]],
+			brand: ['', [Validators.required]],
+			warranty: ['']
 		});
 	}
 
@@ -64,13 +68,16 @@ export class ProductComponent implements OnInit {
 						tap((res: IProduct) => {
 							this.urls = res.images.split(',');
 							this.productForm.get('model').disable;
+							console.log(res);
+
 							this.productForm.patchValue({
 								model: res.model,
 								name: res.name,
 								category: res.category.id,
 								price: res.price,
 								description: res.description,
-								sales: res.sales
+								sales: res.sales,
+								brand: '21444e71-9ed5-41a2-abc9-c32a6eb689e5'
 							});
 						})
 					)
@@ -78,12 +85,50 @@ export class ProductComponent implements OnInit {
 			}
 		});
 		this.getListCategory();
+		this.handleChangeCategory();
+	}
+
+	handleChangeCategory(): void {
+		this.productForm.controls['category'].valueChanges.subscribe((value: string) => {
+			if (value) {
+				console.log(value);
+
+				const category = this.categories.find((category) => category.id === value);
+
+				this.brands = category?.categoryBrands;
+				this.propertyGroup = this.convertToFormArray(category?.categoryProductAttributes);
+
+				this.cdr.detectChanges();
+			}
+		});
+	}
+
+	convertToFormArray(data: any[]): FormArray {
+		console.log(data);
+		this.properties = data;
+		const controls = data.map((p) => {
+			return this.fb.group({
+				id: [p.id],
+				value: ['', [Validators.required]]
+			});
+		});
+		return this.fb.array(controls);
 	}
 
 	getListCategory(): void {
 		this.sharedService.getListCategory().subscribe((res) => {
 			if (res) {
-				this.categories = res;
+				this.categories = res.map((category) => ({
+					...category,
+					categoryBrands: category.categoryBrands.map((item) => {
+						return item.brand;
+					}),
+					categoryProductAttributes: category.categoryProductAttributes.map((item) => {
+						return item.productAttribute;
+					})
+				}));
+				console.log(this.categories);
+
 				this.cdr.detectChanges();
 			}
 		});
@@ -168,8 +213,11 @@ export class ProductComponent implements OnInit {
 			images: urlImage.join(','),
 			quantity: 100,
 			price: Number(valueForm.price.split(',').join('')),
-			sales: Number(valueForm.sales)
+			sales: Number(valueForm.sales.split(',').join('')),
+			productAttributes: this.propertyGroup.value
 		};
+
+		console.log(valueForm);
 
 		if (this.id) {
 			this.sharedService.updateProduct(valueForm, this.id).subscribe(

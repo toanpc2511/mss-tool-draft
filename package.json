@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"scripts": {
 		"ng": "ng",
-		"start": "yarn && ng serve --port 4200",
+		"start": "yarn && ng serve --port 4300",
 		"build-staging": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=staging",
 		"build-prod": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=production",
 		"test": "ng test",

@@ -99,7 +99,8 @@ export class ProductManagementComponent implements OnInit {
 
 	delete(product: IProduct) {
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-			backdrop: 'static'
+			backdrop: false,
+			backdropClass: 'back-drop'
 		});
 		const data: IConfirmModalData = {
 			title: 'Xác nhận',

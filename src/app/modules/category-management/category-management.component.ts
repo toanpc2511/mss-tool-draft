@@ -45,6 +45,7 @@ export class CategoryManagementComponent implements OnInit {
 	edit(data: any) {
 		const modalRef = this.modalService.open(ModalCategoryComponent, {
 			centered: true,
+			backdrop: false,
 			size: 'lg'
 		});
 		modalRef.componentInstance.data = data;
@@ -58,7 +59,7 @@ export class CategoryManagementComponent implements OnInit {
 
 	delete(categogy: ICategory) {
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-			backdrop: 'static'
+			backdrop: false
 		});
 		const data: IConfirmModalData = {
 			title: 'Xác nhận',

@@ -75,6 +75,8 @@
 						<th class="text-center">Mã sản phẩm</th>
 						<th class="text-center">Tên danh mục</th>
 						<th class="text-center">Giá sản phẩm</th>
+						<th class="text-center">Hãng</th>
+						<th class="text-center">Thời gian bảo hành</th>
 						<th class="text-center">Hình ảnh</th>
 						<th class="text-center">Ngày cập nhật</th>
 						<th class="text-center">Hành động</th>
@@ -87,6 +89,8 @@
 						<td class="w-200">{{ product.model }}</td>
 						<td class="w-200">{{ product.category?.name }}</td>
 						<td class="text-right w-150">{{ product.price | number }}</td>
+						<td class="text-center w-150">{{ product.brand?.name }}</td>
+						<td class="text-center w-250">{{ product.warranty }}</td>
 						<td class="text-center image w-120">
 							<img
 								src="./../../../assets/media/svg/icons/Files/Pictures1.svg"

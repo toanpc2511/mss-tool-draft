@@ -1,1 +1,50 @@
-<p>order-management works!</p>
+<div class="card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Danh sách danh mục</h3>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table table-head-custom table-vertical-center overflow-hidden">
+				<thead>
+					<tr>
+						<th class="text-center">STT</th>
+						<th>Tên khách hàng</th>
+						<th>Số điện thoại</th>
+						<th>Email</th>
+						<th>Địa chỉ</th>
+						<th>Tổng tiền</th>
+						<th>Trạng thái</th>
+						<th class="text-center">Hành động</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let order of orders; let i = index">
+						<td class="text-center">{{ i + 1 }}</td>
+						<td class="">{{ order.name }}</td>
+						<td class="">{{ order.phone }}</td>
+						<td class="">{{ order.email }}</td>
+						<td class="">{{ order.deliveryAddress }}</td>
+						<td class="">{{ 'Chưa map' }}</td>
+						<td class="">{{ order.status }}</td>
+						<td class="text-center">
+							<a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+								<span
+									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+									cacheSVG="true"
+									class="svg-icon svg-icon-md svg-icon-primary"
+								>
+								</span>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot *ngIf="orders?.length <= 0">
+					<td colspan="5" class="text-center py-4">Không có bản ghi nào</td>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>

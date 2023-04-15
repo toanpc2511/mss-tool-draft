@@ -8,7 +8,7 @@
 	<div class="card-body">
 		<form [formGroup]="productForm">
 			<div class="form-group row">
-				<div class="col-lg-4">
+				<div class="col-lg-4 my-2">
 					<label class="form-label required">Mã sản phẩm</label>
 					<input
 						type="text"
@@ -23,7 +23,8 @@
 						message="Chưa nhập mã sản phẩm"
 					></app-validate>
 				</div>
-				<div class="col-lg-4">
+
+				<div class="col-lg-4 my-2">
 					<label class="form-label required">Tên sản phẩm</label>
 					<input
 						type="text"
@@ -38,7 +39,19 @@
 						message="Chưa nhập tên sản phẩm"
 					></app-validate>
 				</div>
-				<div class="col-lg-4">
+
+				<div class="col-lg-4 my-2">
+					<label class="form-label">Thời gian bảo hành</label>
+					<input
+						type="text"
+						class="form-control"
+						formControlName="warranty"
+						placeholder="Nhập thời gian bảo hành"
+						autocomplete="off"
+					/>
+				</div>
+
+				<div class="col-lg-4 my-2">
 					<label class="form-label">Loại sản phẩm</label>
 					<select class="form-control" formControlName="category">
 						<option value="">-- Chọn loại sản phẩm --</option>
@@ -50,10 +63,32 @@
 						message="Chưa chọn loại sản phẩm"
 					></app-validate>
 				</div>
-			</div>
 
-			<div class="form-group row">
-				<div class="col-lg-4">
+				<div class="col-lg-4 my-2">
+					<label class="form-label required">Giá gốc</label>
+					<input
+						type="text"
+						class="form-control"
+						placeholder="Nhập giá gốc"
+						autocomplete="off"
+						formControlName="sales"
+						decimal-mask
+						trim="blur"
+						(keydown.space)="$event.preventDefault()"
+					/>
+					<app-validate
+						[control]="productForm.controls['sales']"
+						error="required"
+						message="Chưa nhập giá gốc"
+					></app-validate>
+					<app-validate
+						[control]="productForm.controls['sales']"
+						error="maxSale"
+						message="Giảm giá quá số tiền hiện tại"
+					></app-validate>
+				</div>
+
+				<div class="col-lg-4 my-2">
 					<label class="form-label required">Giá sản phẩm</label>
 					<input
 						type="text"
@@ -66,67 +101,71 @@
 						(keydown.space)="$event.preventDefault()"
 					/>
 				</div>
-				<div class="col-lg-4">
-					<label class="form-label required">Giảm giá (%)</label>
-					<input
-						type="text"
-						class="form-control"
-						placeholder="Nhập % sale"
-						autocomplete="off"
-						formControlName="sales"
-						maxlength="3"
-						decimal-mask
-						trim="blur"
-						(keydown.space)="$event.preventDefault()"
-					/>
+
+				<div class="col-lg-4 my-2">
+					<label class="form-label">Hãng sản xuất</label>
+					<select class="form-control" formControlName="brand">
+						<option value="">-- Chọn hãng sản xuất --</option>
+						<option *ngFor="let item of brands" [value]="item.id">{{ item.name }}</option>
+					</select>
 					<app-validate
-						[control]="productForm.controls['sales']"
+						[control]="productForm.controls['brand']"
 						error="required"
-						message="Chưa nhập % sale"
-					></app-validate>
-					<app-validate
-						[control]="productForm.controls['sales']"
-						error="maxSale"
-						message="Giảm giá quá số tiền hiện tại"
+						message="Chưa chọn hãng sản xuất"
 					></app-validate>
 				</div>
 			</div>
+		</form>
 
-			<div class="form-group row">
-				<div class="col-12">
-					<label for="img" class="form-label required">Ảnh sản phẩm</label>
-					<input
-						hidden
-						type="file"
-						id="img"
-						accept="image/*"
-						#bannerImg
-						(change)="addImage($event)"
-						multiple
-					/>
+		<div class="form-group row">
+			<div
+				class="col-lg-4"
+				*ngFor="let property of propertyGroup.controls; let i = index"
+				[formGroup]="property"
+			>
+				<label class="form-label">{{ properties[i].name }}</label>
+				<select class="form-control" formControlName="value">
+					<option value="">-- Chọn giá trị --</option>
+					<option *ngFor="let value of properties[i].values" [value]="value">{{ value }}</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<div class="col-12">
+				<label for="img" class="form-label required">Ảnh sản phẩm</label>
+				<input
+					hidden
+					type="file"
+					id="img"
+					accept="image/*"
+					#bannerImg
+					(change)="addImage($event)"
+					multiple
+				/>
+				<img
+					alt="Ảnh đính kèm"
+					class="img"
+					(click)="bannerImg.click()"
+					width="100"
+					height="80"
+					[src]="url || 'http://placehold.it/180'"
+					*ngIf="urls.length <= 0"
+				/>
+				<div class="" *ngIf="urls.length > 0">
 					<img
-						alt="Ảnh đính kèm"
-						class="img"
-						(click)="bannerImg.click()"
+						*ngFor="let url of urls"
+						[src]="url"
+						alt=""
 						width="100"
 						height="80"
-						[src]="url || 'http://placehold.it/180'"
-						*ngIf="urls.length <= 0"
+						(click)="bannerImg.click()"
 					/>
-					<div class="" *ngIf="urls.length > 0">
-						<img
-							*ngFor="let url of urls"
-							[src]="url"
-							alt=""
-							width="100"
-							height="80"
-							(click)="bannerImg.click()"
-						/>
-					</div>
 				</div>
 			</div>
-			<div id="preview"></div>
-
+		</div>
+		<div id="preview"></div>
+		<form [formGroup]="productForm">
 			<div class="form-group row">
 				<div class="col-12">
 					<label class="form-label required">Mô tả</label>

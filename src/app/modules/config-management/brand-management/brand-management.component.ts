@@ -59,7 +59,7 @@ export class BrandManagementComponent implements OnInit {
 
 	edit(data: any) {
 		const modalRef = this.modalService.open(ModalBrandComponent, {
-			centered: true,
+			backdrop: false,
 			size: 'lg'
 		});
 		modalRef.componentInstance.data = data;
@@ -73,7 +73,7 @@ export class BrandManagementComponent implements OnInit {
 
 	delete(brand: IBrand) {
 		const modalRef = this.modalService.open(ConfirmDeleteComponent, {
-			backdrop: 'static'
+			backdrop: false
 		});
 		const data: IConfirmModalData = {
 			title: 'Xác nhận',
