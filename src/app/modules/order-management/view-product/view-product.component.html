@@ -1,0 +1,39 @@
+<div class="card card-custom gutter-b">
+	<div class="card-header">
+		<div class="card-title">
+			<h3 class="card-label">Danh sách đơn hàng</h3>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<div class="table-responsive angular-bootstrap-table">
+			<table class="table table-head-custom table-vertical-center overflow-hidden">
+				<thead>
+					<tr>
+						<th class="text-center">STT</th>
+						<th>Model</th>
+						<th>Tên sản phẩm</th>
+						<th class="text-right">Số lượng</th>
+						<th class="text-right">Giá</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let item of data; let i = index">
+						<td class="text-center">{{ i + 1 }}</td>
+						<td class="">{{ item?.model }}</td>
+						<td class="">{{ item?.name }}</td>
+						<td class="text-right">{{ item?.quantity }}</td>
+						<td class="text-right">{{ item?.sales.toLocaleString('en-US') }}</td>
+					</tr>
+					<tr>
+						<th colspan="3" class="text-right">Tổng tiền</th>
+						<th colspan="2" class="text-right">{{totalAmout}}</th>
+					</tr>
+				</tbody>
+				<tfoot *ngIf="data?.length <= 0">
+					<td colspan="5" class="text-center py-4">Không có bản ghi nào</td>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>

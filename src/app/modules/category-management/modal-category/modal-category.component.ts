@@ -7,7 +7,6 @@ import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { ICategory } from 'src/app/shared/models/shared.interface';
 import { EFileType, FileService } from 'src/app/shared/services/file.service';
 import { takeUntil } from 'rxjs/operators';
-import { log } from 'console';
 
 @Component({
 	selector: 'app-modal-category',
@@ -40,7 +39,6 @@ export class ModalCategoryComponent implements OnInit {
 	initForm() {
 		this.dataForm = this.fb.group({
 			name: ['', [Validators.required]]
-			// code: ['', [Validators.required]]
 		});
 	}
 

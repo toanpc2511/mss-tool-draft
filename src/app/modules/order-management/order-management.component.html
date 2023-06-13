@@ -1,7 +1,7 @@
 <div class="card card-custom gutter-b">
 	<div class="card-header">
 		<div class="card-title">
-			<h3 class="card-label">Danh sách danh mục</h3>
+			<h3 class="card-label">Danh sách đơn hàng</h3>
 		</div>
 	</div>
 
@@ -23,14 +23,35 @@
 				<tbody>
 					<tr *ngFor="let order of orders; let i = index">
 						<td class="text-center">{{ i + 1 }}</td>
-						<td class="">{{ order.name }}</td>
-						<td class="">{{ order.phone }}</td>
-						<td class="">{{ order.email }}</td>
-						<td class="">{{ order.deliveryAddress }}</td>
-						<td class="">{{ 'Chưa map' }}</td>
-						<td class="">{{ order.status }}</td>
-						<td class="text-center">
-							<a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3">
+						<td class="">{{ order?.name }}</td>
+						<td class="">{{ order?.phone }}</td>
+						<td class="">{{ order?.email }}</td>
+						<td class="">{{ order?.deliveryAddress }}</td>
+						<td class="" style="width: 130px">{{ order?.totalAmount }}</td>
+						<td class="status" style="width: 130px">
+							<span
+								[ngClass]="order.status ? 'label label-lg label-inline' : ''"
+								[class.label-light-warning]="order.status === orderStatus.PENDING"
+							>
+								<!-- <ng-container *ngIf="item.liquidationStatus === contractStatus.CONFIRMED"
+                >Đã phê duyệt</ng-container
+                >
+								<ng-container *ngIf="item.liquidationStatus === contractStatus.REFUSED"
+                >Đã từ chối</ng-container
+                > -->
+								<ng-container *ngIf="order.status === orderStatus.PENDING"
+									>Chờ phê duyệt</ng-container
+								>
+							</span>
+						</td>
+						<td class="text-center" style="width: 120px">
+							<a
+								class="btn btn-icon btn-light btn-hover-primary btn-sm mx-2"
+								(click)="viewDetail(order)"
+							>
+								<em class="icon-lg-xl fa fa-eye"></em>
+							</a>
+							<a class="btn btn-icon btn-light btn-hover-primary btn-sm mx-2">
 								<span
 									[inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
 									cacheSVG="true"
