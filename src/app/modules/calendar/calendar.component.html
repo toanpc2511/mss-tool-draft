@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="fc-header-bar">
+    <div class="fc-toolbar-chunk">
+      <div class="fc-button-group">
+        <button type="button" (click)="prev()" class="fc-button">&#60;</button>
+        <button
+          type="button"
+          (click)="today()"
+          class="fc-button"
+          [disabled]="isDisable"
+        >
+          Hôm nay
+        </button>
+        <button type="button" (click)="next()" class="fc-button">&#62;</button>
+      </div>
+    </div>
+    <div class="fc-toolbar-chunk">
+      <h3 class="fc-toolbar-title">{{ title }}</h3>
+    </div>
+    <div class="fc-toolbar-chunk">
+      <div class="fc-button-group" id="group-type">
+        <button
+          type="button"
+          class="fc-button type-calendar"
+          *ngFor="let type of typeCalendar"
+          [id]="type.value"
+          (click)="changeTypeCalendar(type.value)"
+        >
+          {{ type.label }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-table">
+    <table class="fc-table">
+      <thead>
+        <tr>
+          <th class="fc-col-header">Team</th>
+          <th class="fc-col-header">User</th>
+          <th class="fc-col-header" *ngFor="let day of days">{{ day }}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <ng-container *ngFor="let data of dataList">
+          <ng-container *ngFor="let user of data.users; let i = index">
+            <tr>
+              <td
+                class="fc-col-body"
+                *ngIf="i == 0"
+                [attr.rowspan]="data.users.length"
+              >
+                {{ data.team }}
+              </td>
+              <td class="fc-col-body">{{ user.name }}</td>
+              <ng-container *ngFor="let item of user.shifts">
+                <td [bgColor]="item.color" class="fc-col-body">
+                  {{ item.shiftName }}
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

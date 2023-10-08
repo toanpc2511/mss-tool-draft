@@ -1,0 +1,94 @@
+.container {
+  padding: 20px 24px;
+  .fc-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .fc-toolbar-chunk {
+      .fc-toolbar-title {
+        font-size: 1.75em;
+        margin: 0px;
+        color: #1a252f;
+      }
+      .fc-button-group {
+        display: flex;
+        position: relative;
+        vertical-align: middle;
+        gap: 1px;
+        .fc-button {
+          background-color: #2c3e50;
+          border: 1px solid #2c3e50;
+          color: #fff;
+          border-radius: 0.25em;
+          display: inline-block;
+          font-size: 1em;
+          font-weight: 400;
+          line-height: 1.5;
+          min-width: 40px;
+          padding: 0.4em 0.65em;
+          text-align: center;
+          user-select: none;
+          vertical-align: middle;
+          cursor: pointer;
+          &.fc-button-active {
+            background-color: #1a252f;
+            border: 1px solid #151e27;
+          }
+          &:focus {
+            box-shadow: rgba(76, 91, 106, 0.5) 0px 0px 0px 0.2rem;
+          }
+          &:hover {
+            background-color: #1e2b37;
+            border: 1px solid #1a252f;
+          }
+          &:disabled {
+            background-color: #2c3e50;
+            border-color: #2c3e50;
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+          &:not(:last-child) {
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+          }
+          &:not(:first-child) {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .fc-table {
+    margin-top: 30px;
+    width: 100%;
+    overflow-y: scroll;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    font-size: 1em;
+    padding-bottom: 20px;
+
+    th,
+    td {
+      min-width: 120px;
+    }
+    thead {
+      border-bottom-width: 0px;
+      th.fc-col-header {
+        border: 1px solid #ddd;
+        padding: 5px 0;
+        vertical-align: top;
+        text-align: center;
+      }
+    }
+    tbody {
+      td.fc-col-body {
+        border: 1px solid #ddd;
+        min-height: 50px;
+        height: 50px;
+        text-align: center;
+      }
+    }
+  }
+}

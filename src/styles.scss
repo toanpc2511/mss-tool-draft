@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+// $range-start-border-color: red;
+.mat-card:not([class*="mat-elevation-z"]) {
+  box-shadow: none;
+  border: 0.5px solid #dfe6e9;
+}
+$selected-item-border-color: #2196f3; // Border color of the selected item
+$box-shadow: false; // Turn on/off box-shadow
+$select-box-color: red; //Color of the selection rectangle
+$selected-item-border-size: 2px; //	Border size of the selected item
+$range-start-border-color: 2px; //	Border color of the range start item
+
+@import "ngx-drag-to-select";

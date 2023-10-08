@@ -1,0 +1,58 @@
+.mat-grid-tile {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 10px;
+}
+
+.drag-area {
+  padding: 20px;
+  border: 1px dashed #03a9f4;
+  margin-bottom: 20px;
+}
+
+mat-card {
+  border: 1px solid transparent;
+}
+
+.selected-items {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+
+  div {
+    background-color: rgba(0, 0, 0, 0.125);
+    padding: 8px;
+  }
+
+  pre {
+    padding: 10px;
+  }
+}
+
+p {
+  font-family: Lato;
+}
+body {
+  background: #ececec;
+}
+
+app-grid {
+  display: block;
+}
+
+mat-drawer {
+  background: #fff;
+  width: 240px;
+}
+
+mat-icon {
+  $icon-size: 34px;
+  width: $icon-size;
+  height: $icon-size;
+  font-size: $icon-size;
+  color: #bbb;
+}
