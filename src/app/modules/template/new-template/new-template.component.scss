@@ -1,0 +1,35 @@
+.template--grid {
+  background-color: #f5f6fa;
+  width: 100%;
+  height: 100%;
+  .template--grid__tab {
+    width: 100%;
+    height: 100%;
+  }
+  .mat-tab-body-wrapper {
+    height: 100vh;
+  }
+  .template--grid__actions {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 10;
+  }
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  .mat-form-field {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .mat-radio-group {
+    display: block;
+    .mat-radio-button {
+      display: block;
+      margin: 6px 0;
+    }
+  }
+}

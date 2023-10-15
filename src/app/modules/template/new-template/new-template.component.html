@@ -1,0 +1,120 @@
+<ng-container>
+  <mat-grid-list cols="4" rowHeight="100vh">
+    <mat-grid-tile colspan="3">
+      <div class="template--grid">
+        <div class="template--grid__tab">
+          <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+            <mat-tab *ngFor="let tab of tabs" [label]="tab">
+              <app-grid-template
+                (elementSelected)="getElementSelect($event)"
+              ></app-grid-template>
+            </mat-tab>
+          </mat-tab-group>
+          <div class="template--grid__actions">
+            <button mat-raised-button (click)="addPage()">
+              <mat-icon>favorite</mat-icon>Add page
+            </button>
+            <button mat-raised-button color="primary">Preview</button>
+          </div>
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="container">
+        <ng-container *ngIf="step === 1">
+          <form [formGroup]="templateForm">
+            <mat-form-field>
+              <mat-label>Template name</mat-label>
+              <input matInput formControlName="templateName" />
+            </mat-form-field>
+            <div>
+              <label id="example-radio-group-label">Choose source</label>
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                formControlName="sourceType"
+              >
+                <mat-radio-button
+                  name="source"
+                  class="example-radio-button"
+                  *ngFor="let source of sources"
+                  [value]="source"
+                >
+                  {{ source }}
+                </mat-radio-button>
+              </mat-radio-group>
+              <button
+                mat-raised-button
+                color="warn"
+                style="width: 100%"
+                (click)="nextStep()"
+              >
+                Next
+              </button>
+            </div>
+          </form>
+        </ng-container>
+
+        <ng-container *ngIf="step === 2">
+          <form [formGroup]="dataTemplateForm">
+            <mat-form-field>
+              <mat-label>Choose time</mat-label>
+              <mat-select formControlName="createTime">
+                <mat-option
+                  *ngFor="let time of optionTime"
+                  [value]="time.value"
+                  >{{ time.label }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <div>
+              <label id="example-radio-group-label">Data visualization</label>
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                formControlName="dataVisualization"
+                (change)="changeVisualization($event)"
+              >
+                <mat-radio-button
+                  name="data"
+                  class="example-radio-button"
+                  *ngFor="let type of dataVisualizations"
+                  [value]="type.value"
+                >
+                  {{ type.label }}
+                </mat-radio-button>
+              </mat-radio-group>
+
+              <ng-container *ngIf="isChart; else typeTable">
+                <label id="example-radio-group-label">Chart type</label>
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="example-radio-group"
+                  formControlName="chartType"
+                >
+                  <mat-radio-button
+                    name="data"
+                    class="example-radio-button"
+                    *ngFor="let type of chartTypes"
+                    [value]="type.value"
+                  >
+                    {{ type.label }}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </ng-container>
+              <ng-template #typeTable>
+                <h1>Table</h1>
+              </ng-template>
+              <div>
+                <button mat-raised-button (click)="prevStep()">Back</button>
+                <button mat-raised-button color="warn" (click)="onLoadLayout()">
+                  Add to layout
+                </button>
+              </div>
+            </div>
+          </form>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</ng-container>

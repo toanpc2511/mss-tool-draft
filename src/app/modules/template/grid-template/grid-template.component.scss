@@ -1,0 +1,39 @@
+$primary-color: #0087f7;
+$link-color: #9c27b0;
+
+.container {
+  overflow-y: auto;
+}
+
+mat-grid-tile {
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+}
+
+dts-select-container {
+  padding: 1rem;
+  border: 2px dashed $primary-color;
+  border-radius: 5px;
+  margin: 24px;
+  &::ng-deep .dts-disabled {
+    color: #b5b5b5;
+  }
+}
+
+.action-buttons {
+  margin: 1rem 0;
+}
+
+.block-element {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain; //cover
+  position: relative;
+  .menu--action {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+  }
+}

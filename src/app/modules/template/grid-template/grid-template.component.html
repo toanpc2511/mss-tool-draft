@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="drag-area">
+    <dts-select-container
+      data-cy="select-container"
+      #selectContainer="dts-select-container"
+      [selectMode]="selectMode"
+      [(selectedItems)]="elementsSelected"
+      [disabled]="disable"
+      [disableRangeSelection]="disableRangeSelection"
+      [selectOnClick]="selectOnClick"
+      [selectOnDrag]="selectOnDrag"
+      [selectWithShortcut]="selectWithShortcut"
+      [dragOverItems]="dragOverItems"
+      (selectionEnded)="onSelectedEnd($event)"
+    >
+      <mat-grid-list cols="12" rowHeight="3:2" gutterSize="12px">
+        <mat-grid-tile
+          *ngFor="let el of elements"
+          [dtsSelectItem]="el"
+          [colspan]="el.cols"
+          [rowspan]="el.rows"
+          [dtsDisabled]="disableEvenItems && el.disabled"
+        >
+          <ng-container *ngIf="!el.img; else img">
+            {{ el.name }}
+          </ng-container>
+          <ng-template #img>
+            <div
+              class="block-element"
+              [style.background-image]="'url(' + el.img + ')'"
+            >
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                aria-label="menu"
+                matTooltip="Basic"
+                class="menu--action"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="deleteLayout(el)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </mat-menu>
+            </div>
+          </ng-template>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </dts-select-container>
+  </div>
+</div>
