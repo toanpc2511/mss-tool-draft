@@ -1,0 +1,187 @@
+@import "../../shared/components/css/account.scss";
+
+.account-owner-list {
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-top: 1px solid #bdbdbd;
+
+  .message {
+    color: #17589f
+  }
+
+  &-content {
+    margin-top: 20px;
+
+    .btn-space-confim {
+      margin-right: 15px;
+    }
+
+    .content-title {
+      button {
+        float: right;
+      }
+
+      span {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0c258a;
+      }
+    }
+
+    .content-table {
+      margin-top: 40px;
+
+      table {
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+
+        thead {
+          th {
+            background-color: #0c258a;
+            text-align: center;
+            color: white;
+            font-weight: 500;
+            height: 50px;
+          }
+        }
+
+        tbody {
+
+          td {
+            color: #252834;
+            font-weight: 400;
+            height: 35px;
+            padding: auto 5px;
+          }
+
+          .link-action {
+            color: #0088FF;
+            cursor: pointer;
+            user-select: none;
+            /* standard syntax */
+            -webkit-user-select: none;
+            /* webkit (safari, chrome) browsers */
+            -moz-user-select: none;
+            /* mozilla browsers */
+            -khtml-user-select: none;
+            /* webkit (konqueror) browsers */
+            -ms-user-select: none;
+            /* IE10+ */
+          }
+
+          .th-col-action {
+            min-width: 100px;
+            max-width: 100px;
+          }
+
+          .td-col-action {
+            min-width: 100px;
+            max-width: 100px;
+
+            .action {
+              display: flex;
+              justify-content: center;
+              height: 100%;
+
+              .btn-icon-edit,
+              .btn-icon-delete {
+                width: 24px;
+                height: 24px;
+                cursor: pointer;
+              }
+
+              .btn-icon-edit {
+                color: #0088ff;
+                margin-right: 12px;
+              }
+
+              .btn-icon-delete {
+                color: #eb5757;
+              }
+            }
+          }
+
+          .col-per-20 {
+            width: 20%;
+          }
+        }
+
+        tr {
+          height: 45px;
+        }
+
+        td {
+          .btn-edit {
+            font-size: 30px;
+            color: #0088FF;
+          }
+
+          .btn-delete {
+            font-size: 30px;
+            color: #E83C19;
+          }
+        }
+      }
+
+      .text-nowrap {
+        white-space: nowrap;
+      }
+    }
+
+    .div-center {
+      text-align: center;
+    }
+
+    .btn-action {
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .content-action {
+      margin: 30px 45%;
+    }
+  }
+
+  &-title {
+    color: #17589f;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 8px 0px;
+    display: flex;
+
+    .mat-icon {
+      float: unset !important;
+    }
+
+    span {
+      align-self: center;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+
+  &-info {
+    margin-top: 15px;
+    padding: 25px 5%;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #bdbdbd;
+  }
+
+  &-info-customer {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 5%;
+
+    .col-info-left,
+    .col-info-right {
+      max-width: 50%;
+      flex: 0 0 50%;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      margin: 0 -15px 0 -24px;
+    }
+  }
+}

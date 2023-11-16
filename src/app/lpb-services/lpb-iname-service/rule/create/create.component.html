@@ -1,0 +1,86 @@
+<div class="d-flex flex-column mb-5">
+  <div class="form-search d-flex flex-column">
+    <div class="content-title pr-2 mt-3">
+      <i class="fa fa-search mr-2 txtLabel"></i> THÔNG TIN CHUNG
+    </div>
+    <hr/>
+    <div class="container mt-3">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Mã rule <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="registerForm.code.touched && (registerForm.code.errors) ? 'is-invalid' : ''"
+                       placeholder="Nhập Mã Rule" type="text" formControlName="code" trimInput>
+<!--                <span class="text-danger"-->
+<!--                      *ngIf="registerForm.code.touched && registerForm.code.errors?.required">-->
+
+<!--                </span>-->
+                <app-validate [control]="$any(form).controls['code']" error="required" message="Mã rule không được bỏ trống" ></app-validate>
+                <app-validate [control]="$any(form).controls['code']" error="maxlength" message="Không được vượt quá 10 kí tự" ></app-validate>
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Loại rule <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <app-lpb-select2 [apiUrl]="'/iname-service/common?groupType=Rule_Type'"
+                                 labelName="name" bindValue="id" [config]="{isNewApi: true}"
+                                 formControlName="ruleTypeId"
+                                 [className]="(registerForm.ruleTypeId.errors && (registerForm?.ruleTypeId.dirty || registerForm.ruleTypeId.touched)) ? 'is-invalid' : ''"
+
+                                 placeholder="Chọn loại rule"></app-lpb-select2>
+<!--                <app-validate [control]="registerForm.controls['debitAccountNumber']" [error]="'required'"-->
+<!--                              [message]="'Bạn cần chọn số TKTT'"></app-validate>-->
+<!--                <div *ngIf="registerForm.ruleType.errors?.required && (registerForm?.ruleType.dirty || registerForm.ruleType.touched)" class="text-danger"> aa Chưa chọn nhà cung cấp-->
+<!--                </div>-->
+                <app-validate [control]="$any(form).controls['ruleTypeId']" error="required" message="Loại rule không được bỏ trống" ></app-validate>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Tên rule <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control" placeholder="Nhập tên rule" type="text" formControlName="name"
+                       [ngClass]="registerForm.name.touched && registerForm.name.errors ? 'is-invalid' : ''">
+
+                <app-validate [control]="$any(form).controls['name']" error="required" message="Tên rule không được bỏ trống" ></app-validate>
+                <app-validate [control]="$any(form).controls['name']" error="maxlength" message="Không được vượt quá 100 kí tự" ></app-validate>
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Đối tượng áp dụng </span>
+              <div class="col-lg-8">
+                <app-lpb-select2 [apiUrl]="'/iname-service/common?groupType=Customer_Type'"
+                                 labelName="name" bindValue="id" [config]="{isNewApi: true}"
+                                 formControlName="customerTypeId"
+                                 [className]="(registerForm.customerTypeId.errors && (registerForm.customerTypeId.dirty || registerForm.customerTypeId.touched)) ? 'is-invalid' : ''"
+                                 placeholder="Chọn đối tượng áp dụng"></app-lpb-select2>
+                <app-validate [control]="$any(form).controls['customerTypeId']" error="required" message="Đối tượng áp dụng không được bỏ trống" ></app-validate>
+              </div>
+            </div>
+          </div>
+        </div>
+<!--        <div class="row">-->
+<!--          <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">-->
+<!--            <button class="btn btn-primary lpb-btn-primary w-25 mr-4 nowrap" type="submit">-->
+<!--              Lưu-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<app-lpb-footer style="bottom: 0px" [actions]="actions"
+                class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

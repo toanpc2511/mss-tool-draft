@@ -1,0 +1,136 @@
+$color-title: #0c258a;
+$border-orange: #f47326;
+$bg-gray: #bdbdbd;
+$bg-blue: #0c258a;
+$bg-red: #eb5757;
+.gap-2 {
+  gap: 0.5rem;
+}
+.transaction-main {
+  background-color: white;
+  padding: 8px 1%;
+  display: flex;
+  flex-direction: column;
+
+  .content-title {
+    padding-bottom: 8px;
+    border-bottom: 1px solid $bg-gray;
+    span {
+      color: $color-title;
+      font-weight: 500;
+      font-size: 18px;
+    }
+  }
+
+  label {
+    color: $color-title;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 8px 0px;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .search {
+    span {
+      color: $color-title;
+      border-bottom: none;
+      font-weight: 500;
+    }
+
+    &-input {
+      display: flex;
+      align-items: baseline;
+      span {
+        width: 120px;
+        font-weight: 500;
+        color: $color-title;
+      }
+      .btn-search {
+        background-color: #007bff !important;
+      }
+    }
+  }
+  table.table th {
+    background: $bg-blue !important;
+  }
+
+  .btn-approve {
+    button {
+      min-width: 100px;
+    }
+  }
+}
+.text-while {
+  color: #fff;
+}
+
+.bg-btn__blue {
+  background: $bg-blue;
+}
+.bg-btn__red {
+  background: $bg-red;
+}
+
+@import "/src/app/shared/styles/lpb-table.scss";
+@import "/src/app/shared/styles/custom-styles.scss";
+
+.data-res {
+  min-width: 768px;
+  overflow-x: scroll;
+  table {
+    td {
+      text-align: justify;
+      &.check-box {
+        min-width: 60px;
+        max-width: 80px;
+      }
+      &.id {
+        max-width: 320px;
+        min-width: 300px;
+      }
+      &.tran-desc {
+        max-width: 400px;
+        min-width: 350px;
+      }
+      &.payment-type,
+      &.customer-name,
+      &.customer-id,
+      &.total-amount,
+      &.created-by {
+        max-width: 250px;
+        min-width: 200px;
+      }
+
+      &.status {
+        max-width: 150px;
+        min-width: 120px;
+      }
+      &.total-amount {
+        text-align: right;
+      }
+      .action {
+        width: 60px;
+        text-align: center;
+        span i {
+          font-size: 18px;
+          color: #0c258a;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+.transaction-main {
+  ::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+    background-color: #0C258A !important;
+  }
+
+  ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #0C258A !important;
+  }
+
+  ::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #0C258A !important;
+  }
+}

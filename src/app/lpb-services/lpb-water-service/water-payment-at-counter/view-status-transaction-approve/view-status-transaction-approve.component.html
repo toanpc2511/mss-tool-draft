@@ -1,0 +1,67 @@
+<div class="p-4 transaction-main">
+  <div class="row">
+    <div class="col-12 col-lg-4 result">
+      <div class="content-title w-100 mt-4">
+        <span> <i class="fa fa-book mr-2"></i>Kết quả duyệt giao dịch</span>
+      </div>
+
+      <div class="tbl-result mt-3">
+        <div class="data-approved">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th class="">Số GD</th>
+                <th class="">Thông báo</th>
+                <th class=""></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let item of transactions"
+                (click)="viewDetail(item)"
+                [ngClass]="item?.transNo === transNo ? 'font-bold' : ''"
+              >
+                <td class="id">{{ item?.transNo }}</td>
+                <td class="notify">
+                  <span *ngIf="item?.status !== 'SUCCESS' && item?.message" >{{
+                    item?.message
+                  }}</span>
+
+                  <ul
+                    *ngIf="item?.changeDebtResponses?.length > 0"
+                  >
+                    <li *ngFor="let err of item?.changeDebtResponses">
+                      Tháng {{ err?.billId }}/{{ err?.billCode }}:
+                      {{ err?.description }}
+                    </li>
+                  </ul>
+                </td>
+                <td class="action">
+                  <span matTooltip="Xem chi tiết" (click)="viewDetail(item)"
+                    ><i class="fa fa-eye success"></i
+                  ></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-8">
+      <div class="content-title w-100 mt-4">
+        <span>
+          <i class="fa fa-book mr-2"></i>Chi tiết giao dịch: {{ transNo }}</span
+        >
+      </div>
+      <div class="trans-detail">
+        <app-water-view-transaction
+          [idTrans]="idTrans"
+        ></app-water-view-transaction>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-lpb-footer
+  class="z-index-footer position-fixed bottom-0 w-100"
+></app-lpb-footer>

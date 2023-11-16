@@ -1,0 +1,19 @@
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+    padding: 5px 0;
+}
+
+.mat-icon {
+    font-size: 20px;
+    display: block;
+    float: left;
+}
+
+@media (max-width:1400px) {
+    .line-base {
+        padding: 0 !important;
+    }
+}

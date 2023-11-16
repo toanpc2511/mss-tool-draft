@@ -1,0 +1,123 @@
+.titleSearch {
+    padding-top: 20px;
+    border-bottom: 1px solid #BDBDBD;
+    padding-bottom: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.table tr th {
+    background: #EFF4FF;
+    border: 1px solid #DFD9D9;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    font-style: normal;
+}
+
+.table tr td {
+    border: 1px solid #DFD9D9;
+}
+
+.ft {
+    clear: both;
+    height: 57px;
+    background: #23388F;
+}
+
+
+/* menu trêe */
+
+.example-tree-invisible {
+    display: none;
+}
+
+.example-tree ul,
+.example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+.example-tree-progress-bar {
+    margin-left: 30px;
+}
+
+.example-tree-nested-node {
+    padding-left: 30px;
+}
+
+
+/* mat-tree {
+  
+} */
+
+
+/* .mat-tree-node {  
+  padding: 0;
+  background-color: white;
+}
+
+.mat-nested-tree-node {
+  top: -24px;
+}
+
+ul, li { 
+  list-style: none; 
+  margin: 0; 
+  padding: 0;  
+}
+
+li.example-tree-container {
+  border-bottom: 0;
+}
+
+ul { 
+  padding-left: 40px; 
+}
+
+li { 
+  padding-left: 39px;
+  border: 1px dotted grey;
+  border-width: 0 0 1px 1px; 
+  position: relative;
+  top: -24px;
+}
+
+li.mat-tree-node,
+li div { 
+  margin: 0;
+  position: relative;
+  top: 24px; 
+}
+
+li ul {
+  border-top: 1px dotted grey;
+  margin-left: -41px;
+  padding-left: 52px;
+}
+
+.example-tree-container .mat-nested-tree-node:last-child ul {
+  border-left: 1px solid white;
+  margin-left: -41px;
+}
+
+.mat-icon-button {
+  z-index: 100;
+  width: unset; 
+  height: unset; 
+  flex-shrink: unset; 
+  line-height: unset; 
+  border-radius: unset;
+}
+.titleTree{
+  font-size: 16px;
+  font-style: normal;
+  color: #4F4F4F;
+  margin: 0px;
+} */
+
+
+/* end menu tree */

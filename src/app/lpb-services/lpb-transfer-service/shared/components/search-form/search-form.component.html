@@ -1,0 +1,184 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="formSearch.controls[controlName].invalid &&
+                           (formSearch.controls[controlName].dirty || formSearch.controls[controlName].touched)">
+    <span *ngIf="formSearch.controls[controlName].errors.required" class="text-danger mt-1 d-block small">
+      {{controlNameVi}} không được bỏ trống
+    </span>
+
+    <span *ngIf="formSearch.controls[controlName].errors.maxlength" class="text-danger mt-1 d-block small">
+      {{controlNameVi}} vượt quá {{formSearch.controls[controlName].errors.maxlength.requiredLength}} ký tự
+    </span>
+
+  </div>
+</ng-template>
+<div class="form-search d-flex flex-column">
+  <form [formGroup]="formSearch" (ngSubmit)="searchTransfer()" (keyup.enter)="searchTransfer()" class="container">
+    <div class="row">
+      <div class="col col-md-6">
+        <!-- Mã giao dịch -->
+        <label class="row">
+          <span class="col-lg-3 col-form-label textLabel">Mã giao dịch</span>
+          <span class="col-lg-9">
+            <input maxlength="50" placeholder="Nhập mã giao dịch" type="text" formControlName="transCode"
+              class="form-control" />
+          </span>
+        </label>
+        <!-- #region Mã giao dịch radio  (*)-->
+        <div class="form-group row pt-1">
+          <span class="col-lg-3 col-md-1 col-form-label textLabel d-lg-block d-none p-0">&nbsp;</span>
+          <span class="col-lg-9 col-md-11">
+            <div class="form-radio-inline-group d-flex align-items-start">
+              <label class="txtLabel form-radio-inline d-flex align-items-center" *ngFor="let item of TRANSCODE_TYPES">
+                <input class="form-control" formControlName="transType" name="transType" type="radio"
+                  [value]="item.key">
+                <span class="font-weight-semibold text-dark">{{item.value}}</span>
+              </label>
+            </div>
+          </span>
+        </div>
+        <!--#end region -->
+
+        <!-- #region Mã sản phẩm -->
+        <label class="form-group row">
+          <span class="col-lg-3 col-form-label textLabel">Mã sản phẩm </span>
+          <span class="col-lg-9">
+            <app-lpb-select-tooltip
+              [bindValue]="'code'" [placeholder]="'Chọn mã sản phẩm'" [items]="lstProduct"
+              [optPatternFields]="['code', 'name']" [optPatternSplitter]="'-'"
+              [control]="formSearch.controls['productCode']"
+            ></app-lpb-select-tooltip>
+          </span>
+        </label>
+        <!--#endregion -->
+
+        <!-- #region Số CIF-->
+        <label class="form-group row">
+          <span class="col-lg-3 col-form-label textLabel">Số CIF </span>
+          <span class="col-lg-9 ">
+
+            <div class="position-relative">
+              <input maxlength="20" type="text" [textPattern]="{allowRegex: '[0-9]'}" formControlName="cifNo"
+                class="form-control pr-4" placeholder="Nhập số CIF" />
+            </div>
+          </span>
+        </label>
+        <!--#endregion -->
+
+        <!-- #region Số tài khoản-->
+        <label class="row">
+          <span class="col-lg-3 col-form-label textLabel">Số tài khoản </span>
+          <span class="col-lg-9">
+            <div class="position-relative">
+              <input maxlength="20" type="text" [textPattern]="{allowRegex: '[0-9]'}" formControlName="acn"
+                class="form-control pr-4" placeholder="Nhập số tài khoản" />
+            </div>
+          </span>
+        </label>
+        <!--#endregion -->
+        <!-- #region Số tài khoản radio  (*)-->
+        <div class="form-group row pt-1">
+          <span class="col-lg-3 col-md-1 col-form-label textLabel d-lg-block d-none">&nbsp;</span>
+          <span class="col-lg-9 col-md-11">
+            <div class="form-radio-inline-group d-flex align-items-start">
+              <label class="txtLabel form-radio-inline d-flex align-items-center" *ngFor="let item of ACN_TYPES">
+                <input class="form-control" formControlName="acnType" name="acnType" type="radio" [value]="item.key">
+                <span class="font-weight-semibold text-dark">{{item.value}}</span>
+              </label>
+            </div>
+          </span>
+        </div>
+        <!--#end region -->
+
+      </div>
+      <div class="col col-md-6">
+        <!-- Mã đơn vị -->
+        <label class="form-group row">
+          <span class="col-lg-3 col-form-label textLabel">Mã đơn vị
+            <span *ngIf="isHoiSo" class="text-danger"> (*)</span>
+          </span>
+          <span class="col-lg-9">
+
+            <ng-container *ngIf="isHoiSo; else elseBranchCode">
+              <app-lpb-select-tooltip [apiUrl]="'/transfer-service/redis/getBranch?branchCode='"
+                [optionAdditional]="[{name: 'Tất cả chi nhánh', code: 'need_all_all_all'}]" [optAdditionalPatternFields]="['name']"
+                [bindValue]="'code'" [placeholder]="'Chọn Chi nhánh / PGD'" [optPatternFields]="['code', 'name']"
+                [optPatternSplitter]="'-'" [control]="formSearch.controls['branchCode']"></app-lpb-select-tooltip>
+              <ng-container *ngTemplateOutlet="error; context: {controlName: 'branchCode', controlNameVi: 'Mã đơn vị'}">
+              </ng-container>
+            </ng-container>
+            <ng-template #elseBranchCode>
+
+              <app-lpb-select2 (clear)="onClearBranchCode()"
+                [items]="[{code: userInfo.branchCode, branchCodeName: userInfo.branchCode + ' - '+ userInfo.branchName}]"
+                labelName="branchCodeName" bindValue="code" formControlName="branchCode"
+                class="app-lpb-select2"></app-lpb-select2>
+
+            </ng-template>
+
+          </span>
+        </label>
+        <!--end Mã đơn vị -->
+        <!-- Trạng thái  -->
+        <label class="form-group row">
+          <span class="col-lg-3 col-form-label textLabel">Trạng thái </span>
+          <span class="col-lg-9">
+            <app-lpb-select2 [optionAdditional]="[{name: 'Tất cả trạng thái', code: ''}]" [items]="TRANSACTION_STATUSES"
+              labelName="name" bindValue="code" formControlName="status" placeholder="Chọn trạng thái"
+              class="app-lpb-select2"></app-lpb-select2>
+          </span>
+        </label>
+        <!-- Người tạo  -->
+        <label class="form-group row">
+          <span class="col-lg-3 col-form-label textLabel">Người tạo </span>
+          <span class="col-lg-9">
+
+            <ng-container *ngIf="(isHoiSo || isKSV); else elseUserListAll">
+              <app-lpb-select2 #selectCreatedBy [apiUrl]="apiUrlUserListAll" [config]="{isNewApi: true}"
+                labelName="userName" bindValue="userName" formControlName="createdBy" placeholder="Chọn người tạo"
+                (handleData)="filterSendBy($event)" class="app-lpb-select2"></app-lpb-select2>
+            </ng-container>
+
+            <ng-template #elseUserListAll>
+              <input formControlName="createdBy" class="form-control pr-4" />
+            </ng-template>
+
+          </span>
+        </label>
+        <!-- Ngày tạo -->
+        <span class="row">
+          <span class="col-lg-3 col-12 col-form-label textLabel py-0"> Ngày tạo</span>
+        </span>
+        <span class="form-group row">
+
+          <span class="col-lg-3 col-12 col-form-label textLabel"> Từ ngày</span>
+
+          <div class="col-lg-9 col-12 d-flex flex-lg-row flex-column justify-content-between align-items-start"
+            style="gap: 10px;">
+            <div class="w-100">
+              <div class="form-control-date-select">
+                <app-lpb-date-picker [maxDate]="maxDate" #createdDate (dateChanged)="createdDateChange()">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+            <div class="col-form-label textLabel text-nowrap">
+              Đến ngày
+            </div>
+            <div class="w-100">
+              <div class="form-control-date-select">
+                <app-lpb-date-picker [maxDate]="maxDate" #toCreatedDate (dateChanged)="toCreatedDateChange()">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+        </span>
+      </div>
+
+      <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+        <button class="btn btn-primary btn-blue mr-4 nowrap" type="submit">
+          Tìm kiếm
+          <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

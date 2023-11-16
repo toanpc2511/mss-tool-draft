@@ -1,0 +1,86 @@
+<div class="content">
+  <div class="content-main">
+    <p class="title text-uppercase"><i class="fa fa-credit-card" aria-hidden="true"></i> Thông tin giao dịch</p>
+
+    <div class="card">
+      <p class="card-title">Thông tin giao dịch</p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Hình thức thanh toán</label>
+          <p class="font-weight-bold">{{data?.transferPaymentTypeName}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Số tiền</label>
+          <p class="font-weight-bold">{{data?.totalAmount | number}} VNĐ</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Trạng thái hạch toán</label>
+          <p class="font-weight-bold">{{data?.statusName}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Nội dung thanh toán</label>
+          <p class="font-weight-bold">{{data?.paymentContent}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">Tài khoản ghi nợ</p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Tài khoản thanh toán</label>
+          <p class="font-weight-bold">{{data?.acNumberD}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Tên tài khoản</label>
+          <p class="font-weight-bold">{{data?.acNameD}}</p>
+        </div>
+        <div *ngIf="data?.transferPaymentType === 'CK'" class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Số dư TK trước giao dịch</label>
+          <p class="font-weight-bold">{{(data?.preBalanceD | vnCurency)}} VNĐ</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">Tài khoản ghi có</p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Tài khoản thanh toán</label>
+          <p class="font-weight-bold">{{data?.acNumberC}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-8 mt-2">
+          <label>Tên tài khoản</label>
+          <p class="font-weight-bold">{{data?.acNameC}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">Thông tin người nộp tiền</p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <p>Họ và tên</p>
+          <p class="font-weight-bold">{{data?.payerName}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <p>Địa chỉ</p>
+          <p class="font-weight-bold">{{data?.payerAddress}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <p>SĐT</p>
+          <p class="font-weight-bold">{{data?.payerPhoneNumber}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-main">
+    <app-lpb-datatable
+      [config]="config"
+      [columns]="columns"
+      [dataSource]="data?.accountingInfo"
+      tableName="Thông tin hạch toán"
+    ></app-lpb-datatable>
+  </div>
+</div>

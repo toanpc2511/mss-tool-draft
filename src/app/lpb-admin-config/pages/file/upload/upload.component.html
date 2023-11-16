@@ -1,0 +1,57 @@
+<div class="d-flex flex-column mb-5">
+  <div class="form-search d-flex flex-column">
+    <div class="content-title pr-2 mt-3">
+      <i class="fa fa-search mr-2 txtLabel"></i> THÔNG TIN CHUNG
+    </div>
+    <hr/>
+    <div class="container mt-3">
+      <form [formGroup]="formUpload">
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">File upload <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <lpb-custom-upload-file accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                        (onChange)="onFileSelect($event)" (onClearSelected)="onClearSelected($event)"
+                                        [maxSize]="10"
+                                        formControlName="file"></lpb-custom-upload-file>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Tên dịch vụ  <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <div class="input-group">
+                  <input class="form-control"
+                         placeholder="Nhập tên dịch vụ" type="text" formControlName="serviceName">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Mô tả  <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <div class="input-group">
+                  <textarea class="form-control"
+                            placeholder="Nhập Mô tả" type="text" formControlName="description">
+                  </textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<app-lpb-footer style="bottom: 0px" [actions]="actions"
+                class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

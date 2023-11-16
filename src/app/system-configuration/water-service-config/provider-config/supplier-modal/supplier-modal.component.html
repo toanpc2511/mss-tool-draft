@@ -1,0 +1,248 @@
+<div class="">
+  <p mat-dialog-title class="modal-header title">{{ titleModal }}</p>
+  <mat-dialog-content class="mat-typography">
+    <div class="supplier-form">
+      <form [formGroup]="supplierForm">
+        <p class="title">Thông tin chung</p>
+        <div class="row w-100 input-group">
+          <div class="py-2 col-12 col-lg-6">
+            <label class="required">Tên nhà cung cấp</label>
+            <input type="text" formControlName="supplierName" autocomplete="off" class="form-control" maxlength="100"
+                   trimInput/>
+            <app-validate [control]="supplierForm.controls['supplierName']" [error]="'required'"
+                          [message]="'Chưa nhập tên nhà cung cấp'"></app-validate>
+          </div>
+          <div class="py-2 col-12 col-lg-6">
+            <label class="required">Hình thức</label>
+            <app-lpb-select2
+              [items]="formTypes"
+              labelName="label"
+              bindValue="value"
+              [config]="{ clearable: false }"
+              placeholder="Chọn hình thức"
+              formControlName="formType"
+            >
+            </app-lpb-select2>
+            <app-validate [control]="supplierForm.controls['formType']" [error]="'required'"
+                          [message]="'Chưa chọn hình thức'"></app-validate>
+          </div>
+
+          <div class="py-2 col-12 col-lg-6">
+            <label class="required">Mã nhà cung cấp</label>
+            <input type="text" formControlName="supplierCode" autocomplete="off" class="form-control" trimInput
+                   maxlength="20"/>
+            <app-validate [control]="supplierForm.controls['supplierCode']" [error]="'required'"
+                          [message]="'Chưa nhập mã nhà cung cấp'"></app-validate>
+            <app-validate [control]="supplierForm.controls['supplierCode']" [error]="'isExist'"
+                          [message]="'Mã nhà cung cấp đã tồn tại!'"></app-validate>
+          </div>
+
+          <ng-container *ngIf="isOnline">
+            <div class="py-2 col-12 col-lg-6">
+              <label class="required">Service</label>
+              <input type="text" formControlName="service" autocomplete="off" class="form-control" maxlength="100"
+                     trimInput/>
+              <app-validate [control]="supplierForm.controls['service']" [error]="'required'"
+                            [message]="'Chưa nhập service'"></app-validate>
+            </div>
+            <div class="py-2 col-12 col-lg-6">
+              <label class="required">ServiceId</label>
+              <input type="text" formControlName="serviceId" autocomplete="off" class="form-control" maxlength="100"
+                     trimInput/>
+              <app-validate [control]="supplierForm.controls['serviceId']" [error]="'required'"
+                            [message]="'Chưa nhập serviceId'"></app-validate>
+            </div>
+            <div class="py-2 col-12 col-lg-6">
+              <label class="required">ProductCode</label>
+              <input type="text" formControlName="productCode" autocomplete="off" class="form-control" maxlength="100"
+                     trimInput/>
+              <app-validate [control]="supplierForm.controls['productCode']" [error]="'required'"
+                            [message]="'Chưa nhập productCode'"></app-validate>
+            </div>
+            <div class="py-2 col-12 col-lg-6">
+              <label class="required">MerchantId</label>
+              <input type="text" formControlName="merchantId" autocomplete="off" class="form-control" maxlength="100"
+                     trimInput/>
+              <app-validate [control]="supplierForm.controls['merchantId']" [error]="'required'"
+                            [message]="'Chưa nhập merchantId'"></app-validate>
+            </div>
+          </ng-container>
+          <div class="py-2 col-12 col-lg-6" *ngIf="!isOnline">
+            <label class="required">Chi nhánh quản lý</label>
+            <app-lpb-select2 [apiUrl]="'/lpb-common-service/api/public/redis/branch'" labelName="name" bindValue="code"
+                             formControlName="brnManager"></app-lpb-select2>
+            <app-validate [control]="supplierForm.controls['brnManager']" [error]="'required'"
+                          [message]="'Chưa chọn chi nhánh quản lý'"></app-validate>
+          </div>
+
+          <div class="py-2 col-12 col-lg-6">
+            <label>Trạng thái</label>
+            <ng-select formControlName="status" (clear)="clearSelected('status')" placeholder="Chọn phương trạng thái">
+              <ng-option *ngFor="let status of statusSuppliers" [value]="status.type">{{ status.name }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </form>
+
+      <ng-container *ngIf="!isOnline">
+        <form [formGroup]="serviceBankInfoGroup">
+          <p class="title mt-4">Tài khoản chuyên thu</p>
+          <div class="row">
+            <div class="mb-3 col-12 col-md-6">
+              <label class="required">Số tài khoản chuyên thu</label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nhập số tài khoản chuyên thu"
+                  [maxLength]="20"
+                  formControlName="bankAccountNumber"
+                  [textPattern]="{allowRegex: '[0-9]'}"
+                  (keydown.enter)="searchAccNumberService()"
+                  (keydown.space)="$event.preventDefault()"
+                  trimInput
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary"
+                    (click)="searchAccNumberService()"
+                    type="button"
+                    style="background: #0c258a"
+                  >
+                    <i
+                      class="fa fa-search"
+                      aria-hidden="true"
+                      style="color: #ffffff"
+                    ></i>
+                  </button>
+                </div>
+              </div>
+              <app-validate
+                [control]="serviceBankInfoGroup.controls['bankAccountNumber']"
+                error='required'
+                message='Chưa nhập số tài khoản chuyên thu'
+              ></app-validate>
+            </div>
+
+            <div class="mb-3 col-12 col-md-6">
+              <label class="required">Số CIF</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="cif"
+                trimInput
+                readonly
+              />
+              <app-validate
+                [control]="serviceBankInfoGroup.controls['cif']"
+                error='required'
+                message='Thiếu số cif'
+              ></app-validate>
+            </div>
+
+
+            <div class="mb-3 col-12 col-md-6">
+              <label class="required">Tên tài khoản</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="bankAccountName"
+                trimInput
+                readonly
+              />
+              <app-validate
+                [control]="serviceBankInfoGroup.controls['bankAccountName']"
+                error='required'
+                message='Thiếu tên tài khoản'
+              ></app-validate>
+            </div>
+
+            <div class="mb-3 col-12 col-md-6">
+              <label class="required">Mã chi nhánh mở tài khoản</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="bankAccountBrnCode"
+                trimInput
+                readonly
+              />
+              <app-validate
+                [control]="serviceBankInfoGroup.controls['bankAccountBrnCode']"
+                error='required'
+                message='Thiếu mã chi nhánh mở tài khoản'
+              ></app-validate>
+            </div>
+
+            <div class="mb-3 col-12 col-md-6">
+              <label class="required">Tên chi nhánh mở tài khoản</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="bankAccountBrnName"
+                trimInput
+                readonly
+              />
+              <app-validate
+                [control]="serviceBankInfoGroup.controls['bankAccountBrnName']"
+                error='required'
+                message='Thiếu tên chi nhánh mở tài khoản'
+              ></app-validate>
+            </div>
+          </div>
+        </form>
+      </ng-container>
+
+      <form [formGroup]="supplierForm">
+        <p class="title mt-4">Quy tắc thanh toán</p>
+
+        <div class="row w-100">
+          <ng-container *ngFor="let item of supplierFormGroups.controls; let i = index" [formGroup]="item">
+            <div class="pb-2 col-12 col-lg-6">
+              <label class="required">{{ paymentRules[i].name }}</label>
+              <ng-select formControlName="supplierRuleId"
+                         (change)="changeValuePaymentRule($event, item, supplierFormGroups.controls)">
+                <ng-option *ngFor="let rule of paymentRules[i].ruleResponses" [value]="rule.id">{{ rule.name
+                  }}</ng-option>
+              </ng-select>
+
+              <app-validate [control]="item.controls['supplierRuleId']" [error]="'required'"
+                            [message]="'Chưa chọn ' + paymentRules[i].name"></app-validate>
+            </div>
+          </ng-container>
+        </div>
+
+        <p class="title mt-4">Nội dung thanh toán</p>
+
+        <div class="w-100">
+          <div class="pb-2">
+            <label class="required">Tiền tố</label>
+            <app-input-autocomplete-custom formControlName="prefix" [listItem]="prefixs" maxlength="100"
+                                           class="w-100"></app-input-autocomplete-custom>
+            <app-validate [control]="supplierForm.controls['prefix']" [error]="'required'"
+                          [message]="'Chưa nhập tiền tố'"></app-validate>
+          </div>
+
+          <div class="pb-5">
+            <label class="required">Chi tiết kỳ</label>
+            <app-input-autocomplete-custom formControlName="periodDetail" [listItem]="periodDetails" maxlength="100"
+                                           class="w-100"></app-input-autocomplete-custom>
+            <app-validate [control]="supplierForm.controls['periodDetail']" [error]="'required'"
+                          [message]="'Chưa nhập chi tiết kỳ'"></app-validate>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </mat-dialog-content>
+
+  <div class="modal-footer mt-4">
+    <button *ngIf="data.action !== 'view'" mat-raised-button (click)="saveForm()"
+            class="button d-inline-block bg-btn__blue text-while">
+      Lưu
+    </button>
+    <button (click)="closeDialog()" mat-stroked-button class="button d-inline-block ml-2">
+      <span *ngIf="data.action === 'view'">Đóng</span>
+      <span *ngIf="data.action !== 'view'">Hủy</span>
+    </button>
+  </div>
+</div>

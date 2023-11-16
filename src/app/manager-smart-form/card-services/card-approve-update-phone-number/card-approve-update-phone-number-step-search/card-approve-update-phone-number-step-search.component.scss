@@ -1,0 +1,74 @@
+@import '/src/app/shared/styles/lpb-button';
+@import '/src/app/shared/styles/lpb-table';
+.card-approve-update-phone-search {
+  background-color: white;
+  border-top: 1px solid #bdbdbd;
+  padding: 0px 10px;
+  min-height: 100%;
+  height: auto;
+  .content-title {
+    color: #17589f;
+    border-bottom: 2px solid #F47326;
+    padding: 8px 0px;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+    place-self: flex-start;
+    width: fit-content;
+    margin-bottom: 24px;
+  }
+  .form-search {
+    .field-item {
+      span {
+        font-weight: 500;
+        color: #17589f;
+      }
+    }
+    .btn-action {
+      margin-top: 16px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .err-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: red;
+      padding-left: 200px;
+    }
+  }
+  .empty-data {
+    text-align: center;
+    color: #17589f;
+    font-size: 13px;
+    font-weight: 400;
+  }
+}
+.modal-confirm {
+  text-align: center;
+  &-content {
+    margin: 16px auto auto auto;
+    width: 400px;
+    color: #17589f;
+    .txt-name {
+      font-weight: 500;
+    }
+  }
+  &-action {
+    margin-top: 16px;
+  }
+  &-reject-reason {
+    margin: 16px auto auto auto;
+    width: 400px;
+    .err-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: red;
+    }
+    .err-field {
+      border-color: red;
+    }
+  }
+}
+.form-control:focus {
+  box-shadow: unset !important;
+}

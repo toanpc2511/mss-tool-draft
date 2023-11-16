@@ -1,0 +1,31 @@
+.form-group {
+  padding: 0px 2rem;
+
+  .main-form {
+    display: flex;
+    justify-content: center;
+  }
+}
+.form-container {
+  max-width: 900px;
+}
+.row-form {
+  padding: 10px 15px;
+}
+
+.col-form {
+  padding: 5px 15px;
+}
+
+.status.form-control:disabled,
+.status.form-control[readonly] {
+  background: none !important;
+  border: none;
+  outline: none;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 21px;
+  padding-left: 0;
+  padding-right: 0;
+}

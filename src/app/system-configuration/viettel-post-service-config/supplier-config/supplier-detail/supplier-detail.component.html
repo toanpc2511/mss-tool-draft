@@ -1,0 +1,49 @@
+<div class="supplier">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between mt-1"
+  >
+    <span>Chi tiết thông tin nhà trường</span>
+  </div>
+  <div class="supplier-card mt-2">
+    <p class=title>Thông tin chung</p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Mã nhà trường</label>
+        <p class="text-content">{{supplier?.code}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Tên nhà trường</label>
+        <p class="text-content">{{supplier?.name}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Số CIF</label>
+        <p class="text-content">{{supplier?.cif}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Số TK chuyên thu</label>
+        <p class="text-content">{{supplier?.accNo}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Trạng thái</label>
+        <p class="text-content">
+          {{supplier?.isActive === 'ACTIVE' ? 'Hoạt động' : 'Không hoạt động'}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="supplier-card">
+    <p class=title>Nội dung thanh toán</p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Nội dung</label>
+        <p class="text-content">{{supplier?.content}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-lpb-footer></app-lpb-footer>

@@ -1,0 +1,159 @@
+<div class="topnav" id="myTopnav">
+    <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoadingCallApi"
+                          class="sq-global-backdrop center-aligned">
+    </app-progress-spinner>
+    <div id="css-menu">
+      <img src="assets/img/logo_1905.png"  alt="logo" style="height: auto !important;" class="mt-2" >
+      <a class="menu-nav menuParent" routerLink="/smart-form/home" style="width: 130px;">
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <label style="cursor: pointer">&nbsp;Trang chủ</label>
+      </a>
+  <!--    <a class="dropdown menu-nav menuParent" style="width: 130px;">-->
+  <!--      <i class="fa fa-star" aria-hidden="true" menu-data='REGISTER_SERVICES'-->
+  <!--         style="margin-right: 5px;"></i><label>Đăng-->
+  <!--      ký dịch vụ</label>-->
+  <!--      <div class="dropdown-content">-->
+  <!--        <a class="checkPermission" routerLink="./fileProcessed"-->
+  <!--           permission-data='REGISTER_SERVICES_INDIVIDUAL_CUSTOMERS'>Khách hàng cá-->
+  <!--          nhân</a>-->
+  <!--      </div>-->
+  <!--    </a>-->
+      <a class="dropdown menu-nav menuParent" style="width: 130px;" *ngIf="isShowMenuDSHS || isShowMenuDSHSDXL">
+        <i class="fa fa-folder-open" menu-data='PROCESS_MANAGEMENT' aria-hidden="true"
+           style="margin-right: 3px;"></i><label>Quản lý hồ sơ</label>
+        <div class="dropdown-content">
+          <a routerLink="/process/list" *ngIf="isShowMenuDSHS" class="checkPermission"
+             permission-data='PROCESS_MANAGEMENT_LIST'>Danh
+            sách hồ sơ</a>
+          <a class="checkPermission" routerLink="/fileProcessed" *ngIf="isShowMenuDSHSDXL"
+             permission-data='LIST_OF_PENDING_RECORDS'>
+            Danh sách hồ sơ đang xử lý
+          </a>
+        </div>
+      </a>
+      <a class="dropdown menu-nav menuParent" *ngIf="authenticationService.isAccessMenu('SYS_MANAGEMENT')"
+         style="width: 130px;">
+        <i class="fa fa-cog" aria-hidden="true" style="margin-right: 5px;"></i>
+        <label>Quản trị hệ thống</label>
+        <div class="dropdown-content">
+          <a class="checkPermission" (click)="clickMenuAdmin(0)"
+             *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.USER)">
+            Quản lý người dùng
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="checkPermission" (click)="clickMenuAdmin(1)"
+             *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.TITLE)">
+            Quản lý chức danh
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="checkPermission" (click)="clickMenuAdmin(2)"
+             *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.ROLE)">Quản lý
+            role</a>
+          <div class="dropdown-divider"></div>
+          <a class="checkPermission" (click)="clickMenuAdmin(3)"
+             *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.FUNCTION)">Quản
+            lý
+            function</a>
+          <div class="dropdown-divider"></div>
+          <a class="checkPermission" (click)="clickMenuAdmin(4)"
+             *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.ACTION)">Quản lý
+            hành động</a>
+          <div class="dropdown-divider"></div>
+          <a class="checkPermission" (click)="clickMenuAdmin(5)"
+             *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.ROLE_MAPPING)">Map
+            quyền</a>
+        </div>
+      </a>
+
+      <a class="dropdown menu-nav menuParent" style="width: 130px;" *ngIf="isShowMenuTHE">
+        <i class="fa fa-cog" aria-hidden="true" menu-data='PROCESS_MANAGEMENT' style="margin-right: 5px;"></i>
+        <label>Quản trị thẻ</label>
+        <div class="dropdown-content">
+          <a routerLink="/export-cards" class="checkPermission" permission-data='PROCESS_MANAGEMENT_LIST'>Export
+            thẻ chờ phát hành</a>
+        </div>
+      </a>
+
+  <!--    <a class="menu-nav menuParent" routerLink="./card-services" style="width: 130px;">-->
+  <!--      <i class="fa fa-credit-card-alt" aria-hidden="true"></i>-->
+  <!--      <label style="cursor: pointer">&nbsp;Hỗ trợ thẻ</label>-->
+  <!--    </a>-->
+
+      <a class="dropdown menu-nav menuParent" style="width: 130px;">
+
+        <i class="fa fa-flag-checkered" aria-hidden="true" style="margin-right: 5px;"></i>
+        <label>Đối soát</label>
+        <div class="dropdown-content">
+          <a routerLink="/cross-checking/create" class="checkPermission"
+             *ngIf="isShowMenuTaoDS">Gạch nợ thẻ tín dụng</a>
+          <div class="dropdown-divider" *ngIf="isShowMenuDuyetDS"></div>
+          <a routerLink="./cross-checking/approve" class="checkPermission"
+             *ngIf="isShowMenuDuyetDS">Kiểm tra và phê duyệt</a>
+          <div class="dropdown-divider"></div>
+          <a routerLink="./cross-checking/report" class="checkPermission">Báo cáo đối soát giao dịch thanh toán thẻ</a>
+        </div>
+      </a>
+      <a class="dropdown menu-nav menuParent" style="width: 130px;">
+        <i class="fa fa-plug" aria-hidden="true"></i>
+        <label>&nbsp;Kết nối ứng dụng</label>
+        <div class="dropdown-content">
+          <a routerLink="./admin/system-partner/connect-ebs" class="checkPermission">Kết nối ebs</a>
+        </div>
+      </a>
+      <!-- <a class="dropdown menu-nav menuParent" style="width: 150px;">
+        <i class="fa fa-solid fa-gears" aria-hidden="true"></i>
+        <label>&nbsp;Cấu hình hệ thống</label>
+        <div class="dropdown-content">
+          <a routerLink="/system-config/lvbis-service" class="checkPermission">Cấu hình dịch vụ</a>
+        </div>
+      </a> -->
+      <a class="menu-nav menuParent" routerLink="/system-config" style="width: 150px;">
+        <i class="fa fa-solid fa-gears" aria-hidden="true"></i>
+        <label style="cursor: pointer">&nbsp;Cấu hình hệ thống</label>
+      </a>
+
+  <!--    <a class="dropdown menu-nav menuParent" style="width: 130px;">-->
+  <!--      <i class="fa fa-exchange" aria-hidden="true"></i>-->
+  <!--      <label>&nbsp;Dịch vụ LVBIS</label>-->
+  <!--      <div class="dropdown-content">-->
+  <!--        <a class="checkPermission" routerLink="/lvbis/sms-status-query">Truy vấn trạng thái SMS</a>-->
+  <!--      </div>-->
+  <!--    </a>-->
+
+  <!--    <a class="menu-nav menuParent" routerLink="/lvbis/home" >-->
+  <!--      <i class="fa fa-money" aria-hidden="true"></i>-->
+  <!--      <label style="cursor: pointer">&nbsp;Thanh Toán Hóa Đơn</label>-->
+  <!--    </a>-->
+
+
+      <a class="admin-right dropdown menu-nav" style="float: right;">
+        <i class="fa fa-user" aria-hidden="true" style="margin-right: 5px;"></i>{{name}}
+        <div>
+          CN: {{branchCode}}
+        </div>
+        <div class="dropdown-content" (click)="logout()" style="left: unset;right: 5px;min-width: 100px;">
+          <a>Logout</a>
+        </div>
+      </a>
+      <!-- <div style="clear: both;"> -->
+      <nav aria-label="breadcrumb" class="customBreadcrumb"
+           style="border-top: 5px solid #F47326;border-bottom: 1px solid #c8ced3;">
+        <ol class="breadcrumb">
+          <!-- <li class="breadcrumb-item" style="padding-top: 6px;padding-bottom: 6px;"><a style="width: auto;padding-left: 15px;font-size: 14px;">Trang chủ</a></li> -->
+          <li class="breadcrumb-item" style="padding-top: 6px;padding-bottom: 6px;padding-left: 10px">
+            <a style="width: auto;font-size: 14px;cursor: default;" class="parentName"></a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page" style="padding-bottom: 6px;padding-top: 6px;">
+            <a style="width: auto;font-size: 14px;font-weight: 400;cursor: default;" class="childName"></a>
+          </li>
+          <span class="ml-auto" style="    height: auto;
+            padding-top: 7px;
+            padding-right: 10px;">Ngày hệ thống {{ time | date: 'dd/MM/yyyy HH:mm:ss aa' }}</span>
+        </ol>
+      </nav>
+    </div>
+    <div style="height: 90px"></div>
+  </div>
+  <div style="clear: both; height: calc(100% - 96px)">
+    <router-outlet></router-outlet>
+  </div>

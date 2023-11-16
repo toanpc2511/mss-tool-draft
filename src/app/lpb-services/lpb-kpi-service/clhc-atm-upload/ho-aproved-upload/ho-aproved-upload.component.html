@@ -1,0 +1,93 @@
+<div class="finance-body">
+  <div class="step-search d-flex flex-column">
+    <hr/>
+
+    <div class="form-search d-flex flex-column">
+
+      <div [formGroup]="uploadForm" class="container">
+        <div class="row">
+          <div class="col col-4">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Kiểu dữ liệu</span>
+              <span class="col-8">
+
+                <app-lpb-select2 [items]="typesUpload"
+                                 labelName="name" bindValue="key" [config]="selectConfig"
+                                 formControlName="typeUpload"
+                                 placeholder="Chọn kiểu upload"></app-lpb-select2>
+
+              </span>
+            </div>
+          </div>
+          <div class="col col-4">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Lương tháng</span>
+              <span class="col-8">
+                <app-lpb-datepicker-new #dateT startView="multi-year">
+                                   <mat-form-field class="col-12" style="padding: 0;">
+                    <input style="padding: 3px !important; border: 1px; border-radius: 4px !important;"
+                           placeholder="MM/YYYY"
+                           matInput [matDatepicker]="dp" [formControl]="date">
+                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+
+                  </mat-form-field>
+                </app-lpb-datepicker-new>
+                      </span>
+            </div>
+          </div>
+          <div class="col col-4">
+            <div class="form-group row">
+                  <span class="col-4">
+                   <button
+                     mat-raised-button
+                     class="btn form-search-title" (click)="search()">
+                      Tìm kiếm
+                    </button>
+                   </span>
+              <span class="col-4">
+                   <button
+                     mat-raised-button
+                     class="bg-btn__blue"
+                     (click)="aproved()"
+                     [disabled]="isDisabled">
+                      Duyệt dữ liệu
+                    </button>
+                   </span>
+              <span class="col-4">
+                                   <button style="padding-left: 10px"
+                                           mat-raised-button
+                                           class="d-inline-block bg-btn__blue text-while button-send mx-auto"
+                                           (click)="exportExcel()" [disabled]="isDisabled">
+                     Tải dữ liệu
+                    </button>
+                   </span>
+            </div>
+          </div>
+          <div class="col col-4" *ngIf="isStatus">
+            <div class="form-group row">
+              <label class="col-4 col-form-label textLabel">  Trạng Thái</label>
+              <div class="col-8">
+                <app-lpb-select2 [items]="formStatus"
+                                 labelName="name" bindValue="key" [config]="selectConfig"
+                                 placeholder="Chọn trạng thái"
+                                 formControlName="formStatus">
+                </app-lpb-select2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="step-search d-flex flex-column">
+    <div class="row">
+      <div class="col-12">
+        <app-lpb-datatable
+          [config]="configs"
+          [columns]="$any(columns)"
+          [dataSource]="dataSource"
+        ></app-lpb-datatable>
+      </div>
+    </div>
+  </div>
+</div>

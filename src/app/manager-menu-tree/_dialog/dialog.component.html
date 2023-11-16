@@ -1,0 +1,23 @@
+<div class="modal fade show" tabindex="-1" role="dialog" [ngStyle]="style">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content" style="border-radius: 10px;">
+			<div class="modal-header" style="border-bottom: 1px solid #828282;background: #23388F;">
+				<h2 class="modal-title" style="color: #fff;
+				margin: 0px;
+				font-size: 17px;
+				font-weight: 400;">Bạn chắc chắn thực hiện thao tác?</h2>
+				<span class="material-icons" (click)="cancelClicked()" style="float: right;cursor: pointer;color: #fff;">
+					close
+				</span>
+			</div>
+			<div class="modal-body" style="border-bottom: 1px solid #828282;">
+				<p style=" margin: 0px;
+				padding-left: 30px;">Xóa ủy quyền</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn closePopup" (click)="cancelClicked()">Hủy</button>
+				<button type="button" class="btn newfile btn-color" (click)="okClicked()">Đồng ý</button>
+			</div>
+		</div>
+	</div>
+</div>

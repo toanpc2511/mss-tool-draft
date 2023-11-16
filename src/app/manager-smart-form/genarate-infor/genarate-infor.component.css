@@ -1,0 +1,177 @@
+.mat-icon {
+    font-size: 20px;
+    display: block;
+    float: left;
+}
+.btn-save {
+    background: #0C258A;
+    border: 1px solid #0C258A;
+    border-radius: 8px;
+    width: 140px;
+    height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 23px;
+    color: #FFFFFF;
+    border-style: solid;
+    outline: none;
+}
+.btn-cancel {
+    background-color: #eb5757;
+    border: 1px solid #eb5757;
+    border-radius: 8px;
+    color: #fff;
+    width: 140px;
+    height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 23px;
+    border-style: solid;
+    outline: none
+}
+.div-center {
+   display: flex;
+   justify-content: center;
+}
+.update {
+    color: #4868E4;
+    cursor: pointer;
+}
+
+.genarate-top {
+    margin-bottom: 8%;
+}
+
+.delete {
+    color: #DA5D5D;
+    cursor: pointer;
+}
+
+.title-head {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    text-indent: 8px;
+    color: #1F69BC;
+}
+
+.table td {
+    font-size: 18px;
+}
+
+.table-responsive {
+    display: table;
+}
+
+.col-12 {
+    margin: 0;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+
+.col-12 {
+    margin-bottom: 0;
+    padding: 0 0;
+}
+
+.col-table {
+    margin: 0;
+}
+
+.line-base {
+    border-bottom: 1px solid #c8ced3;
+    padding: 10px 0;
+}
+
+table {
+    white-space: nowrap;
+}
+
+.accountNumber {
+    width: 180px;
+    color: #0088FF;
+}
+
+.phoneNumber {
+    width: 150px;
+}
+
+.choose {
+    color: #F2994A;
+    cursor: pointer;
+}
+
+.sendSMS {
+    color: #2F80ED;
+    cursor: pointer;
+}
+
+@media (max-width: 1400px) {
+    .title-head {
+        font-size: 15px;
+    }
+
+    mat-icon {
+        font-size: 25px !important;
+        margin-top: 2px !important;
+    }
+
+    .line-base {
+        padding: 0 !important;
+        border-bottom: 1px solid #c8ced3;
+    }
+
+    .label-title {
+        font-size: 12px;
+    }
+
+    .error-message {
+        font-size: 13px;
+    }
+
+    .btn-action {
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 21px;
+        display: flex;
+        align-items: center;
+        text-indent: 8px;
+        color: #FFFFFF;
+    }
+
+    .accountNumber {
+        width: 180px;
+    }
+
+    .phoneNumber {
+        width: 150px;
+    }
+
+    .table-responsive {
+        display: block;
+    }
+
+    .table th,
+    td {
+        font-size: 16px;
+    }
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+
+.mat-icon {
+    font-size: 20px;
+    display: block;
+    float: left;
+}

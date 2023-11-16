@@ -1,0 +1,64 @@
+<div class="finance-body" style="padding-bottom: 10px">
+  <div class="step-search d-flex flex-column">
+    <div class="content-title pt-2 ">
+      <i class="fa fa-search mr-2 txtLabel"></i>
+      TÌM KIẾM
+    </div>
+    <hr/>
+    <!-- Search Form -->
+    <div class="form-search d-flex flex-column">
+      <form [formGroup]="formSearch" class="container" (ngSubmit)="onSearch()">
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Từ ngày</span>
+              <span class="col-8">
+                <app-lpb-datepicker-new formControlName="fromDate"></app-lpb-datepicker-new>
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Đến ngày</span>
+              <span class="col-8">
+                 <app-lpb-datepicker-new formControlName="toDate"></app-lpb-datepicker-new>
+
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Số CCCD</span>
+              <span class="col-8">
+                 <input class="form-control"
+                        placeholder="Nhập Số CCCD" type="text" formControlName="cccdNo">
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="submit">
+              Tìm kiếm
+              <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="button" (click)="exportExcel()">
+              Export
+              <i class="fa fa-download ic-in-primary" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Search Form -->
+    <hr class="h-1px"/>
+    <app-lpb-datatable tableName="DANH SÁCH" [config]="datatableConfig" [searchConditions]="searchCondition"
+                       (viewAction)="view($event)" [columns]="columns"  (getRowSelected)="getRowSelected($event)"
+                       [apiServiceURL]="apiServiceUrl"></app-lpb-datatable>
+
+  </div>
+</div>

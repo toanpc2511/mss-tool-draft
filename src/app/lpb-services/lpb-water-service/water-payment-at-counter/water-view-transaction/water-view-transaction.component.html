@@ -1,0 +1,51 @@
+<app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isLoading"
+    class="sq-global-backdrop center-aligned">
+</app-progress-spinner>
+<div class="px-4 py-4">
+    <div>
+      <p class="title-trans">{{title}}</p>
+        <div class="d-flex mt-2">
+            <div class="col-6 col-lg-3 px-1">
+                <label>Nhà cung cấp</label>
+                <div class="text-high-light fw-bolder">
+                    {{rootData?.supplierName}}
+                </div>
+            </div>
+          <div class="col-6 col-lg-3 px-1">
+            <label>Mã khách hàng</label>
+            <div class="text-high-light fw-bolder">
+              {{rootData?.customerId}}
+            </div>
+          </div>
+          <div class="col-6 col-lg-3 px-1">
+            <label>Core_ref_no</label>
+            <div class="text-high-light fw-bolder">
+              {{rootData?.coreRefNo}}
+            </div>
+          </div>
+        </div>
+        <div class="pt-5">
+            <div class="text-high-light text-uppercase fw-bolder"> <i class="fa fa-credit-card-alt text-high-light mr-2"></i>Danh sách hóa đơn
+            </div>
+            <hr>
+            <app-lpb-datatable [dataSource]="dataSource" [columns]="columns" [config]="config"></app-lpb-datatable>
+            <div class="pt-5">
+                <div class="text-high-light text-uppercase fw-bolder"> <i class="fa fa-credit-card-alt text-high-light mr-2"></i>Thông tin thanh
+                    toán
+                </div>
+                <hr>
+                <app-payment-info [type]="'view'" #paymentInfo></app-payment-info>
+            </div>
+            <div class="mt-5">
+                <div class="text-high-light text-uppercase fw-bolder"> <i class="fa fa-credit-card-alt text-high-light mr-2"></i>Thông tin hạch
+                    toán
+                </div>
+                <hr>
+                <app-lpb-datatable [dataSource]="dataSource2" [columns]="columns2" [config]="config"></app-lpb-datatable>
+            </div>
+        </div>
+    </div>
+</div>
+<div [style.height.px]="50" *ngIf="!idTrans">
+    <app-lpb-footer [actions]="actions" class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>
+</div>

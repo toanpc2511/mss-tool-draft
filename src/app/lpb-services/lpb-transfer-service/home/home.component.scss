@@ -1,0 +1,30 @@
+@import "/src/app/shared/styles/palette.style.scss";
+
+.fetch-spinner-container{
+  background-color: rgba(0,0,0, 0.1);
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000
+}
+
+
+:host ::ng-deep {
+  .wait-reversed-row, .suspicious-row{
+    color: $error-main;
+    font-weight: 500;
+
+    a {
+      color: $error-main;
+    }
+
+    &:hover, &:focus{
+      color: $error-dark;
+    }
+  }
+}

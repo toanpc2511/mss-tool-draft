@@ -1,0 +1,174 @@
+<div class="content">
+  <div class="card">
+    <form [formGroup]="transferForm">
+      <p class="card-title px-4">Thông tin giao dịch</p>
+      <div class="row">
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <p>Hình thức giao dịch</p>
+          <mat-radio-group aria-label="Select an option" formControlName="paymentType">
+            <mat-radio-button
+              color="primary"
+              *ngFor="let type of paymentMethods"
+              [value]="type.value"
+              class="pr-2">{{type.label}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <p>Số tiền</p>
+          <p class="font-weight-bold">{{data?.totalPrice | vnCurency}} VNĐ</p>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">Nội dung thanh toán</label>
+          <input
+            type="text"
+            formControlName="detail"
+            placeholder="Nhập nội dung thanh toán"
+            class="form-control"
+            maxlength="250"
+            trimInput
+          />
+          <app-validate
+            [control]="transferForm.get('detail')"
+            error="required"
+            message="Chưa nhập nội dung thanh toán"
+          ></app-validate>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="card mt-4" *ngIf="isTransfer">
+    <form [formGroup]="cifInfoForm">
+      <p class="card-title px-4">Tài khoản ghi nợ</p>
+      <div class="row">
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">Mã khách hàng (CIF)</label>
+
+          <div class="position-relative input-group">
+            <input type="text" [formControl]="cifInfoForm.controls['cif']" class="form-control pr-4"
+                   (change)="changeCifInfo()"
+                   placeholder="Nhập mã khách hàng (CIF)" maxlength="20"
+                   [textPattern]="{allowRegex: '[0-9]'}"/>
+            <div class="input-group-append">
+              <button
+                mat-raised-button
+                class=" bg-btn__blue text-while"
+                (click)="onSearchCifInfo()"
+              ><i class="fa fa-search mr-2" style="color: #fff"></i>
+              </button>
+            </div>
+          </div>
+          <app-validate
+            [control]="cifInfoForm.get('cif')"
+            error="required"
+            message="Chưa nhập mã khách hàng"
+          ></app-validate>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">Tài khoản thanh toán</label>
+          <app-lpb-select2 [items]="accNumbers" labelName="accountNumber"
+                           formControlName="accNumber" placeholder="Chọn số TKTT">
+            <ng-template let-item="item" let-index="index">
+              <b>{{item.accountNumber}}</b>
+              <div class="text-high-light">{{item.availableBalance | vnCurency}} VNĐ
+              </div>
+            </ng-template>
+          </app-lpb-select2>
+          <app-validate
+            [control]="cifInfoForm.get('accNumber')"
+            error="required"
+            message="Chưa chọn tài khoản thanh toán"
+          ></app-validate>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="">Tên tài khoản</label>
+          <p class="font-weight-bold">{{cifInfoForm.get('custAcName').value || '--'}}</p>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="">Số dư TK trước giao dịch</label>
+          <p class="font-weight-bold">{{(cifInfoForm.get('preAmount').value | vnCurency) || '--'}}</p>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="card mt-4">
+    <p class="card-title px-4">Tài khoản ghi có</p>
+    <div class="row">
+      <div class="col-12 col-md-4 mt-2 px-5">
+        <label class="">Số tài khoản</label>
+        <p class="font-weight-bold">{{data?.acNumber}}</p>
+      </div>
+      <div class="col-12 col-md-8 mt-2 px-5">
+        <label class="">Tên tài khoản</label>
+        <p class="font-weight-bold">{{data?.acName}}</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card mt-4">
+    <form [formGroup]="userTransferForm">
+      <p class="card-title px-4">Thông tin người nộp tiền</p>
+      <div class="row">
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">Họ và tên</label>
+          <input
+            type="text"
+            formControlName="userName"
+            placeholder="Nhập họ và tên"
+            class="form-control"
+            [maxLength]="200"
+            trimInput
+          />
+          <app-validate
+            [control]="userTransferForm.get('userName')"
+            error="required"
+            message="Chưa nhập họ và tên người nộp tiền"
+          ></app-validate>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">Địa chỉ</label>
+          <input
+            type="text"
+            formControlName="address"
+            placeholder="Nhập địa chỉ"
+            class="form-control"
+            [maxLength]="200"
+            trimInput
+          />
+          <app-validate
+            [control]="userTransferForm.get('address')"
+            error="required"
+            message="Chưa nhập địa chỉ người nộp tiền"
+          ></app-validate>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">SĐT</label>
+          <input
+            type="text"
+            formControlName="phone"
+            [textPattern]="{allowRegex: '[0-9]'}"
+            maxlength="11"
+            placeholder="Nhập số điện thoại"
+            class="form-control"
+            trimInput
+          />
+          <app-validate
+            [control]="userTransferForm.get('phone')"
+            error="required"
+            message="Chưa nhập SĐT người nộp tiền"
+          ></app-validate>
+          <app-validate
+            [control]="userTransferForm.get('phone')"
+            error="maxlength"
+            message="Số SĐT người nộp tiền vượt quá 11 ký tự"
+          ></app-validate>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

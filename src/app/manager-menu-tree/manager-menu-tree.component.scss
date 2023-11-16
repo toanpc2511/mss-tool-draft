@@ -1,0 +1,275 @@
+.click-link {
+    cursor: pointer;
+}
+
+.material-icons {
+    font-size: 16px !important;
+}
+
+.tree-menu {
+    padding-top: 5px !important;
+    padding-left: 2px !important;
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+    // overflow-y: auto;
+    margin: 0px;
+    // border-right: 1px solid #828282;
+}
+
+.float-right {
+    display: flex;
+    padding-top: 6px;
+}
+
+.tree-menu {
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    position: fixed;
+}
+
+.tree-menu .open,
+.tree-menu .open .child {
+    display: contents;
+    width: 100%;
+}
+
+ul {
+    max-width: 16.666667%;
+    background: #fff;
+    // box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    // position: fixed;
+}
+
+$gray-light: #bdc3c7;
+
+ul li {
+    list-style: none;
+    margin-right: 5px;
+}
+
+.message {
+    color: #17589f
+}
+
+.tree {
+    padding: 0px;
+}
+
+.tree-parent {
+    padding: 0px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    display: inline-block;
+    height: 100%;
+}
+
+.open {
+    padding-left: 3px;
+}
+
+.tree-parent {
+    margin-top: 0.5rem;
+    display: none;
+}
+
+.tree-parent.open {
+    display: block;
+}
+
+.tree-parent.child {
+    display: block;
+}
+
+.tree-item {
+    position: relative;
+    margin-left: 1.25rem;
+    margin-left: 1.7rem;
+    line-height: 2rem;
+    padding-top: 3px;
+
+    &:last-child {
+        border: none;
+    }
+
+    &:before {
+        content: '';
+        display: block;
+        border-top: 1px solid #bdc3c7;
+        border-left: 1px solid #bdc3c7;
+        height: 100%;
+        width: 1rem;
+        position: absolute;
+        bottom: -1.1rem;
+        left: -0.9rem;
+        left: -1.3rem;
+        z-index: -1;
+    }
+
+    &:last-child:before {
+        border-left: none;
+    }
+
+    &:first-child:after {
+        content: '';
+        display: block;
+        border-left: 1px solid #bdc3c7;
+        height: 100%;
+        width: 1rem;
+        position: absolute;
+        bottom: 0.9rem;
+        left: -0.9rem;
+        left: -1.3rem;
+        z-index: -1;
+    }
+
+    a {
+        i {
+            margin-right: 0.5rem;
+            // color: #3498db;
+        }
+    }
+}
+
+.fa-angle-right {
+    border: 1px solid #384961;
+    width: 20px;
+    height: 20px;
+    padding: 2px 6px;
+}
+
+.fa-angle-down {
+    border: 1px solid #384961;
+    width: 20px;
+    height: 20px;
+    padding: 2px 4px;
+}
+
+tree-li {
+    background: whitesmoke;
+}
+
+.active {
+    // background: whitesmoke;
+    font-weight: 500;
+    width: 77%;
+}
+
+.material-icons {
+    font-size: 20px;
+    color: #1F69BC;
+}
+
+a {
+    cursor: pointer;
+}
+
+.custom-icon {
+    height: 0px;
+    display: block;
+    float: left;
+    margin-top: 5px;
+}
+
+.border-icon {
+    border: 1px solid #384961;
+    margin-right: 5px;
+    color: #384961;
+    border-radius: 3px;
+}
+
+////////////////////////////tree
+.example-tree-progress-bar {
+    margin-left: 30px;
+}
+
+.example-tree-nested-node {
+    padding-left: 30px;
+}
+
+mat-tree {
+    margin-left: 0px;
+}
+
+.mat-tree-node {
+    padding: 0;
+    background-color: white;
+    min-height: 35px;
+}
+
+.mat-nested-tree-node {
+    top: -24px;
+}
+
+ul,
+li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+li.example-tree-container {
+    border-bottom: 0;
+}
+
+ul {
+    padding-left: 40px;
+}
+
+li {
+    padding-left: 10px;
+    border: 1px dotted grey;
+    border-width: 0 0 1px 1px;
+    position: relative;
+    top: -24px;
+}
+
+li.mat-tree-node,
+li div {
+    margin: 0;
+    position: relative;
+    top: 20px;
+}
+
+li ul {
+    border-top: 1px dotted grey;
+    margin-left: -10px;
+    padding-left: 25px;
+}
+
+.mat-nested-tree-node:last-child ul {
+    border-left: 1px solid white;
+    margin-left: -10px;
+}
+
+.mat-icon-button {
+    z-index: 100;
+    outline: none;
+    margin-left: -5px;
+}
+
+.extend-link {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 2px;
+    margin-bottom: -2px;
+}
+
+.custom-height {
+    padding: 0px;
+    white-space: nowrap;
+    overflow-x: auto;
+    //height: 587px
+}
+
+.custom-card {
+    padding-bottom: 35px;
+    padding-left: 15px;
+    width: 100%;
+    position: fixed;
+    overflow-x: auto;
+    //height: 588px;
+}

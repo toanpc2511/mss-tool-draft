@@ -1,0 +1,629 @@
+<div class="account-authority-create">
+  <div class="account-authority-create-title">
+    <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">account_circle</mat-icon>
+    <span>THÔNG TIN KHÁCH HÀNG</span>
+  </div>
+  <div class="w-100 d-flex justify-content-between account-authority-create-content">
+    <div class="account-authority-create-content-left">
+
+      <div class="row-item-info">
+        <div class="label-field">Mã Khách hàng :</div>
+        <div class="value-field">
+          <div class="control-item">
+            <span>{{ (customerInfo && customerInfo.customerCode) ? customerInfo.customerCode : ''}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Số giấy tờ xác minh :</div>
+        <div class="value-field">
+          <div class="control-item">
+            <span>{{ (customerInfo && customerInfo.person) ? customerInfo.person.perDocNoList[0].perDocNo : ''}}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="account-authority-create-content-right">
+      <div class="row-item-info">
+        <div class="label-field">Họ và tên :</div>
+        <div class="value-field">
+          <div class="control-item">
+            <span>{{ (customerInfo && customerInfo.person) ? customerInfo.person.fullName : ''}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày sinh :</div>
+        <div class="value-field">
+          <div class="control-item">
+            <span>{{ (customerInfo && customerInfo.person) ? customerInfo.person.dateOfBirth : ''}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Tình trạng :</div>
+        <div class="value-field">
+          <div class="control-item">
+            <span>{{ (customerInfo && customerInfo.currentStatusName) ? customerInfo.currentStatusName : ''}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- cpn search thông tin ủy quyền -->
+  <div class="account-authority-create">
+    <div class="account-authority-create-title">
+      <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">search</mat-icon>
+      <span>TÌM KIẾM THÔNG TIN KHÁCH HÀNG</span>
+    </div>
+    <div class="container mt-3 mb-2">
+      <div class="row">
+        <div class="offset-md-1 col-md-2 mt-2">Khách hàng cá nhân <span class="text-danger">(*)</span></div>
+        <div class="col-md-6 flex-column">
+          <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="txtSearch" placeholder="Nhập thông tin tìm kiếm">
+            <div class="input-group-append">
+              <span class="input-group-text" (click)="searchCustomer()" *ngIf="txtSearch !== ''">
+                <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">search</mat-icon>
+              </span>
+            </div>
+          </div>
+          <div class="grRadio-search w-100">
+            <div class="rd-item">
+              <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)" [(ngModel)]="typeSearch"
+                name="typeSearch" id="rd-1" value="{{prefixTypeSearch.cmnd}}">
+              <label for="rd-1">
+                CMND
+              </label>
+            </div>
+            <div class="rd-item">
+              <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)" [(ngModel)]="typeSearch"
+                name="typeSearch" id="rd-2" value="{{prefixTypeSearch.cccd}}">
+              <label for="rd-2">
+                CCCD
+              </label>
+            </div>
+            <div class="rd-item">
+              <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)" [(ngModel)]="typeSearch"
+                name="typeSearch" id="rd-3" value="{{prefixTypeSearch.hc}}">
+              <label for="rd-3">
+                Hộ chiếu
+              </label>
+            </div>
+            <div class="rd-item">
+              <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)" [(ngModel)]="typeSearch"
+                value="{{prefixTypeSearch.cif}}" id="searchCIF">
+              <label for="searchCIF">
+                Mã CIF
+              </label>
+            </div>
+            <div class="rd-item mr-4">
+              <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)" [(ngModel)]="typeSearch"
+                value="{{prefixTypeSearch.sdt}}" id="searchPhone">
+              <label for="searchPhone">
+                Số điện thoại
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  Thông tin form đăng ký ủy quyền-->
+  <form class="w-100" [formGroup]="formCreateAuthority">
+    <!-- cpn thong tin uy quyen-tạo mới -->
+    <div class="account-authority-create">
+      <div class="account-authority-create-title">
+        <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">supervised_user_circle</mat-icon>
+        <span>THÔNG TIN NGƯỜI ỦY QUYỀN</span>
+      </div>
+      <div class="w-100 d-flex justify-content-between account-authority-create-content">
+        <div class="account-authority-create-content-left">
+
+          <!--Input Họ tên-->
+          <div class="row-item-info">
+            <div class="label-field">Họ và tên <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <input oninput="this.value = this.value.toUpperCase()" maxlength="50"
+                  [class.error-invalid]="(fullName.touched || fullName.dirty) && fullName.invalid"
+                  formControlName="fullName" class="form-control w-100" placeholder="Nhập họ và tên">
+              </div>
+              <span *ngIf="hasErrorInput('fullName', 'required')" class="error-msg">
+                Họ và tên không được bỏ trống
+              </span>
+            </div>
+          </div>
+
+          <!--Input Ngày sinh-->
+          <div class="row-item-info">
+            <div class="label-field">Ngày sinh <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <app-lpb-date-picker #dpDateOfBirth (dateChanged)="dateOfBirthChanged()"
+                  (blurInput)="blurDateOfBirth($event)" class="w-100">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+
+          <!--Array dropdown Quốc tịch-->
+          <div class="d-flex flex-column">
+            <div class="row-item-info" formArrayName="nationalityCode"
+              *ngFor="let item of formCreateAuthority.get('nationalityCode')['controls']; let i = index;">
+              <div class="label-field">Quốc tịch {{ i + 1 }} <span class="text-danger">(*)</span></div>
+              <div class="value-field">
+                <div class="control-item w-80">
+                  <ng-select [multiple]="false" [items]="lstCountry" [closeOnSelect]="true" appendTo="body"
+                    placeholder="Chọn Quốc gia" (change)="nationalityChange($event, i)" [formControlName]="i"
+                    bindLabel="name" bindValue="code">
+                    <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                      <div class="ng-option disabled">
+                        Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                      </div>
+                    </ng-template>
+                  </ng-select>
+                </div>
+                <span *ngIf="hasErrorFormArray('nationalityCode', i, 'required')" class="error-msg">
+                  Quốc tịch {{ i + 1 }} bắt buộc chọn
+                </span>
+              </div>
+              <div class="ic-add no_selection " *ngIf=" i=== 0">
+                <mat-icon class="plus" (click)="addFieldNationality()">add_circle_outline</mat-icon>
+              </div>
+              <div class="ic-remove no_selection " *ngIf="i !== 0">
+                <mat-icon class="plus" (click)="removeFieldNationality(i)">remove_circle_outline</mat-icon>
+              </div>
+            </div>
+            <div class="row-item-info" *ngIf="hasErrorInput('nationalityCode', 'duplicate')">
+              <div class="label-field"></div>
+              <div class="value-field">
+                <div class="control-item">
+                  <span class="error-msg">
+                    Quốc tịch không được trùng nhau
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!--Check Thị thực nhập cảnh-->
+          <div class="row-item-info" [ngClass]="nationalityCode
+          && nationalityCode.getRawValue()[0]
+          && nationalityCode.getRawValue()[0] !== 'VN' ? 'd-flex' : 'd-none'">
+            <div class="label-field">Thị thực nhập cảnh</div>
+            <div class="value-field">
+              <div class="control-item">
+                <div class="form-check">
+                  <input type="checkbox" formControlName="visaExemption" class="form-check-input" id="cbVisaFree">
+                  <label class="form-check-label pointer-class" for="cbVisaFree">Miễn thị thực nhập cảnh</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Miễn thị thực từ ngày-->
+          <div class="row-item-info" [ngClass]="(!formCreateAuthority.value.visaExemption) ? 'd-flex' : 'd-none'">
+            <div class="label-field">Từ ngày</div>
+            <div class="value-field">
+              <div class="control-item">
+                <div class="input-group w-100">
+                  <app-lpb-date-picker #dpFromDateVisaFree (dateChanged)="visaIssueDateChanged()" class="w-100">
+                  </app-lpb-date-picker>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Miễn thị thực đến ngày-->
+          <div class="row-item-info" [ngClass]="(!formCreateAuthority.value.visaExemption) ? 'd-flex' : 'd-none'">
+            <div class="label-field">Đến ngày</div>
+            <div class="value-field">
+              <div class="control-item">
+                <div class="input-group w-100">
+                  <app-lpb-date-picker #dpToDateVisaFree (dateChanged)="visaExpireDateChanged()" class="w-100">
+                  </app-lpb-date-picker>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--radio người cư trú-->
+          <div class="row-item-info">
+            <div class="label-field">Người cư trú <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <div class="grRadio w-100">
+                  <div class="rd-item mr-4">
+                    <input type="radio" class="mr-1" formControlName="residence" id="residentYes" [value]="true">
+                    <label for="residentYes">
+                      Có
+                    </label>
+                  </div>
+                  <div class="rd-item">
+                    <input type="radio" class="mr-" formControlName="residence" id="residentNo" [value]="false">
+                    <label for="residentNo">
+                      Không
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Input Điện thoại di động-->
+          <div class="row-item-info">
+            <div class="label-field">Điện thoại di động <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <input maxlength="10"
+                  [class.error-invalid]="(mobilePhone.touched || mobilePhone.dirty) && mobilePhone.invalid" numbersOnly
+                  formControlName="mobilePhone" class="form-control w-100" placeholder="Nhập điện thoại di động">
+              </div>
+              <span *ngIf="hasErrorInput('mobilePhone', 'required')" class="error-msg">
+                Số điện thoại di động không được bỏ trống
+              </span>
+              <span *ngIf="hasErrorInput('mobilePhone', 'minlength') || hasErrorInput('mobilePhone', 'maxLength')"
+                class="error-msg">
+                Số điện thoại di động phải có 10 số
+              </span>
+              <span *ngIf="hasErrorInput('mobilePhone', 'prefixMobileNotExist')" class="error-msg">
+                Đầu số điện thoại di động không đúng
+              </span>
+            </div>
+          </div>
+
+          <!--Input Email-->
+          <div class="row-item-info">
+            <div class="label-field">Email</div>
+            <div class="value-field">
+              <div class="control-item">
+                <input maxlength="200" [class.error-invalid]="(email.touched || email.dirty) && email.invalid"
+                  formControlName="email" class="form-control w-100" placeholder="Nhập điạ chỉ mail">
+              </div>
+              <span *ngIf="hasErrorInput('email', 'email')" class="error-msg">
+                Email không đúng định dạng
+              </span>
+            </div>
+          </div>
+
+        </div>
+        <div class="account-authority-create-content-right">
+          <!--Radio giới tính-->
+          <div class="row-item-info">
+            <div class="label-field">Giới tính <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <div class="grRadio w-100">
+                  <div class="rd-item mr-4">
+                    <input type="radio" formControlName="genderCode" class="mr-1" id="genderMale"
+                      [value]="prefixGenderCode.MALE">
+                    <label for="genderMale">
+                      Nam
+                    </label>
+                  </div>
+                  <div class="rd-item">
+                    <input type="radio" formControlName="genderCode" class="mr-1" id="genderFemale"
+                      [value]="prefixGenderCode.FEMALE">
+                    <label for="genderFemale">
+                      Nữ
+                    </label>
+                  </div>
+                  <div class="rd-item" *ngIf="isCheckGenderOther">
+                    <input type="radio" formControlName="genderCode" class="mr-1" id="genderOthers"
+                      [value]="prefixGenderCode.OTHERS">
+                    <label for="genderOthers">
+                      Khác
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Dropdown Loại GTXM-->
+          <div class="row-item-info">
+            <div class="label-field">Loại GTXM <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <select class="form-control w-100"
+                  [class.error-invalid]="(perDocTypeCode.touched || perDocTypeCode.dirty) && perDocTypeCode.invalid"
+                  formControlName="perDocTypeCode">
+                  <option *ngFor="let perDocType of perDocsType" [disabled]="perDocType.code === ''"
+                    [value]="perDocType.code">{{perDocType.name}}</option>
+                </select>
+              </div>
+              <span *ngIf="hasErrorInput('perDocTypeCode', 'required')" class="error-msg">
+                GTXM bắt buộc chọn
+              </span>
+              <span *ngIf="hasErrorInput('perDocTypeCode', 'errPerDocType')" class="error-msg">
+                GTXM phải là Hộ chiếu với Quốc tịch nước ngoài
+              </span>
+            </div>
+          </div>
+
+          <!--Input Số GTXM-->
+          <div class="row-item-info">
+            <div class="label-field">Số GTXM <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <input maxlength="2000" (blur)="validatorPerDocNo()" formControlName="perDocNo"
+                  [class.error-invalid]="(perDocNo.touched || perDocNo.dirty) && perDocNo.invalid"
+                  class="form-control w-100" placeholder="Nhập số GTXM">
+              </div>
+              <span *ngIf="hasErrorInput('perDocNo', 'required')" class="error-msg">
+                Số GTXM không được để trống
+              </span>
+              <span *ngIf="hasErrorInput('perDocNo', 'errLengthCMND')" class="error-msg">
+                CMND phải là 9 hoặc 12 chữ số
+              </span>
+              <span *ngIf="hasErrorInput('perDocNo', 'errLengthCCCD')" class="error-msg">
+                CCCD phải là 12 chữ số
+              </span>
+              <span *ngIf="hasErrorInput('perDocNo', 'errOnlyNumber')" class="error-msg">
+                Số CMND / CCCD phải là chữ số
+              </span>
+            </div>
+          </div>
+
+          <!--Ngày cấp GTXM-->
+          <div class="row-item-info">
+            <div class="label-field">Ngày cấp <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <app-lpb-date-picker #dpIssueDate (dateChanged)="issueDateChanged()" (blurInput)="blurIssueDate()"
+                  class="w-100">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+
+          <!--Nơi cấp GTXM-->
+          <div class="row-item-info">
+            <div class="label-field">Nơi cấp <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <input maxlength="2000" formControlName="issuePlace"
+                  [class.error-invalid]="(issuePlace.touched || issuePlace.dirty) && issuePlace.invalid"
+                  class="form-control w-100" placeholder="Nhập nơi cấp">
+              </div>
+              <span *ngIf="hasErrorInput('issuePlace', 'required')" class="error-msg">
+                Nơi cấp không được để trống
+              </span>
+            </div>
+          </div>
+
+          <!--Input nghề nghiệp-->
+          <div class="row-item-info">
+            <div class="label-field">Nghề nghiệp</div>
+            <div class="value-field">
+              <div class="control-item">
+                <!-- <ng-select [multiple]="false" [items]="lstIndustry" [closeOnSelect]="true" appendTo="body"
+                  placeholder="Chọn nghề nghiệp" formControlName="industry" bindLabel="name" bindValue="code">
+                  <ng-template ng-notfound-tmp let-searchIndustry="searchIndustry">
+                    <div class="ng-option disabled">
+                      Không tìm thấy dữ liệu cho "{{searchIndustry}}"
+                    </div>
+                  </ng-template>
+                </ng-select> -->
+                <input maxlength="2000" formControlName="industry" class="form-control w-100"
+                  placeholder="Nhập nghề nghiệp">
+              </div>
+            </div>
+          </div>
+
+          <!--Input Chức vụ-->
+          <div class="row-item-info">
+            <div class="label-field">Chức vụ</div>
+            <div class="value-field">
+              <div class="control-item">
+                <input maxlength="2000" formControlName="position" class="form-control w-100"
+                  placeholder="Nhập chức vụ">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="account-authority-create-address w-50">
+        <app-lpb-single-address #address [objCurrentAddress]="objCurrentAddress"></app-lpb-single-address>
+      </div>
+
+    </div>
+
+    <!-- cpn nội dung ủy quyền -->
+    <div class="account-authority-create">
+      <div class="account-authority-create-title">
+        <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">description</mat-icon>
+        <span class="text">NỘI DUNG ỦY QUYỀN</span>
+      </div>
+      <div class="w-100 d-flex justify-content-between account-authority-create-content">
+        <div class="account-authority-create-content-left">
+          <!--Loại Tài khoản-->
+          <div class="row-item-info">
+            <div class="label-field">Loại tài khoản</div>
+            <div class="value-field">
+              <div class="control-item">
+                <input maxlength="2000" [value]="accountType" class="form-control w-100" disabled>
+              </div>
+            </div>
+          </div>
+
+          <!--Phạm vi ủy quyền-->
+          <div class="row-item-info">
+            <div class="label-field">Phạm vi ủy quyền <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <div class="form-check no_selection" *ngFor="let authorType of lstAuthorType; let i = index">
+                  <input type="checkbox" [disabled]="i !== 0 && isDisableAuthorType"
+                    (change)="authorTypeChanged($event, authorType)" [checked]="authorType.selected"  class="form-check-input pointer-class"
+                    [id]="'authorType' + i">
+                  <label class="form-check-label pointer-class" [for]="'authorType' + i">{{authorType.name}}</label>
+                </div>
+                <textarea class="form-control noter" rows="3" *ngIf="isShowFreeText" [(ngModel)]="authorTypeFreeText"
+                  [ngModelOptions]="{standalone: true}" maxlength="1000"></textarea>
+              </div>
+              <span *ngIf="errAuthorType !== ''" class="error-msg">
+                {{errAuthorType}}
+              </span>
+            </div>
+          </div>
+
+          <!--Thời gian ủy quyền-->
+          <div class="row-item-info">
+            <div class="label-field">Thời gian ủy quyền <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <div class="rd-item no_selection mb-2 d-flex align-items-center"
+                  *ngFor="let authorExpire of lstAuthorExpire; let i = index">
+                  <input type="radio" class="pointer-class mr-2" [(ngModel)]="expireAuthorCode"
+                    (change)="authorExpireChanged()" [ngModelOptions]="{standalone: true}" [id]="'authorExprie' + i"
+                    [value]="authorExpire.code">
+                  <label [for]="'authorExprie' + i" class="pointer-class">
+                    {{authorExpire.name}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="account-authority-create-content-right">
+          <!--Số tài khoản-->
+          <div class="row-item-info">
+            <div class="label-field">Số tài khoản</div>
+            <div class="value-field">
+              <div class="control-item">
+                <input maxlength="2000" [value]="accountNumber" class="form-control w-100" disabled>
+              </div>
+            </div>
+          </div>
+
+          <!--Giá trị hạn mức-->
+          <div class="row-item-info">
+            <div class="label-field">Giá trị hạn mức</div>
+            <div class="value-field">
+              <div class="control-item">
+                <input maxlength="2000" [disabled]="isDisableInputAmount" [(ngModel)]="limitAmount"
+                  [ngModelOptions]="{standalone: true}" numbersOnly class="form-control w-100">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="w-100 d-flex justify-content-between account-authority-create-content">
+        <div class="account-authority-create-content-left">
+          <!--Từ ngày-->
+          <div class="row-item-info">
+            <div class="label-field">Từ ngày <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <app-lpb-date-picker #dpFromDateAuthority (blurInput)="blurFromDateAuthority()"
+                  (dateChanged)="fromDateAuthorityChanged()" class="w-100">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="account-authority-create-content-right">
+          <!--Đến ngày-->
+          <div class="row-item-info" [ngClass]="isShowToDateAuthority ? 'd-flex' : 'd-none'">
+            <div class="label-field">Đến ngày <span class="text-danger">(*)</span></div>
+            <div class="value-field">
+              <div class="control-item">
+                <app-lpb-date-picker #dpToDateAuthority (blurInput)="blurToDateAuthority()"
+                  (dateChanged)="toDateAuthorityChanged()" class="w-100">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+
+  <div style="height: 50px;display: block;clear: both;"></div>
+  <div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+    <div class="col-12" style="text-align: right;padding: 0px;margin: 0px;">
+      <div class="footer" *ngIf="isApprove" (click)="submitAuthority('SEND_APPROVE')">
+        <span class="material-icons"> check </span>
+        <label>Gửi duyệt</label>
+      </div>
+      <div class="footer" *ngIf="isSave" (click)="submitAuthority('SAVE')">
+        <span class="material-icons"> save</span>
+        <label>Lưu thông tin</label>
+      </div>
+      <div class="footer" (click)="backPage()">
+        <span class="material-icons"> keyboard_backspace </span>
+        <label>Quay lại</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-lpb-modal headerText="Danh sách khách hàng" [show]="isShowModalResult" [unit]="'%'" [widthContent]="65"
+  [heightContent]="50" (hideModal)="isShowModalResult = false">
+  <div class="tbl-data">
+    <table class="table table-striped">
+      <thead>
+        <tr class="text-nowrap">
+          <th>Tên khách hàng</th>
+          <th>Mã CIF</th>
+          <th>Số GTXM</th>
+          <th>Ngày cấp GTXM</th>
+          <th>Nơi cấp GTXM</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of lstResultSearchCustomer;let i = index" class="pointer-class"
+          [ngStyle]="{'background-color': i % 2 == 0  ? 'rgba(0,0,0,.05)' : null }"
+          (click)="getCustomerInfoESB(item.CUSTOMER_NO)">
+          <td>{{item.FULL_NAME}}</td>
+          <td>{{item.CUSTOMER_NO}}</td>
+          <td>{{item.UID_VALUE}}</td>
+          <td>{{item.NGAY_CAP }}</td>
+          <td>{{item.NOI_CAP}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="empty-data mb-2" *ngIf="lstResultSearchCustomer.length === 0">
+      Không tìm thấy kết quả
+    </div>
+    <div class="btn-action">
+      <button class="btn-close mr-2" (click)="isShowModalResult = false">Đóng</button>
+    </div>
+  </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Xác nhận" [show]="isShowPopupApprove" [unit]="'%'" [widthContent]="50" [heightContent]="50"
+  (hideModal)="isShowPopupApprove = false">
+  <div class="update-cif-content">
+    <div class="mb-2">
+      Bạn có muốn gửi duyệt dịch vụ này không?
+    </div>
+    <div class="block-note">
+      <label>Ghi chú:&nbsp;&nbsp;</label>
+      <textarea [(ngModel)]='noteApprove' class="form-control" cols="80" rows="7"></textarea>
+    </div>
+    <div class="text-center mt-2">
+      <button class="btn-cancel" (click)="isShowPopupApprove = false">
+        Hủy
+      </button>
+      <button class="btn-save ml-2" (click)="submitApprove()">
+        Đồng ý
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>

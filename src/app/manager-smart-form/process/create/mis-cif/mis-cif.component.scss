@@ -1,0 +1,41 @@
+@import '../../../../../popup';
+.colLeft {
+    padding: 0px;
+}
+
+.textLabel {
+    font-size: 14px;
+}
+
+.title-label {
+    color: #0C258A;
+    font-size: 18px;
+    line-height: 21px;
+    font-weight: bold;
+}
+
+// .row{
+//     margin: 0;
+// }
+.margin-10 {
+    margin: 10px;
+}
+
+.back-gray {
+    background: rgba(196, 196, 196, 0.2);
+    border-radius: 10px;
+}
+
+.pd0 {
+    padding: 0px;
+    margin-bottom: 5px;
+}
+
+.ng-select.is-invalid {
+    border: 1px solid #dc3545;
+    border-radius: .2rem;
+}
+
+.clear-css-actions {
+    margin-bottom: unset !important;
+}

@@ -1,0 +1,90 @@
+<div class="supplier">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between mt-1"
+  >
+    <span>Chi tiết thông tin nhà trường</span>
+  </div>
+  <div class="supplier-card mt-2">
+    <p class=title>Thông tin chung</p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Mã nhà trường</label>
+        <p class="text-content">{{university?.code}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Tên nhà trường</label>
+        <p class="text-content">{{university?.name}}</p>
+      </div>
+
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">ServiceID</label>
+        <p class="text-content">{{university?.universityMetadata.serviceId}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Số CIF</label>
+        <p class="text-content">{{university?.customerNo}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Số TK chuyên thu</label>
+        <p class="text-content">{{university?.accNo}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Số TK VAT</label>
+        <p class="text-content">{{university?.accVat}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Số TK thu phí DV</label>
+        <p class="text-content">{{university?.accFee}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Trạng thái</label>
+        <p class="text-content">
+          {{university?.statusCode === 'ACTIVE' ? 'Hoạt động' : 'Không hoạt động'}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="supplier-card">
+    <p class=title>Quy tắc thanh toán</p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Hình thức thanh toán</label>
+        <p class="text-content">{{university?.typeConnectName}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Loại kỳ thanh toán</label>
+        <p class="text-content">{{university?.typeSemesterPayName}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Loại hình thanh toán</label>
+        <p class="text-content">{{university?.typePaymentName}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="supplier-card">
+    <p class=title>Nội dung thanh toán</p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Tiền tố</label>
+        <p class="text-content">{{university?.universityMetadata.prefixFormat}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Chi tiết kỳ</label>
+        <p class="text-content">{{university?.universityMetadata.billFormat}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-lpb-footer></app-lpb-footer>

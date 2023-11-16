@@ -1,0 +1,141 @@
+.table tr th {
+    background: #EFF4FF;
+    border: 1px solid #DFD9D9;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    font-style: normal;
+    vertical-align: middle;
+}
+
+.table tr td {
+    border: 1px solid #DFD9D9;
+}
+
+.titleSearch {
+    padding-top: 15px;
+    border-bottom: 1px solid #BDBDBD;
+    padding-bottom: 15px;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+
+ul {
+    margin: 0px;
+    list-style: none;
+    font-style: italic;
+    font-size: 12px;
+    color: #828282;
+}
+
+.footer-row {
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+
+.footer {
+    padding: 6px;
+}
+
+.footer label {
+    margin-bottom: 0px;
+}
+
+.col-12 {
+    padding: 0 0 50px 0;
+    .form-full-size {
+        max-width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        .col-first {
+            width: 35%;
+            .branch-ntf {
+                width: 100%;
+                height: 70px;
+                border: 1px solid #BDBDBD;
+                display: table;
+                span {
+                    display: table-cell;
+                    vertical-align: middle;
+                }
+            }
+            .d-flex {
+                // display: block;
+                .account-no-col {
+                    display: block;
+                    width: 65%;
+                    .account-no {
+                        width: 100%;
+                        height: 100px;
+                        display: table;
+                        background-color: #EFF4FF;
+                        text-align: center;
+                        border: 1px solid #BDBDBD;
+                        span {
+                            vertical-align: middle;
+                            display: table-cell;
+                        }
+                    }
+                    .account-number {
+                        width: 100%;
+                        height: 50px;
+                        text-align: center;
+                        display: table;
+                        border: 1px solid #BDBDBD;
+                        span {
+                            vertical-align: middle;
+                            display: table-cell;
+                        }
+                    }
+                }
+                .fee-charge {
+                    width: 35%;
+                    .fee-charge-col {
+                        display: block;
+                        .fee-charge-title {
+                            width: 100%;
+                            height: 100px;
+                            display: table;
+                            background-color: #EFF4FF;
+                            text-align: center;
+                            border: 1px solid #BDBDBD;
+                            span {
+                                vertical-align: middle;
+                                display: table-cell;
+                            }
+                        }
+                        .fee-charge-radio {
+                            width: 100%;
+                            height: 50px;
+                            text-align: center;
+                            display: table;
+                            border: 1px solid #BDBDBD;
+                            input[type=radio] {
+                                vertical-align: middle;
+                                margin: 14px 0;
+                                width: 20px;
+                                height: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .col-second {
+            width: 65%;
+            overflow-x: scroll;
+        }
+    }
+}

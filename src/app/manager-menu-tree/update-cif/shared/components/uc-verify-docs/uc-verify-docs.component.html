@@ -1,0 +1,285 @@
+<div class="uc-verify-docs">
+  <div class="w-100">
+    <div class="uc-verify-docs-block">
+      <div class="row-item-info">
+        <div class="label-title fw-700">Thông tin GTXM 1</div>
+        <!-- <div class="label-action"></div> -->
+      </div>
+      <div class="row-item-info">
+        <div class="label-field">Loại GTXM<span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <select class="form-control form-control-sm w-100" #typeVerifyDocsFirst
+              [class.error-invalid]="errMsgTypeVerifyDocsFirst !== ''" (blur)="validateTypeVerifyDocsFirst()"
+              (change)="onChangeDocsTypeFirst($event.target.value)">
+              <option value="" disabled selected>Chọn loại GTXM 1</option>
+              <option *ngFor="let item of lstVerifyDocs" [value]="item.code">{{item.name}}
+              </option>
+            </select>
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[0] && lstPerDocsCore[0].perDocTypeName) ? lstPerDocsCore[0].perDocTypeName : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+          <div class="error-msg" *ngIf="errMsgTypeVerifyDocsFirst !== ''">{{errMsgTypeVerifyDocsFirst}}</div>
+        </div>
+        <div class="action-control ml-2">
+          <mat-icon class="plus" (click)="addOrRemoveNation('ADD')">add_circle_outline</mat-icon>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Số GTXM <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <input type="text" [(ngModel)]="verifyNumberDocsFirst" (blur)="validateVerifyNumberDocsFirst()" onPaste="return false"
+              maxlength="20" [ngModelOptions]="{standalone: true}" class="form-control w-100"
+              [class.error-invalid]="errMsgVerifyNumberDocsFirst !== ''">
+
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[0] && lstPerDocsCore[0].perDocNo) ? lstPerDocsCore[0].perDocNo : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+          <div class="error-msg" *ngIf="errMsgVerifyNumberDocsFirst !== ''">
+            {{errMsgVerifyNumberDocsFirst}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex" [ngClass]="dpDateSupplyFirst.errorMsg === '' ? 'align-items-center' : 'align-items-baseline'">
+            <app-lpb-date-picker #dpDateSupplyFirst class="w-100" (blurInput)="supplyDateFirstBlur()"
+                                 (dateChanged)="supplyDateFirstChange()"  (keydown)="detectTabKey($event)"></app-lpb-date-picker>
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[0] && lstPerDocsCore[0].issueDate) ? lstPerDocsCore[0].issueDate : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Nơi cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <input [(ngModel)]="provideByFirst"
+              [ngModelOptions]="{standalone: true}" type="text" class="form-control w-100"
+              [class.error-invalid]="errMsgProvideByFirst !== ''" (blur)="validateProvideByFirst()">
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[0] && lstPerDocsCore[0].issuePlace) ? lstPerDocsCore[0].issuePlace : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+          <div class="error-msg" *ngIf="errMsgProvideByFirst !== ''">
+            {{errMsgProvideByFirst}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày hết hiệu lực</div>
+        <div class="value-field">
+          <div class="control-item d-flex" [ngClass]="dpExpDateFirst.errorMsg === '' ? 'align-items-center' : 'align-items-baseline'">
+            <app-lpb-date-picker #dpExpDateFirst class="w-100" (blurInput)="validateExpDateFirst();selectValueExpDateFirst()"
+                                 (dateChanged)="validateExpDateFirst();selectValueExpDateFirst()"></app-lpb-date-picker>
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[0] && lstPerDocsCore[0].expireDate) ? lstPerDocsCore[0].expireDate : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="uc-verify-docs-block" [ngClass]="isShowDocsSecond ? 'd-block' : 'd-none'">
+      <div class="row-item-info">
+        <div class="label-title fw-700">Thông tin GTXM 2</div>
+        <!-- <div class="label-action"></div> -->
+      </div>
+      <div class="row-item-info">
+        <div class="label-field">Loại GTXM<span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <select class="form-control form-control-sm w-100" #typeVerifyDocsSecond
+              [class.error-invalid]="errMsgTypeVerifyDocsSecond !== ''" (blur)="validateTypeVerifyDocsSecond()"
+              (change)="onChangeDocsTypeSecond($event.target.value)">
+              <option value="" disabled selected>Chọn loại GTXM 2</option>
+              <option [value]="item.code" *ngFor="let item of lstVerifyDocs">{{item.name}}
+              </option>
+            </select>
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[1] && lstPerDocsCore[1].perDocTypeName) ? lstPerDocsCore[1].perDocTypeName : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+          <div class="error-msg" *ngIf="errMsgTypeVerifyDocsSecond !== ''">{{errMsgTypeVerifyDocsSecond}}</div>
+        </div>
+        <div class="action-control ml-2">
+          <mat-icon class="minus" (click)="addOrRemoveNation('REMOVE', 'SECOND')">remove_circle_outline
+          </mat-icon>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Số GTXM <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <input type="text" [(ngModel)]="verifyNumberDocsSecond" (blur)="validateVerifyNumberDocsSecond()" onPaste="return false"
+              maxlength="20" [ngModelOptions]="{standalone: true}" class="form-control w-100"
+              [class.error-invalid]="errMsgVerifyNumberDocsSecond !== ''">
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[1] && lstPerDocsCore[1].perDocNo) ? lstPerDocsCore[1].perDocNo : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+          <div class="error-msg" *ngIf="errMsgVerifyNumberDocsSecond !== ''">
+            {{errMsgVerifyNumberDocsSecond}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex" [ngClass]="dpDateSupplySecond.errorMsg === '' ? 'align-items-center' : 'align-items-baseline'">
+            <app-lpb-date-picker class="w-100" #dpDateSupplySecond (blurInput)="supplyDateSecondBlur()"
+                                 (dateChanged)="supplyDateSecondChange()" (keydown)="detectTabKey($event)"></app-lpb-date-picker>
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[1] && lstPerDocsCore[1].issueDate) ? lstPerDocsCore[1].issueDate : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Nơi cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <input [(ngModel)]="provideBySecond"
+              [ngModelOptions]="{standalone: true}" type="text" class="form-control w-100"
+              [class.error-invalid]="errMsgProvideBySecond !== ''" (blur)="validateProvideBySecond()">
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[1] && lstPerDocsCore[1].issuePlace) ? lstPerDocsCore[1].issuePlace : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+          <div class="error-msg" *ngIf="errMsgProvideBySecond !== ''">
+            {{errMsgProvideBySecond}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày hết hiệu lực</div>
+        <div class="value-field">
+          <div class="control-item d-flex" [ngClass]="dpExpDateSecond.errorMsg === '' ? 'align-items-center' : 'align-items-baseline'">
+            <app-lpb-date-picker #dpExpDateSecond class="w-100" (blurInput)="validateExpDateSecond();selectValueExpDateSecond()"
+                                 (dateChanged)="validateExpDateSecond();selectValueExpDateSecond()"></app-lpb-date-picker>
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[1] && lstPerDocsCore[1].expireDate) ? lstPerDocsCore[1].expireDate : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="uc-verify-docs-block" [ngClass]="isShowDocsThird ? 'd-block' : 'd-none'">
+      <div class="row-item-info">
+        <div class="label-title fw-700">Thông tin GTXM 3</div>
+        <!-- <div class="label-action"></div> -->
+      </div>
+      <div class="row-item-info">
+        <div class="label-field">Loại GTXM<span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <select class="form-control form-control-sm w-100" #typeVerifyDocsThird
+              [class.error-invalid]="errMsgTypeVerifyDocsThird !== ''" (blur)="validateTypeVerifyDocsThird()"
+              (change)="onChangeDocsTypeThird($event.target.value)">
+              <option value="" disabled selected>Chọn loại GTXM 1</option>
+              <option *ngFor="let item of lstVerifyDocs" [value]="item.code">{{item.name}}
+              </option>
+            </select>
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[2] && lstPerDocsCore[2].perDocTypeName) ? lstPerDocsCore[2].perDocTypeName : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+          <div class="error-msg" *ngIf="errMsgTypeVerifyDocsThird !== ''">{{errMsgTypeVerifyDocsThird}}</div>
+        </div>
+        <div class="action-control ml-2">
+          <mat-icon class="minus" (click)="addOrRemoveNation('REMOVE', 'THIRD')">remove_circle_outline
+          </mat-icon>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Số GTXM <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <input type="text" [(ngModel)]="verifyNumberDocsThird" (blur)="validateVerifyNumberDocsThird()" onPaste="return false"
+              maxlength="20" [ngModelOptions]="{standalone: true}" class="form-control w-100"
+              [class.error-invalid]="errMsgVerifyNumberDocsThird !== ''">
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[3] && lstPerDocsCore[3].perDocNo) ? lstPerDocsCore[3].perDocNo : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+          <div class="error-msg" *ngIf="errMsgVerifyNumberDocsThird !== ''">
+            {{errMsgVerifyNumberDocsThird}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex" [ngClass]="dpDateSupplyThird.errorMsg === '' ? 'align-items-center' : 'align-items-baseline'">
+            <app-lpb-date-picker #dpDateSupplyThird class="w-100" (blurInput)="supplyDateThirdBlur()"
+                                 (dateChanged)="supplyDateThirdChange()"  (keydown)="detectTabKey($event)"></app-lpb-date-picker>
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[3] && lstPerDocsCore[3].issueDate) ? lstPerDocsCore[3].issueDate : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Nơi cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <input [(ngModel)]="provideByThird"
+              [ngModelOptions]="{standalone: true}" type="text" class="form-control w-100"
+              [class.error-invalid]="errMsgProvideByThird !== ''" (blur)="validateProvideByThird()">
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[3] && lstPerDocsCore[3].issuePlace) ? lstPerDocsCore[2].issuePlace : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+          <div class="error-msg" *ngIf="errMsgProvideByThird !== ''">
+            {{errMsgProvideByThird}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày hết hiệu lực</div>
+        <div class="value-field">
+          <div class="control-item d-flex" [ngClass]="dpExpDateSecond.errorMsg === '' ? 'align-items-center' : 'align-items-baseline'">
+            <app-lpb-date-picker #dpExpDateThird class="w-100" (blurInput)="validateExpDateThird();selectValueExpDateThird()"
+                                 (dateChanged)="validateExpDateThird();selectValueExpDateThird()"></app-lpb-date-picker>
+            <mat-icon *ngIf="lstPerDocsCore" class="ic-info-core" #tooltip="matTooltip"
+                      [matTooltip]="'Dữ liệu Core: ' + ((lstPerDocsCore[3] && lstPerDocsCore[3].expireDate) ? lstPerDocsCore[3].expireDate : 'Không xác định')"
+                      matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="px-4 py-2">
+    <div class="text-high-light fw-medium text-lg-custom"> Tìm kiếm giao dịch
+    </div>
+    <hr>
+    <div class="pl-2">
+        <form [formGroup]="formSearch" (ngSubmit)="search()">
+            <div class="d-flex flex-wrap">
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Loại giao dịch</label>
+                    <div>
+                        <app-lpb-select2 [items]="transactionTypes" [config]="{'clearable':false}" labelName="label"
+                            bindValue="value" formControlName="transactionType">
+                        </app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Nhà cung cấp</label>
+                    <div>
+                        <app-lpb-select2 [apiUrl]="'/electric-service/supplier/active'" labelName="supplierName"
+                            bindValue="supplierCode" formControlName="supplierCode"
+                            placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Trạng thái</label>
+                    <div>
+                        <app-lpb-select2 [items]="statusTransactions" [config]="{'clearable':false}" labelName="label"
+                            bindValue="value" formControlName="statusTransaction">
+                        </app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Mã khách hàng</label>
+                    <div>
+                        <input type="text" formControlName="customerId" class="form-control w-100" trimInput
+                            placeholder="Nhập mã khách hàng">
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Số tiền</label>
+                    <div>
+                        <input type="text" formControlName="amount" class="form-control" decimal-mask maxlength="20"
+                            placeholder="Nhập số tiền tra cứu">
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Hình thức thanh toán</label>
+                    <div>
+                        <app-lpb-select2 [items]="paymentMethods" labelName="label" bindValue="value"
+                            formControlName="paymentMethod" placeholder="Chọn hình thức thanh toán">
+                        </app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Từ ngày</label>
+                    <div>
+                        <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="checkValidateDate()"
+                            (dateChanged)="getFromDate()"></app-lpb-date-picker>
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Đến ngày</label>
+                    <div>
+                        <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="checkValidateDate()"
+                            (dateChanged)="getToDate()"></app-lpb-date-picker>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 text-center">
+                <button type="submit" class="btn lpb-btn-primary" [disabled]="isLoading"> <i class="fa fa-search"></i>
+                    <span> Tìm kiếm</span>
+                </button>
+                <button type="button" (click)="retype()" class="btn bg-white ml-3 border text-high-light fw-bolder "><i
+                        class="fa fa-rotate-left text-high-light"></i> Nhập lại</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mt-5">
+        <app-lpb-datatable [config]="config" [searchConditions]="searchConditions" [isDisabledDelete]="isDisabledDelete"
+            [isDisabledReverse]="isDisabledReverse" (viewAction)="viewTransaction($event)" (printAction)="printAction($event)"
+            (deleteAction)="cancelTransaction($event)" (reverseAction)="reverseAction($event)" [columns]="columns"
+            apiServiceURL="/electric-service/transaction" tableName="Danh sách giao dịch"></app-lpb-datatable>
+    </div>
+</div>
+<div *ngIf="openModal" class="modal d-flex align-items-center bg-modal-opacity">
+    <div class="modal-dialog mw-100">
+        <div class="modal-content p-4 ">
+            <div class="d-flex justify-content-between">
+                <span class="fw-bolder"> In chứng từ </span>
+                <i type="button" class="material-icons" (click)="closeModal()">close</i>
+            </div>
+            <div class="text-center mt-3">
+                <button class="btn lpb-btn-primary min-w-100-px" (click)="printBill()"><i class="fa fa-print text-white"></i> In
+                    phiếu thu tiền</button>
+                <button class="btn lpb-btn-primary ml-2 min-w-100-px" (click)="printReceipt()"><i
+                        class="fa fa-print text-white"></i> In biên nhận</button>
+            </div>
+        </div>
+    </div>
+</div>

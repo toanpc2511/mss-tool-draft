@@ -1,0 +1,116 @@
+<div class="transaction-main">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between"
+  >
+    <div class="d-flex align-items-center">
+      <i class="fa fa-search mr-2"></i>
+      <span>Tra cứu thông tin khách hàng</span>
+    </div>
+  </div>
+
+  <div class="search px-4 mt-2">
+    <form [formGroup]="searchForm" (submit)="search()">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Loại giao dịch</span>
+          <ng-select [clearable]="false" formControlName="transactionType">
+            <ng-option
+              *ngFor="let type of transactionTypes"
+              [value]="type.value"
+            >{{ type.label }}</ng-option
+            >
+          </ng-select>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Chọn nhà cung cấp</span>
+          <ng-select formControlName="supplierCode" [clearable]="false">
+            <ng-option value="">Tất cả</ng-option>
+            <ng-option
+              *ngFor="let item of suppliers"
+              [value]="item.supplierCode"
+            >{{ item.supplierName }}</ng-option
+            >
+          </ng-select>
+        </div>
+        <ng-container *ngIf="transactionTypeValue === 'IN_PROCESS'">
+          <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+            <span>Trạng thái giao dịch</span>
+            <ng-select formControlName="status" [clearable]="false">
+              <ng-option
+                *ngFor="let status of statusTransaction"
+                [value]="status.value"
+              >{{ status.label }}</ng-option
+              >
+            </ng-select>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="transactionTypeValue === 'CHANGE_DEBT'">
+          <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+            <span>Trạng thái giao dịch</span>
+            <ng-select
+              [clearable]="false"
+              formControlName="changeDebtStatus"
+              placeholder="Chọn trạng thái giao dịch"
+            >
+              <ng-option value="IN_PROCESS">Chờ duyệt gạch nợ bổ sung</ng-option>
+              <ng-option value="SUCCESS">Đã duyệt</ng-option>
+              <ng-option value="REJECT">Từ chối</ng-option>
+            </ng-select>
+          </div>
+        </ng-container>
+
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Mã khách hàng</span>
+          <input
+            type="text"
+            formControlName="customerId"
+            placeholder="Nhập mã khách hàng"
+            class="form-control"
+            trimInput
+          />
+        </div>
+        <ng-container *ngIf="transactionTypeValue === 'CHECK'">
+          <div class="col-6 col-md-3 col-lg-4 pb-3 px-5 pr-md-1 pr-lg-5">
+            <span>Từ ngày:</span>
+            <app-lpb-date-picker
+              [maxDate]="getToday()"
+              (blurInput)="dateValidator()"
+              (dateChanged)="dateValidator()"
+              #dpFromDate
+            ></app-lpb-date-picker>
+          </div>
+          <div class="col-6 col-md-3 col-lg-4 pb-3 px-5 pl-md-1 pl-lg-5">
+            <span>Đến ngày:</span>
+            <app-lpb-date-picker
+              [maxDate]="getToday()"
+              (blurInput)="dateValidator()"
+              (dateChanged)="dateValidator()"
+              #dpToDate
+            ></app-lpb-date-picker>
+          </div>
+        </ng-container>
+      </div>
+      <div class="w-full d-flex justify-content-center g-2">
+        <button
+          mat-raised-button
+          type="submit"
+          class="d-inline-block bg-btn__blue text-while"
+        >
+          <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+          Tìm kiếm
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="mt-2">
+    <app-lpb-datatable
+      [config]="configTellerTb"
+      (viewAction)="showDetailModal($event)"
+      [columns]="columnsTeller"
+      [apiServiceURL]="apiServiceURL"
+      tableName="Danh sách giao dịch"
+    ></app-lpb-datatable>
+  </div>
+</div>
+
+<app-lpb-footer [actions]="actions"></app-lpb-footer>

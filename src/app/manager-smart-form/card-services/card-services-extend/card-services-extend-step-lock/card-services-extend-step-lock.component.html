@@ -1,0 +1,63 @@
+<app-card-services-form [formGroup]="formCustomerInfo" [title]="'KHÓA THẺ'" [isShowLoading]="isShowLoading"
+  [formType]="formType" (eventBackStep)="backToSearch($event)" (eventOpenModal)="openModal()" [showPinCount]="true">
+  <div class="field mb-2">
+    <span class="txtLabel">Dư nợ thẻ:</span>
+    <app-lpb-money-input [control]="formCustomerInfo.controls['totalOutStanding']" maxlength="1000"
+      [class]="'form-control'"></app-lpb-money-input>
+  </div>
+  <div class="field">
+    <span class="txtLabel">Lý do khóa thẻ <span class="text-danger">(*)</span> :</span>
+    <ng-select [multiple]="false" formControlName="reason" placeholder="Chọn lý do khóa thẻ"
+      (change)="changeLockReason($event)">
+      <ng-option *ngFor="let item of LOCK_STATUSES" [value]="item.code">{{item.name}}</ng-option>
+    </ng-select>
+    <div class="err-text mt-1 text-left p-0" *ngIf="hasErrorInput('reason', 'required')">Lý do khóa thẻ không
+      được bỏ trống
+    </div>
+  </div>
+  <div class="field">
+    <span class="txtLabel">Ngày hết hạn <span class="text-danger">(*)</span> :</span>
+    <input type="text" formControlName="expireDate" class="form-control">
+  </div>
+  <div class="field mb-2">
+    <span class="txtLabel">Ghi chú <span class="text-danger">(*)</span> :</span>
+    <textarea rows="1" [autoResize]="{height: 36, minHeight:36, maxHeight: 100}" type="text" formControlName="sendNote"
+      maxlength="1000" class="form-control"></textarea>
+    <div class="err-text mt-1 text-left p-0" *ngIf="hasErrorInput('sendNote', 'required')">Ghi chú không
+      được bỏ trống
+    </div>
+    <div class="err-text mt-1" *ngIf="hasErrorInput('reason', 'maxlength')">Ghi chú không được vượt quá 1000 ký tự</div>
+  </div>
+</app-card-services-form>
+
+<app-lpb-modal *ngIf="!showPendingPopup" [headerText]="modalHeaderTxt" [show]="showModal"
+  (hideModal)="showModal = false" [widthContent]="50" [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt" *ngFor="let line of modalContents">
+      <p>{{line}}</p>
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-denied mr-2" (click)="this.showModal = false">
+        Hủy bỏ
+      </button>
+      <button class="btn btn-accept" (click)="lockSubmit()">
+        Đồng ý
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>
+
+
+<app-lpb-modal *ngIf="showPendingPopup" headerText="Thông báo" [show]="showModal" (hideModal)="showModal = false"
+  [widthContent]="50" [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt" *ngFor="let line of modalContents">
+      <p>{{line}}</p>
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-accept" (click)="this.showModal = false">
+        Quay lại
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>

@@ -1,0 +1,124 @@
+.table tr th {
+    background: #EFF4FF;
+    border: 1px solid #DFD9D9;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    font-style: normal;
+}
+
+.table tr td {
+    border: 1px solid #DFD9D9;
+}
+
+.col-12 {
+    margin: 0;
+}
+
+.btn {
+    font-size: 14px;
+    &:hover {
+        color: #fff;
+    }
+}
+
+ul {
+    margin: 0px;
+    list-style: none;
+    font-style: italic;
+    font-size: 12px;
+    color: #828282;
+}
+
+.footer-row {
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+
+.footer {
+    padding: 6px !important;
+}
+
+.hoverTr:hover {
+    cursor: pointer;
+    background: #E8E8E8;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+
+.material-icon {
+    color: #007bff;
+    display: block;
+    float: left;
+}
+
+.form {
+    form-layout {
+        height: auto;
+        width: 100%;
+    }
+}
+
+.label-title {
+    font-size: 18px;
+    line-height: 21px;
+    text-align: right;
+    color: #384961;
+}
+
+.label-infor {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: #384961;
+}
+
+.mat-icon {
+    font-size: 20px;
+    display: block;
+    float: left;
+}
+
+.error-message {
+    font-size: 16px;
+}
+
+input[type=radio] {
+    width: 20px;
+    height: 20px;
+    background: #FFFFFF;
+    border: 1px solid #C1CCDA;
+    box-sizing: border-box;
+}
+
+.explain-text {
+    width: 95%;
+    height: 100px;
+}
+
+@media (max-width: 1366px) {
+    mat-icon {
+        font-size: 25px !important;
+        margin-top: 2px !important;
+    }
+    .line-base {
+        padding: 0 !important;
+    }
+    .error-message {
+        font-size: 14px;
+    }
+    input[type=radio] {
+        width: 15px;
+        height: 15px;
+    }
+}

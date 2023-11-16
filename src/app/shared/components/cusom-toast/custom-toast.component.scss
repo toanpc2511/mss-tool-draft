@@ -1,0 +1,68 @@
+:host {
+  background-color: #f5f7f9 !important;
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 6px;
+  padding: 10px;
+  width: 450px;
+  border-radius: 3px;
+  color: #000;
+  pointer-events: all;
+  cursor: pointer;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+:host.border-success {
+  border-left: 4px solid #28a138;
+}
+:host.border-warning {
+  border-left: 4px solid #df7b00;
+}
+:host.border-error {
+  border-left: 4px solid #d21c1c;
+}
+:host {
+  &.toast-error,
+  &.toast-success,
+  &.toast-warning {
+    background-image: none;
+  }
+}
+.toast-close-button {
+  color: #999;
+  opacity: 1;
+}
+.toast-close-button:hover {
+  color: #02ceff;
+}
+
+.custom-title {
+  color: #111;
+}
+.custom-message {
+  color: #333;
+}
+.toastr-action {
+  margin-top: 6px;
+  button {
+    color: #fff;
+    min-width: 90px;
+    margin: 0 6px;
+
+    &.error {
+      background: #d21c1c !important;
+    }
+    &:first-child {
+      background: #28a138;
+    }
+    &:last-child {
+      background: #253c97;
+    }
+  }
+}
+
+.toast-icon {
+  i {
+    font-size: 24px;
+  }
+}

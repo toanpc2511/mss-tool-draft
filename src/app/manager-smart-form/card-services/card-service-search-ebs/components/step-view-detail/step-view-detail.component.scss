@@ -1,0 +1,70 @@
+.card-inssuance-request-step-send {
+  background-color: white;
+  border-top: 1px solid #bdbdbd;
+  padding: 0 10px;
+  height: 100%;
+  .content-title {
+    color: #17589f;
+    border-bottom: 2px solid #F47326;
+    padding: 8px 0;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+    place-self: flex-start;
+  }
+  .form-detail {
+    .row-fields {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 0 !important;
+      .form-search-title {
+        span {
+          font-weight: 500;
+          font-size: 16px;
+          color: #17589f;
+        }
+      }
+      .field {
+        max-width: 50%;
+        width: calc(50% - 16px);
+        margin-bottom: 16px;
+        .txtLabel {
+          font-weight: 500;
+          color: #17589f;
+        }
+      }
+      span {
+        font-weight: 500;
+        color: #17589f;
+      }
+    }
+  }
+}
+.form-control:focus {
+  box-shadow: unset !important;
+}
+.btn-action {
+  font-weight: 400;
+  color: #FFFFFF;
+  padding: 0 10px;
+  &:hover {
+    background-color: #0e1d58;
+  }
+}
+
+.clear{
+  height: 80px;
+}
+
+.footer-row {
+  padding: 0;
+  background: #23388f;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  margin: 0;
+  z-index: 10;
+  height: 40px;
+}

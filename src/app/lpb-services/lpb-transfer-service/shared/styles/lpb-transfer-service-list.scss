@@ -1,0 +1,65 @@
+@import "/src/app/shared/styles/lpb-table";
+@import "/src/app/shared/styles/palette.style.scss";
+
+.finance-body {
+  background-color: white;
+  border-top: 1px solid #bdbdbd;
+  padding: 0 10px;
+  min-height: 100%;
+  height: auto;
+}
+
+.content-title {
+  color: $primary-main;
+  align-self: center;
+  font-size: 16px;
+  font-weight: 500;
+  place-self: flex-start;
+  margin-top: 8px;
+  height: fit-content;
+  display: block;
+  span {
+    padding: 8px 0;
+    cursor: pointer;
+    display: block;
+    &.active {
+      cursor: auto;
+      border-bottom: 2px solid $secondary-main;
+    }
+  }
+  i {
+    color: #17589f;
+  }
+}
+.text-title {
+  color: $primary-main;
+}
+.font-weight-semibold {
+  font-weight: 500;
+}
+hr {
+  border-color: #bdbdbd;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  &.h-1px {
+    border: 1px solid #bdbdbd;
+    display: block;
+  }
+}
+
+.h-1 {
+  height: 1px;
+}
+.h-i {
+  height: inherit;
+}
+:host ::ng-deep {
+  .ng-invalid.ng-touched,
+  .ng-invalid.ng-dirty,
+  ng-select.ng-invalid.ng-touched .ng-select-container,
+  app-lpb-select2.ng-touched.ng-invalid .ng-select-container,
+  app-lpb-select2.ng-invalid ng-select.ng-touched .ng-select-container {
+    border-color: #dc3545 !important;
+  }
+}

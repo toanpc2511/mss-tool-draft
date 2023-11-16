@@ -1,0 +1,72 @@
+.form-group {
+    margin-bottom: 7px;
+}
+
+ul {
+    margin: 0px;
+    list-style: none;
+    font-style: italic;
+    font-size: 12px;
+    color: #828282;
+}
+
+.message {
+    color: #17589f
+}
+
+.btn-cancel {
+    background-color: #eb5757;
+    border: 1px solid #eb5757;
+    border-radius: 8px;
+    color: #fff;
+    width: 140px;
+    height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 23px;
+    border-style: solid;
+    outline: none
+}
+
+.btn-save {
+    background: #0C258A;
+    border: 1px solid #0C258A;
+    border-radius: 8px;
+    width: 140px;
+    height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 23px;
+    color: #FFFFFF;
+    border-style: solid;
+    outline: none;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+
+.footer-row {
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+
+.footer {
+    padding: 6px;
+}
+
+.footer label {
+    margin-bottom: 0px;
+}
+
+.txt-italic {
+    font-style: italic;
+}

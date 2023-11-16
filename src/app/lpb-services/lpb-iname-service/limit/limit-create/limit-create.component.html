@@ -1,0 +1,122 @@
+<div class="d-flex flex-column mb-5">
+  <div class="form-search d-flex flex-column">
+    <div class="content-title pr-2 mt-3">
+      <i class="fa fa-search mr-2 txtLabel"></i> THÔNG TIN CHUNG
+    </div>
+    <hr/>
+    <div class="container mt-3">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Kí tự, chuỗi <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.characterName)"
+                       placeholder="Nhập kí tự, chuỗi" type="text" formControlName="characterName" appNoSpaceString>
+                <app-validate [control]="$any(form).controls['characterName']" error="required"
+                              message="Kí tự, chuỗi không được bỏ trống"></app-validate>
+                <app-validate [control]="$any(form).controls['characterName']" error="maxlength"
+                              message="Không được vượt quá 20 kí tự"></app-validate>
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Tiêu thức <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <app-lpb-select2 [apiUrl]="'/iname-service/common?groupType=Method_Type'"
+                                 labelName="name" bindValue="id" [config]="{isNewApi: true}"
+                                 formControlName="methodTypeId"
+                                 [className]="FormHelpers.isValidClass(registerForm.methodTypeId)"
+                                 placeholder="Chọn tiêu thức"></app-lpb-select2>
+                <app-validate [control]="$any(form).controls['methodTypeId']" error="required"
+                              message="Tiêu thức không được bỏ trống"></app-validate>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Loại <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <app-lpb-select2 [apiUrl]="'/iname-service/common?groupType=Limit_Type'"
+                                 labelName="name" bindValue="id" [config]="{isNewApi: true}"
+                                 formControlName="limitTypeId"
+                                 (handleData)="handleDataSelect($event)"
+                                 [className]="FormHelpers.isValidClass(registerForm.limitTypeId)"
+                                 placeholder="Chọn loại"></app-lpb-select2>
+                <app-validate [control]="$any(form).controls['limitTypeId']" error="required"
+                              message="Loại không được bỏ trống"></app-validate>
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Đối tượng áp dụng</span>
+              <div class="col-lg-8">
+                <app-lpb-select2 [apiUrl]="'/iname-service/common?groupType=Customer_Type'"
+                                 labelName="name" bindValue="id" [config]="{isNewApi: true}"
+                                 formControlName="customerTypeId"
+                                 [className]="FormHelpers.isValidClass(registerForm.customerTypeId)"
+                                 placeholder="Chọn đối tượng áp dụng"></app-lpb-select2>
+                <app-validate [control]="$any(form).controls['customerTypeId']" error="required"
+                              message="Đối tượng áp dụng không được bỏ trống"></app-validate>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Ngày áp dụng <span class="text-danger">(*)</span></span>
+              <div class="col-8">
+                <app-lpb-datepicker-new formControlName="startDate" [minDate]="minDate"
+                                        [className]="FormHelpers.isValidClass(registerForm.startDate) + FormHelpers.isValidClass(form)"></app-lpb-datepicker-new>
+                <app-validate [control]="registerForm.startDate" error="required"
+                              message="Ngày áp dụng không được bỏ trống"></app-validate>
+                <div *ngIf="form.errors?.dateRange">
+                  <span  class="text-danger mt-1 d-block small">
+                    Ngày áp dụng không được lớn hơn ngày hết hiệu lực
+                  </span>
+                </div>
+                <!--                {{registerForm.startDate.errors | json }}-->
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Ngày hết hiệu lực </span>
+              <div class="col-8">
+                <app-lpb-datepicker-new formControlName="endDate" [minDate]="minDate"
+                                        [className]="FormHelpers.isValidClass(registerForm.endDate)"></app-lpb-datepicker-new>
+                <!--                <app-validate [control]="registerForm.endDate" error="required"-->
+                <!--                              message="Ngày hết hiệu không được bỏ trống"></app-validate>-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="isBeautyNumber">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Đơn giá <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.price)"
+                       placeholder="Nhập đơn giá" type="text" formControlName="price" decimal-mask>
+                <app-validate [control]="registerForm.price" error="required"
+                              message="Đơn giá không được bỏ trống"></app-validate>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<app-lpb-footer style="bottom: 0px" [actions]="actions"
+                class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

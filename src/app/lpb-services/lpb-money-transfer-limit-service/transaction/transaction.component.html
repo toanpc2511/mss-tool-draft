@@ -1,0 +1,130 @@
+<div class="finance-body" style="padding-bottom: 10px">
+  <div class="step-search d-flex flex-column">
+    <div class="content-title pt-2 ">
+      <i class="fa fa-search mr-2 txtLabel"></i>
+      TÌM KIẾM
+    </div>
+    <hr/>
+    <!-- Search Form -->
+    <div class="form-search d-flex flex-column">
+      <form [formGroup]="formSearch" class="container" (ngSubmit)="onSearch()">
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Mã giao dịch</span>
+              <span class="col-8">
+              <input class="form-control"
+                     placeholder="Nhập Mã giao dịch" type="text" formControlName="transId">
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Hộ chiếu</span>
+              <span class="col-8">
+                        <input class="form-control"
+                               placeholder="Nhập hộ chiếu" type="text" formControlName="customerPassport">
+
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Loại giao dịch</span>
+              <span class="col-8">
+
+                <app-lpb-select2 [apiUrl]="API_BASE_URL + '/common?groupType=TRANS_TYPE'"
+                                 labelName="name" bindValue="code" [config]="selectConfig"
+                                 formControlName="transType"
+                                 multiple="true"
+                                 placeholder="Chọn Loại giao dịch"></app-lpb-select2>
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Trạng thái</span>
+              <span class="col-8">
+                 <app-lpb-select2 [apiUrl]="API_BASE_URL + '/common?groupType=TRANS_STATUS'"
+                                  labelName="name" bindValue="code" [config]="selectConfig"
+                                  formControlName="status"
+                                  placeholder="Chọn trạng thái"></app-lpb-select2>
+
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Ngày giao dịch</span>
+              <span class="col-8">
+                <div class="form-row">
+                  <div class="col-6">
+                  <app-lpb-datepicker-new formControlName="fromDate" placeholder="Từ ngày"></app-lpb-datepicker-new>
+
+                  </div>
+
+                  <div class="col-6">
+                   <app-lpb-datepicker-new formControlName="toDate"
+                                             placeholder="Tới ngày"></app-lpb-datepicker-new>
+                  </div>
+                </div>
+
+
+              </span>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="submit">
+              Tìm kiếm
+              <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="button" (click)="exportExcel()">
+              Export
+              <i class="fa fa-download ic-in-primary" aria-hidden="true"></i>
+            </button>
+            <div>Tải tập tin mẫu <a type="button" class="text-high-light fw-bolder"
+                                    (click)="downloadTemplate()">tại đây</a></div>
+            <!--            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="button" (click)="downloadTemplate()">-->
+            <!--              Template-->
+            <!--              <i class="fa fa-download ic-in-primary" aria-hidden="true"></i>-->
+            <!--            </button>-->
+
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Search Form -->
+    <hr class="h-1px"/>
+    <ng-template #info>
+      <div class="px-4 pt-3 bg mt-2 temp" style="background:#F1F3F6;">
+        <div class="py-1 d-flex justify-content-between">
+          <div class="temp-content">
+            <!--            <p>Tổng số: <strong>5</strong> bản ghi</p>/-->
+            <!--            <p><span class="record success"></span>Số bản ghi hợp lệ: <strong>{{totalValid}}</strong></p>-->
+            <!--            <p><span class="record error"></span>Số bản ghi không hợp lệ: <strong class="text-danger">15</strong></p>-->
+          </div>
+          <p class="text-down" style="cursor: pointer" (click)="downloadError()"><i class="fa fa-download mr-2"
+                                                                                    aria-hidden="true"></i>Tải xuống
+            giao dịch không hợp lệ</p>
+        </div>
+        <!--        <p *ngIf="totalRecordError > 0" class="text-message pb-2">{{ message }}</p>-->
+      </div>
+    </ng-template>
+    <app-lpb-datatable tableName="DANH SÁCH GIAO DỊCH" [config]="datatableConfig" [searchConditions]="searchCondition"
+                       (chkAll)="chkAll($event)" (getRowSelected)="chkAll($event)"
+                       [checkboxConfig]="checkboxConfig" [templateOther]="info"
+                       [isDisabledUpdate]="isDisabledUpdate" (deleteAction)="delete($event)"
+                       (editAction)="edit($event)" (viewAction)="view($event)" [columns]="columns"
+                       apiServiceURL="/money-transfer-limit-service/transaction"></app-lpb-datatable>
+
+  </div>
+</div>
+<app-lpb-footer (onApprove)="approve()" [hiddenBackButton]="true" (onReject)="reject()"></app-lpb-footer>
+

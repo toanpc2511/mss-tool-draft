@@ -1,0 +1,325 @@
+<div class="abc">
+  <div>
+    <h2 class="border-header-popup" mat-dialog-title
+      style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;padding:15px">
+      THÔNG TIN MIS
+      <span class="material-icons" (click)="closeDialog(0)" style="float: right;cursor: pointer;">
+        close
+      </span>
+    </h2>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="misForm">
+
+      <div class="col-12 p-0">
+        <div class="row d-flex justify-content-around m-0">
+          <div class="col-6">
+            <div class="margin-10 back-gray py-3 my-3">
+              <div class="col-12 text-center title-label mb-3">Thông tin chung</div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-4 col-form-label textLabel">CIF_LHKT
+                  </label>
+                  <div class="col-8 ">
+                    <ng-select [items]="lstMenuCif.lstMisCifLHKT" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn CIF_LHKT --" formControlName="CIF_LHKT" name="CIF_LHKT">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">CIF_KH78<span
+                      style="margin-left: 5px; color: red;">(*)</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <ng-select placeholder="-- Chọn CIF_KH78 --" [items]="lstMenuCif.lstMisCifKH78" bindLabel="name"
+                      bindValue="code" [ngClass]="{ 'is-invalid': submitted && f.CIF_KH78.errors}" bindLabel="codeName"
+                      bindValue="code" formControlName="CIF_KH78" name="CIF_KH78">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                    <div *ngIf="submitted && f.CIF_KH78.errors" class="invalid-feedback">
+                      <div>{{textMessage.contentCIF_KH78}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">CIF_MANKT
+                  </label>
+                  <div class="col-sm-8">
+                    <ng-select [items]="lstMenuCif.lstMisCifMANKT" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn CIF_MANKT --" formControlName="CIF_MANKT" name="CIF_MANKT">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">CIF_TPKT
+                    <span style="margin-left: 5px; color: red;">(*)</span>
+                  </label>
+                  <div class="col-sm-8 ">
+                    <ng-select [items]="lstMenuCif.lstMisCifTPKT" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn CIF_TPKT --" [ngClass]="{ 'is-invalid': submitted && f.CIF_TPKT.errors}"
+                      bindLabel="name" bindValue="code" formControlName="CIF_TPKT" name="CIF_TPKT">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                    <div *ngIf="submitted && f.CIF_TPKT.errors" class="invalid-feedback">
+                      <div>{{textMessage.contentCIF_TPKT}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">CIF_KBHTG
+                  </label>
+                  <div class="col-sm-8 ">
+                    <ng-select [items]="lstMenuCif.lstMisCifKBHTG" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn CIF_KBHTG --" formControlName="CIF_KBHTG" name="CIF_KBHTG">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="margin-10 back-gray  py-3 my-3">
+              <div class="col-12 text-center title-label mb-3">Thông tin vay</div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">CIF_PNKH
+                  </label>
+                  <div class="col-sm-8">
+                    <ng-select [items]="lstMenuCif.lstMisCifPNKH" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn loại CIF_PNKH --" formControlName="CIF_PNKH" name="CIF_PNKH">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">CIF_LOAI
+                  </label>
+                  <div class="col-sm-8 ">
+                    <ng-select [items]="lstMenuCif.lstMisCifType" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn loại CIF --" formControlName="CIF_LOAI" name="CIF_LOAI">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">LHNNNTVAY
+                  </label>
+                  <div class="col-sm-8 ">
+                    <ng-select [items]="lstMenuCif.lstMisCifLHNNNTVAY" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn LHNNNTVAY --" formControlName="LHNNNTVAY" name="LHNNNTVAY">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">TD_MANKT
+                  </label>
+                  <div class="col-sm-8 ">
+                    <ng-select [items]="lstMenuCif.lstMisCifTDMANKT" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn TD_MANKT --" formControlName="TD_MANKT" name="TD_MANKT">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">CIF_NGANH
+                  </label>
+                  <div class="col-sm-8 ">
+                    <ng-select [items]="lstMenuCif.lstMisCifNGANH" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn CIF_NGANH --" formControlName="CIF_NGANH" name="CIF_NGANH">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">COM_TSCT
+                  </label>
+                  <div class="col-sm-8">
+                    <ng-select [items]="lstMenuCif.lstMisCifComTSCT" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn COM_TSCT --" formControlName="COM_TSCT" name="COM_TSCT">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <div class="row">
+                  <label class="col-sm-4 col-form-label textLabel">DC_GH
+                  </label>
+                  <div class="col-sm-8">
+                    <ng-select [items]="lstMenuCif.lstMisCifDCGH" bindLabel="name" bindValue="code"
+                      placeholder="-- Chọn DC_GH --" formControlName="DC_GH" name="DC_GH">
+                      <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                        <div class="ng-option disabled">
+                          Không tìm thấy dữ liệu
+                        </div>
+                      </ng-template>
+                      <ng-template ng-label-tmp let-item="item">
+                        <span>{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                      <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                        <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions class="clear-css-actions">
+    <div class="float-right col-12" style="height: 57px;
+        margin-top: 9px;display: block;text-align: right;">
+      <button type="button" class="btn newfile btn-color" [hidden]="this.data.isViewMode" (click)="save(1)"
+        cdkFocusInitial>Lưu
+      </button>
+      <button type="button" class="btn closePopup" (click)="closeDialog(0)">Đóng</button>
+    </div>
+  </mat-dialog-actions>
+</div>

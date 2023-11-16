@@ -1,0 +1,96 @@
+.titleSearch {
+    padding-top: 15px;
+    border-bottom: 1px solid #BDBDBD;
+    padding-bottom: 15px;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+
+/* .colLeft{
+    float: left;
+    padding-bottom: 50px;
+}
+.colRight{
+    float: left;
+} */
+
+.infor-address {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+    padding: 5px 0;
+}
+
+.txt {
+    padding-top: calc(.375rem + 1px);
+}
+
+.table tr th {
+    background: #EFF4FF;
+    border: 1px solid #DFD9D9;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    font-style: normal;
+}
+
+.table tr td {
+    border: 1px solid #DFD9D9;
+}
+
+.ft {
+    clear: both;
+    height: 57px;
+    background: #23388F;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+
+
+/* menu trêe */
+
+.example-tree-invisible {
+    display: none;
+}
+
+.footer-row {
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+
+.footer {
+    padding: 6px;
+}
+
+.example-tree ul,
+.example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+.example-tree-progress-bar {
+    margin-left: 30px;
+}
+
+.example-tree-nested-node {
+    padding-left: 30px;
+}

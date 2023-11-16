@@ -1,0 +1,90 @@
+<div class="row cust-row" style="margin-left: 5px; margin-right: 3px;">
+    <div class="col-12 line-base">
+        <div class="title-head">
+            <mat-icon style="font-size: 30px; height: 30px; width: 38px;">add_circle</mat-icon>
+            <span class="text" style="padding: 5px 0;">THÔNG TIN HỒ SƠ</span>
+        </div>
+    </div>
+
+    <div class="col-12 information-section">
+        <div class="col-6 colLeft">
+            <div class="row ">
+                <label class="col-sm-4 col-form-label textLabel">Mã khách hàng:</label>
+                <div class="col-sm-8 txt">
+                    <label *ngIf="process.item?.customer.customerCode === null">XXXXXX</label>
+                    <label>{{process.item?.customer.customerCode}}</label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-4 col-form-label textLabel">Mã ĐVKD:</label>
+                <div class="col-sm-8 txt">
+                    <label>{{process.item?.customer?.branch?.code}} - {{process.item?.customer?.branch?.name}}</label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-4 col-form-label textLabel">Người tạo:</label>
+                <div class="col-sm-8 txt">
+                    <!-- <label>{{process.item?.createdByUser.fullName}}</label> -->
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-4 col-form-label textLabel">Người duyệt:
+                </label>
+                <div class="col-sm-8 txt">
+                    <!-- <label>{{process.item?.modifiedByUser.fullName}}</label> -->
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-4 col-form-label textLabel">Trạng thái CIF:
+                </label>
+                <div class="col-sm-8 txt">
+                    <label></label>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 colRight">
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Trạng thái GD:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label></label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Loại giao dịch:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label>Tại quầy</label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Mã giao dịch gần nhất:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label></label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Ngày tạo:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label></label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Ngày cập nhật gần nhất:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label></label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Kênh tạo:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label>Tại quầy</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

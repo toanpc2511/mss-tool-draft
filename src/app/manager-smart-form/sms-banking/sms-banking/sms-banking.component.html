@@ -1,0 +1,74 @@
+<div class="container-fuild">
+    <div class="row cust-row">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+
+            <app-process-info [processId]="processId"></app-process-info>
+        </div>
+
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; border-top: 1px solid #c8ced3;">
+            <div class="title-head">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px;">account_balance_wallet</mat-icon>
+                <span class="text" style="padding: 5px 0;">DANH MỤC ĐĂNG KÝ</span>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <tr>
+                <th class="text-center">STT</th>
+                <th>Ngày tạo</th>
+                <th>Số tài khoản</th>
+                <th>Chi nhánh</th>
+                <th class="text-center">Trạng thái</th>
+                <th class="text-center">Trạng thái Mobile</th>
+                <th>Thao tác</th>
+            </tr>
+
+            <tr>
+                <td class="text-center">1</td>
+                <td>22/01/2000</td>
+                <td class="accountNumber">42710000459949</td>
+                <td>BIDV Anh Minh</td>
+                <td>Khởi tạo</td>
+                <td>Khởi tạo</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td class="text-center">1</td>
+                <td>22/01/2000</td>
+                <td class="accountNumber">42710000459949</td>
+                <td>BIDV Anh Minh</td>
+                <td>Khởi tạo</td>
+                <td>Khởi tạo</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td class="text-center">1</td>
+                <td>22/01/2000</td>
+                <td class="accountNumber">42710000459949</td>
+                <td>BIDV Anh Minh</td>
+                <td>Khởi tạo</td>
+                <td>Khởi tạo</td>
+                <td>1</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="row footer-row">
+    <div class="col-12">
+
+        <div class="footer">
+            <span class="material-icons">
+                add </span>
+            <label class="btn-action" (click)="addNew()">Thêm mới</label>
+        </div>
+        <div class="footer">
+            <span class="material-icons">
+                add </span>
+            <label class="btn-action">View</label>
+        </div>
+        <div class="footer" (click)="backPage()">
+            <span class="material-icons"> keyboard_backspace </span>
+            <label class="btn-action">Quay lại</label>
+        </div>
+    </div>
+</div>

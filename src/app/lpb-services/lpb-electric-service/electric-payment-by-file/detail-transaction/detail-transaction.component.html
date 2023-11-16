@@ -1,0 +1,21 @@
+<div class="content">
+  <p class="content-title">{{title}}</p>
+  <div class="py-2">
+    <mat-horizontal-stepper [linear]=false (selectionChange)="getSelected($event)">
+      <ng-template matStepperIcon="edit">
+        <mat-icon>done</mat-icon>
+      </ng-template>
+      <mat-step label="Giao dịch nộp tiền">
+        <app-tab-one [data]="dataStepOne"></app-tab-one>
+      </mat-step>
+      <mat-step label="Giao dịch gạch nợ">
+        <app-tab-two [data]="dataStepTwo"></app-tab-two>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</div>
+
+<app-lpb-footer
+  [actions]="actions" [hiddenBackButton]="true"
+  class="z-index-footer position-fixed bottom-0 w-100"
+></app-lpb-footer>

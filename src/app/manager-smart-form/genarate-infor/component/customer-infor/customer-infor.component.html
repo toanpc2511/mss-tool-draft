@@ -1,0 +1,124 @@
+<div class="row cust-row" style="margin-top: 5px; margin-left: 5px; margin-right: 3px;">
+    <div class="col-12 line-base">
+        <div class="title-head">
+            <mat-icon style="font-size: 30px; height: 30px; width: 38px;">account_balance_wallet</mat-icon>
+            <span class="text" style="padding: 5px 0;">THÔNG TIN KHÁCH HÀNG</span>
+        </div>
+    </div>
+
+    <div class="col-12" style="padding-top: 30px; padding-bottom: 30px;">
+        <div class="col-6 colLeft">
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Họ và tên:</label>
+                <div class="col-sm-7 txt">
+                    <label>{{process.item?.customer.person.fullName}}</label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Ngày sinh:</label>
+                <div class="col-sm-7 txt">
+                    <label>{{process.item?.customer.person.dateOfBirth | date:'dd/MM/yyyy' }}</label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Người cư trú:</label>
+                <div class="col-sm-7 txt">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input checked" disabled name="exampleRadios" type="radio" id="exampleRadios1" [checked]="process.item?.customer.person.residentStatus">
+                        <label class="form-check-label" for="exampleRadios1" style="color: black">Có</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" disabled name="exampleRadios" type="radio" id="exampleRadios2" [checked]="!process.item?.customer.person?.residentStatus">
+                        <label class="form-check-label" for="exampleRadios2" style="color: black">Không</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row " *ngFor="let item of process.item?.customer.person.perDocNoList;let i = index">
+                <label class="col-sm-5 col-form-label textLabel">Số giấy tờ xác minh::
+                </label>
+                <div class="col-sm-7 txt">
+                    <label class="">{{item.perDocNo}}</label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Địa chỉ hiện tại:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label class="">{{process.item?.customer.person.residenceStreetNumber }}</label> -
+                    <label class="">{{process.item?.customer.person.residenceWardName}}</label> -
+                    <label class="">{{process.item?.customer.person.residenceDistrictName}}</label> -
+                    <label class="">{{process.item?.customer.person.residenceCityName}}</label> -
+                    <label class="">{{process.item?.customer.person.residenceCountryName}}</label>
+                </div>
+            </div>
+
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Tổng số dư TKTT:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label></label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Tổng số dư TKTK:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 colRight">
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Giới tính:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label class="">{{process.item?.customer.person.genderName}}</label>
+
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Địa chỉ email:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label class="">{{process.item?.customer.person.email}}</label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Điện thoại di động:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label class="">{{process.item?.customer.person.mobileNo}}</label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Dư nợ vay:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label></label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Số tiền đã thấu chi:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label></label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Hạn mức thấu chi:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label></label>
+                </div>
+            </div>
+            <div class="row ">
+                <label class="col-sm-5 col-form-label textLabel">Tổng dư nợ:
+                </label>
+                <div class="col-sm-7 txt">
+                    <label></label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="finance-body" style="padding-bottom: 10px">
+  <div class="step-search d-flex flex-column">
+    <div class="content-title pt-2 ">
+      <i class="fa fa-search mr-2 txtLabel"></i>
+      TÌM KIẾM
+    </div>
+    <hr/>
+    <!-- Search Form -->
+    <div class="form-search d-flex flex-column">
+      <form [formGroup]="formSearch" class="container" (ngSubmit)="onSearch()">
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Loại tiền</span>
+              <span class="col-8">
+
+                <app-lpb-select2 [apiUrl]="API_BASE_URL + '/common?groupType=CURRENCY_CODE'"
+                                 labelName="name" bindValue="code" [config]="{isNewApi: true}"
+                                 formControlName="currencyCode"
+                                 multiple="true"
+                                 placeholder="Nhập Mã nguyên tệ"></app-lpb-select2>
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Trạng thái</span>
+              <span class="col-8">
+                 <app-lpb-select2 [apiUrl]="API_BASE_URL + '/common?groupType=STATUS'"
+                                  labelName="name" bindValue="code" [config]="selectConfig"
+                                  formControlName="status.code" multiple="true"
+                                  placeholder="Chọn trạng thái"></app-lpb-select2>
+
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="submit">
+              Tìm kiếm
+              <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="button" (click)="exportExcel()">
+              Export
+              <i class="fa fa-download ic-in-primary" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Search Form -->
+    <hr class="h-1px"/>
+    <app-lpb-datatable tableName="DANH SÁCH" [config]="datatableConfig" [searchConditions]="searchCondition" (deleteAction)="delete($event)"
+                       (chkAll)="chkAll($event)" (getRowSelected)="chkAll($event)"  [checkboxConfig]="checkboxConfig"
+                       [clearSelected]="clearSelected" [isDisabledUpdate]="isDisabledUpdate"
+                       (editAction)="edit($event)" (viewAction)="view($event)" [columns]="columns"
+                       apiServiceURL="/money-transfer-limit-service/currency-rate"></app-lpb-datatable>
+  </div>
+</div>
+<app-lpb-footer (onApprove)="approve()" [hiddenBackButton]="true" (onReject)="reject()"></app-lpb-footer>

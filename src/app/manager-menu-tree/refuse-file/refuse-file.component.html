@@ -1,0 +1,21 @@
+<div>
+    <h2 mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;">
+        Lý do từ chối
+    </h2>
+    <mat-dialog-content class="mat-typography scroll-dialog">
+        <div class="col-12" style="padding-top: 10px;">
+            <textarea class="form-control" (input)="submitted = true" [ngClass]="{'is-invalid': messageValidator()}" [(ngModel)]="message" placeholder="Lý do từ chối/yêu cầu bổ sung hồ sơ" maxlength="2000"></textarea>
+            <div class="invalid-feedback error-message">
+                <div>Không được để trống lý do</div>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <div class="text-center mt-2 mb-2">
+
+            <button type="button" style="background-color: white;color: black;" class="btn closePopup" (click)="exitDialog(1)">Đóng</button>
+
+            <button type="button" style="background-color: #C10611;color: #FFF;" class="btn closePopup" (click)="refuse(0)">Từ chối hồ sơ</button>
+        </div>
+    </mat-dialog-actions>
+</div>

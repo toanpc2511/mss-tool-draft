@@ -1,0 +1,10 @@
+<div [title]="crrDisplayText || ''" class="select-wrapper">
+  <ng-select [multiple]="false" [placeholder]="placeholder" (change)="onChangeValue.emit($event)"
+    [formControl]="control" [loading]="isLoading">
+    <ng-option *ngFor="let item of lstOption" [value]="item[bindValue]">
+      <div [title]="displayTextDict[item[bindValue]]">
+        {{displayTextDict[item[bindValue]]}}
+      </div>
+    </ng-option>
+  </ng-select>
+</div>

@@ -1,0 +1,28 @@
+@import '/src/popup.scss';
+// ::ng-deep .cdk-overlay-pane {
+//   transform: translateX(-12px) !important;
+// }
+// ::ng-deep .mat-select-panel {
+//   min-width: calc(100% + 26px) !important;
+// }
+// ::ng-deep .mat-pseudo-checkbox-checked {
+//   background: #23388F;
+// }
+// .mat-select-disabled {
+//   background-color: #e9ecef !important;
+//   opacity: 1 !important;
+// }
+// ::ng-deep .mat-select-disabled .mat-select-value {
+//   color: #495057 !important;
+// }
+.mat-select-panel.class-title-panel {
+  min-width: 385px !important;
+  margin-left: 7% !important;
+}
+.custom-mat .mat-checkbox-layout {
+  margin-bottom: 0px;
+}
+.custom-mat {
+  font-weight: bold;
+  padding: 0px 20px;
+}

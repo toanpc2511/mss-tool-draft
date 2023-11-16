@@ -1,0 +1,100 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.MAX_LENGTH" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được vượt quá
+        {{form.controls[controlName].errors[FORM_VAL_ERRORS.MAX_LENGTH].requiredLength}} ký tự
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED_ONE_IN_TWO" [class]="controlName==='docNum' ?'d-none': 'd-block'"
+        class="text-danger mt-1 small">
+        Vui lòng nhập số điện thoại hoặc GTXM để tiếp tục
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NO_EXIST" class="text-danger mt-1 d-block small">
+        Không tìm thấy thông tin người dùng
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+
+<div class="d-flex flex-column form-group" [formGroup]="form">
+  <div class="content-title">
+    THÔNG TIN NGƯỜI DÙNG
+  </div>
+  <div class="main-form">
+    <div class="container-fluid mt-4 form-container">
+      <div class="row">
+        <div class="col col-lg-6 col-md-12 col-sm-12 col-form">
+
+          <!-- #region Input Số điện thoại (*) -->
+          <div class="row row-form" *ngIf="!isDetail">
+            <span class="col-lg-4 col-md-6 px-lg-0 px-md-0 col-form-label textLabel">Số điện thoại</span>
+            <span class="col-lg-8 col-md-6">
+              <div class="position-relative input-group">
+                <input type="text" formControlName="phoneNumber" class="form-control" [JustNumberOnly]="{maxlength: 15}"
+                  placeholder="Nhập số điện thoại" (blur)="changeControlValue($event, 'phoneNumber')"
+                  (input)="onInputChange($event, 'phoneNumber')">
+                <div class="input-group-append"
+                  *ngIf="form.controls['phoneNumber'].value && form.controls['phoneNumber'].enabled"
+                  (click)="clearControl('phoneNumber', true)">
+                  <span class="input-group-text pointer-event ng-clear-wrapper ng-star-inserted" title="Clear all">
+                    <span aria-hidden="true" class="ng-clear">×</span>
+                  </span>
+                </div>
+              </div>
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'phoneNumber', controlNameVi: 'Số điện thoại'}">
+              </ng-container>
+            </span>
+          </div>
+          <!--#endregion -->
+
+          <!-- #region Input GTXM (*) -->
+          <div class="row row-form" *ngIf="!isDetail">
+            <span class="col-lg-4 col-md-6 px-lg-0 px-md-0 col-form-label textLabel">GTXM</span>
+            <span class="col-lg-8 col-md-6">
+              <div class="position-relative input-group">
+                <input (blur)="changeControlValue($event, 'docNum')" type="text" formControlName="docNum"
+                  class="form-control" placeholder="Nhập GTXM" maxlength="50" textTransform="uppercase" trimInput
+                  [textPattern]="{allowRegex: '[A-Za-z0-9\/\\s-]'}" (input)="onInputChange($event, 'docNum')" />
+                <div class="input-group-append" *ngIf="form.controls['docNum'].value && form.controls['docNum'].enabled"
+                  (click)="clearControl('docNum', true)">
+                  <span class="input-group-text pointer-event ng-clear-wrapper ng-star-inserted" title="Clear all">
+                    <span aria-hidden="true" class="ng-clear">×</span>
+                  </span>
+                </div>
+              </div>
+              <ng-container *ngTemplateOutlet="error; context: {controlName: 'docNum', controlNameVi: 'GTXM'}">
+              </ng-container>
+            </span>
+          </div>
+          <!--#endregion -->
+
+          <ng-container *ngFor="let info of sortedInfos[0]">
+            <div class="row row-form py-0">
+              <span class="col-lg-4 col-md-6 px-lg-0 px-md-0 col-form-label textLabel">{{info.title}}</span>
+              <span [class]="info.class + ' col-lg-8 col-md-6 col-form-label text-break'" *ngIf="newCustomerUserInfo">
+                {{newCustomerUserInfo[info.code]}}
+              </span>
+            </div>
+          </ng-container>
+
+        </div>
+
+        <div class="col col-lg-6 col-md-12 col-sm-12 col-form col-right">
+          <ng-container *ngFor="let info of sortedInfos[1]">
+            <div class="row row-form py-0">
+              <span class="col-lg-4 col-md-6 px-lg-0 px-md-0 col-form-label textLabel">{{info.title}}</span>
+              <span [class]="info.class + ' col-lg-8 col-md-6 col-form-label text-break'" *ngIf="newCustomerUserInfo">
+                {{newCustomerUserInfo[info.code]}}
+              </span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

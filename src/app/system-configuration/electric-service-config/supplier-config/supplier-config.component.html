@@ -1,0 +1,76 @@
+<div class="provider-main">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between"
+  >
+    <div class="d-flex align-items-center">
+      <i class="fa fa-search mr-2"></i>
+      <span>Tìm kiếm nhà cung cấp</span>
+    </div>
+    <button
+      mat-raised-button
+      class="d-inline-block bg-btn__blue text-while"
+      *ngIf="'SYSTEM_CONFIG_WATER_SUPPLIER_CREATE' | canUseFeature"
+      (click)="onCreate()"
+    >
+      <i class="fa fa-plus mr-2 text-while"></i>
+      Thêm mới
+    </button>
+  </div>
+
+  <div class="search px-4 mt-2">
+    <form [formGroup]="searchForm" (submit)="search()">
+      <div class="row pb-3">
+        <div class="col-12 col-lg-6 px-5">
+          <span>Nhà cung cấp</span>
+          <input
+            type="text"
+            formControlName="provider"
+            placeholder="Nhập tên NCC, mã NCC để tìm kiếm "
+            class="form-control"
+            trimInput
+          />
+        </div>
+        <div class="col-12 col-lg-6 px-5">
+          <span>Trạng thái</span>
+          <ng-select
+            formControlName="status"
+            placeholder="Chọn trạng thái"
+            (clear)="clearSelect('status')"
+          >
+            <ng-option value="">Tất cả</ng-option>
+            <ng-option
+              *ngFor="let status of statusSuppliers"
+              [value]="status.type"
+              >{{ status.name }}</ng-option
+            >
+          </ng-select>
+        </div>
+      </div>
+      <div class="w-full d-flex justify-content-center g-2">
+        <button
+          mat-raised-button
+          type="submit"
+          class="d-inline-block bg-btn__blue text-while"
+        >
+          <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+          Tìm kiếm
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="result-section mt-4">
+    <div class="card border-0">
+      <app-lpb-datatable
+        [config]="configs"
+        [columns]="columns"
+        tableName="Kết quả tìm kiếm"
+        (viewAction)="onViewDetail($event)"
+        (changeAction)="changeStatus($event)"
+        (editAction)="onUpdate($event)"
+        apiServiceURL="/electric-service/supplier"
+      ></app-lpb-datatable>
+    </div>
+  </div>
+</div>
+
+<app-lpb-footer></app-lpb-footer>

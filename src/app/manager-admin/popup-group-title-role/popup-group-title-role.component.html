@@ -1,0 +1,78 @@
+<div class="abc">
+    <h2 mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;">
+        Map quyền vào chức danh
+    </h2>
+    <mat-dialog-content class="mat-typography">
+        <div class="col-12" style="padding-top: 10px;">
+            <form [formGroup]="myForm">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Tên chức danh<span style="color: red;">*</span></label>
+                        <mat-select  panelClass="title-panel"
+                            [ngClass]="{ 'is-invalid': (submitted && f.title.errors) || checkTitle }" 
+                            class="form-control" formControlName="title" name="title"
+                            placeholder="-- Chọn chức danh --">
+                            <mat-option (onSelectionChange)="selectTitle(item)" (click)="optionClick()" *ngFor="let item of lstTitles" [value]="item.id">
+                                {{item.name}}
+                            </mat-option>
+                        </mat-select>
+                        <!-- <select type="text" formControlName="title" name="title" class="form-control col-9"
+                            (change)="selectTitle($event.target.value)"
+                            [ngClass]="{ 'is-invalid': (submitted && f.title.errors) || checkTitle }">
+                            <option value="0">-- Chọn chức danh --</option>
+                            <option *ngFor="let item of lstTitles">{{item.name}}</option>
+                        </select> -->
+                        <div *ngIf="checkTitle || (submitted && f.title.errors)" class="invalid-feedback">
+                            <div *ngIf="checkTitle || (f.title.errors.required) ">Chức danh chưa chọn</div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Tên role<span style="color: red;">*</span></label>
+                        <mat-select id="demo" panelClass="example-panel"
+                        [ngClass]="{ 'is-invalid': submitted && f.role.errors }" #select
+                            class="form-control" multiple formControlName="role" name="role"
+                            placeholder="-- Chọn quyền --">
+                            <div class="select-all" style="padding-left: 15px;">
+                                <mat-checkbox [(ngModel)]="allSelected" [ngModelOptions]="{standalone: true}"
+                                    (change)="toggleAllSelection()">Chọn tất cả</mat-checkbox>
+                            </div>
+
+                            <mat-option (click)="optionClick()" *ngFor="let role of lstRoles" [value]="role.id">
+                                {{role.name}}
+                            </mat-option>
+                        </mat-select>
+                        <!-- <ng-multiselect-dropdown class="form-control css-multi"
+                          formControlName="role" name="role"
+                          [ngClass]="{ 'is-invalid': submitted && f.role.errors }"
+                         [settings]="dropdownSettings" [data]="lstRoles"
+                         [placeholder]="'-- Lựa chọn role --'" 
+                         (onSelectAll)="onSelectAll($event)"
+                         (onDeSelect)="onDeSelect($event)"
+                         (onSelect)="onItemSelect($event)" 
+                         (onDeSelectAll)="onDeSelectAll($event)"
+                            [(ngModel)]="selectedItems">
+                        </ng-multiselect-dropdown> -->
+                        <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
+                            <div *ngIf="f.role.errors.required ">Quyền chưa chọn</div>
+                        </div>
+                        <!-- <select  type="text" class="form-control col-8"
+                            (change)="selectTitle($event.target.value)">
+                            <option value="0">-- Chọn quyền --</option>
+                            <option [value]="item.code" *ngFor="let item of lstRoles">{{item.name}}</option>
+                        </select> -->
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <div class="float-right" style="height: 57px;
+    margin-top: 9px;">
+            <button type="button" class="btn newfile btn-color" (click)="save(1)" cdkFocusInitial>Lưu thông
+                tin</button>
+            <button type="button" class="btn closePopup" (click)="closeDialog(0)">Đóng</button>
+
+        </div>
+    </mat-dialog-actions>
+</div>

@@ -1,0 +1,88 @@
+<div class="content">
+  <br/>
+  <div class="pl-2">
+    <form [formGroup]="formsSearch" (ngSubmit)="search()">
+      <div class="d-flex">
+        <div class="col-5 px-4">
+          <label class="text-high-light fw-bolder">Mã đại lý</label>
+          <div class="position-relative input-group">
+            <app-lpb-select2
+              [items]="listType"
+              labelName="label"
+              bindValue="value"
+              formControlName="agentType"
+              [config]="{'clearable':false}"
+              class="w-25">
+            </app-lpb-select2>
+            <div class="input-group-append w-75">
+              <input
+                type="text"
+                formControlName="agentCode"
+                placeholder="Nhập mã đại lý"
+                class="form-control"
+                [textPattern]="{allowRegex: '[0-9]'}"
+                trimInput
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-1 px-4"></div>
+        <div class="col-5 px-4">
+          <label class="text-high-light fw-bolder">Trạng thái</label>
+          <app-lpb-select2
+            formControlName="status"
+            placeholder="Chọn trạng thái"
+            bindValue="value"
+            labelName="label"
+            [items]="listStatus">
+          </app-lpb-select2>
+        </div>
+      </div>
+      <div class="d-flex pt-2">
+        <ng-container>
+          <div class="col-5 px-4">
+            <label>Từ ngày:</label>
+            <app-lpb-date-picker
+              [maxDate]="getToday()"
+              (blurInput)="dateValidator()"
+              (dateChanged)="dateValidator()"
+              #dpFromDate
+            ></app-lpb-date-picker>
+          </div>
+          <div class="col-1 px-4"></div>
+          <div class="col-5 px-4">
+            <label>Đến ngày:</label>
+            <app-lpb-date-picker
+              [maxDate]="getToday()"
+              (blurInput)="dateValidator()"
+              (dateChanged)="dateValidator()"
+              #dpToDate
+            ></app-lpb-date-picker>
+          </div>
+        </ng-container>
+      </div>
+      <div class="d-flex">
+      </div>
+      <div class="mt-4 text-center">
+        <button class="btn lpb-btn-primary"><i
+          class="fa fa-search"></i>
+          <span> Tìm kiếm</span>
+        </button>
+      </div>
+    </form>
+    <br/>
+    <br/>
+    <div class="mt-2 px-2">
+      <app-lpb-datatable
+        [config]="configs"
+        [columns]="$any(columns)"
+        [searchConditions]="searchConditions"
+        (viewAction)="onViewDetail($event)"
+        (deleteAction)="cancelTrans($event)"
+        [isDisabledDelete]="isDisabledDelete"
+        tableName="DANH SÁCH GIAO DỊCH"
+        [apiServiceURL]="urlSearch"
+      ></app-lpb-datatable>
+    </div>
+  </div>
+</div>

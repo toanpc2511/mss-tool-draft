@@ -1,0 +1,47 @@
+<div class="container-fuild">
+    <div class="row cust-row">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+            <div class="title-head" style="font-weight: 500;">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">search</mat-icon>
+                <span class="text" style="padding: 5px 0;">TÌM KIẾM THÔNG TIN KHÁCH HÀNG</span>
+            </div>
+        </div>
+        <div class="col-12 information-section">
+            <div class="form-group d-flex">
+                <label for="inputPassword3" class="col-sm-2 col-form-label formSearch" style="text-align: right;">Khách hàng cá nhân
+                    <span class="text-danger">(*)</span> </label>
+                <div class="input-group" style="width:370px">
+                    <input type="text" class="form-control" (input)="onValueSearchChange()" id="inputPassword3" placeholder="Nhập giá trị tìm kiếm" [(ngModel)]="valueSearch" [ngClass]="{'is-invalid': valueSearchValid}" (keydown.enter)="search()">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" (click)="search()" type="button" style="background: #828282;">
+                            <i class="fa fa-search" aria-hidden="true" style="color:#FFFFFF"></i>
+                        </button>
+                    </div>
+                    <div class="invalid-feedback">
+                        <div>Vui lòng nhập giá trị tìm kiếm</div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="col-sm-2">
+                </div>
+                <div class="form-group">
+                    <mat-radio-group aria-label="Select an option" (change)="onFilterChange($event.value)" [(ngModel)]="filterSelected">
+                        <mat-radio-button color="primary" value="{{CUSTOMER_TYPE.CMND}}" class="pr-2">CMND
+                        </mat-radio-button>
+                        <mat-radio-button color="primary" value="{{CUSTOMER_TYPE.KHAI_SINH}}" class="pr-2">Giấy Khai Sinh
+                        </mat-radio-button>
+                        <mat-radio-button color="primary" value="{{CUSTOMER_TYPE.CCCD}}" class="pr-2">CCCD
+                        </mat-radio-button>
+                        <mat-radio-button color="primary" value="{{CUSTOMER_TYPE.HO_CHIEU}}" class="pr-2">Hộ Chiếu
+                        </mat-radio-button>
+                        <mat-radio-button color="primary" value="{{CUSTOMER_TYPE.CIF}}" class="pr-2">Mã CIF
+                        </mat-radio-button>
+                        <mat-radio-button color="primary" value="{{CUSTOMER_TYPE.PHONE}}" class="pr-2">Số điện thoại
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

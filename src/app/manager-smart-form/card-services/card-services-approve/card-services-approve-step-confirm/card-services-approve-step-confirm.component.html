@@ -1,0 +1,161 @@
+<div class="card-services-approve-step-confirm d-flex flex-column">
+  <app-progress-spinner color="primary" mode="indeterminate" value="50" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item [disabled]="getFile !== 'CARD_BACK'" (click)="fileBBBGT()">BBBG thẻ</button>
+    <button mat-menu-item [disabled]="getFile === 'CARD_BACK'" (click)="fileBBTGT()">BB thu giữ thẻ</button>
+    <button mat-menu-item [disabled]="getFile === 'CARD_BACK'" (click)="fileYCTGKHCN()">Yêu cầu trợ giúp KHCN</button>
+  </mat-menu>
+  <div class="content-title text-uppercase">
+    PHÊ DUYỆT DỊCH VỤ THẺ
+  </div>
+  <div class="form-detail d-flex flex-column container-fluid" [formGroup]="formEbsServiceInfo">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="field mt-3">
+          <span class="txtLabel">CIF:</span>
+          <input type="text" formControlName="customerCode" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Số GTXM:</span>
+          <input type="text" formControlName="uidValue" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Tên khách hàng:</span>
+          <input type="text" formControlName="fullName" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Chi nhánh:</span>
+          <input type="text" formControlName="branchCode" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Serial number:</span>
+          <input type="text" formControlName="cardEbsSerialNumber" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Trạng thái thẻ:</span>
+          <input type="text" formControlName="cardStatusCode" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Trạng thái kho thẻ:</span>
+          <input type="text" formControlName="cardEbsStatusCode" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Ghi chú:</span>
+          <input type="text" formControlName="sendNote" class="form-control">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="field mt-3">
+          <span class="txtLabel">Thẻ chính / phụ:</span>
+          <input type="text" formControlName="cardCategory" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Mã sản phẩm thẻ:</span>
+          <input type="text" formControlName="cardProductCode" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Số thẻ:</span>
+          <input type="text" formControlName="cardNumber" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Tài khoản mặc định:</span>
+          <input type="text" formControlName="defaultAccount" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">CardID:</span>
+          <input type="text" formControlName="cardCoreId" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Ngày phát hành:</span>
+          <input type="text" formControlName="releaseDate" class="form-control">
+        </div>
+        <div class="field mt-3">
+          <span class="txtLabel">Mã CBNV {{cardEbsServiceSelected.ebsActionName}}:</span>
+          <input type="text" formControlName="employeeId" class="form-control">
+        </div>
+        <div class="field mt-3" *ngIf="this.cardEbsServiceSelected.brokenDesc">
+          <span class="txtLabel">Lý do:</span>
+          <input type="text" formControlName="brokenDesc" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <p class="txtLabel">Trạng thái bản ghi: {{this.cardEbsServiceSelected.displayStatusName}} </p>
+        <p class="txtLabel">Người tạo: {{this.cardEbsServiceSelected.inputBy}}</p>
+        <p class="txtLabel">Người duyệt: {{this.cardEbsServiceSelected.approveBy ? this.cardEbsServiceSelected.approveBy : this.userInfo.userName}}</p>
+        <p class="txtLabel" *ngIf="this.view ==='VIEW_DETAIL' && cardEbsServiceSelected.ebsActionCode === 'CARD_BACK'">
+          User NHS: {{this.cardEbsServiceSelected.mismatchBy}}
+        </p>
+        <p class="txtLabel" *ngIf="this.view ==='APPROVE' && cardEbsServiceSelected.ebsActionCode === 'CARD_BACK'">
+          User NHS:
+        </p>
+      </div>
+      <div class="col-md-6">
+        <p class="txtLabel">Thời gian tạo: {{this.cardEbsServiceSelected.inputDate}}</p>
+        <p class="txtLabel">Thời gian duyệt: {{this.cardEbsServiceSelected.approveDate ? this.cardEbsServiceSelected.approveDate : '--/--/----'}}</p>
+        <div *ngIf="this.view ==='VIEW_DETAIL' && userRole === 'UNIFORM.BANK.KSV'">
+          <p class="txtLabel" *ngIf="this.cardEbsServiceSelected.approveNote !== null">
+            Lý do từ chối: {{this.cardEbsServiceSelected.approveNote}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="clear"></div>
+  <div *ngIf="this.view ==='VIEW_DETAIL'" class="row footer-row">
+    <div class="col-12 d-flex justify-content-end">
+      <button mat-button class="btn-action" (click)="backToSearch($event)"><mat-icon>arrow_back</mat-icon>Quay lại</button>
+      <button mat-button class="btn-action" [matMenuTriggerFor]="menu"><mat-icon>get_app</mat-icon>Biểu mẫu</button>
+    </div>
+  </div>
+  <div *ngIf="this.view ==='APPROVE'" class="row footer-row">
+    <div class="col-12 d-flex justify-content-end">
+      <button mat-button class="btn-action" (click)="backToSearch($event)"><mat-icon>arrow_back</mat-icon>Quay lại</button>
+      <button mat-button class="btn-action" [matMenuTriggerFor]="menu"><mat-icon>get_app</mat-icon>Biểu mẫu</button>
+      <button mat-button class="btn-action" *ngIf="getFile === 'CARD_BACK'"
+              [hidden]="hidenBtn === 'PENDING' || hidenBtn ==='MISMATCH'" (click)="evtBtnActionClick(ACTION.REJECT)">
+        <mat-icon>highlight_off</mat-icon>Từ chối
+      </button>
+      <button mat-button class="btn-action" *ngIf="getFile !== 'CARD_BACK'"
+              (click)="evtBtnActionClick(ACTION.REJECT)">
+        <mat-icon>highlight_off</mat-icon>Từ chối
+      </button>
+      <button mat-button class="btn-action" (click)="evtBtnActionClick(ACTION.APPROVE)"><mat-icon>send</mat-icon>Duyệt</button>
+    </div>
+  </div>
+</div>
+
+<app-lpb-modal [headerText]="modalHeader" [show]="isShowModal" [widthContent]="35" [heightContent]="requestType === ACTION.REJECT ? 35: 25"
+               marginTop="200px"
+               (hideModal)="hideModal()">
+  <div class="modal-confirm">
+    <div class="modal-confirm-content">{{modalContent}}<span class="txt-name">{{cardEbsServiceSelected ? cardEbsServiceSelected.fullName : ''}}</span></div>
+    <div class="modal-confirm-reject-reason" *ngIf="requestType === ACTION.REJECT">
+      <textarea [(ngModel)]="txtReason" [class.err-field]="errTextReason !== ''" placeholder="Nhập lý do từ chối" class="form-control w-100" maxlength="200" rows="2"></textarea>
+      <div class="text-left err-text">{{errTextReason}}</div>
+    </div>
+    <div class="modal-confirm-action">
+      <button mat-raised-button class="btn-orange mr-2" (click)="evtBtnConfirmClick(ACTION.CONFIRM_YES)">Đồng ý</button>
+      <button mat-raised-button class="btn-blue" (click)="evtBtnConfirmClick(ACTION.CANCEL)">Hủy bỏ</button>
+    </div>
+  </div>
+</app-lpb-modal>
+
+<app-lpb-modal [headerText]="modalHeaderError" [show]="isShowModalErr" [widthContent]="25" [heightContent]="25"
+               marginTop="200px"
+               (hideModal)="isShowModalErr = false">
+  <div class="modal-error">
+    <div class="modal-error-content d-flex justify-content-center">
+      <span *ngFor="let err of errorsDetail" class=" mb-1"> {{err.msg}}</span><br>
+    </div>
+    <div class="modal-error-action">
+<!--      <button mat-raised-button class="btn-blue" (click)="isShowModalErr = false">Đóng</button>-->
+      <button mat-raised-button class="btn-blue" (click)="backToSearch($event)">Đóng</button>
+    </div>
+  </div>
+</app-lpb-modal>

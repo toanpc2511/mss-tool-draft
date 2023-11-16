@@ -1,0 +1,102 @@
+<div class="container-fuild">
+  <div class="row cust-row">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+      <app-process-info [processId]="processId"></app-process-info>
+    </div>
+  </div>
+  <div class="row cust-row">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+      <div class="title-head" style="font-weight: 500;">
+        <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">account_balance_wallet</mat-icon>
+        <span class="text" style="padding: 5px 0;">DANH SÁCH THẺ CHÍNH</span>
+      </div>
+    </div>
+    <table class="table table-responsive table-fixed table-hover" style="margin: 0px;">
+      <thead>
+        <tr class="titleTD">
+          <th class="text-center id-table">STT</th>
+          <th class="cardTypeNameCol">Loại thẻ</th>
+          <th class="cardNumber">Số thẻ</th>
+          <th>Tài khoản</th>
+          <th>Ngày phát hành</th>
+          <th>Ngày hết hạn</th>
+          <th>Tình trạng</th>
+          <th class="action" *ngIf="roleLogin[0]==='UNIFORM.BANK.GDV'">Hành động</th>
+          <!--                    <th class="action">Hành động</th>-->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of card ;index as i" tabindex="0">
+          <td class="text-center id-table">{{i + 1}}</td>
+          <td class="text-center cardTypeNameCol"><label class="cardTypeName">
+              {{c.cardTypeName}}</label>
+          </td>
+          <td *ngIf="authenticationService.isPermission(PermissionConst.THE_CHINH.DETAIL); else elseBlock"
+            class="text-center detail cardNumber" (click)="detailCard(c)">
+            {{c.cardNumber}}
+            <ng-container *ngIf="c.cardNumber==null">
+              [Thẻ chính - {{c.cardIndex}}]
+            </ng-container>
+          </td>
+          <ng-template #elseBlock>
+            <td class="text-center">
+              {{c.cardNumber}}
+              <ng-container *ngIf="c.cardNumber==null">
+                [Thẻ chính - {{c.cardIndex}}]
+              </ng-container>
+            </td>
+          </ng-template>
+          <td class="text-center">
+            <ng-container *ngIf="c.account==null">
+              không có Tài khoản mặc định
+            </ng-container>
+            <ng-container *ngIf="c.account!=null">
+              {{c.account.accountNumber}}
+              <ng-container *ngIf="c.account.accountNumber==null">
+                Số tài khoản mới {{c.account.accountIndex}}
+              </ng-container>
+            </ng-container>
+
+          </td>
+          <td class="text-center">{{c.issueDate}}</td>
+          <td class="text-center">{{c.expirationDate}}</td>
+          <td class="text-center">{{c.cardStatusName}}</td>
+          <td class="text-center action" style="cursor: pointer;" *ngIf="roleLogin[0]==='UNIFORM.BANK.GDV'">
+            <i class="fa fa-trash-o" style="color: red"
+              *ngIf="((c.processIntegrated?.statusCode== SERVICE_STATUS.CHO_DUYET ||
+                       c.processIntegrated?.statusCode== SERVICE_STATUS.DANG_NHAP) &&
+                        (process.item.statusCode !== PROCESS_STATUS.DONG_HO_SO) && !isView) && authenticationService.isPermission(PermissionConst.THE_CHINH.DELETE)"
+              (click)="deleteCard(c.id)"> Xóa</i>
+          </td>
+        </tr>
+        <tr id="tab" class="card-content-1">
+          <td colspan="9" style="text-align: center;" *ngIf="card==null">
+            Không có dữ liệu
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<app-popup-detail-warring [show]="isShowMessage" (hideModal)="isShowMessage = false">
+  <div class="text-center">
+    Hồ sơ <span class="message">{{process?.item?.code}}</span> đang được thao tác bởi
+    <span class="message">{{ process?.item?.createdByUser?.userName}}</span> chi nhánh
+    <span class="message">{{process?.item?.branchCode}} </span>
+  </div>
+</app-popup-detail-warring>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+  <div class="col-12" style="text-align: right; margin-right: 15px;">
+    <div class="footer" style="padding-right: 20px;" (click)="addNew()" *ngIf="authenticationService.isPermission(PermissionConst.THE_CHINH.CREATE)
+         && process.item.statusCode !== PROCESS_STATUS.DONG_HO_SO && !isView
+         && process.item.customer.statusCif !== 'Y' && process.item.customer.statusCif !== 'C'">
+      <span class="material-icons"> add </span>
+      <label>Thêm mới</label>
+    </div>
+    <div class="footer" (click)="backPage()">
+      <span class="material-icons"> keyboard_backspace </span>
+      <label>Quay lại</label>
+    </div>
+  </div>
+</div>

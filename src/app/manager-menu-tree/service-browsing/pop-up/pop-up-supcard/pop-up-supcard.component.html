@@ -1,0 +1,256 @@
+<div class="container-fuild">
+    <div class="row cust-row" *ngIf="card">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+            <div class="title-head" style="font-weight: 500;">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add_circle</mat-icon>
+                <span class="text" style="padding: 5px 0;">THÔNG TIN THẺ CHÍNH</span>
+            </div>
+        </div>
+        <div class="col-12 information-section">
+            <div class="col-6 colLeft">
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Họ và tên:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{name}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Số thẻ chính:</label>
+                    <div class="col-sm-7 txt">
+                        <label>
+                            {{card2.cardNumber}}
+                            <ng-container *ngIf="card2.cardNumber === null">
+                               Số thẻ chính {{card2.cardIndex}}
+                            </ng-container>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Loại thẻ:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card2.cardTypeName}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Mã thẻ:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card2.cardProductCode}} - {{card2.cardProductName}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Tài khoản mặc định:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.account.accountNumber}}</label>
+                        <label *ngIf="card.account.accountNumber==null">Tài khoản mới - {{card.account.accountIndex}}</label>
+                    </div>
+                </div>
+                <div class="row" *ngFor="let c of card.accountLinkList">
+                    <label class="col-sm-5 col-form-label textLabel"> Tài khoản liên kết thẻ: </label>
+                    <div class="col-sm-7 txt">
+                        <div>
+                            <label>{{c.account.accountNumber}}</label>
+                            <label *ngIf="c.account.accountNumber=== null">Tài khoản mới - {{c.account.accountIndex}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 colRight">
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Mã khách hàng: </label>
+                    <div class="col-sm-7 txt">
+                        <label *ngIf="process.item?.customer.customerCode === null">XXXXXX</label>
+                        <label>{{process.item?.customer.customerCode}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Ngày sinh:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{process.item?.customer.person.dateOfBirth}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Số giấy tờ xác minh:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{process.item?.customer.person?.perDocNoList.length > 0 ?
+                            process.item?.customer.person?.perDocNoList[0].perDocNo : ''}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Ngày phát hành:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label> {{card2.issueDate}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Ngày hết hạn:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card2.expirationDate}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row cust-row" *ngIf="card">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+            <div class="title-head" style="font-weight: 500;">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add_circle</mat-icon>
+                <span class="text" style="padding: 5px 0;">THÔNG TIN THẺ PHỤ</span>
+            </div>
+        </div>
+        <div class="col-12 " style="margin-top: 10px; margin-bottom: 5px; padding: 20px 0;">
+            <div class="col-6 colLeft">
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel  ">Số hợp đồng:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card2.contractNumber}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel ">Tài khoản mặc định: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.account.accountNumber}}</label>
+                        <label *ngIf="card.account.accountNumber==null">Tài khoản mới - {{card.account.accountIndex}}</label>
+                    </div>
+                </div>
+                <div class="row" *ngFor="let c of card.accountLinkList">
+                    <label class="col-sm-5 col-form-label textLabel ">Tài khoản liên kết thẻ: </label>
+                    <div class="col-sm-7 txt">
+                        <div>
+                            <label>{{c.account.accountNumber}}</label>
+                            <label *ngIf="c.account.accountNumber==null">Tài khoản mới - {{c.account.accountIndex}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel ">Mã nhân viên: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.employeeId}}</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel ">Mã người giới thiệu: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.referrerCode}}</label>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-6 colRight">
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel ">Loại thẻ:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.cardTypeName}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel ">Tên dập nổi trên thẻ: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.cardHolderName}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Hình thức phát hành:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.deliveryTypeName}}</label>
+                    </div>
+                </div>
+                <div class="row" *ngIf="deliveryTypeCode=='TRAO_NGAY'">
+                    <label class="col-sm-5 col-form-label textLabel"> Số thẻ:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.cardNumber}}</label>
+                    </div>
+                </div>
+                <div class="row" *ngIf="deliveryTypeCode=='DEFAULT'">
+                    <label class="col-sm-5 col-form-label textLabel"> Địa chỉ nhận thẻ:
+                    </label>
+                    <div class="col-sm-7 txt" *ngIf="deliveryChanelCode=='TAI_CHI_NHANH'">
+                        <label>{{card.deliveryBranch.code}} - {{card.deliveryBranch.address}} </label>
+                    </div>
+                    <div class="col-sm-7 txt" *ngIf="deliveryChanelCode=='GUI_NHAN'">
+                        <label>{{card.deliveryAddress}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="row">
+                <div class="col-3 text-center">
+                    <label class="font-weight-bold ">Thông tin cá nhân</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label textLabel ">Họ và tên: </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{card.person.fullName}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label textLabel ">Ngày sinh: </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{card.person.dateOfBirth }}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label textLabel ">Giới tính: </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{getStatusName(card.person.genderCode)}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label textLabel ">Điện thoại: </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{card.person.mobileNo}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label textLabel ">Địa chỉ: </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{card.person.address}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label textLabel ">Loại GTXM:</label>
+                        <div class="col-sm-7 txt">
+                            <label>{{card.person.perDocTypeCode}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label textLabel ">Số GTXM:</label>
+                        <div class="col-sm-7 txt">
+                            <label>{{card.person.perDocNo}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label textLabel ">Ngày cấp:
+                        </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{card.person.issueDate}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-5 col-form-label textLabel ">Nơi cấp:
+                        </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{card.person.issuePlace}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

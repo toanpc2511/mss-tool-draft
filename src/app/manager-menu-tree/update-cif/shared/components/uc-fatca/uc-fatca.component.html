@@ -1,0 +1,77 @@
+<div class="uc-fatca d-flex" [class.error-invalid]="errMsgBlockFatca !== ''">
+  <span class="uc-fatca-left">THÔNG TIN FATCA <span [hidden]="!isRequiredFatca" class="error-invalid">(*)</span> </span>
+  <div class="uc-fatca-right">
+    <div class="form-check form-check-inline">
+      <input class="form-check-input"  type="radio" id="checkedTrue" [(ngModel)]="checkedFatca" name="Fatca"
+        [value]="true" [checked]="checkedFatca" (change)="checkFormFatca()">
+      <label class="form-check-label" for="checkedTrue">Có</label>
+    </div>
+    <div class="form-check form-check-inline" *ngIf="(!fatcaObjectCore || (fatcaObjectCore && (!fatcaObjectCore.fatcaCode || fatcaObjectCore.fatcaCode === '')))">
+      <input class="form-check-input" type="radio" id="checkedFalse" [(ngModel)]="checkedFatca" name="Fatca"
+        [value]="false" [checked]="!checkedFatca" (change)="checkFormFatca()">
+      <label class="form-check-label" for="checkedFalse">Không</label>
+    </div>
+  </div>
+
+</div>
+<span class="error-block-fatca" *ngIf="errMsgBlockFatca !== ''">{{errMsgBlockFatca}}</span>
+
+<div class="w-100 uc-fatca-form" [ngClass]="checkedFatca ? 'd-flex' : 'd-none'">
+  <div class="uc-fatca-form-left">
+    <div class="row-item-info">
+      <div class="label-field">Phân loại FATCA <span class="item-require">(*)</span></div>
+      <div class="value-field">
+        <div class="control-item d-flex align-items-center">
+          <select class="form-control form-control-sm w-100" #fatcaCode [class.error-invalid]="errMsgFatcaCode !== ''"
+            (blur)="validateTypeFatca()" (change)="changeFatcaCode()">
+            <option value="" disabled selected>Chọn loại FATCA</option>
+            <option *ngFor="let item of lstTypeFatca" [value]="item.code">{{item.name}}
+            </option>
+          </select>
+          <mat-icon *ngIf="fatcaObjectCore" class="ic-info-core" #tooltip="matTooltip"
+                    [matTooltip]="'Dữ liệu Core: ' + (fatcaObjectCore ? (fatcaObjectCore.fatcaCode + ' - ' + fatcaObjectCore.fatcaName) : 'Không xác định')"
+                    matTooltipPosition="below">error_outline
+          </mat-icon>
+        </div>
+        <div class="error-msg" *ngIf="errMsgFatcaCode !== ''">{{errMsgFatcaCode}}</div>
+      </div>
+    </div>
+    <div class="row-item-info" [ngClass]="hiddenFatcaAnswer === 'US PERSON' ? 'd-flex' : 'd-none'">
+      <div class="label-field">Mã số thuế <span class="item-require">(*)</span></div>
+      <div class="label-action">
+        <div class="control-item d-flex align-items-center">
+          <input type="text" numbersOnly maxlength="9" [(ngModel)]="fatcaAnswer" [class.error-invalid]="errMsgfatcaAnswer !== ''"
+            placeholder="Nhập mã số thuế" class="input-field form-control form-control-sm w-100"
+            (input)="validatefatcaAnswer()" (blur)="validatefatcaAnswer()">
+          <mat-icon *ngIf="fatcaObjectCore" class="ic-info-core" #tooltip="matTooltip"
+                    [matTooltip]="'Dữ liệu Core: ' + (fatcaObjectCore ? fatcaObjectCore.fatcaAnswer : 'Không xác định')"
+                    matTooltipPosition="below">error_outline
+          </mat-icon>
+        </div>
+        <div class="error-msg" *ngIf="errMsgfatcaAnswer !== ''">
+          {{errMsgfatcaAnswer}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="uc-fatca-form-right">
+    <div class="row-item-info">
+      <div class="label-field">Mẫu biểu bổ sung <span class="item-require">(*)</span></div>
+      <div class="value-field">
+        <div class="control-item d-flex align-items-center">
+          <select class="form-control form-control-sm w-100" #fatcaForm [class.error-invalid]="errMsgFatcaForm !== ''"
+            (blur)="validateFormFatca()" (change)="validateFormFatca()">
+            <option value="" disabled selected>Chọn loại mẫu biểu bổ sung</option>
+            <option *ngFor="let item of lstFatcaForm" [value]="item.code">{{item.name}}
+            </option>
+          </select>
+          <mat-icon *ngIf="fatcaObjectCore" class="ic-info-core" #tooltip="matTooltip"
+                    [matTooltip]="'Dữ liệu Core: ' + (fatcaObjectCore ? (fatcaObjectCore.fatcaForm + ' - ' + fatcaObjectCore.fatcaFormName) : 'Không xác định')"
+                    matTooltipPosition="below">error_outline
+          </mat-icon>
+        </div>
+        <div class="error-msg" *ngIf="errMsgFatcaForm !== ''">{{errMsgFatcaForm}}</div>
+      </div>
+    </div>
+  </div>
+</div>

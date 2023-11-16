@@ -1,0 +1,10 @@
+@import "/src/app/shared/styles/palette.style.scss";
+
+input.ng-invalid.ng-touched,
+input.ng-invalid.ng-dirty {
+  border-color: $error-main;
+}
+
+.input-error{
+  border-color: $error-main;
+}

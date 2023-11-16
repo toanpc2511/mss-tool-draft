@@ -1,0 +1,110 @@
+.all-content{
+  background-color: #FFFFFF;
+  .title-content {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    text-indent: 8px;
+    color: #0C258A;
+    margin-top: 10px;
+  }
+  .col-left {padding-left: 15%;}
+  .col-right {padding-right: 15%;}
+  .form-field{
+    margin: 15px 0;
+    span{
+      font-size: 14px;
+      font-weight: bold;
+      color: #0C258A;
+    }
+  }
+  .table-content {
+    th {
+      background-color: #0C258A;
+      color: #FFFFFF;
+    }
+  }
+}
+
+// bảng
+.table-scroll1{
+  position: relative;
+  width:100%;
+  z-index: 1;
+  margin: auto;
+  overflow: auto;
+  //height: 350px;
+  table{
+    width: 100%;
+    //min-width: 3840px;
+    min-width: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    th,td{
+      vertical-align: top;
+    }
+    thead th {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      z-index: 6;
+    }
+    thead tr th:first-child {
+      width: 40px !important;
+      min-width: 40px !important;
+      position: -webkit-sticky;
+      position: sticky;
+      left: 0;
+      z-index: 7;
+    }
+    tbody tr td:first-child {
+      width: 40px !important;
+      min-width: 40px !important;
+      position: -webkit-sticky;
+      position: sticky;
+      left: 0;
+      z-index: 5;
+      background-color: #FFFFFF;
+    }
+    // chỉnh lại chiều rộng nếu quá giới hạn cột
+    thead tr th {min-width: 150px}
+    tbody tr td {min-width: 150px}
+    thead tr th:nth-child(2) {min-width: 50px !important}
+    tbody tr td:nth-child(2) {min-width: 50px !important}
+  }
+}
+
+.tb-sideBar{
+  width: 480px;
+}
+.drawer{
+  min-height: 824px !important;
+  background-color: #FFFFFF;
+}
+
+.remove-border-bottom ::ng-deep .mat-tab-header {
+  border-bottom: none !important;
+}
+
+.cBox{
+  background-color: #FFFFFF !important;
+}
+.btn-search{
+  background-color: #0C258A;
+  color: #FFFFFF;
+}
+.btn-send{
+  background-color: #F47326;
+  color: #FFFFFF;
+}
+.btn-excel{
+  i{color: #28A745;}
+  color: #28A745;
+}
+input {
+  box-shadow: none !important;
+}
+::ng-deep.ng-select-container {
+  outline: none !important;
+  box-shadow: unset !important;
+}

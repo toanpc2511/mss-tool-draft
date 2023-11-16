@@ -1,0 +1,53 @@
+@import "/src/app/shared/styles/palette.style.scss";
+@import "/src/app/shared/styles/custom-mat-button.style.scss";
+
+.form-radio-inline {
+  column-gap: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  &-group {
+    column-gap: 15px;
+    width: fit-content;
+    row-gap: 10px;
+    flex-wrap: wrap;
+  }
+  .form-control {
+    height: 15px;
+    transform: translateY(-2px);
+  }
+  input {
+    cursor: pointer;
+  }
+}
+
+input.ng-invalid.ng-touched,
+input.ng-invalid.ng-dirty {
+  border-color: #dc3545;
+}
+
+textarea.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-dirty{
+  border-color: #dc3545;
+}
+
+:host app-lpb-select2.ng-invalid {
+  ::ng-deep .ng-touched .ng-select-container {
+    border-color: #dc3545 !important;
+  }
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+  text-transform: none;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  text-transform: none;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  text-transform: none;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+  text-transform: none;
+}
+::placeholder { /* Recent browsers */
+  text-transform: none;
+}

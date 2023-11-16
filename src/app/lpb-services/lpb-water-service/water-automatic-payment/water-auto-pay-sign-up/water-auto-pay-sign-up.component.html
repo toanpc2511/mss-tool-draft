@@ -1,0 +1,153 @@
+<div class="px-4 py-2">
+    <div class="text-high-light text-uppercase fw-bolder"> <i class="fa fa-search"></i> Tra cứu thông tin khách
+        hàng
+    </div>
+    <form [formGroup]="formSearch" (ngSubmit)="search()" class="d-flex mt-3">
+        <div class="col-4 px-4">
+            <label for="" class="text-high-light fw-bolder required label">Nhà cung cấp</label>
+            <div>
+                <app-lpb-select2 [apiUrl]="'/water-service/supplier/active'" labelName="supplierName"
+                    bindValue="supplierCode" formControlName="supplierCode"
+                    placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+                <div *ngIf="invalid(formSearch.controls.supplierCode)" class="text-danger">Chưa chọn nhà cung cấp
+                </div>
+            </div>
+        </div>
+        <div class="col-4 px-4">
+            <label for="" class="text-high-light fw-bolder required label">Mã khách hàng</label>
+            <div>
+                <input type="text" required formControlName="customerId" (change)="infoSearchChange()"
+                    class="form-control" placeholder="Nhập mã khách hàng">
+                <div *ngIf="invalid(formSearch.controls.customerId)" class="text-danger">Chưa nhập mã
+                    khách hàng</div>
+            </div>
+        </div>
+        <div class="col-4 px-4">
+            <label for=""></label>
+            <div>
+                <button class="btn lpb-btn-primary" [disabled]="isLoading"> <i class="fa fa-search"></i>
+                    <span> Tìm kiếm</span>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div *ngIf="searched" class="mt-4">
+        <div class="border border-radius-panel p-2 bg-info-customer">
+            <div class="text-high-light text-uppercase fw-bolder"> <i
+                    class="fa fa-credit-card-alt text-high-light mr-2"></i>Thông tin
+                khách hàng
+            </div>
+            <div class="d-flex flex-wrap mt-3">
+                <div class="col-4">
+                    <label for="">Họ và tên</label>
+                    <div class="fw-bolder text-uppercase">
+                        {{customerInfo.custName}}
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label for="">SĐT</label>
+                    <div class="fw-bolder">
+                        {{customerInfo.custMobile}}
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label for="">Email</label>
+                    <div class="fw-bolder">
+                        {{customerInfo.custEmail}}
+                    </div>
+                </div>
+                <div class="col-12 mt-2">
+                    <label for="">Địa chỉ</label>
+                    <div class="fw-bolder">
+                        {{customerInfo.custDesc}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border border-radius-panel p-2 mt-4">
+            <div class="text-high-light text-uppercase fw-bolder"><i
+                    class="fa fa-credit-card-alt text-high-light mr-2"></i>Thông tin tài khoản ghi nợ
+            </div>
+            <form [formGroup]="formSignup" class="mt-3">
+                <div class="mt-2 d-flex">
+                    <div class="col-4">
+                        <app-lpb-select2 [items]="identityDocTypes" [config]="{'clearable':false}" labelName="label"
+                            bindValue="value" formControlName="identityDocType">
+                        </app-lpb-select2>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" formControlName="numberDocType" placeholder="Nhập giá trị tìm kiếm"
+                            (change)="numberDocTypeChange()" class="form-control">
+                        <div *ngIf="invalid(formSignup.controls.numberDocType)" class="text-danger">Chưa nhập giá
+                            trị tìm kiếm</div>
+                    </div>
+                    <div class="col-4">
+                        <button class="btn lpb-btn-primary" (click)="searchAccountCustomers()" [disabled]="isLoading"><i
+                                class="fa fa-search"></i>
+                            Tìm kiếm</button>
+                    </div>
+                </div>
+                <div class="mt-2 d-flex">
+                    <div class="col-4">
+                        <label for="" class="required">Chọn số TKTT</label>
+                        <div>
+                            <app-lpb-select2 labelName="accountNumber" [items]="customerAccounts"
+                                bindValue="accountNumber" formControlName="accountDebit" placeholder="Chọn số TKTT">
+                            </app-lpb-select2>
+                        </div>
+                        <div *ngIf="invalid(formSignup.controls.accountDebit)" class="text-danger">Chưa chọn số
+                            TKTT</div>
+                    </div>
+                    <div class="col-4">
+                        <label for="" class="">Chủ tài khoản</label>
+                        <div>
+                            <span class="form-control border-0 pl-0 text-high-light fw-bolder">
+                                {{formSignup.value.accountNameDebit}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="" class="">Loại thanh toán</label>
+                        <div>
+                            <app-lpb-select2 [items]="paymentTypes" [config]="{'clearable':false}" labelName="label"
+                                bindValue="value" formControlName="paymentType">
+                            </app-lpb-select2>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 d-flex">
+                    <div class="col-4">
+                        <label for="" class="required">Ngày thanh toán định kỳ</label>
+                        <div>
+                            <app-lpb-select2 [items]="recurringPaymentDates" [config]="{'clearable':false}"
+                                labelName="label" bindValue="value" formControlName="recurringPaymentDate"
+                                placeholder="Chọn ngày thanh toán định kỳ">
+                            </app-lpb-select2>
+                            <div *ngIf="invalid(formSignup.controls.recurringPaymentDate)" class="text-danger">
+                                Chưa chọn ngày thanh toán định kỳ</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="">Email</label>
+                        <div>
+                            <input type="email" formControlName="email"
+                                pattern="^[A-Za-z0-9]+((\.[A-Za-z0-9]+)+)*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)+$" class="form-control"
+                                placeholder="Nhập email" maxlength="100">
+                        </div>
+                        <div *ngIf="invalid2(formSignup.controls.email,'pattern') || invalid2(formSignup.controls.email,'email')"
+                            class="text-danger">Email không đúng định dạng
+                        </div>
+                    </div>
+                    <div class="col-4">
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<div [style.height.px]="50">
+    <app-lpb-footer [actions]="actions" class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>
+</div>

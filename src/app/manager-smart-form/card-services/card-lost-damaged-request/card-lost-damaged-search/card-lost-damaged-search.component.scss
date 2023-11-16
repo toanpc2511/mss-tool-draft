@@ -1,0 +1,86 @@
+@import '/src/app/shared/styles/lpb-table';
+.card-issuance-request-step-search {
+  .content-title {
+    color: #17589f;
+    border-bottom: 2px solid #F47326;
+    padding: 8px 0;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+    place-self: flex-start;
+  }
+  .form-search {
+    .row-fields {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .form-search-title {
+        span {
+          font-weight: 500;
+          font-size: 16px;
+          color: #17589f;
+        }
+      }
+      .field {
+        max-width: 50%;
+        width: calc(50% - 16px);
+        margin-bottom: 16px;
+        .field-require {
+          color: red;
+        }
+        .txtLabel {
+          font-weight: 500;
+          color: #17589f;
+        }
+        .input-group {
+          .input-group-append {
+            select {
+              background: #2F80ED;
+              color: white;
+              border-right: 0;
+              border-bottom-right-radius: 0 !important;
+              border-top-right-radius: 0 !important;
+              cursor: pointer;
+              width: 160px;
+            }
+          }
+          input {
+            border-left: 0;
+            border-bottom-left-radius: 0 !important;
+            border-top-left-radius: 0 !important;
+          }
+        }
+        .err-text {
+          font-size: 12px;
+          font-weight: 400;
+          color: red;
+          padding-left: 160px;
+        }
+      }
+      .btn-action {
+        text-align: center;
+        margin-bottom: 16px;
+      }
+    }
+  }
+  .tbl-result {
+    margin-top: 16px;
+  }
+  .empty-data {
+    text-align: center;
+    color: #17589f;
+    font-size: 13px;
+    font-weight: 400;
+  }
+  .ic-in-primary {
+    color: #FFFFFF;
+  }
+}
+.form-control:focus {
+  box-shadow: unset !important;
+}
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+

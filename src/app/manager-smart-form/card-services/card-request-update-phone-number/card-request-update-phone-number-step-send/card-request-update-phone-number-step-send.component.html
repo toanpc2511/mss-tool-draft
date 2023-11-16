@@ -1,0 +1,85 @@
+<div class="card-request-update-phone-send d-flex flex-column" [formGroup]="formCustomerInfo">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title">
+    THÔNG TIN KHÁCH HÀNG
+  </div>
+
+  <div class="customer-info container-fluid mb-2">
+    <div class="row">
+      <div class="col-md-6 mb-2 field-item">
+        <span>CIF:</span>
+        <input type="text" formControlName="CUSTOMER_NO" class="form-control">
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Họ và tên:</span>
+        <input type="text" formControlName="FULL_NAME" class="form-control">
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Ngày sinh:</span>
+        <input type="text" formControlName="DATEOFBIRTH" class="form-control">
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Giới tính:</span>
+        <input type="text" formControlName="GENDER" class="form-control">
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Loại GTXM:</span>
+        <input type="text" formControlName="UID_NAME" class="form-control">
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Số GTXM:</span>
+        <input type="text" formControlName="UID_VALUE" class="form-control">
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Nơi cấp:</span>
+        <input type="text" formControlName="NOI_CAP" class="form-control">
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Ngày cấp:</span>
+        <input type="text" formControlName="NGAY_CAP" class="form-control">
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>SĐT người đại diện:</span>
+        <input type="text" formControlName="TEL_NO" class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="content-title">
+    CẬP NHẬT SỐ ĐIỆN THOẠI
+  </div>
+  <div class="change-phone-number container-fluid mb-2">
+    <div class="row">
+      <div class="col-md-12 mb-2 field-item">
+        <input type="checkbox" formControlName="cbStatus" class="mr-1" id="cb1">
+        <label for="cb1">
+          <i>Sử dụng SĐT trùng với SĐT người đại diện</i>
+        </label>
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Cập nhật sang SVBO <span class="field-require">(*)</span>:</span>
+        <input type="text" formControlName="PHONE_SVBO" minlength="10" maxlength="10"
+               [class.border-field-require]="(PHONE_SVBO.touched || PHONE_SVBO.dirty) && PHONE_SVBO.invalid"
+               class="form-control">
+        <span *ngIf="hasErrorInput('PHONE_SVBO', 'required')" class="err-text">
+                Số điện thoại di động không được bỏ trống
+        </span>
+        <span *ngIf="hasErrorInput('PHONE_SVBO', 'pattern')" class="err-text">Số điện thoại không hợp lệ
+        </span>
+        <span *ngIf="(hasErrorInput('PHONE_SVBO', 'minlength')
+                    || hasErrorInput('PHONE_SVBO', 'maxLength'))
+                    && !hasErrorInput('PHONE_SVBO', 'pattern')"
+              class="err-text">Số điện thoại phải 10 ký tự số
+        </span>
+        <span *ngIf="hasErrorInput('PHONE_SVBO', 'prefixMobileNotExist')" class="err-text">Đầu số điện thoại di động không đúng</span>
+      </div>
+    </div>
+  </div>
+  <div class="btn-action w-100 d-flex justify-content-center mb-2">
+    <button class="btn btn-primary mr-2 btn-action-back" (click)="backToSearch($event)" type="button">Quay lại
+    </button>
+    <button class="btn btn-primary btn-action-send" (click)="sendApprove()" type="button">Gửi duyệt
+    </button>
+  </div>
+</div>

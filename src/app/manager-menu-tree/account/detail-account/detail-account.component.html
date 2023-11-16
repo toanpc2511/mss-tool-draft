@@ -1,0 +1,218 @@
+<!-- danh sach account -->
+<div class="container-fuild" *ngIf="detailAccount">
+    <app-process-info [processId]="processId" (processDetail)="getDetail($event)"></app-process-info>
+    <!-- chi tiet -->
+    <div class="row cust-row">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+            <div class="title-head" style="font-weight: 500;">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">account_balance_wallet
+                </mat-icon>
+                <span class="text" style="padding: 5px 0;">THÔNG TIN CHI TIẾT TÀI KHOẢN</span>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="col-6 colLeft">
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Tên tài khoản:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.accountName}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Loại tài khoản:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.accountProductName || 'Không có giá trị'}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Mã tài khoản:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>
+                            {{detailAccount.accountClassCode || 'Không có giá trị'}} -
+                            {{detailAccount.accountClassName}}
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Gói tài khoản:
+                    </label>
+                    <div class="col-sm-7 txt">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Loại tiền tệ:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.currencyCode}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số dư duy trì tối thiểu:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.minBalance | number:'1.0': 'vi'}} {{detailAccount.currencyCode}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Chi nhánh:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.branch.code}} - {{detailAccount.branch.name}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Diễn giải tài khoản:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.accountDescription}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 colRight">
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số tài khoản:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.accountNumber ? detailAccount.accountNumber : 'Số tài khoản
+                            mới'}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số dư hiện tại:
+                    </label>
+                    <div class="col-sm-7 txt txt-italic">
+                        <label>Không có giá trị</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số dư khả dụng:
+                    </label>
+                    <div class="col-sm-7 txt txt-italic">
+                        <label>Không có giá trị</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Hạn mức chi tiêu:
+                    </label>
+                    <div class="col-sm-7 txt txt-italic">
+                        <label>Không có giá trị</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số dư đầu ngày:
+                    </label>
+                    <div class="col-sm-7 txt txt-italic">
+                        <label>Không có giá trị</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số dự bị khóa:
+                    </label>
+                    <div class="col-sm-7 txt txt-italic">
+                        <label>Không có giá trị</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Mã nhân viên:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.employeeId}} - {{detailAccount.employeeName}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Trạng thái:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.accountStatusName}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- kết thúc chi tiết -->
+
+    <div style="height: 50px;display: block;clear: both;"></div>
+    <div class="row footer-row">
+        <div class="col-12">
+            <div class="footer" *ngIf="isModify" (click)="showPopup('REQUEST_ADD')">
+                <span class="material-icons"> edit </span>
+                <label>Yêu cầu bổ sung</label>
+            </div>
+            <div class="footer" *ngIf="isReject" (click)="showPopup('REJECT')">
+                <span class="material-icons"> close </span>
+                <label>Từ chối</label>
+            </div>
+            <div class="footer" *ngIf="isApprove" (click)="showPopup('APPROVE')">
+                <span class="material-icons"> check </span>
+                <label>Duyệt</label>
+            </div>
+            <div class="footer" *ngIf="isUpdate" (click)="updateAccount()">
+                <span class="material-icons"> edit </span>
+                <label>Cập nhật thông tin</label>
+            </div>
+            <div class="footer" *ngIf="isDelete" (click)="deleteAccount()">
+                <span class="material-icons"> delete </span>
+                <label>Xóa</label>
+            </div>
+            <div class="footer" *ngIf="isSendApprove" (click)="sendApprove()">
+                <span class="material-icons"> check </span>
+                <label>Gửi duyệt</label>
+            </div>
+            <div class="footer" (click)="backPage()">
+                <span class="material-icons"> keyboard_backspace </span>
+                <label>Quay lại</label>
+            </div>
+        </div>
+    </div>
+    <app-popup-detail-warring [show]="isShowMessage" (hideModal)="isShowMessage = false">
+        <div class="text-center">
+            Hồ sơ <span class="message">{{objStatusProfile.code}}</span> đang được thao tác bởi
+            <span class="message">{{objStatusProfile?.createdByUser?.userName}}</span> chi nhánh
+            <span class="message">{{objStatusProfile.branchCode}} </span>
+        </div>
+    </app-popup-detail-warring>
+    <app-lpb-modal headerText="Xác nhận" [show]="isShowPopupSendApprove" [unit]="'%'" [widthContent]="50"
+        [heightContent]="50" (hideModal)="isShowPopupSendApprove = false">
+        <div class="detail-cif-content">
+            <div class="mb-2">
+                Bạn có muốn gửi duyệt dịch vụ này không?
+            </div>
+            <div class="block-note">
+                <label>Ghi chú:&nbsp;&nbsp;</label>
+                <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+            </div>
+            <div class="text-right pt-2">
+                <button class="btn-cancel" (click)="confimSendApproveProcess('CANCEL')">
+                    Hủy
+                </button>
+                <button class="btn-save ml-2" (click)="confimSendApproveProcess('CONFIRM')">
+                    Đồng ý
+                </button>
+            </div>
+        </div>
+    </app-lpb-modal>
+    <app-lpb-modal headerText="Xác nhận" [show]="isShowPopupApprove" [unit]="'%'" [widthContent]="50"
+        [heightContent]="50" (hideModal)="isShowPopupApprove = false">
+        <div class="detail-cif-content">
+            <div class="mb-2">
+                Bạn có muốn duyệt dịch vụ này không?
+            </div>
+            <div class="block-note">
+                <label>Ghi chú:&nbsp;&nbsp;</label>
+                <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+            </div>
+            <div class="text-right pt-2">
+                <button class="btn-cancel" (click)="confimApproveProcess('CANCEL')">
+                    Hủy
+                </button>
+                <button class="btn-save ml-2" (click)="confimApproveProcess('CONFIRM')">
+                    Đồng ý
+                </button>
+            </div>
+        </div>
+    </app-lpb-modal>
+</div>

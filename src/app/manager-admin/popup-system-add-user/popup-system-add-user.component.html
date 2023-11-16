@@ -1,0 +1,192 @@
+<div class="abc">
+  <h2 mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;">
+    Thêm mới người dùng
+  </h2>
+  <mat-dialog-content class="mat-typography scroll-dialog">
+    <div class="col-12" style="padding-top: 10px;">
+      <form [formGroup]="userForm">
+        <div class="row">
+          <div class="col-12">
+            <label class="col-3 col-form-label" style="float: left;padding-left: 0px;">Tìm kiếm</label>
+            <div class="input-group col-9" style="float: left;padding-right: 0px;">
+              <input type="text" class="form-control" placeholder="Nhập userAD hoặc mã nhân viên">
+              <span class="input-search" style="background: #545b62;">
+                <i class="fa fa-search" aria-hidden="true" style="color:#FFFFFF"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 required">
+            <label class="control-label">Username</label>
+            <input (keypress)="keyPress($event)" maxlength="50" type="text" class="form-control pading-date"
+              formControlName="userName" name="userName" (input)="onInput($event.target.name)"
+              [ngClass]="{'is-invalid' : (submitted && f.userName.errors) || formValidator['userName'] == true}" />
+            <ng-template [ngIf]="submitted && f.userName.errors || formValidator['userName'] == true ">
+              <div class="invalid-feedback">
+                <div>Username không được để trống</div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="form-group col-md-6 required">
+            <label class="control-label">Mã nhân viên</label>
+            <input (keypress)="keyPress($event)" type="text" maxlength="50" class="form-control"
+              formControlName="employeeId" name="employeeId" (input)="onInput($event.target.name)"
+              [ngClass]="{'is-invalid' : (submitted && f.employeeId.errors) || formValidator['employeeId'] == true}">
+            <ng-template [ngIf]="submitted && f.employeeId.errors || formValidator['employeeId'] == true ">
+              <div class="invalid-feedback">
+                <div>Mã nhân viên không được để trống</div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 required">
+            <label class="control-label">Họ và tên</label>
+            <input NumberAndTextViSentenceOnly maxlength="50" type="text" class="form-control"
+              formControlName="fullName" name="fullName" (input)="onInput($event.target.name)"
+              [ngClass]="{'is-invalid' : (submitted && f.fullName.errors) || formValidator['fullName'] == true}">
+            <ng-template [ngIf]="submitted && f.fullName.errors || formValidator['fullName'] == true ">
+              <div class="invalid-feedback">
+                <div>Họ và tên không được để trống</div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="form-group col-md-6 required">
+            <label class="control-label">Phòng ban</label>
+            <input (keypress)="keyPressSymbol($event)" maxlength="50" type="text" class="form-control"
+              formControlName="department" name="department" (input)="onInput($event.target.name)"
+              [ngClass]="{'is-invalid' : (submitted && f.department.errors) || formValidator['department'] == true}">
+            <ng-template [ngIf]="submitted && f.department.errors || formValidator['department'] == true ">
+              <div class="invalid-feedback">
+                <div>Phòng ban không được để trống</div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 required">
+            <label class="control-label">Số điện thoại</label>
+            <input maxlength="11" numbersOnly type="text" class="form-control" formControlName="phone" name="phone"
+              maxlength="10" (input)="onInput($event.target.name)"
+              [ngClass]="{'is-invalid' : (submitted && f.phone.errors) || formValidator['phone'] == true}">
+            <ng-template [ngIf]="submitted && f.phone.errors || formValidator['phone'] == true ">
+              <div class="invalid-feedback">
+                <div>Số điện thoại không được để trống</div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="form-group col-md-6 required">
+            <label class="control-label">Email</label>
+            <input (keypress)="keyPressSpace($event)" maxlength="50" type="text" class="form-control"
+              formControlName="email" name="email" (input)="onInput($event.target.name)"
+              [ngClass]="{'is-invalid' : (submitted && f.email.errors) || formValidator['email'] == true}">
+            <div *ngIf="(submitted && f.email.errors) || formValidator['email'] == true" class="invalid-feedback">
+              <div *ngIf="f.email.errors == null || f.email.errors.required  ">Email không để trống</div>
+              <div *ngIf="f.email.errors.email || (f.email.errors && !f.email.errors.required)">Email không đúng định
+                dạng</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Ngày hiệu lực</label>
+            <input type="text" class="form-control pading-date" formControlName="validFrom" name="validFrom" />
+          </div>
+          <div class="form-group col-md-6">
+            <label>Ngày hết hạn</label>
+            <input type="text" class="form-control pading-date" formControlName="validTo" name="validTo" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 required">
+            <label class="control-label">UserCore</label>
+            <input (keypress)="keyPress($event)" type="text" class="form-control pading-date" formControlName="userCore"
+              name="userCore" (input)="onInput($event.target.name)"
+              [ngClass]="{'is-invalid' : (submitted && f.userCore.errors) || formValidator['userCore'] == true}" />
+            <ng-template [ngIf]="submitted && f.userCore.errors || formValidator['userCore'] == true ">
+              <div class="invalid-feedback">
+                <div>UserCore không được để trống</div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="form-group col-md-6 required">
+            <label class="control-label">Chi nhánh</label>
+            <select style="float: left;" type="text" class="form-control" formControlName="branchIds" name="branchIds"
+              (change)="onInput($event.target.name)"
+              [ngClass]="{'is-invalid' : (submitted && f.branchIds.errors) || formValidator['branchIds'] == true}">
+              <option value="">-- Chọn chi nhánh --</option>
+              <option [value]="item.id" *ngFor="let item of lstBranch">{{item.name}}</option>
+            </select>
+            <ng-template [ngIf]="submitted && f.branchIds.errors || formValidator['branchIds'] == true ">
+              <div class="invalid-feedback">
+                <div>Chi nhánh không được để trống</div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 required">
+            <label class="control-label">Chức danh</label>
+            <ng-select [multiple]="true" [items]="lstTitles" appendTo="body" [closeOnSelect]="false"
+              placeholder="Chọn chức danh" formControlName="titleIds" name="titleIds"
+              [ngClass]="{'is-invalid' : (submitted && f.titleIds.errors) || formValidator['titleIds'] == true}"
+              bindLabel="name" bindValue="id">
+              <ng-template ng-header-tmp style="padding: 0">
+                <mat-checkbox class="custom-mat" [checked]="selectAllTitle"
+                  (change)="toggleSelectAllTitle($event.checked)">
+                  Chọn tất cả
+                </mat-checkbox>
+              </ng-template>
+              <mat-select multiple style="padding: 0" formControlName="titleIds" name="titleIds">
+                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                  <mat-option style="height: 18px" [value]="item.id">{{item.name}}</mat-option>
+                </ng-template>
+              </mat-select>
+            </ng-select>
+            <ng-template [ngIf]="submitted && f.titleIds.errors || formValidator['titleIds'] == true ">
+              <div class="invalid-feedback">
+                <div>Chức danh không được để trống</div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="form-group col-md-6 ">
+            <label class="control-label">Role</label>
+            <ng-select [multiple]="true" [items]="lstRole" appendTo="body" [closeOnSelect]="false"
+              placeholder="Chọn role" formControlName="roleIds" name="roleIds"
+              bindLabel="name" bindValue="id">
+              <ng-template ng-header-tmp style="padding: 0">
+                <mat-checkbox class="custom-mat" [checked]="selectAllRoles"
+                  (change)="toggleSelectAllRoles($event.checked)">
+                  Chọn tất cả
+                </mat-checkbox>
+              </ng-template>
+              <mat-select multiple style="padding: 0" formControlName="roleIds" name="roleIds">
+                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                  <mat-option style="height: 18px" [value]="item.id">{{item.name}}</mat-option>
+                </ng-template>
+              </mat-select>
+            </ng-select>
+
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div style="height: 57px; margin-top: 9px;">
+      <div class="float-left" style="padding-left: 20px; padding-top: 10px;">
+        <mat-slide-toggle [(ngModel)]="isUnlocked" color="primary" (change)="onUnlockedChange()">
+          Mở khóa chức năng: {{isUnlocked ? 'Bật' : 'Tắt'}}
+        </mat-slide-toggle>
+      </div>
+      <div class="float-right">
+        <button type="button" class="btn newfile btn-color" (click)="saveUser(1)" cdkFocusInitial>
+          Lưu thông tin
+        </button>
+        <button type="button" class="btn closePopup" (click)="closeDialog(0)">Đóng</button>
+      </div>
+    </div>
+  </mat-dialog-actions>
+</div>

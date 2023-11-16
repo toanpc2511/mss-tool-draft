@@ -1,0 +1,211 @@
+<mat-drawer-container class="drawer">
+  <mat-drawer #drawer>
+    <div class="tb-sideBar">
+      <div class="d-flex justify-content-center mt-3 mb-3 ">
+        Ẩn / hiển thị cột trong bảng
+      </div>
+      <hr>
+      <div class="row d-flex justify-content-between pl-3 pr-3">
+        <div class="col-md-6">
+          <mat-checkbox color="warn" [checked]="allComplete" (change)="setAll($event.checked)" [indeterminate]="someComplete()">{{allComplete ? 'Ẩn':'Hiện'}} tất cả</mat-checkbox>
+        </div>
+        <div class="col-md-6">
+          <mat-checkbox color="warn" (change)="viewDefault($event.checked)" [checked]="defaultColumn">Mặc định</mat-checkbox>
+        </div>
+      </div>
+      <hr>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6 d-flex flex-column">
+            <mat-checkbox color="primary" *ngFor="let item of tickTB.slice(0, 17)" [(ngModel)]="item.ticked" (ngModelChange)="updateAllComplete()">{{item.name}}</mat-checkbox>
+          </div>
+          <div class="col-sm-6 d-flex flex-column">
+            <mat-checkbox color="primary" *ngFor="let item of tickTB.slice(17)" [(ngModel)]="item.ticked" (ngModelChange)="updateAllComplete()">{{item.name}}</mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="all-content">
+      <div class="container-fluid">
+        <div class="title-content"><i class="fa fa-search title-content"></i> TÌM KIẾM LỊCH SỬ</div>
+        <hr>
+        <div class="row" [formGroup]="formSearch">
+          <div class="col-md-6 col-left">
+            <div class="row d-flex align-items-center form-field">
+              <div class="col-md-3">
+                <span>Từ ngày: <span class="text-danger">(*)</span> </span>
+              </div>
+              <div class="col-md-9">
+                <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="dateFromChanged()"
+                                     (dateChanged)="getFromDate()"></app-lpb-date-picker>
+              </div>
+            </div>
+            <div class="row d-flex align-items-center form-field">
+              <div class="col-md-3">
+                <span class="txtLabel">Chi nhánh:</span>
+              </div>
+              <div class="col-md-9" *ngIf="userInfo.roleCode === 'UNIFORM.BANK.KSV'">
+                <app-lpb-select2 [apiUrl]="urlBranchCode" labelName="name" bindValue="code"
+                                 formControlName="branchCode"></app-lpb-select2>
+              </div>
+              <div class="col-md-9" *ngIf="userInfo.roleCode !== 'UNIFORM.BANK.KSV'">
+                <app-lpb-select2 [apiUrl]="'/lpb-common-service/api/public/redis/branch'" labelName="name" bindValue="code"
+                                 formControlName="branchCode"></app-lpb-select2>
+              </div>
+            </div>
+            <div class="row d-flex align-items-center form-field">
+              <div class="col-md-3">
+                <span>CIF:</span>
+              </div>
+              <div class="col-md-9">
+                <input class="form-control" formControlName="customerCode">
+              </div>
+            </div>
+            <div class="row d-flex align-items-center form-field">
+              <div class="col-md-3">
+                <span>Trạng thái:</span>
+              </div>
+              <div class="col-md-9">
+                <ng-select formControlName="status" [clearable]="false">
+                  <ng-option value="">Tất cả</ng-option>
+                  <ng-option value="SEND_APPROVE">Chờ duyệt</ng-option>
+                  <ng-option value="APPROVE_LV1">Đã duyệt 1</ng-option>
+                  <ng-option value="APPROVE_LV2">Đã duyệt 2</ng-option>
+                  <ng-option value="MODIFY">Chờ bổ sung</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-right">
+            <div class=" row d-flex align-items-center form-field">
+              <div class="col-md-3">
+                <span>Đến ngày: <span class="text-danger">(*)</span> </span>
+              </div>
+              <div class="col-md-9">
+                <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="dateToChanged()"
+                                     (dateChanged)="getToDate()">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+            <div class="row d-flex align-items-center form-field">
+              <div class="col-md-3">
+                <span class="txtLabel">Mã sản phẩm:</span>
+              </div>
+              <div class="col-md-9">
+                <app-lpb-select2 [apiUrl]="'/credit-card-service/card-product'" labelName="name" bindValue="code"
+                                 formControlName="productCode"></app-lpb-select2>
+              </div>
+            </div>
+            <div class="row d-flex align-items-center form-field">
+              <div class="col-md-3">
+                <span>GTXM:</span>
+              </div>
+              <div class="col-md-9">
+                <input class="form-control" formControlName="issueValue">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+          <button mat-raised-button class="btn-search" (click)="search()">Tìm kiếm</button>
+        </div>
+        <div class="table-content">
+          <div class="title-content"><i class="fa fa-book title-content"></i> DANH SÁCH YÊU CẦU PHÁT HÀNH THẺ TÍN DỤNG</div>
+          <div class="d-flex justify-content-between">
+                    <button mat-button (click)="drawer.toggle()">Cài đặt hiển thị</button>
+            <button mat-button class="btn-excel" (click)="exportHistory()"><i class="fa fa-file-excel-o"></i> Xuất dữ liệu</button>
+          </div>
+          <div class="table-scroll">
+            <table class="main-table table table-hover">
+              <thead>
+              <tr>
+                <th [hidden]="!tickTB[0].ticked">STT</th>
+                <th [hidden]="!tickTB[1].ticked">Mã CN</th>
+                <th [hidden]="!tickTB[2].ticked">Mã khách hàng</th>
+                <th [hidden]="!tickTB[3].ticked">Customer Category</th>
+                <th [hidden]="!tickTB[4].ticked">Mã tài sản</th>
+                <th [hidden]="!tickTB[5].ticked">Mã sản phẩm</th>
+                <th [hidden]="!tickTB[6].ticked">Tên chủ thẻ</th>
+                <th [hidden]="!tickTB[7].ticked">SĐT</th>
+                <th [hidden]="!tickTB[8].ticked">TK trích nợ</th>
+                <th [hidden]="!tickTB[9].ticked">Số tiền trích nợ</th>
+                <th [hidden]="!tickTB[10].ticked">Mã NVKD</th>
+                <th [hidden]="!tickTB[11].ticked">Mã giới thiệu</th>
+                <th [hidden]="!tickTB[12].ticked">Hạn mức</th>
+                <th [hidden]="!tickTB[13].ticked">Họ và Tên Đệm</th>
+                <th [hidden]="!tickTB[14].ticked">Tên</th>
+                <th [hidden]="!tickTB[15].ticked">Ngày sinh</th>
+                <th [hidden]="!tickTB[16].ticked">Giới tính</th>
+                <th [hidden]="!tickTB[17].ticked">Số CMND</th>
+                <th [hidden]="!tickTB[18].ticked">Ngày cấp</th>
+                <th [hidden]="!tickTB[19].ticked">Nơi cấp</th>
+                <th [hidden]="!tickTB[20].ticked">Email</th>
+                <th [hidden]="!tickTB[21].ticked">Số nhà</th>
+                <th [hidden]="!tickTB[22].ticked">Đường</th>
+                <th [hidden]="!tickTB[23].ticked">Thành Phố</th>
+                <th [hidden]="!tickTB[24].ticked">Hạng thẻ</th>
+                <th [hidden]="!tickTB[25].ticked">Trạng thái</th>
+                <th [hidden]="!tickTB[26].ticked">Trạng thái duyệt</th>
+                <th [hidden]="!tickTB[27].ticked">KSV</th>
+                <th [hidden]="!tickTB[28].ticked">NHS</th>
+                <th [hidden]="!tickTB[29].ticked">Ghi chú</th>
+                <th [hidden]="!tickTB[30].ticked">Ngày cấp HM</th>
+                <th [hidden]="!tickTB[31].ticked">Thời gian cập nhật trên Uniform</th>
+                <th [hidden]="!tickTB[32].ticked">Lý do</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr *ngFor="let item of records; index as i">
+                <td [hidden]="!tickTB[0].ticked">{{i + 1}}</td>
+                <td [hidden]="!tickTB[1].ticked">{{item.branchCode}}</td>
+                <td [hidden]="!tickTB[2].ticked" (click)="seeDetails(item)"><a href="javascript:void(0)">{{item.customerCode}}</a></td>
+                <td [hidden]="!tickTB[3].ticked">{{item.customerCategory}}</td>
+                <td [hidden]="!tickTB[4].ticked">{{item.productId}}</td>
+                <td [hidden]="!tickTB[5].ticked">{{item.productCode}}</td>
+                <td [hidden]="!tickTB[6].ticked">{{item.cardHolderName}}</td>
+                <td [hidden]="!tickTB[7].ticked">{{item.phoneNumber}}</td>
+                <td [hidden]="!tickTB[8].ticked">{{item.debtAccount}}</td>
+                <td [hidden]="!tickTB[9].ticked">{{item.debtAmount}}</td>
+                <td [hidden]="!tickTB[10].ticked">{{item.employeeId}}</td>
+                <td [hidden]="!tickTB[11].ticked">{{item.inviteCode}}</td>
+                <td [hidden]="!tickTB[12].ticked">{{item.limitAmount | prettyMoney}}</td>
+                <td [hidden]="!tickTB[13].ticked">{{item.surname}}</td>
+                <td [hidden]="!tickTB[14].ticked">{{item.lastName}}</td>
+                <td [hidden]="!tickTB[15].ticked">{{item.birthDate}}</td>
+                <td [hidden]="!tickTB[16].ticked">{{item.gender}}</td>
+                <td [hidden]="!tickTB[17].ticked">{{item.issueValue}}</td>
+                <td [hidden]="!tickTB[18].ticked">{{item.issueDate}}</td>
+                <td [hidden]="!tickTB[19].ticked">{{item.issuePlace}}</td>
+                <td [hidden]="!tickTB[20].ticked">{{item.email}}</td>
+                <td [hidden]="!tickTB[21].ticked">{{item.houseNumber}}</td>
+                <td [hidden]="!tickTB[22].ticked">{{item.street}}</td>
+                <td [hidden]="!tickTB[23].ticked">{{item.city}}</td>
+                <td [hidden]="!tickTB[24].ticked">{{item.cardRateCode}}</td>
+                <td [hidden]="!tickTB[25].ticked">{{item.statusLos === '1'? 'Hợp lệ': 'Không hợp lệ'}}</td>
+                <td [hidden]="!tickTB[26].ticked">{{item.processStatus}}</td>
+                <td [hidden]="!tickTB[27].ticked">{{item.approveLv1By}}</td>
+                <td [hidden]="!tickTB[28].ticked">{{item.approveLv2By}}</td>
+                <td [hidden]="!tickTB[29].ticked">{{item.note}}</td>
+                <td [hidden]="!tickTB[30].ticked">{{item.getLosDate}}</td>
+                <td [hidden]="!tickTB[31].ticked">{{item.approvalDateLos}}</td>
+                <td [hidden]="!tickTB[32].ticked">{{item.rejectReason}}</td>
+              </tr>
+              </tbody>
+            </table>
+                    <div *ngIf="records.length === 0" class="d-flex justify-content-center"> Không có bản ghi phù hợp</div>
+          </div>
+
+        </div>
+        <app-lpb-pagination [pagination]="pagination"
+                            (evtChangePageSize)="changePageSize($event)"
+                            (evtSetPage)="setPage($event)">
+        </app-lpb-pagination>
+      </div>
+    </div>
+
+  </mat-drawer-content>
+</mat-drawer-container>

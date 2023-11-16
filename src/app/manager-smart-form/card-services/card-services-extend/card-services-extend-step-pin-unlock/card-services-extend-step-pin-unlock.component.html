@@ -1,0 +1,28 @@
+<app-card-services-form [formGroup]="formCustomerInfo" [title]="'MỞ KHÓA PIN'" [isShowLoading]="isShowLoading"
+  [formType]="'SEND_APPROVE'" (eventBackStep)="backToSearch($event)" (eventOpenModal)="openModal()" [showPinCount]="true">
+  <div class="field">
+    <span class="txtLabel">File đính kèm:</span>
+    <app-card-service-extend-file-input [maxSize]="2097152" [validType]="['pdf','png','doc','docx']" #uploadFile
+      [isRequire]="false" (changeFile)="changeSelectedFile($event)"></app-card-service-extend-file-input>
+  </div>
+</app-card-services-form>
+
+<app-lpb-modal headerText="Xác nhận gửi duyệt Mở khóa PIN" [show]="showModal" (hideModal)="showModal = false"
+  [widthContent]="50" [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt">
+      Bạn có chắc muốn gửi duyệt giao dịch Mở khoá PIN?
+    </div>
+    <div class="mb-2 confirm-txt" *ngIf="cardSelected?.cardNumber">
+      Số thẻ: {{cardSelected?.cardNumber}}
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-denied mr-2" (click)="this.showModal = false">
+        Hủy bỏ
+      </button>
+      <button class="btn btn-accept" (click)="unlockPin()">
+        Đồng ý
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>

@@ -1,0 +1,84 @@
+@import "./shared/css/update-cif.scss";
+
+.update-cif {
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 3px;
+  border-top: 1px solid #bdbdbd;
+  &-content { 
+    .div-center {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+    .block-note {
+      display: flex;
+      white-space: nowrap;
+    }
+  }
+  &-content-title {
+    color: #17589f;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 8px 0px;
+    display: flex;
+
+    .mat-icon {
+      float: unset !important;
+    }
+
+    span {
+      align-self: center;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+
+  &-info-customer {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 5%;
+
+    .col-info-left,
+    .col-info-right {
+      max-width: 50%;
+      flex: 0 0 50%;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      margin: 0 -15px;
+    }
+  }
+
+  &-address {
+    padding: 25px 5%;
+  }
+
+  &-child-infor {
+    padding: 25px 5%;
+
+    .mis {
+      border: 1px solid #828282;
+      height: 39px;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #0C258A;
+      padding: 10px;
+      margin: 30px 0;
+      cursor: pointer;
+      .error-invalid {
+        color: #E83C19;
+       }
+    }
+    .error-block {
+      color: #e83c19;
+      font-size: 12px;
+    }
+    .error-invalid {
+      margin-bottom: 10px;
+      border-color: #E83C19;
+    }
+  }
+}
+

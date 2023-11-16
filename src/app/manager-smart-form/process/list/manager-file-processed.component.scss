@@ -1,0 +1,197 @@
+tr:focus {
+    background-color: #faebd7;
+    outline: 0;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+.btn-outline-secondary {
+  background: #828282;
+  height: 36px;
+}
+.require-tilte {
+  color: red;
+}
+.input-group {
+  width:370px;
+}
+.input-search {
+  width: 100%;
+}
+.fa-search {
+  color:#FFFFFF
+}
+.location-msg {
+  margin-top: -8px;
+}
+.error-msg {
+  color: #E83C19;
+  font-size: 12px;
+  display: contents;
+}
+.btn-close {
+  width: 93px;
+  border-radius: 4px;
+  background: #bdbdbd;
+  border: 1px solid #bdbdbd;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 23px;
+  color: white;
+  border-style: solid;
+  outline: none;
+}
+.btn-new {
+  border-radius: 4px;
+  background: #0C258A;
+  width: 93px;
+  border: 1px solid #0C258A;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 23px;
+  color: white;
+  border-style: solid;
+  outline: none;
+
+}
+.title-head {
+  font-weight: 500;
+}
+.cust-row-search {
+  margin-top: -1%;
+  .row-item-info {
+    .label-field {
+      max-width: 22.2222%;
+      flex: 0 0 22.2222%;
+      font-weight: 500;
+      text-align: left;
+      margin-right: 10px;
+      padding-top: 10px;
+      font-size: 14px;
+      color: #0C258A;
+      .item-require {
+        color: #E83C19;
+        font-weight: 500;
+      }
+    }
+    button {
+      max-width: 11.1111%;
+      flex: 0 0 11.1111%;
+      height: 36px;
+      width: 36px;
+      margin-top: 5px;
+      border: 1px solid #BDBDBD;
+    }
+    .value-field {
+      max-width: 66.6666%;
+      flex: 0 0 66.6666%;
+      .control-item {
+        .grRadio {
+          height: 35px;
+          display: flex;
+          .rd-item {
+            align-self: center;
+            margin-right: 30px;
+            label,
+            input {
+              cursor: pointer;
+            }
+          }
+        }
+        .link-web {
+          cursor: pointer;
+          font-style: italic;
+        }
+      }
+      .rd-nowrap-text { 
+        display: flex;
+        white-space: nowrap;
+      }
+      .error-msg {
+        color: #E83C19;
+        margin-top: 5px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+.popup-table {
+  margin-top: 20px;
+  .content-title {
+    button {
+    float: right;
+    }
+  }
+  .content-table {
+   margin-top: 40px;
+    table {
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      thead {
+        th {
+          background-color: #0c258a;
+          text-align: center;
+          color: white;
+          font-weight: 500;
+          height: 50px;
+        }
+      }
+      tbody {
+        td {
+          color: #252834;
+          font-weight: 400;
+          height: 35px;
+          padding: auto 5px;
+        }
+        .link-action {
+          color: #0088FF;
+          cursor: pointer;
+          user-select: none; /* standard syntax */
+          -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+          -moz-user-select: none; /* mozilla browsers */
+          -khtml-user-select: none; /* webkit (konqueror) browsers */
+          -ms-user-select: none; /* IE10+ */
+        }
+        .th-col-action {
+          min-width: 100px;
+          max-width: 100px;
+        }
+        .td-col-action {
+          min-width: 100px;
+          max-width: 100px;
+          .action {
+            display: flex;
+            justify-content: center;
+            height: 100%;
+          }
+        }
+      }
+      tr {
+        height: 45px;
+      }
+    }
+    .text-nowrap {
+      white-space: nowrap;
+    }
+  }
+  .col-9 {
+    color: red;
+  }
+  .div-center {
+    text-align: center;
+  }
+  .btn-action {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .content-action {
+    margin: 30px 45%;
+  }
+  
+}

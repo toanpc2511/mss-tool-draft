@@ -1,0 +1,46 @@
+<div class="container-fluid">
+  <div class="search-section mt-3">
+    <div class="card">
+      <div class="search px-4 mt-2">
+        <form [formGroup]="searchForm" (submit)="search()">
+          <div class="row">
+
+            <div class="col-4">
+              <div class="form-group">
+                <span class="col-4">Mã khách hàng</span>
+                <input  type="text" class="form-control col-8" formControlName="customerId"/>
+              </div>
+
+            </div>
+            <div class="col-4">
+              <app-lpb-select2  labelName="supplierName" apiUrl="/water-service/supplier" class="col-8" formControlName="supplier"></app-lpb-select2>
+              <app-lpb-select2  [config]="selectConfig" labelName="name" apiUrl="/process/userView/branchListAll" class="col-8" formControlName="branch"></app-lpb-select2>
+            </div>
+
+          </div>
+          <div class="w-full d-flex justify-content-center m-5">
+            <button [disabled]="child &&  child.getSectionSelect().length > 0 ? false : true"
+              mat-raised-button
+              type="submit"
+              class="d-inline-block bg-btn__blue text-while"
+            >
+              <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+              Tìm kiếm
+            </button>
+          </div>
+        </form>
+      </div>
+      {{ searchForm.value | json }}
+    </div>
+
+  </div>
+  <div class="result-section mt-5">
+    <div class="card border-0">
+      <app-lpb-datatable (addAction)="onAdd()" [config]="config" (editAction)="onEdit($event)"
+                         (deleteAction)="onDelete($event)" (viewAction)="onView($event)"
+                         [columns]="columns" apiServiceURL="/water-service/transaction"></app-lpb-datatable>
+    </div>
+
+  </div>
+</div>
+

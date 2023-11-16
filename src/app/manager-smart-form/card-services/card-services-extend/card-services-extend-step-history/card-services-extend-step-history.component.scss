@@ -1,0 +1,57 @@
+.card-services-extend-step-search {
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 30px;
+    justify-content: space-between;
+    .row-fields {
+      flex: 1;
+      .field {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  }
+  .btn-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .card-services-extend-step-search {
+    .form-field {
+      flex-direction: row;
+      column-gap: 30px;
+    }
+  }
+}
+
+::ng-deep app-lpb-date-picker .label-warning {
+  position: absolute;
+}
+
+.tbl-result {
+  overflow-x: auto;
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 130%;
+    border: 1px solid #ddd;
+    overflow-x: auto;
+    min-width: 1000px;
+    th {
+      white-space: nowrap;
+    }
+
+    $lenght: 100;
+    @for $i from 1 through $lenght {
+      .col-w-#{$i} {
+        width: calc(#{$i} * 70% / 100);
+      }
+    }
+  }
+}

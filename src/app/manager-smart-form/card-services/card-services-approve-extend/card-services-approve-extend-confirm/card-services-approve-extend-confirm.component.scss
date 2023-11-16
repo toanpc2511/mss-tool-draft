@@ -1,0 +1,105 @@
+@import '/src/app/shared/styles/lpb-button';
+.card-services-approve-step-confirm {
+  background-color: white;
+  border-top: 1px solid #bdbdbd;
+  padding: 0px 10px;
+  height: 100%;
+  .content-title {
+    color: #17589f;
+    border-bottom: 2px solid #F47326;
+    padding: 8px 0px;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+    place-self: flex-start;
+  }
+  .form-detail {
+    .row-fields {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .form-search-title {
+        span {
+          font-weight: 500;
+          font-size: 16px;
+          color: #17589f;
+        }
+      }
+      .field {
+        max-width: 50%;
+        width: calc(50% - 16px);
+        margin-bottom: 16px;
+        .txtLabel {
+          font-weight: 500;
+          color: #17589f;
+        }
+        .file-upload-info {
+          span {
+            font-weight: 400;
+            cursor: pointer;
+          }
+          i {
+            font-weight: 500;
+            cursor: pointer;
+          }
+        }
+      }
+      span {
+        font-weight: 500;
+        color: #17589f;
+      }
+    }
+  }
+  .btn-action {
+    margin-top: 24px;
+
+    &-reject {
+      background-color: #f47326;
+      border: 1px solid #f47326;
+    }
+    &-back {
+      background-color: #6c757d;
+      border: 1px solid #6c757d;
+    }
+    &-send {
+      background-color: #17589f;
+      border: 1px solid #17589f;
+    }
+  }
+}
+.modal-confirm, .modal-error {
+  text-align: center;
+  &-content {
+    margin: 16px auto auto auto;
+    color: #17589f;
+    text-align: left;
+    .txt-name {
+      font-weight: 500;
+    }
+    span {
+      word-wrap: break-word;
+    }
+  }
+  &-action {
+    margin-top: 16px;
+  }
+  &-reject-reason {
+    margin: 16px auto auto auto;
+    .err-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: red;
+    }
+    .err-field {
+      border-color: red;
+    }
+  }
+}
+.form-control:focus {
+  box-shadow: unset !important;
+}
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+
+}

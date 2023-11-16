@@ -1,0 +1,225 @@
+<div class="supplier">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between"
+  >
+    <span>Tạo mới nhà cung cấp</span>
+  </div>
+
+  <form [formGroup]="supplierForm">
+    <div class="supplier-card">
+      <p class="title">Thông tin chung</p>
+      <div class="row">
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Mã nhà cung cấp</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập mã nhà cung cấp"
+            formControlName="supplierCode"
+            [maxLength]="100"
+            trimInput
+          />
+          <app-validate
+            [control]="supplierForm.controls['supplierCode']"
+            error="required"
+            message="Nhập thiếu mã nhà cung cấp"
+          ></app-validate>
+
+          <app-validate
+            [control]="supplierForm.controls['supplierCode']"
+            [error]="'isExist'"
+            [message]="'Mã nhà cung cấp đã tồn tại!'"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Tên nhà cung cấp</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập tên nhà cung cấp"
+            formControlName="supplierName"
+            [maxLength]="100"
+            trimInput
+          />
+          <app-validate
+            [control]="supplierForm.controls['supplierName']"
+            error="required"
+            message="Nhập thiếu tên nhà cung cấp"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Service</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập service"
+            formControlName="service"
+            [maxLength]="100"
+            trimInput
+          />
+          <app-validate
+            [control]="supplierForm.controls['service']"
+            error="required"
+            message="Nhập thiếu service"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">MerchantID</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập merchantId"
+            formControlName="merchantId"
+            [maxLength]="100"
+            trimInput
+          />
+          <app-validate
+            [control]="supplierForm.controls['merchantId']"
+            error="required"
+            message="Nhập thiếu merchantID"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">ServiceID</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập serviceID"
+            formControlName="serviceId"
+            [maxLength]="100"
+            trimInput
+          />
+          <app-validate
+            [control]="supplierForm.controls['serviceId']"
+            error="required"
+            message="Nhập thiếu serviceID"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">ProductCode</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập productCode"
+            formControlName="productCode"
+            [maxLength]="100"
+            trimInput
+          />
+          <app-validate
+            [control]="supplierForm.controls['productCode']"
+            error="required"
+            message="Nhập thiếu productCode"
+          ></app-validate>
+        </div>
+
+        <div class="mb-2 col-12 col-md-6 col-lg-4">
+          <label class="required">Trạng thái</label>
+          <app-lpb-select2
+            [items]="statusSuppliers"
+            labelName="name"
+            bindValue="type"
+            formControlName="status"
+            placeholder="Chọn trạng thái"
+          ></app-lpb-select2>
+          <app-validate
+            [control]="supplierForm.controls['status']"
+            error="required"
+            message="Chưa chọn trạng thái"
+          ></app-validate>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form [formGroup]="supplierForm">
+    <div class="supplier-card">
+      <p class="title">Quy tắc thanh toán</p>
+      <div class="row">
+        <ng-container
+          *ngFor="let supplierGroup of supplierFormGroups.controls; let i = index"
+          [formGroup]="supplierGroup"
+        >
+          <div class="mb-3 col-12 col-md-6 col-lg-4">
+            <ng-container *ngIf="paymentRules[i].code === 'UNI-FORMGROUP3'">
+              <label [ngClass]="!isNoPriority ? 'required' : ''">{{ paymentRules[i].name }}</label>
+              <app-lpb-select2
+                [items]="paymentRules[i].ruleResponses"
+                [multiple]="true"
+                [config]="selectConfig"
+                labelName="name"
+                bindValue="id"
+                formControlName="supplierRuleId"
+                [placeholder]="'Chọn ' + paymentRules[i].name"
+                (change)="handleChangeRule($event)"
+              ></app-lpb-select2>
+            </ng-container>
+            <ng-container *ngIf="paymentRules[i].code !== 'UNI-FORMGROUP3'">
+              <label class="required">{{ paymentRules[i].name }}</label>
+              <ng-select
+                formControlName="supplierRuleId"
+                [placeholder]="'Chọn ' + paymentRules[i].name"
+                (change)="onChangeRule($event, paymentRules, i)"
+              >
+                <ng-option
+                  *ngFor="let rule of paymentRules[i].ruleResponses"
+                  [value]="rule.id"
+                >{{ rule.name }}</ng-option
+                >
+              </ng-select>
+            </ng-container>
+
+            <app-validate
+              [control]="supplierGroup.controls['supplierRuleId']"
+              [error]="'required'"
+              [message]="'Chưa nhập ' + paymentRules[i].name"
+            ></app-validate>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="supplier-card">
+      <p class="title">Nội dung thanh toán</p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+          <label class="required">Tiền tố</label>
+          <app-input-autocomplete-custom
+            [listItem]="prefixs"
+            formControlName="prefix"
+            maxlength="200"
+            class="w-100"
+            placeholder="Nhập tiền tố"
+          ></app-input-autocomplete-custom>
+          <app-validate
+            [control]="supplierForm.controls['prefix']"
+            [error]="'required'"
+            [message]="'Chưa nhập tiền tố'"
+          ></app-validate>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <label class="required">Chi tiết kỳ</label>
+          <app-input-autocomplete-custom
+            formControlName="periodDetail"
+            [listItem]="periodDetails"
+            maxlength="200"
+            class="w-100"
+            placeholder="Nhập chi tiết kỳ"
+          ></app-input-autocomplete-custom>
+          <app-validate
+            [control]="supplierForm.controls['periodDetail']"
+            [error]="'required'"
+            [message]="'Chưa nhập chi tiết kỳ'"
+          ></app-validate>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<app-lpb-footer [actions]="actions" ></app-lpb-footer>

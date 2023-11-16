@@ -1,0 +1,34 @@
+.content {
+  display: flex;
+  margin-bottom: 60px;
+  .content-main {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    .text-success {
+      color: #4DC033;
+      font-size: 18px;
+      font-weight: 500;
+      margin-top: 20px;
+    }
+    label {
+      color: #0C258A;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .row:not(:last-child) {
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(204, 204, 204, 0.4);
+
+    }
+  }
+  .txt-success {
+    cursor: pointer;
+    color: #4674EB;
+    .fa-info-circle {
+      font-size: 20px;
+      color: #4674EB;
+      margin-right: 7px;
+    }
+  }
+}

@@ -1,0 +1,86 @@
+<div class="d-flex flex-column mb-5">
+  <div class="form-search d-flex flex-column">
+    <div class="content-title pr-2 mt-3">
+      <i class="fa fa-search mr-2 txtLabel"></i> THÔNG TIN CHUNG
+    </div>
+    <hr/>
+    <div class="container mt-3">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Tên khách hàng  <span
+                class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.customerName)"
+                       placeholder="Nhập tên khách hàng" type="text" formControlName="customerName">
+                <app-validate [control]="registerForm.customerName" error="required"
+                              message="Tên khách hàng không được bỏ trống"></app-validate>
+                <app-validate [control]="registerForm.customerName" error="maxlength"
+                              message="Tên khách hàng không được vượt quá 100 kí tự"></app-validate>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <ng-container *ngFor="let userForm of customerPassports.controls; let index = index">
+          <div class="row" formArrayName="customerPassports">
+            <div class="col col-lg-6">
+              <div class="form-group row">
+                <span class="col-lg-4 col-form-label textLabel" ><span *ngIf="index === 0">Hộ chiếu  <span class="text-danger">(*)</span></span></span>
+                <div class="col-lg-8">
+                  <div class="form-inline">
+                    <input class="form-control w-75" [formControlName]="index" (input)="onInput($event, registerForm.customerPassports.controls[index])" (paste)="onPaste($event, registerForm.customerPassports.controls[index])"
+                           [ngClass]="FormHelpers.isValidClass(registerForm.customerPassports.controls[index])"
+                           placeholder="Nhập hộ chiếu" type="text" >
+                    <ng-container *ngIf="mode !== ViewMode.VIEW">
+                      <button class="ml-1" mat-mini-fab (click)="deleteRow(index)" *ngIf="index !== 0">
+                        <mat-icon>
+                          remove_circle
+                        </mat-icon>
+                      </button>
+                      <button class="ml-1" mat-mini-fab (click)="addRow('')" *ngIf="index === 0">
+                        <mat-icon>add_circle</mat-icon>
+                      </button>
+                    </ng-container>
+
+                  </div>
+                  <app-validate [control]="registerForm.customerPassports.controls[index]" error="required"
+                                message="Hộ chiếu không được bỏ trống"></app-validate>
+                  <app-validate [control]="registerForm.customerPassports.controls[index]" error="maxlength"
+                                message="Hộ chiếu không được vượt quá 20 kí tự"></app-validate>
+                  <app-validate [control]="registerForm.customerPassports" error="duplicate"
+                                message="Hộ chiếu không được trùng nhau"></app-validate>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </form>
+    </div>
+  </div>
+  <ng-container *ngIf="mode === ViewMode.VIEW">
+    <hr/>
+    <div class="col d-flex justify-content-center border-0 w-75">
+      <div class="card col-12 border-0">
+        <div class="card-header">
+          <h1><i class="fa fa-history mr-2 txtLabel text-uppercase"></i> Lịch sử chỉnh sửa</h1>
+        </div>
+        <div class="card-body">
+                    <app-lpb-datatable [dataSource]="dataSource" [columns]="columns" [config]="datatableConfig">
+
+                    </app-lpb-datatable>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>
+
+
+</div>
+
+<app-lpb-footer style="bottom: 0px" [actions]="actions"
+                class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

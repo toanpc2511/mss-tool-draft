@@ -1,0 +1,93 @@
+<div class="account-owner-create">
+    <div class="account-owner-create-search">
+        <div class="row-item-info">
+            <div class="label-field">Khách hàng cá nhân <span class="item-require">(*)</span></div>
+            <div class="label-action">
+                <input class="form-control" [(ngModel)]="codeCustomer" type="text" (change)="customerChange()">
+                <div class="error-msg" *ngIf="errMsgSearchCustomer !== ''">{{errMsgSearchCustomer}}</div>
+            </div>
+            <button class="fa fa-search" (click)="searchCustomer()"></button>
+            <app-lpb-modal headerText="Danh sách khách hàng" [show]="isListCustomer" [unit]="'%'" [widthContent]="65"
+                [heightContent]="50" (hideModal)="isListCustomer = false">
+                <div class="account-owner-create-content">
+                    <div class="table table-striped content-table">
+                        <table>
+                            <thead>
+                                <tr class="text-nowrap">
+                                    <th>Tên khách hàng</th>
+                                    <th>Mã CIF</th>
+                                    <th>Số GTXM</th>
+                                    <th>Ngày cấp GTXM</th>
+                                    <th>Nơi cấp GTXM</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of customers;let i = index"
+                                    [ngStyle]="{'background-color': i % 2 == 0  ? 'rgba(0,0,0,.05)' : null }"
+                                    (click)="selectCustomer(item.CUSTOMER_NO)">
+                                    <td>{{item.FULL_NAME}}</td>
+                                    <td>{{item.CUSTOMER_NO}}</td>
+                                    <td>{{item.UID_VALUE}}</td>
+                                    <td>{{item.NGAY_CAP }}</td>
+                                    <td>{{item.NOI_CAP}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="div-center">
+                            {{msgEmpty}}
+                        </div>
+                        <div class="btn-action">
+                           <button class="btn-close mr-2" (click)="close()">Đóng</button>
+                           <button class="btn-close mr-2" (click)="addNewOwner()">Tạo mới</button>
+                        </div>
+                    </div>
+                </div>
+            </app-lpb-modal>
+        </div>
+        <div class="row-item-info">
+            <div class="label-field"></div>
+            <div class="value-field">
+                <div class="control-item rd-nowrap-text">
+                    <div class="grRadio">
+                        <div class="rd-item">
+                            <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)"
+                                [(ngModel)]="typeCustomer" name="typeCustomer" id="rd-1" value="{{typeParamSearch.cmnd}}">
+                            <label for="rd-1">
+                                CMND
+                            </label>
+                        </div>
+                        <div class="rd-item">
+                            <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)"
+                                [(ngModel)]="typeCustomer" name="typeCustomer" id="rd-2" value="{{typeParamSearch.cccd}}">
+                            <label for="rd-2">
+                                CCCD
+                            </label>
+                        </div>
+                        <div class="rd-item">
+                            <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)"
+                                [(ngModel)]="typeCustomer" name="typeCustomer" id="rd-3" value="{{typeParamSearch.hc}}">
+                            <label for="rd-3">
+                                Hộ chiếu
+                            </label>
+                        </div>
+                        <div class="rd-item">
+                            <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)"
+                                [(ngModel)]="typeCustomer" name="typeCustomer" id="rd-3" value="{{typeParamSearch.gks}}">
+                            <label for="rd-3">
+                                Giấy khai sinh
+                            </label>
+                        </div>
+                        <div class="rd-item">
+                            <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)"
+                                [(ngModel)]="typeCustomer" name="typeCustomer" id="rd-4"
+                                value="{{typeParamSearch.cif}}">
+                            <label for="rd-4">
+                                Mã CIF
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="content-body ">
+
+  <div class="content-title p-0">
+    <span class="active"> YÊU CẦU LIENVIET24H</span>
+  </div>
+
+  <app-form-search [form]="formSearch" (searchTransaction)="submitSearchTransaction()"></app-form-search>
+  <app-lpb-datatable tableName="DANH SÁCH YÊU CẦU" [isDisabledUpdate]="isDisabledUpdate"
+    [isDisabledDelete]="isDisabledDelete" [config]="{hasNoIndex:true,
+    hasPaging: true,
+    filterDefault: filterDefault,
+    defaultSort: '',
+    hasAddtionButton: true,
+    hiddenActionColumn: true }" [searchConditions]="searchCondition" (viewAction)="detail($event)" [columns]="columns"
+    apiServiceURL="/lv24-service/transaction"></app-lpb-datatable>
+</div>

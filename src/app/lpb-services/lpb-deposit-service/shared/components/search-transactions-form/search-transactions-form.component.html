@@ -1,0 +1,170 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="formSearch.controls[controlName].invalid &&
+                           (formSearch.controls[controlName].dirty || formSearch.controls[controlName].touched)">
+    <span *ngIf="formSearch.controls[controlName].errors.required" class="text-danger mt-1 d-block small">
+      {{controlNameVi}} không được bỏ trống
+    </span>
+
+    <span *ngIf="formSearch.controls[controlName].errors.maxlength" class="text-danger mt-1 d-block small">
+      {{controlNameVi}} vượt quá {{formSearch.controls[controlName].errors.maxlength.requiredLength}} ký tự
+    </span>
+
+  </div>
+</ng-template>
+<div class="form-search d-flex flex-column">
+  <form [formGroup]="formSearch" class="container" (ngSubmit)="searchTransaction()" (keyup.enter)="searchTransaction()">
+    <div class="row">
+      <div class="col col-md-6">
+        <!-- Mã giao dịch -->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Mã giao dịch</span>
+          <span class="col-lg-8">
+            <input maxlength="50" placeholder="Nhập mã giao dịch" type="text" formControlName="transCode"
+              class="form-control" />
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'transCode', controlNameVi: 'Mã giao dịch'}">
+            </ng-container>
+          </span>
+        </label>
+        <!-- #region Mã sản phẩm -->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Mã sản phẩm </span>
+          <span class="col-lg-8">
+            <ng-select [multiple]="false" formControlName="productCode" placeholder="Chọn mã sản phẩm">
+              <ng-option *ngFor="let product of lstProduct;" [value]="product.code">
+                {{product.code ? product.code + ' - ': ''}} {{product.name}}
+              </ng-option>
+            </ng-select>
+          </span>
+        </label>
+        <!--#endregion -->
+
+        <!-- #region Số CIF-->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Số CIF </span>
+          <span class="col-lg-8 ">
+            <div class="position-relative">
+              <input maxlength="20" type="text" [textPattern]="{allowRegex: '[0-9]'}" formControlName="cifNo"
+                class="form-control pr-4" placeholder="Nhập số CIF" />
+            </div>
+          </span>
+        </label>
+        <!--#endregion -->
+
+        <!-- #region Số tài khoản-->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Số tài khoản </span>
+          <span class="col-lg-8">
+            <div class="position-relative">
+              <input maxlength="20" type="text" [textPattern]="{allowRegex: '[0-9]'}" formControlName="acn"
+                class="form-control pr-4" placeholder="Nhập số tài khoản" />
+            </div>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'acn', controlNameVi: 'Số tài khoản'}">
+            </ng-container>
+          </span>
+        </label>
+        <!--#endregion -->
+
+        <!-- #region Giấy tờ xác minh type -->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Loại GTXM</span>
+          <span class="col-lg-8">
+            <app-lpb-select2 [items]="DOC_TYPES_VI" labelName="radioTxt" bindValue="code" formControlName="docType"
+              placeholder="Chọn loại GTXM" class="app-lpb-select2"></app-lpb-select2>
+          </span>
+        </label>
+        <!--#endregion -->
+        <!-- #region Giấy tờ xác minh -->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Số GTXM </span>
+          <span class="col-lg-8">
+            <div class="position-relative">
+              <input maxlength="50" type="text" formControlName="docNum" class="form-control" placeholder="Nhập số GTXM"
+                [textPattern]="{allowRegex: '[A-Za-z0-9\/\\s-]'}" />
+            </div>
+          </span>
+        </label>
+        <!--#endregion -->
+      </div>
+      <div class="col col-md-6">
+        <!-- Mã chi nhánh -->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Mã chi nhánh
+            <span *ngIf="isHoiSo" class="text-danger"> (*)</span>
+          </span>
+          <span class="col-lg-8">
+
+            <ng-container *ngIf="isHoiSo; else elseBranchCode">
+              <app-lpb-select-tooltip [apiUrl]="'/' + this.serviceName + '/redis/getBranch?branchCode='"
+                [optionAdditional]="[{name: 'Tất cả chi nhánh', code: 'need_all_all_all'}]"
+                [optAdditionalPatternFields]="['name']"
+                [bindValue]="'code'" [placeholder]="'Chọn Chi nhánh / PGD'"
+                [optPatternFields]="['code', 'name']" [optPatternSplitter]="'-'"
+                [control]="formSearch.controls['branchCode']"
+             ></app-lpb-select-tooltip>
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'branchCode', controlNameVi: 'Mã chi nhánh'}">
+              </ng-container>
+            </ng-container>
+            <ng-template #elseBranchCode>
+              <app-lpb-select2 (clear)="onClearBranchCode()"
+                [items]="[{code: userInfo.branchCode, branchCodeName: userInfo.branchCode + ' - '+ userInfo.branchName}]"
+                labelName="branchCodeName" bindValue="code" formControlName="branchCode"
+                class="app-lpb-select2"></app-lpb-select2>
+            </ng-template>
+
+          </span>
+        </label>
+        <!-- Trạng thái  -->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Trạng thái </span>
+          <span class="col-lg-8">
+            <app-lpb-select2 [optionAdditional]="[{name: 'Tất cả trạng thái', code: ''}]" [items]="TRANSACTION_STATUSES"
+              labelName="name" bindValue="code" formControlName="status" placeholder="Chọn trạng thái"
+              class="app-lpb-select2"></app-lpb-select2>
+          </span>
+        </label>
+        <!-- Người tạo  -->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Người tạo </span>
+          <span class="col-lg-8">
+            <ng-container *ngIf="(isHoiSo || isKSV); else elseUserListAll">
+              <app-lpb-select2 #selectCreatedBy [apiUrl]="apiUrlUserListAll" [config]="{isNewApi: true}"
+                labelName="userName" bindValue="userName" formControlName="createdBy" placeholder="Chọn người tạo"
+                (handleData)="filterSendBy($event)"></app-lpb-select2>
+            </ng-container>
+            <ng-template #elseUserListAll>
+              <input formControlName="createdBy" class="form-control pr-4" />
+            </ng-template>
+          </span>
+        </label>
+        <!-- Từ ngày tạo -->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Từ ngày tạo</span>
+          <span class="col-lg-8">
+            <span class="form-control-date-select">
+              <app-lpb-date-picker [maxDate]="maxDate" #createdDate (dateChanged)="createdDateChange()">
+              </app-lpb-date-picker>
+            </span>
+          </span>
+        </label>
+        <!-- Đến ngày tạo  -->
+        <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Đến ngày tạo</span>
+          <span class="col-lg-8">
+            <span class="form-control-date-select">
+              <app-lpb-date-picker [maxDate]="maxDate" #toCreatedDate (dateChanged)="toCreatedDateChange()">
+              </app-lpb-date-picker>
+            </span>
+          </span>
+        </label>
+      </div>
+
+      <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+        <button class="btn btn-primary btn-blue mr-4 nowrap" type="submit">
+          Tìm kiếm
+          <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,64 @@
+<div class="p-4">
+  <div class="px-5">
+    <form [formGroup]="formReport">
+      <div class="row">
+        <div class="col">
+          <div class="form-group row">
+            <div class="col col-2">
+            </div>
+            <div class="col col-4">
+              <div class="form-group row">
+                <label class="col-2 col-form-label textLabel">ĐVKD</label>
+                <span class="col-8">
+                  <app-lpb-select2 [items]="dsDonVis"
+                                   labelName="name"
+                                   [config]="selectConfig"
+                                   formControlName="branchCode"
+                                   placeholder="Đơn vị"
+                                   ></app-lpb-select2>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-2">
+        </div>
+        <div class="col col-4">
+          <div class="form-group row">
+            <label class="col-2 col-form-label textLabel">Từ Ngày</label>
+            <div class="col-8">
+              <app-lpb-datepicker-new
+                #startDate
+                placeholder="dd/MM/YYYY"
+                [formControl]="formReport.controls['toDate']"
+                (blurInput)="validateStartDate()"
+                [maxDate]="today"
+                [className]="formHelpers.isValidClass(formReport.controls.fromDate)">
+              </app-lpb-datepicker-new>
+            </div>
+          </div>
+        </div>
+        <div class="col col-4">
+          <div class="form-group row">
+            <label class="col-4 col-form-label textLabel">Đến Ngày</label>
+            <div class="col-8">
+              <app-lpb-datepicker-new
+                #endDate
+                placeholder="dd/MM/YYYY"
+                [formControl]="formReport.controls['toDate']"
+                (blurInput)="validateEndDate()"
+                [maxDate]="today"
+                [className]="formHelpers.isValidClass(formReport.controls.toDate)">
+              </app-lpb-datepicker-new>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3 text-center">
+        <button class="btn lpb-btn-primary" (click)="exportExcel()"><i class="fa fa-search"></i> Xuất Dữ Liệu</button>
+      </div>
+    </form>
+  </div>
+</div>

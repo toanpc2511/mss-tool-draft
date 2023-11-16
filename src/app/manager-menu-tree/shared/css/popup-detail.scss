@@ -1,0 +1,90 @@
+.mt-100 {
+    margin-top: 100px;
+  }
+  
+  .mt-50 {
+    margin-top: 50px;
+  }
+  
+  .mt-48 {
+    margin-top: 48px;
+  }
+  
+  .mt-36 {
+    margin-top: 48px;
+  }
+  
+  .pr-24 {
+    padding-right: 24px;
+  }
+  
+  
+  
+  .btn-save {
+    background: #0C258A;
+    border: 1px solid #0C258A;
+    border-radius: 10px;
+    width: 140px;
+    height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 23px;
+    color: #FFFFFF;
+    border-style: solid;
+    outline: none;
+  }
+  
+  .btn-close {
+    background: #bdbdbd;
+    border: 1px solid #bdbdbd;
+    border-radius: 10px;
+    width: 140px;
+    height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 23px;
+    color: white;
+    border-style: solid;
+    outline: none;
+  }
+  
+  .btn-add {
+    background-color: #0088FF;
+    border: 1px solid #0088FF;
+    border-radius: 10px;
+    color: #fff;
+    width: 140px;
+    height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 23px;
+    border-style: solid;
+    outline: none;
+  }
+  .btn-cancel {
+    background-color: #eb5757;
+    border: 1px solid #eb5757;
+    border-radius: 8px;
+    color: #fff;
+    width: 140px;
+    height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 23px;
+    border-style: solid;
+    outline: none;
+  }
+  
+  .input-field {
+    height: 36px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #BDBDBD;
+    padding: 6px 12px;
+  }
+  
+  .form-control:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  

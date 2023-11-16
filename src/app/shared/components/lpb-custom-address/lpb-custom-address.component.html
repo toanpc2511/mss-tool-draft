@@ -1,0 +1,242 @@
+<div class="lpb-address">
+    <!-- Begin - Địa chỉ hiện tại -->
+    <div class="lpb-address-left">
+        <div class="row-item-info">
+            <div class="label-title fw-700">Địa chỉ hiện tại <span class="item-require">(*)</span></div>
+            <div class="label-action">
+
+            </div>
+        </div>
+        <div class="row-item-info">
+            <div class="label-field">Quốc gia <span class="item-require" *ngIf="requireCurrentCountry">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <app-lpb-select #currentCountry (blurSelect)="blurSelectDropdown('CURRENT_COUTRY')"
+                        [selectedItem]="selectedCurrentCountry" [txtPlaceholder]="'Chọn Quốc gia'"
+                        [lstOptions]="lstCurrentCountry" (selectedChangeOption)="currentCountryChanged($event)">
+                    </app-lpb-select>
+                </div>
+                <div class="error-msg" *ngIf="errMsgCurrentCountry !== ''">
+                    {{errMsgCurrentCountry}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="!isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Tỉnh / Thành phố <span class="item-require"
+                    *ngIf="requireCurrentProvine">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <app-lpb-select #currentProvince (blurSelect)="blurSelectDropdown('CURRENT_PROVINCE')"
+                        [selectedItem]="selectedCurrentProvince" [txtPlaceholder]="'Chọn Tỉnh / Thành phố'"
+                        (selectedChangeOption)="currentProvinceChanged($event)" [lstOptions]="lstCurrentProvince">
+                    </app-lpb-select>
+                </div>
+                <div class="error-msg" *ngIf="errMsgCurrentProvice !== ''">
+                    {{errMsgCurrentProvice}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Tỉnh / Thành phố</div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input #currentProvinceForeign type="text" maxlength="50" class="form-control w-100">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="!isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Quận / Huyện <span class="item-require" *ngIf="requireCurrentDistrict">(*)</span>
+            </div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="control-item">
+                        <app-lpb-select #currentDistrict [selectedItem]="selectedCurrentDistrict"
+                            (blurSelect)="blurSelectDropdown('CURRENT_DISTRICT')"
+                            (selectedChangeOption)="currentDistrictChanged($event)" [lstOptions]="lstCurrentDistrict"
+                            [txtPlaceholder]="'Chọn Quận / Huyện'"></app-lpb-select>
+                    </div>
+                    <div class="error-msg" *ngIf="errMsgCurrentDistrict !== ''">
+                        {{errMsgCurrentDistrict}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Quận / Huyện </div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input #currentDistrictForeign type="text" maxlength="50" class="form-control w-100">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="!isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Phường / Xã <span class="item-require" *ngIf="requireCurrentWard">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="control-item">
+                        <app-lpb-select #currentWard [selectedItem]="selectedCurrentWard"
+                            (blurSelect)="blurSelectDropdown('CURRENT_WARD')"
+                            (selectedChangeOption)="currentWardChanged($event)" [lstOptions]="lstCurrentWard"
+                            [txtPlaceholder]="'Chọn Phường / Xã'"></app-lpb-select>
+                    </div>
+                    <div class="error-msg" *ngIf="errMsgCurrentWard !== ''">
+                        {{errMsgCurrentWard}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Phường / Xã </div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input #currentWardForeign type="text" maxlength="50" class="form-control w-100">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Số nhà / Đường phố <span class="item-require"
+                    *ngIf="requireCurrentAddress">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="control-item">
+                        <input #currentAddress type="text" (blur)="validateCurrentAddress()" maxlength="200"
+                            class="form-control w-100">
+                    </div>
+                </div>
+                <div class="error-msg" *ngIf="errMsgCurrentAddress !== ''">
+                    {{errMsgCurrentAddress}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End - Địa chỉ hiện tại -->
+
+    <!-- Begin - Địa chỉ thường trú -->
+    <div class="lpb-address-right">
+        <div class="row-item-info">
+            <div class="label-title fw-700">Địa chỉ thường trú <span class="item-require"
+                    *ngIf="requireResidentAddress">(*)</span></div>
+            <div class="label-action" (click)="selectDuplicateAddress()">Trùng với địa chỉ hiện tại</div>
+        </div>
+        <div class="row-item-info">
+            <div class="label-field">Quốc gia <span class="item-require" *ngIf="requireResidentCountry">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <app-lpb-select #residentCountry [selectedItem]="selectedResidentCountry"
+                        (blurSelect)="blurSelectDropdown('RESIDENT_COUTRY')"
+                        (selectedChangeOption)="residentCountryChanged($event)" [lstOptions]="lstResidentCountry"
+                        [txtPlaceholder]="'Chọn Quốc gia'"></app-lpb-select>
+                </div>
+                <div class="error-msg" *ngIf="errMsgResidentCountry !== ''">
+                    {{errMsgResidentCountry}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="!isResidentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Tỉnh / Thành phố <span class="item-require"
+                    *ngIf="requireResidentProvine">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <app-lpb-select #residentProvince [selectedItem]="selectedResidentProvince"
+                        (blurSelect)="blurSelectDropdown('RESIDENT_PROVINCE')"
+                        (selectedChangeOption)="residentProvinceChanged($event)" [lstOptions]="lstResidentProvince"
+                        [txtPlaceholder]="'Chọn Tỉnh / Thành phố'"></app-lpb-select>
+                </div>
+                <div class="error-msg" *ngIf="errMsgResidentProvice !== ''">
+                    {{errMsgResidentProvice}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="isResidentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Tỉnh / Thành phố</div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input #residentProvinceForeign type="text" maxlength="50" class="form-control w-100">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="!isResidentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Quận / Huyện <span class="item-require" *ngIf="requireResidentDistrict">(*)</span>
+            </div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="control-item">
+                        <app-lpb-select #residentDistrict [selectedItem]="selectedResidentDistrict"
+                            (blurSelect)="blurSelectDropdown('RESIDENT_DISTRICT')"
+                            (selectedChangeOption)="residentDistrictChanged($event)" [lstOptions]="lstResidentDistrict"
+                            [txtPlaceholder]="'Chọn Quận / Huyện'"></app-lpb-select>
+                    </div>
+                    <div class="error-msg" *ngIf="errMsgResidentDistrict !== ''">
+                        {{errMsgResidentDistrict}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="isResidentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Quận / Huyện </div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input #residentDistrictForeign type="text" maxlength="50" class="form-control w-100">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="!isResidentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Phường / Xã <span class="item-require" *ngIf="requireResidentWard">(*)</span>
+            </div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="control-item">
+                        <app-lpb-select #residentWard [selectedItem]="selectedResidentWard"
+                            (blurSelect)="blurSelectDropdown('RESIDENT_WARD')"
+                            (selectedChangeOption)="residentWardChanged($event)" [lstOptions]="lstResidentWard"
+                            [txtPlaceholder]="'Chọn Phường / Xã'"></app-lpb-select>
+                    </div>
+                    <div class="error-msg" *ngIf="errMsgResidentWard !== ''">
+                        {{errMsgResidentWard}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="isResidentCountryForeign ? 'd-flex' : 'd-none'">
+            <div class="label-field">Phường / Xã </div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input #residentWardForeign type="text" maxlength="50" class="form-control w-100">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Số nhà / Đường phố <span class="item-require"
+                    *ngIf="requireResidentAddress">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="control-item">
+                        <input #residentAddress (blur)="validateResidentAddress()" type="text" maxlength="200"
+                            class="form-control w-100">
+                    </div>
+                </div>
+                <div class="error-msg" *ngIf="errMsgResidentAddress !== ''">
+                    {{errMsgResidentAddress}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End - Địa chỉ thường trú -->
+
+</div>
+
+<!-- <div (click)="testClearData()">Test empty data</div> -->

@@ -1,0 +1,192 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class=" text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.DATE_RANGE_ERROR" class="text-danger mt-1 d-block small text-over-error">
+        Từ ngày không được lớn hơn Đến ngày
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.DATE_FORMAT_ERROR" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.DATE_MAX_ERROR" class="text-danger mt-1 d-block small ">
+        Từ ngày không được chọn ngày lớn hơn ngày hiện tại
+      </span>
+      <ng-container *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED_ONE_IN_MANY">
+        <span *ngIf="controlName==='serialNo'" class="text-danger mt-1 d-block small">
+          Vui lòng nhập số CIF hoặc Số tài khoản hoặc Serial No để tìm kiếm
+        </span>
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-template>
+
+<div class="container form-group-container mt-2 form-group" [formGroup]="form" #searchTransactionForm>
+  <div class="row">
+    <div class="col-lg-6">
+
+      <!-- Loại sản phẩm: -->
+      <div class="row form-group align-items-end">
+        <div class="col-lg-3 pr-lg-0 col-form-label">
+          <span class="txtLabel">Loại sản phẩm</span>
+        </div>
+        <div class="col-lg-9 pl-lg-0">
+          <app-lpb-select2 placeholder="Chọn Loại sản phẩm" [items]="PRODUCTS_TYPES" labelName="label" bindValue="code"
+            formControlName="productType" class="w-100"></app-lpb-select2>
+        </div>
+      </div>
+      <!-- end Loại sản phẩm: -->
+
+      <!-- Số CIF: -->
+      <div class="row form-group align-items-start">
+        <div class="col-lg-3 pr-lg-0 col-form-label">
+          <span class="txtLabel">Số CIF</span>
+        </div>
+        <div class="col-lg-9 pl-lg-0">
+          <input placeholder="Nhập Số CIF" formControlName="cifNo" class="form-control"
+            [JustNumberOnly]="{maxlength:20}" />
+          <ng-container *ngTemplateOutlet="error; context: {controlName: 'cifNo', controlNameVi: 'Số CIF'}">
+          </ng-container>
+        </div>
+      </div>
+      <!-- end Số CIF: -->
+
+      <!-- Số tài khoản: -->
+      <div class="row form-group">
+        <div class="col-lg-3 pr-lg-0 col-form-label">
+          <span class="txtLabel">Số tài khoản</span>
+        </div>
+        <div class="col-lg-9 pl-lg-0">
+          <input placeholder="Nhập Số tài khoản" formControlName="accountNum" class="form-control"
+            [JustNumberOnly]="{maxlength:20}" />
+          <ng-container *ngTemplateOutlet="error; context: {controlName: 'accountNum', controlNameVi: 'Số tài khoản'}">
+          </ng-container>
+        </div>
+      </div>
+      <!-- end Số tài khoản: -->
+
+      <!-- Serial No: -->
+      <div class="row form-group">
+        <div class="col-lg-3 pr-lg-0 col-form-label">
+          <span class="txtLabel">Serial No</span>
+        </div>
+        <div class="col-lg-9 pl-lg-0">
+          <input [textPattern]="{allowRegex: '[A-Za-z0-9\\s]', allowVi: true}" placeholder="Nhập Serial No"
+            formControlName="serialNo" class="form-control" maxlength="20" />
+          <ng-container *ngTemplateOutlet="error; context: {controlName: 'serialNo', controlNameVi: 'Serial No'}">
+          </ng-container>
+        </div>
+      </div>
+      <!-- end Serial No: -->
+
+      <!-- Chi nhánh: -->
+      <div class="row form-group align-items-end">
+        <div class="col-lg-3 pr-lg-0 col-form-label">
+          <span class="txtLabel">Chi nhánh</span>
+        </div>
+        <div class="col-lg-9 pl-lg-0">
+          <ng-container *ngIf="isHoiSo; else elseBranchCode">
+            <app-lpb-select2 (clear)="onClearBranchCode()"
+              [optionAdditional]="[{branchCodeName: 'Tất cả chi nhánh', code: ''}]"
+              [apiUrl]="'/admin/api/public/branch'" labelName="branchCodeName" bindValue="code"
+              [config]="{isNewApi: false}" formControlName="branchCode" placeholder="Chọn chi nhánh"></app-lpb-select2>
+          </ng-container>
+          <ng-template #elseBranchCode>
+            <app-lpb-select2 (clear)="onClearBranchCode()"
+              [items]="[{code: userInfo.branchCode, branchCodeName: userInfo.branchCode + ' - '+ userInfo.branchName}]"
+              labelName="branchCodeName" bindValue="code" formControlName="branchCode"
+              class="app-lpb-select2"></app-lpb-select2>
+          </ng-template>
+        </div>
+      </div>
+      <!-- end Chi nhánh: -->
+
+    </div>
+    <div class=" col-lg-6">
+
+
+      <!-- Trạng thái sổ TK: -->
+      <div class="row form-group align-items-end">
+        <div class="col-lg-3 pr-lg-0 col-form-label">
+          <span class="txtLabel">Trạng thái sổ TK</span>
+        </div>
+        <div class="col-lg-9 pl-lg-0">
+          <app-lpb-select2 placeholder="Chọn Trạng thái sổ TK " [items]="ACCOUNT_STATUSES" labelName="label"
+            bindValue="code" formControlName="accountStatus" class="w-100">
+          </app-lpb-select2>
+        </div>
+      </div>
+      <!-- end Trạng thái sổ TK: -->
+
+      <!-- Trạng thái giao dịch: -->
+      <div class="row form-group align-items-end">
+        <div class="col-lg-3 pr-lg-0 col-form-label">
+          <span class="txtLabel">Trạng thái giao dịch</span>
+        </div>
+        <div class="col-lg-9 pl-lg-0">
+          <app-lpb-select2 placeholder="Chọn Trạng thái giao dịch" [items]="TRANS_STATUSES" labelName="label"
+            bindValue="code" formControlName="transStatus" class="w-100 trans-status"></app-lpb-select2>
+        </div>
+      </div>
+      <!-- end Trạng thái giao dịch: -->
+
+      <!-- Người tạo: -->
+      <label class="form-group row">
+        <span class="col-lg-3 col-form-label textLabel">Người tạo </span>
+        <span class="col-lg-9 pl-lg-0">
+          <ng-container *ngIf="(isHoiSo || isKSV); else elseUserListAll">
+            <app-lpb-select2 #selectCreatedBy [apiUrl]="apiUrlUserListAll" [config]="{isNewApi: true}"
+              labelName="userName" bindValue="userName" formControlName="createdBy" placeholder="Chọn người tạo"
+              (handleData)="filterSendBy($event)"></app-lpb-select2>
+          </ng-container>
+          <ng-template #elseUserListAll>
+            <input formControlName="createdBy" class="form-control pr-4" />
+          </ng-template>
+        </span>
+      </label>
+      <!-- end Người tạo: -->
+
+      <!-- Ngày tạo: -->
+      <div class="row form-group align-items-stretch">
+        <div class="col-lg-3 pr-lg-0 col-form-label pt-0">
+          <div class="txtLabel">Ngày tạo</div>
+          <div class="txtLabel">Từ ngày</div>
+        </div>
+        <div class="col-lg-9 pl-lg-0">
+          <div class="row ">
+            <div class="col-lg-5">
+              <span class="form-control-date-select">
+                <app-lpb-datepicker-new [maxDate]="maxDate" formControlName="createdDate">
+                </app-lpb-datepicker-new>
+              </span>
+              <ng-container *ngTemplateOutlet="error; context: {controlName: 'createdDate', controlNameVi: 'Từ ngày'}">
+              </ng-container>
+            </div>
+            <div class="col-lg-2 col-form-label align-items-end pr-0">
+              <span class="txtLabel">Đến ngày</span>
+            </div>
+            <div class="col-lg-5">
+              <span class="form-control-date-select">
+                <app-lpb-datepicker-new formControlName="toCreatedDate">
+                </app-lpb-datepicker-new>
+              </span>
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'toCreatedDate', controlNameVi: 'Đến ngày'}">
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end Ngày tạo: -->
+
+      <!-- Tìm kiếm: -->
+      <div class="d-flex justify-content-start align-items-center">
+        <button class="btn btn-primary btn-blue nowrap btn-search" type="button" (click)="searchTransactionAction()">
+          Tìm kiếm
+        </button>
+      </div>
+      <!-- end Tìm kiếm: -->
+    </div>
+  </div>

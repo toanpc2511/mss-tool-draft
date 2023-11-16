@@ -1,0 +1,402 @@
+<div class="container-fuild">
+  <div class="row cust-row" *ngIf="card">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+      <div class="title-head" style="font-weight: 500;">
+        <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add_circle</mat-icon>
+        <span class="text" style="padding: 5px 0;">THÔNG TIN THẺ CHÍNH</span>
+      </div>
+    </div>
+    <div class="col-12 information-section">
+      <div class="col-6 colLeft">
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Họ và tên:</label>
+          <div class="col-sm-7 textLabel">
+            <label>{{process.item?.customer.person.fullName}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Số thẻ chính:</label>
+          <div class="col-sm-7 textLabel">
+            <label>
+              {{card2.cardNumber}}
+              <ng-container *ngIf="card2.cardNumber == null">
+                Số thẻ chính {{card2.cardIndex}}
+              </ng-container>
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Loại thẻ:</label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card2.cardTypeName}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Mã thẻ:</label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card2.cardProductCode}} - {{card2.cardProductName}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label "> Tài khoản mặc định:</label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.account.accountNumber}}</label>
+            <label *ngIf="card.account.accountNumber==null">Tài khoản mới - {{card.account.accountIndex}}</label>
+          </div>
+        </div>
+        <div class="row" *ngFor="let c of card.accountLinkList">
+          <label class="col-sm-5 col-form-label "> Tài khoản liên kết thẻ: </label>
+          <div class="col-sm-7 textLabel">
+            <div *ngIf="c.account">
+              <label>{{c.account?.accountNumber}}</label>
+              <label *ngIf="c.account?.accountNumber=== null">Tài khoản mới - {{c.account?.accountIndex}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 colRight">
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Mã khách hàng: </label>
+          <div class="col-sm-7 textLabel">
+            <label *ngIf="process.item?.customer.customerCode === null">XXXXXX</label>
+            <label>{{process.item?.customer.customerCode}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Ngày sinh:
+          </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{process.item?.customer.person.dateOfBirth }}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Số giấy tờ xác minh:
+          </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{process.item?.customer.person?.perDocNoList.length > 0 ?
+              process.item?.customer.person?.perDocNoList[0].perDocNo : ''}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Ngày phát hành:
+          </label>
+          <div class="col-sm-7 textLabel">
+            <label> {{card2.issueDate}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Ngày hết hạn:
+          </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card2.expirationDate}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row cust-row" *ngIf="card">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+      <div class="title-head" style="font-weight: 500;">
+        <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add_circle</mat-icon>
+        <span class="text" style="padding: 5px 0;">THÔNG TIN THẺ PHỤ</span>
+      </div>
+    </div>
+
+
+    <div class="col-12 ">
+      <div class="row pl-3 pt-3">
+        <h2>Thông tin chủ thẻ phụ</h2>
+      </div>
+      <div class="col-6 colLeft">
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Họ và tên: </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.person.fullName}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Ngày sinh: </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.person.dateOfBirth}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Giới tính: </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{getStatusName(card.person.genderCode)}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Điện thoại: </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.person.mobileNo}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Địa chỉ: </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.person.address}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 colRight">
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Loại GTXM:</label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.person.perDocTypeCode}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Số GTXM:</label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.person.perDocNo}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Ngày cấp:
+          </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.person.issueDate}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Nơi cấp:
+          </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.person.issuePlace}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Ngày hết hiệu lực:
+          </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.person.expireDate}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 pl-3">
+      <hr style="border: 1px solid">
+      <div class="row pl-3">
+        <h2>Thông tin thẻ phụ</h2>
+      </div>
+      <div class="col-6 colLeft">
+        <div class="row">
+          <label class="col-sm-5 col-form-label   ">Số hợp đồng:</label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card2.contractNumber}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Tài khoản mặc định: </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.account.accountNumber}}</label>
+            <label *ngIf="card.account.accountNumber==null">Tài khoản mới - {{card.account.accountIndex}}</label>
+          </div>
+        </div>
+        <div class="row" *ngFor="let c of card.accountLinkList">
+          <label class="col-sm-5 col-form-label  ">Tài khoản liên kết thẻ: </label>
+          <div class="col-sm-7 textLabel" *ngIf="c.account">
+            <div>
+              <label>{{c.account.accountNumber}}</label>
+              <label *ngIf="c.account.accountNumber==null">Tài khoản mới - {{c.account.accountIndex}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Mã nhân viên: </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.employeeId}}</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Mã người giới thiệu: </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.referrerCode}}</label>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="col-6 colRight">
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Loại thẻ:</label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.cardTypeName}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label  ">Tên dập nổi trên thẻ: </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.cardHolderName}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label "> Hình thức phát hành:
+          </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.deliveryTypeName}}</label>
+          </div>
+        </div>
+        <div class="row" *ngIf="card.deliveryTypeCode=='TRAO_NGAY'">
+          <label class="col-sm-5 col-form-label "> Số thẻ:
+          </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.cardNumber}}</label>
+          </div>
+        </div>
+        <div class="row" *ngIf="card.deliveryTypeCode=='DEFAULT'">
+          <label class="col-sm-5 col-form-label "> Địa chỉ nhận thẻ:
+          </label>
+          <div class="col-sm-7 textLabel" *ngIf="card.deliveryChanelCode=='TAI_CHI_NHANH'">
+            <label>{{card.deliveryBranch?.code}} - {{card.deliveryBranch?.address}} </label>
+          </div>
+          <div class="col-sm-7 textLabel" *ngIf="card.deliveryChanelCode=='GUI_NHAN'">
+            <label>{{card.deliveryAddress}}</label>
+          </div>
+        </div>
+
+        <div class="row" >
+          <label class="col-sm-5 col-form-label "> Tổng phí + VAT:
+          </label>
+          <div class="col-sm-7 textLabel">
+            <label>{{card.feeAmount | number}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;"
+     *ngIf="card">
+
+  <div class="col-12" style="text-align: right;padding: 0px;margin: 0px">
+
+    <div class="footer" style="padding-right: 20px;" (click)="update()"
+         *ngIf="authenticationService.isPermission(PermissionConst.THE_PHU.UPDATE)
+         && ((process.item.customer.statusCif !== 'Y'
+         && process.item.customer.statusCif !== 'C')
+         && card.currentStatusCode == 'NEW'
+         && (card.processIntegrated?.statusCode !== SERVICE_STATUS.DONG_HO_SO)
+         && !isView)">
+      <span class="material-icons"> edit </span>
+      <label style=" margin-right: 15px;">Cập nhật thông tin</label>
+    </div>
+    <div class="footer"
+         *ngIf="authenticationService.isPermission(PermissionConst.THE_PHU.DELETE)
+         && ( (process.item.customer.statusCif !== 'Y' && process.item.customer.statusCif !== 'C')
+         && card.currentStatusCode == 'NEW'
+         && (card.processIntegrated?.statusCode==SERVICE_STATUS.DANG_NHAP || card.processIntegrated?.statusCode==SERVICE_STATUS.CHO_DUYET)
+         && !isView )"
+         (click)="deleteCard(card)" style="padding-right: 20px; ">
+      <span class="material-icons"> delete </span>
+      <label>Xóa</label>
+    </div>
+    <div class="footer" style="padding-right: 20px;" (click)="sendApprove()"
+         *ngIf="authenticationService.isPermission(PermissionConst.HO_SO_GIAO_DICH.SEND_APPROVE_CREATE_SUP_CARD)
+         && ((process.item.customer.statusCif !== 'Y' && process.item.customer.statusCif !== 'C')
+         && (card.processIntegrated?.statusCode === SERVICE_STATUS.DANG_NHAP)
+         && !isView)">
+      <span class="material-icons"> check </span>
+      <label style=" margin-right: 15px;">Gửi duyệt</label>
+    </div>
+    <div class="footer" *ngIf="authenticationService.isPermission(PermissionConst.HO_SO_GIAO_DICH.SEND_MODIFY_CREATE_SUP_CARD)
+      && (isBtnKsv && (process.item.customer.statusCif !== 'Y' && process.item.customer.statusCif !== 'C'))"
+         (click)="showPopup(btnButton.REQUEST_ADD)">
+      <span class="material-icons"> edit </span>
+      <label>Yêu cầu bổ sung</label>
+    </div>
+    <div class="footer"
+         *ngIf="authenticationService.isPermission(PermissionConst.HO_SO_GIAO_DICH.SEND_REJECT_CREATE_SUP_CARD)
+         && isBtnKsv
+         && (process.item.customer.statusCif !== 'Y' && process.item.customer.statusCif !== 'C')"
+         (click)="showPopup(btnButton.REJECT)">
+      <span class="material-icons"> close </span>
+      <label>Từ chối</label>
+    </div>
+    <div class="footer"
+         *ngIf="authenticationService.isPermission(PermissionConst.HO_SO_GIAO_DICH.APPROVE_CREATE_SUP_CARD)
+         && isBtnKsv && (process.item.customer.statusCif !== 'Y' && process.item.customer.statusCif !== 'C')"
+         (click)="showPopup(btnButton.APPROVE)">
+      <span class="material-icons"> check </span>
+      <label>Duyệt </label>
+    </div>
+    <div class="footer" (click)="backPage()">
+      <span class="material-icons"> keyboard_backspace</span>
+      <label>Quay lại</label>
+    </div>
+  </div>
+  <!--  <div class="col-12" *ngIf="isKSV && !isFullRole ">-->
+  <!--    -->
+  <!--    <div class="footer mr-1" (click)="backPage()">-->
+  <!--      <span class="material-icons"> keyboard_backspace </span>-->
+  <!--      <label>Quay lại</label>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <app-lpb-modal headerText="Xác nhận" [show]="isShowPopupRequestAdd" [unit]="'%'" [widthContent]="50"
+                 [heightContent]="50" (hideModal)="isShowPopupRequestAdd = false">
+    <div class="detail-cif-content">
+      <div class="mb-2">
+        Bạn có muốn yêu cầu bổ sung dịch vụ này không?
+      </div>
+      <div class="block-note">
+        <label>Ghi chú:&nbsp;&nbsp;</label>
+        <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+      </div>
+      <div class="text-right pt-2">
+        <button class="btn-cancel" (click)="confimSendRequestAdd('CANCEL')">
+          Hủy
+        </button>
+        <button class="btn-save ml-2" (click)="confimSendRequestAdd('CONFIRM')">
+          Đồng ý
+        </button>
+      </div>
+    </div>
+  </app-lpb-modal>
+  <app-lpb-modal headerText="Xác nhận" [show]="isShowPopupApprove" [unit]="'%'" [widthContent]="50"
+                 [heightContent]="50" (hideModal)="isShowPopupApprove = false">
+    <div class="detail-cif-content">
+      <div class="mb-2">
+        Bạn có muốn duyệt dịch vụ này không?
+      </div>
+      <div class="block-note">
+        <label>Ghi chú:&nbsp;&nbsp;</label>
+        <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+      </div>
+      <div class="text-right pt-2">
+        <button class="btn-cancel" (click)="confimApproveProcess('CANCEL')">
+          Hủy
+        </button>
+        <button class="btn-save ml-2" (click)="confimApproveProcess('CONFIRM')">
+          Đồng ý
+        </button>
+      </div>
+    </div>
+  </app-lpb-modal>
+  <app-lpb-modal headerText="Xác nhận" [show]="isShowPopupDelete" [unit]="'%'" [widthContent]="50"
+                 [heightContent]="50" (hideModal)="isShowPopupDelete = false">
+
+    <div class="detail-cif-content">
+      <div class="text-center">
+        Bạn có muốn từ chối hồ sơ?
+      </div>
+      <div class="block-note">
+        <label>Ghi chú:&nbsp;&nbsp;</label>
+        <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+      </div>
+      <div class="div-center">
+        <button class="btn-cancel btn-space-confim mr-2" (click)="confirmDeteteProcess('NO')">
+          Hủy
+        </button>
+        <button class="btn-save" (click)="confirmDeteteProcess('YES')">
+          Đồng ý
+        </button>
+      </div>
+    </div>
+  </app-lpb-modal>
+</div>

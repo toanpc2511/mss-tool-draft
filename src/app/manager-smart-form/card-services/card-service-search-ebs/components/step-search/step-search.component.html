@@ -1,0 +1,127 @@
+<div class="card-issuance-request-step-search d-flex flex-column">
+  <app-progress-spinner color="primary" mode="indeterminate" value="50" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title">
+    DỊCH VỤ YÊU CẦU THẺ
+  </div>
+  <div class="form-search d-flex flex-column container">
+    <div class="row-fields mt-3 mb-2">
+      <div class="form-search-title d-flex justify-content-center">
+        <span>Tìm kiếm danh sách thông tin thẻ</span>
+      </div>
+    </div>
+    <div class="row-fields" [formGroup]="formSearch">
+      <div class="field">
+        <span class="txtLabel">Thông tin KH <span class="field-require">(*)</span>:</span>
+        <div class="input-group">
+          <div class="input-group-append">
+            <select class="form-control" formControlName="type">
+              <option *ngFor="let typeSearch of lstInputTypeSearch" [value]="typeSearch.code">{{typeSearch.name}}</option>
+            </select>
+          </div>
+          <input type="text" formControlName="txtSearch" placeholder="Nhập giá trị tìm kiếm" class="form-control" >
+        </div>
+<!--        <div class="err-text mt-1" *ngIf="hasErrorInput('txtSearch', 'required')">-->
+<!--          Thông tin tìm kiếm không được bỏ trống-->
+<!--        </div>-->
+        <div *ngIf="this.formSearch.getRawValue().txtSearch === ''" class="err-text mt-1">
+          {{errSearch}}
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6 field">
+          <span class="txtLabel">Từ ngày<span class="field-require"> (*)</span></span>
+          <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="dateFromChanged()"
+                               (dateChanged)="getFromDate()"></app-lpb-date-picker>
+        </div>
+        <div class="col-md-6 field">
+          <span class="txtLabel">Đến ngày<span class="field-require"> (*)</span></span>
+          <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="dateToChanged()"
+                               (dateChanged)="getToDate()"></app-lpb-date-picker>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6 field">
+          <span class="txtLabel">Chi nhánh:</span>
+          <ng-select formControlName="branchCode" (clear)="clearBranchCode()">
+            <ng-option value="">Tất cả Chi nhánh / PGD</ng-option>
+            <ng-option *ngFor="let item of lstBranch" [value]="item.code">{{item.branchCodeName}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6 field">
+          <span class="txtLabel">Trạng thái:</span>
+          <ng-select (clear)="defaulStatus()" formControlName="displayStatus" >
+            <ng-option *ngFor="let item of listStatus" [value]="item.code">{{item.name}}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="btn-action w-100 mt-3">
+        <button class="mr-3" mat-raised-button color="search" (click)="search()">Tìm kiếm</button>
+        <button mat-raised-button color="create" (click)="CreateCard()">Tạo mới</button>
+      </div>
+    </div>
+  </div>
+  <div class="content-title">
+    DANH SÁCH THẺ
+  </div>
+  <div class="tbl-result">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>STT</th>
+        <th>Loại GD</th>
+        <th>Số Thẻ</th>
+        <th>CardID</th>
+        <th>Số CIF</th>
+        <th>Tên khách hàng</th>
+        <th>Thẻ chính/phụ</th>
+        <th>Mã SP thẻ</th>
+        <th>TK mặc định</th>
+        <th>Ngày phát hành</th>
+        <th>Trạng thái</th>
+        <th>Thao tác </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of listDetail , index as i">
+        <th>{{i + 1}}</th>
+        <th>{{item.ebsActionName}}</th>
+        <th>{{item.cardNumber ? item.cardNumber : ''}}</th>
+        <th>{{item.cardCoreId ? item.cardCoreId : ''}}</th>
+        <th>{{item.customerCode ? item.customerCode : ''}}</th>
+        <th>{{item.fullName ? item.fullName : ''}}</th>
+        <th>{{item.cardCategoryName ? item.cardCategoryName : ''}}</th>
+        <th>{{item.cardProductCode ? item.cardProductCode : ''}}</th>
+        <th>{{item.defaultAccount ? item.defaultAccount : ''}}</th>
+        <th>{{item.releaseDate ? item.releaseDate : ''}}</th>
+        <th>{{item.displayStatusName ? item.displayStatusName : ''}}</th>
+        <th>
+          <div class="d-flex justify-content-around">
+            <span matTooltip="Xóa thông tin" *ngIf="item.displayStatus ==='WAITING'">
+              <i *ngIf="item.inputBy === userInfo.userName"
+                role="button" class="fa fa-trash text-danger" (click)="viewDetail(item, acctionView.DELETE)"></i>
+              <i *ngIf="item.inputBy !== userInfo.userName" role="button" class="fa fa-trash"></i>
+            </span>
+            <span *ngIf="item.displayStatus !=='WAITING'">
+              <i class="fa fa-trash"></i>
+            </span>
+            <span matTooltip="Xem chi tiết">
+              <i role="button" class="fa fa-eye btn-view" (click)="viewDetail(item, acctionView.VIEW_DETAIL)"></i>
+            </span>
+          </div>
+<!--          <span matTooltip="Gửi yêu cầu">-->
+<!--            <i role="button" class="fa fa-paper-plane-o text-warning" (click)="getCardInfoEbs(item,btnAcctionView.REQ_APPROVE)"></i>-->
+<!--          </span>-->
+        </th>
+      </tr>
+      </tbody>
+    </table>
+    <div class="empty-data" *ngIf="listDetail.length === 0">Chưa có bản ghi tồn tại</div>
+  </div>
+  <app-lpb-pagination [pagination]="pagination"
+                      (evtChangePageSize)="changePageSize($event)"
+                      (evtSetPage)="setPage($event)">
+  </app-lpb-pagination>
+</div>

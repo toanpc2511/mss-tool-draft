@@ -1,0 +1,5 @@
+@import "/src/app/shared/styles/palette.style.scss";
+
+:host ::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled{
+  color: $error-main;
+}

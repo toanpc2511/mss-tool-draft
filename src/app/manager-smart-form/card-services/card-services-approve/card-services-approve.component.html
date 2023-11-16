@@ -1,0 +1,11 @@
+<div class="card-services-approve-main">
+  <app-card-services-approve-step-search *ngIf="step === STEP.HOME"
+                                         (evtClickShowDetail)="showStepDetail($event)">
+  </app-card-services-approve-step-search>
+
+  <app-card-services-approve-step-confirm *ngIf="step === STEP.DETAIL"
+                                          [cardEbsServiceSelected]="cardEbsServiceSelected"
+                                          [view]="view"
+                                          (eventBackStep)="backToSearch()">
+  </app-card-services-approve-step-confirm>
+</div>

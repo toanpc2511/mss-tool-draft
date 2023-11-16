@@ -1,0 +1,16 @@
+@import "/src/app/shared/styles/palette.style.scss";
+
+:host ::ng-deep {
+  .ng-invalid.ng-touched,
+  .ng-invalid.ng-dirty,
+  ng-select.ng-invalid.ng-touched .ng-select-container {
+    border-color: $error-main !important;
+  }
+  ng-select .ng-option {
+    padding: 0 !important;
+    .ng-option-label {
+      display: block;
+      padding: 8px 10px;
+    }
+  }
+}

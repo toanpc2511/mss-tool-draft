@@ -1,0 +1,24 @@
+.is-hidden {
+  display: none !important;
+}
+
+.w-fit-cont {
+  width: fit-content;
+}
+
+.h-20{
+  height: 20px;
+}
+:host app-lpb-select2.ng-touched.ng-invalid {
+  ::ng-deep .ng-select-container {
+    border-color: #dc3545 !important;
+  }
+}
+
+textarea {
+  resize: none;
+  &.ng-touched.ng-invalid {
+    border-color: #dc3545 !important;
+  }
+}
+

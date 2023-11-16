@@ -1,0 +1,17 @@
+@import "/src/app/shared/styles/lpb-button";
+.field {
+  max-width: 50%;
+  width: calc(50% - 16px);
+  margin-bottom: 16px;
+  .txtLabel {
+    font-weight: 500;
+    color: #17589f;
+  }
+}
+.node {
+  font-weight: 500;
+  color: #17589f;
+}
+.err-text{
+  color: red;
+}

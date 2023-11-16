@@ -1,0 +1,444 @@
+<!-- danh sach account -->
+<div class="container-fuild" style="margin-top: 5px;">
+    <div>
+        <div class="row cust-row">
+            <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+                <app-process-info [processId]="processId"></app-process-info>
+            </div>
+        </div>
+    </div>
+    <!-- them moi -->
+    <form>
+        <div>
+            <div class="row cust-row">
+                <div class="col-12 line-base" style=" padding: 10px 0; ">
+                    <div class="title-head">
+                        <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px ;color: #1F69BC;">list</mat-icon>
+                        <span class="text" style="padding: 5px 0;">THÔNG TIN TÀI KHOẢN</span>
+                    </div>
+                </div>
+                <div class="col-12 row information-section">
+                    <div class="col-6 colLeft">
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Tên tài khoản:
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{detailAccount.accountName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Số tài khoản:
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{detailAccount.accountNumber || 'Số tài khoản mới '+ detailAccount.accountIndex}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 colRight">
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Loại tiền tệ:
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{detailAccount.currencyCode}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Trạng thái:
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{detailAccount.currentStatusName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row cust-row">
+                <div class="col-12 line-base" style="border-top: 1px solid #c8ced3;padding: 10px 0; ">
+                    <div class="title-head">
+                        <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px ;color: #1F69BC;">list</mat-icon>
+                        <span class="text" style="padding: 5px 0;">THÔNG TIN CHI TIẾT ỦY QUYỀN</span>
+                    </div>
+                </div>
+                <div class="col-12 row information-section">
+                    <div class="col-6 colLeft">
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Họ và tên  :
+
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.fullName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Loại GTXM  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.perDocTypeName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Số GTXM  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.perDocNo}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Ngày cấp  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.issueDate | date:'dd/MM/yyyy'}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Nơi cấp  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.issuePlace}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Người cư trú  :
+                            </label>
+                            <div class="col-sm-7" style="padding-top: 8px;">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions1" id="inlineRadio1" [value]="true" [(ngModel)]="residenceCheck" disabled="disabled">
+                                    <label style="padding-top: 3px;" for="inlineRadio1">Có</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" disabled="disabled" name="inlineRadioOptions1" id="inlineRadio2" [value]="false" [(ngModel)]="residenceCheck">
+                                    <label style="padding-top: 3px;" for="inlineRadio2">Không</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Chức vụ  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.position}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 colRight">
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Giới tính  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.genderName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Ngày sinh  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.birthDate | date:'dd/MM/yyyy'}}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Quốc tịch  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.nationality1Name}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row" *ngIf=" detailAuthority.nationality2Name !== null">
+                            <label class="col-sm-5 col-form-label textLabel"><span
+                                    class="text-danger"></span>
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.nationality2Name}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row" *ngIf=" detailAuthority.nationality3Name !== null">
+                            <label class="col-sm-5 col-form-label textLabel"><span
+                                    class="text-danger"></span>
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.nationality3Name}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row" *ngIf=" detailAuthority.nationality4Name !== null">
+                            <label class="col-sm-5 col-form-label textLabel"><span
+                                    class="text-danger"></span>
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.nationality4Name}}</label>
+                            </div>
+                        </div>
+                        <ng-container *ngIf=" detailAuthority.nationality1Code !== 'VN'">
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label textLabel">Thực thi nhập cảnh  :
+                          </label>
+                                <div class="col-sm-7 txt">
+                                    <!-- <label>{{ detailAuthority.visaExemption}}</label> -->
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label textLabel">Từ ngày  :
+                        </label>
+                                <div class="col-sm-7 txt">
+                                    <label>{{ detailAuthority.visaIssueDate | date: 'dd/MM/yyyy'}}</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label textLabel">Đến ngày  :
+                      </label>
+                                <div class="col-sm-7 txt">
+                                    <label>{{ detailAuthority.visaExpireDate | date: 'dd/MM/yyyy'}}</label>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Điện thoại di động  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.mobilePhone}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Địa chỉ email  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.email}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Nghề nghiệp  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.industry}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="p-2" style="font-weight: 500;">
+                        <span style="font-weight: bold;">Địa chỉ hiện tại </span>
+                    </div>
+                </div>
+
+                <div class="col-12" style="display: flex;padding-left: 0px;padding-right: 0px;padding-top: 10px;">
+                    <div class="col-6 colLeft">
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Quốc gia  :
+
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.currentCountryName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Quận/huyện  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.currentDistrictName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Số nhà/đường phố  :
+                            </label>
+                            <div class="col-sm-7 txt ">
+                                <label>{{ detailAuthority.currentStreetNumber}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 colRight">
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Tỉnh/thành phố :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.currentCityName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Phường xã  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.currentWardName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="p-2" style="font-weight: 500;">
+                        <div class="form-group row">
+                            <span class="col-sm-2" style="font-weight: bold;">Địa chỉ thường trú</span>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input disabled class="form-check-input" type="checkbox" [(ngModel)]="checkedAddress" [ngModelOptions]="{standalone: true}">
+                                    <label class="form-check-label" for="inlineCheckbox1" style="font-style: italic;
+                                font-size: 14px;
+                                color: blue;">Trùng với địa chỉ hiện tại</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" style="display: flex;padding-left: 0px;padding-right: 0px;padding-top: 10px;">
+                    <div class="col-6 colLeft">
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Quốc gia  :
+
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.residenceCountryName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Quận/huyện  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.residenceDistrictName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Số nhà/đường phố  :
+                            </label>
+                            <div class="col-sm-7 txt ">
+                                <label>{{ detailAuthority.residenceStreetNumber}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 colRight">
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Tỉnh/thành phố  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.residenceCityName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Phường xã  :
+                            </label>
+                            <div class="col-sm-7 txt">
+                                <label>{{ detailAuthority.residenceWardName}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ket thuc them moi -->
+        <div class="row cust-row">
+            <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+                <div class="title-head">
+                    <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px ;color: #1F69BC;">list</mat-icon>
+                    <span class="text" style="padding: 5px 0;">NỘI DUNG ỦY QUYỀN</span>
+                </div>
+            </div>
+            <div class="col-12 row information-section">
+                <div class="col-6 colLeft">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel">Loại tài khoản  :
+
+                        </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{detailAccount.accountProductName}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 colRight">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel">Số tài khoản  :
+
+                        </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{detailAccount.accountNumber || 'Số tài khoản mới '+ detailAccount.accountIndex}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 row p-0">
+                <div class="col-6 colLeft">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel" style="padding-top: 0px;">Phạm vi ủy quyền  :
+                        </label>
+                        <div class="col-sm-8">
+                            <div class="form-check" style="padding-bottom: 10px;" *ngFor="let item of lstAuthorType;let i = index">
+                                <input disabled="disabled" [value]="lstAuthorType[i].checked" [ngModelOptions]="{standalone: true}" [(ngModel)]="lstAuthorType[i].checked" class="form-check-input" type="checkbox">
+                                <label style="padding-top: 2px;">
+                                    {{item.name}}
+                                </label>
+                            </div>
+                            <div class="form-check" style="padding-bottom: 10px;padding-left: 0px;" *ngIf="booleanOrther">
+                                <textarea [ngModelOptions]="{standalone: true}" class="form-control" name="valueOrther" disabled="disabled" [(ngModel)]="valueOrther"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 colRight" [hidden]="!isChecked">
+                    <div class="form-group">
+                        <label class="col-4 col-form-label textLabel" style="float: left;">
+                            Giá trị hạn mức  :
+
+                        </label>
+                        <ng-container *ngIf="limitAmount === ''">
+                            <label class="col-8 col-form-label " style="float: left;">Không co giá trị</label>
+                        </ng-container>
+                        <label class="col-8 col-form-label " style="float: left;">{{limitAmount | number }}</label>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12 row p-0">
+                <div class="col-12 colLeft">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label textLabel">Thời gian ủy quyền  :
+                        </label>
+                        <div class="col-sm-10 txt">
+                            <!-- <div class="form-check" *ngFor="let item of lstAuthorExpire;let i = index">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" [checked]="expireAuthorCode" disabled="disabled">
+                                <label style="padding-top: 2px;">
+                                    {{item.name}}
+                                </label>
+                            </div> -->
+                            {{detailAuthority.expireAuthorName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="col-6 colLeft">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel">Từ ngày  :
+                        </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{ detailAuthority.validFrom |date:"dd/MM/yyyy"}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 colRight" [hidden]=" detailAuthority.expireAuthorCode == 'ONE' ||detailAuthority.expireAuthorCode == 'WAIT_UPDATE' ">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel">Đến ngày  :
+                        </label>
+                        <div class="col-sm-7 txt">
+                            <label>{{ detailAuthority.validTo |date:"dd/MM/yyyy"}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row">
+    <div class="col-12">
+        <div class="footer" (click)="updateAuthority()" *ngIf="(isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)">
+            <span class="material-icons">edit</span>
+            <label>Cập nhật thông tin</label>
+        </div>
+        <div class="footer" (click)="showDialog()" *ngIf="(isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true) && detailAuthority.currentStatusCode !=='ACTIVE'">
+            <span class="material-icons">clear</span>
+            <label>Xóa</label>
+        </div>
+        <div class="footer" (click)="backPage()">
+            <span class="material-icons">keyboard_backspace</span>
+            <label>Quay lại</label>
+        </div>
+    </div>
+</div>
+<app-dialog #appDialog></app-dialog>

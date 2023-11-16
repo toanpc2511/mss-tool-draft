@@ -1,0 +1,282 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.DATE_RANGE_ERROR" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được lớn hơn Ngày mở STK
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.INVALID_DATE" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.EMAIL" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} sai định dạng
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+<div class="dialog-main">
+  <div class="dialog-header">
+    <div class="title">Thêm mới Người đại diện pháp luật</div>
+    <div class="toolbar">
+      <button class="resize" (click)="resizeDialog()">
+
+        <ng-container *ngIf="isFullScreen; else elseIsFullScreen">
+          <i class="fa fa-compress" aria-hidden="true"></i>
+        </ng-container>
+        <ng-template #elseIsFullScreen>
+          <i class="fa fa-expand" aria-hidden="true"></i>
+        </ng-template>
+      </button>
+      <button class="close-x">
+        <mat-icon (click)="closeDialog()">close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div #formBeneficiary class="dialog-content form-group" [class._full]="isFullScreen" [formGroup]="form">
+
+    <!-- #region Thông tin cơ bản -->
+    <div class="dialog-content-region">
+
+      <div class="title">
+        <div class="content-title">
+          <span class="active mr-2">Thông tin cơ bản</span>
+        </div>
+      </div>
+
+      <div class="mt-3 container-fluid">
+        <div class="row">
+          <!-- #region Số CIF -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel">Số CIF</span>
+            <input class="form-control" formControlName="cifNo" [JustNumberOnly]="{maxlength:20}" />
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'cifNo', controlNameVi: 'Số CIF'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Số CIF -->
+
+          <!-- #region Họ và tên -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel required">Họ và tên</span>
+            <input class="form-control" formControlName="fullName" maxlength="50" />
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'fullName', controlNameVi: 'Họ và tên'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Họ và tên -->
+
+          <!-- #region Ngày sinh -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel required">Ngày sinh</span>
+            <app-lpb-datepicker-new [maxDate]="maxDate" formControlName="birthDate">
+            </app-lpb-datepicker-new>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'birthDate', controlNameVi: 'Ngày sinh'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Ngày sinh -->
+
+          <!-- #region GTXM -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel required">GTXM</span>
+            <input class="form-control" formControlName="docNum" [textPattern]="{blockRegex: '[/-]', allowVi: true}" />
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'docNum', controlNameVi: 'GTXM'}">
+            </ng-container>
+            <div class="form-radio-inline-group d-flex align-items-start mt-2">
+              <label class="txtLabel form-radio-inline d-flex align-items-center mr-3" *ngFor="let item of DOC_TYPES">
+                <input class="mr-2" formControlName="docType" name="docType" type="radio" [value]="item.key">
+                {{item.value}}
+              </label>
+            </div>
+          </label>
+          <!-- #endregion GTXM -->
+
+          <!-- #region Ngày cấp -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel required">Ngày cấp</span>
+            <app-lpb-datepicker-new [maxDate]="maxDate" formControlName="issueDate">
+            </app-lpb-datepicker-new>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'issueDate', controlNameVi: 'Ngày cấp'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Ngày cấp -->
+
+          <!-- #region Nơi cấp -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel required">Nơi cấp</span>
+            <input class="form-control" formControlName="issuePlace" />
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'issuePlace', controlNameVi: 'Nơi cấp'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Nơi cấp -->
+
+          <!-- #region Quốc tịch -->
+          <label class="form-group d-block col-lg-6">
+            <span class="textLabel">Quốc tịch</span>
+            <input class="form-control" formControlName="nationality" />
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'nationality', controlNameVi: 'Quốc tịch'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Quốc tịch -->
+
+          <!-- #region Thị thực nhập cảnh -->
+          <div class="form-group d-block col-lg-6">
+            <span class="textLabel">&nbsp;</span>
+            <div class="d-flex align-items-center flex-wrap visa">
+              <div class="mr-5 textLabel text-black"> Thị thực nhập cảnh</div>
+              <div class="mt-3 mt-md-0">
+                <mat-checkbox [formControl]="form.controls[VISA[0].code]" class="txtLabel mr-4" color="primary">
+                  {{VISA[0].label}}</mat-checkbox>
+                <mat-checkbox *ngIf="!form.controls['visaExemption'].value" [formControl]="form.controls[VISA[1].code]"
+                  class="txtLabel mr-4" color="primary">
+                  {{VISA[1].label}}</mat-checkbox>
+              </div>
+            </div>
+          </div>
+          <!-- #endregion Thị thực nhập cảnh -->
+
+          <app-collapse-section [showSectionBreak]="false" [collapsed]="form.controls['visaExemption'].value"
+            class="d-block w-100" [showArrow]="false">
+            <div area="body" class="row">
+              <!-- #region Từ ngày -->
+              <label class="form-group d-block col-lg-6">
+                <span [class]="form.controls['hasExpiration'].value ? 'required' : undefined" class="textLabel">Từ
+                  ngày</span>
+                <app-lpb-datepicker-new [maxDate]="maxDate" formControlName="fromDate">
+                </app-lpb-datepicker-new>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'fromDate', controlNameVi: 'Từ ngày'}">
+                </ng-container>
+              </label>
+              <!-- #endregion Từ ngày -->
+
+              <!-- #region Đến ngày -->
+              <label class="form-group d-block col-lg-6">
+                <span [class]="form.controls['hasExpiration'].value ? 'required' : undefined" class="textLabel">Đến
+                  ngày</span>
+                <app-lpb-datepicker-new [maxDate]="maxDate" formControlName="toDate">
+                </app-lpb-datepicker-new>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'toDate', controlNameVi: 'Đến ngày'}">
+                </ng-container>
+              </label>
+              <!-- #endregion Đến ngày -->
+            </div>
+          </app-collapse-section>
+
+          <!-- #region Địa chỉ hiện tại -->
+          <label class="form-group d-block col-lg-12">
+            <span class="textLabel required">Địa chỉ hiện tại</span>
+            <input class="form-control" formControlName="currentAddress" maxlength="100"
+              [textPattern]="{allowRegex: '[A-Za-z0-9-,/\\s]', allowVi: true}" />
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'currentAddress', controlNameVi: 'Địa chỉ hiện tại'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Địa chỉ hiện tại -->
+
+          <!-- #region Địa chỉ thường trú -->
+          <label class="form-group d-block col-lg-12">
+            <span class="textLabel required">Địa chỉ thường trú </span>
+            <input class="form-control" formControlName="permanentAddress" maxlength="100"
+              [textPattern]="{allowRegex: '[A-Za-z0-9-,/\\s]', allowVi: true}" />
+            <ng-container *ngTemplateOutlet=" error; context: {controlName: 'permanentAddress',
+              controlNameVi: 'Địa chỉ thường trú' }">
+            </ng-container>
+          </label>
+          <!-- #endregion Địa chỉ thường trú -->
+
+          <!-- #region Email -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel">Email</span>
+            <input type="email" class="form-control" formControlName="email" maxlength="50" />
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'email', controlNameVi: 'Email'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Email -->
+
+          <!-- #region Nghề nghiệp -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel required">Nghề nghiệp</span>
+            <input class="form-control" formControlName="occupation" maxlength="50" />
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'occupation', controlNameVi: 'Nghề nghiệp'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Nghề nghiệp -->
+
+          <!-- #region Chức vụ -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel required">Chức vụ</span>
+            <input class="form-control" formControlName="position" maxlength="50" />
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'position', controlNameVi: 'Chức vụ'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Chức vụ -->
+
+          <!-- #region Điện thoại di động -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel required">Điện thoại di động</span>
+            <input class="form-control" formControlName="mobilePhone" [JustNumberOnly]="{maxlength:15}" />
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'mobilePhone', controlNameVi: 'Điện thoại di động'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Điện thoại di động -->
+
+          <!-- #region Điện thoại nhà riêng -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel">Điện thoại nhà riêng</span>
+            <input class="form-control" formControlName="homePhone" [JustNumberOnly]="{maxlength:15}" />
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'homePhone', controlNameVi: 'Điện thoại nhà riêng'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Điện thoại nhà riêng -->
+
+          <!-- #region Văn bản xác nhận Người đại diện Pháp luật số -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel">Văn bản xác nhận Người đại diện Pháp luật số</span>
+            <input class="form-control" formControlName="legalDocument" maxlength="50" />
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'legalDocument', controlNameVi: 'Văn bản xác nhận Người đại diện Pháp luật số'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Văn bản xác nhận Người đại diện Pháp luật số -->
+
+          <!-- #region Quan hệ với chủ sở hữu -->
+          <label class="form-group d-block col-lg-6">
+            <span class="textLabel required">Quan hệ với chủ sở hữu</span>
+            <app-lpb-select2 placeholder="Chọn quan hệ với chủ sở hữu" [items]="RELATIONS" labelName="label"
+              bindValue="code" formControlName="relation" class="w-100"></app-lpb-select2>
+
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'relation', controlNameVi: 'Quan hệ với chủ sở hữu'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Quan hệ với chủ sở hữu -->
+
+          <!-- #region Quan hệ với chủ sở hữu -->
+          <label class="form-group d-block col-lg-6">
+            <span [class]="form.controls['relation'].value === 'other'? 'required': undefined" class="textLabel">Quan hệ
+              khác</span>
+            <input class="form-control" formControlName="otherRelation" />
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'otherRelation', controlNameVi: 'Quan hệ khác'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Quan hệ khác (*) -->
+
+        </div>
+      </div>
+    </div>
+    <!-- #endRegion Thông tin cơ bản -->
+
+  </div>
+  <div class="dialog-footer">
+    <button mat-button color="warning" class="mat-button-secondary button-close" (click)="closeDialog()">
+      Quay lại
+    </button>
+    <button *ngIf="!data?.isView" mat-button color="primary" class="mat-button-primary button-save" (click)="onSubmit()"
+      type="submit">
+      Lưu
+    </button>
+  </div>
+</div>

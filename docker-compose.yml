@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+  uniform-web:
+    image: harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform-web:latest
+    container_name: uniform-web
+#    restart: on-failure
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "2"
+    ports:
+      - "8080:80"
+    #    network_mode: "host"
+    # command: ['ng serve --prod --host 0.0.0.0']
+    environment:
+      - "JAVA_TOOL_OPTIONS=-Xms128m -Xss256k -Xmx512m"
+      - "SPRING_PROFILES_ACTIVE=docker"
+    networks:
+      - uniform-app-network
+
+  portainer-1:
+    image: "portainer/portainer:1.24.1-alpine"
+    container_name: portainer-1
+    restart: unless-stopped
+    command: -H unix:///var/run/docker.sock
+    ports:
+      - 9000:9000
+      - 8000:8000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - uniform-app-network
+
+networks:
+  uniform-app-network:
+    driver: bridge
+    name: uniform-app-network
+  uniform-web-1:
+    image: harbor-registry.lienvietpostbank.com.vn:5000/uniform-web:uat
+    container_name: uniform-web-1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - '4201:4200'
+#    command: ['ng serve --host 0.0.0.0']
+

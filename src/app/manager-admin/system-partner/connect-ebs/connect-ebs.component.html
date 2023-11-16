@@ -1,0 +1,96 @@
+<div class="container-fluids">
+  <app-progress-spinner color="primary" mode="indeterminate" [value]="value" *ngIf="isShowLoading" class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="row cust-row2 body-content">
+    <div class="col-12 line-base st-title position-relative mt-2">
+      <div class="title form-w">
+        <span class="d-flex align-items-center"> <mat-icon>link</mat-icon> &nbsp; KẾT NỐI ỨNG DỤNG UNIFORM - EBS</span>
+      </div>
+    </div>
+    <div class="col-12 information-content d-flex justify-content-center">
+      <div class="col-8">
+        <div class="row position-relative btn-connect">
+          <div class="col-sm-6">
+            <button mat-raised-button class="btn-orange btn-block mt-2" (click)="connectAll()">
+              Kết nối tất cả chi nhánh
+            </button>
+          </div>
+          <div class="col-sm-6">
+            <button mat-raised-button class="btn-blue btn-block mt-2" (click)="disconnectAll()">
+              Ngắt kết nối tất cả chi nhánh
+            </button>
+          </div>
+        </div>
+
+        <mat-tab-group mat-stretch-tabs (selectedTabChange)="tabChanged($event)">
+          <mat-tab label="Chi nhánh Active: {{branchActive}}">
+            <table class="table table-hover tb">
+              <thead>
+              <tr class="titleTD">
+                <th>STT</th>
+                <th>Chi Nhánh</th>
+                <th>Trạng thái</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let info of listsON ; let i = index " tabindex="0">
+                <td>  {{pagination0.pager.startIndex + i + 1}}</td>
+                <td>{{info.branchCode}} - {{info.branchName}}</td>
+                <td style="width: calc(100%/4); padding: 10px">
+                  <button type="button" class="btn btn-secondary btn-toggle"
+                          [ngClass]="info.ebsStatus === 'ON' ? 'active' : ''" data-toggle="button" aria-pressed="false"
+                          (click)="connectConfirm(info)">
+                    <span class="handle"></span>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="listsON == null || listsON.length == 0">
+                <td colspan="3" class="text-center">Không có chi nhánh nào được kết nối</td>
+              </tr>
+              </tbody>
+            </table>
+
+
+          </mat-tab>
+          <mat-tab label="Chi nhánh Inactive: {{branchInActive}}">
+            <table class="table table-hover tb" >
+              <thead>
+              <tr class="titleTD">
+                <th>STT</th>
+                <th>Chi Nhánh</th>
+                <th>Trạng thái</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let info of listsOFF ; let i = index " tabindex="0">
+                <td>  {{pagination1.pager.startIndex + i + 1}}</td>
+                <td>{{info.branchCode}} - {{info.branchName}}</td>
+                <td style="width: calc(100%/4); padding: 10px">
+                  <button type="button" class="btn btn-secondary btn-toggle"
+                          [ngClass]="info.ebsStatus === 'ON' ? 'active' : ''" data-toggle="button" aria-pressed="false"
+                          (click)="connectConfirm(info)">
+                    <span class="handle"></span>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="listsOFF == null || listsOFF.length == 0">
+                <td colspan="3" class="text-center">Không có chi nhánh bị ngắt kết nối</td>
+              </tr>
+              </tbody>
+            </table>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+    <div class="col-12">
+      <app-lpb-pagination [pagination]="pagination0" [hidden]="currentPag !== 0"
+                          (evtChangePageSize)="changePageSize0($event)"
+                          (evtSetPage)="setPage0($event)">
+      </app-lpb-pagination>
+      <app-lpb-pagination [pagination]="pagination1" [hidden]="currentPag !== 1"
+                          (evtChangePageSize)="changePageSize1($event)"
+                          (evtSetPage)="setPage1($event)">
+      </app-lpb-pagination>
+    </div>
+  </div>
+</div>

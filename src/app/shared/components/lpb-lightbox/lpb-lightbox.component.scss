@@ -1,0 +1,17 @@
+.light-box {
+  &-img {
+    cursor: pointer;
+  }
+  img {
+    width: 100%;
+  }
+}
+
+.light-box-thubnail {
+  width: auto !important;
+  height: 100%;
+  max-width: 100%;
+}
+:host ::ng-deep .mat-dialog-container {
+  display: none !important;
+}

@@ -1,0 +1,65 @@
+<div class="content">
+  <div class="row form-search" [formGroup]="uploadForm">
+    <div class="col-12 col-md-5 pb-3 px-5">
+      <label class="required">Nhà cung cấp</label>
+      <app-lpb-select2 [apiUrl]="'/electric-service/supplier/active'"
+                       labelName="supplierName" [config]="{isNewApi: true}"
+                       formControlName="supplierCode"
+                       placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+      <app-validate [control]="uploadForm.get('supplierCode')" error="required"
+                    message="Chưa chọn nhà cung cấp"></app-validate>
+    </div>
+    <div class="col-12 col-md-5 pb-3 px-5">
+      <label class="required">Tải lên hóa đơn</label>
+      <lpb-custom-upload-file
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        [maxSize]="10"
+        (onChange)="onFileSelect($event)"
+        (onClearSelected)="onClearSelected($event)"
+        formControlName="file"
+      ></lpb-custom-upload-file>
+      <app-validate [control]="uploadForm.get('file')" error="required" message="Chưa chọn file upload"></app-validate>
+      <p class="mt-1">
+        <small>Tải tệp tin mẫu</small>
+        <span *ngFor="let temp of templateType"
+              (click)="downloadTemplate(temp)"
+              class="temp">{{temp}}</span></p>
+    </div>
+
+    <div class="col-12 col-md-2 pb-3 px-5 ">
+      <button
+        mat-raised-button
+        class="bg-btn__blue mt-3"
+        (click)="uploadFile()"
+        [disabled]="isDisabled"
+      >
+        Upload
+      </button>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <ng-template #temp_check_file>
+      <div class="px-4 pt-3 bg mt-2 template-other">
+        <div class="py-1 d-flex justify-content-between">
+          <div class="temp-content">
+            <p>Tổng số: <strong>{{dataSource?.length}}</strong> bản ghi</p>
+            <p><span class="record success"></span>Số bản ghi không lỗi: <strong>{{totalRecordSuccess}}</strong></p>
+            <p><span class="record error"></span>Số bản ghi lỗi: <strong>{{totalRecordError}}</strong></p>
+          </div>
+          <p class="" [ngClass]="dataSource?.length > 0 ? 'text-down' : 'text-down-disable'"
+             (click)="downloadFileError()"><i
+            class="fa fa-download mr-2" aria-hidden="true"></i>Tải xuống tệp tin kiểm tra lỗi</p>
+        </div>
+        <p *ngIf="totalRecordError > 0" class="text-message pb-2">{{ message }}</p>
+      </div>
+    </ng-template>
+    <app-lpb-datatable
+      [templateOther]="temp_check_file"
+      [config]="configs"
+      [columns]="$any(columns)"
+      [dataSource]="dataSource"
+      tableName="Danh sách"
+    ></app-lpb-datatable>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="card">
+  <div class="card-header">
+    <h1 class="font-weight-bold">Từ chối duyệt</h1>
+  </div>
+  <div class="card-body">
+    <div class="row row-form">
+      <div class="col-lg-2 col-form-label textLabel">Lý do</div>
+      <div class="col-lg-10">
+        <textarea  [formControl]="reason" class="form-control" [ngClass]="FormHelpers.isValidClass(reason)" rows="5" trimInput>
+
+        </textarea>
+        <app-validate [control]="reason" error="required"
+                      message="Lý do không được bỏ trống"></app-validate>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="text-right">
+      <button class="btn btn-primary lpb-btn-primary mr-3" (click)="onCloseDialog(1)">Xác nhận</button>
+      <button class="btn btn-danger" (click)="onCloseDialog(0)">Đóng</button>
+    </div>
+
+  </div>
+</div>
+

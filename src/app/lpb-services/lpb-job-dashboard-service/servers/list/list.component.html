@@ -1,0 +1,48 @@
+<div class="finance-body" style="padding-bottom: 10px">
+  <div class="step-search d-flex flex-column">
+    <div class="content-title pt-2 ">
+      <i class="fa fa-search mr-2 txtLabel"></i>
+      TÌM KIẾM
+    </div>
+    <hr/>
+    <!-- Search Form -->
+    <div class="form-search d-flex flex-column">
+      <form [formGroup]="formSearch" class="container" (ngSubmit)="onSearch()">
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Service Name</span>
+              <span class="col-8">
+                <input class="form-control"
+                       placeholder="Input service name" type="text" formControlName="serviceName">
+              </span>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="row">
+          <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="submit">
+              Tìm kiếm
+              <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+            </button>
+
+
+            <!--            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="button" (click)="downloadTemplate()">-->
+            <!--              Template-->
+            <!--              <i class="fa fa-download ic-in-primary" aria-hidden="true"></i>-->
+            <!--            </button>-->
+
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Search Form -->
+    <hr class="h-1px"/>
+    <app-lpb-datatable tableName="DANH SÁCH" [config]="datatableConfig" [searchConditions]="searchCondition"
+                       [columns]="columns"
+                       apiServiceURL="/job-dashboard-service/servers"></app-lpb-datatable>
+  </div>
+</div>

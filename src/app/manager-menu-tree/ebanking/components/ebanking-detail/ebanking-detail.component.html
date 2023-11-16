@@ -1,0 +1,63 @@
+<div class="ebanking-detail">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+        <div class="title-head" style="font-weight: 500;">
+            <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add_circle</mat-icon>
+            <span class="text" style="padding: 5px 0;">THÔNG TIN E - BANKING</span>
+        </div>
+    </div>
+
+    <div class="ebanking-detail-content">
+        <div class="col-content">
+            <div class="col-content-row mb-3">
+                <span class="txt-label">UserID <span class="txt-require">(*)</span></span>
+                <span class="txt-value">{{objEbankingSelected.userId}}</span>
+            </div>
+            <div class="col-content-row mb-3">
+                <span class="txt-label">Email <span class="txt-require">(*)</span></span>
+                <span class="txt-value">{{objEbankingSelected.email}}</span>
+            </div>
+            <div class="col-content-row mb-3">
+                <span class="txt-label">User Type</span>
+                <span class="txt-value">{{objEbankingSelected.userTypeName}}</span>
+            </div>
+            <div class="col-content-row mb-3">
+                <span class="txt-label">Loại User</span>
+                <span class="txt-value" *ngIf="objEbankingSelected.isDomestic==true">Domestic</span>
+            </div>
+            <div class="col-content-row mb-3">
+                <span class="txt-label">Bang</span>
+                <span class="txt-value">{{objEbankingSelected.state}}</span>
+            </div>
+            <div class="col-content-row">
+                <span class="txt-label">Khu vực</span>
+                <span class="txt-value">{{objEbankingSelected.area}}</span>
+            </div>
+        </div>
+        <div class="col-content">
+            <div class="col-content-row mb-3">
+                <span class="txt-label">Mobile <span class="txt-require">(*)</span></span>
+                <span class="txt-value">{{objEbankingSelected.mobileNo1}}</span>
+            </div>
+            <div class="col-content-row mb-3">
+                <span class="txt-label">Mobile 2</span>
+                <span class="txt-value">{{objEbankingSelected.mobileNo2}}</span>
+            </div>
+            <div class="col-content-row mb-3">
+                <span class="txt-label">Phương thức xác thực</span>
+                <span class="txt-value">{{objEbankingSelected.deviceTypeName}}</span>
+            </div>
+            <div class="col-content-row mb-3">
+                <span class="txt-label">Gói dịch vụ</span>
+                <span class="txt-value">{{objEbankingSelected.servicePackageName}}</span>
+            </div>
+            <div class="col-content-row mb-3">
+                <span class="txt-label">Mã NV giới thiệu</span>
+                <span class="txt-value">{{objEbankingSelected.reffererCode}}</span>
+            </div>
+            <div class="col-content-row">
+                <span class="txt-label">Mã nhân viên</span>
+                <span class="txt-value">{{objEbankingSelected.employeeId}} </span>
+            </div>
+        </div>
+    </div>
+</div>

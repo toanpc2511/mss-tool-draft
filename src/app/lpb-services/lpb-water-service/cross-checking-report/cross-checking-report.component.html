@@ -1,0 +1,71 @@
+<div class="p-4">
+  <form [formGroup]="formSearch" (ngSubmit)="search()">
+    <div class="d-flex flex-wrap">
+      <div class="col-4">
+        <label for="" class="text-high-light fw-bolder">Nhà cung cấp</label>
+        <div>
+          <app-lpb-select2 [apiUrl]="'/water-service/supplier/active'" labelName="supplierName"
+                           bindValue="supplierCode" formControlName="supplierCode"
+                           placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+        </div>
+      </div>
+      <div class="col-4">
+        <label for="" class="text-high-light fw-bolder">Số giao dịch</label>
+        <div>
+          <input type="text" class="form-control" placeholder="Nhập số giao dịch" formControlName="transNo">
+        </div>
+      </div>
+      <div class="col-4">
+        <label for="" class="text-high-light fw-bolder">Mã khách hàng</label>
+        <div>
+          <input type="text" class="form-control" placeholder="Nhập mã khách hàng"
+                 formControlName="customerId">
+        </div>
+      </div>
+
+      <div class="col-4 mt-3">
+        <label for="" class="text-high-light fw-bolder">Từ ngày</label>
+        <div>
+          <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="checkValidateDate()"
+                               (dateChanged)="getFromDate()"></app-lpb-date-picker>
+        </div>
+      </div>
+      <div class="col-4 mt-3">
+        <label for="" class="text-high-light fw-bolder">Đến ngày</label>
+        <div>
+          <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="checkValidateDate()"
+                               (dateChanged)="getToDate()"></app-lpb-date-picker>
+        </div>
+      </div>
+      <div class="col-4 mt-3">
+        <label for="" class="text-high-light fw-bolder">Kết quả đối soát</label>
+        <div>
+          <app-lpb-select2 [items]="crossCheckingResults" labelName="label" bindValue="value"
+                           formControlName="crossCheckingResult" placeholder="Chọn kết quả đối soát"></app-lpb-select2>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-3 text-center">
+      <button class="btn lpb-btn-primary"> <i class="fa fa-search"></i> Tìm kiếm</button>
+    </div>
+  </form>
+
+  <div *ngIf="searched" class="mt-4">
+    <div class="text-high-light text-uppercase fw-bolder">Danh sách</div>
+    <div class="clearfix mb-2 bg-title p-2">
+      <span class="mr-3">Tổng số<span class="fw-bolder"> {{totalRecords}} bản ghi</span> </span>
+      <span class="mr-3"><i class="fa fa-circle text-success mr-2"></i>Số bản ghi khớp thông tin<span
+        class="fw-bolder"> {{trueRecords}} </span> </span>
+      <span class=""><i class="fa fa-circle text-danger mr-2"></i>Số bản ghi lệch thông tin <span
+        class="fw-bolder"> {{falseRecords}} </span></span>
+      <div class="float-right">
+                <span role="button" class="fw-bolder text-high-light" (click)="exportExcel()">
+                    <i class="fa fa-download text-high-light"></i> Xuất Excel
+                </span>
+      </div>
+    </div>
+    <app-lpb-datatable [config]="config" (getRawData)="getRawData($event)" [searchConditions]="searchConditions"
+                       [columns]="columns" [apiServiceURL]="'/water-service/cross-check'"></app-lpb-datatable>
+  </div>
+</div>

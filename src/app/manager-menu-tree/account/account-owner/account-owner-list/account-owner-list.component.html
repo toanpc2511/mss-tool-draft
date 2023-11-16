@@ -1,0 +1,84 @@
+<div class="container-fuild">
+  <div class="account-owner-list">
+    <div class="account-owner-list-title">
+      <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">add</mat-icon>
+      <span>THÔNG TIN KHÁCH HÀNG</span>
+    </div>
+    <div class="account-owner-list-info">
+      <app-account-owner-info [processId]="processId" (processDetail)="getDetail($event)"></app-account-owner-info>
+    </div>
+    <div class="account-owner-list-title">
+      <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">add</mat-icon>
+      <span>DANH SÁCH TÀI KHOẢN ĐỒNG SỞ HỮU</span>
+    </div>
+    <div class="account-owner-list-content">
+      <div class="table table-striped content-table">
+        <table>
+          <thead>
+            <tr class="text-nowrap">
+              <th>Họ và tên</th>
+              <th>Mã CIF</th>
+              <th>Số GTXM</th>
+              <th>Từ ngày</th>
+              <th>Đến ngày</th>
+              <th>Tình trạng</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of listCoowner;let i = index">
+              <td class="link-action" (click)="routerDetailCoowner(item.id)">{{item.person.fullName}} </td>
+              <td>{{item?.customerCode}}</td>
+              <td>{{item.person?.perDocNoList[0]?.perDocNo}}</td>
+              <td>{{item.coowner?.jointStartDate}}</td>
+              <td>{{item.coowner?.jointEndDate}}</td>
+              <td>{{item.coowner?.coownerStatusName}}</td>
+              <td class="td-col-action" >
+                <div class="action">
+                  <div class="material-icons btn-icon-delete btn-delete"  *ngIf="item.isActive" (click)="showPopupDelete(item.id)">
+                    delete
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row footer-row">
+      <div class="col-12">
+        <div class="footer" *ngIf="isCreate" (click)="addOwner()">
+          <span class="material-icons"> save </span>
+          <label>Tạo mới</label>
+        </div>
+        <div class="footer mr-1" (click)="backPage()">
+          <span class="material-icons"> keyboard_backspace </span>
+          <label>Quay lại</label>
+        </div>
+      </div>
+    </div>
+    <app-lpb-modal headerText="Xác nhận" [show]="isDeleteRow" [unit]="'%'"
+      [widthContent]="40" [heightContent]="30" (hideModal)="isDeleteRow = false">
+      <div class="account-owner-list-content">
+        <div class="text-center">
+          Bạn có chắc chắc muốn thực hiện thao tác Xóa đồng sở hữu?
+        </div>
+        <div class="div-center">
+          <button class="btn-cancel btn-space-confim" (click)="confimRemoveData('CANCEL')">
+            Hủy
+          </button>
+          <button class="btn-save" (click)="confimRemoveData('CONFIM')">
+            Đồng ý
+          </button>
+        </div>
+      </div>
+    </app-lpb-modal>
+    <app-popup-detail-warring [show]="isShowMessage" (hideModal)="isShowMessage = false">
+      <div class="text-center">
+          Hồ sơ <span class="message">{{objStatusProfile.code}}</span> đang được thao tác bởi
+          <span class="message">{{objStatusProfile?.createdByUser?.userName}}</span> chi nhánh
+          <span class="message">{{objStatusProfile.branchCode}} </span>
+      </div>
+  </app-popup-detail-warring>
+  </div>
+</div>

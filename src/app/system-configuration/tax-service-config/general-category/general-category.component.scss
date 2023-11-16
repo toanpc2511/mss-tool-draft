@@ -1,0 +1,30 @@
+$text-blue: #0C258A;
+.tax {
+  .tax-header {
+    text-align: center;
+    text-transform: uppercase;
+    color: #0C258A;
+    font-weight: bold;
+    font-size: 24px;
+  }
+  .tax-item {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    padding: 24px;
+    border-radius: 5px;
+
+    p {
+      color: $text-blue;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+  .gap-4 {
+    gap: 12px;
+  }
+  .bg-btn__blue {
+    background: $text-blue;
+    color: #fff;
+  }
+}
+
+@import "/src/app/shared/styles/custom-styles.scss";

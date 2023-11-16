@@ -1,0 +1,147 @@
+@import "../../shared/components/css/account.scss";
+.account-authority-update {
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-top: 1px solid #bdbdbd;
+  &-title {
+    color: #17589f;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 8px 5px;
+    display: flex;
+
+    .mat-icon {
+      float: unset !important;
+    }
+
+    span {
+      align-self: center;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+  &-content {
+    padding: 25px 5%;
+    &-left,
+    &-right {
+      max-width: 50%;
+      flex: 0 0 50%;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      margin: 0 -15px 0 -24px;
+
+      .row-item-info {
+        display: flex;
+        margin-bottom: 12px;
+
+        .label-title {
+          max-width: 33.3333%;
+          flex: 0 0 33.3333%;
+          font-weight: 500;
+          text-align: left;
+          margin-right: 10px;
+          padding-top: 6px;
+          font-size: 18px;
+          color: #0c258a;
+
+          .item-require {
+            color: #e83c19;
+            font-weight: 500;
+          }
+        }
+
+        .label-field {
+          max-width: 33.3333%;
+          flex: 0 0 33.3333%;
+          font-weight: 500;
+          text-align: left;
+          margin-right: 10px;
+          padding-top: 6px;
+          font-size: 14px;
+          color: #0c258a;
+
+          .item-require {
+            color: #e83c19;
+            font-weight: 500;
+          }
+        }
+
+        .fw-700 {
+          font-weight: 700;
+        }
+
+        .label-action {
+          max-width: 66.6666%;
+          flex: 0 0 66.6666%;
+          padding-top: 5px;
+          font-style: italic;
+          color: #17589f;
+          font-weight: 500;
+          cursor: pointer;
+        }
+
+        .value-field {
+          max-width: 66.6666%;
+          flex: 0 0 66.6666%;
+
+          .control-item {
+            min-height: 35px;
+
+            .grRadio {
+              height: 35px;
+              display: flex;
+
+              .rd-item {
+                align-self: center;
+                margin-right: 10px;
+
+                label,
+                input {
+                  cursor: pointer;
+                }
+              }
+            }
+
+            .form-check {
+              height: 35px;
+              display: flex;
+              align-items: center;
+            }
+          }
+
+          .error-msg {
+            color: #e83c19;
+            margin-top: 5px;
+            font-size: 12px;
+          }
+        }
+
+        .error-invalid {
+          border-color: #e83c19;
+        }
+      }
+    }
+  }
+}
+.ic-remove, .ic-add{
+  padding-top: 8px;
+  margin-left: 3px;
+  cursor: pointer;
+}
+.ic-remove {
+  color: #dc3545;
+}
+.ic-add {
+  color: #17589f;
+}
+.rdo-ngcutru{
+  margin-left: 20px;
+}
+.account-authority-update-address{
+  padding: 25px 5%;
+}
+.add-uc-customer{
+  padding-top: 8px;
+  margin-left: 3px;
+}

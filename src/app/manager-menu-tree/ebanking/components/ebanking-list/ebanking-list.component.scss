@@ -1,0 +1,87 @@
+.ebanking-list {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #BDBDBD;
+    &-header {
+        padding: 9px;
+        border-bottom: 1px solid #BDBDBD;
+        span {
+            vertical-align: sub;
+            color: #23388F;
+            font-weight: 500;
+            font-size: 18px;
+            margin-left: 5px;
+        }
+        img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+    &-content {
+        .tbl-ebanking {
+            .col-no {
+                width: 5%;
+            }
+            .col-id,
+            .col-phone,
+            .col-status,
+            .col-action,
+            .col-name {
+                width: 15%;
+                word-break: break-all;
+            }
+            .col-email {
+                width: 20%;
+                word-break: break-all;
+            }
+            .col-action {
+                &-sms {
+                    font-weight: 400;
+                    color: #2F80ED;
+                    cursor: pointer;
+                }
+                &-select {
+                    font-weight: 400;
+                    color: #F2994A;
+                    cursor: pointer;
+                }
+                .btn-delete {
+                    color: #CA0707;
+                    cursor: pointer;
+                }
+                .btn-edit {
+                    color: #0088FF;
+                    cursor: pointer;
+                }
+                .btn-close {
+                    color: #CA0707;
+                    cursor: pointer;
+                }
+            }
+            .txt-link {
+                cursor: pointer;
+                color: #2F80ED;
+            }
+        }
+    }
+    .line-base {
+        border-bottom: 1px solid #c8ced3;
+        border-top: 1px solid #c8ced3;
+        padding: 10px 0;
+        .title-head {
+            font-weight: 500;
+            .icon-title-head {
+                font-size: 30px;
+                height: 30px;
+                width: 38px;
+                text-indent: 5px
+            }
+            .text {
+                padding: 5px 0;
+                color: #17589f;
+                display: block;
+                float: left;
+            }
+        }
+    }
+}

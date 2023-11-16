@@ -1,0 +1,145 @@
+$primary-main: #0c258a;
+$primary-light: lighten(
+  $color: $primary-main,
+  $amount: 20%,
+);
+$primary-dark: darken(
+  $color: $primary-main,
+  $amount: 20%,
+);
+
+$secondary-main: #f47326;
+$secondary-light: lighten(
+  $color: $secondary-main,
+  $amount: 20%,
+);
+$secondary-dark: darken(
+  $color: $secondary-main,
+  $amount: 20%,
+);
+
+$error-main: #dc3545;
+$error-light: lighten(
+  $color: $error-main,
+  $amount: 20%,
+);
+$error-dark: darken(
+  $color: $error-main,
+  $amount: 20%,
+);
+
+$success-main: #2e7d32;
+$success-light: lighten(
+  $color: $success-main,
+  $amount: 20%,
+);
+$success-dark: darken(
+  $color: $success-main,
+  $amount: 20%,
+);
+
+$white-main: #fff;
+$white-light: lighten(
+  $color: $white-main,
+  $amount: 20%,
+);
+$white-dark: darken(
+  $color: $white-main,
+  $amount: 20%,
+);
+
+$orange: #f47326;
+$gray-main: #bdbdbd;
+
+@mixin button-primary {
+  background-color: $primary-main;
+  color: $white-main;
+  i,
+  span {
+    color: $white-main;
+  }
+  &:focus {
+    background-color: $primary-light;
+  }
+  &:hover {
+    background-color: $primary-dark;
+  }
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+@mixin button-secondary {
+  background-color: $secondary-main;
+  color: $white-main;
+  i,
+  span {
+    color: $white-main;
+  }
+  &:focus {
+    background-color: $secondary-light;
+  }
+  &:hover {
+    background-color: $secondary-dark;
+  }
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+@mixin button-error {
+  background-color: $error-main;
+  color: $white-main;
+  i,
+  span {
+    color: $white-main;
+  }
+  &:focus {
+    background-color: $error-light;
+  }
+  &:hover {
+    background-color: $error-dark;
+  }
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+@mixin button-success {
+  background-color: $success-main;
+  color: $white-main;
+  i,
+  span {
+    color: $white-main;
+  }
+  &:focus {
+    background-color: $success-light;
+  }
+  &:hover {
+    background-color: $success-dark;
+  }
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+@mixin button-no-bg {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  color: $primary-main;
+  i,
+  span {
+    color: $primary-main;
+  }
+  &:focus * {
+    color: $primary-light;
+  }
+  &:hover * {
+    color: $primary-dark;
+  }
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}

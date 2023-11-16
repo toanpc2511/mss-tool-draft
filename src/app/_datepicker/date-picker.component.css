@@ -1,0 +1,14 @@
+/*::ng-deep .mat-icon-button {*/
+/*  height: 0;*/
+/*  flex-shrink: 0;*/
+/*  line-height: 0;*/
+/*}*/
+.mat-datepicker-toggle {
+  /*margin-right: 10px !important;*/
+  padding: 3px;
+  width: auto;
+  height: 37px;
+}
+.mat-icon-button:focus {
+  outline: none;
+}

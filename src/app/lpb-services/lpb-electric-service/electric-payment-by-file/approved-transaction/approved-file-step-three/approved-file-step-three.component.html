@@ -1,0 +1,54 @@
+<div class="text-high-light fw-bolder text-uppercase">Thông tin hóa đơn</div>
+<div class="d-flex flex-wrap bg-readonly border-radius-panel p-2 mt-3 justify-content-between">
+    <div class="d-flex">
+        <div>
+            <label for="">Tổng số</label>
+            <span class="fw-bolder ml-2"> {{dataSource.length}} bản ghi </span>
+        </div>
+        <div class="ml-5 text-danger fw-bolder">
+            <label for="">GN thất bại</label>
+            <span class="fw-bolder ml-2"> {{rowsChangeDebtFail}} HĐ </span>
+        </div>
+        <div class="ml-5 text-warning fw-bolder">
+            <label for="">GN không xác định</label>
+            <span class="fw-bolder ml-2"> {{rowsChangeDebtUnknown}} HĐ </span>
+        </div>
+        <div class="ml-5">
+            <label for="">GN thành công</label>
+            <span class="fw-bolder ml-2"> {{rowsChangeDebtSuccess}} HĐ </span>
+        </div>
+        <div class="ml-5">
+            <label for="">Tổng tiền gạch nợ TC</label>
+            <span class="fw-bolder ml-2"> {{totalAmount | number}} VNĐ </span>
+        </div>
+    </div>
+    <div>
+        <span type="button" class="text-high-light fw-bolder" (click)="exportExcel()"><i
+                class="fa fa-download text-high-light"></i> Tải xuống tập tin</span>
+        <button class="btn btn-lpb ml-2" (click)="openModalChangeDebt()" [disabled]="rowsChangeDebtUnknown === 0">Gạch nợ bổ sung</button>
+    </div>
+</div>
+<app-lpb-datatable [dataSource]="dataSource" [columns]="columns" [config]="config"></app-lpb-datatable>
+<div class="text-high-light fw-bolder text-uppercase mt-3">Thông tin hạch toán</div>
+<app-lpb-datatable [dataSource]="dataSource2" [columns]="accountingColumns" [config]="config"></app-lpb-datatable>
+
+<div *ngIf="openModal" class="modal d-flex align-items-center bg-modal-opacity">
+    <div class="modal-dialog mw-100 min-w-90">
+        <div class="modal-content p-4 ">
+            <div class="text-uppercase text-high-light fw-bolder d-flex justify-content-between h5">
+                <span></span>
+                <span class="text-uppercase"> {{changedDebt?"Kết quả gạch nợ bổ sung":"Gạch nợ bổ sung"}} </span>
+                <i type="button" class="material-icons" (click)="closeModal()">close</i>
+            </div>
+            <div class="text-uppercase text-high-light fw-bolder mt-4">Danh sách hóa đơn</div>
+            <app-lpb-datatable [dataSource]="dataInsertChangeDebt" [columns]="columns" [config]="config"></app-lpb-datatable>
+            <div class="text-center mt-3">
+                <ng-container *ngIf="!changedDebt">
+                    <button class="btn lpb-btn-primary min-w-100-px" (click)="changeDebt()">Gạch nợ bổ sung</button>
+                    <button class="btn btn-outline-secondary ml-2 min-w-100-px" (click)="closeModal()">Hủy</button>
+                </ng-container>
+                <button *ngIf="changedDebt" class="btn lpb-btn-primary min-w-100-px" (click)="closeModal(true)">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

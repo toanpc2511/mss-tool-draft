@@ -1,0 +1,147 @@
+<div class="content">
+  <div class="content-main">
+    <p class="title text-uppercase">
+      Chi tiết thông tin khách hàng
+    </p>
+
+    <div class="card">
+      <p class="card-title">
+        <i class="fa fa-credit-card-alt mr-2"></i>
+        Thông tin điện lực
+      </p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Nhà cung cấp</label>
+          <p class="font-weight-bold">{{data?.supplierCode + ' - ' + data?.supplierName}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Điện lực</label>
+          <p class="font-weight-bold">{{data?.custType}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">
+        <i class="fa fa-credit-card-alt mr-2"></i>
+        Thông tin khách hàng
+      </p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Họ và tên</label>
+          <p class="font-weight-bold">{{data?.custName}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Mã khách hàng</label>
+          <p class="font-weight-bold">{{data?.custId}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Địa chỉ</label>
+          <p class="font-weight-bold">{{data?.custDesc}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">
+        <i class="fa fa-credit-card-alt mr-2"></i>
+        Thông tin tài khoản ghi nợ
+      </p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Số CIF</label>
+          <p class="font-weight-bold">{{data?.cif}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Tài khoản thanh toán</label>
+          <p class="font-weight-bold">{{data?.acNumber}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Tên tài khoản</label>
+          <p class="font-weight-bold">{{data?.acName}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">
+        <i class="fa fa-credit-card-alt mr-2"></i>
+        Thông tin thanh toán
+      </p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Ngày thanh toán định kỳ</label>
+          <p class="font-weight-bold">Ngày {{data?.settleDate}} hàng tháng</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Nhận thông tin qua Email</label>
+          <p class="font-weight-bold">{{data?.sendMail ? 'Có nhận' : 'Không nhận'}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Email</label>
+          <p class="font-weight-bold">{{data?.email}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Số điện thoại</label>
+          <p class="font-weight-bold">{{data?.phone}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title">
+        <i class="fa fa-credit-card-alt mr-2"></i>
+        Thông tin khác
+      </p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Chi nhánh đăng ký</label>
+          <p class="font-weight-bold">{{data?.supplierName}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Trạng thái hoạt động</label>
+          <p class="font-weight-bold">{{data?.statusName}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Trạng thái giao dịch</label>
+          <p class="font-weight-bold">{{data?.auditStatusName}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Ngày đăng ký</label>
+          <p class="font-weight-bold">{{data?.createdDate | date:'dd/MM/yyyy hh:mm:ss'}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Ngày duyệt đăng ký</label>
+          <p class="font-weight-bold">{{data?.lastModifiedDate | date:'dd/MM/yyyy hh:mm:ss'}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Người duyệt đăng ký</label>
+          <p class="font-weight-bold">{{data?.lastModifiedBy}}</p>
+        </div>
+        <ng-container *ngIf="data?.auditStatus === 'REJECT'">
+          <div class="col-12 col-md-6 col-lg-4 mt-2">
+            <label>Ngày hủy</label>
+            <p class="font-weight-bold">{{data?.acName}}</p>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 mt-2">
+            <label>Ngày duyệt hủy</label>
+            <p class="font-weight-bold">{{data?.acName}}</p>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 mt-2">
+            <label>Người duyệt hủy</label>
+            <p class="font-weight-bold">{{data?.acName}}</p>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 mt-2">
+            <label>Lý do hủy</label>
+            <p class="font-weight-bold">{{data?.acName}}</p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-lpb-footer
+  [actions]="actions"
+  class="z-index-footer position-fixed bottom-0 w-100"
+></app-lpb-footer>

@@ -1,0 +1,88 @@
+<div class="p-4">
+  <div class="px-5">
+    <form [formGroup]="formSearch" >
+      <div class="row justify-content-center">
+        <div class="col mr-3" align="left">
+          <div class="col col-8" >
+            <div class="form-group row">
+              <div class="col-2"></div>
+              <span class="col-2 col-form-label textLabel">Loại LKK</span>
+              <div class="col-6">
+                <span class="col-12">
+                   <app-lpb-select2 [items]="typesUpload"
+                                    labelName="name" bindValue="key" [config]="selectConfig"
+                                    formControlName="typeUpload"
+                                    placeholder="Chọn kiểu upload"></app-lpb-select2>
+
+                </span>
+
+              </div>
+            </div>
+          </div>
+          <div class="col col-8" >
+            <div class="form-group row">
+              <div class="col-2"></div>
+              <label class="col-2 col-form-label textLabel">Loại báo cáo</label>
+              <div class="col-6">
+                <app-lpb-select2 [items]="typeLkkBH" bindValue="key"
+                                  labelName="name"  [config]="selectConfig"
+                                  placeholder="Loại báo cáo"
+                                  formControlName="reportType">
+                </app-lpb-select2>
+              </div>
+            </div>
+          </div>
+          <div class="col col-8" >
+            <div class="form-group row">
+              <div class="col-2"></div>
+              <label class="col-2 col-form-label textLabel">Chi nhánh</label>
+              <div class="col-4">
+
+<!--                <app-lpb-select2  labelName="label" bindValue="value" formControlName="branchCode"> </app-lpb-select2>-->
+                <app-lpb-select2 [items]="dsDonVis"
+                                 labelName="branchName"
+                                 [config]="selectConfig"
+                                 formControlName="branchCode"
+                                 placeholder="Đơn vị"></app-lpb-select2>
+              </div>
+              <div class="col-2">
+                <label>
+                  <input  type="checkbox" data-toggle="toggle"
+                          formControlName="checkAll"
+                          class="form-check-input">Bao Gồm PGD
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col col-8">
+            <div class="form-group row">
+              <div class="col-2"></div>
+              <label class="col-2 col-form-label textLabel">Lương tháng</label>
+              <div class="col-6">
+                <app-lpb-datepicker-new #valueDate startView="multi-year" placeholder="MM/YYYY">
+                </app-lpb-datepicker-new>
+              </div>
+
+            </div>
+          </div>
+          <div class="col col-8" >
+            <div class="form-group row">
+              <div class="col-2"></div>
+              <label class="col-2 col-form-label textLabel">  Định dạng file</label>
+              <div class="col-4">
+                <app-lpb-select2 [items]="typeDownload" bindValue="key"
+                                 labelName="name" [config]="selectConfig"
+                                 formControlName="typeDownload">
+                </app-lpb-select2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3 text-center">
+        <button class="btn lpb-btn-primary" (click)="exportExcel()"> <i class="fa fa-search"></i> Xuất Dữ Liệu</button>
+      </div>
+    </form>
+  </div>
+</div>
+

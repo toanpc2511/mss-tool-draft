@@ -1,0 +1,50 @@
+<div class="row account-owner-info">
+  <div class="col-xl-4">
+    <div class="row">
+      <div class="col-xl-6 text-label ">
+        Mã khách hàng:
+      </div>
+      <div class="col-xl-6 text-right">
+        <label>{{objectCustomerInfo?.customer?.customerCode ? objectCustomerInfo?.customer?.customerCode: 'XXXXXX'}}</label>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-xl-6 text-label">
+        Ngày sinh:
+      </div>
+      <div class="col-xl-6 text-right">
+        <label>{{objectCustomerInfo.customer?.person?.dateOfBirth}}</label>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4"></div>
+  <div class="col-xl-4">
+    <div class="row">
+      <div class="col-xl-6 text-label">
+        Họ và tên:
+      </div>
+      <div class="col-xl-6 text-right">
+        <label>{{objectCustomerInfo.customer?.person?.fullName}}</label>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-xl-6 text-label">
+        Số giấy tờ xác minh:
+      </div>
+      <div class="col-xl-6 text-right">
+        {{objectCustomerInfo.customer?.person?.perDocNoList[0]?.perDocNo}}
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-xl-6 text-label">
+        Tình trạng CIF:
+      </div>
+      <div class="col-xl-6 text-right">
+        {{objectCustomerInfo?.customer?.statusCifName ? objectCustomerInfo?.customer?.statusCifName : ''}}
+      </div>
+    </div>
+  </div>
+</div>

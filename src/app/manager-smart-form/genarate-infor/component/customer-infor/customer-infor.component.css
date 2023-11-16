@@ -1,0 +1,12 @@
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+
+.mat-icon {
+    font-size: 20px;
+    display: block;
+    float: left;
+}

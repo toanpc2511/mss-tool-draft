@@ -1,0 +1,20 @@
+<div class="abc">
+  <div class="col-12" style="padding: 0px;">
+    <h2 mat-dialog-title style="background: #23388F;color:#fff;border-bottom: 1px solid #828282;font-size: 16px;">{{title}}
+      <span class="material-icons" (click)="closeDialog(0)" style="float: right;cursor: pointer;">
+        close
+    </span>
+    </h2>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <p style="color: #333333;font-size: 14px;" [innerHTML]="content"></p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="float-right" style="height: 57px;
+    margin-top: 9px;">
+      <button [hidden]="hidden" type="button" class="btn closePopup" (click)="closeDialog(0)">Hủy</button>
+      <button type="button" class="btn newfile btn-color" (click)="closeDialog(1)" cdkFocusInitial>{{hidden ? 'Đóng' :
+        'Đồng ý'}}</button>
+    </div>
+  </mat-dialog-actions>
+</div>

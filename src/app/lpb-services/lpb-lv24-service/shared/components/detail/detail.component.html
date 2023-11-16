@@ -1,0 +1,46 @@
+<ng-container *ngIf="transactionData">
+
+  <h3 class="content-title">CHI TIẾT YÊU CẦU LIENVIET24H</h3>
+  <hr />
+  <div class="pb-5">
+    <app-customer-user-info-form [sortedInfos]="sortedInfos" [isDetail]="true" [(customerUserInfo)]="customerUserInfo"
+      [form]="detailForm" [phoneNumber]="phoneNumber"></app-customer-user-info-form>
+    <hr />
+    <app-lv24-form [isDetail]="true" [form]="detailForm"></app-lv24-form>
+
+    <div *ngIf="!hiddenExtend" class="container form-container" [formGroup]="detailFormExtend">
+      <div class="row row-form">
+        <div class="col-lg-2 col-form-label textLabel ">Trạng thái </div>
+        <div class="col-lg-10">
+          <input type="text" formControlName="status" class="form-control status" />
+        </div>
+      </div>
+      <div class="row row-form" *ngIf="transactionData.status ===  TRANS_STATUS_CODES.REJECT">
+        <div class="col-lg-2 col-form-label textLabel">Lý do</div>
+        <div class="col-lg-10">
+          <textarea formControlName="approveNote" rows="1" [autoResize]="{height: 36, minHeight:36, maxHeight: 400}"
+            class="form-control">
+      </textarea>
+        </div>
+      </div>
+      <div class="row row-form">
+        <div class="col-lg-2 col-form-label"></div>
+        <div class="col-lg-10">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="textLabel">Người tạo: {{transactionData.createdBy}}</div>
+              <div class="textLabel mt-2">Người duyệt: {{transactionData.approveBy}}</div>
+            </div>
+            <div class="col-lg-6">
+              <div class="textLabel">Thời gian tạo: {{transactionData.createdDate | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+              <div class="textLabel mt-2">Thời gian duyệt: {{transactionData.approveDate | date: 'dd/MM/yyyy HH:mm:ss'}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<app-lpb-footer [hiddenBackButton]="true" [actions]="actions" [hiddenButtons]="hiddenButtons"
+    (onApprove)="onApprove()" (onReject)="onReject()" #footer></app-lpb-footer>

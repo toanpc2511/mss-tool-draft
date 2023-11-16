@@ -1,0 +1,138 @@
+<div class="transaction-main">
+  <div class="content-title w-100 text-uppercase d-flex justify-content-between">
+    <div class="d-flex align-items-center">
+      <i class="fa fa-search mr-2"></i>
+      <span>Tra cứu báo cáo</span>
+    </div>
+  </div>
+
+  <div class="search px-4 mt-2">
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Loại báo cáo</span>
+          <app-lpb-select2 [items]="reportTypes" labelName="label" [config]="{ clearable: false }"
+            placeholder="Chọn loại báo cáo" formControlName="reportType">
+          </app-lpb-select2>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Nhà cung cấp</span>
+          <app-lpb-select2 *ngIf="reportTypeValue !== '4'" [apiUrl]="'/electric-service/supplier/active'"
+            labelName="supplierName" bindValue="supplierCode" formControlName="supplierCode"
+            placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+          <app-lpb-select2 *ngIf="reportTypeValue === '4'" [items]="supplierLv24" labelName="label" bindValue="value"
+            formControlName="supplierCode" placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+        </div>
+        <ng-container *ngIf="reportTypeValue !== '3'">
+          <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+            <span>Chi nhánh</span>
+            <app-lpb-select2 [apiUrl]="'/electric-service/branch'" labelName="name" bindValue="code"
+              formControlName="branchCode" placeholder="Chọn chi nhánh"></app-lpb-select2>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="reportTypeValue !== '0'">
+          <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+            <span>Mã khách hàng</span>
+            <input type="text" formControlName="custId" placeholder="Nhập mã khách hàng" class="form-control"
+              trimInput />
+          </div>
+        </ng-container>
+        <ng-container *ngIf="reportTypeValue === '1'">
+          <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+            <span>Kênh thanh toán</span>
+            <app-lpb-select2 [items]="chanelTypes" [config]="{ clearable: false }" labelName="label" bindValue="value"
+              formControlName="paymentChannel" placeholder="Chọn kênh thanh toán"></app-lpb-select2>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+            <span>Trạng thái</span>
+            <app-lpb-select2 [items]="statusDebts" labelName="label" [config]="{ clearable: false }"
+              placeholder="Chọn trạng thái" bindValue="value" formControlName="debtStatus">
+            </app-lpb-select2>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="reportTypeValue === '4'">
+          <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+            <span>Kênh thanh toán</span>
+            <app-lpb-select2 [items]="chanelTypesLv24" labelName="label" bindValue="value"
+              formControlName="paymentChannel" placeholder="Chọn kênh thanh toán"></app-lpb-select2>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+            <span>Trạng thái</span>
+            <app-lpb-select2 [items]="statusDebtsLv24" labelName="label" placeholder="Chọn trạng thái" bindValue="value"
+              formControlName="debtStatus">
+            </app-lpb-select2>
+          </div>
+        </ng-container>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Từ ngày</span>
+          <app-lpb-datepicker-new formControlName="fromDate" [maxDate]="today"
+            [className]="formHelpers.isValidClass(searchControl.fromDate)"></app-lpb-datepicker-new>
+          <app-validate [control]="searchForm.controls['fromDate']" error="required"
+            message="Từ ngày không được để trống"></app-validate>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Đến ngày</span>
+          <app-lpb-datepicker-new formControlName="toDate" [maxDate]="today"
+            [className]="formHelpers.isValidClass(searchControl.toDate)"></app-lpb-datepicker-new>
+          <app-validate [control]="searchForm.controls['toDate']" error="required"
+            message="Đến ngày không được để trống"></app-validate>
+        </div>
+        <ng-container *ngIf="reportTypeValue === '0'">
+          <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+            <span>Nội dung</span>
+            <app-lpb-select2 [items]="contentTypes" [config]="{ clearable: false }" labelName="label" bindValue="value"
+              formControlName="contentType" placeholder="Chọn nội dung"></app-lpb-select2>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="reportTypeValue === '4'">
+          <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+            <span>Người xuất báo cáo</span>
+            <input type="text" formControlName="export" placeholder="Nhập người xuất báo cáo" class="form-control"
+              trimInput />
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="w-full d-flex justify-content-center gap-2">
+        <button mat-raised-button type="submit" class="bg-btn__blue text-while">
+          <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+          Tìm kiếm
+        </button>
+        <button mat-raised-button (click)="resetForm()" class="ml-2" style="color: #0c258a">
+          <i class="fa fa-rotate-left mr-2" style="color: #0c258a"></i>
+          Nhập lại
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="mt-4">
+    <app-lpb-datatable tableName="Kết quả tìm kiếm" [apiServiceURL]="apiServiceURL" [dataSource]="dataSource"
+      [config]="config" [columns]="columns" (viewAction)="viewAction($event)" [searchConditions]="searchConditions"
+      (getRawData)="getRawData($event)"></app-lpb-datatable>
+  </div>
+</div>
+<div [style.height.px]="50">
+  <app-lpb-footer [actions]="actions" class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>
+</div>
+
+<div *ngIf="showDetail" class="w3-modal d-flex">
+  <div class="w3-modal-content p-4 align-items-center">
+    <div class="d-flex justify-content-between text-high-light fw-bolder text-uppercase">
+      <span></span>
+      <span>Kết quả</span>
+      <i type="button" class="material-icons" (click)="closeModal()">close</i>
+    </div>
+    <div class="mt-4">
+      <tr>
+        <th [style.width.px]="100">Mã giao dịch</th>
+        <th [style.width.px]="200">Kết quả core</th>
+        <th [style.width.px]="300">Kết quả đối tác</th>
+      </tr>
+      <tr>
+        <td [style.width.px]="100"> {{curRow?.transNo}} </td>
+        <td [style.width.px]="200"> {{curRow?.coreDesc}} </td>
+        <td [style.width.px]="300"> {{curRow?.pgTransDesc}} </td>
+      </tr>
+    </div>
+  </div>
+</div>

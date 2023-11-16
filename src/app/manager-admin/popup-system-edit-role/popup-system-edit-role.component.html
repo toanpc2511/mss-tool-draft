@@ -1,0 +1,54 @@
+<div class="abc">
+    <h2 mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;">
+        Cập nhập quyền
+    </h2>
+    <mat-dialog-content class="mat-typography scroll-dialog">
+        <div class="col-12" style="padding-top: 10px;">
+            <form [formGroup]="editRoleForm">
+                <div class="form-row" style="margin-bottom: 5px;">
+                    <div class="form-group col-md-6">
+                        <label>Mã quyền<span style="color: red;">*</span></label>
+                        <div class="input-group">
+                            <input maxlength="50" NumberAndTextLatin [ngClass]="{ 'is-invalid': (submitted && f.code.errors) || validateCode }" [(ngModel)]="code"
+                            type="text" formControlName="code" class="form-control">
+                            <div *ngIf="(submitted && f.code.errors) || validateCode" class="invalid-feedback">
+                                <div *ngIf="validateCode || f.code.errors.required ">Mã quyền không được để trống</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Tên quyền<span style="color: red;">*</span></label>
+                        <input maxlength="50" [ngClass]="{ 'is-invalid': (submitted && f.name.errors) || validateName }" [(ngModel)]="name"
+                        formControlName="name" type="text" class="form-control">
+                        <div *ngIf="(submitted && f.name.errors) || validateName" class="invalid-feedback">
+                            <div *ngIf="validateName || f.name.errors.required ">Tên quyền không được để trống</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row" style="margin-bottom: 5px;">
+                    <div class="form-group col-md-6">
+                        <label>Trạng thái</label>
+                        <select formControlName="statusCode" class="form-control col-8" name="statusCode" [(ngModel)]="statusCode" (change)="selectTitle($event.target.value)">
+                            <option  [value]="item.statusCode" *ngFor="let item of lstStatus">{{item.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Mô tả</label>
+                        <div class="input-group">
+                            <textarea maxlength="200" formControlName="description" class="form-control" cols="10" name="description" [(ngModel)]="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <div class="float-right" style="height: 57px;
+      margin-top: 9px;">
+            <button type="button" class="btn newfile btn-color" (click)="editRole(1)" cdkFocusInitial>Lưu thông
+                tin</button>
+            <button type="button" class="btn closePopup" (click)="closeDialog(0)">Đóng</button>
+        </div>
+    </mat-dialog-actions>
+</div>

@@ -1,0 +1,127 @@
+<div id="printr" class="row justify-content-center mr-0 ml-0 mb-5 pb-5">
+  <div class="col-8">
+    <div *ngIf="cccd">
+      <h2 data-cy="cccdDetailsHeading"><span>Căn cước công dân/ Chứng minh nhân dân</span></h2>
+      <hr/>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>Ảnh đại diện</span></dt>
+        <dd>
+          <img [src]="cccd.avatarUrl" alt="avatar" width="100px"/>
+        </dd>
+        <dt><span>ID</span></dt>
+        <dd>global
+          <span>{{ cccd.id }}</span>
+        </dd>
+        <dt><span>Số CCCD</span></dt>
+        <dd>
+          <span>{{ cccd.cccdNo }}</span>
+        </dd>
+        <dt><span>Số CMT cũ</span></dt>
+        <dd>
+          <span>{{ cccd.cmndBefore }}</span>
+        </dd>
+        <dt><span>Họ và tên</span></dt>
+        <dd>
+          <span>{{ cccd.fullName }}</span>
+        </dd>
+        <dt><span>Ngày sinh</span></dt>
+        <dd>
+          <span>{{
+            cccd.birthDay ? cccd.birthDay.substring(0, 2) + '-' + cccd.birthDay.substring(2, 4) + '-' + cccd.birthDay.substring(4, 8) : ''
+            }}</span>
+        </dd>
+        <dt><span>Giới tính</span></dt>
+        <dd>
+          <span>{{ cccd.title }}</span>
+        </dd>
+        <dt><span>Địa chỉ thường trú</span></dt>
+        <dd>
+          <span>{{ cccd.address }}</span>
+        </dd>
+        <dt><span>Ngày cấp</span></dt>
+        <dd>
+          <span>{{
+            cccd.dayProvide
+              ? cccd.dayProvide.substring(0, 2) + '-' + cccd.dayProvide.substring(2, 4) + '-' + cccd.dayProvide.substring(4, 8)
+              : ''
+            }}</span>
+        </dd>
+        <dt><span>Nơi cấp</span></dt>
+        <dd>
+          <span>Cục Cảnh sát QLHC về TTXH</span>
+        </dd>
+
+        <dt><span>Quốc tịch</span></dt>
+        <dd>
+          <span>{{ cccd.nationality }}</span>
+        </dd>
+        <dt><span>Dân tộc</span></dt>
+        <dd>
+          <span>{{ cccd.nation }}</span>
+        </dd>
+        <dt><span>Tôn giáo</span></dt>
+        <dd>
+          <span>{{ cccd.religion }}</span>
+        </dd>
+        <dt><span>Quê quán</span></dt>
+        <dd>
+          <span>{{ cccd.homeTown }}</span>
+        </dd>
+        <dt><span>Đặc điểm nhận dạng</span></dt>
+        <dd>
+          <span>{{ cccd.identifying }}</span>
+        </dd>
+        <dt><span>Ngày hết hạn</span></dt>
+        <dd>
+          <span>{{
+            cccd.expiredDate
+              ? cccd.expiredDate.substring(0, 2) + '-' + cccd.expiredDate.substring(2, 4) + '-' + cccd.expiredDate.substring(4, 8)
+              : ''
+            }}</span>
+        </dd>
+        <dt><span>Họ tên cha</span></dt>
+        <dd>
+          <span>{{ cccd.fatherName }}</span>
+        </dd>
+        <dt><span>Họ tên mẹ</span></dt>
+        <dd>
+          <span>{{ cccd.motherName }}</span>
+        </dd>
+        <dt><span>Họ tên vợ hoặc chồng</span></dt>
+        <dd>
+          <span>{{ cccd.husbandOrWifeName }}</span>
+        </dd>
+        <dt><span jhiTranslate="identityApp.cccd.employeeId">Employee Id</span></dt>
+        <dd>
+          <span>{{ cccd.employeeId }}</span>
+        </dd>
+        <dt><span jhiTranslate="identityApp.cccd.scanTime">Scan Time</span></dt>
+        <dd>
+          <span>{{ cccd.scanTime }}</span>
+        </dd>
+
+        <dd>
+          Chi nhánh: <span class="font-weight-bold">{{ cccd.branch }}</span>
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>
+<div class="row mr-0 ml-0 ">
+  <div class="col-12 text-center pb-5">
+    <button type="submit" (click)="previousState()" class="btn btn-info mr-4" data-cy="entityDetailsBackButton">
+      <i icon="arrow-left"></i>&nbsp;<span>Back</span>
+    </button>
+    <button [useExistingCss]="true" printSectionId="printr" ngxPrint class="btn btn-success"
+            data-cy="entityDetailsBackButton">
+      <i icon="print-search"></i>&nbsp;<span>Print</span>
+    </button>
+  </div>
+</div>
+
+<!--<app-lpb-footer [actions]="actions"></app-lpb-footer>-->
+
+<!--<button [useExistingCss]="true" printSectionId="printr" ngxPrint class="btn btn-success" data-cy="entityDetailsBackButton">-->
+<!--  <fa-icon icon="print-search"></fa-icon>&nbsp;<span>Print</span>-->
+<!--</button>-->

@@ -1,0 +1,96 @@
+$transaction-link: color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease !default;
+.wizard {
+  .wizard-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: auto;
+
+    .wizard-step {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:not(:first-child) {
+        &:before {
+          content: '';
+          width: 24px;
+          height: 4px;
+          background-color: #DBE2F3;
+        }
+      }
+
+      .wizard-label {
+        color: #6B90EF;
+        background-color: #DBE2F3;
+        padding: 6px 8px;
+        border-radius: 50px;
+        min-width: 180px;
+        cursor: pointer;
+
+        .number-step {
+          font-size: 22px;
+          width: 35px;
+          max-width: 35px;
+          height: 35px;
+          line-height: 30px;
+          border-radius: 50%;
+          background: #fff;
+          border: 3px solid #9DB4F0;
+          text-align: center;
+          margin: auto;
+          display: inline-block;
+        }
+        .wizard-title {
+          font-size: 16px;
+          flex-wrap: wrap;
+          margin: auto;
+          display: inline-block;
+          padding-left: 10px;
+        }
+      }
+
+
+      &.active {
+        .wizard-title {
+          color: #fff !important;
+        }
+        .wizard-label {
+          background-color: #4674EB !important;
+        }
+      }
+
+      &:hover {
+        .wizard-title {
+          color: #fff !important;
+        }
+        .wizard-label {
+          background-color: #6B90EF !important;
+        }
+      }
+
+      &.success {
+        .wizard-title {
+          color: #fff ;
+        }
+        .wizard-label {
+          background-color: #4DC033 ;
+        }
+        .number-step i {
+          color:  #4DC033 ;
+        }
+        &:not(:first-child):before {
+          content: '';
+          width: 24px;
+          height: 4px;
+          background-color: #4DC033;
+        }
+      }
+    }
+    &[data-wizard-state='current'] {
+      .wizard-label {
+        color: #3699ff;
+      }
+    }
+  }
+}

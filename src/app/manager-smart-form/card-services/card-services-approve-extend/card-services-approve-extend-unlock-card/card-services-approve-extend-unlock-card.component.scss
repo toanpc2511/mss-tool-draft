@@ -1,0 +1,46 @@
+.field {
+  max-width: 50%;
+  width: calc(50% - 16px);
+  margin-bottom: 16px;
+}
+.txtLabel {
+  font-weight: 500;
+  color: #17589f;
+}
+::ng-deep .modal-content{
+  // position: fixed;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
+  height: fit-content !important;
+
+  .confirm-content{
+    width: 100%;
+    text-align: center;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .confirm-txt{
+      font-weight: 500;
+      color: #17589f;
+    }
+  }
+}
+.file-upload-info {
+  display: flex;
+  align-items: center;
+  .file-name{
+    flex: 1;
+    text-overflow: ellipsis;
+  }
+  span {
+    font-weight: 400;
+    cursor: pointer;
+  }
+  i {
+    font-weight: 500;
+    cursor: pointer;
+  }
+}

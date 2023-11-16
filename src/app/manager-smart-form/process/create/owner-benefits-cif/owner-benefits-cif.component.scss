@@ -1,0 +1,73 @@
+@import '../../../../../popup';
+.pd0{
+    padding: 0px;
+    margin-bottom:5px;
+}
+.col-12{
+    display: flex;
+}
+.colLeft{
+    padding: 0px;
+}
+.col-sm-4{
+    padding: 5px 0px 5px 0px;
+    text-align: right;
+    font-weight: 500;
+}
+.labelTitle{
+    font-weight: 500;
+    color: #252834;
+    font-size: 15px;
+    display: block;
+    padding: 0.7em;
+}
+hr{
+    clear: both;
+    margin: 1em 1em 1em 1em;
+    background-color: #9DABBD;
+}
+.save-ut,.create-save,.sucss{
+    display: block;
+    width: 100%;
+    text-align: right;
+}
+.save-ut button{
+    margin: 0px;
+    background-color: #C4C4C4;
+    font-weight: 500;
+}
+thead tr{
+    background-color: #C4C4C4;
+    height: 40px;
+}
+tbody tr{
+    background-color: #EBEBEB;
+    height: 30px;
+}
+tbody .hovertr:hover{
+    background-color: #C4C4C4;
+    cursor: pointer;
+}
+.sucss button{
+    margin-right: 0px;
+}
+.is-invalid {
+    border:1px solid #dc3545 !important;
+    border-radius: .2rem;
+}
+.border-input-date{
+    border: 1px solid #ced4da;
+}
+.add_national{
+    float: left;
+    color: #1F69BC;
+    cursor: pointer;
+    height: 36px;
+}
+.add-country{
+    padding-top: 5px;
+}
+
+.mat-dialog-content{
+    max-height: 77vh;
+}

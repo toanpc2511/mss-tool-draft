@@ -1,0 +1,33 @@
+.dialog-main {
+  max-height: 100vh;
+  overflow: auto;
+  height: fit-content;
+}
+.dialog-content {
+  width: 1380px;
+  max-width: 100%;
+  &._full {
+    width: 100%;
+  }
+}
+.content-title span {
+  font-weight: 700;
+  font-size: 18px;
+}
+.visa {
+  height: 36px;
+}
+
+.scope-duration {
+  color: #000;
+  font-size: 16px;
+  line-height: 18px;
+  label {
+    font-weight: 500;
+    width: 150px;
+  }
+  label,
+  mat-radio-button {
+    margin-right: 90px;
+  }
+}

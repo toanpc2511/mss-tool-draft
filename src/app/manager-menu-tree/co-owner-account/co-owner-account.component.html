@@ -1,0 +1,57 @@
+<!-- danh sach account -->
+
+<div class="container-fuild">
+    <app-process-info [processId]="processId"></app-process-info>
+
+    <div class="row cust-row">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+            <div class="title-head" style="font-weight: 500;">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">account_balance_wallet
+                </mat-icon>
+                <span class="text" style="padding: 5px 0;">DANH SÁCH TÀI KHOẢN ĐỒNG SỞ HỮU</span>
+            </div>
+        </div>
+        <div class="mat-elevation-z8">
+            <table class="table table-responsive table-fixed" style="margin: 0px;display: unset;">
+                <thead>
+                    <tr style="font-weight: bold; background: #EFF4FF" class="titleTD">
+                        <th>Tên chủ tài khoản</th>
+                        <th>Số giấy tờ xác minh</th>
+                        <th>Trạng thái</th>
+                        <th style="width: 150px">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of coOwnerList">
+                        <td style="cursor: pointer; color: #1F69BC" (click)="getDetailCoOwner(item.id)"> {{item.person.fullName}} </td>
+                        <td>{{item.person.perDocNoList[0].perDocNo}}</td>
+                        <td>{{item.currentStatusName}}</td>
+                        <td style="width: 150px; padding: 0; vertical-align: middle">
+                            <div style="width: 50%;margin: 0 auto;">
+                                <mat-icon style="margin-right: 10px; cursor: pointer" (click)="deleteCoOwner(item.id)"> delete</mat-icon>
+                                <!--                <mat-icon style="cursor: pointer">edit</mat-icon>-->
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="coOwnerList && coOwnerList.length == 0">
+                        <td style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="height: 50px;display: block;clear: both;"></div>
+    <div class="row footer-row">
+        <div class="col-12">
+            <div class="footer" (click)="create()" *ngIf="(isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)">
+                <span class="material-icons"> note_add </span>
+                <label>Tạo mới</label>
+            </div>
+            <div class="footer" (click)="backPage()">
+                <span class="material-icons"> keyboard_backspace </span>
+                <label>Quay lại</label>
+            </div>
+        </div>
+    </div>
+</div>

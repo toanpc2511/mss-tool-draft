@@ -1,0 +1,188 @@
+@import "/src/app/shared/styles/palette.style.scss";
+.textLabel.required::after {
+  content: "(*)";
+  display: inline-block;
+  color: #dc3545 !important;
+  margin-left: 5px;
+}
+
+hr {
+  border-color: $gray-main;
+  width: 100%;
+}
+.pd-15px {
+  padding: 15px;
+}
+.text-black {
+  color: #000000;
+}
+.btn-blue {
+  @include button-primary;
+}
+
+:host ::ng-deep {
+  ng-select.ng-select.ng-select-single {
+    .ng-select-container {
+      overflow: visible;
+      .ng-value-container .ng-input {
+        top: 0;
+      }
+    }
+  }
+  ng-select {
+    .ng-input,
+    input,
+    .ng-value-container {
+      height: 100%;
+    }
+  }
+  .ng-invalid.ng-touched,
+  .ng-invalid.ng-dirty,
+  ng-select.ng-invalid.ng-touched .ng-select-container,
+  app-lpb-select2.ng-touched.ng-invalid .ng-select-container,
+  app-lpb-datepicker-new.ng-touched.ng-invalid .txtMainInput,
+  app-lpb-datepicker-new.ng-invalid:not(.ng-pristine) .txtMainInput {
+    border-color: $error-main !important;
+  }
+  mat-tab-header {
+    border-bottom: none;
+    background-color: $white-main;
+
+    .mat-ink-bar {
+      background-color: $orange !important;
+    }
+  }
+
+  .mat-tab-body-wrapper {
+    padding: 15px;
+    background-color: $white-main;
+  }
+
+  mat-radio-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .mat-radio {
+      &-label,
+      &-container {
+        display: flex;
+        align-items: center;
+      }
+
+      &-label-content {
+        padding-left: 3px;
+      }
+
+      &-inner-circle,
+      &-container,
+      &-outer-circle {
+        height: 17px;
+        width: 17px;
+      }
+      &-container {
+        margin-right: 2px;
+      }
+    }
+  }
+
+  app-collapse-section .section-break {
+    height: auto;
+
+    hr {
+      margin-top: 0;
+      margin-bottom: 0;
+      border-top: 1px solid #bdbdbd;
+    }
+  }
+
+  .mat-tab-label {
+    opacity: 1;
+    padding: 0;
+    min-width: auto;
+    width: fit-content;
+    margin-right: 20px;
+
+    .mat-tab-label-content {
+      color: #0c258a;
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+
+  .mat-button {
+    &-primary {
+      @include button-primary;
+    }
+
+    &-secondary {
+      @include button-secondary;
+    }
+
+    &-no-bg {
+      @include button-no-bg;
+      font-weight: 500;
+      font-size: 18px;
+    }
+  }
+}
+
+.text-error {
+  color: $error-main;
+}
+
+.h-36px {
+  height: 36px;
+}
+
+.font-weight-semibold {
+  font-weight: 500;
+}
+
+.content {
+  &-body {
+    background-color: $white-main;
+    border-top: 1px solid $gray-main;
+    padding: 0 15px;
+    min-height: 100%;
+    height: auto;
+  }
+
+  &-title {
+    color: $primary-main;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+    place-self: flex-start;
+    height: fit-content;
+    span,
+    i {
+      padding-bottom: 6px;
+      display: inline-block;
+      cursor: pointer;
+
+      &.active {
+        cursor: auto;
+        border-bottom: 2px solid $secondary-main;
+      }
+    }
+  }
+}
+
+.table-no-record {
+  font-size: 14px;
+  font-weight: 400;
+  color: #212529;
+  td {
+    outline: offset 1px solid red !important;
+  }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.075) !important;
+  }
+}
+.form-radio-inline {
+  cursor: pointer;
+  input:disabled {
+    color: red;
+  }
+}

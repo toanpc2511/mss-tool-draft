@@ -1,0 +1,115 @@
+<!-- <div class="login">
+    <div class="row">
+        <div class="col-6" style="padding: 0px;">
+            <img src="assets/img/loginpng.png" class="img-fluid">
+        </div>
+        <div class="col-6" >
+            <div class="col-12" style="text-align: right;padding-top: 50px;">
+                <span class="title1 hotline" style="color: #1F69BC;">Hotline: 1900 xxx xxx</span>|<span class="title1 engl">Tiếng Việt</span>
+            </div>
+            <div style="clear: both;top: 100px;padding-left: 70px;padding-right: 100px;" class="col-12">
+                <span class="title2">Hệ thống đăng nhập UniForm</span>
+                <span class="title3">NGÂN HÀNG BƯU ĐIỆN LIÊN VIỆT</span>
+                <form  [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
+                    <div class="form-group">
+                        <label for="username" class="tk">Tên tài khoản</label>
+                        <input style="background-color: whitesmoke;"
+                        type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                            <div *ngIf="f.username.errors.required">Tên tài khoản không được để trống</div>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="tk">Mật khẩu</label>
+                        <input style="background-color: whitesmoke;"
+                        type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                            <div *ngIf="f.password.errors.required">Mật khẩu không được để trống</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="invalid-feedback" *ngIf="loginSucces">Tên tài khoản hoặc mật khẩu không đúng</div>
+                    </div>
+                    <button style="width:100%" [disabled]="loading" class="btn btn-primary">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Đăng nhập
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="container-fuild">
+    <div class="row" src="/assets/img/bgLogin.jpg">
+        <div class="col-lg-1">
+            <img class="img-left-logo" src="../../assets/img/logo_1905.png" alt="lien-viet-post-bank-logo">
+        </div>
+        <div class="col-lg-5 ml-auto" style="display: flex">
+            <div class="card card-signin" style="margin: auto">
+                <div class="card-body">
+                    <span class="title2">Hệ thống đăng nhập UniForm</span>
+                    <span class="title3">NGÂN HÀNG BƯU ĐIỆN LIÊN VIỆT</span>
+                    <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()" *ngIf="!isLogin">
+                        <div>
+                            <div class="form-group">
+                                <label for="username" class="tk">Tên tài khoản</label>
+                                <input oninput="this.value = this.value.toUpperCase()" (input)="inputLatinUppercase($event)" style="background-color: whitesmoke;" type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+                                />
+                                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                                    <div *ngIf="f.username.errors.required">Tên tài khoản không được để trống</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="tk">Mật khẩu</label>
+                                <input style="background-color: whitesmoke;float: left;width: 89%; border-bottom-left-radius: 5px;
+                                border-top-left-radius: 5px; border-top-right-radius: 0; border-bottom-right-radius: 0;" [type]="fieldTextType ? 'text' : 'password'" formControlName="password" class="form-control straight-right-border" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                                />
+                                <div class="input-group-append straight-right-border" style="width: 35px;cursor: pointer;height: 36px;" (click)="toggleFieldTextType()">
+                                    <span class="material-icons input-group-text" style="float: left; border-bottom-left-radius: 0; border-top-left-radius: 0; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+                            {{fieldTextType ? 'visibility_off' : 'visibility'}}
+                            </span>
+                                </div>
+                                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                    <div *ngIf="f.password.errors.required">Mật khẩu không được để trống</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="otp" class="tk">Mã OTP</label>
+                                <input numbersOnly style="background-color: whitesmoke;" type="text" formControlName="otp" class="form-control" [ngClass]="{ 'is-invalid': (submitted && f.otp.errors)
+                                || (f.otp.errors && f.otp.errors.cannotContainSpace)
+                                || (f.otp.errors && f.otp.errors.max7) }" />
+                                <div *ngIf="submitted && f.otp.errors" class="invalid-feedback">
+                                    <div *ngIf="f.otp.errors.required">Mã OTP không được để trống</div>
+                                </div>
+                                <div *ngIf="f.otp.errors && f.otp.errors.cannotContainSpace" class="invalid-feedback">Mã OTP không có khoảng trống</div>
+                                <div *ngIf="f.otp.errors && f.otp.errors.max7" class="invalid-feedback">Mã OTP không hợp lệ</div>
+                            </div>
+                            <ng-template [ngIf]="showValidationMsg">
+                                <div class="alert alert-danger alert-sm form-control" role="alert">{{ validationMsg }}</div>
+                                <br>
+                            </ng-template>
+
+
+                            <!-- <mat-checkbox color="primary">Lưu đăng nhập?</mat-checkbox> -->
+                            <button *ngIf="!isLogin" style="width:100%" [disabled]="loading" class="btn btn-primary">
+                              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                              ĐĂNG NHẬP
+                            </button>
+
+                        </div>
+                    </form>
+                    <div class="form-group" *ngIf="isLogin">
+                      <label for="role" class="tk">Role</label>
+                      <select class="form-control" id="role" [(ngModel)]="role">
+                        <option *ngFor="let item of roles;index as i" [value]="item.id" >{{ item.name }}</option>
+                      </select>
+                    </div>
+                  <button *ngIf="isLogin" style="width:100%" (click)="selectRole()" class="btn btn-primary">
+                    CHỌN ROLE
+                  </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

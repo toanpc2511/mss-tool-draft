@@ -1,0 +1,8 @@
+<div class="light-box d-flex justify-content-center align-items-center" [style]="'height:' + height + 'px'">
+
+  <img *ngIf="!error" class="light-box-img light-box-thubnail" [height]="height" [src]="src" [alt]="alt"
+    (click)="openLightBoxDialog()" (error)="onError($event)">
+
+  <i *ngIf="error" class="fa fa-picture-o" [style]="'font-size:' + height + 'px'" aria-hidden="true"
+    [matTooltip]="errorMessage" matTooltipClass="bg-danger text-white"></i>
+</div>

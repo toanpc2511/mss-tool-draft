@@ -1,0 +1,56 @@
+<table class="table table-hover w-100 text-center" aria-describedby="Phi">
+  <thead>
+    <tr>
+      <th style="width: 5%">STT</th>
+      <th style="width: 15%">Loại phí</th>
+      <th style="width: 15%" *ngIf="curCode !== 'VND'">Mức phí nguyên tệ</th>
+      <th style="width: 15%" *ngIf="curCode !== 'VND'">VAT nguyên tệ</th>
+      <th style="width: 15%">Mức phí VND</th>
+      <th style="width: 15%">VAT VND</th>
+    </tr>
+  </thead>
+  <tbody>
+    <td class="align-middle">1</td>
+    <td class="align-middle">PHÍ CHUYỂN TIỀN</td>
+    <td *ngIf="curCode !== 'VND'">
+      <div class="w-100 d-flex justify-content-center">
+        <div class="w-75">
+          <app-lpb-money-input [class]="'form-control'" [control]="EX_FeeCtrl" (changeValue)="changeFeeEx($event)"
+            [controlNameVi]="'Phí nguyên tệ'" [maxlength]="8" [roundType]="'ex'" (blurChangeValue)="changeFeeEx($event)"
+            [name]="EX_FeeCtrlName">
+          </app-lpb-money-input>
+        </div>
+      </div>
+    </td>
+    <td *ngIf="curCode !== 'VND'">
+      <div class="w-100 d-flex justify-content-center">
+        <div class="w-75">
+          <app-lpb-money-input [class]="'form-control'" [control]="EX_FeeVATCtrl" [controlNameVi]="'VAT nguyên tệ'"
+            [maxlength]="8" [roundType]="'ex'" [name]="EX_FeeVATCtrlName" (blurChangeValue)="changeFeeVATEx($event)"
+            (changeValue)="changeFeeVATEx($event)">
+          </app-lpb-money-input>
+        </div>
+      </div>
+    </td>
+    <td>
+      <div class="w-100 d-flex justify-content-center">
+        <div class="w-75">
+          <app-lpb-money-input [class]="'form-control'" [control]="VND_FeeCtrl" (changeValue)="changeFee($event)"
+            [controlNameVi]="'Phí VND'" [maxlength]="13" [roundType]="'vnd'" (blurChangeValue)="changeFee($event)"
+            [name]="VND_FeeCtrlName">
+          </app-lpb-money-input>
+        </div>
+      </div>
+    </td>
+    <td>
+      <div class="w-100 d-flex justify-content-center">
+        <div class="w-75">
+          <app-lpb-money-input [class]="'form-control'" [control]="VND_FeeVATCtrl" (changeValue)="changeFeeVAT($event)"
+            [controlNameVi]="'VAT VND'" [maxlength]="13" [roundType]="'vnd'" (blurChangeValue)="changeFeeVAT($event)"
+            [name]="VND_FeeVATCtrlName">
+          </app-lpb-money-input>
+        </div>
+      </div>
+    </td>
+  </tbody>
+</table>

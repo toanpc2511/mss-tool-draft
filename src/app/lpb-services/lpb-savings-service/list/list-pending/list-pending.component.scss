@@ -1,0 +1,22 @@
+@import "/src/app/shared/styles/palette.style.scss";
+:host ::ng-deep {
+  app-lpb-datatable table tr td a {
+    color: #212529 !important;
+    text-decoration: none !important;
+  }
+}
+.mat-button {
+  &-primary {
+    @include button-primary;
+  }
+
+  &-secondary {
+    @include button-secondary;
+  }
+
+  &-no-bg {
+    @include button-no-bg;
+    font-weight: 500;
+    font-size: 18px;
+  }
+}

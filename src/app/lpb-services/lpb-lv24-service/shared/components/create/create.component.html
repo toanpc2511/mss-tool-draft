@@ -1,0 +1,9 @@
+<h3 class="content-title">TẠO MỚI YÊU CẦU LIENVIET24H</h3>
+<hr />
+<div class="pb-5" #createFormElement>
+  <app-customer-user-info-form [sortedInfos]="sortedInfos" [(customerUserInfo)]="customerUserInfo" [form]="createForm"
+    [(isSearchCustomerUserInfo)]="isSearchCustomerUserInfo"></app-customer-user-info-form>
+  <hr />
+  <app-lv24-form [form]="createForm"></app-lv24-form>
+</div>
+<app-lpb-footer [actions]="actions" [hiddenBackButton]="true"></app-lpb-footer>

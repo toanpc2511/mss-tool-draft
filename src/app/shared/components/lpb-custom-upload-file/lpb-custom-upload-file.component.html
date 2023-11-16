@@ -1,0 +1,19 @@
+<div class="input-upload w-100 position-relative">
+    <span *ngIf="fileName !== ''" (click)="clear()" class="icon-clear" [ngClass]="isDisabled ? 'disable-control' : ''">
+      <span aria-hidden="true" class="ng-clear">×</span>
+    </span>
+  <label for="file-upload" class="form-control" [ngClass]="isDisabled ? 'disable-control' : ''">
+    <i class="fa fa-upload mr-2"></i>{{fileName !== '' ? fileName : 'Chọn file upload'}}
+  </label>
+  <input
+    id="file-upload"
+    #fileUpload type="file"
+    class="form-control"
+    [accept]="accept"
+    (change)="onSelectFile($event)"
+    [multiple]="isMultiple"
+    [formControl]="uploadControl"
+  />
+</div>
+<app-validate [control]="uploadControl" error="accepted" message="File không đúng định dạng"></app-validate>
+<app-validate [control]="uploadControl" error="maxSize" [message]="'File vượt quá ' + maxSize + ' Mb!'"></app-validate>

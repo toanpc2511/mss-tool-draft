@@ -1,0 +1,171 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.INVALID_DATE" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.MAX_DATE" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+
+<div class="dialog-main">
+  <div class="dialog-header">
+    <div class="title">Thông tin tài khoản/đơn vị thụ hưởng</div>
+    <div class="toolbar">
+      <button class="close-x">
+        <mat-icon (click)="closeDialog()">close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="dialog-content" style="max-height: 500px; overflow: auto;">
+    <div class="container-fluid" [formGroup]="form">
+      <div class="row form-group">
+        <div class="col-12 col-form-label textLabel">
+          <span> Đơn vị hưởng <span class="text-danger">(*)</span></span>
+        </div>
+        <div class="col-12">
+          <input type="text" formControlName="customerName" class="form-control pr-4 text-uppercase" placeholder="Nhập Đơn vị hưởng"
+            maxlength="50" [textPattern]="{allowRegex: '[A-Za-z0-9-,./\\s]', allowVi: true}" textTransform="uppercase" textEncode="latin" />
+          <ng-container
+            *ngTemplateOutlet="error; context: {controlName: 'customerName', controlNameVi: 'Đơn vị hưởng'}">
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-6">
+          <div class="row">
+            <div class="col-12 col-form-label textLabel">
+              <label class="form-group-radio">
+                <input name="txtType" type="radio" [value]="'acn'" [(ngModel)]="txtType"
+                  (change)="changeTxtType($event)" [ngModelOptions]="{standalone: true}">
+                Số tài khoản
+              </label>
+            </div>
+            <div class="col-12">
+              <input type="text" formControlName="acn" class="form-control pr-4" maxlength="20"
+                placeholder="Nhập số tài khoản"  [textPattern]="{allowRegex: '[0-9]'}" />
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'acn', controlNameVi: 'Số tài khoản'}">
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+          <div class="row">
+            <div class="col-12 col-form-label textLabel">
+              <label class="form-group-radio">
+                <input name="txtType" type="radio" [value]="'gtxm'" [(ngModel)]="txtType"
+                  (change)="changeTxtType($event)" [ngModelOptions]="{standalone: true}">
+                GTXM
+              </label>
+            </div>
+            <div class="col-12">
+              <input type="text" formControlName="docNum" class="form-control"
+                 placeholder="Nhập giấy tờ xác minh" maxlength="50" textTransform="uppercase"
+                 [textPattern]="{allowRegex: '[A-Za-z0-9\/\\s-]'}" />
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'docNum', controlNameVi: 'Số GTXM'}">
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-6">
+          <div class="row">
+            <div class="col-12 col-form-label textLabel">Ngày cấp</div>
+            <div class="col-12">
+              <app-lpb-datepicker-new formControlName="docIssueDate" [maxDate]="maxDate">
+              </app-lpb-datepicker-new>
+              <ng-container *ngTemplateOutlet="error; context: {controlName: 'docIssueDate', controlNameVi: 'Ngày cấp'}">
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+          <div class="row">
+            <div class="col-12 col-form-label textLabel">Nơi cấp</div>
+            <div class="col-12">
+              <input type="text" formControlName="docIssuePlace" class="form-control text-uppercase" placeholder="Nhập Nơi Cấp"
+                textTransform="uppercase" textEncode="latin" maxlength="50">
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'docIssuePlace', controlNameVi: 'Nơi cấp'}">
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-12 col-form-label textLabel">
+          <span> Tại ngân hàng <span class="text-danger">(*)</span></span>
+        </div>
+        <div class="col-12">
+          <app-lpb-select2 [apiUrl]="'/deposit-service/transaction/getListBank'"
+            labelName="displayName" bindValue="displayName"
+            [config]="{isNewApi: true}" formControlName="withBank"
+            placeholder="Chọn Chi nhánh / PGD">
+          </app-lpb-select2>
+          <ng-container
+            *ngTemplateOutlet="error; context: {controlName: 'withBank', controlNameVi: 'Ngân hàng'}">
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-6">
+          <div class="row">
+            <div class="col-12 col-form-label textLabel">
+              <span> Chi nhánh <span class="text-danger">(*)</span></span>
+            </div>
+            <div class="col-12">
+              <input type="text" formControlName="branchName" class="form-control text-uppercase" placeholder="Nhập Chi nhánh"
+                textTransform="uppercase" textEncode="latin" maxlength="25">
+              <ng-container
+               *ngTemplateOutlet="error; context: {controlName: 'branchName', controlNameVi: 'Chi nhánh'}">
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+          <div class="row">
+            <div class="col-12 col-form-label textLabel">
+              <span> Tỉnh/TP <span class="text-danger">(*)</span></span>
+            </div>
+            <div class="col-12">
+              <app-lpb-select2 [apiUrl]="'/deposit-service/redis/cityList'"
+                labelName="name" bindValue="name"
+                [config]="{isNewApi: true}" formControlName="branchCityName"
+                placeholder="Chọn Tỉnh/TP">
+              </app-lpb-select2>
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'branchCityName', controlNameVi: 'Tỉnh/TP'}">
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog-footer">
+    <button mat-button color="warning" class="mat-button-secondary button-close" (click)="closeDialog()">
+      Quay lại
+    </button>
+    <button mat-button color="primary" class="mat-button-primary button-save" (click)="onSubmit()" type="submit">
+      In biểu mẫu
+    </button>
+  </div>
+</div>

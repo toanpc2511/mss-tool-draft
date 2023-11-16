@@ -1,0 +1,170 @@
+.title {
+  color: rgb(0, 0, 206);
+  font-weight: bolder;
+  text-align: center;
+  margin-top: 15px;
+}
+
+label {
+  color: rgb(0, 0, 206);
+  font-weight: bolder;
+}
+
+.row {
+  margin-bottom: 5px;
+  align-content: center;
+}
+
+.form-group-school {
+  .button-download {
+    background-color: rgb(0, 0, 206);
+    color: white;
+    border: 1px solid white;
+    padding: 10px 40px;
+    border-radius: 15px;
+  }
+
+  .button-download:disabled {
+    background-color: gray;
+  }
+}
+
+.form-group-choose-file {
+  input {
+    background-color: white;
+    border: 1px solid rgb(190, 190, 190);
+    padding: 5px 5px;
+    border-radius: 5px;
+  }
+
+  .button-chooseFile {
+    background-color: rgb(0, 0, 206);
+    color: white;
+    border: 1px solid white;
+    padding: 10px 64px;
+    border-radius: 15px;
+  }
+
+  .button-chooseFile:disabled {
+    background-color: gray;
+  }
+}
+
+.form-footer {
+  .button-send {
+    background: #0c258a;
+    color: #fff;
+  }
+
+  .button-send:disabled {
+    background-color: darkgray;
+    color: gray;
+  }
+  align-content: center;
+}
+
+.required:after {
+  content: '*';
+  color: red;
+}
+
+.bg-btn__blue {
+  background: #0c258a;
+  color: #fff;
+}
+
+.action-drag {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.button-error {
+  background-color: rgb(253, 0, 1);
+  color: white;
+  padding: 10px 40px;
+  border: 1px solid white;
+  border-radius: 10px;
+  margin: 15px;
+}
+
+.button-valid {
+  background-color: rgb(12, 37, 137);
+  color: white;
+  padding: 10px 40px;
+  border: 1px solid white;
+  border-radius: 10px;
+  margin: 20px 20px;
+  margin-left: 35px;
+}
+
+.button-save {
+  background-color: rgb(12, 37, 137);
+  color: white;
+  padding: 10px 40px;
+  border: 1px solid white;
+  border-radius: 10px;
+  margin: 20px 20px;
+  margin-left: 105px;
+}
+
+.content {
+  .title {
+    color: #0C258A;
+  }
+
+  .required:after {
+    content: ' *';
+    color: red;
+  }
+
+  label {
+    color: #0C258A;
+    font-weight: 500;
+  }
+
+  .bg-btn__blue {
+    background-color: #0C258A;
+  }
+
+  .text-while {
+    color: #fff;
+  }
+  .button-send:disabled {
+    background-color: darkgray;
+    color: gray;
+  }
+}
+
+.text_success {
+  color: rgb(12, 37, 137);
+  text-align: center;
+  font-weight: bolder;
+}
+
+.text_error {
+  color: rgb(137, 12, 12);
+  text-align: center;
+  font-weight: bolder;
+}
+
+.text_warning {
+  color: rgb(168, 157, 3);
+  text-align: center;
+  font-weight: bolder;
+}
+.example-margin {
+  margin: 0 12px;
+}
+.form-footer {
+  .button-send {
+    background: #0c258a;
+    color: #fff;
+  }
+
+  .button-send:disabled {
+    background-color: darkgray;
+    color: gray;
+  }
+  align-content: center;
+}

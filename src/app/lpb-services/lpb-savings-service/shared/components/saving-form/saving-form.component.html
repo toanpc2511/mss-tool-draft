@@ -1,0 +1,31 @@
+<div class="form-container" #savingForm>
+  <app-sender-info [form]="form.controls['sender']" (changeSenderInfo)="changeSenderInfo($event)"
+    [(collapsed)]="collapsed.senderInfo"></app-sender-info>
+
+  <app-saving-account-info [form]="form.controls['account']"
+    [(collapsed)]="collapsed.accountInfo"></app-saving-account-info>
+
+  <app-money-table [(collapsedDepositMoney)]="collapsed.depositMoney"
+                   [(collapsedReceiptMoney)]="collapsed.receiptMoney"
+                   [depositAmount]="form.controls['account']['controls']['depositAmount'].value"
+                   [depositFormArr]="depositFormArr"
+                   [receiptFormArr]="receiptFormArr"
+                   [curCode]="form.controls['account']['controls']['curCode'].value">
+  </app-money-table>
+
+  <div #tabGroup>
+    <mat-tab-group animationDuration="0ms" (selectedTabChange)="onTabChange()">
+      <mat-tab label="CHỮ KÝ" class="position-relative m-3">
+        <app-lpb-signature-list [class]="'w-100'"></app-lpb-signature-list>
+      </mat-tab>
+      <mat-tab label="GIẤY TỜ XÁC MINH" class="position-relative m-3">
+        <app-lpb-identity-certification [class]="'w-100'"></app-lpb-identity-certification>
+      </mat-tab>
+      <mat-tab label="BẢNG KÊ" class="position-relative m-3">
+        <app-money-list [moneyListForm]="form.controls['moneyList']"
+          [curCode]="form.controls['account']['controls']['curCode'].value"></app-money-list>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <app-list-button-open-dialog [isDetail]="form.disabled"></app-list-button-open-dialog>
+</div>

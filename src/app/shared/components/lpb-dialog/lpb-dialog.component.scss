@@ -1,0 +1,172 @@
+.dialog {
+  width: 700px;
+  min-height: 200px;
+  height: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  // justify-content: flex-start;
+  align-items: center;
+  &-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #0c258a;
+  }
+  &-title {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    text-indent: 8px;
+    color: #0c258a;
+  }
+  &-close-btn {
+    font: 400 20px Roboto, "Helvetica Neue", sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    &:hover {
+      color: #dc3545;
+    }
+  }
+  &-content {
+    width: 100%;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    color: #0c258a;
+    padding: 30px 15px 0 15px;
+    box-sizing: border-box;
+  }
+  &-message {
+    text-align: center;
+  }
+  &-form {
+    padding: 0 40px;
+    // width: 500px;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+  &-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    justify-self: flex-end;
+    margin-top: auto;
+    button {
+      height: auto;
+      border: none;
+      outline: none;
+      &:hover,
+      :focus {
+        border: none;
+        outline: none;
+        filter: brightness(0.8);
+      }
+    }
+  }
+  &-cancel {
+    background-color: #f47326;
+  }
+  &-confirm {
+    background-color: #23388f;
+  }
+  input[type="radio"]:focus,
+  input[type="checkbox"]:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    height: 15px;
+  }
+  input[type="radio"],
+  input[type="checkbox"] {
+    outline: none !important;
+    box-shadow: none !important;
+    height: 15px;
+    width: fit-content;
+  }
+
+  .form-radio-inline {
+    cursor: pointer;
+    flex-wrap: nowrap;
+  }
+
+  .form-group {
+    min-height: 36px;
+  }
+  .text-error {
+    font-size: 12px;
+  }
+}
+
+textarea.ng-invalid.ng-touched,
+input.ng-invalid.ng-touched {
+  border-color: #e83c19;
+  box-shadow: none;
+}
+
+.w-fit-content {
+  width: fit-content !important;
+}
+.w-form-full {
+  .dialog-form {
+    width: 100% !important;
+  }
+}
+table,
+tr,
+td {
+  border: none;
+  outline: none;
+}
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 1em;
+  tr {
+    vertical-align: top;
+    td {
+      vertical-align: middle;
+      &.td-label {
+        vertical-align: top;
+        width: 1%;
+        max-width: 100%;
+        white-space: nowrap;
+        font-size: 18px;
+        padding-right: 15px;
+      }
+    }
+    &::before {
+      content: "";
+      margin-bottom: 10px;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .mat-radio-container,
+  .mat-radio-outer-circle,
+  .mat-radio-inner-circle {
+    width: 17px;
+    height: 17px;
+  }
+
+  .is-horizontal {
+    .txtLabel:not(:last-child),
+    .mat-radio-2-input {
+      margin-right: 1rem;
+    }
+  }
+  mat-checkbox.mat-checkbox {
+    min-height: 41px;
+  }
+}

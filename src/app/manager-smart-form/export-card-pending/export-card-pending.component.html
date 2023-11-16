@@ -1,0 +1,183 @@
+<div class="main">
+  <div class="container-fluid">
+    <div class="row cust-row">
+      <div class="col-12 line-base st-title">
+        <div class="title-head form-w">
+          <span class="text pading-find">TÌM KIẾM THÔNG TIN THẺ CHỜ PHÁT HÀNH</span>
+        </div>
+      </div>
+      <div class="col-12 information-section">
+        <form [formGroup]="exportCardForm" (ngSubmit)="searchCard()">
+          <div style="width:100%">
+            <div class="col-6 colLeft" style=" z-index: 1;">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label textLabel">Từ ngày </label>
+                <div class="col-sm-8 ">
+                  <app-lpb-date-picker #dpCreatedDateFrom (blurInput)="blurCreatedDateFrom($event)" (dateChanged)="createdDateFromChanged()"></app-lpb-date-picker>
+                  <div *ngIf="exportCardForm.errors?.validateDate" class="error-message">
+                    Từ ngày phải nhỏ hơn đến ngày
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label textLabel">Chi nhánh </label>
+                <div class="col-sm-8 ">
+                  <ng-select [multiple]="false" bindLabel="name" bindValue="code" formControlName="branchCode"
+                             placeholder="-- Chọn chi nhánh --">
+                    <ng-option *ngFor="let branch of branches" [value]="branch.code">{{branch.name}}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="form-group row" style="padding-top: .2rem">
+                <label class="col-sm-4 col-form-label textLabel">FileID </label>
+                <div class="col-sm-8 ">
+                  <input type="text" class="form-control form-control-sm inputText" formControlName="fileId"
+                         placeholder="-- Vui lòng nhập FileID --">
+                </div>
+              </div>
+            </div>
+            <div class="col-6 colRight" style=" z-index: 1;">
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label textLabel">Đến ngày </label>
+                <div class="col-sm-8 ">
+                  <app-lpb-date-picker #dpCreatedDateTo (dateChanged)="createdDateToChanged()"></app-lpb-date-picker>
+                  <div *ngIf="exportCardForm.errors?.validateDate" class="error-message">
+                    Đến ngày phải lớn hơn từ ngày
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label textLabel">Loại thẻ </label>
+                <div class="col-sm-8 ">
+                  <ng-select [multiple]="false" bindLabel="name" bindValue="code" formControlName="cardTypeCode">
+                    <ng-option *ngFor="let cardT of cardType" [value]="cardT.code">{{cardT.name}}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label textLabel">Mã thẻ </label>
+                <div class="col-sm-8 ">
+                  <ng-select [multiple]="true" bindLabel="name" bindValue="code" formControlName="productCodes">
+                    <ng-option *ngFor="let cardProduct of listCardProduct"
+                               [value]="cardProduct.code">{{cardProduct.name}}</ng-option>
+
+                  </ng-select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label textLabel">Người tạo </label>
+                <div class="col-sm-8 ">
+                  <ng-select [multiple]="false" bindLabel="userName" formControlName="createdByUserName"
+                             bindValue="userName">
+                    <ng-option *ngFor="let user of userList" [value]="user.userName">{{user.userName}}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-color" style="width: 150px;color: white;">
+              <i class="fa fa-search" style="color: white"></i>
+              Tìm kiếm
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+    <div class="row cust-row">
+      <div class="col-12 line-base st-title">
+        <div class="title-head form-w">
+          <span class="text" style="padding: 5px 0;">Danh sách thẻ chờ phát hành</span>
+        </div>
+
+      </div>
+      <div class=" mat-elevation-z8">
+        <div class="row">
+          <div class="col-6 align-content-start pt-3 pr-3">
+            <button type="button" class="btn" *ngIf="this.authenticationService.isPermission(PermissionConst.KET_XUAT_THE.EXPORT_XML)" style="width: 150px;color: white; background-color: #f47326;"
+                    (click)="printSuggestion()">
+              <i class="fa fa-print" style="color: white"></i>
+              In Đề Nghị
+            </button>
+
+            <button type="button" class="btn ml-2" *ngIf="this.authenticationService.isPermission(PermissionConst.KET_XUAT_THE.EXPORT_XML)" style="width: 150px;color: white; background-color: #f47326;"
+                    (click)="printDetail()">
+              <i class="fa fa-print" style="color: white"></i>
+              In Chi Tiết
+            </button>
+<!--            <div class=" " style="text-align: right; width: 100%;">-->
+
+<!--            </div>-->
+          </div>
+          <div class="col-6 align-content-end pt-3 pr-3" style="text-align: right; width: 100%;">
+            <button type="button" class="btn" *ngIf="this.authenticationService.isPermission(PermissionConst.KET_XUAT_THE.EXPORT_XML)" style="width: 150px;color: white; background-color: #f47326;"
+                    (click)="exportCard()">
+              <i class="fa fa-search" style="color: white"></i>
+              Export
+            </button>
+<!--            <div class="" >-->
+<!--              -->
+<!--            </div>-->
+          </div>
+
+        </div>
+        <table class="table table-responsive table-fixed p-3">
+          <thead>
+          <tr class="titleTD">
+            <th style="width: 50px; text-align: center; padding: 0">STT</th>
+            <th>FileID</th>
+            <th>Mã CIF khách hàng</th>
+            <th>Tên khách hàng</th>
+            <th>Mã thẻ</th>
+            <th>Tên dập nổi</th>
+            <th>Chi nhánh</th>
+            <th>Ngày tạo</th>
+            <th>Người tạo</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let process of cardExportOut; index as i" tabindex="0">
+            <td style="width: 50px; padding-left: 0; padding-right: 0">{{pagination.pager.startIndex + i + 1}}</td>
+            <td class="file-name col-xs-6" style="text-align: left;">{{ process.fileId}}</td>
+            <td class="file-name col-xs-6" style="text-align: left;">{{ process.customerCode}}</td>
+            <td class="file-name col-xs-6" style="text-align: left;">{{ process.fullName}}</td>
+            <td class="file-name col-xs-6" style="text-align: left;">{{ process.cardProductName}}</td>
+            <td class="file-name col-xs-6" style="text-align: left;">{{ process.cardHolderName}}</td>
+            <td class="file-name col-xs-6" style="text-align: left;">{{ process.branchName}}</td>
+            <td class="file-name col-xs-6" style="text-align: left;">{{ process.issueDate}}</td>
+            <td class="file-name col-xs-6" style="text-align: left;">{{ process.createdByUserName}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation for action list" style="padding-bottom: 10px;margin-left: 10px;margin-right: 5px;padding-top: 10px;" *ngIf="pagination.pager && pagination.pager.pages && pagination.pager.pages.length">
+          <div style="float: left; padding-top: 10px;">
+            <span>{{pagination.pager.getStatus()}}</span>
+          </div>
+          <ul class="pagination justify-content-end">
+            <div class="amout-show">
+              <span>Số lượng bản ghi/trang</span> &nbsp;
+              <select class="form-control numberPage" (change)="changePageSize($event.target.value)">
+                <option selected value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select> &nbsp;&nbsp;
+            </div>
+            <li class="page-item" (click)="setPage(pagination.pager.currentPage - 1)">
+              <a class="page-link" href="javascript: void(0)" tabindex="-1">&lt;</a>
+            </li>
+            <li class="page-item" *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}" (click)="setPage(page)">
+              <a class="page-link" href="javascript: void(0)">{{page}}</a>
+            </li>
+            <li class="page-item" (click)="setPage(pagination.pager.currentPage + 1)">
+              <a class="page-link" href="javascript: void(0)">&gt;</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+

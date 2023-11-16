@@ -1,0 +1,74 @@
+<div class="px-4 py-2">
+    <div class="text-high-light fw-medium text-lg-custom"> Tìm kiếm giao dịch
+    </div>
+    <hr>
+    <div class="pl-2">
+        <form [formGroup]="formSearch" (ngSubmit)="search()">
+            <div class="d-flex flex-wrap">
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Loại giao dịch</label>
+                    <div>
+                        <app-lpb-select2 [items]="transactionTypes" [config]="{'clearable':false}" labelName="label"
+                            bindValue="value" formControlName="transactionType">
+                        </app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Nhà cung cấp</label>
+                    <div>
+                        <app-lpb-select2 [apiUrl]="'/electric-service/supplier/active'" labelName="supplierName"
+                            bindValue="supplierCode" formControlName="supplierCode"
+                            placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Trạng thái</label>
+                    <div>
+                        <app-lpb-select2 [items]="statusTransactions" [config]="{'clearable':false}" labelName="label"
+                            bindValue="value" formControlName="statusTransaction">
+                        </app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Mã khách hàng</label>
+                    <div>
+                        <input type="text" formControlName="customerId" class="form-control w-100" trimInput
+                            placeholder="Nhập mã khách hàng">
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Số tiền</label>
+                    <div>
+                        <input type="text" formControlName="amount" class="form-control" decimal-mask maxlength="20"
+                            placeholder="Nhập số tiền tra cứu">
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Hình thức thanh toán</label>
+                    <div>
+                        <app-lpb-select2 [items]="paymentMethods" labelName="label" bindValue="value"
+                            formControlName="paymentMethod" placeholder="Chọn hình thức thanh toán">
+                        </app-lpb-select2>
+                    </div>
+                </div>                
+            </div>
+            <div class="mt-4 text-center">
+                <button class="btn lpb-btn-primary" [disabled]="isLoading"> <i class="fa fa-search"></i>
+                    <span> Tìm kiếm</span>
+                </button>
+                <button class="btn lpb-btn-primary ml-2" [disabled]="isLoading"> <i class="material-icons">replay</i>
+                    <span> Nhập lại </span>
+                </button>
+                <button class="btn lpb-btn-primary ml-2" [disabled]="isLoading"> <i class="material-icons">arrow_back</i>
+                    <span> Quay lại </span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mt-5">
+        <app-lpb-datatable [config]="config" [searchConditions]="searchConditions"
+            (viewAction)="viewTransaction($event)" [columns]="columns"
+            apiServiceURL="/electric-service/transaction" tableName="Danh sách giao dịch"></app-lpb-datatable>
+    </div>
+</div>

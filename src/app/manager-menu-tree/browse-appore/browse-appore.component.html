@@ -1,0 +1,484 @@
+<div class="container-fuild">
+    <div class="row cust-row">
+        <div class="col-12 title-head" style="border-bottom: 1px solid #c8ced3;padding: 0px;">
+            <div class="browse-conten-title" style="font-weight: 500;">
+                <mat-icon>add_circle</mat-icon>
+                <span>THÔNG TIN HỒ SƠ</span>
+            </div>
+        </div>
+        <div class="col-12 information-section">
+            <div class="col-6 colLeft">
+                <div class="row form-group">
+                    <label class="col-sm-5 col-form-label textLabel">Mã hồ sơ</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{processDetail ? processDetail.code : ''}}</label>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-5 col-form-label textLabel">Người tạo</label>
+                    <div class="col-sm-7 txt">{{(processDetail && processDetail.createdByUser) ?
+                        processDetail.createdByUser.userName : ''}}</div>
+                </div>
+            </div>
+            <div class="col-6 colRight">
+                <div class="row form-group">
+                    <label class="col-sm-5 col-form-label textLabel">Trạng thái
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{processDetail ? processDetail.statusName : ''}}</label>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-5 col-form-label textLabel">Ngày tạo
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{processDetail ? (processDetail.createdDate | date: 'dd/MM/yyyy') : ''}}</label>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-5 col-form-label textLabel">Chi nhánh
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{(processDetail && processDetail.branch) ? processDetail.branch.address : ''}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row cust-row">
+        <div class="col-12 title-head" style="border-bottom: 1px solid #c8ced3;padding: 0px;">
+            <div class="p-2 browse-conten-title" style="font-weight: 500;">
+                <mat-icon>view_list</mat-icon>
+                <span>DANH SÁCH DỊCH VỤ ĐĂNG KÝ</span>
+            </div>
+        </div>
+        <div class="tables-status">
+            <ul class="info-status">
+                <li (click)="checkIndex(1)" [class.active]="tabIndex == 1">Chờ duyệt<span class="ml-2"
+                        *ngIf="listPendingCount">({{listPendingCount}})</span></li>
+                <li (click)="checkIndex(2)" [class.active]="tabIndex == 2">Chờ bổ sung<span class="ml-2"
+                        *ngIf="listWaitingCount">({{listWaitingCount}})</span></li>
+                <li (click)="checkIndex(3)" [class.active]="tabIndex == 3">Đã duyệt <span class="ml-2"
+                        *ngIf="listApprovedCount">({{listApprovedCount}})</span></li>
+                <li (click)="checkIndex(4)" [class.active]="tabIndex == 4">Từ chối<span class="ml-2"
+                        *ngIf="listRefuseCount">({{listRefuseCount}})</span></li>
+            </ul>
+            <div class="list-table" [ngSwitch]="tabIndex">
+                <table class="table table-responsive table-fixed" style="margin: 0px;" *ngSwitchCase="1">
+                    <thead>
+                        <tr class="titleTD">
+                            <th style="width: 50px">STT</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Kết quả</th>
+                            <th>Ghi chú gửi duyệt</th>
+                            <th>Ghi chú phê duyệt</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let element of listPending; let i = index">
+                            <td style="width: 50px;">{{ i + 1 }}</td>
+                            <!-- <td>{{item.title}}</td> -->
+                            <td>
+                                <a href="javascript:void(0)"
+                                    *ngIf="(SERVICE_NAME.OPEN_CIF === element.typeCode) || (SERVICE_NAME.UPDATE_CIF === element.typeCode)"
+                                    (click)="showDetailCif(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.EBANKING === element.typeCode"
+                                    (click)="showDetailEbanking(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.ACCOUNT === element.typeCode"
+                                    (click)="showDetailAccount(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.SUPCARD === element.typeCode"
+                                    (click)="showDetaiSubCard(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.CARD === element.typeCode"
+                                    (click)="showDetailMainCard(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.GUARDIAN === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.LEGAL === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.CRF === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.COB === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.AUTHORITY === element.typeCode"
+                                    (click)="showDetailAuthority(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.COOWNER === element.typeCode || SERVICE_NAME.PCO === element.typeCode"
+                                    (click)="showAccountOwner(element)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.ACU === element.typeCode"
+                                    (click)="showDetailAccount(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.SIGN === element.typeCode || SERVICE_NAME.SIGNU === element.typeCode"
+                                    (click)="showDetailSignature(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.ATTACHMENT === element.typeCode || SERVICE_NAME.ATTACHMENTU === element.typeCode"
+                                    (click)="showDetailAttachment(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.OPEN_CIF_LV24 === element.typeCode || SERVICE_NAME.UPDATE_CIF_LV24 === element.typeCode "
+                                    (click)="showDetailLienViet24(element.dwItemId)">{{element.title}}</a>
+                            </td>
+                            <td>
+                                {{element ? element.msgBody : ''}}
+                            </td>
+                            <td>
+                                <ng-container *ngFor="let i of element.note">
+                                    <div *ngIf="i.statusCode === 'W'">
+                                        <div *ngIf="i.note !== null">
+                                            {{i.userName}}: {{i.note}}
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngFor="let i of element.note">
+                                    <div *ngIf="i.statusCode === 'R' || i.statusCode === 'M'">
+                                        <div *ngIf="i.note !== null">
+                                            {{i.userName}}: {{i.note}}
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </td>
+                            <td>
+                                <div class="mb-1" *ngIf="isHidden" (click)="approvalOneDialog(element)">
+                                    <a href="javascript:void(0)" class="btn-approve">
+                                        <span class="material-icons mr-1">check</span>Duyệt</a>
+                                </div>
+                                <div class="mb-1" *ngIf="isHidden" (click)="sendRejectOneDialog(element)">
+                                    <a href="javascript:void(0)" class="btn-refuse">
+                                        <span class="material-icons mr-1">cancel</span> Từ chối</a>
+                                </div>
+                                <div class="mb-1" *ngIf="isHidden" (click)="sendModifyOneDialog(element)">
+                                    <a href="javascript:void(0)" class="btn-modify">
+                                        <span class="material-icons mr-1">autorenew</span>Yêu cầu bổ sung</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-responsive table-fixed" style="margin: 0px;" *ngSwitchCase="2">
+                    <thead>
+                        <tr class="titleTD">
+                            <th style="width: 50px">STT</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Kết quả</th>
+                            <th>Ghi chú gửi duyệt</th>
+                            <th>Ghi chú phê duyệt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let element of listWaiting; let i = index">
+                            <td style="width: 50px;">{{ i + 1}}</td>
+                            <td>
+                                <a href="javascript:void(0)"
+                                    *ngIf="(SERVICE_NAME.OPEN_CIF === element.typeCode) || (SERVICE_NAME.UPDATE_CIF === element.typeCode)"
+                                    (click)="showDetailCif(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.EBANKING === element.typeCode"
+                                    (click)="showDetailEbanking(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.ACCOUNT === element.typeCode"
+                                    (click)="showDetailAccount(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.SUPCARD === element.typeCode"
+                                    (click)="showDetaiSubCard(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.CARD === element.typeCode"
+                                    (click)="showDetailMainCard(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.GUARDIAN === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.LEGAL === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.CRF === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.COB === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.AUTHORITY === element.typeCode"
+                                    (click)="showDetailAuthority(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.COOWNER === element.typeCode || SERVICE_NAME.PCO === element.typeCode"
+                                    (click)="showAccountOwner(element)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.ACU === element.typeCode"
+                                    (click)="showDetailAccount(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.SIGN === element.typeCode || SERVICE_NAME.SIGNU === element.typeCode"
+                                    (click)="showDetailSignature(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.ATTACHMENT === element.typeCode || SERVICE_NAME.ATTACHMENTU === element.typeCode"
+                                    (click)="showDetailAttachment(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.OPEN_CIF_LV24 === element.typeCode || SERVICE_NAME.UPDATE_CIF_LV24 === element.typeCode "
+                                    (click)="showDetailLienViet24(element.dwItemId)">{{element.title}}</a>
+                            </td>
+                            <td>
+                                {{element ? element.msgBody : ''}}
+                            </td>
+                            <td>
+                                <ng-container *ngFor="let i of element.note">
+                                    <div *ngIf="i.statusCode === 'W'">
+                                        <div *ngIf="i.note !== null">
+                                            <div *ngIf="i.note !== null">
+                                                {{i.userName}}: {{i.note}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngFor="let i of element.note">
+                                    <div *ngIf="i.statusCode === 'R' || i.statusCode === 'M'">
+                                        <div *ngIf="i.note !== null">
+                                            <div *ngIf="i.note !== null">
+                                                {{i.userName}}: {{i.note}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-responsive table-fixed" style="margin: 0px;" *ngSwitchCase="3">
+                    <thead>
+                        <tr class="titleTD">
+                            <th style="width: 50px">STT</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Kết quả</th>
+                            <th>Ghi chú gửi duyệt</th>
+                            <th>Ghi chú phê duyệt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let element of listApproved; let i = index">
+                            <td style="width: 50px;">{{ i + 1 }}</td>
+                            <!-- <td>{{item.title}}</td> -->
+                            <td>
+                                <a href="javascript:void(0)"
+                                    *ngIf="(SERVICE_NAME.OPEN_CIF === element.typeCode) || (SERVICE_NAME.UPDATE_CIF === element.typeCode)"
+                                    (click)="showDetailCif(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.EBANKING === element.typeCode"
+                                    (click)="showDetailEbanking(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.ACCOUNT === element.typeCode"
+                                    (click)="showDetailAccount(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.SUPCARD === element.typeCode"
+                                    (click)="showDetaiSubCard(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.CARD === element.typeCode"
+                                    (click)="showDetailMainCard(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.GUARDIAN === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.LEGAL === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.CRF === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.COB === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.AUTHORITY === element.typeCode"
+                                    (click)="showDetailAuthority(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.COOWNER === element.typeCode || SERVICE_NAME.PCO === element.typeCode"
+                                    (click)="showAccountOwner(element)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.ACU === element.typeCode"
+                                    (click)="showDetailAccount(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.SIGN === element.typeCode || SERVICE_NAME.SIGNU === element.typeCode"
+                                    (click)="showDetailSignature(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.ATTACHMENT === element.typeCode || SERVICE_NAME.ATTACHMENTU === element.typeCode"
+                                    (click)="showDetailAttachment(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.OPEN_CIF_LV24 === element.typeCode || SERVICE_NAME.UPDATE_CIF_LV24 === element.typeCode "
+                                    (click)="showDetailLienViet24(element.dwItemId)">{{element.title}}</a>
+                            </td>
+                            <td>
+                                {{element ? element.msgBody : ''}}
+                            </td>
+                            <td>
+                                <ng-container *ngFor="let i of element.note">
+                                    <div *ngIf="i.statusCode === 'W'">
+                                        <div *ngIf="i.note !== null">
+                                            {{i.userName}}: {{i.note}}
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngFor="let i of element.note">
+                                    <div *ngIf="i.statusCode === 'R' || i.statusCode === 'M'">
+                                        <div *ngIf="i.note !== null">
+                                            {{i.userName}}: {{i.note}}
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-responsive table-fixed" style="margin: 0px;" *ngSwitchCase="4">
+                    <thead>
+                        <tr class="titleTD">
+                            <th style="width: 50px">STT</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Kết quả</th>
+                            <th>Ghi chú gửi duyệt</th>
+                            <th>Ghi chú phê duyệt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let element of listRefuse; let i = index">
+                            <td style="width: 50px;">{{ i + 1 }}</td>
+                            <!-- <td>{{item.title}}</td> -->
+                            <td>
+                                <a href="javascript:void(0)"
+                                    *ngIf="(SERVICE_NAME.OPEN_CIF === element.typeCode) || (SERVICE_NAME.UPDATE_CIF === element.typeCode)"
+                                    (click)="showDetailCif(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.EBANKING === element.typeCode"
+                                    (click)="showDetailEbanking(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.ACCOUNT === element.typeCode"
+                                    (click)="showDetailAccount(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.SUPCARD === element.typeCode"
+                                    (click)="showDetaiSubCard(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.CARD === element.typeCode"
+                                    (click)="showDetailMainCard(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.GUARDIAN === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.LEGAL === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.CRF === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.COB === element.typeCode"
+                                    (click)="showDetailCustomer(element.processId)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.AUTHORITY === element.typeCode"
+                                    (click)="showDetailAuthority(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.COOWNER === element.typeCode || SERVICE_NAME.PCO === element.typeCode"
+                                    (click)="showAccountOwner(element)">{{element.title}}</a>
+                                <a href="javascript:void(0)" *ngIf="SERVICE_NAME.ACU === element.typeCode"
+                                    (click)="showDetailAccount(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.SIGN === element.typeCode || SERVICE_NAME.SIGNU === element.typeCode"
+                                    (click)="showDetailSignature(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.ATTACHMENT === element.typeCode || SERVICE_NAME.ATTACHMENTU === element.typeCode"
+                                    (click)="showDetailAttachment(element.dwItemId)">{{element.title}}</a>
+                                <a href="javascript:void(0)"
+                                    *ngIf="SERVICE_NAME.OPEN_CIF_LV24 === element.typeCode || SERVICE_NAME.UPDATE_CIF_LV24 === element.typeCode "
+                                    (click)="showDetailLienViet24(element.dwItemId)">{{element.title}}</a>
+                            </td>
+                            <td>
+                                {{element ? element.msgBody : ''}}
+                            </td>
+                            <td>
+                                <ng-container *ngFor="let i of element.note">
+                                    <div *ngIf="i.statusCode === 'W'">
+                                        <div *ngIf="i.note !== null">
+                                            {{i.userName}}: {{i.note}}
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </td>
+                            <td>
+                                <ng-container *ngFor="let i of element.note">
+                                    <div *ngIf="i.statusCode === 'R' || i.statusCode === 'M'">
+                                        <div *ngIf="i.note !== null">
+                                            {{i.userName}}: {{i.note}}
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row">
+    <div class="col-12">
+        <ng-template [ngIf]="isHidden">
+            <div class="footer" (click)="showPopup('REQUEST_ADD')">
+                <span class="material-icons"> edit </span>
+                <label>Yêu cầu bổ sung</label>
+            </div>
+            <div class="footer" (click)="showPopup('REJECT')">
+                <span class="material-icons"> close </span>
+                <label>Từ chối hồ sơ</label>
+            </div>
+            <div class="footer" (click)="showPopup('APPROVE')">
+                <span class="material-icons"> check </span>
+                <label>Duyệt hồ sơ</label>
+            </div>
+            <div class="footer" (click)="showPopup('CANCEL')">
+                <span class="material-icons"> close </span>
+                <label>Kết thúc hồ sơ</label>
+            </div>
+        </ng-template>
+        <div class="footer" (click)="backPage()">
+            <span class="material-icons"> keyboard_backspace </span> <label>Quay lại</label>
+        </div>
+    </div>
+</div>
+
+<app-lpb-modal headerText="Xác nhận" [show]="isShowPopup" [unit]="'%'" [widthContent]="50" [heightContent]="50"
+    (hideModal)="isShowPopup = false">
+    <div class="content-popup">
+        <div class="mb-2">
+            Bạn có muốn duyệt dịch vụ này không?
+        </div>
+        <div class="block-note">
+            <label>Ghi chú:&nbsp;&nbsp;</label>
+            <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+        </div>
+        <div class="text-right pt-2">
+            <button class="btn-cancel" (click)="confimApproveProcess('CANCEL')">
+                Hủy
+            </button>
+            <button class="btn-save ml-2" (click)="confimApproveProcess('CONFIRM')">
+                Đồng ý
+            </button>
+        </div>
+    </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="THÔNG TIN TÀI KHOẢN" [show]="isAccount" [unit]="'%'" [widthContent]="75" [heightContent]="75"
+    (hideModal)="isAccount = false">
+    <app-popup-detail-account *ngIf="isAccount" [accountId]="accountId"></app-popup-detail-account>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="THÔNG TIN TÀI KHOẢN ỦY QUYỀN" [show]="isAuthority" [unit]="'%'" [widthContent]="75"
+    [heightContent]="75" (hideModal)="isAuthority = false">
+    <app-popup-detail-authority *ngIf="isAuthority" [authorityId]="authorityId"></app-popup-detail-authority>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="THÔNG TIN KHÁCH HÀNG" [show]="isCustomer" [unit]="'%'" [widthContent]="80"
+    [heightContent]="75" (hideModal)="isCustomer = false">
+    <app-popup-detail-cif *ngIf="isCustomer" [processId]="processId">
+    </app-popup-detail-cif>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="THÔNG TIN THẺ CHÍNH" [show]="isMainCard" [unit]="'%'" [widthContent]="75"
+    [heightContent]="75" (hideModal)="isMainCard = false">
+    <app-pop-up-maincard *ngIf="isMainCard" [id]="cardId">
+    </app-pop-up-maincard>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="THÔNG TIN THẺ PHỤ" [show]="isSupCard" [unit]="'%'" [widthContent]="75" [heightContent]="75"
+    (hideModal)="isSupCard = false">
+    <app-pop-up-supcard *ngIf="isSupCard" [id]="cardId">
+    </app-pop-up-supcard>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="THÔNG TIN TÀI KHOẢN ĐỒNG SỞ HỮU" [show]="isAccountOwner" [unit]="'%'" [widthContent]="75"
+    [heightContent]="75" (hideModal)="isAccountOwner = false">
+    <app-popup-detail-owner *ngIf="isAccountOwner" [ownerId]="ownerId">
+    </app-popup-detail-owner>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="THÔNG TIN CHỮ KÝ" [show]="isSignature" [unit]="'%'" [widthContent]="75" [heightContent]="35"
+    (hideModal)="isSignature = false">
+    <app-popup-detail-signature *ngIf="isSignature" [signatureId]="signatureId"></app-popup-detail-signature>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="THÔNG TIN TÀI LIỆU ĐÍNH KÈM" [show]="isAttachment" [unit]="'%'" [widthContent]="75"
+    [heightContent]="75" (hideModal)="isAttachment = false">
+    <app-popup-detail-attachment *ngIf="isAttachment" [attachmentId]="attachmentId"></app-popup-detail-attachment>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="THÔNG TIN VÍ LIÊN VIỆT 24H" [show]="isLienViet24" [unit]="'%'" [widthContent]="75"
+    [heightContent]="75" (hideModal)="isLienViet24 = false">
+
+</app-lpb-modal>

@@ -1,0 +1,49 @@
+.approved {
+    .content-title {
+      color: #0c258a;
+      font-size: 16px;
+      font-weight: 500;
+    }
+  
+    .data-approved {
+      max-height: 50vh;
+      overflow: scroll;
+      table {
+        min-width: 598px;
+        thead {
+          position: sticky;
+          top: 0;
+          z-index: 10;
+        }
+        tr td {
+          text-align: center;
+          &.id {
+            min-width: 100px;
+            max-width: 280px;
+          }
+          &.notify {
+            min-width: 250px;
+            max-width: 280px;
+            text-align: left;
+          }
+          &.status,
+          &.action {
+            min-width: 100px;
+            max-width: 120px;
+          }
+        }
+  
+        span i {
+          font-size: 18px;
+          &.success {
+            color: #0c258a;
+            cursor: pointer;
+          }
+        }
+      }
+      .text-red {
+        color: #c10611;
+      }
+    }
+  }
+  

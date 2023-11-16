@@ -1,0 +1,112 @@
+<div class="topnav" id="myTopnav">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoadingCallApi"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div id="css-menu">
+    <img src="/assets/img/logo_1905.png" alt="logo" style="height: auto !important;" class="mt-2 ml-4" >
+    <a class="menu-nav menuParent" routerLink="/smart-form/home" style="width: 130px;">
+      <i class="fa fa-home" aria-hidden="true"></i>
+      <label style="cursor: pointer">&nbsp;Trang chủ</label>
+    </a>
+<!--    <a class="dropdown menu-nav menuParent" *ngIf="authenticationService.isAccessMenu('SYS_MANAGEMENT')"-->
+<!--       style="width: 130px;">-->
+<!--      <i class="fa fa-cog" aria-hidden="true" style="margin-right: 5px;"></i>-->
+<!--      <label>Quản trị hệ thống</label>-->
+<!--      <div class="dropdown-content">-->
+<!--        <a class="checkPermission" (click)="clickMenuAdmin(0)"-->
+<!--           *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.USER)">-->
+<!--          Quản lý người dùng-->
+<!--        </a>-->
+<!--        <div class="dropdown-divider"></div>-->
+<!--        <a class="checkPermission" (click)="clickMenuAdmin(1)"-->
+<!--           *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.TITLE)">-->
+<!--          Quản lý chức danh-->
+<!--        </a>-->
+<!--        <div class="dropdown-divider"></div>-->
+<!--        <a class="checkPermission" (click)="clickMenuAdmin(2)"-->
+<!--           *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.ROLE)">Quản lý-->
+<!--          role</a>-->
+<!--        <div class="dropdown-divider"></div>-->
+<!--        <a class="checkPermission" (click)="clickMenuAdmin(3)"-->
+<!--           *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.FUNCTION)">Quản-->
+<!--          lý-->
+<!--          function</a>-->
+<!--        <div class="dropdown-divider"></div>-->
+<!--        <a class="checkPermission" (click)="clickMenuAdmin(4)"-->
+<!--           *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.ACTION)">Quản lý-->
+<!--          hành động</a>-->
+<!--        <div class="dropdown-divider"></div>-->
+<!--        <a class="checkPermission" (click)="clickMenuAdmin(5)"-->
+<!--           *ngIf="authenticationService.isPermissionWithCode(PermissionConst.SYSTEM_MANAGEMENT.ROLE_MAPPING)">Map-->
+<!--          quyền</a>-->
+<!--      </div>-->
+<!--    </a>-->
+
+<!--    <a class="dropdown menu-nav menuParent" style="width: 130px;">-->
+<!--      <i class="fa fa-plug" aria-hidden="true"></i>-->
+<!--      <label>&nbsp;Kết nối ứng dụng</label>-->
+<!--      <div class="dropdown-content">-->
+<!--        <a routerLink="./admin/system-partner/connect-ebs" class="checkPermission">Kết nối ebs</a>-->
+<!--      </div>-->
+<!--    </a>-->
+<!--    <a class="dropdown menu-nav menuParent" style="width: 150px;">-->
+<!--      <i class="fa fa-solid fa-gears" aria-hidden="true"></i>-->
+<!--      <label>&nbsp;Cấu hình hệ thống</label>-->
+<!--      <div class="dropdown-content">-->
+<!--        <a routerLink="/system-config/lvbis-service" class="checkPermission">Cấu hình dịch vụ</a>-->
+<!--      </div>-->
+<!--    </a>-->
+    <input type="text"
+           placeholder="Tìm kiếm chức năng"
+           class="form-control mt-3 align-content-start"
+           style="display: inline-block;position: absolute;max-width: 500px"
+           [formControl]="functionName"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="navToProd($event)">
+      <mat-option *ngFor="let street of filteredStreets | async" [value]="street.urlRouter">
+        <img [routerLink]="street.urlRouter" class="example-option-img mr-2" aria-hidden [src]="street.pathImage" height="25">
+        <span [routerLink]="street.urlRouter">{{street.textItem}}</span>
+<!--        <small>Population: {{street.parentName}}</small>-->
+<!--        <a [routerLink]="street.urlRouter" [title]="street.textItem" >-->
+<!--          <img class="example-option-img" aria-hidden [src]="street.pathImage" height="25">-->
+<!--          <span>{{street.textItem}}</span> |-->
+<!--          <small>Population: {{street.parentName}}</small>-->
+<!--&lt;!&ndash;          <img alt="" width="25" class="example-option-img w-25" [src]="street.pathImage" height="25">&ndash;&gt;-->
+<!--&lt;!&ndash;          {{street.textItem}}&ndash;&gt;-->
+<!--&lt;!&ndash;          {{street.parentName}}&ndash;&gt;-->
+<!--        </a>-->
+      </mat-option>
+    </mat-autocomplete>
+
+
+    <a class="admin-right dropdown menu-nav" style="float: right;">
+      <i class="fa fa-user" aria-hidden="true" style="margin-right: 5px;"></i>{{isRoot == true ? 'Admin' : name + ' (' + userName + ' - ' + userRole?.name + ')'}}
+      <div>
+        CN: {{branchCode + '-' + branchName}}
+      </div>
+      <div class="dropdown-content" (click)="logout()" style="left: unset;right: 5px;min-width: 100px;">
+        <a>Logout</a>
+      </div>
+    </a>
+    <!-- <div style="clear: both;"> -->
+    <nav aria-label="breadcrumb" class="customBreadcrumb"
+         style="border-top: 5px solid #F47326;border-bottom: 1px solid #c8ced3;">
+      <ol class="breadcrumb">
+        <!-- <li class="breadcrumb-item" style="padding-top: 6px;padding-bottom: 6px;"><a style="width: auto;padding-left: 15px;font-size: 14px;">Trang chủ</a></li> -->
+        <li class="breadcrumb-item" style="padding-top: 6px;padding-bottom: 6px;padding-left: 10px">
+          <a style="  width: auto;font-size: 14px;cursor: default;" class="parentName"></a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page" style="padding-bottom: 6px;padding-top: 6px;">
+          <a style="width: auto;font-size: 14px;font-weight: 400;cursor: default;" class="childName"></a>
+        </li>
+        <span class="ml-auto" style="    height: auto;
+          padding-top: 7px;
+          padding-right: 10px;">Ngày hệ thống {{ time | date: 'dd/MM/yyyy HH:mm:ss aa' }}</span>
+      </ol>
+    </nav>
+  </div>
+  <div style="height: 90px"></div>
+</div>
+<div style="clear: both; height: calc(100% - 96px)">
+  <router-outlet></router-outlet>
+</div>

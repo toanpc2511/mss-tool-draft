@@ -1,0 +1,16 @@
+
+<div class="modal-content" >
+  <div class="modal-header">
+    <h2 class="textLabel" id="exampleModalLabel2">{{title}}</h2>
+    <button type="button" class="close" (click)="onDismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <p>{{message}}</p>
+  </div>
+  <div class="modal-footer">
+    <button mat-raised-button class="btn-orange mr-2" [mat-dialog-close]="true">Đồng ý</button>
+    <button mat-raised-button class="btn-blue" [mat-dialog-close]="false">Đóng</button>
+  </div>
+</div>

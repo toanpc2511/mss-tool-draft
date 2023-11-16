@@ -1,0 +1,77 @@
+<div class="provider-main">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between"
+  >
+    <div class="d-flex align-items-center">
+      <i class="fa fa-search mr-2"></i>
+      <span>Tra cứu thông tin nhà trường</span>
+    </div>
+  </div>
+
+  <div class="search px-4 mt-2">
+    <form [formGroup]="searchForm" (submit)="search()">
+      <div class="row pb-3">
+        <div class="col-12 col-lg-6 px-5">
+          <span>Nhà trường</span>
+          <ng-select [clearable]="false" formControlName="university">
+            <ng-option value="">Tất cả</ng-option>
+            -->
+            <ng-option
+              *ngFor="let item of university"
+              [value]="item.code"
+            >{{ item.name }}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-12 col-lg-6 px-5">
+          <span>Trạng thái</span>
+          <ng-select
+            formControlName="status"
+            placeholder="Chọn trạng thái"
+            (clear)="clearSelect('status')"
+          >
+            <ng-option value="">Tất cả</ng-option>
+            <ng-option
+              *ngFor="let status of statusUniversity"
+              [value]="status.type"
+            >{{ status.name }}</ng-option
+            >
+          </ng-select>
+        </div>
+      </div>
+      <div class="w-full d-flex justify-content-center g-2">
+        <button
+          mat-raised-button
+          type="submit"
+          class="d-inline-block bg-btn__blue text-while"
+        >
+          <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+          Tìm kiếm
+        </button>
+        <button
+          mat-raised-button
+          (click)="resetForm()"
+          class="d-inline-block ml-2"
+          style="color: #0c258a"
+        >
+          <i class="fa fa-rotate-left mr-2" style="color: #0c258a"></i>
+          Nhập lại
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="result-section mt-2">
+    <div class="card border-0">
+      <app-lpb-datatable
+        [config]="configs"
+        [columns]="columns"
+        (viewAction)="onViewDetail($event)"
+        (changeAction)="changeStatus($event)"
+        (editAction)="onUpdate($event)"
+        apiServiceURL="/tuition-service/config/university"
+        tableName='Danh sách nhà trường'
+      ></app-lpb-datatable>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,142 @@
+.send-conten-title{
+    display: flex;
+    align-items: center;
+    padding: 8px 5px;
+}
+.info-status{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 0;
+    margin-bottom: 0;
+    li{
+        background: #ededed;
+        color: #23388F;
+        list-style: none;
+        width: 25%;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border-left: 1px solid #828282;
+        height: 48px;
+        font-weight: bold;
+        cursor: pointer;
+        &.active{
+            background: #23388F;
+            color: #FFF;
+        }
+        &:first-child{
+            border-left: 0px;
+        }
+        &:last-child{
+            border-top-right-radius: 10px;
+        }
+    }
+}
+.list-table{
+  tr{
+    th:first-child{
+      width: 50px;
+    }
+  }
+  table:first-child{
+    padding-left: 5px;
+    td:last-child{
+      div{
+        padding-left: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        text-decoration: none;
+        opacity: 0.8;
+        color: #0088FF;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.tables-status{
+    .table-responsive{
+        td{
+            text-align: center;
+            vertical-align: middle;
+            &:nth-child(2){
+                text-align: left;
+            }
+        }
+    }
+}
+.footer-row{
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+
+.popup-detail {
+  width: 70%;
+  height: 80%;
+  position: fixed;
+  overflow-y: scroll;
+  left: 50%;
+  top: 50%;
+  right: 50%;
+  border: 0.5px;
+  transform: translate(-50%, -50%);
+  /* ensure in front of rest of page -- increase as needed */
+  z-index: 1000;
+  /* visual illusion of being in front -- alter to taste */
+  background-color: white;
+  box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%);
+  .title {
+      height: 50px;
+      background-color: #253C97;
+      font-size: 25px;
+      padding: 15px;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      .close-popup {
+          color: #fff;
+          margin-top: -7px;
+      }
+  }
+  .btn-close {
+      // size: 50px;
+      position: sticky;
+      left: 93%;
+      bottom: 5%;
+  }
+
+
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #287eda;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #4990CD;
+}

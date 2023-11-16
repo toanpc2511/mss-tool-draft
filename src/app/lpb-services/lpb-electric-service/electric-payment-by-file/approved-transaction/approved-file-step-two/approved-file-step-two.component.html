@@ -1,0 +1,38 @@
+<div class="text-high-light fw-bolder text-uppercase">Thông tin batch</div>
+<div class="d-flex flex-wrap bg-readonly border-radius-panel p-2 mt-3">
+    <div class="col-4">
+        <label for="">Số Batch</label>
+        <div class="fw-bolder"> {{dataRoot?.batchNo}} </div>
+    </div>
+    <div class="col-4">
+        <label for="">Tên file</label>
+        <div class="fw-bolder"> {{dataRoot?.fileName}} </div>
+    </div>
+    <div class="col-4">
+        <label for="">Trạng thái batch</label>
+        <div class="fw-bolder"> {{dataRoot?.batchStatusName}} </div>
+    </div>
+    <div class="col-4 mt-3">
+        <label for="">Chi nhánh</label>
+        <div class="fw-bolder"> {{dataRoot?.tranBrn+' - '+dataRoot?.tranName}} </div>
+    </div>
+
+    <div class="col-4 mt-3">
+        <label for="">Người tạo</label>
+        <div class="fw-bolder"> {{dataRoot?.createdBy}} </div>
+    </div>
+</div>
+<div class="text-high-light fw-bolder text-uppercase">Thông tin hóa đơn</div>
+<div class="d-flex flex-wrap bg-readonly border-radius-panel p-2 mt-3 justify-content-between">
+    <div class="d-flex">
+        <div>
+            <label for="">Tổng số</label>
+            <span class="fw-bolder ml-2"> {{dataSource.length}} bản ghi </span>
+        </div>
+        <div class="ml-5">
+            <label for="">Tổng tiền giao dịch</label>
+            <span class="fw-bolder ml-2"> {{totalAmount | number}} VNĐ </span>
+        </div>
+    </div>
+</div>
+<app-lpb-datatable [dataSource]="dataSource" [columns]="columns" [config]="config"></app-lpb-datatable>

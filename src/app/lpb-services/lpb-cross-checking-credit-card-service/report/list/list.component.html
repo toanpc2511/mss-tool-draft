@@ -1,0 +1,97 @@
+<div class="finance-body" style="padding-bottom: 10px">
+  <div class="step-search d-flex flex-column">
+    <div class="content-title pt-2 ">
+      <i class="fa fa-search mr-2 txtLabel"></i>
+      TÌM KIẾM
+    </div>
+    <hr/>
+    <!-- Search Form -->
+    <div class="form-search d-flex flex-column">
+      <form [formGroup]="formSearch" class="container" (ngSubmit)="onExport()">
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Chi nhánh</span>
+              <span class="col-8">
+               <app-lpb-select2 [apiUrl]="'/lpb-common-service/api/public/redis/branch'" labelName="codeAndName"
+                                bindValue="code" multiple="true" placeholder="Chọn chi nhánh" [config]="selectConfig"
+                                formControlName="branch"></app-lpb-select2>
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Loại thẻ</span>
+              <span class="col-8">
+               <ng-select [multiple]="false" bindLabel="name" bindValue="code" placeholder="-- Chọn loại thẻ --"
+                          formControlName="glCode">
+                  <ng-option value="459900026">Thẻ Master - GL 459900026</ng-option>
+                  <ng-option value="459900029">Thẻ Prepaid - GL 459900029</ng-option>
+                  <ng-option value="459900033">Thẻ JCB - GL 459900033</ng-option>
+                  <ng-option value="459900035">Thẻ Visa - GL 459900035</ng-option>
+                </ng-select>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Ngày giao dịch</span>
+              <span class="col-8">
+                <div class="form-row">
+                  <div class="col-6">
+                    <app-lpb-datepicker-new formControlName="fromDate" placeholder="Từ ngày"></app-lpb-datepicker-new>
+                  </div>
+
+                  <div class="col-6">
+                    <app-lpb-datepicker-new formControlName="toDate"
+                                            placeholder="Tới ngày"></app-lpb-datepicker-new>
+                  </div>
+                </div>
+
+
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Loại báo cáo</span>
+              <span class="col-8">
+                <ng-select [multiple]="false" bindLabel="name" bindValue="code" placeholder="-- Loại báo cáo --"
+                         formControlName="reportType">
+                  <ng-option value="REPORT_00">00 - Báo cáo khớp đúng</ng-option>
+                  <ng-option value="REPORT_10">10 - Báo cáo lệch - CORE BANKING thừa</ng-option>
+                  <ng-option value="REPORT_01">01 - Báo cáo lệch - CORE BANKING thiếu</ng-option>
+                <!--                  <ng-option value="all">Báo cáo chi tiết giao dịch</ng-option>-->
+                </ng-select>
+                  <app-validate [control]="searchFormControl.reportType" error="required"
+                                message="Loại báo không được bỏ trống"></app-validate>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="submit">
+              Export
+              <i class="fa fa-print ic-in-primary" aria-hidden="true"></i>
+            </button>
+            <!--            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="button" (click)="exportExcel()">-->
+            <!--              Export-->
+            <!--              <i class="fa fa-download ic-in-primary" aria-hidden="true"></i>-->
+            <!--            </button>-->
+
+            <!--            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="button" (click)="downloadTemplate()">-->
+            <!--              Template-->
+            <!--              <i class="fa fa-download ic-in-primary" aria-hidden="true"></i>-->
+            <!--            </button>-->
+
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Search Form -->
+
+  </div>
+</div>

@@ -1,0 +1,123 @@
+@import '/src/app/shared/styles/lpb-button';
+.card-services-approve-step-confirm {
+  background-color: white;
+  border-top: 1px solid #bdbdbd;
+  padding: 0px 10px;
+  height: 100%;
+  .content-title {
+    color: #17589f;
+    border-bottom: 2px solid #F47326;
+    padding: 8px 0px;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+    place-self: flex-start;
+  }
+  .txtLabel {
+    font-weight: 500;
+    color: #17589f;
+  }
+  .form-detail {
+    span {
+      font-weight: 500;
+      color: #17589f;
+    }
+    .row-fields {
+      //display: flex;
+      //flex-wrap: wrap;
+      //justify-content: space-between;
+      .field {
+        //max-width: 50%;
+        //width: calc(50% - 16px);
+        //margin-bottom: 16px;
+        .txtLabel {
+          font-weight: 500;
+          color: #17589f;
+        }
+        .file-upload-info {
+          span {
+            font-weight: 400;
+            cursor: pointer;
+          }
+          i {
+            font-weight: 500;
+            cursor: pointer;
+          }
+        }
+      }
+      span {
+        font-weight: 500;
+        color: #17589f;
+      }
+    }
+  }
+}
+.modal-confirm, .modal-error {
+  text-align: center;
+  &-content {
+    margin: 16px auto auto auto;
+    color: #17589f;
+    text-align: left;
+    .txt-name {
+      font-weight: 500;
+    }
+    span {
+      word-wrap: break-word;
+    }
+  }
+  &-action {
+    margin-top: 16px;
+  }
+  &-reject-reason {
+    margin: 16px auto auto auto;
+    .err-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: red;
+    }
+    .err-field {
+      border-color: red;
+    }
+  }
+}
+
+.form-control:focus {
+  box-shadow: unset !important;
+}
+
+::ng-deep .mat-tooltip {
+  color: #fff;
+  background-color: #f47326;
+}
+.btn-action {
+  font-weight: 400;
+  color: #FFFFFF;
+  padding: 0 10px;
+  &:hover {
+    background-color: #0e1d58;
+  }
+}
+
+.btn-blue {
+  color: #fff;
+  background-color: #0C258A;
+}
+.btn-orange {
+  background-color: #F47326 ;
+  color: #fff;
+}
+.clear{
+  height: 80px;
+}
+
+.footer-row {
+  padding: 0;
+  background: #23388f;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  margin: 0;
+  z-index: 10;
+  height: 40px;
+}

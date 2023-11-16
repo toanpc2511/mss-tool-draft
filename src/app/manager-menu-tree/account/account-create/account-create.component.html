@@ -1,0 +1,175 @@
+<div class="container-fluid">
+    <app-process-info [processId]="processId" (processDetail)="dataProcessDetail($event)"></app-process-info>
+    <div class="row cust-row">
+        <div class="col-12 line-base">
+            <div class="title-head">
+                <mat-icon>add_circle</mat-icon>
+                <span class="text">THÊM MỚI</span>
+            </div>
+        </div>
+        <div class="col-12 account-form">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel">Tên tài khoản:</label>
+                        <div class="col-sm-7">
+                            <input name="accountName" [(ngModel)]="accountName" class="form-control form-control-sm "
+                                disabled type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel ">Loại tiền tệ:<span
+                                class="text-danger ">(*)</span>
+                        </label>
+                        <div class="col-sm-7">
+                            <select #currencyCode name="currencyCode" class="form-control form-control-sm"
+                                (change)="dataProduct()">
+                                <option *ngFor="let cur of lstCurrency" [value]="cur.code">{{cur.code}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel">Loại tài khoản:<span
+                                class="text-danger">(*)</span>
+                        </label>
+                        <div class="col-sm-7">
+                            <select #accountProductCode name="accountProductCode" class="form-control form-control-sm"
+                                (change)="dataClass()" (change)="checkErrProduct()">
+                                <option value="">-- Chọn loại tài khoản --</option>
+                                <option *ngFor="let pro of lstProduct" [value]="pro.code">{{pro.name}}</option>
+                            </select>
+                            <div class="error-valid ">
+                                {{errAccountProductCode}}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group row ">
+                        <label class="col-sm-4 col-form-label textLabel ">Mã tài khoản:<span
+                                class="text-danger ">(*)</span>
+                        </label>
+                        <div class="col-sm-7 ">
+                            <select #accountClassCode name="accountClassCode" class="form-control form-control-sm"
+                                (change)="dataMinBa()" (change)="checkErrClass()">
+                                <option value="">-- Chọn mã tài khoản --</option>
+                                <option *ngFor="let class of lstClass" [value]="class.code"> {{class.code}} -
+                                    {{class.name}}</option>
+                            </select>
+                            <div class="error-valid">
+                                {{errAccountClassCode}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel">Chi nhánh: </label>
+                        <div class="col-sm-7">
+                            <label class=" form-control-sm" style="padding-left: 0px;">{{branchName}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 ">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel">Số tài khoản:<span
+                                class="text-danger">(*)</span>
+                        </label>
+                        <div class="col-sm-7">
+                            <input disabled name="acountNumber" placeholder="Tài khoản mới "
+                                class="form-control form-control-sm " type="text ">
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <label class="col-sm-4 col-form-label textLabel ">Gói tài khoản: </label>
+                        <div class="col-sm-7 ">
+                            <select class="form-control form-control-sm" name="packageAccount">
+                                <option value="" disabled selected>-- Chọn gói tài khoản --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label textLabel">Số tiền
+                            duy trì tối thiểu<span class="text-danger">(*)</span>
+                        </label>
+                        <div class="col-sm-7">
+                            <input appMoneyOnly #minBalance type="text" class="form-control form-control-sm " name=""
+                                id="" (blur)="checkErrBalance()" (input)="checkErrBalance()">
+                            <div class="error-valid">
+                                {{errMinBalance}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <label class="col-sm-4 col-form-label textLabel ">Mã nhân viên:<span
+                                class="text-danger" for="employeeCode">(*)</span>
+                        </label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control form-control-sm" placeholder="Nhập mã nhân viên"
+                               [value]="selectedMaCBNVLPB ? selectedMaCBNVLPB.employeeId : ''"
+                               id="employeeCode" (blur)="searchEmployee($event)">
+                        <div class="error-valid" *ngIf="errEmployeeCode !== ''">
+                          {{errEmployeeCode}}
+                        </div>
+                        <div class="employee-info mt-1"
+                             *ngIf="selectedMaCBNVLPB && selectedMaCBNVLPB.employeeName !== '' && errEmployeeCode === ''">
+                          Thông tin nhân viên: {{selectedMaCBNVLPB.employeeName}}
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [(ngModel)]="employeeId" -->
+        <div class="col-12 decription">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label textLabel">Diễn giải tài khoản:<span
+                        class="text-danger">(*)</span>
+                </label>
+                <div class="col-sm-9">
+                    <textarea #accountDescription name="description" class="form-control form-control-sm"
+                        (blur)="checkErrDescription()"></textarea>
+                    <div class="error-valid">
+                        {{errAccountDescription}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row footer-row">
+    <div class="col-12 action-button">
+        <div class="footer" *ngIf="isApprove" (click)="approveProcess('SEND_APPROVE')">
+            <span class="material-icons"> check </span>
+            <label>Gửi duyệt</label>
+        </div>
+        <!-- *ngIf="((isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)) && (statusCode !=='T')" [disabled]="isClick" -->
+        <button class="footer" *ngIf="isSave" (click)="approveProcess('SAVE')">
+            <span class="material-icons"> save </span>
+            <label>Lưu thông tin</label>
+        </button>
+        <!-- <button class="footer" style="padding-right: 20px;"  [disabled]="loading" (click)="createAccount()">  <span class="material-icons"> note_add</span> Lưu</button> -->
+        <div class="footer" (click)="backPage()">
+            <span class="material-icons"> keyboard_backspace </span>
+            <label>Quay lại</label>
+        </div>
+    </div>
+</div>
+<app-lpb-modal headerText="Xác nhận" [show]="isShowPopupApprove" [unit]="'%'" [widthContent]="50" [heightContent]="50"
+    (hideModal)="isShowPopupApprove = false">
+    <div class="account-create-content">
+        <div class="mb-2">
+            Bạn có muốn gửi duyệt dịch vụ này không?
+        </div>
+        <div class="block-note">
+            <label>Ghi chú:&nbsp;&nbsp;</label>
+            <textarea class="form-control" [(ngModel)]="note" cols="80" rows="6"></textarea>
+        </div>
+        <div class="text-right mt-2">
+            <button class="btn-cancel" (click)="confimApproveProcess('CANCEL')">
+                Hủy
+            </button>
+            <button class="btn-save ml-2" (click)="confimApproveProcess('CONFIM')">
+                Đồng ý
+            </button>
+        </div>
+    </div>
+</app-lpb-modal>

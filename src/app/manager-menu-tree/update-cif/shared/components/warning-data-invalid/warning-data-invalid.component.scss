@@ -1,0 +1,24 @@
+.warning-data {
+  &-block {
+    &-header {
+      .header-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0c258a;
+      }
+      i {
+        color: #0c258a;
+      }
+      background-color: #f4732642;
+    }
+    &-content {
+      i {
+        color: #ff0000a8;
+      }
+      .field-error {
+        font-size: 14px;
+        color: #0C258A;
+      }
+    }
+  }
+}

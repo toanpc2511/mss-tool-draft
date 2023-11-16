@@ -1,0 +1,33 @@
+.form-group {
+  padding: 5px 2rem;
+
+  .main-form {
+    display: flex;
+    justify-content: center;
+
+    .form-container {
+      width: 1300px;
+    }
+  }
+}
+
+.row-form {
+  padding: 10px 25px;
+}
+
+.col-form {
+  padding: 0 25px;
+}
+
+.input-height {
+  height: 58px;
+}
+
+.col-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.white-space-pre {
+  white-space: pre;
+}

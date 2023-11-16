@@ -1,0 +1,34 @@
+/*::ng-deep .mat-icon-button {*/
+/*  height: 0;*/
+/*  flex-shrink: 0;*/
+/*  line-height: 0;*/
+/*}*/
+::ng-deep .mat-icon-button:focus {
+  outline: none;
+}
+
+/* .straight-right-border {
+  border-top-right-radius: 0px!important;
+  border-bottom-right-radius: 0px!important;
+}
+.radius-right-border {
+  border-top-right-radius: 4px!important;
+  border-bottom-right-radius: 4px!important;
+} */
+::placeholder {
+  color: #999;
+}
+.cdk-overlay-pane{
+  top: unset !important;
+}
+
+.mat-datepicker-content .mat-calendar {
+  height: 365px !important;
+}
+#border-input-date{
+  border: 1px solid #ced4da;
+}
+.is-invalid {
+  border:1px solid #dc3545 !important;
+  border-radius: .2rem;
+}

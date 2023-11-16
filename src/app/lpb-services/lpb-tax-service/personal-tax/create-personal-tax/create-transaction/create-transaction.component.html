@@ -1,0 +1,472 @@
+<div class="lpb-main px-4 py-2">
+  <span class="icon-back" (click)="backSearchTrans()"><i class="fa fa-arrow-left mr-2"></i>Chọn hóa đơn khác</span>
+  <!--      Thông tin nộp thuế-->
+  <div class="card mt-4">
+    <form [formGroup]="payInfoForm">
+      <p class="card-title px-4">Thông tin nộp thuế</p>
+      <div class="row">
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label>Số hiệu KBNN</label>
+          <p class="font-weight-bold">{{data?.treasuryNumber || '--'}}</p>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label>Cơ quan thu</label>
+          <p class="font-weight-bold">{{data?.organReceive || '--'}}</p>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label>Số GTTT</label>
+          <p class="font-weight-bold">{{data?.number || '--'}}</p>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label>Loại thuế</label>
+          <p class="font-weight-bold">{{data?.taxTypeName || '--'}}</p>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label>Mã số thuế</label>
+          <p class="font-weight-bold">{{data?.taxCode || '--'}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">Tên người nộp thuế</label>
+          <input
+            type="text"
+            formControlName="payerName"
+            placeholder="Nhập tên người nộp thuế"
+            class="form-control"
+            maxlength="250"
+            trimInput
+          />
+          <app-validate
+            [control]="payInfoForm.get('payerName')"
+            error="required"
+            message="Chưa nhập tên người nộp thuế"
+          ></app-validate>
+        </div>
+
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">Địa chỉ</label>
+          <input
+            type="text"
+            formControlName="payerAddress"
+            placeholder="Nhập địa chỉ"
+            class="form-control"
+            maxlength="250"
+            trimInput
+          />
+          <app-validate
+            [control]="payInfoForm.get('payerAddress')"
+            error="required"
+            message="Chưa nhập địa chỉ"
+          ></app-validate>
+        </div>
+
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">Mã DBHC</label>
+          <input
+            type="text"
+            formControlName="administrationCode"
+            placeholder="Nhập mã DBHC"
+            class="form-control"
+            maxlength="250"
+            trimInput
+            (keydown.space)="$event.preventDefault()"
+          />
+          <app-validate
+            [control]="payInfoForm.get('administrationCode')"
+            error="required"
+            message="Chưa nhập mã DBHC"
+          ></app-validate>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--      end-->
+
+  <!--      Tiểu mục-->
+  <div class="mt-4">
+    <p class="card-title">Tiểu mục</p>
+    <div class="w-100 d-flex justify-content-center">
+      <table class="table table-hover w-100" aria-describedby="Tiểu mục">
+        <thead>
+        <tr>
+          <th class="text-center justify-content-center" style="background: #fff">
+            <mat-checkbox
+              color="primary"
+              (change)="onCheckAllChange($event.checked)"
+              [checked]="isSelectedAll()"
+              [indeterminate]="isIndeterminate()">
+            </mat-checkbox>
+          </th>
+          <th class="justify-content-center">STT</th>
+          <th class="justify-content-center">
+            <label class="required">Mã chương</label>
+          </th>
+          <th class="justify-content-center">Tiểu mục</th>
+          <th class="justify-content-center">Tên tiểu mục</th>
+          <!--          <th class="justify-content-center">Số quyết định/ Mã hồ sơ</th>-->
+          <!--          <th class="justify-content-center">Kỳ thuế</th>-->
+          <th class="justify-content-center">Số tiền</th>
+          <th class="justify-content-center">Tài khoản ngân sách</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let subsectionControl of subsectionFormArr.controls, let i = index" [formGroup]="subsectionControl">
+          <td class="text-center justify-content-center">
+            <mat-checkbox
+              color="primary"
+              (change)="onCheckRowChange($event.checked, subsectionControl.value)"
+              [checked]="isSelected(subsectionControl.value)">
+            </mat-checkbox>
+          </td>
+          <td class="text-center justify-content-center">{{i + 1}}</td>
+          <td class="justify-content-center" style="width: 200px">
+            <input
+              type="text"
+              placeholder="Nhập mã chương"
+              formControlName="chapter"
+              class="form-control"
+              trimInput
+              [maxLength]="3"
+              (change)="changeChapter(i)"
+              (keydown.space)="$event.preventDefault()"
+              [textPattern]="{allowRegex: '[0-9]'}"
+            />
+            <app-validate
+              [control]="subsectionControl.get('chapter')"
+              error="required"
+              message="Mã chương không được để trống!"
+            ></app-validate>
+            <app-validate
+              [control]="subsectionControl.get('chapter')"
+              error="minlength"
+              message="Mã chương phải gồm 3 ký tự!"
+            ></app-validate>
+            <app-validate
+              [control]="subsectionControl.get('chapter')"
+              error="existed"
+              message="Mã chương không tồn tại!"
+            ></app-validate>
+          </td>
+          <td class="justify-content-center">{{subsectionControl.get('subSectionCode').value}}</td>
+          <td class="justify-content-center">{{subsectionControl.get('subSectionName').value}}</td>
+          <!--          <td class="justify-content-center">{{subsectionControl.get('decisionNumber').value}}</td>-->
+          <!--          <td class="justify-content-center">{{subsectionControl.get('taxCycle').value}}</td>-->
+          <td class="text-right justify-content-center">{{subsectionControl.get('billAmount').value | vnCurency}}</td>
+          <td class="justify-content-center">{{subsectionControl.get('fund').value}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--      end-->
+
+  <!--      Thửa đất-->
+  <div class="mt-4" *ngIf="data?.taxTypeCode === taxType.TCT_QUERY_TND">
+    <p class="card-title">Thửa đất</p>
+    <app-lpb-datatable
+      [config]="config"
+      [columns]="column"
+      [dataSource]="data?.metadataList"
+    ></app-lpb-datatable>
+  </div>
+  <!--      end-->
+
+  <!--      Số quyết định -->
+  <div class="mt-4" *ngIf="data?.taxTypeCode === taxType.TCT_QUERY_LPTB">
+    <p class="card-title">Số quyết định</p>
+    <app-lpb-datatable
+      [config]="config"
+      [columns]="column"
+      [dataSource]="data?.metadataList"
+    ></app-lpb-datatable>
+  </div>
+  <!--      end-->
+
+  <!--      Thông tin giao dịch-->
+  <div class="card mt-4">
+    <form [formGroup]="transferForm">
+      <p class="card-title px-4">Thông tin giao dịch</p>
+      <div class="row">
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <p>Hình thức giao dịch</p>
+          <mat-radio-group formControlName="paymentType" (change)="changePaymentType()">
+            <mat-radio-button
+              color="primary"
+              *ngFor="let type of paymentMethods"
+              [value]="type.value"
+              class="pr-2">{{type.label}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="">Phí</label>
+          <input
+            type="text"
+            formControlName="fee"
+            placeholder="Nhập phí"
+            class="form-control"
+            maxlength="250"
+            trimInput
+          />
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="">Số tiền thanh toán</label>
+          <input
+            type="text"
+            formControlName="amount"
+            placeholder="Nhập số tiền thanh toán"
+            class="form-control"
+            maxlength="250"
+            decimal-mask
+            trimInput
+          />
+        </div>
+
+        <div class="col-12 mt-2 px-5">
+          <label class="required">Nội dung thanh toán</label>
+          <textarea
+            type="text"
+            formControlName="detail"
+            class="form-control"
+            placeholder="Nhập nội dung thanh toán"
+            maxlength="250"
+            trimInput
+          ></textarea>
+          <app-validate
+            [control]="transferForm.get('detail')"
+            error="required"
+            message="Chưa nhập nội dung thanh toán"
+          ></app-validate>
+          <app-validate
+            [control]="transferForm.get('detail')"
+            error="maxlenght"
+            message="Nội dung thanh toán vượt quá 210 ký tự!"
+          ></app-validate>
+        </div>
+
+        <div class="col-12 mt-2 px-5">
+          <label class="">Ghi chú</label>
+          <textarea
+            type="text"
+            formControlName="note"
+            class="form-control"
+            placeholder="Nhập ghi chú"
+            maxlength="250"
+            trimInput
+          ></textarea>
+          <app-validate
+            [control]="transferForm.get('note')"
+            error="required"
+            message="Chưa nhập ghi chứ"
+          ></app-validate>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--      end-->
+
+  <!--      Thông tin ghi nợ-->
+  <div class="card mt-4" *ngIf="isTransfer">
+    <form [formGroup]="cifInfoForm">
+      <p class="card-title px-4">Thông tin tài khoản ghi nợ</p>
+      <div class="row">
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">CIF</label>
+          <div class="position-relative input-group">
+            <input
+              type="text"
+              placeholder="Nhập số CIF"
+              maxlength="20"
+              class="form-control pr-4"
+              [formControl]="cifInfoForm.controls['cif']"
+              (change)="changeCifInfo()"
+              [textPattern]="{allowRegex: '[0-9]'}"
+              (keydown.space)="$event.preventDefault()"/>
+            <div class="input-group-append">
+              <button
+                mat-raised-button
+                class="btn_blue"
+                (click)="onSearchCifInfo()"
+              ><i class="fa fa-search mr-2" style="color: #fff"></i>
+              </button>
+            </div>
+          </div>
+          <app-validate
+            [control]="cifInfoForm.get('cif')"
+            error="required"
+            message="Chưa nhập số CIF"
+          ></app-validate>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">Tài khoản thanh toán</label>
+          <app-lpb-select2
+            [items]="accNumbers"
+            labelName="accountNumber"
+            [formControl]="cifInfoForm.controls.account"
+            placeholder="Chọn số TKTT">
+          </app-lpb-select2>
+          <app-validate
+            [control]="cifInfoForm.get('account')"
+            error="required"
+            message="Chưa chọn tài khoản thanh toán"
+          ></app-validate>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="">Tên tài khoản</label>
+          <p class="font-weight-bold">{{cifInfoForm.get('accountName').value || '--'}}</p>
+        </div>
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="">Số dư TK trước giao dịch</label>
+          <p class="font-weight-bold">{{(cifInfoForm.get('availableBalance').value | vnCurency) || '--'}}</p>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--      end-->
+
+  <!--      Thông tin ghi có-->
+  <div class="card mt-4">
+    <p class="card-title px-4">Thông tin tài khoản ghi có</p>
+    <form [formGroup]="creditForm">
+      <div class="row">
+        <div class="col-12 col-md-4 mt-2 px-5">
+          <label class="required">Ngân hàng thụ hưởng</label>
+          <app-lpb-select2
+            [items]="beneficiaryBanks"
+            labelName="bankName"
+            formControlName="bankInfo"
+            placeholder="Chọn ngân hàng thụ hưởng">
+          </app-lpb-select2>
+          <app-validate
+            [control]="creditForm.get('bankInfo')"
+            error="required"
+            message="Chưa chọn ngân hàng thụ hưởng"
+          ></app-validate>
+        </div>
+        <div class="col-12 col-md-8 mt-2 px-5">
+          <label class="">Số tài khoản</label>
+          <p class="font-weight-bold">{{creditForm.controls['bankInfo'].value?.bankNumber || '--'}}</p>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--      end-->
+
+  <!--      Thông tin nộp thay-->
+  <div class=" card mt-4">
+    <div class="d-flex justify-content-between">
+      <p class="card-title px-4">
+        <span>Thông tin người nộp thay</span>
+        <i class="fa ml-4 fa-2x pointer-event"
+           [ngClass]="isPayer ? 'fa-minus-circle' : 'fa-plus-circle'"
+           [matTooltip]="isPayer ? 'Xóa người nộp thay' : 'Thêm người nộp thay'"
+           (click)="addInfoUser()"></i>
+      </p>
+      <i class="fa d-block fa-2x" aria-hidden="true" [ngClass]="isPayer ? 'fa-angle-up' : 'fa-angle-down'"></i>
+    </div>
+    <ng-container *ngIf="isPayer">
+      <form [formGroup]="payerInfoForm">
+        <div class="row">
+          <div class="col-12 col-md-4 mt-2 px-5">
+            <label class="">Người nộp thuế thay</label>
+            <input
+              type="text"
+              formControlName="payerName"
+              placeholder="Nhập tên người nộp thuế"
+              class="form-control"
+              maxlength="250"
+              trimInput
+            />
+          </div>
+          <div class="col-12 col-md-4 mt-2 px-5">
+            <label class="">Mã số thuế</label>
+            <input
+              type="text"
+              formControlName="taxCode"
+              placeholder="Nhập mã số thuế"
+              class="form-control"
+              maxlength="250"
+              (keydown.space)="$event.preventDefault()"
+              trimInput
+            />
+          </div>
+          <div class="col-12 col-md-4 mt-2 px-5">
+            <label class="">Địa chỉ</label>
+            <input
+              type="text"
+              (change)="handleReplacerAddress()"
+              formControlName="payerAddress"
+              placeholder="Nhập địa chỉ"
+              class="form-control"
+              maxlength="250"
+              trimInput
+            />
+          </div>
+          <div class="col-12 col-md-4 mt-2 px-5">
+            <label class="">Tỉnh/ Thành phố</label>
+            <app-lpb-select2
+              [apiUrl]="apiCity"
+              (change)="changeCity()"
+              labelName="name"
+              formControlName="city"
+              placeholder="Chọn tỉnh / thành phố"
+            >
+            </app-lpb-select2>
+            <app-validate
+              [control]="payerInfoForm.get('city')"
+              error="required"
+              message="Chưa chọn Tỉnh / Thành phố"
+            ></app-validate>
+          </div>
+          <div class="col-12 col-md-4 mt-2 px-5">
+            <label class="">Quận / Huyện</label>
+            <app-lpb-select2
+              [apiUrl]="apiDistrict"
+              (change)="changeDistrict()"
+              labelName="name"
+              formControlName="district"
+              placeholder="Chọn Quận / Huyện">
+            </app-lpb-select2>
+            <app-validate
+              [control]="payerInfoForm.get('district')"
+              error="required"
+              message="Chưa chọn Quận / Huyện"
+            ></app-validate>
+          </div>
+          <div class="col-12 col-md-4 mt-2 px-5">
+            <label class="">Xã / Phường</label>
+            <app-lpb-select2
+              [apiUrl]="apiWard"
+              (change)="handleReplacerAddress()"
+              labelName="name"
+              formControlName="ward"
+              placeholder="Chọn Xã / Phường">
+            </app-lpb-select2>
+            <app-validate
+              [control]="payerInfoForm.get('ward')"
+              error="required"
+              message="Chưa chọn Xã / Phường"
+            ></app-validate>
+          </div>
+          <div class="col-12 mt-2 px-5">
+            <label class="">Địa chỉ đầy đủ</label>
+            <textarea
+              type="text"
+              formControlName="replacerAddress"
+              class="form-control"
+              placeholder="Địa chỉ cụ thể"
+              maxlength="250"
+              trimInput
+            ></textarea>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+  <!--      end-->
+</div>
+
+<app-lpb-footer [actions]="actions"></app-lpb-footer>

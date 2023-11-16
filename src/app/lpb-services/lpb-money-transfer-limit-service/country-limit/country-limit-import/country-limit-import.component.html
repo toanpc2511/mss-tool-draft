@@ -1,0 +1,76 @@
+<div class="transaction-main">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between"
+  >
+    <div class="d-flex align-items-center">
+      <!--      <i class="fa fa-search mr-2"></i>-->
+      <span>Thông tin import tổng HM</span>
+    </div>
+  </div>
+
+  <div class="search px-4 mt-2">
+    <div class="row">
+
+      <div class="col-12 pb-3 px-5">
+        <span class="required">Tải tệp tin</span>
+        <input
+          type="file"
+          hidden
+          class="form-control"
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          (change)="onSelectedFile($event)"
+          #inputFile
+        />
+        <div class="form-drag-file" draggable="true">
+          <p class="py-1 font-weight-bold"><i class="fa fa-file-excel-o mr-2" style="color: #0C258A"
+                                              *ngIf="fileName"></i> {{ fileName }}</p>
+
+          <div class="action-drag">
+            <p class="mt-2">Kéo thả để tải lên</p>
+            <p class="mt-2">Hoặc</p>
+
+            <button
+              mat-raised-button
+              (click)="inputFile.click()"
+              class="d-inline-block bg-btn__blue text-while"
+            >
+              <i class="fa fa-file-excel-o mr-2" style="color: #fff"></i>
+              Chọn tệp tin
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-right font-weight-bold">
+          <li>Danh sách quốc gia có nhiều mã quốc gia: <span class="text-danger font-weight-bold">AE-UE, CHN-TWN, KH-KHM</span>. Hãy chú ý file import</li>
+        </div>
+      </div>
+
+<!--      <div class="row text-right small">-->
+<!--          <ul class="list-group">-->
+<!--            <li class="list-group-item">AE-UE</li>-->
+<!--            <li class="list-group-item">CHN-TWN</li>-->
+<!--            <li class="list-group-item">KH-KHM</li>-->
+<!--          </ul>-->
+<!--      </div>-->
+    </div>
+
+  </div>
+  <div class="mt-5">
+
+    <app-lpb-datatable
+      [config]="datatableConfig"
+      [columns]="$any(columns)"
+      [dataSource]="dataSource"
+      tableName="Danh sách hạn mức  quốc gia"
+    ></app-lpb-datatable>
+  </div>
+</div>
+
+
+<div [style.height.px]="50">
+  <app-lpb-footer
+    [actions]="actions"
+    class="z-index-footer position-fixed bottom-0 w-100"
+  ></app-lpb-footer>
+</div>

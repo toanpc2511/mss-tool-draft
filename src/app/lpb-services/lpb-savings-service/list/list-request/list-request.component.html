@@ -1,0 +1,19 @@
+<div class="content-body ">
+
+  <div class="content-title p-0 d-flex align-items-center mt-3">
+    <mat-icon>search</mat-icon>
+    <p class="m-0 ml-3"> TÌM KIẾM GIAO DỊCH</p>
+  </div>
+  <app-form-search [form]="formSearch" (searchTransaction)="submitSearchTransaction()"></app-form-search>
+  <app-lpb-datatable tableName="DANH SÁCH GIAO DỊCH" [config]="{
+  hasPaging: true,
+  filterDefault: filterDefault,
+  defaultSort: '',
+  hasSelection: true,
+  hasAddtionButton: true,
+  hiddenActionColumn: false,
+  outputHandleClick: true,
+  hasNoIndex: true
+}" (chkAll)="chkAll($event)" (chkClickChange)="chkClickChange($event)" [searchConditions]="searchCondition"
+    (viewAction)="detail($event)" [columns]="columns" apiServiceURL="/savings-service/transaction"></app-lpb-datatable>
+</div>

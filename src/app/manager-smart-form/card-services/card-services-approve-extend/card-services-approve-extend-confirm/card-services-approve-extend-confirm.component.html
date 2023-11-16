@@ -1,0 +1,103 @@
+<div class="card-services-approve-step-confirm d-flex flex-column">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title text-uppercase">
+    PHÊ DUYỆT DỊCH VỤ {{cardEbsServiceSelected.ebsActionName || ''}}
+  </div>
+  <div class="form-detail d-flex flex-column" [formGroup]="formEbsServiceInfo">
+    <div class="row-fields mt-3 mb-2">
+      <div class="field">
+        <span class="txtLabel">CIF:</span>
+        <input type="text" formControlName="customerCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Thẻ chính / phụ:</span>
+        <input type="text" formControlName="cardCategoryName" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Số GTXM:</span>
+        <input type="text" formControlName="uidValue" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Mã sản phẩm thẻ:</span>
+        <input type="text" formControlName="cardProductCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Tên khách hàng:</span>
+        <input type="text" formControlName="fullName" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Số thẻ:</span>
+        <input type="text" formControlName="cardNumber" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Chi nhánh:</span>
+        <input type="text" formControlName="branchCodeDo" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Tài khoản mặc định:</span>
+        <input type="text" formControlName="defaultAccount" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Loại giao dịch:</span>
+        <input type="text" formControlName="actionName" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Ngày phát hành:</span>
+        <input type="text" formControlName="releaseDate" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Ghi chú:</span>
+        <input type="text" formControlName="sendNote" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Tài liệu đính kèm:</span>
+        <div class="form-control file-upload-info" (click)="download()">
+          <span>{{formEbsServiceInfo.getRawValue().fileName || ''}}</span>
+          <i class="fa fa-cloud-download ml-2" aria-hidden="true"></i>
+        </div>
+<!--        <input type="text" formControlName="fileName" class="form-control">-->
+      </div>
+    </div>
+  </div>
+  <div class="btn-action w-100 d-flex justify-content-center">
+    <button class="btn btn-primary mr-4 btn-action-back" (click)="backToSearch($event)" type="button">Quay lại
+    </button>
+    <button class="btn btn-primary btn-action-reject mr-4" (click)="evtBtnActionClick(ACTION.REJECT)" type="button">Từ chối
+    </button>
+    <button class="btn btn-primary btn-action-send mr-4" (click)="evtBtnActionClick(ACTION.APPROVE)" type="button">Duyệt
+    </button>
+  </div>
+</div>
+
+<app-lpb-modal [headerText]="modalHeader" [show]="isShowModal" [widthContent]="40" [heightContent]="requestType === ACTION.REJECT ? 35: 30"
+               marginTop="200px"
+               (hideModal)="hideModal()">
+  <div class="modal-confirm">
+    <div class="modal-confirm-content">{{modalContent}}<span class="txt-name">{{cardEbsServiceSelected ? cardEbsServiceSelected.fullName : ''}}</span></div>
+    <div class="modal-confirm-reject-reason" *ngIf="requestType === ACTION.REJECT">
+      <textarea [(ngModel)]="txtReason" [class.err-field]="errTextReason !== ''" placeholder="Nhập lý do từ chối" class="form-control w-100" maxlength="200" rows="2"></textarea>
+      <div class="text-left err-text">{{errTextReason}}</div>
+    </div>
+    <div class="modal-confirm-action">
+      <button type="button" class="btn btn-denied mr-2" data-toggle="tooltip" data-placement="left" (click)="evtBtnConfirmClick(ACTION.CANCEL)">Hủy bỏ</button>
+      <button type="button" class="btn btn-accept" data-toggle="tooltip" data-placement="left" (click)="evtBtnConfirmClick(ACTION.CONFIRM_YES)">Đồng ý</button>
+    </div>
+  </div>
+</app-lpb-modal>
+
+<app-lpb-modal [headerText]="modalHeaderError" [show]="isShowModalErr" [widthContent]="25" [heightContent]="30"
+               marginTop="200px"
+               (hideModal)="isShowModalErr = false">
+  <div class="modal-error">
+    <div class="modal-error-content">
+      <span *ngFor="let err of errorsDetail" class=" mb-1">- {{err.detail}}</span><br>
+    </div>
+    <div class="modal-error-action">
+      <button type="button" class="btn btn-accept" data-toggle="tooltip" data-placement="left"
+              (click)="isShowModalErr = false">Đóng
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>

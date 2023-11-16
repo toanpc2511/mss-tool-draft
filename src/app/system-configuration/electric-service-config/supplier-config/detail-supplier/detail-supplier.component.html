@@ -1,0 +1,73 @@
+<div class="supplier">
+  <div class="content-title w-100 text-uppercase d-flex justify-content-between mt-1">
+    <span>Chi tiết nhà cung cấp</span>
+  </div>
+  <div class="supplier-card mt-2">
+    <p class=title>Thông tin chung</p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Mã nhà cung cấp</label>
+        <p class="text-content">{{supplier?.supplierCode}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Tên nhà cung cấp</label>
+        <p class="text-content">{{supplier?.supplierName}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Service</label>
+        <p class="text-content">{{supplier?.supplierMetadata.service}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">MerchantID</label>
+        <p class="text-content">{{supplier?.supplierMetadata.merchantId}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">ServiceID</label>
+        <p class="text-content">{{supplier?.supplierMetadata.serviceId}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">ProductCode</label>
+        <p class="text-content">{{supplier?.supplierMetadata.productCode}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Trạng thái</label>
+        <p class="text-content">{{supplier?.statusName}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="supplier-card">
+    <p class=title>Quy tắc thanh toán</p>
+    <div class="row">
+      <ng-container *ngFor="let item of supplier?.supplierFormGroups, let i = index">
+        <div class="col-12 col-md-6 col-lg-4">
+          <label class="">{{ supplier?.supplierFormGroups[i].name }}</label>
+          <p class="text-content">{{supplier.supplierFormGroups[i].ruleName}}</p>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="supplier-card">
+    <p class=title>Nội dung thanh toán</p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Tiền tố</label>
+        <p class="text-content text-break">{{prefixFormat}}</p>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <label class="">Chi tiết kỳ</label>
+        <p class="text-content text-break">{{billFormatDetail}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-lpb-footer></app-lpb-footer>

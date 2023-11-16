@@ -1,0 +1,46 @@
+<div class="finance-body">
+  <div class="step-search d-flex flex-column">
+    <div class="content-title pt-2 ">
+      <i class="fa fa-search mr-2 txtLabel"></i>
+      TÌM KIẾM GIAO DỊCH
+    </div>
+    <hr />
+    <!-- Search Form -->
+    <search-form [formSearch]="formSearch" [TRANSACTION_STATUSES]="TRANSACTION_STATUSES"
+      [lstProduct]="lstProduct" (submitSearchTransaction)="submitSearchTransaction()"
+      [disableSearch]="waitReversedRecordExist" (showWarningEvent)="openWaitReversedWarning()"></search-form>
+    <!-- End Search Form -->
+    <hr class="h-1px" />
+
+    <ng-template #citadSyncInfoTemp>
+      <div class="w-100 p-2 d-flex justify-content-end" *ngIf="citadSyncInfo">
+        <div class="d-flex mr-3">
+          <span class="mr-2 textLabel">Mã ngân hàng cập nhật lần cuối:</span>
+          <span>{{citadSyncInfo.lastSyncDt | date:'dd/MM/yyyy HH:mm:ss'}}</span>
+        </div>
+
+        <div class="d-flex">
+          <span class="mr-2 textLabel">Trạng thái:</span>
+          <span [style.color]="citadSyncInfo.color" class="font-weight-bold">{{citadSyncInfo.statusVi}}</span>
+        </div>
+      </div>
+    </ng-template>
+
+
+    <app-lpb-datatable tableName="DANH SÁCH GIAO DỊCH" [isDisabledUpdate]="isDisabledUpdate"
+      [templateOther]="citadSyncInfoTemp"
+      [isDisabledDelete]="isDisabledDelete" [config]="{hasNoIndex:true,
+        hasPaging:true,
+        filterDefault: filterDefault,
+        defaultSort: '',
+        hasAddtionButton: true }" [searchConditions]="searchCondition" (deleteAction)="delete($event)"
+      (editAction)="edit($event)" (viewAction)="detail($event)" [columns]="columns"
+      (getRawData)="handleRawData($event)"  #datatable
+      [apiServiceURL]="'/transfer-service/transaction?searchType=' + searchType"></app-lpb-datatable>
+  </div>
+</div>
+
+<div class="fetch-spinner-container" *ngIf="isSynchronizing">
+  <mat-spinner mode="indeterminate" color="accent"></mat-spinner>
+</div>
+<app-lpb-footer *ngIf="actions.length" [actions]="actions" [hiddenBackButton]="true"></app-lpb-footer>

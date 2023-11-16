@@ -1,0 +1,59 @@
+@import '../../../../../popup';
+// .col-12{
+//     display: flex;
+// }
+.colLeft {
+    padding: 0px;
+}
+
+.textLabel {
+    font-size: 14px;
+}
+
+.title-label {
+    color: #0C258A;
+    font-size: 18px;
+    line-height: 21px;
+    font-weight: bold;
+}
+
+.pd0 {
+    padding: 0px;
+    margin-bottom: 5px;
+}
+
+.margin-10 {
+    margin: 10px;
+}
+
+.back-gray {
+    background: rgba(196, 196, 196, 0.2);
+    border-radius: 10px;
+}
+
+.mat-datepicker-toggle {
+    padding: 3px;
+    width: auto;
+    height: 37px;
+}
+
+.mat-icon-button:focus {
+    outline: none;
+}
+
+.clear-css-actions {
+    margin-bottom: unset !important;
+}
+
+.border-input-date {
+    border: 1px solid #ced4da;
+}
+
+::placeholder {
+    color: #999;
+}
+
+.is-invalid {
+    border: 1px solid #dc3545 !important;
+    border-radius: .2rem;
+}

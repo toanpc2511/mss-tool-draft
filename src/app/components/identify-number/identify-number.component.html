@@ -1,0 +1,4 @@
+<input numbersOnly type="text" class="form-control form-control-sm inputText"
+       (input)="onChange($event.target.value)"
+       (focusout)="checkIsExist()"
+       [formControl]="myControl" placeholder="VD: 026198002555">

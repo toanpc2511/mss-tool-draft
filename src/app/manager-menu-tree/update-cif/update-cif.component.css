@@ -1,0 +1,7 @@
+.update-cif{background-color:#fff;margin-left:5px;margin-right:5px;border-top:1px solid #bdbdbd}
+.update-cif-content-title{color:#17589f;border-bottom:1px solid #bdbdbd;padding:8px 0px;display:flex}
+.update-cif-content-title .mat-icon{float:unset !important}
+.update-cif-content-title span{align-self:center;font-size:18px;font-weight:500}
+.update-cif-info-customer{display:flex;justify-content:space-between;padding-top:24px;padding-left:32px;padding-right:32px}
+.update-cif-info-customer .col-info-left,.update-cif-info-customer .col-info-right{width:50%;padding-right:24px;display:flex;flex-direction:column}
+.update-cif-address{padding-left:32px;padding-right:32px}

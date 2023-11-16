@@ -1,0 +1,338 @@
+<div class="uc-reference-cif">
+    <div class="uc-reference-cif-search" [ngClass]="isShowAddReferenceCif ? 'd-show' : 'd-none'">
+        <div class="row-item-info">
+            <div class="label-field">Khách hàng cá nhân <span class="item-require">(*)</span></div>
+            <div class="label-action">
+                <input class="form-control" [(ngModel)]="codeCustomer" type="text" (change)="customerChange()">
+                <div class="error-msg" *ngIf="errMsgSearchCustomer !== ''">{{errMsgSearchCustomer}}</div>
+            </div>
+            <button class="fa fa-search" (click)="searchCustomer()"></button>
+            <app-lpb-modal headerText="Danh sách khách hàng" [show]="isListCustomer" [unit]="'%'" [widthContent]="65"
+                [heightContent]="50" (hideModal)="isListCustomer = false">
+                <div class="uc-reference-cif-content">
+                    <div class="table table-striped content-table">
+                        <table>
+                            <thead>
+                                <tr class="text-nowrap">
+                                    <th>Tên khách hàng</th>
+                                    <th>Mã CIF</th>
+                                    <th>Số GTXM</th>
+                                    <th>Ngày cấp GTXM</th>
+                                    <th>Nơi cấp GTXM</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of customers;let i = index"
+                                    [ngStyle]="{'background-color': i % 2 == 0  ? 'rgba(0,0,0,.05)' : null }"
+                                    (click)="selectCustomer(item.CUSTOMER_NO)">
+                                    <td>{{item.FULL_NAME}}</td>
+                                    <td>{{item.CUSTOMER_NO}}</td>
+                                    <td>{{item.UID_VALUE }}</td>
+                                    <td>{{item.NGAY_CAP }}</td>
+                                    <td>{{item.NOI_CAP}}</td>>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="div-center">
+                            {{msgEmpty}}
+                        </div>
+                        <div class="btn-action">
+                            <button class="btn-close mr-2" (click)="close()">Đóng</button>
+                            <button class="btn-save" (click)="addNewReferenceCif()">Tạo mới</button>
+                        </div>
+                    </div>
+                </div>
+            </app-lpb-modal>
+        </div>
+        <div class="row-item-info" #refScroll>
+            <div class="label-field"></div>
+            <div class="value-field">
+                <div class="control-item rd-nowrap-text">
+                    <div class="grRadio">
+                        <div class="rd-item">
+                            <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)"
+                                [(ngModel)]="typeCustomer" name="typeCustomer" id="rd-1" value="">
+                            <label for="rd-1">
+                                Số GTXM
+                            </label>
+                        </div>
+                        <div class="rd-item">
+                            <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)"
+                                [(ngModel)]="typeCustomer" name="typeCustomer" id="rd-2"
+                                value="{{typeParamSearch.cif}}">
+                            <label for="rd-2">
+                                Mã CIF
+                            </label>
+                        </div>
+                        <div class="rd-item">
+                            <input type="radio" class="mr-1" (ngModelChange)="typeCustomerChange($event)"
+                                [(ngModel)]="typeCustomer" name="typeCustomer" id="rd-3"
+                                value="{{typeParamSearch.phone}}">
+                            <label for="rd-3">
+                                Số điện thoại
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="uc-reference-cif-info " [ngClass]="isShowAddReferenceCif ? 'd-show' : 'd-none'">
+    </div>
+    <div class="uc-reference-cif-info" [ngClass]="isShowAddReferenceCif ? 'd-show' : 'd-none'">
+        <div class="info">
+            <div class="info-left"
+                [ngClass]="{'d-show': isShowAddReferenceCif, 'd-none' : !isShowAddReferenceCif, 'body-edit': !isOnlyView, 'body-disable': isOnlyView}">
+                <div class="row-item-info" [ngClass]="isShowEffect ? 'd-show' : 'd-none'">
+                    <div class="label-field">Tình trạng <span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <div class="control-item">
+                            <div class="grRadio w-100">
+                                <div class="rd-item">
+                                    <input type="radio" [(ngModel)]="inEffect" class="mr-1" name="inEffect"
+                                        id="inEffectYes" [value]="true">
+                                    <label for="inEffect">
+                                        Hiệu lực
+                                    </label>
+                                </div>
+                                <div class="rd-item">
+                                    <input type="radio" [(ngModel)]="inEffect" class="mr-1" name="inEffect"
+                                        id="inEffectNo" [value]="false">
+                                    <label for="inEffectNo">
+                                        Hết hiệu lực
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-item-info">
+                    <div class="label-field">Mã CIF:</div>
+                    <div class="value-field">
+                        <div class="control-item">
+                            <input [(ngModel)]="cifCode" class="input-field text-disable" type="text" name="" id="">
+                        </div>
+                    </div>
+                </div>
+                <div class="row-item-info">
+                    <div class="label-field">Họ và tên <span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <div class="control-item ">
+                            <input oninput="this.value = this.value.toUpperCase()" class="form-control"
+                                [class.error-invalid]="errMsgFullName !== ''" #refocus
+                                (change)="fullNameInputChange($event)" [(ngModel)]="fullName" (blur)="validFullName()"
+                                maxlength="35" type="text">
+                        </div>
+                        <div class="error-msg" *ngIf="errMsgFullName !== ''">{{errMsgFullName}}</div>
+                    </div>
+                </div>
+                <div class="row-item-info">
+                    <div class="label-field">Ngày sinh <span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <div class="control-item">
+                            <app-lpb-date-picker #dpDateOfBirth
+                                (keyup)="dateInputChange($event.target.value,'NGAY_SINH')"
+                                (blurInput)="blurDateOfBirth($event)" (dateChanged)="dateOfBirthChanged()">
+                            </app-lpb-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-item-info">
+                    <div class="label-field">Giới tính <span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <div class="control-item">
+                            <div class="grRadio">
+                                <div class="rd-item" *ngFor="let item of lstGender;let i = index">
+                                    <ng-tempate *ngIf="item.code !=='O'">
+                                        <input type="radio" [(ngModel)]="genderCode" class="mr-1" [name]="item.code"
+                                            [id]="item.code" [value]="item.code">
+                                        <label [for]="item.code">
+                                            {{item.name}}
+                                        </label>
+                                    </ng-tempate>
+                                    <!-- trường hợp  hiện hữu có giới tính khác mới cho hiện thỉ -->
+                                    <ng-tempate *ngIf="genderCode ==='O' && i === lstGender.length - 1">
+                                        <input type="radio" [(ngModel)]="genderCode" class="mr-1" [name]="item.code"
+                                            [id]="item.code" [value]="item.code">
+                                        <label [for]="item.code">
+                                            {{item.name}}
+                                        </label>
+                                    </ng-tempate>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-item-info">
+                    <div class="label-field">Số điện thoại<span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <div class="control-item">
+                            <input [(ngModel)]="mobileNo" [class.error-invalid]="errMsgMobileNo !== ''"
+                                (keypress)="mobileInputChange($event)" maxlength="10" type="text" class="form-control"
+                                (blur)="validatePhoneNumber()">
+                        </div>
+                        <div class="error-msg" *ngIf="errMsgMobileNo !== ''">{{errMsgMobileNo}}</div>
+                    </div>
+                </div>
+                <div class="row-item-info">
+                    <div class="label-field">Mối quan hệ<span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <div class="control-item">
+                            <select class="form-control form-control-sm" [(ngModel)]="typeRelationship"
+                                [class.error-invalid]="errMsgRelationship !== ''" (change)="validateRelationship()"
+                                (blur)="validateRelationship()">
+                                <option value="" selected disabled>Chọn mối quan hệ</option>
+                                <option *ngFor="let item of lstRelationship"
+                                    [attr.selected]="item.code === typeRelationship ? '':null" [value]="item.code">
+                                    {{item.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="error-msg" *ngIf="errMsgRelationship !== ''">{{errMsgRelationship}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-right"
+                [ngClass]="{'d-show': isShowAddReferenceCif, 'd-none' : !isShowAddReferenceCif, 'body-edit': !isOnlyView, 'body-disable': isOnlyView}">
+                <div class="row-item-info">
+                    <div class="label-field">Quốc tịch<span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <div class="control-item">
+                            <app-lpb-select [selectedItem]="selectedNationality" [txtPlaceholder]="'Chọn Quốc tịch'"
+                                [lstOptions]="lstCountry" (selectedChangeOption)="nationalityFirstChange($event)">
+                            </app-lpb-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-item-info">
+                    <div class="label-field">Loại GTXM<span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <div class="control-item">
+                            <select class="form-control form-control-sm" [(ngModel)]="perDocTypeCode"
+                                [class.error-invalid]="errMsgTypeVerifyDocsFirst !== ''"
+                                (blur)="validateTypeVerifyDocsFirst()"
+                                (change)="onChangeDocsTypeFirst($event.target.value)">
+                                <option [value]="initValueVerifyDocs" disabled selected>Chọn loại GTXM</option>
+                                <option *ngFor="let item of lstVerifyDocs"
+                                    [attr.selected]="item.code === perDocTypeCode? '':null" [value]="item.code">
+                                    {{item.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="error-msg" *ngIf="errMsgTypeVerifyDocsFirst !== ''">{{errMsgTypeVerifyDocsFirst}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row-item-info">
+                    <div class="label-field">Số GTXM <span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <div class="control-item">
+                            <input type="text" [(ngModel)]="verifyNumberDocsFirst"
+                                (blur)="validateVerifyNumberDocsFirst()" maxlength="20"
+                                (keyup)="verifyNumberInputChange($event.target.value)"
+                                [ngModelOptions]="{standalone: true}" class="form-control"
+                                [class.error-invalid]="errMsgVerifyNumberDocsFirst !== ''">
+                        </div>
+                        <div class="error-msg" *ngIf="errMsgVerifyNumberDocsFirst !== ''">
+                            {{errMsgVerifyNumberDocsFirst}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row-item-info">
+                    <div class="label-field">Ngày cấp <span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <app-lpb-date-picker #dpDateSupplyFirst
+                            (keyup)="dateInputChange($event.target.value, 'NGAY_CAP')"
+                            (blurInput)="supplyDateFirstBlur()" (dateChanged)="supplyDateFirstChange()">
+                        </app-lpb-date-picker>
+                    </div>
+                </div>
+                <div class="row-item-info">
+                    <div class="label-field">Nơi cấp <span class="item-require">(*)</span></div>
+                    <div class="value-field">
+                        <div class="control-item">
+                            <input [(ngModel)]="identifyAddress" [disabled]="!allowEditProvideByFirst"
+                                [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                                [class.error-invalid]="errMsgProvideByFirst !== ''" (blur)="validateProvideByFirst()">
+                        </div>
+                        <div class="error-msg" *ngIf="errMsgProvideByFirst !== ''">
+                            {{errMsgProvideByFirst}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="div-center">
+            <div class="uc-legal-action mt-3 w-100 div-center">
+                <button class="mr-2 btn-save" (click)="saveAction()"
+                    [ngClass]="isShowAddReferenceCif && !isOnlyView? 'd-show' : 'd-none'">Lưu</button>
+                <button class="btn-cancel" (click)="cancelAction()"
+                    [ngClass]="isShowAddReferenceCif ? 'd-show' : 'd-none'">Hủy</button>
+            </div>
+        </div>
+    </div>
+    <div class="uc-reference-cif-content">
+        <div class="content-title">
+            <span>DANH SÁCH CIF LIÊN QUAN</span>
+            <button (click)="showNewGuardian()" [ngClass]="!isShowAddReferenceCif ? 'btn-add' : 'btn-close'"
+                [disabled]="isShowAddReferenceCif ? 'disabled': null">Thêm mới </button>
+        </div>
+        <div class="content-table table table-striped">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Họ và tên</th>
+                        <th>Mã CIF</th>
+                        <th>Số điện thoại</th>
+                        <th>Số GTXM</th>
+                        <th>Mối quan hệ</th>
+                        <th>Tình trạng</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of referenceCifs;let i = index">
+                        <td class="link-action" (click)="fillDataViewOnly(i)">{{item.fullName}}</td>
+                        <td>{{item.customerCode}}</td>
+                        <td>{{item.phoneNumber}}</td>
+                        <td>{{item.identifyCode}}</td>
+                        <td>
+                            <ng-container *ngFor="let relationship of lstRelationship">
+                                {{relationship.code === item.relationshipType ? relationship.name : ''}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            {{item.inEffect !== null ? (item.inEffect ? 'Hiệu lực':'Hết hiệu lực') :''}}
+                        </td>
+                        <td class="td-col-action" [ngStyle]="{'padding-left': item.inEffect === null ? '33px' : null }">
+                            <div class="action">
+                                <div class="material-icons btn-icon-edit btn-edit" (click)="editData(i)">edit</div>
+                                <div *ngIf="item.inEffect === null" class="material-icons btn-icon-delete btn-delete"
+                                    (click)="showPopupRemove(i)">
+                                    delete
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <app-lpb-modal headerText="Bạn có chăc chắn thực hiện thao tác?" [show]="isDeleteRow" [unit]="'%'"
+                [widthContent]="50" [heightContent]="30" (hideModal)="isDeleteRow = false">
+                <div class="uc-guardian-cif-content">
+                    <div class="div-center">
+                        <button class="btn-cancel btn-space-confim" (click)="confimRemoveData('CANCEL')">
+                            Hủy
+                        </button>
+                        <button class="btn-save" (click)="confimRemoveData('CONFIM')">
+                            Đồng ý
+                        </button>
+                    </div>
+                </div>
+            </app-lpb-modal>
+        </div>
+        <div class="div-center">
+            <button class="btn-save" (click)="complate()">Hoàn thành</button>
+        </div>
+    </div>
+</div>

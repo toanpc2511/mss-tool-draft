@@ -1,0 +1,33 @@
+<div class="tax">
+  <div class="tax-header my-3">
+    <label>Danh mục dùng chung</label>
+  </div>
+  <div class="tax-main mt-4 mx-5">
+    <div class="row">
+      <div class="col-6 col-lg-4 my-3" *ngFor="let item of categoryTypes">
+        <div class="tax-item text-center ">
+          <p>{{item.label}}</p>
+          <div class="d-flex justify-content-center gap-4 mt-4">
+            <button
+              mat-raised-button
+              class="d-inline-block bg-btn__blue"
+              (click)="onUpdate(item.apiUpdate)"
+            >
+              Cập nhật
+            </button>
+            <button
+              mat-raised-button
+              class="d-inline-block bg-btn__blue"
+              (click)="exportFile(item.apiExport)"
+            >
+              Xuất excel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-lpb-footer
+  class="z-index-footer position-fixed bottom-0 w-100"
+></app-lpb-footer>

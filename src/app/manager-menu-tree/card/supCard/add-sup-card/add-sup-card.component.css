@@ -1,0 +1,116 @@
+.label-title {
+    font-size: 18px;
+    line-height: 21px;
+    text-align: right;
+    /* 384961 */
+    color: #384961;
+}
+
+.information {
+    font-weight: 700;
+    line-height: 21px;
+    text-align: right;
+    color: #252834;
+}
+
+.label-infor {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: #384961;
+}
+
+.btn {
+    font-size: 14px;
+}
+
+.btn:hover {
+    color: #fff;
+}
+
+.label-under {
+    line-height: 21px;
+    text-align: right;
+    color: #252834;
+}
+
+.label-under-first {
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 19px;
+    color: #252834;
+}
+
+.label-under-nd {
+    font-size: 16px;
+    line-height: 19px;
+    color: #333333;
+}
+
+input[type=radio] {
+    width: 20px;
+    height: 20px;
+}
+
+.material-icons {
+    color: #fff;
+}
+
+.mat-icon {
+    font-size: 20px;
+    display: block;
+    float: left;
+    color: #1F69BC;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.error-message {
+    font-size: 16px;
+}
+
+.footer-row {
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+
+.footer {
+    padding: 6px !important;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+
+.col-12 {
+    margin: 0;
+}
+
+@media (max-width:1400px) {
+    mat-icon {
+        height: 20px;
+        width: 20px;
+        font-size: 25px !important;
+        margin-top: 3px;
+    }
+    .line-base {
+        padding: 0 !important;
+    }
+    input[type=radio] {
+        width: 15px;
+        height: 15px;
+    }
+    .error-message {
+        font-size: 13px;
+    }
+}

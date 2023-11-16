@@ -1,0 +1,270 @@
+<!-- thong tin khach hang -->
+<div class="container-fuild">
+    <div class="ebanking-content box-shadow">
+        <div class="customer-info">
+            <app-process-info [processId]="processId"></app-process-info>
+            <app-ebanking-list *ngIf="step === 'HOME'" (viewEbankingDetail)="viewEbankingDetail($event)" (editEbanking)="editEbanking($event)" [customerName]="customerName" (cancelEbank)="cancelEbank($event)"></app-ebanking-list>
+            <app-ebanking-detail *ngIf="step === 'DETAIL'" [objEbankingSelected]="objEbankSelected"></app-ebanking-detail>
+            <app-ebanking-add-or-edit #addOrEditComponent *ngIf="step === 'CREATE' || step === 'EDIT'" [actionType]="step" (changeStep)="showStep($event)" [objEbankingSelected]="objEbankSelected" [objProcessDetail]="processDetail"></app-ebanking-add-or-edit>
+        </div>
+    </div>
+    <div class="row footer-row">
+        <div class="col-12 group-action" *ngIf="step === 'HOME'">
+            <div class="footer ml-1" (click)="createEbanking()">
+                <span class="material-icons mr-2">add</span>
+                <label>Tạo mới</label>
+            </div>
+            <div class="footer" (click)="backStep()">
+                <span class="material-icons mr-2">keyboard_backspace</span>
+                <label>Quay lại</label>
+            </div>
+        </div>
+
+        <div class="col-12 group-action" *ngIf="step === 'DETAIL'">
+            <div class="footer ml-1" *ngIf="objEbankSelected.currentStatusCode !== 'ACTIVE'" (click)="delete()">
+                <span class="material-icons mr-2">delete</span>
+                <label>Xóa</label>
+            </div>
+            <app-aprove-one></app-aprove-one>
+            <div class="footer ml-1" *ngIf="objEbankSelected.currentStatusCode !== 'ACTIVE'" (click)="editEbanking()">
+                <span class="material-icons mr-2">edit</span>
+                <label>Chỉnh sửa</label>
+            </div>
+            <div class="footer" *ngIf="objEbankSelected.currentStatusCode === 'ACTIVE'" (click)="cancelEbank()">
+                <span class="material-icons mr-2">close</span>
+                <label>Hủy Dịch vụ</label>
+            </div>
+            <div class="footer" (click)="backStep()">
+                <span class="material-icons mr-2">keyboard_backspace</span>
+                <label>Quay lại</label>
+            </div>
+
+        </div>
+
+        <div class="col-12 group-action" *ngIf="step === 'CREATE' || step === 'EDIT'">
+            <div class="footer ml-1" (click)="saveEbanking()">
+                <span class="material-icons mr-2">save</span>
+                <label>Lưu</label>
+            </div>
+            <div class="footer" (click)="backStep()">
+                <span class="material-icons mr-2">keyboard_backspace</span>
+                <label>Quay lại</label>
+            </div>
+        </div>
+
+    </div>
+    <!--
+<div>
+  <div class="col-12 titleSearch">
+    <i class="fa fa-plus-square" aria-hidden="true" style="color:#828282;"></i>
+    <span style="color: #252834;padding-left: 10px;">THÔNG TIN KHÁCH HÀNG</span>
+  </div>
+  <div class="col-12" style="display: flex; border-bottom: 1px solid #BDBDBD;padding-top: 15px;padding-bottom: 15px;">
+    <div class="col-6 colLeft">
+      <div class="row">
+        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Mã khách hàng
+        </label>
+        <div class="col-sm-7 txt">
+          <label>XXXXX</label>
+        </div>
+      </div>
+      <div class="row">
+        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Ngày sinh
+        </label>
+        <div class="col-sm-7 txt">
+          <label>11/09/1998</label>
+        </div>
+      </div>
+      <div class="row">
+        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Địa chỉ email
+        </label>
+        <div class="col-sm-7 txt">
+          <label>thaont8@gmail.com</label>
+        </div>
+      </div>
+      <div class="row">
+        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Số giấy tờ xác minh
+        </label>
+        <div class="col-sm-7 txt">
+          <label>026198002425</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 colRight">
+      <div class="row">
+        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Họ và tên
+        </label>
+        <div class="col-sm-7 txt">
+          <label>NGUYEN THU THAO</label>
+        </div>
+      </div>
+      <div class="row">
+        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Giới tính
+        </label>
+        <div class="col-sm-7 txt">
+          <label>Nữ</label>
+        </div>
+      </div>
+      <div class="row">
+        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Điện thoại di động
+        </label>
+        <div class="col-sm-7 txt">
+          <label>0398434888</label>
+        </div>
+      </div>
+      <div class="row">
+        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Trạng thái
+        </label>
+        <div class="col-sm-7 txt">
+          <label>Khởi tạo</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="eBankingListShower; then showList else showAction"></div>
+  <ng-template #showList>
+    <div class="col-12 titleSearch" style="display: flex;">
+      <div class="col-6" style="float: left;padding-top: 10px;padding-left: 0px;">
+        <i class="fa fa-folder-open" aria-hidden="true" style="color:#828282;"></i>
+        <span style="color: #252834;padding-left: 10px;">DANH SÁCH EBANKING</span>
+      </div>
+      <div class="col-6" style="float: left;text-align: right;">
+        <button type="button" class="btn btn-primary" style="background: #23388F;" (click)="createAccount()">
+          <mat-icon aria-hidden="false" style="display: block;float: left;">add</mat-icon>
+          <span style="display: block;float: left;">Thêm mới</span>
+        </button>
+      </div>
+    </div>
+    <div class="col-12">
+      <table class="table" style="margin-top: 20px;">
+        <tr>
+          <th>Tài khoản đăng nhập</th>
+          <th>Tài khoản mặc định</th>
+          <th>Trạng thái hồ sơ</th>
+          <th>Trạng thái dịch vụ</th>
+          <th class="action">Tác vụ</th>
+        </tr>
+        <tr *ngFor="let acc of accLst">
+          <td (click)="detailAccount(acc)" style="cursor: pointer; color: -webkit-link">{{ acc.loginAccount }}</td>
+          <td>{{ acc.defaultAccount }}</td>
+          <td>{{ acc.processStatus }}</td>
+          <td>{{ acc.serviceStatus }}</td>
+          <td>
+            <div class="row justify-content-center">
+              <button type="button" class="btn btn-sm btn-outline-primary" (click)="updateAccount(acc)">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </button> &nbsp; &nbsp;
+              <button type="button" class="btn btn-sm btn-outline-danger" (click)="openDeleteModal(acc)">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="accLst.length === 0">
+          <td colspan="5" style="background: #F2F2F2">Không có dữ liệu</td>
+        </tr>
+      </table>
+    </div>
+  </ng-template>
+  <ng-template #showAction>
+    <div class="col-12 titleSearch" style="display: flex;">
+      <div class="col-6" style="float: left;padding-top: 10px;padding-left: 0px;">
+        <i class="fa fa-plus-square" aria-hidden="true" style="color:#828282;"></i>
+        <span style="color: #252834;padding-left: 10px;">THÔNG TIN DỊCH VỤ E-BANKING</span>
+      </div>
+      <div class="col-6" style="float: left;text-align: right;">
+        <button type="button" class="btn btn-primary" style="background: #23388F;" (click)="backToList()">
+          <mat-icon aria-hidden="false" style="display: block;float: left;">arrow_back_ios</mat-icon>
+          <span style="display: block;float: left;">Trở về</span>
+        </button>
+      </div>
+    </div>
+    <div class="col-12" style="display: flex;padding-bottom: 25px;padding-left: 0px;padding-right: 0px;"
+      [formGroup]="eBankingForm">
+      <div class="col-6 colLeft">
+        <div class="form-group row" style="padding-top: 35px;">
+          <label class="col-sm-4 col-form-label textLabel">Tên đăng nhập
+          </label>
+          <div class="col-sm-8 input-group">
+            <input class="form-control form-control-sm" type="text" formControlName="loginAccount">
+            <div class="input-group-append">
+              <button type="submit" class="form-control form-control-sm btn-primary">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row required">
+          <label class="col-sm-4 col-form-label textLabel control-label">TK thanh toán phí
+          </label>
+          <div class="col-sm-8">
+            <select class="form-control form-control-sm" formControlName="paymentAccount">
+              <option>[Tài khoản mới - 1]</option>
+              <option>[Tài khoản mới - 2]</option>
+              <option>[Tài khoản mới - 3]</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row required">
+          <label class="col-sm-4 col-form-label textLabel control-label">PT Xác thực
+          </label>
+          <div class="col-sm-8">
+            <select class="form-control form-control-sm" formControlName="authorizedMethod">
+              <option>SMS OTP</option>
+              <option>Token</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label textLabel">Mã nhân viên
+          </label>
+          <div class="col-sm-8">
+            <select class="form-control form-control-sm" formControlName="employeeId">
+              <option>employeeId 1</option>
+              <option>employeeId 2</option>
+              <option>employeeId 3</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 colRight">
+        <div class="form-group row required" style="padding-top: 35px;">
+          <label class="col-sm-4 col-form-label textLabel control-label">Email
+          </label>
+          <div class="col-sm-8">
+            <input class="form-control form-control-sm" type="text" formControlName="email">
+          </div>
+        </div>
+        <div class="form-group row required">
+          <label class="col-sm-4 col-form-label textLabel control-label">Gói dịch vụ
+          </label>
+          <div class="col-sm-8">
+            <select class="form-control form-control-sm" formControlName="accountPlan">
+              <option>VIP 1</option>
+              <option>VIP 2</option>
+              <option>VIP 3</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row required">
+          <label class="col-sm-4 col-form-label textLabel control-label">Số điện thoại
+          </label>
+          <div class="col-sm-8 input-group">
+            <input class="form-control form-control-sm" type="text" formControlName="phone">
+            <div class="input-group-append">
+              <button type="submit" class="form-control form-control-sm btn-primary">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12" style="text-align: right;padding-top: 15px;border-top: 1px solid #BDBDBD;">
+      <button type="button" class="btn btn-color" style=" width: 200px;color: white;" (click)="onSubmit()">
+        {{ eBankingUpdating ? 'Cập nhật thông tin' : 'Lưu thông tin' }}
+      </button>
+    </div>
+  </ng-template>
+</div> -->
+    <!-- ket thuc danh sach account -->

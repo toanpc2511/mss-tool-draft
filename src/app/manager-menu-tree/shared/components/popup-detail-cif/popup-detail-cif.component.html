@@ -1,0 +1,1152 @@
+<div class="detail-cif">
+    <div class="detail-cif-title">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <span>Thông tin khách hàng </span>
+    </div>
+    <div class="detail-cif-person mt-5">
+        <div class="info">
+            <span class="block-title">Khối thông tin cá nhân</span>
+            <div class="row-item-info">
+                <label class="title-label">CIF Bank </label>
+                <label class="content-label">{{objCifDetail?.customerCode ? objCifDetail?.customerCode : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">CIF Ví </label>
+                <label class="content-label"></label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Họ và tên </label>
+                <label class="content-label">{{objPerson?.fullName ? objPerson?.fullName : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Giới tính </label>
+                <label class="content-label">{{objPerson?.genderName ? objPerson?.genderName : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Ngày sinh </label>
+                <label class="content-label">{{objPerson?.dateOfBirth ? objPerson?.dateOfBirth : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Quốc tịch 1 </label>
+                <label class="content-label">{{objPerson?.nationality1Name ? objPerson?.nationality1Name : ''}}</label>
+            </div>
+            <div class="row-item-info" [hidden]="!objPerson?.nationality2Name">
+                <label class="title-label">Quốc tịch 2 </label>
+                <label class="content-label">{{objPerson?.nationality2Name ? objPerson?.nationality2Name : ''}}</label>
+            </div>
+            <div class="row-item-info" [hidden]="!objPerson?.nationality3Name">
+                <label class="title-label">Quốc tịch 3 </label>
+                <label class="content-label">{{objPerson?.nationality3Name ? objPerson?.nationality3Name : ''}}</label>
+            </div>
+            <div class="row-item-info" [hidden]="!objPerson?.nationality4Name">
+                <label class="title-label">Quốc tịch 4 </label>
+                <label class="content-label">{{objPerson?.nationality4Name ? objPerson?.nationality4Name : ''}}</label>
+            </div>
+            <!-- <div class="row-item-info">
+                <label class="title-label">Miễn thị thực nhập cảnh </label>
+                <label class="content-label">{{objPerson?.visaExemption ? 'Có' : 'Không'}}</label>
+            </div> 
+            <ng-template
+                [ngIf]="!objPerson?.visaExemption && objPerson?.visaIssueDate !==null && objPerson?.visaExpireDate !== null">
+                <div class="row-item-info">
+                    <label class="title-label">Thị thực nhập cảnh </label>
+                    <label class="content-label">{{objPerson?.visaIssueDate ? objPerson?.visaIssueDate : ''}} &nbsp;
+                        ~&nbsp; {{objPerson?.visaExpireDate ? objPerson?.visaExpireDate : ''}}</label>
+                </div>
+            </ng-template> -->
+            <div class="row-item-info" *ngIf="objPerson?.visaExemption === true">
+                <label class="title-label">Miễn thị thực nhập cảnh </label>
+                <label class="content-label">Có</label>
+            </div>
+            <div class="row-item-info" *ngIf="objPerson?.visaExemption === false
+                       || objPerson?.visaExemption === null
+                       && objPerson?.nationality1Code !=='VN' ">
+                <label class="title-label">Miễn thị thực nhập cảnh </label>
+                <label class="content-label">Không</label>
+            </div>
+            <div class="row-item-info" *ngIf="objPerson?.visaIssueDate">
+                <label class="title-label">Từ ngày </label>
+                <label class="content-label">{{objPerson?.visaIssueDate ?
+                    objPerson.visaIssueDate : ''}}</label>
+            </div>
+            <div class="row-item-info" *ngIf="objPerson?.visaExpireDate">
+                <label class="title-label">Đến ngày </label>
+                <label class="content-label">{{objPerson?.visaExpireDate ?
+                    objPerson.visaExpireDate : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Mã số thuế</label>
+                <label class="content-label">{{objPerson?.taxCode ? objPerson?.taxCode : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Người cư trú </label>
+                <label class="content-label">{{objPerson?.residentStatus ? 'Có' : 'Không'}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Nghề nghiệp </label>
+                <label class="content-label">{{objPerson?.professionName ? objPerson?.professionName : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Nơi công tác</label>
+                <label class="content-label">{{objPerson?.workPlace ? objPerson?.workPlace : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Chức vụ </label>
+                <label class="content-label">{{objPerson?.position ? objPerson?.position : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Điện thoại </label>
+                <label class="content-label">{{objPerson?.mobileNo ? objPerson?.mobileNo : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Email</label>
+                <label class="content-label">{{objPerson?.email ? objPerson?.email : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Nhu cầu sử dụng thấu chi</label>
+                <label class="content-label">{{objPerson?.creditStatus ? 'Có' : 'Không'}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Nhận lương qua LienVietPostBank</label>
+                <label class="content-label">{{objPerson?.payStatus ? 'Có' : 'không'}}</label>
+            </div>
+        </div>
+        <div class="verifyDoc">
+            <div class="blockVerifyDoc" *ngFor="let p of objPerson?.perDocNoList, index as i">
+                <span class="block-title">Khối GTXM {{i + 1}}</span>
+                <div class="row-item-info">
+                    <label class="title-label">Loại GTXM </label>
+                    <label class="content-label">{{p.perDocTypeName ? p.perDocTypeName : ''}}</label>
+                </div>
+                <div class="row-item-info">
+                    <label class="title-label">Số GTXM </label>
+                    <label class="content-label">{{p.perDocNo ? p.perDocNo : ''}}</label>
+                </div>
+                <div class="row-item-info">
+                    <label class="title-label">Nơi cấp </label>
+                    <label class="content-label"> {{p.issuePlace ? p.issuePlace : ''}}</label>
+                </div>
+                <div class="row-item-info">
+                    <label class="title-label">Ngày cấp </label>
+                    <label class="content-label">{{p.issueDate ? p.issueDate : ''}}</label>
+                </div>
+                <div class="row-item-info">
+                    <label class="title-label">Ngày hết hiệu lực </label>
+                    <label class="content-label">{{p.expireDate ? p.expireDate : ''}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="detail-cif-address">
+        <div class="current-address">
+            <span class="block-title">Địa chỉ hiện tại</span>
+            <div class="row-item-info">
+                <label class="title-label"> Quốc gia </label>
+                <label class="content-label">{{objPerson?.currentCountryName ? objPerson?.currentCountryName :
+                    ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Tỉnh / thành phố </label>
+                <label class="content-label">{{objPerson?.currentCityName ? objPerson?.currentCityName : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Quận / huyện </label>
+                <label class="content-label">{{objPerson?.currentDistrictName ? objPerson?.currentDistrictName :
+                    ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Phường / xã </label>
+                <label class="content-label">{{objPerson?.currentWardName ? objPerson?.currentWardName : ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Số nhà, Đường phố </label>
+                <label class="content-label">{{objPerson?.currentStreetNumber ? objPerson?.currentStreetNumber :
+                    ''}}</label>
+            </div>
+        </div>
+        <div class="resident-address">
+            <span class="block-title">Địa chỉ thường trú</span>
+            <div class="row-item-info">
+                <label class="title-label"> Quốc gia </label>
+                <label class="content-label">{{objPerson?.residenceCountryName ? objPerson?.residenceCountryName :
+                    ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Tỉnh / thành phố </label>
+                <label class="content-label">{{objPerson?.residenceCityName ? objPerson?.residenceCityName :
+                    ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Quận / huyện </label>
+                <label class="content-label">{{objPerson?.residenceDistrictName ? objPerson?.residenceDistrictName :
+                    ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Phường / xã </label>
+                <label class="content-label">{{objPerson?.residenceWardName ? objPerson?.residenceWardName :
+                    ''}}</label>
+            </div>
+            <div class="row-item-info">
+                <label class="title-label">Số nhà, Đường phố </label>
+                <label class="content-label">{{objPerson?.residenceStreetNumber ? objPerson?.residenceStreetNumber :
+                    ''}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="detail-cif-child-info">
+        <div class="child d-flex" (click)="showMis()">
+            <div class="child-left"> THÔNG TIN TRƯỜNG MIS </div>
+        </div>
+        <app-lpb-modal headerText="THÔNG TIN TRƯỜNG MIS" [show]="isMis" [unit]="'%'" [widthContent]="70"
+            [maxHeightContent]="60" (hideModal)="isMis = false">
+            <div class="mis-block">
+                <div class="info-block">
+                    <div class="block-title">THÔNG TIN CHUNG</div>
+                    <div class="block-content">
+                        <div class="row-item-info">
+                            <label class="title-label">CIF_KH78 </label>
+                            <label class="content-label">{{objMis?.cifKh78Code ? objMis?.cifKh78Code : '' }} -
+                                {{objMis?.cifKh78Name ? objMis?.cifKh78Name : '' }}</label>
+                        </div>
+                        <div class="row-item-info">
+                            <label class="title-label">CIF_MANKT </label>
+                            <label class="content-label">{{objMis?.cifManktCode ? objMis?.cifManktCode : '' }} -
+                                {{objMis?.cifManktName ? objMis?.cifManktName : '' }}</label>
+                        </div>
+                        <div class="row-item-info">
+                            <label class="title-label">CIF_TPKT </label>
+                            <label class="content-label">{{objMis?.cifTpktCode ? objMis?.cifTpktCode : '' }} -
+                                {{objMis?.cifTpktName ? objMis?.cifTpktName : '' }}</label>
+                        </div>
+                        <div class="row-item-info">
+                            <label class="title-label">CIF_KBHTG </label>
+                            <label class="content-label">{{objMis?.cifKbhtgCode ? objMis?.cifKbhtgCode : '' }} -
+                                {{objMis?.cifKbhtgName ? objMis?.cifKbhtgName : '' }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-block">
+                    <div class="block-title">THÔNG TIN VAY</div>
+                    <div class="block-content">
+                        <div class="row-item-info">
+                            <label class="title-label">CIF_PNKH </label>
+                            <label class="content-label">{{objMis?.cifPnkhCode ? objMis?.cifPnkhCode : '' }} -
+                                {{objMis?.cifPnkhName ? objMis?.cifPnkhName : '' }}</label>
+                        </div>
+                        <div class="row-item-info">
+                            <label class="title-label">CIF_LOAI </label>
+                            <label class="content-label">{{objMis?.cifLoaiCode ? objMis?.cifLoaiCode : '' }} -
+                                {{objMis?.cifLoaiName ? objMis?.cifLoaiName : '' }}</label>
+                        </div>
+                        <div class="row-item-info">
+                            <label class="title-label">LHNNNTVAY </label>
+                            <label class="content-label">{{objMis?.lhnnntvayCode ? objMis?.lhnnntvayCode : '' }} -
+                                {{objMis?.lhnnntvayName ? objMis?.lhnnntvayName : '' }}</label>
+                        </div>
+                        <div class="row-item-info">
+                            <label class="title-label">TD_MANKT </label>
+                            <label class="content-label">{{objMis?.tdManktCode ? objMis?.tdManktCode : '' }} -
+                                {{objMis?.tdManktName ? objMis?.tdManktName : '' }}</label>
+                        </div>
+                        <div class="row-item-info">
+                            <label class="title-label">CIF_NGANH </label>
+                            <label class="content-label">{{objMis?.cifNganhCode ? objMis?.cifNganhCode : '' }} -
+                                {{objMis?.cifNganhName ? objMis?.cifNganhName : '' }}</label>
+                        </div>
+                        <div class="row-item-info">
+                            <label class="title-label">COM_TSCT </label>
+                            <label class="content-label">{{objMis?.comTsctCode ? objMis?.comTsctCode : '' }} -
+                                {{objMis?.comTsctName ? objMis?.comTsctName : '' }}</label>
+                        </div>
+                        <div class="row-item-info">
+                            <label class="title-label">DC-GH </label>
+                            <label class="content-label">{{objMis?.dcGhCode ? objMis?.dcGhCode : '' }} -
+                                {{objMis?.dcGhName ? objMis?.dcGhName : '' }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-block mt-3">
+                <button class="btn-close" (click)="closeMis()">Đóng</button>
+            </div>
+
+        </app-lpb-modal>
+        <div class="child d-flex" (click)="showUdf()">
+            <div class="child-left"> THÔNG TIN TRƯỜNG UDF </div>
+        </div>
+        <app-lpb-modal headerText="THÔNG TIN TRƯỜNG UDF" [show]="isUdf" [unit]="'%'" [widthContent]="70"
+            [maxHeightContent]="60" (hideModal)="isUdf = false">
+            <div class="udf-block">
+                <div class="udf-info-block">
+                    <div class="info-block">
+                        <div class="block-title">N1.THÔNG TIN CHUNG</div>
+                        <div class="block-content">
+                            <div class="row-item-info">
+                                <label class="title-label">CIF_DINHDANH </label>
+                                <label class="content-label">{{objUdf?.cifDinhdanhCode ? objUdf?.cifDinhdanhCode : '' }}
+                                    - {{objUdf?.cifDinhdanhName ? objUdf?.cifDinhdanhName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">MA CBNV LPB </label>
+                                <label class="content-label">{{objUdf?.maCbnvLpbCode ? objUdf?.maCbnvLpbCode : '' }}
+                                    - {{objUdf?.maCbnvLpbName ? objUdf?.maCbnvLpbName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">CAN_BO_GIOI_THIEU </label>
+                                <label class="content-label">{{objUdf?.canBoGioiThieu ? objUdf?.canBoGioiThieu : ''
+                                    }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">KHUT </label>
+                                <label class="content-label">{{objUdf?.khutCode ? objUdf?.khutCode : '' }}
+                                    - {{objUdf?.khutName ? objUdf?.khutName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">CIF_PNKH </label>
+                                <label class="content-label">{{objUdf?.cifPnkhCode ? objUdf?.cifPnkhCode : '' }}
+                                    - {{objUdf?.cifPnkhName ? objUdf?.cifPnkhName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">KHACH HANG </label>
+                                <label class="content-label">{{objUdf?.khachHangCode ? objUdf?.khachHangCode : '' }}
+                                    - {{objUdf?.khachHangName ? objUdf?.khachHangName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">PNKH_KHDK </label>
+                                <label class="content-label">{{objUdf?.pnkhKhdk ? objUdf?.pnkhKhdk : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">SO SO BAO HIEM XA HOI </label>
+                                <label class="content-label">{{objUdf?.soSoBaoHiemXaHoi ? objUdf?.soSoBaoHiemXaHoi : ''
+                                    }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">THUONG_TAT </label>
+                                <label class="content-label">{{objUdf?.thuongTatCode ? objUdf?.thuongTatCode : '' }}
+                                    - {{objUdf?.thuongTatName ? objUdf?.thuongTatName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">KHOI DON VI GIOI THIEU </label>
+                                <label class="content-label">{{objUdf?.khoiDonViGioiThieuCode ?
+                                    objUdf?.khoiDonViGioiThieuCode : '' }}
+                                    - {{objUdf?.khoiDonViGioiThieuName ? objUdf?.khoiDonViGioiThieuName : '' }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-block">
+                        <div class="block-title">N2. THÔNG TIN DỊCH VỤ</div>
+                        <div class="block-content">
+                            <div class="row-item-info">
+                                <label class="title-label">TRA CUU TT STK WEBSITE-VI VIET </label>
+                                <label class="content-label">{{objUdf?.tracuuTtstkwebVivietCode ?
+                                    objUdf?.tracuuTtstkwebVivietCode : '' }}
+                                    - {{objUdf?.tracuuTtstkwebVivietName ? objUdf?.tracuuTtstkwebVivietName : ''
+                                    }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">SDT NHAN SMS GD TIET KIEM </label>
+                                <label class="content-label">{{objUdf?.sdtNhanSmsGdtetkiem ? objUdf?.sdtNhanSmsGdtetkiem
+                                    : '' }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="udf-info-block">
+
+                    <div class="info-block">
+                        <div class="block-title">N3. THÔNG TIN VAY</div>
+                        <div class="block-content">
+                            <div class="row-item-info">
+                                <label class="title-label">NO PHAI THU </label>
+                                <label class="content-label">{{objUdf?.noPhaiThu ? objUdf?.noPhaiThu : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">NO PHAI TRA </label>
+                                <label class="content-label">{{objUdf?.noPhaiTra ? objUdf?.noPhaiTra : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">DB_KH VAY </label>
+                                <label class="content-label">{{objUdf?.dbKhVayCode ? objUdf?.dbKhVayCode : '' }}
+                                    - {{objUdf?.dbKhVayName ? objUdf?.dbKhVayName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">MA HUYEN THI XA </label>
+                                <label class="content-label">{{objUdf?.maHuyenThiXaCode ? objUdf?.maHuyenThiXaCode : ''
+                                    }}
+                                    - {{objUdf?.maHuyenThiXaName ? objUdf?.maHuyenThiXaName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">DIA BAN NONG THON </label>
+                                <label class="content-label">{{objUdf?.diaBanNongThonCode ? objUdf?.diaBanNongThonCode :
+                                    '' }}
+                                    - {{objUdf?.diaBanNongThonName ? objUdf?.diaBanNongThonName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">VI TRI TO L_KET VAY VON </label>
+                                <label class="content-label">{{objUdf?.viTriToLketVayvonCode ?
+                                    objUdf?.viTriToLketVayvonCode : '' }}
+                                    - {{objUdf?.viTriToLketVayvonName ? objUdf?.viTriToLketVayvonName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">LV UD CN CAO CIF </label>
+                                <label class="content-label">{{objUdf?.lvUdCnCaoCifCode ? objUdf?.lvUdCnCaoCifCode : ''
+                                    }}
+                                    - {{objUdf?.lvUdCnCaoCifName ? objUdf?.lvUdCnCaoCifName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">CN UTPT 1483 CIF </label>
+                                <label class="content-label">{{objUdf?.cnUtpt1483CifCode ? objUdf?.cnUtpt1483CifCode :
+                                    '' }}
+                                    - {{objUdf?.cnUtpt1483CifName ? objUdf?.cnUtpt1483CifName : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">KI DANH GIA TNV </label>
+                                <label class="content-label">{{objUdf?.kyDanhGiaTvn ? objUdf?.kyDanhGiaTvn : ''
+                                    }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">HO TEN VO CHONG </label>
+                                <label class="content-label">{{objUdf?.hoTenVoChong ? objUdf?.hoTenVoChong : ''
+                                    }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">SO CMND HC </label>
+                                <label class="content-label">{{objUdf?.coCmndHc ? objUdf?.coCmndHc : '' }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">NGAY CAP CMND HC </label>
+                                <label class="content-label">{{objUdf?.ngayCapCmndHc ? objUdf?.ngayCapCmndHc : ''
+                                    }}</label>
+                            </div>
+                            <div class="row-item-info">
+                                <label class="title-label">NOI CAP CMND HC </label>
+                                <label class="content-label">{{objUdf?.noiCapCmndHc ? objUdf?.noiCapCmndHc : ''
+                                    }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-block mt-3">
+                <button class="btn-close" (click)="closeUdf()">Đóng</button>
+            </div>
+
+        </app-lpb-modal>
+        <div class="child d-flex">
+            <div class="child-left"> THÔNG TIN FATCA </div>
+        </div>
+        <div class="fatca-form" [hidden]="!objPerson?.fatcaName">
+            <div class="left">
+                <div class="row-item-info">
+                    <label class="title-label">Phân loại FATCA</label>
+                    <label class="content-label">{{objPerson?.fatcaName ? objPerson?.fatcaName : ''}}</label>
+                </div>
+                <div class="row-item-info">
+                    <label class="title-label">Mẫu biểu bổ sung</label>
+                    <label class="content-label">{{objPerson?.fatcaFormName ? objPerson?.fatcaFormName : ''}}</label>
+                </div>
+            </div>
+            <div class="right">
+                <div class="row-item-info">
+                    <label class="title-label">Mã số thuế </label>
+                    <label class="content-label">{{objPerson?.fatcaAnswer ? objPerson?.fatcaAnswer : ''}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="child d-flex" (click)="showReference()">
+            <div class="child-left"> THÔNG TIN CIF LIÊN QUAN <span>({{cifLienQuan.length}})</span> </div>
+        </div>
+        <app-lpb-modal headerText="THÔNG TIN CIF LIÊN QUAN" [show]="isReference" [unit]="'%'" [widthContent]="70"
+            [maxHeightContent]="60" (hideModal)="isReference = false">
+            <div class="content-info mb-5" [hidden]="!(cifLienQuan.length > 0)">
+                <div class="info-left">
+                    <div class="row-item-info" *ngIf="inEffectReference !== null">
+                        <label class="title-label">Trạng thái </label>
+                        <label class="content-label">{{inEffectReference ? 'Hiệu lực' : 'Hết hiệu lực'}}
+                        </label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">MÃ CIF </label>
+                        <label class="content-label">{{objCifLienQuan?.customerCode ? objCifLienQuan?.customerCode :
+                            ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Họ và tên </label>
+                        <label class="content-label">{{objCifLienQuan?.fullName ? objCifLienQuan?.fullName :
+                            ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Ngày sinh </label>
+                        <label class="content-label">{{objCifLienQuan?.dateOfBirth ? objCifLienQuan?.dateOfBirth :
+                            ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Giới tính </label>
+                        <label class="content-label">{{objCifLienQuan?.gender === 'M' ? 'Nam' : 'Nữ'}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Mối quan hệ </label>
+                        <label class="content-label">{{objCifLienQuan?.relationshipName ?
+                            objCifLienQuan?.relationshipName : ''}}</label>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <div class="row-item-info">
+                        <label class="title-label">Quốc tịch </label>
+                        <label class="content-label">{{objCifLienQuan?.nationalityName ? objCifLienQuan?.nationalityName
+                            :
+                            ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Loại GTXM </label>
+                        <label class="content-label">{{objCifLienQuan?.perDocTypeName ? objCifLienQuan?.perDocTypeName :
+                            ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Số GTXM </label>
+                        <label class="content-label">{{objCifLienQuan?.identifyCode ? objCifLienQuan?.identifyCode :
+                            ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Ngày cấp </label>
+                        <label class="content-label">{{objCifLienQuan?.identifyDate ? objCifLienQuan?.identifyDate :
+                            ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Nơi cấp </label>
+                        <label class="content-label">{{objCifLienQuan?.identifyAddress ? objCifLienQuan?.identifyAddress
+                            :
+                            ''}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="content-table" [ngClass]="cifLienQuan.length > 0 ? 'line-block' : '' ">
+                <span class="mb-5"> DANH SÁCH CIF LIÊN QUAN </span>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-per-20">Họ và tên</th>
+                            <th class="col-per-10">Mã CIF</th>
+                            <th class="col-per-20">Số điện thoại</th>
+                            <th class="col-per-10">Số GTXM</th>
+                            <th class="col-per-20">Mối quan hệ</th>
+                            <th class="col-per-10">Tình trạng</th>
+                            <th class="col-per-10">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let c of cifLienQuan">
+                            <td class="col-per-20">
+                                {{c.fullName ? c.fullName : ''}}</td>
+                            <td class="col-per-10"> {{c.customerCode ? c.customerCode : '' }}</td>
+                            <td class="col-per-20"> {{c.phoneNumber ? c.phoneNumber : '' }} </td>
+                            <td class="col-per-10">{{c.identifyCode ? c.identifyCode : ''}}</td>
+                            <td class="col-per-20">{{c.relationshipName ? c.relationshipName : ''}}</td>
+                            <td class="col-per-10"> {{c.inEffect !== null ? (c.inEffect ? 'Hiệu lực' : 'Hết hiệu lực')
+                                :''}} </td>
+                            <td class="td-col-action">
+                                <div class="action">
+                                    <mat-icon class="btn-icon-edit" (click)="getObjectCifLienQuan(c)">remove_red_eye
+                                    </mat-icon>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="empty-data mt-2">
+                    {{msgReference}}
+                </div>
+            </div>
+            <div class="action-block mt-3">
+                <button class="btn-close" (click)="closeReference()">Đóng</button>
+            </div>
+
+        </app-lpb-modal>
+        <div class="child d-flex" (click)="showCoOwner()">
+            <div class="child-left"> THÔNG TIN CHỦ SỞ HỮU HƯỞNG LỢI <span>({{customerOwnerBenefit.length}})</span></div>
+        </div>
+        <app-lpb-modal headerText="THÔNG TIN CHỦ SỞ HỮU HƯỞNG LỢI" [show]="isCoOwner" [unit]="'%'" [widthContent]="70"
+            [maxHeightContent]="60" (hideModal)="isCoOwner = false">
+            <div class="content-info" [hidden]="!(customerOwnerBenefit.length > 0)">
+                <div class="info-left">
+                    <div class="row-item-info">
+                        <label class="title-label">Họ và tên</label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.name ? objCustomerOwnerBenefit?.name :
+                            ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Giới tính</label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.genderCode === 'F' ? 'Nam' :
+                            'Nữ'}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Ngày sinh</label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.dateOfBirth ?
+                            objCustomerOwnerBenefit?.dateOfBirth : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Nơi sinh </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.placeOfBirth ?
+                            objCustomerOwnerBenefit?.placeOfBirth : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Điện thoại cố định</label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.phoneNumber ?
+                            objCustomerOwnerBenefit?.phoneNumber : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Điện thoại di động</label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.phoneNumber2 ?
+                            objCustomerOwnerBenefit?.phoneNumber2 : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Email</label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.email ? objCustomerOwnerBenefit?.email :
+                            ''}}</label>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <div class="row-item-info">
+                        <label class="title-label">Số GTXM </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.identityNumber ?
+                            objCustomerOwnerBenefit?.identityNumber : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Nơi cấp </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.identityAddress ?
+                            objCustomerOwnerBenefit?.identityAddress : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Ngày cấp </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.identityDate ?
+                            objCustomerOwnerBenefit?.identityDate : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Quốc tịch 1 </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.nationalName ?
+                            objCustomerOwnerBenefit?.nationalName : ''}}</label>
+                    </div>
+                    <div class="row-item-info" [hidden]="!objCustomerOwnerBenefit?.national2Name">
+                        <label class="title-label">Quốc tịch 2 </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.national2Name ?
+                            objCustomerOwnerBenefit?.national2Name : ''}}</label>
+                    </div>
+                    <div class="row-item-info" [hidden]="!objCustomerOwnerBenefit?.national3Name">
+                        <label class="title-label">Quốc tịch 3 </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.national3Name ?
+                            objCustomerOwnerBenefit?.national3Name : ''}}</label>
+                    </div>
+                    <div class="row-item-info" [hidden]="!objCustomerOwnerBenefit?.national4Name">
+                        <label class="title-label">Quốc tịch 4 </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.national4Name ?
+                            objCustomerOwnerBenefit?.national4Name : ''}}</label>
+                    </div>
+                    <!-- ---------------------------- -->
+                    <div class="row-item-info"
+                        [hidden]="objCustomerOwnerBenefit?.visaExemption === true && objCustomerOwnerBenefit?.nationalityCode !== 'VN'">
+                        <label class="title-label">Miễn thị thực nhập cảnh </label>
+                        <label class="content-label">Không</label>
+                    </div>
+                    <div class="row-item-info" [hidden]="objCustomerOwnerBenefit?.visaExemption !== true">
+                        <label class="title-label">Miễn thị thực nhập cảnh </label>
+                        <label class="content-label">Có</label>
+                    </div>
+                    <div class="row-item-info" [hidden]="!objCustomerOwnerBenefit?.visaIssueDate">
+                        <label class="title-label">Từ ngày </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.visaIssueDate ?
+                            objCustomerOwnerBenefit?.visaIssueDate : ''}}</label>
+                    </div>
+                    <div class="row-item-info" [hidden]="!objCustomerOwnerBenefit?.visaExpireDate">
+                        <label class="title-label">Đến ngày </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.visaExpireDate ?
+                            objCustomerOwnerBenefit?.visaExpireDate : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Người cư trú </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.isResident ? 'Có' : 'Không'}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Nghề nghiệp</label>
+
+                        <label class="content-label">{{objCustomerOwnerBenefit?.jobName}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Chức vụ </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.position ?
+                            objCustomerOwnerBenefit?.position : ''}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="content-info mb-5" [hidden]="!(customerOwnerBenefit.length > 0)">
+                <div class="info-left">
+                    <span> Địa chỉ hiện tại</span>
+                    <div class="row-item-info">
+                        <label class="title-label">Quốc gia </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.caddressRegionName ?
+                            objCustomerOwnerBenefit?.caddressRegionName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Tỉnh/ thành phố </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.caddressCity ?
+                            objCustomerOwnerBenefit?.caddressCity : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Quận / Huyện </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.caddressDistrict ?
+                            objCustomerOwnerBenefit?.caddressDistrict : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Phường / Xã </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.caddressWard ?
+                            objCustomerOwnerBenefit?.caddressWard : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Số nhà / đường phố</label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.caddress ?
+                            objCustomerOwnerBenefit?.caddress : ''}}</label>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <span> Địa chỉ thường trú</span>
+                    <div class="row-item-info">
+                        <label class="title-label">Quốc gia </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.paddressRegionName ?
+                            objCustomerOwnerBenefit?.paddressRegionName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Tỉnh/ thành phố </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.paddressCity ?
+                            objCustomerOwnerBenefit?.paddressCity : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Quận / Huyện </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.paddressDistrict ?
+                            objCustomerOwnerBenefit?.paddressDistrict : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Phường / Xã </label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.paddressWard ?
+                            objCustomerOwnerBenefit?.paddressWard : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Số nhà / đường phố</label>
+                        <label class="content-label">{{objCustomerOwnerBenefit?.paddress ?
+                            objCustomerOwnerBenefit?.paddress : ''}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="content-table" [ngClass]="customerOwnerBenefit.length > 0 ? 'line-block' : '' ">
+                <span> DANH SÁCH CHỦ SỞ HỮU HƯỞNG LỢI </span>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-per-20">Mã Người hưởng lợi</th>
+                            <th class="col-per-10">Họ và tên</th>
+                            <th class="col-per-20">Điện thoại</th>
+                            <th class="col-per-20">Số GTXM</th>
+                            <th class="col-per-10">Quốc tịch</th>
+                            <th class="col-per-10">Tình trạng</th>
+                            <th class="th-col-action">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let o of customerOwnerBenefit">
+                            <td class="col-per-20">{{o.ownerBenefitCode ? o.ownerBenefitCode : ''}}</td>
+                            <td class="col-per-10">{{o.name ? o.name : ''}}</td>
+                            <td class="col-per-20">{{o.phoneNumber2 ? o.phoneNumber2 :
+                                ''}}</td>
+                            <td class="col-per-10">{{o.identityNumber ? o.identityNumber : ''}}</td>
+                            <td class="col-per-20">{{o.nationalName ? o.nationalName : ''}}</td>
+                            <td class="col-per-10"> {{o.inEffect !== null ? (o.inEffect ? 'Hiệu lực' : 'Hết hiệu lực')
+                                :''}}</td>
+                            <td class="td-col-action">
+                                <div class="action">
+                                    <mat-icon class="btn-icon-edit" (click)="getObjectCustomerOwnerBenefit(o)">
+                                        remove_red_eye</mat-icon>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="empty-data mt-2">
+                    {{msgOwnerBenefit}}
+                </div>
+            </div>
+            <div class="action-block mt-3">
+                <button class="btn-close" (click)="closeCoOwner()">Đóng</button>
+            </div>
+
+        </app-lpb-modal>
+        <div class="child d-flex">
+            <div class="child-left" (click)="showLegal()"> THÔNG TIN THỎA THUẬN PHÁP LÝ
+                <span>({{legalList.length}})</span>
+            </div>
+        </div>
+        <app-lpb-modal headerText="THÔNG TIN THỎA THUẬN PHÁP LÝ" [show]="isLegal" [unit]="'%'" [widthContent]="70"
+            [maxHeightContent]="60" (hideModal)="isLegal = false">
+            <div class="content-info" [hidden]="!(legalList.length > 0)">
+                <div class="info-left">
+                    <div class="row-item-info">
+                        <label class="title-label">Số định danh </label>
+                        <label class="content-label">{{objLegal?.legalCode ? objLegal?.legalCode : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Nội dung </label>
+                        <label class="content-label">{{objLegal?.content ? objLegal?.content : ''}}</label>
+                    </div>
+                    <!-- <div class="row-item-info">
+                        <label class="title-label">Giá trị tài sản </label>
+                        <label class="content-label">{{objLegal?.amount ? objLegal?.amount : ''}}</label>
+                    </div> -->
+
+                    <div class="row-item-info">
+                        <label class="title-label">Tình trạng </label>
+                        <label class="content-label">{{!objLegal?.inEffect ? '' : objLegal?.inEffect ? 'Hiệu lực' :
+                            'Hết hiệu lực'}}</label>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <div class="row-item-info">
+                        <label class="title-label">Giá trị tài sản </label>
+                        <label class="content-label">{{objLegal?.amount ? objLegal?.amount : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Ngày lập thỏa thuận</label>
+                        <label class="content-label">{{objLegal?.beginDate ? objLegal?.beginDate : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Quốc gia </label>
+                        <label class="content-label">{{objLegal?.nationalityName ? objLegal?.nationalityName :
+                            ''}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="content-info mb-5" [hidden]="!(legalList.length > 0)">
+                <div class="info-left">
+                    <span> Thông tin người liên quan đến Ủy thác / Ủy quyền </span>
+                    <div class="row-item-info">
+                        <label class="title-label">Họ và tên </label>
+                        <label class="content-label">{{objLegal?.customerList[0].person.fullName ?
+                            objLegal?.customerList[0].person.fullName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Ngày sinh </label>
+                        <label class="content-label">{{objLegal?.customerList[0].person.dateOfBirth ?
+                            objLegal?.customerList[0].person.dateOfBirth : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Điện thoại</label>
+                        <label class="content-label">{{objLegal?.customerList[0].person.mobileNo ?
+                            objLegal?.customerList[0].person.mobileNo : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Số GTXM</label>
+                        <label class="content-label">{{objLegal?.customerList[0].person.perDocNoList[0].perDocNo ?
+                            objLegal?.customerList[0].person.perDocNoList[0].perDocNo : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Nơi cấp</label>
+                        <label class="content-label">{{objLegal?.customerList[0].person.perDocNoList[0].issuePlace ?
+                            objLegal?.customerList[0].person.perDocNoList[0].issuePlace : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Ngày cấp</label>
+                        <label class="content-label">{{objLegal?.customerList[0].person.perDocNoList[0].issueDate ?
+                            objLegal?.customerList[0].person.perDocNoList[0].issueDate : ''}}</label>
+                    </div>
+
+                    <div class="row-item-info">
+                        <label class="title-label">Đối tượng</label>
+                        <label class="content-label">{{ objLegal?.customerList[0].legalObjectTypeName ?
+                            objLegal?.customerList[0].legalObjectTypeName : ''}}</label>
+                    </div>
+                </div>
+                <div class="info-right mt-4">
+                    <div class="row-item-info">
+                        <label class="title-label">Quốc gia</label>
+                        <label class="content-label">{{objLegal?.customerList[0].person.currentCountryName ?
+                            objLegal?.customerList[0].person.currentCountryName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Tỉnh / Thành phố </label>
+                        <label class="content-label">{{objLegal?.customerList[0].person.currentCityName ?
+                            objLegal?.customerList[0].person.currentCityName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Quận / huyện</label>
+                        <label class="content-label">{{objLegal?.customerList[0].person.currentDistrictName ?
+                            objLegal?.customerList[0].person.currentDistrictName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Phường xã </label>
+                        <label class="content-label"> {{objLegal?.customerList[0].person.currentWardName ?
+                            objLegal?.customerList[0].person.currentWardName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Số nhà / Đường phố</label>
+                        <label class="content-label">{{objLegal?.customerList[0].person.currentStreetNumber ?
+                            objLegal?.customerList[0].person.currentStreetNumber : ''}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="content-table" [ngClass]="legalList.length > 0 ? 'line-block' : '' ">
+                <span> DANH SÁCH THỎA THUẬN PHÁP LÝ </span>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-per-20">Mã thỏa thuận</th>
+                            <th class="col-per-10">Giá trị</th>
+                            <th class="col-per-20">Họ và tên</th>
+                            <th class="col-per-10">Điện thoại</th>
+                            <th class="col-per-20">Số GTXM</th>
+                            <th class="col-per-10">Đối tượng</th>
+                            <th class="col-per-10">Tình trạng</th>
+                            <th class="th-col-action">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let legal of legalList">
+                        <tr *ngFor="let c of legal.customerList">
+                            <td class="col-per-20">{{legal.legalAgreementCode ? legal.legalAgreementCode : ''}}</td>
+                            <td class="col-per-10">{{legal.amount ? legal.amount : ''}}</td>
+                            <td class="col-per-20">{{c.person.fullName ? c.person.fullName : ''}}</td>
+                            <td class="col-per-10">{{c.person.mobileNo ? c.person.mobileNo : ''}}</td>
+                            <td class="col-per-20">{{c.person.perDocNoList[0].perDocNo ?
+                                c.person.perDocNoList[0].perDocNo : ''}}</td>
+                            <td class="col-per-10">{{c.legalObjectTypeName ? c.legalObjectTypeName : ''}}</td>
+                            <td class="col-per-10"> {{c.person.inEffect !== null ? (c.person.inEffect ? 'Hiệu lực' :
+                                'Hết hiệu lực') : ''}}
+                            </td>
+                            <td class="td-col-action">
+                                <div class="action">
+                                    <mat-icon class="btn-icon-edit" (click)="getObjectLegal(legal)">remove_red_eye
+                                    </mat-icon>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="empty-data mt-2">
+                    {{msgLegal}}
+                </div>
+            </div>
+            <div class="action-block mt-3">
+                <button class="btn-close" (click)="closeLegal()">Đóng</button>
+            </div>
+
+        </app-lpb-modal>
+        <div class="child d-flex">
+            <div class="child-left" (click)="showGuardian()"> THÔNG TIN ĐẠI DIỆN PHÁP LUẬT
+                <span>({{guardianList.length}})</span>
+            </div>
+        </div>
+        <app-lpb-modal headerText="THÔNG TIN ĐẠI DIỆN PHÁP LUẬT" [show]="isGuardian" [unit]="'%'" [widthContent]="70"
+            [maxHeightContent]="60" (hideModal)="isGuardian = false">
+            <div class="content-info" [hidden]="!(guardianList.length > 0)">
+                <div class="info-left">
+                    <div class="row-item-info" *ngIf="inEffectGudian !== null">
+                        <label class="title-label">Trạng thái </label>
+                        <label class="content-label">{{inEffectGudian ? 'Hiệu lực' : 'Hết hiệu lực'}}
+                        </label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Mã CIF </label>
+                        <label class="content-label">{{objGuardian?.customer.customerCode ?
+                            objGuardian?.customer.customerCode : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Họ và tên</label>
+                        <label class="content-label">{{objGuardian?.customer.person.fullName ?
+                            objGuardian?.customer.person.fullName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Ngày sinh </label>
+                        <label class="content-label">{{objGuardian?.customer.person.dateOfBirth ?
+                            objGuardian?.customer.person.dateOfBirth : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Quốc tịch 1 </label>
+                        <label class="content-label">{{objGuardian?.customer.person.nationality1Name ?
+                            objGuardian?.customer.person.nationality1Name : ''}}</label>
+                    </div>
+                    <div class="row-item-info" [hidden]="!objGuardian?.customer.person.nationality2Name">
+                        <label class="title-label">Quốc tịch 2 </label>
+                        <label class="content-label">{{objGuardian?.customer.person.nationality2Name ?
+                            objGuardian?.customer.person.nationality2Name : ''}}</label>
+                    </div>
+                    <div class="row-item-info" [hidden]="!objGuardian?.customer.person.nationality3Name">
+                        <label class="title-label">Quốc tịch 3</label>
+                        <label class="content-label">{{objGuardian?.customer.person.nationality3Name ?
+                            objGuardian?.customer.person.nationality3Name : ''}}</label>
+                    </div>
+                    <div class="row-item-info" [hidden]="!objGuardian?.customer.person.nationality4Name">
+                        <label class="title-label">Quốc tịch 4 </label>
+                        <label class="content-label">{{objGuardian?.customer.person.nationality4Name ?
+                            objGuardian?.customer.person.nationality4Name : ''}}</label>
+                    </div>
+
+                    <div class="row-item-info" *ngIf="objGuardian?.customer.person.visaExemption === true">
+                        <label class="title-label">Miễn thị thực nhập cảnh </label>
+                        <label class="content-label">Có</label>
+                    </div>
+                    <div class="row-item-info" *ngIf="objGuardian?.customer.person.visaExemption === false
+                               || objGuardian?.customer.person.visaExemption === null
+                               && objGuardian?.customer.person.nationality1Code !=='VN' ">
+                        <label class="title-label">Miễn thị thực nhập cảnh </label>
+                        <label class="content-label">Không</label>
+                    </div>
+                    <div class="row-item-info" *ngIf="objGuardian?.customer.person.visaIssueDate">
+                        <label class="title-label">Từ ngày </label>
+                        <label class="content-label">{{objGuardian?.customer.person.visaIssueDate ?
+                            objGuardian?.customer.person.visaIssueDate : ''}}</label>
+                    </div>
+                    <div class="row-item-info" *ngIf="objGuardian?.customer.person.visaExpireDate">
+                        <label class="title-label">Đến ngày </label>
+                        <label class="content-label">{{objGuardian?.customer.person.visaExpireDate ?
+                            objGuardian?.customer.person.visaExpireDate : ''}}</label>
+                    </div>
+
+                    <div class="row-item-info">
+                        <label class="title-label">Mã số thuế </label>
+                        <label class="content-label">{{objGuardian?.customer.person.taxCode ?
+                            objGuardian?.customer.person.taxCode : ''}}</label>
+                    </div>
+                    <!-- <ng-template
+                        [ngIf]="!objGuardian?.customer.person.visaExemption
+                         && objGuardian?.customer.person.visaIssueDate !== null && objGuardian?.customer.person.visaExpireDate !== null">
+                        <div class="row-item-info">
+                            <label class="title-label">Thị thực nhập cảnh </label>
+                            <label class="content-label">{{objGuardian?.customer.person.visaIssueDate ?
+                                objGuardian?.customer.person.visaIssueDate : ''}}
+                                &nbsp;
+                                ~&nbsp; {{objGuardian?.customer.person.visaExpireDate ?
+                                objGuardian?.customer.person.visaExpireDate : ''}}</label>
+                        </div>
+                    </ng-template> -->
+                </div>
+                <div class="info-right">
+                    <div class="row-item-info">
+                        <label class="title-label">Người cư trú </label>
+                        <label class="content-label">{{objGuardian?.customer.person.residentStatus ? 'Có':
+                            'Không'}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Số điện thoại </label>
+                        <label class="content-label">{{objGuardian?.customer.person.mobileNo ?
+                            objGuardian?.customer.person.mobileNo : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Giới tính </label>
+                        <label class="content-label">{{objGuardian?.customer.person.genderName ?
+                            objGuardian?.customer.person.genderName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Quan hệ với chủ tài khoản</label>
+                        <label class="content-label">{{objGuardian?.guardianRelationName ?
+                            objGuardian?.guardianRelationName : ''}}</label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="content-info mb-5" [hidden]="!(guardianList.length > 0)">
+                <div class="info-left">
+                    <span> Địa chỉ hiện tại</span>
+                    <div class="row-item-info">
+                        <label class="title-label">Quốc gia </label>
+                        <label class="content-label">{{objGuardian?.customer.person.currentCountryName ?
+                            objGuardian?.customer.person.currentCountryName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Tỉnh / thành phố</label>
+                        <label class="content-label">{{objGuardian?.customer.person.currentCityName ?
+                            objGuardian?.customer.person.currentCityName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Quận / Huyện</label>
+                        <label class="content-label">{{objGuardian?.customer.person.currentDistrictName ?
+                            objGuardian?.customer.person.currentDistrictName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Phường / Xã</label>
+                        <label class="content-label">{{objGuardian?.customer.person.currentWardName ?
+                            objGuardian?.customer.person.currentWardName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Số nhà/đường phố</label>
+                        <label class="content-label">{{objGuardian?.customer.person.currentStreetNumber ?
+                            objGuardian?.customer.person.currentStreetNumber : ''}}</label>
+                    </div>
+                </div>
+                <div class="info-right mt-4">
+                    <div class="row-item-info">
+                        <label class="title-label">Loại GTXM</label>
+                        <label class="content-label">{{objGuardian?.customer.person.perDocNoList[0].perDocTypeName ?
+                            objGuardian?.customer.person.perDocNoList[0].perDocTypeName : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Số GTXM</label>
+                        <label class="content-label">{{objGuardian?.customer.person.perDocNoList[0].perDocNo ?
+                            objGuardian?.customer.person.perDocNoList[0].perDocNo : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Ngày cấp </label>
+                        <label class="content-label">{{objGuardian?.customer.person.perDocNoList[0].issueDate ?
+                            objGuardian?.customer.person.perDocNoList[0].issueDate : ''}}</label>
+                    </div>
+                    <div class="row-item-info">
+                        <label class="title-label">Nơi cấp</label>
+                        <label class="content-label">{{objGuardian?.customer.person.perDocNoList[0].issuePlace ?
+                            objGuardian?.customer.person.perDocNoList[0].issuePlace : ''}}</label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="content-table" [ngClass]="guardianList.length > 0 ? 'line-block' : '' ">
+                <span> DANH SÁCH ĐẠI DIỆN PHÁP LUẬT </span>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-per-20">Họ và tên</th>
+                            <th class="col-per-10">Mã CIF</th>
+                            <th class="col-per-20">Số điện thoại</th>
+                            <th class="col-per-10">Số GTXM</th>
+                            <th class="col-per-20">Loại giám hộ</th>
+                            <th class="col-per-10">Tình trạng</th>
+                            <th class="th-col-action">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor=" let g of guardianList">
+                            <td class="col-per-20">{{g.customer.person.fullName ? g.customer.person.fullName : ''}}</td>
+                            <td class="col-per-10">{{g.customer.customerCode ? g.customer.customerCode :
+                                ''}}</td>
+                            <td class="col-per-20">{{g.customer.person.mobileNo ? g.customer.person.mobileNo : ''}}</td>
+                            <td class="col-per-10">{{g.customer.person.perDocNoList[0].perDocNo}}</td>
+                            <td class="col-per-20">{{g.guardianRelationName ? g.guardianRelationName : ''}}</td>
+                            <td class="col-per-10"> {{g.inEffect !== null ? (g.inEffect ? 'Hiệu lực':'Hết hiệu
+                                lực') :''}}</td>
+                            <td class="td-col-action">
+                                <div class="action">
+                                    <mat-icon class="btn-icon-edit" (click)="getObjectGuard(g)">remove_red_eye
+                                    </mat-icon>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="empty-data mt-2">
+                    {{msgGuardian}}
+                </div>
+            </div>
+            <div class="action-block mt-3">
+                <button class="btn-close" (click)="closeGuardian()">Đóng</button>
+            </div>
+        </app-lpb-modal>
+    </div>
+</div>

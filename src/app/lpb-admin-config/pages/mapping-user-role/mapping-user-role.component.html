@@ -1,0 +1,81 @@
+<div class="d-flex flex-column mb-5">
+  <div class="form-search d-flex flex-column">
+    <div class="content-title pr-2 mt-3">
+      <i class="fa fa-search mr-2 txtLabel"></i> THÔNG TIN CHUNG
+    </div>
+    <hr/>
+    <div class="container mt-3">
+      <form [formGroup]="form" class="form-inline">
+        <ng-container formArrayName="users">
+          <table class="table table-responsive table-fixed" style="height: 500px">
+<!--            <tr>-->
+<!--              <td colspan="3"><button mat-mini-fab (click)="addRow()">-->
+<!--                <mat-icon>add_circle</mat-icon>-->
+<!--              </button></td>-->
+<!--            </tr>-->
+            <ng-container *ngFor="let userForm of users.controls; let i = index">
+              <tr [formGroupName]="i" class="w-100" style="height: 50px">
+                <td>
+                  <div class="form-group">
+                  <span class="col-lg-4 col-form-label textLabel">User <span
+                    class="text-danger">(*)</span></span>
+                    <div class="col-lg-8">
+                      <app-lpb-select2 [items]="userList" labelName="userName" bindValue="id" formControlName="userId"
+                                       placeholder="Chọn user" class="app-lpb-select2"></app-lpb-select2>
+                      <app-validate [control]="$any(userForm).controls['userId']" error="required"
+                                    message="Kí tự, chuỗi không được bỏ trống"></app-validate>
+
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group">
+                    <div class="col-lg-4 col-form-label textLabel">Role <span class="text-danger">(*)</span></div>
+                    <div class="col-lg-8">
+                      <app-lpb-select2 [items]="roles" labelName="name" bindValue="id" formControlName="roleId"
+                                       placeholder="Chọn role" class="app-lpb-select2"></app-lpb-select2>
+                      <!--                      <app-lpb-select2 apiUrl="/admin/role/listAll"-->
+                      <!--                                       labelName="name" bindValue="id" [config]="{isNewApi: true}"-->
+                      <!--                                       formControlName="roleId"-->
+                      <!--                                       placeholder="Chọn role"></app-lpb-select2>-->
+
+                      <app-validate [control]="$any(userForm).controls['roleId']" error="required"
+                                    message="Role không được bỏ trống"></app-validate>
+
+                    </div>
+                  </div>
+                </td>
+                <td style="width: 70px">
+                  <button mat-mini-fab (click)="deleteRow(i)" *ngIf="i !== 0">
+                    <mat-icon>
+                      remove_circle
+                    </mat-icon>
+                  </button>
+                  <button mat-mini-fab (click)="addRow()" *ngIf="i === 0">
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
+
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+        </ng-container>
+
+
+      </form>
+
+<!--      <div class="row form-group">-->
+<!--        <div class="col text-center">-->
+<!--          <button mat-mini-fab (click)="addRow()">-->
+<!--            <mat-icon>add_circle</mat-icon>-->
+<!--          </button>-->
+<!--        </div>-->
+
+<!--      </div>-->
+    </div>
+  </div>
+
+</div>
+
+<app-lpb-footer style="bottom: 0px" [actions]="actions"
+                class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

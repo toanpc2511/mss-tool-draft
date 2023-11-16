@@ -1,0 +1,38 @@
+<div class="content">
+  <div class="row form-search" [formGroup]="uploadForm">
+
+    <div class="col-12 col-md-5 pb-3 px-5">
+      <label class="required">Tải lên dữ liệu LVBIS</label>
+      <lpb-custom-upload-file
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        [maxSize]="10"
+        (onChange)="onFileSelect($event)"
+        (onClearSelected)="onClearSelected($event)"
+        formControlName="file"
+      ></lpb-custom-upload-file>
+      <app-validate [control]="uploadFormControl.file" error="required" message="Chưa chọn file upload"></app-validate>
+
+    </div>
+
+    <div class="col-12 col-md-2 pb-3 px-5 ">
+      <button
+        mat-raised-button
+        class="bg-btn__blue mt-3"
+        (click)="uploadFile()"
+        [disabled]="isDisabled"
+      >
+        Upload
+      </button>
+    </div>
+  </div>
+  <div class="mt-5">
+
+<!--    <app-lpb-datatable-->
+<!--      [config]="configs"-->
+<!--      [columns]="columns"-->
+<!--      [dataSource]="dataSource"-->
+<!--      tableName="Danh sách"-->
+<!--    ></app-lpb-datatable>-->
+  </div>
+
+</div>

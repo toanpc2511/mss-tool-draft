@@ -1,0 +1,35 @@
+.content {
+  margin-bottom: 30px;
+  .content-main {
+    margin: 30px 25px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    .title {
+      color: #0C258A;
+      font-size: 18px;
+      font-weight: 500;
+
+      .fa-credit-card {
+        color: #0C258A;
+      }
+    }
+
+    .card {
+      background-color: #F1F3F6;
+      padding: 15px 25px;
+      border: none;
+
+      .card-title {
+        color: #0C258A;
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      p {
+        color: #384961;
+      }
+    }
+  }
+}

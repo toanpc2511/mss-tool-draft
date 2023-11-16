@@ -1,0 +1,279 @@
+<div class="container-fuild">
+  <div class="row cust-row">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+      <app-process-info [processId]="processId"></app-process-info>
+    </div>
+  </div>
+  <div class="row cust-row">
+    <div class="col-12 line-base">
+      <div class="title-head" style="font-weight: 500;">
+        <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add_circle_outline</mat-icon>
+        <span class="text" style="padding: 5px 0;">CẬP NHẬT</span>
+      </div>
+    </div>
+    <!-- {{UpdateCardForm.value |json}} -->
+    <form class="w-100 py-5" [formGroup]="UpdateCardForm" *ngIf="card">
+      <div class="col-12 d-flex px-0 py-3">
+        <div class="col-6 colLeft">
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Số hợp đồng :<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control-sm form-control" disabled readonly
+                     placeholder="{{card.contractNumber}}">
+            </div>
+          </div>
+
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Loại thẻ:<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <select formControlName="cardTypeCode" name="typeCurrency" class="form-control form-control-sm"
+                      (change)="addCard()">
+                <!-- <option value="" disabled selected> {{card.cardTypeName}} </option> -->
+                <option *ngFor="let ct of cardType" [value]="ct.code"> {{ct.name}} </option>
+              </select>
+              <div
+                *ngIf="submitted && cardTypeCode.errors || cardTypeCode.invalid && (cardTypeCode.dirty ||cardTypeCode.touched)"
+                class="error-message">
+                <div *ngIf="cardTypeCode.errors.required" class="error-message">Chọn loại thẻ.</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Mã thẻ:<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <select class="form-control form-control-sm" formControlName="cardProductCode" name="typeAccountHtml">
+                <!-- <option [value]="card.cardProductCode" disabled selected>{{card.cardProductName}}
+                                </option> -->
+                <option *ngFor="let ct of cardProduct" [value]="ct.code"> {{ct.code}} - {{ct.name}}
+                </option>
+              </select>
+              <div
+                *ngIf="submitted && cardProductCode.errors || cardProductCode.invalid && (cardProductCode.dirty ||cardProductCode.touched)"
+                class="error-message">
+                <div *ngIf="cardProductCode.errors.required" class="error-message">Mã thẻ không được bỏ trống.</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Hạng thẻ:<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <select class="form-control form-control-sm" formControlName="cardRateCode" name="codeAccount">
+                <!-- <option selected  value="{{card.code}}"> {{card.cardRateName}} </option> -->
+                <option *ngFor="let cr of cardRate" value="{{cr.code}}"> {{cr.name}}</option>
+              </select>
+              <div
+                *ngIf="submitted && cardRateCode.errors || cardRateCode.invalid && (cardRateCode.dirty ||cardRateCode.touched)"
+                class="error-message">
+                <div *ngIf="cardRateCode.errors.required" class="error-message">Hạng thẻ không được bỏ trống</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Tài khoản mặc định:<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <select class="form-control form-control-sm" formControlName="accountId" name="codeAccount">
+                <option style="width: 100%;" *ngFor="let acc of account" [value]="acc.id">{{acc.accountNumber}}
+                  <ng-container *ngIf="acc.accountNumber==null">Tài khoản mới - {{acc.accountIndex}}
+                  </ng-container>
+                </option>
+              </select>
+              <div *ngIf="submitted && accountId.errors || accountId.invalid && (accountId.dirty ||accountId.touched)"
+                   class="error-message">
+                <div *ngIf="accountId.errors.required" class="error-message">Tài khoản mặc định không được bỏ trống
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Số dư tài khoản:<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <input type="text" readonly disabled placeholder="0" class="form-control-sm form-control">
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Lãi suất:<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <input formControlName="interestRate" name="accountName" class="form-control form-control-sm"
+                     type="number" readonly disabled>
+            </div>
+
+          </div>
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Tài khoản liên kết thẻ: </label>
+            <div class="col-sm-7">
+              <ng-select [multiple]="true" [formControl]="accountLinkList" maxlength="3" [closeOnSelect]="false"
+                         placeholder="--Mời chọn tài khoản liên kết thẻ--">
+                <ng-option *ngFor="let acc of accountCLone" [value]="acc.accountId">{{acc.accountNumber}}
+                  <ng-container *ngIf="acc.accountNumber==null">Tài khoản mới - {{acc.accountIndex}}
+                  </ng-container>
+                </ng-option>
+              </ng-select>
+              <div
+                *ngIf="submitted && accountLinkList.errors || accountLinkList.invalid && (accountLinkList.dirty ||accountLinkList.touched)"
+                class="error-message">
+                <div *ngIf="accountLinkList.errors.required" class="error-message">Tài khoản liên kết không được bỏ
+                  trống
+                </div>
+              </div>
+              <div
+                *ngIf="submitted && accountLinkList.errors || accountLinkList.invalid && (accountLinkList.dirty ||accountLinkList.touched)"
+                class="error-message">
+                <div *ngIf="accountLinkList.errors.maxlength" class="error-message">Tài khoản liên kết không được quá 3
+                  tài khoản
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Tên dập nổi trên thẻ :<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <input class="form-control form-control-sm uppercase" type="text"
+                     oninput="this.value = this.value.toUpperCase()" (input)="inputLatinUppercase($event)"
+                     formControlName="cardHolderName" name="minimumMaintenanceBalance"
+                     placeholder="{{card.cardHolderName}}">
+              <div
+                *ngIf="submitted && cardHolderName.errors || cardHolderName.invalid && (cardHolderName.dirty ||cardHolderName.touched)"
+                class="error-message">
+                <div *ngIf="cardHolderName.errors.required" class="error-message">Tên dập nổi không được bỏ trống</div>
+                <div *ngIf="cardHolderName.errors.maxlength" class="error-message"> Tên dập nổi tối đa 25 ký tự
+                </div>
+                <div *ngIf="cardHolderName.errors.pattern" class="error-message"> Tên dập nổi không được nhập ký tự số
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Hình thức phát hành:<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <select class="form-control form-control-sm" formControlName="deliveryTypeCode" name="packageAccount">
+                <option *ngFor="let de of deliveryType" [value]="de.code">{{de.name}}</option>
+              </select>
+              <div
+                *ngIf="submitted && deliveryTypeCode.errors || deliveryTypeCode.invalid && (deliveryTypeCode.dirty ||deliveryTypeCode.touched)"
+                class="error-message">
+                <div *ngIf="deliveryTypeCode.errors.required" class="error-message">Hình thức phát hành không được bỏ
+                  trống
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;" *ngIf="deliveryTypeCode.value==='DEFAULT'">
+            <label class="col-sm-4 col-form-label text-right">
+              Địa chỉ nhận thẻ <span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <div style="float: left;display: block;margin-left: 10px;">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" value="TAI_CHI_NHANH"
+                         formControlName="deliveryChanelCode">
+                  <label class="form-check-label" for="radio1">Chi nhánh</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" value="GUI_NHAN" formControlName="deliveryChanelCode">
+                  <label class="form-check-label" for="radio1">Gửi nhận</label>
+                </div>
+              </div>
+              <div *ngIf="deliveryChanelCode.value === 'TAI_CHI_NHANH'">
+                <select class="form-control form-control-sm" formControlName="deliveryBranchCode" name="packageAccount">
+                  <option value="" disabled selected>--Mời chọn chi nhánh--</option>
+                  <option *ngFor="let b of branch" [value]="b.code">{{b.name}}</option>
+                </select>
+              </div>
+              <div *ngIf="deliveryChanelCode.value === 'GUI_NHAN'">
+                <input class="form-control form-control-sm uppercase" type="text" formControlName="deliveryAddress"
+                       name="minimumMaintenanceBalance"/>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;" *ngIf="deliveryTypeCode.value === 'TRAO_NGAY'">
+            <label class="col-sm-4 col-form-label text-right"> Số thẻ <span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <input class="form-control form-control-sm uppercase" type="text" formControlName="cardNumber" numbersOnly
+                     maxlength="16"/>
+              <div
+                *ngIf="submitted && cardNumber.errors || cardNumber.invalid && (cardNumber.dirty ||cardNumber.touched)"
+                class="error-message">
+                <div *ngIf="cardNumber.errors.minlength" class="error-message">Số thẻ phải đủ 16 số</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Tổng phí + VAT:<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <input type="text" disabled readonly class="form-control form-control-sm"
+                     placeholder="{{cardIssueFee[0].feeAmount | number}} VNĐ">
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Mã nhân viên:<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control form-control-sm" maxlength="10" formControlName="employeeId"
+                     placeholder="--Mời nhập mã nhân viên--" name="employeeCode"/>
+              <div
+                *ngIf="submitted && employeeId.errors || employeeId.invalid && (employeeId.dirty ||employeeId.touched)"
+                class="error-message">
+                <div *ngIf="employeeId.errors.required" class="error-message">Mã nhân viên không được bỏ trống</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row" style="padding: 7px 0;">
+            <label class="col-sm-4 col-form-label text-right">Mã người giới thiệu:<span class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control form-control-sm" maxlength="200" formControlName="referrerCode"
+                     placeholder="--Mời nhập mã người giới thiệu--" name="employeeCode"/>
+              <div
+                *ngIf="submitted && referrerCode.errors || referrerCode.invalid && (referrerCode.dirty ||referrerCode.touched)"
+                class="error-message">
+                <div *ngIf="referrerCode.errors.required" class="error-message">Mã người giới thiệu không được bỏ trống
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12" style="clear: both; display: block;">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label text-right">Diễn giải:<span class="text-danger">(*)</span>
+          </label>
+          <div class="col-sm-10">
+            <textarea formControlName="explain" name="description" placeholder="--Mời nhập diễn giải--"
+                      class="form-control form-control-sm explain-text" maxlength="200"></textarea>
+            <div *ngIf="submitted && explain.errors || explain.invalid && (explain.dirty ||explain.touched)"
+                 class="error-message">
+              <div *ngIf="explain.errors.required" class="error-message">Diễn giải không được bỏ trống</div>
+              <div *ngIf="explain.errors.maxlength" class="error-message">Diễn giải tối đa 200 ký tự</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row footer-row" style="margin:0px;position: fixed; width: 100%; background: #23388F;">
+    <div class="col-12" style="text-align: right; margin-right: 15px;">
+      <div class="footer" style="padding-right: 20px;" (click)="save()"
+           *ngIf="((isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)) && (process.item.statusCode !== PROCESS_STATUS.DONG_HO_SO)">
+        <span class="material-icons"> note_add </span>
+        <label>Lưu</label>
+      </div>
+      <div class="footer" (click)="backPage()">
+        <span class="material-icons"> keyboard_backspace </span>
+        <label>Quay lại</label>
+      </div>
+    </div>
+  </div>
+</div>

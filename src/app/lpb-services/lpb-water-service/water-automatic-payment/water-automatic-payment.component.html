@@ -1,0 +1,67 @@
+<div class="px-4 py-2">
+    <div class="text-high-light text-uppercase fw-medium text-lg-custom"> <i class="fa fa-search"></i> Tra cứu thông tin
+        khách hàng
+    </div>
+    <hr>
+    <div class="pl-2">
+        <form [formGroup]="formSearch" (ngSubmit)="search()">
+            <div class="d-flex flex-wrap">
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Loại giao dịch</label>
+                    <div>
+                        <app-lpb-select2 [items]="requestTypes" labelName="label" bindValue="value"
+                            formControlName="requestType" placeholder="Chọn loại giao dịch"></app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Nhà cung cấp</label>
+                    <div>
+                        <app-lpb-select2 [apiUrl]="'/water-service/supplier/active'" labelName="supplierName"
+                            bindValue="supplierCode" formControlName="supplierCode"
+                            placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Mã khách hàng</label>
+                    <div>
+                        <input type="text" formControlName="customerId" class="form-control w-100"
+                            placeholder="Nhập mã khách hàng">
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Từ ngày</label>
+                    <div>
+                        <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="checkValidateDate()"
+                            (dateChanged)="getFromDate()"></app-lpb-date-picker>
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Đến ngày</label>
+                    <div>
+                        <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="checkValidateDate()"
+                            (dateChanged)="getToDate()"></app-lpb-date-picker>
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label for="" class="text-high-light fw-bolder">Trạng thái giao dịch</label>
+                    <div>
+                        <app-lpb-select2 [items]="statusSettles" labelName="label" bindValue="value"
+                            formControlName="statusSettle" placeholder="Chọn trạng thái giao dịch"></app-lpb-select2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <button class="btn lpb-btn-primary" [disabled]="isLoading"> <i class="fa fa-search"></i>
+                    <span> Tìm kiếm</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mt-5">
+        <app-lpb-datatable [config]="config" [searchConditions]="searchConditions" (viewAction)="viewAction($event)"
+            (deleteAction)="deleteAction($event)" [columns]="columns"
+            tableName="Danh sách đăng ký thanh toán tự động" apiServiceURL="/water-service/settle"></app-lpb-datatable>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+$blue: #23388f;
+$orange: #f47326;
+$red: #f30e0e;
+$gray: #bdbdbd;
+
+$dark-blue: darken(
+  $color: $blue,
+  $amount: 30,
+);
+
+$dark-orange: darken(
+  $color: $orange,
+  $amount: 30,
+);
+$dark-gray: darken(
+  $color: $gray,
+  $amount: 30,
+);
+button {
+  all: unset;
+}
+
+.open-dialog-info {
+  width: 100%;
+  cursor: pointer;
+  border: 1px solid $gray;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 21px;
+  display: block;
+  padding: 11.5px 0;
+  color: $blue;
+  span {
+    margin-left: 16px;
+    display: block;
+  }
+  &:hover {
+    background-color: #eff4ff;
+  }
+  &:focus {
+    border: 1px solid $gray !important;
+    background-color: #eff4ff;
+  }
+}

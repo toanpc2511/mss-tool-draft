@@ -1,0 +1,122 @@
+<div class="row list-detail-account">
+       <div class="col-sm-6">
+          <div class="row young">
+              <div class="col-sm-4"><label class="label-field">Tên tài khoản :</label></div>
+              <div class="col-sm-8"><span>{{ (accountInfo && accountInfo.accountName) ? accountInfo.accountName : 'Không có giá trị'}}</span></div>
+          </div>
+       </div>
+       <div class="col-sm-6">
+         <div class="row young">
+           <div class="col-sm-4"><label class="label-field">Số tài khoản :</label></div>
+           <div class="col-sm-8"><span>{{ (accountInfo && accountInfo.accountNumber) ? accountInfo.accountNumber : 'Không có giá trị'}}</span></div>
+         </div>
+       </div>
+</div>
+
+<div class="row list-detail-account">
+  <div class="col-sm-6">
+     <div class="row young">
+         <div class="col-sm-4"><label class="label-field">Loại tài khoản :</label></div>
+         <div class="col-sm-8"><span>{{ (accountInfo && accountInfo.accountProductName) ? accountInfo.accountProductName : 'Không có giá trị'}}</span></div>
+     </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="row young">
+      <div class="col-sm-4"><label class="label-field">Số dư hiện tại :</label></div>
+      <div class="col-sm-8">Không có giá trị</div>
+    </div>
+  </div>
+</div>
+
+<div class="row list-detail-account">
+  <div class="col-sm-6">
+     <div class="row young">
+         <div class="col-sm-4"><label class="label-field">Mã tài khoản :</label></div>
+         <div class="col-sm-8"><span>{{ (accountInfo && accountInfo.accountClassCode) ? accountInfo.accountClassCode : 'Không có giá trị'}}</span></div>
+     </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="row young">
+      <div class="col-sm-4"><label class="label-field">Số dư khả dụng :</label></div>
+      <div class="col-sm-8">Không có giá trị</div>
+    </div>
+  </div>
+</div>
+
+<div class="row list-detail-account">
+  <div class="col-sm-6">
+     <div class="row young">
+         <div class="col-sm-4"><label class="label-field">Gói tài khoản :</label></div>
+         <div class="col-sm-8">Không có giá trị</div>
+     </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="row young">
+      <div class="col-sm-4"><label class="label-field">Hạn mức chi tiêu :</label></div>
+      <div class="col-sm-8">Không có giá trị</div>
+    </div>
+  </div>
+</div>
+
+<div class="row list-detail-account">
+  <div class="col-sm-6">
+     <div class="row young">
+         <div class="col-sm-4"><label class="label-field">Loại tiền tệ :</label></div>
+         <div class="col-sm-8"><span>{{ (accountInfo && accountInfo.currencyCode) ? accountInfo.currencyCode : 'Không có giá trị'}}</span></div>
+     </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="row young">
+      <div class="col-sm-4"><label class="label-field">Số dư đầu ngày :</label></div>
+      <div class="col-sm-8">Không có giá trị</div>
+    </div>
+  </div>
+</div>
+
+<div class="row list-detail-account">
+  <div class="col-sm-6">
+     <div class="row young">
+         <div class="col-sm-4"><label class="label-field">Số dư duy trì tối thiểu :</label></div>
+         <div class="col-sm-8"><span>{{ (accountInfo && accountInfo.minBalance) ? accountInfo.minBalance : 'Không có giá trị'}}</span></div>
+     </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="row young">
+      <div class="col-sm-4"><label class="label-field">Số dư bị khóa :</label></div>
+      <div class="col-sm-8">Không có giá trị</div>
+    </div>
+  </div>
+</div>
+
+<div class="row list-detail-account">
+  <div class="col-sm-6">
+     <div class="row young">
+         <div class="col-sm-4"><label class="label-field">Chi nhánh :</label></div>
+         <div class="col-sm-8"><span>{{ (accountInfo && accountInfo.branch.code) ? accountInfo.branch.code : 'Không có giá trị'}}</span>
+          <span>{{ (accountInfo && accountInfo.branch.name) ? accountInfo.branch.name : 'Không có giá trị'}}</span>
+        </div>
+     </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="row young">
+      <div class="col-sm-4"><label class="label-field">Mã nhân viên :</label></div>
+      <div class="col-sm-8"><span>{{ (accountInfo && accountInfo.employeeId) ? accountInfo.employeeId : 'Không có giá trị'}}</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="row list-detail-account">
+  <div class="col-sm-6">
+     <div class="row young">
+         <div class="col-sm-4"><label class="label-field">Diễn giải tài khoản :</label></div>
+         <div class="col-sm-8">{{ (accountInfo && accountInfo.accountDescription) ? accountInfo.accountDescription : 'Không có giá trị'}}</div>
+     </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="row young">
+      <div class="col-sm-4"><label class="label-field">Trạng thái :</label></div>
+      <div class="col-sm-8"><span>{{ (accountInfo && accountInfo.accountStatusName) ? accountInfo.accountStatusName : 'Không có giá trị'}}</span></div>
+    </div>
+  </div>
+</div>
+

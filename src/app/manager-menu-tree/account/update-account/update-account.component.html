@@ -1,0 +1,187 @@
+<div class="container-fuild">
+
+  <app-process-info [processId]="processId" (processDetail)="getDetail($event)"></app-process-info>
+
+  <div>
+    <div class="row cust-row">
+      <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+        <div class="title-head" style="font-weight: 500;">
+          <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add_circle</mat-icon>
+          <span class="text" style="padding: 5px 0;">CẬP NHẬT TÀI KHOẢN</span>
+        </div>
+      </div>
+      <form style="width: 100%;" [formGroup]="updateAccountForm">
+        <div class="col-12" style="display: flex;padding-left: 0px;padding-right: 0px;">
+          <div class="col-6 colLeft" style="padding-top: 20px;padding-bottom:10px"
+               [ngStyle]="{'pointer-events': isCheckDisable ? 'none' : 'auto' }">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Tên tài khoản
+              </label>
+              <div class="col-sm-7">
+                <input formControlName="accountName" name="accountName"
+                       [(ngModel)]="detailAccount.accountName" class="form-control form-control-sm"
+                       type="text" disabled>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Loại tiền tệ<span
+                class="text-danger">(*)</span>
+              </label>
+              <div class="col-sm-7">
+                <select formControlName="currencyCode" class="form-control form-control-sm"
+                        (change)="onChangeAccountCurrency($event.target.value)">
+                  <option [value]="item.code" *ngFor="let item of lstCurrency">{{item.code}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Loại tài khoản<span
+                class="text-danger">(*)</span>
+              </label>
+              <div class="col-sm-7">
+                <select class="form-control form-control-sm" formControlName="accountProductCode"
+                        #myAccountProduct (change)="onChangeAccountProduct(myAccountProduct.value)">
+                  <option value="">-- Chọn tài loại tài khoản --</option>
+                  <option *ngFor="let item of lstAccountProduct" [value]="item.code">{{item.code}} -
+                    {{item.name}}
+                  </option>
+                </select>
+
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Mã tài khoản<span
+                class="text-danger">(*)</span>
+              </label>
+              <div class="col-sm-7">
+                <select #mySelect [ngClass]="{ 'is-invalid': submitted && f.accountClassCode.errors}"
+                        class="form-control form-control-sm" formControlName="accountClassCode"
+                        (change)="onChangeAccountClass(mySelect.value)"
+                        [(ngModel)]="detailAccount.accountClassCode" name="codeAccount">
+                  <option value="">-- Chọn mã khoản --</option>
+                  <option *ngFor="let item of lstAccountClass" [value]="item.code">{{item.code}} -
+                    {{item.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Chi nhánh
+              </label>
+              <div class="col-sm-7">
+                <label class=" form-control-sm" style="padding-left: 0px;">{{branchName}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 colRight" style="padding-top: 20px;padding-bottom:10px"
+               [ngStyle]="{'pointer-events': isCheckDisable ? 'none' : 'auto' }">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Số tài khoản<span
+                class="text-danger">(*)</span>
+              </label>
+              <div class="col-sm-7">
+                <input formControlName="acountNumber" name="acountNumber"
+                       class="form-control form-control-sm" type="text" disabled>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Gói tài khoản
+              </label>
+              <div class="col-sm-7">
+                <select class="form-control form-control-sm" formControlName="packageAccount"
+                        name="packageAccount">
+                  <option value="" disabled selected>-- Chọn gói tài khoản --</option>
+                </select>
+
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Số
+                tiền duy trì tối thiểu<span class="text-danger">(*)</span>
+              </label>
+              <div class="col-sm-7">
+                <input numbersOnly [ngClass]="{ 'is-invalid': submitted && f.minBalance.errors}"
+                       class="form-control form-control-sm" type="text" #input (blur)="onBlurMethod()"
+                       formControlName="minBalance" name="minBalance" />
+                <div *ngIf="submitted && f.minBalance.errors" class="invalid-feedback">
+                  <div *ngIf="f.minBalance.errors.required ">Số tiền duy trì tối thiểu không để trống
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Mã nhân viên<span
+                class="text-danger">(*)</span>
+              </label>
+              <div class="col-sm-7" *ngIf="this.detailAccount && !this.detailAccount.accountNumber">
+                <app-lpb-select [selectedItem]="selectedMaCBNVLPB" [txtPlaceholder]="'Chọn MA CBNV LPB'"
+                                [lstOptions]="lstMACBNVLPB" (selectedChangeOption)="onChangeMaCbnvLpbCode($event)">
+                </app-lpb-select>
+              </div>
+              <div class="col-sm-7" *ngIf="this.detailAccount && this.detailAccount.accountNumber">
+                <input class="form-control form-control-sm"
+                       [value]="selectedMaCBNVLPB ? selectedMaCBNVLPB.name : ''" type="text" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12" style="clear: both; display: block;">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label textLabel">Diễn giải tài khoản<span
+              class="text-danger">(*)</span>
+            </label>
+            <div class="col-sm-10">
+                            <textarea [(ngModel)]="detailAccount.accountDescription"
+                                      [ngClass]="{'is-invalid': submitted && f.accountDescription.errors}"
+                                      formControlName="accountDescription" name="description"
+                                      class="form-control form-control-sm" style="width: 95%;"></textarea>
+              <div class="invalid-feedback">
+                <div>Diễn giải tài khoản không được để trống</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+  <div class="col-12" style="text-align: right;padding: 0px;margin: 0px;">
+    <div class="footer" *ngIf="isSendApprove" (click)="approveProcess('SEND_APPROVE')">
+      <span class="material-icons"> check </span>
+      <label>Gửi duyệt</label>
+    </div>
+    <div class="footer" *ngIf="isSave" (click)="approveProcess('SAVE')">
+      <span class="material-icons"> save</span>
+      <label>Lưu thông tin</label>
+    </div>
+    <div class="footer" (click)="backPage()">
+            <span class="material-icons">
+                keyboard_backspace
+            </span>
+      <label>Quay lại</label>
+    </div>
+  </div>
+</div>
+
+<app-lpb-modal headerText="Xác nhận" [show]="isShowPopupApprove" [unit]="'%'" [widthContent]="50" [heightContent]="50"
+               (hideModal)="isShowPopupApprove = false">
+  <div class="account-create-content">
+    <div class="mb-2">
+      Bạn có muốn gửi duyệt dịch vụ này không?
+    </div>
+    <div class="block-note">
+      <label>Ghi chú:&nbsp;&nbsp;</label>
+      <textarea class="form-control" [(ngModel)]="note" cols="80" rows="6"></textarea>
+    </div>
+    <div class="text-right mt-2">
+      <button class="btn-cancel" (click)="confimApproveProcess('CANCEL')">
+        Hủy
+      </button>
+      <button class="btn-save ml-2" (click)="confimApproveProcess('CONFIM')">Đồng ý
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>

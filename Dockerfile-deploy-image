@@ -1,0 +1,12 @@
+# chạy tại local mỗi lần sửa node_modules
+# > docker build -t harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform_web_deploy:latest -f .\Dockerfile-deploy-image .
+# > docker save -o uniform_web_deploy.tar harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform_web_deploy:latest
+# > docker push uniform_web_deploy.tar harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform_web_deploy:latest
+
+# Step 1: build node include angular-cli image
+FROM harbor-registry.lienvietpostbank.com.vn:5443/uniform/node_angular:14.15.1-alpine3.12_10.0.0 as angular_builder
+
+# Step 2: copy node_modules local
+WORKDIR /app
+COPY ./node_modules /app/node_modules
+ENV PATH /app/node_modules/.bin:$PATH

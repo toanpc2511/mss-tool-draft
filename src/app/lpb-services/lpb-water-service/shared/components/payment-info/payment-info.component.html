@@ -1,0 +1,105 @@
+<form [formGroup]="formPayment">
+    <ng-container *ngIf="!init || type===''">
+        <div class="border border-1 p-4 border-radius-panel">
+            <span class="text-high-light fw-bolder">Tài khoản ghi có</span>
+            <div class="mt-2 d-flex">
+                <div class="col-4">
+                    <label> Số tài khoản</label>
+                    <div>
+                        <span class="fw-bolder text-high-light"> {{formPayment.value?.accountNumberCredit}}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <label>Tên tài khoản</label>
+                    <div>
+                        <span class="fw-bolder text-high-light"> {{formPayment.value?.accountNameCredit}}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <label> Hình thức thanh toán</label>
+                    <div>
+                        <ng-select [searchable]="false" [clearable]="false" [items]="paymentMethods" bindLabel="label"
+                            bindValue="value" formControlName="paymentMethod">
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3 d-flex">
+                <div class="col-4">
+                    <label>Số tiền thanh toán</label>
+                    <div class="input-group">
+                        <input type="text" readonly [value]="formPayment.value?.paymentAmount | number"
+                            class="form-control border-right-0">
+                        <div class="input-group-append">
+                            <span class="fw-bolder text-high-light input-group-text"> VNĐ</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <label>Nội dung thanh toán</label>
+                    <div>
+                        <span class="text-high-light fw-bolder"> {{formPayment.value?.paymentContent}} </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="formPayment.value.paymentMethod === 'CK'" class="border border-1 p-4 border-radius-panel mt-4">
+            <span class="text-high-light fw-bolder">Tài khoản ghi nợ</span>
+            <div class="mt-2 d-flex">
+                <div class="col-4">
+                    <ng-select [searchable]="false" [clearable]="false" [items]="identityDocTypes" bindLabel="label"
+                        bindValue="value" formControlName="identityDocType">
+                    </ng-select>
+                </div>
+                <div class="col-4">
+                    <input type="text" [readOnly]="transferFirst && type==='edit'" formControlName="numberDocType"
+                        placeholder="Nhập giá trị tìm kiếm" (change)="numberDocTypeChange()" class="form-control">
+                    <div *ngIf="invalid(formPayment.controls.numberDocType)" class="text-danger">Chưa nhập giá
+                        trị tìm kiếm</div>
+                </div>
+                <div class="col-4">
+                    <button *ngIf="!transferFirst && type !=='view'" class="btn lpb-btn-primary"
+                        (click)="searchAccountCustomers()" [disabled]="isLoading"><i class="fa fa-search"></i>
+                        Tìm kiếm</button>
+                </div>
+            </div>
+            <div class="mt-3 d-flex">
+                <div class="col-4">
+                    <label>Số TKTT</label>
+                    <div>
+                        <app-lpb-select2 [items]="customerAccounts" labelName="accountNumber" bindValue="accountNumber"
+                            formControlName="accountDebit" placeholder="Chọn số TKTT">
+                            <ng-template let-item="item" let-index="index">
+                                <b>{{item.accountNumber}}</b>
+                                <div class="text-high-light">{{item.availableBalance | number}} VNĐ
+                                </div>
+                            </ng-template>
+                        </app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label>Chủ tài khoản</label>
+                    <div>
+                        <span class="fw-bolder text-uppercase text-high-light">
+                            {{formPayment.value?.accountNameDebit}}
+                        </span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label>Số dư tài khoản trước giao dịch</label>
+                    <div>
+                        <span class="fw-bolder text-uppercase text-high-light">
+                            {{formPayment.value?.accountBalance | number}} VNĐ
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+</form>

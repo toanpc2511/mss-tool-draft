@@ -1,0 +1,120 @@
+<div class="card-services-approve-step-search card-services-extend-step-search">
+  <div class="content-title">
+    <span class="active">TRA CỨU YÊU CẦU CHỜ PHÊ DUYỆT</span>
+    <span class="ml-4 text-decoration-none" (click)="switchPage(APPROVE_STEP.HISTORY)">LỊCH SỬ PHÊ DUYỆT</span>
+  </div>
+
+  <div class="form-search d-flex flex-column">
+    <div class="row-fields mt-3 mb-2 align-self-center">
+      <div class="form-search-title">
+        <span>Nhập thông tin tìm kiếm</span>
+      </div>
+    </div>
+    <form class="row-fields container" [formGroup]="formSearch" (ngSubmit)="submitSearchForm()"
+      (keyup.enter)="submitSearchForm()">
+      <div class="field">
+        <span class="txtLabel">Thông tin KH:</span>
+        <div class="input-group">
+          <div class="input-group-append">
+            <select class="form-control" formControlName="type">
+              <option *ngFor="let typeSearch of lstInputTypeSearch" [value]="typeSearch.code">{{typeSearch.name}}
+              </option>
+            </select>
+          </div>
+          <input type="text" formControlName="txtSearch" maxlength="15" placeholder="Nhập giá trị tìm kiếm"
+            class="form-control">
+        </div>
+      </div>
+      <div class="field">
+        <span class="txtLabel">Mã sản phẩm thẻ:</span>
+        <ng-select [multiple]="false" formControlName="cardProductCode" (clear)="clearCardProductCode()"
+          placeholder="Chọn mã sản phẩm thẻ: ">
+          <ng-option *ngFor="let item of lstCardProductCode" [value]="item.code">{{item.name}}</ng-option>
+        </ng-select>
+      </div>
+      <div class="field">
+        <span class="txtLabel">Chi nhánh:</span>
+        <ng-select (clear)="clearBranchCode()" [multiple]="false" formControlName="branchCode"
+          placeholder="Chọn Chi nhánh / PGD">
+          <ng-option value="">Tất cả Chi nhánh / PGD</ng-option>
+          <ng-option *ngFor="let item of lstBranch" [value]="item.code">{{item.branchCodeName}}</ng-option>
+        </ng-select>
+        <div class="text-danger mt-1 text-left p-0" *ngIf="hasErrorInput('branchCode', 'required')">
+          Chi nhánh không được bỏ trống
+        </div>
+      </div>
+      <div class="field">
+        <span class="txtLabel">User nhập:</span>
+        <input type="text" formControlName="inputBy" placeholder="Nhập Username" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Loại giao dịch:</span>
+        <ng-select placeholder="Chọn loại giao dịch" [multiple]="false" formControlName="actionCode">
+          <ng-option *ngFor="let item of lstTypeTransactionSearch" [value]="item.code">{{item.name}}</ng-option>
+        </ng-select>
+      </div>
+
+      <div class="w-100 text-center">
+        <div class="text-danger" *ngIf="hasError()">
+          * Vui lòng nhập Thông tin KH hoặc User nhập để thực hiện tìm kiếm
+        </div>
+      </div>
+
+
+      <div class="btn-action w-100 mt-3">
+        <button class="btn btn-primary" type="submit">Tìm kiếm
+          <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="content-title">
+    DANH SÁCH YÊU CẦU CHỜ PHÊ DUYỆT
+  </div>
+  <div class="tbl-result">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="col-w-3">STT</th>
+          <th class="col-w-10">Ref code</th>
+          <th class="col-w-10">Số GD</th>
+          <th class="col-w-5">Loại GD</th>
+          <th class="col-w-5">Số CIF</th>
+          <th class="col-w-10">Tên KH</th>
+          <th class="col-w-10">Thẻ Chính / Phụ</th>
+          <th class="col-w-5">Mã SP thẻ</th>
+          <th class="col-w-10">Số thẻ</th>
+          <th class="col-w-10">Tài khoản mặc định</th>
+          <th class="col-w-5">Ngày phát hành</th>
+          <th class="col-w-5">User nhập</th>
+          <th class="col-w-5">Thời gian tạo</th>
+          <th class="col-w-5">Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of lstEbsServicesSearch , index as i">
+          <td>{{ (pageIndex - 1) * pageSize + i + 1}}</td>
+          <td class="link-access" (click)="showDetail(item)">{{ item.serviceCode }}</td>
+          <td>{{ item.coreServiceCode }}</td>
+          <td class="text-nowrap">{{ item | actionName}}</td>
+          <td>{{item.customerCode }}</td>
+          <td class="text-nowrap">{{item.fullName }}</td>
+          <td>{{item.cardCategoryName }}</td>
+          <td>{{item.cardProductCode }}</td>
+          <td>{{item.cardNumber }}</td>
+          <td>{{item.defaultAccount }}</td>
+          <td>{{item.releaseDate }}</td>
+          <td>{{item.inputBy }}</td>
+          <td>{{(item.inputDate | prettyDate: 'DATE_ONLY') }}</td>
+          <td class="text-nowrap" [class.text-warning]="item.serviceStatusName !== 'Pending'"
+            [class.text-danger]="item.serviceStatusName === 'Pending'">
+            {{item.serviceStatusName }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="empty-data" *ngIf="lstEbsServicesSearch.length === 0">Không có bản ghi phù hợp</div>
+  </div>
+  <app-lpb-pagination [pagination]="pagination" (evtChangePageSize)="changePageSize($event)"
+    (evtSetPage)="setPage($event)">
+  </app-lpb-pagination>
+</div>

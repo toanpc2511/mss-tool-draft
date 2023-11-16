@@ -1,0 +1,115 @@
+export class GlobalConstant {
+
+  public static PROCESS_STATUS = {
+    DANG_NHAP: 'E',
+    CHO_DUYET: 'W',
+    TU_CHOI: 'R',
+    DUYET_MOT_PHAN: 'P',
+    DA_DUYET: 'A',
+    DONG_HO_SO: 'C',
+    DA_XOA: 'D',
+    KHOI_TAO_HO_SO: 'T',
+    CHO_BO_SUNG: 'M',
+  };
+
+  public static ITEM_STATUS = {
+    NEW: 'NEW',
+    ACTIVE: 'ACTIVE',
+    INACTIVE: 'INACTIVE',
+  };
+
+  public static POPUP_NAME = {
+    MIS: 'MIS',
+    UDF: 'UDF',
+    CIF_REFER: 'CIF_REFER',
+    LEGAL: 'LEGAL',
+    OWNER_BENEFIT: 'OWNER_BENEFIT',
+    GUARDIAN: 'GUARDIAN'
+  };
+
+  public static PERMANENT_ADDRESS = {
+    COUNTRY: 'PERMANENT_COUNTRY',
+    CITY: 'PERMANENT_CITY',
+    DISTRICT: 'PERMANENT_DISTRICT',
+    WARD: 'PERMANENT_WARD',
+    ADDRESS: 'PERMANENT_ADDRESS',
+  };
+  public static CURRENT_ADDRESS = {
+    COUNTRY: 'CURRENT_COUNTRY',
+    CITY: 'CURRENT_CITY',
+    DISTRICT: 'CURRENT_DISTRICT',
+    WARD: 'CURRENT_WARD',
+    ADDRESS: 'CURRENT_ADDRESS',
+  };
+
+  public static CUSTOMER_TYPE = {
+    CMND: 'CHUNG MINH NHAN DAN',
+    CCCD: 'CAN CUOC CONG DAN',
+    CCCD_2: 'CAN CUOC CONG DAN',
+    HO_CHIEU: 'HO CHIEU',
+    KHAI_SINH: 'GIAY KHAI SINH',
+    CIF: 'CIF',
+    PHONE: 'PHONE'
+  };
+
+  public static MODE = {
+    VIEW: 'VIEW',
+    CREATE: 'CREATE',
+    EDIT: 'EDIT'
+  };
+
+  public static ACTION_CODE = {
+    C: 'C',
+    U: 'U',
+    D: 'D'
+  };
+
+  public static SERVICE_STATUS = {
+    DANG_NHAP: 'E',
+    CHO_DUYET: 'W',
+    TU_CHOI: 'R',
+    DUYET_MOT_PHAN: 'P',
+    DA_DUYET: 'S',
+    DONG_HO_SO: 'C',
+    DA_XOA: 'D',
+    KHOI_TAO_HO_SO: 'T',
+    CHO_BO_SUNG: 'M',
+  };
+
+  public static SERVICE_NAME = {
+    OPEN_CIF: 'OPEN_CIF',
+    UPDATE_CIF: 'UPDATE_CIF',
+    CARD: 'CARD',
+    ACCOUNT: 'ACC',
+    EBANKING: 'EMB',
+    SUPCARD: 'SUPCARD',
+    GUARDIAN: 'CREATE_GUARDIAN',
+    UGD: 'UPDATE_GUARDIAN',
+    DGD: 'DELETE_GUARDIAN',
+    LEGAL: 'CREATE_LEGAL',
+    UL: 'UPDATE_LEGAL',
+    DL: 'DELETE_LEGAL',
+    CRF: 'CREATE_CIF_REF',
+    UCR: 'UPDATE_CIF_REF',
+    DCR: 'DELETE_CIF_REF',
+    COB: 'CREATE_CUSTOMER_OWNER_BENIFIT',
+    UCOB: 'UPDATE_CUSTOMER_OWNER_BENIFIT',
+    DCOB: 'DELETE_CUSTOMER_OWNER_BENIFIT',
+    PCO: 'PCO',
+    ACU: 'ACU',
+    COOWNER: 'COOWNER',
+    AUTHORITY: 'PDG',
+    SIGN: 'SIGN',
+    ATTACHMENT: 'ATTACHMENT',
+    ATTACHMENTU: 'ATTACHMENTU',
+    SIGNU: 'SIGNU',
+    OPEN_CIF_LV24: 'OPEN_CIF_LV24',
+    UPDATE_CIF_LV24: 'UPDATE_CIF_LV24'
+  };
+
+  public static ROLE = {
+    GDV: 'UNIFORM.BANK.GDV',
+    KSV: 'UNIFORM.BANK.KSV',
+    ADMIN: 'UNIFORM.BANK.QUANTRI',
+  };
+}

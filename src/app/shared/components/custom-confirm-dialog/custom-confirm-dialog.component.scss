@@ -1,0 +1,71 @@
+.btn-red {
+  color: #fff;
+  background-color: #d21c1c;
+  font-size: 14px;
+}
+.btn-red:focus,
+.btn-red.btn-red:focus {
+  background-color: #d23131;
+}
+.btn-blue {
+  color: #fff;
+  background-color: #0C258A;
+  font-size: 14px;
+}
+.btn-blue:focus,
+.btn-blue.btn-blue:focus {
+  background-color: #132a89;
+}
+
+.btn-orig {
+  color: #fff;
+  background-color: #f4721f;
+  font-size: 14px;
+}
+.btn-orig:focus,
+.btn-orig.btn-orig:focus {
+  background-color: #ea8140;
+}
+
+.btn-red {
+  color: #fff;
+  background-color: #D21C1C;
+  font-size: 14px;
+}
+.btn-red:focus,
+.btn-red:focus,
+.btn-red.btn-red:focus {
+  background-color: #d32a2a;
+}
+
+.required:after {
+  content: " * ";
+  color: red;
+}
+
+.dialog-content {
+  width: 100%;
+  padding: 28px 32px;
+  .dialog-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .textLabel {
+      color: #252a31;
+    }
+    .message {
+      color: #252a31;
+      font-weight: 100;
+    }
+  }
+}
+.action {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+
+  button {
+    min-width: 100px;
+  }
+}

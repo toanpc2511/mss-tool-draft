@@ -1,0 +1,36 @@
+<div class="px-4 py-2">
+    <div class="text-high-light fw-bolder">Hủy đăng ký thanh toán tự động</div>
+    <form [formGroup]="formSearch" (ngSubmit)="search()" class="d-flex mt-3">
+        <div class="col-4 px-4">
+            <label for="" class="text-high-light fw-bolder required label">Nhà cung cấp</label>
+            <div>
+                <app-lpb-select2 [apiUrl]="'/water-service/supplier/active'" labelName="supplierName"
+                    bindValue="supplierCode" formControlName="supplierCode"
+                    placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+                <div *ngIf="invalid(formSearch.controls.supplierCode)" class="text-danger">Chưa chọn nhà cung cấp
+                </div>
+            </div>
+        </div>
+        <div class="col-4 px-4">
+            <label for="" class="text-high-light fw-bolder required label">Mã khách hàng</label>
+            <div>
+                <input type="text" required formControlName="customerId" class="form-control"
+                    placeholder="Nhập mã khách hàng">
+                <div *ngIf="invalid(formSearch.controls.customerId)" class="text-danger">Chưa nhập mã
+                    khách hàng</div>
+            </div>
+        </div>
+        <div class="col-4 px-4">
+            <label for=""></label>
+            <div>
+                <button class="btn lpb-btn-primary" [disabled]="isLoading"> <i class="fa fa-search"></i>
+                    <span> Tìm kiếm</span>
+                </button>
+            </div>
+        </div>
+    </form>
+    <app-water-detail-register-info *ngIf="searched" [rootData]="rootData"></app-water-detail-register-info>    
+</div>
+<div [style.height.px]="50">
+    <app-lpb-footer [actions]="actions" class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>
+</div>

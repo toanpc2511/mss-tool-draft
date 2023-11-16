@@ -1,0 +1,155 @@
+<!-- Upload DSSV -->
+<div class="content">
+  <h3 class="title text-center text-uppercase font-weight-bold">UPLOAD FILE DANH SÁCH SINH VIÊN</h3>
+  <hr/>
+
+  <form [formGroup]="forms">
+    <div class="px-5">
+      <div class="row px-5 mx-auto my-2">
+        <div class="col-3"></div>
+        <div class="col-1">
+          <label class="required">Tên trường</label>
+        </div>
+        <div class="col-5">
+          <ng-select [clearable]="false" formControlName="schoolName">
+            <ng-option value="">Tất cả</ng-option>
+            -->
+            <ng-option
+              *ngFor="let item of schools"
+              [value]="item.code"
+            >{{ item.name }}</ng-option>
+          </ng-select>
+
+          <!--          <ng-select formControlName="supplierCode" [clearable]="false">-->
+          <!--            <ng-option value="">Tất cả</ng-option>-->
+          <!--            <ng-option-->
+          <!--              *ngFor="let item of suppliers"-->
+          <!--              [value]="item.supplierCode"-->
+          <!--            >{{ item.supplierName }}</ng-option-->
+          <!--            >-->
+          <!--          </ng-select>-->
+          <!--          <app-lpb-select2 [items]="crossUnivercityName"-->
+          <!--                           labelName="label"-->
+          <!--                           bindValue="value"-->
+          <!--                           formControlName="schoolName"-->
+          <!--                           placeholder="DANH SÁCH TRƯỜNG"></app-lpb-select2>-->
+          <app-validate [control]="forms.get('schoolName')" message="Chưa chọn trường" error="required"></app-validate>
+        </div>
+        <div class="col-2">
+          <button
+            mat-raised-button
+            (click)="onDownloadTemplate()"
+            [disabled]="!isFileTemplate"
+            class="d-inline-block bg-btn__blue text-while button-send mx-auto"
+          >
+            Tải file mẫu
+          </button>
+        </div>
+      </div>
+
+      <div class="row px-5 mx-auto my-2">
+        <div class="col-3"></div>
+        <div class="col-1">
+          <label class="required">Chọn file</label>
+        </div>
+        <div class="col-5">
+          <input type="file" #fileInput class="form-control-file form-control"
+                 id="file"
+                 name="file"
+                 (change)="getFile($event)"
+                 (click)="remoteEvent($event)"
+                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        </div>
+        <div class="col-2">
+          <button
+            mat-raised-button
+            (click)="checkFileExcel()"
+            [disabled]="!isBranchUpload"
+            class="d-inline-block bg-btn__blue text-while button-send mx-auto"
+          >
+            Kiểm tra file
+          </button>
+        </div>
+      </div>
+
+      <div class="row px-5 mx-auto my-2">
+        <div class="col-3"></div>
+        <div class="col-1">
+          <label class="required">Nội dung</label>
+        </div>
+        <div class="col-5">
+          <input
+            type="text"
+            formControlName="content"
+            placeholder="Nhập nội dung"
+            class="form-control"
+            trimInput
+            [maxlength]="200"
+          />
+          <app-validate [control]="forms.get('content')" message="Nội dung không được để trống"
+                        error="required"></app-validate>
+        </div>
+        <div class="col-3"></div>
+      </div>
+      <div class="row px-5 mx-auto my-2">
+        <div class="col-3"></div>
+        <div class="col-1">
+          <label>Kỳ upload mới</label>
+        </div>
+        <div class="col-5">
+          <mat-checkbox
+            formControlName="isNewUpload" >
+          </mat-checkbox>
+        </div>
+        <div class="col-3"></div>
+      </div>
+      <div class="d-flex mt-3">
+        <button
+          mat-raised-button
+          (click)="saveFile()"
+          [disabled]="!isValidFile"
+          class="d-inline-block bg-btn__blue text-while button-send mx-auto"
+        >
+          Lưu và gửi duyệt
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+
+  <ng-template #modalCheck>
+    <div class="container-fluid">
+      <h3>Thông báo kiểm tra file</h3>
+      <div class="modal-body">
+        <p class="text_success">Số dòng hợp lệ/Tổng số dòng: {{this.totalRecordSuccess}} / {{this.totalRecord}}</p>
+        <p class="text_warning">Số dòng lưu ý/Tổng số dòng: {{this.totalRecordWarning}} / {{this.totalRecord}}</p>
+        <p class="text_error">Số dòng lỗi/Tổng số dòng: {{this.totalRecordError}} / {{this.totalRecord}}</p>
+      </div>
+      <div>
+        <button class="button-valid"
+                (click)="viewFileValid()"
+        >
+          Tải file kết quả
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #modalSave>
+    <div class="container-fluid">
+      <h3>Thông báo lưu file</h3>
+      <div class="modal-body">
+        <p class="text_record">Bạn có chắc thay thế các khoản học phí đã tồn tại !</p>
+      </div>
+      <div>
+        <button class="button-save"
+                (click)="onSubmit()"
+        >
+          Lưu file
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

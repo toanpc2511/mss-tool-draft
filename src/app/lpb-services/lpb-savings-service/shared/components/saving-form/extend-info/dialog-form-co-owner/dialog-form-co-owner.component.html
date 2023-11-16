@@ -1,0 +1,160 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.DATE_RANGE_ERROR" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được lớn hơn Ngày mở STK
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.INVALID_DATE" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.MAX_DATE" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.OUT_OF_BOUNDS" class="text-danger mt-1 d-block small">
+        Tổng tỷ lệ sở hữu của các đồng sở hữu lớn hơn 100%
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.MAX" class="text-danger mt-1 d-block small">
+        Tổng tỷ lệ sở hữu của các đồng sở hữu lớn hơn 100%
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+<div class="dialog-main">
+  <div class="dialog-header">
+    <div class="title">
+      <span *ngIf="!data?.coOwner">Thêm mới</span>
+      <span *ngIf="data?.coOwner">Chi tiết</span>
+      Người đồng sở hữu
+    </div>
+    <div class="toolbar">
+      <button class="resize" (click)="resizeDialog()">
+        <ng-container *ngIf="isFullScreen; else elseIsFullScreen">
+          <i class="fa fa-compress" aria-hidden="true"></i>
+        </ng-container>
+        <ng-template #elseIsFullScreen>
+          <i class="fa fa-expand" aria-hidden="true"></i>
+        </ng-template>
+      </button>
+      <button class="close-x">
+        <mat-icon (click)="closeDialog()">close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div #formAddCoOwner class="dialog-content form-group" [class._full]="isFullScreen" [formGroup]="form">
+
+    <!-- #region lấy thông tin khách hàng -->
+    <div class="dialog-content-region" *ngIf="!data?.coOwner">
+      <div class="dialog-content-region-content">
+        <app-customer-search [(collapsed)]="collapsed"
+          (changeCustomerInfo)="searchCustomerInfo($event)"></app-customer-search>
+      </div>
+    </div>
+    <!-- #endregion lấy thông tin khách hàng -->
+
+    <!-- #region Thông tin cơ bản -->
+    <div class="dialog-content-region">
+
+      <div class="title">
+        <div class="content-title">
+          <span class="mr-2">Thông tin cơ bản</span>
+        </div>
+      </div>
+
+      <div class="mt-3 container-fluid">
+        <div class="row">
+          <!-- #region Số CIF -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel">Số CIF</span>
+            <input class="form-control" formControlName="cifNo" />
+          </label>
+          <!-- #endregion Số CIF -->
+          <!-- #region Họ và tên -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel">Họ và tên</span>
+            <input class="form-control" formControlName="fullName" />
+          </label>
+          <!-- #endregion Họ và tên -->
+
+          <!-- #region Số điện thoại -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel">Số điện thoại</span>
+            <input class="form-control" formControlName="phoneNumber" />
+          </label>
+          <!-- #endregion Số điện thoại -->
+
+          <!-- #region GTXM -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel">GTXM</span>
+            <input class="form-control" formControlName="docNum" />
+            <div class="form-radio-inline-group d-flex align-items-start mt-2">
+              <label class="txtLabel form-radio-inline d-flex align-items-center mr-3" *ngFor="let item of DOC_TYPES">
+                <input class="mr-2" formControlName="docType" name="docType" type="radio" [value]="item.key">
+                {{item.value}}
+              </label>
+            </div>
+          </label>
+          <!-- #endregion GTXM -->
+
+          <!-- #region Ngày cấp -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel">Ngày cấp</span>
+            <input class="form-control" formControlName="docIssueDate" />
+          </label>
+          <!-- #endregion Ngày cấp -->
+
+          <!-- #region Nơi cấp -->
+          <label class="form-group d-block col-lg-4">
+            <span class="textLabel">Nơi cấp</span>
+            <input class="form-control" formControlName="docIssuePlace" />
+          </label>
+          <!-- #endregion Nơi cấp -->
+
+          <!-- #region Địa chỉ -->
+          <label class="form-group d-block col-lg-12">
+            <span class="textLabel">Địa chỉ</span>
+            <input class="form-control" formControlName="address" />
+          </label>
+          <!-- #endregion Địa chỉ -->
+
+          <!-- #region Tỷ lệ sở hữu (%) -->
+          <label class="form-group d-block col-lg-6">
+            <span class="textLabel required">Tỷ lệ sở hữu (%)</span>
+            <input class="form-control" formControlName="ownershipRate" JustNumberOnly />
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'ownershipRate', controlNameVi: 'Tỷ lệ sở hữu'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Tỷ lệ sở hữu (%) -->
+
+          <!-- #region Ngày hết hiệu lực-->
+          <label class="form-group d-block col-lg-6">
+            <span class="textLabel required">Ngày hết hiệu lực</span>
+            <app-lpb-datepicker-new formControlName="expirationDate">
+            </app-lpb-datepicker-new>
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'expirationDate', controlNameVi: 'Ngày hết hiệu lực'}">
+            </ng-container>
+          </label>
+          <!-- #endregion Ngày hết hiệu lực -->
+        </div>
+      </div>
+
+    </div>
+    <!-- #endRegion Thông tin cơ bản -->
+
+
+  </div>
+  <div class="dialog-footer">
+    <button mat-button color="warning" class="mat-button-secondary button-close" (click)="closeDialog()">
+      Quay lại
+    </button>
+    <button *ngIf="!data?.isView" [disabled]="!form.controls['cifNo'].value" mat-button color="primary"
+      class="mat-button-primary button-save" (click)="onSubmit()" type="submit">
+      Lưu
+    </button>
+  </div>
+</div>

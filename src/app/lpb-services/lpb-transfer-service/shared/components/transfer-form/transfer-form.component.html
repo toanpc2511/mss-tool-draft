@@ -1,0 +1,509 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NO_EXIST" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NOT_MATCH_PROD" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không khớp với mã sản phẩm
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NOT_EXIST_ACC" class="text-danger mt-1 d-block small">
+        Không tìm thấy tài khoản của {{controlNameVi}} này
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NOT_ENOUGH_CHARS" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} phải chứa đúng {{fullChars[controlName]}} kí tự
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NOT_MATCH_CURCODE" class="text-danger mt-1 d-block small">
+        Loại tiền bên nhận không khớp với loại tiền bên chuyển
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NOT_PERSONAL_ACC" class="text-danger mt-1 d-block small">
+        Khách hàng doanh nghiệp vui lòng chọn số TK để nhận tiền
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.MIN_LENGTH" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} cần ít nhất {{minChars[controlName]}} kí tự
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.FROZEN" class="text-danger mt-1 d-block small">
+        Tài khoản bị chặn ghi Nợ, ghi Có
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NO_CR" class="text-danger mt-1 d-block small">
+        Tài khoản bị chặn ghi Có
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NO_DR" class="text-danger mt-1 d-block small">
+        Tài khoản bị chặn ghi Nợ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.SAME_ACN" class="text-danger mt-1 d-block small">
+        Tài khoản bên chuyển và bên nhận không được trùng nhau
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.PATTERN" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} chứa các ký tự đặc biệt
+      </span>
+    </ng-container>
+  </div>
+
+  <div *ngIf="warning[controlName] && (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstWarning(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NO_EXIST" class="text-warning mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+
+<div class="d-flex flex-column mb-5 form-group" [formGroup]="form">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col col-lg-6">
+        <div class="row px-4">
+          <div class="col col-lg-6 col-md-6">
+            <!-- #region Mã sản phẩm (*) -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Mã sản phẩm <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <ng-select [multiple]="false" formControlName="productCode" placeholder="Chọn mã sản phẩm">
+                  <ng-option *ngFor="let product of lstProduct;" [value]="product.code">
+                    {{product.code}} - {{product.name}}
+                  </ng-option>
+                </ng-select>
+                <ng-container
+                  *ngTemplateOutlet="error; context: {controlName: 'productCode', controlNameVi: 'Mã sản phẩm'}">
+                </ng-container>
+              </span>
+            </div>
+            <!--#endregion -->
+          </div>
+
+          <div class="col col-lg-6 col-md-6">
+            <!-- #region Mã nhân viên (*) -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Mã nhân viên <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <app-lpb-employee-input [control]="form.controls['employeeId']" [serviceName]="'transfer-service'"></app-lpb-employee-input>
+                <ng-container
+                  *ngTemplateOutlet="error; context: {controlName: 'employeeId', controlNameVi: 'Mã nhân viên'}">
+                </ng-container>
+              </span>
+            </div>
+            <!--#endregion -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- #region Thông tin bên chuyển (*) -->
+      <div class="col col-lg-6">
+        <div class="content-title w-100">
+          <span class="active text-uppercase">Thông tin bên chuyển</span>
+        </div>
+
+        <div class="row px-4">
+          <div class="col col-lg-6 col-md-12">
+            <!-- #region Số Cif (*) -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Số CIF <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <div class="position-relative input-group">
+                  <input type="text" formControlName="senderCifNo" class="form-control pr-4" (blur)="changeSenderCif($event)"
+                    placeholder="Nhập số CIF" (input)="inputChangeSenderCif($event)" maxlength="20" trimInput
+                    [textPattern]="{allowRegex: '[0-9]'}" />
+                  <div class="input-group-append"
+                    *ngIf="form.controls['senderCifNo'].value && form.controls['senderCifNo'].enabled"
+                    (click)="clearTextControl('SENDER', 'senderCifNo')">
+                    <span class="input-group-text ng-clear-wrapper ng-star-inserted" title="Clear all">
+                      <span aria-hidden="true" class="ng-clear">×</span>
+                    </span>
+                  </div>
+                </div>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'senderCifNo', controlNameVi: 'Số CIF'}">
+                </ng-container>
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Số tài khoản (*) -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Số tài khoản <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12" [title]="acnHoverText.SENDER">
+                <div *ngIf="
+                    form.controls['senderCifNo'].value &&
+                      lstAccount?.length >= 2;
+                    then stk_combobox;
+                    else stk_txt_box">
+                </div>
+                <ng-template #stk_combobox>
+                  <ng-select [multiple]="false" formControlName="senderAcn" placeholder="Chọn số tài khoản"
+                    (change)="changeAcn($event, 'SENDER')" (clear)="loadAccountInfo('SENDER', null, 'senderAcn')">
+                    <ng-option *ngFor="let item of lstAccount" [value]="item.acn">
+                      <div [title]="item.acn + ' - ' + (item.accountName || '') + ' - ' + item.curCode">
+                        {{ item.acn }} - {{ item.accountName || '' }} - {{ item.curCode }}
+                      </div>
+                    </ng-option>
+                  </ng-select>
+                </ng-template>
+                <ng-template #stk_txt_box>
+                  <div class="position-relative input-group">
+                    <input type="text" formControlName="senderAcn" class="form-control pr-4" (blur)="changeAcn($event, 'SENDER')" trimInput
+                      placeholder="Nhập số tài khoản" (input)="onAccInputChange($event, 'SENDER')" maxlength="20"  [textPattern]="{allowRegex: '[0-9]'}"/>
+                    <div class="input-group-append" *ngIf="form.controls['senderAcn'].value && form.controls['senderAcn'].enabled"
+                         (click)="clearTextControl('SENDER', 'senderAcn')">
+                      <span class="input-group-text ng-clear-wrapper ng-star-inserted" title="Clear all">
+                        <span aria-hidden="true" class="ng-clear">×</span>
+                      </span>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'senderAcn', controlNameVi: 'Số tài khoản'}">
+                </ng-container>
+              </span>
+            </div>
+
+            <div class="form-group row h-20">
+              <div class="col-lg-12">
+                <span>{{form.controls['senderName'].value}}</span>
+                <span *ngIf="form.controls['senderAvailableBalance'].value !== null">
+                  - Số dư khả dụng gồm thấu chi:
+                  {{form.controls['senderAvailableBalance'].value | prettyMoney}}
+                </span>
+              </div>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Nội dung (*) -->
+            <label class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Nội dung chuyển tiền <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <textarea type="text" formControlName="note" maxlength="210" placeholder="Nhập nội dung"
+                  class="form-control text-uppercase" rows="4" textTransform="uppercase" textEncode="latin"
+                  [textPattern]="{blockRegex: '[\\n\\r]', allowVi: true}" [textAreaLimit]="{maxLine: 4}">
+                </textarea>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'note', controlNameVi: 'Nội dung'}">
+                </ng-container>
+              </span>
+            </label>
+            <!--#endregion -->
+          </div>
+          <div class="col col-lg-6 col-md-12">
+            <!-- #region Loại tiền -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Loại tiền</span>
+              <span class="col-lg-12">
+                <input type="text" formControlName="senderCurCode" class="form-control">
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Đơn vị  mở TK -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Đơn vị mở TK</span>
+              <span class="col-lg-12">
+                <input type="text" class="form-control" [(ngModel)]="acnBranch.SENDER" disabled
+                  [ngModelOptions]="{standalone: true}">
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Số tiền giao dịch (*) -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Số tiền giao dịch <span
+                  class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <app-lpb-money-input [placeholder]="'Nhập số tiền giao dịch'" [class]="'form-control'"
+                  [control]="form.controls['transactionAmount']" [controlNameVi]="'Số tiền giao dịch'"
+                  (blurChangeValue)="changeTransactionAmount($event)"
+                  [name]="'transactionAmount'" [maxlength]="form.controls['senderCurCode'].value === 'VND' ? 13 : 10"
+                  [blockComma]="!form.controls['senderCurCode'].value || form.controls['senderCurCode'].value === 'VND'">
+                </app-lpb-money-input>
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Số tiền giao dịch radio (*)-->
+            <div class="form-group row">
+              <span class="col-lg-12">
+                <div class="form-radio-inline-group d-flex align-items-start">
+                  <label class="txtLabel form-radio-inline d-flex align-items-center">
+                    <input class="form-control" formControlName="feeType" name="feeType" type="radio" [value]="FEE_TYPES.FREE"
+                      (change)="changeFeeType($event)">
+                    Miễn phí
+                  </label>
+                  <label class="txtLabel form-radio-inline d-flex align-items-center">
+                    <input class="form-control" formControlName="feeType" name="feeType" type="radio" [value]="FEE_TYPES.INCLUDING"
+                      (change)="changeFeeType($event)">
+                    Phí trong
+                  </label>
+                  <label class="txtLabel form-radio-inline d-flex align-items-center">
+                    <input class="form-control" formControlName="feeType" name="feeType" type="radio" [value]="FEE_TYPES.EXCLUDING"
+                      (change)="changeFeeType($event)">
+                    Phí ngoài
+                  </label>
+                </div>
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Tổng số tiền/ Số tiền rút  -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Tổng số tiền giao dịch (gồm phí)</span>
+              <span class="col-lg-12">
+                <app-lpb-money-input [class]="'form-control'" [control]="form.controls['totalAmount']"
+                  [maxlength]="20">
+                </app-lpb-money-input>
+              </span>
+            </div>
+            <!--#endregion -->
+          </div>
+        </div>
+      </div>
+      <!--#endregion -->
+
+      <!-- #region Thông tin bên nhận (*) -->
+      <div class="col col-lg-6">
+        <div class="content-title w-100">
+          <span class="active text-uppercase">Thông tin bên nhận</span>
+        </div>
+
+        <div class="row px-4">
+          <div class="col col-lg-6 col-md-12">
+            <!-- #region Số tài khoản (*) -->
+            <div class="form-group row">
+              <span class="col-lg-12">
+                <label class="col-form-label txtLabel form-radio-inline d-flex align-items-center w-fit-cont">
+                  <fieldset [disabled]="disabledSearchType.ACN">
+                    <input class="form-control" formControlName="recipientSearchType" name="recipientSearchType"
+                    type="radio" [value]="RECIPIENT_SEARCH_TYPE.ACN">
+                  </fieldset>
+                  <span class="textLabel">Số tài khoản <span class="text-danger">(*)</span></span>
+                </label>
+              </span>
+              <span class="col-lg-12">
+                <div class="position-relative input-group">
+                  <input type="text" formControlName="recipientAcn" class="form-control pr-4" trimInput
+                    (blur)="changeAcn($event, 'RECIPIENT')" placeholder="Nhập số tài khoản" (input)="onAccInputChange($event, 'RECIPIENT')"
+                    maxlength="20" [textPattern]="{allowRegex: '[0-9]'}" />
+                  <div class="input-group-append"
+                    *ngIf="form.controls['recipientAcn'].value && form.controls['recipientAcn'].enabled"
+                    (click)="clearTextControl('RECIPIENT', 'recipientAcn')">
+                    <span class="input-group-text ng-clear-wrapper ng-star-inserted" title="Clear all">
+                      <span aria-hidden="true" class="ng-clear">×</span>
+                    </span>
+                  </div>
+                </div>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'recipientAcn', controlNameVi: 'Số tài khoản'}">
+                </ng-container>
+              </span>
+            </div>
+
+            <div class="form-group row h-20">
+              <div class="col-lg-12"
+                *ngIf="form.controls['recipientSearchType'].value === 'ACN' && form.controls['recipientFullNameACN'].value">
+                <span> {{form.controls['recipientFullNameACN'].value}} </span>
+              </div>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Loại tiền -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Loại tiền</span>
+              <span class="col-lg-12">
+                <input type="text" formControlName="recipientCurCode" class="form-control">
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Đơn vị mở TK -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Đơn vị mở TK</span>
+              <span class="col-lg-12">
+                <input type="text" class="form-control" [(ngModel)]="acnBranch.RECIPIENT" disabled
+                  [ngModelOptions]="{standalone: true}">
+              </span>
+            </div>
+            <!--#endregion -->
+          </div>
+
+          <div class="col col-lg-6 col-md-12">
+            <!-- #region Giấy tờ xác minh (*) -->
+            <div class="form-group row">
+              <span class="col-lg-12">
+                <label class="col-form-label txtLabel form-radio-inline d-flex align-items-center w-fit-cont">
+                  <fieldset [disabled]="disabledSearchType.GTXM">
+                    <input class="form-control" formControlName="recipientSearchType" name="recipientSearchType"
+                    type="radio" [value]="RECIPIENT_SEARCH_TYPE.GTXM">
+                  </fieldset>
+                  <span class="textLabel">Giấy tờ xác minh <span class="text-danger">(*)</span></span>
+                </label>
+              </span>
+              <span class="col-lg-12">
+                <app-autocomplete-input [placeholder]="'Nhập giấy tờ xác minh'"
+                  [searchURL]="'/transfer-service/customer/info?inputType=gtxm'" [queryParamName]="'input'"
+                  [bindValue]="'docNum'" [bindLabel]="'docNum'" (onChangeValue)="changeRecipientDocNum($event)"
+                  [control]="form.controls['recipientDocNum']" [customSearchFn]="customSearchRecipientDocNumFn"
+                  [minTermLength]="8">
+                  <div area="input">
+                    <input type="text" formControlName="recipientDocNum" trimInput
+                    class="form-control" placeholder="Nhập giấy tờ xác minh" maxlength="50" textTransform="uppercase"
+                    [textPattern]="{allowRegex: '[A-Za-z0-9\/\\s-]'}" (input)="onInputDocNumChange($event)"/>
+                  </div>
+                </app-autocomplete-input>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'recipientDocNum', controlNameVi: 'Số GTXM'}">
+                </ng-container>
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Giấy tờ xác minh radio  (*)-->
+            <div class="form-group row">
+              <span class="col-lg-12">
+                <div class="form-radio-inline-group d-flex align-items-start">
+                  <label class="txtLabel form-radio-inline d-flex align-items-center" *ngFor="let item of DOC_TYPES">
+                    <input class="form-control" formControlName="recipientDocType" name="recipientDocType" type="radio"
+                      [value]="item.key" (change)="changeRecipientDocType($event)">
+                    {{item.value}}
+                  </label>
+                </div>
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Ngày cấp -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Ngày cấp <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <app-lpb-date-picker #recipientDocIssueDate (dateChanged)="docIssueDateChange()" [maxDate]="maxDate">
+                </app-lpb-date-picker>
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Nơi Cấp -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Nơi Cấp <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <input type="text" formControlName="recipientDocIssuePlace" class="form-control text-uppercase" placeholder="Nhập Nơi Cấp"
+                       textTransform="uppercase" textEncode="latin" maxlength="50" trimInput>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'recipientDocIssuePlace', controlNameVi: 'Nơi Cấp'}">
+                </ng-container>
+              </span>
+            </div>
+            <!--#endregion -->
+
+             <!-- #region Tên khách hàng -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Tên khách hàng <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <div *ngIf="
+                            form.controls['recipientSearchType'].value === 'ACN'
+                            then unbinded_input;
+                            else binded_input">
+                </div>
+                <ng-template #unbinded_input>
+                  <input type="text" maxlength="70" class="form-control text-uppercase" placeholder="Nhập tên" disabled>
+                </ng-template>
+                <ng-template #binded_input>
+                   <input type="text" formControlName="recipientFullNameGTXM" class="form-control text-uppercase" placeholder="Nhập tên"
+                         textTransform="uppercase" textEncode="latin" maxlength="70" trimInput>
+                </ng-template>
+                <ng-container
+                  *ngTemplateOutlet="error; context: {controlName: 'recipientFullNameGTXM', controlNameVi: 'Tên khách hàng'}">
+                </ng-container>
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Số TK vãng lai đến (*) -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">
+                Số TK vãng lai đến <span class="text-danger">(*)</span>
+              </span>
+              <span class="col-lg-12">
+                <div class="position-relative input-group">
+                  <input type="text" formControlName="recipientCurrentAcn" class="form-control pr-4" (blur)="changeCrrAcn($event)"
+                    placeholder="Nhập số tài khoản" maxlength="20" [textPattern]="{allowRegex: '[0-9]'}"
+                    (input)="onInputCrrAcnChange($event)" />
+                  <div class="input-group-append"
+                    *ngIf="form.controls['recipientCurrentAcn'].value && form.controls['recipientCurrentAcn'].enabled"
+                    (click)="clearTextControl('RECIPIENT', 'recipientCurrentAcn')">
+                    <span class="input-group-text ng-clear-wrapper ng-star-inserted" title="Clear all">
+                      <span aria-hidden="true" class="ng-clear">×</span>
+                    </span>
+                  </div>
+                </div>
+                <ng-container
+                  *ngTemplateOutlet="error; context: {controlName: 'recipientCurrentAcn', controlNameVi: 'Số TK vãng lai'}">
+                </ng-container>
+              </span>
+            </div>
+
+            <div class="form-group row" *ngIf="form.controls['recipientCurrentAcnName'].value">
+              <span class="col-lg-12">{{form.controls['recipientCurrentAcnName'].value}} -
+                {{form.controls['recipientCurrentAcnCurCode'].value}}</span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Đơn vị nhận lệnh  -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Đơn vị nhận lệnh <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <app-lpb-select2 [apiUrl]="'/admin/api/public/branch'" labelName="branchCodeName" bindValue="code"
+                  [config]="{isNewApi: false}" formControlName="recipientCurrentAcnBranchCode"
+                  placeholder="Chọn Chi nhánh / PGD"></app-lpb-select2>
+              </span>
+            </div>
+            <!--#endregion -->
+          </div>
+        </div>
+      </div>
+      <!--#endregion -->
+    </div>
+
+    <!-- #region Phí (*) -->
+    <hr *ngIf="form.controls.feeType.value !== FEE_TYPES.FREE"/>
+    <div class="row" *ngIf="form.controls.feeType.value !== FEE_TYPES.FREE">
+      <div class="col col-lg-12 col-md-12">
+        <div class="content-title w-100">
+          <span class="active text-uppercase">Phí</span>
+        </div>
+      </div>
+
+      <div class="col col-lg-12 col-md-12">
+        <div class="mt-2 w-100 px-4">
+          <app-fee-table [curCode]="form.controls['senderCurCode'].value"
+                         [VND_FeeCtrlName]="'fee'"
+                         [VND_FeeVATCtrlName]="'feeVAT'"
+                         [EX_FeeCtrlName]="'feeEx'"
+                         [EX_FeeVATCtrlName]="'feeVATEx'"
+                         [form]="form"
+                         [feeCalData]="feeCalData"
+                         [class]="'w-100'"
+                         (onUpdate)="onUpdateFeeTable($event)">
+        </app-fee-table>
+        </div>
+      </div>
+    </div>
+    <!--#endregion -->
+
+    <!-- #region Chữ kí (*) -->
+    <hr/>
+    <div class="row">
+      <div class="col col-lg-12 col-md-12">
+        <div class="content-title w-100">
+          <span class="active text-uppercase">Chữ kí</span>
+        </div>
+      </div>
+
+      <div class="col col-lg-12 col-md-12">
+        <div class="mt-2 w-100 px-4">
+          <app-lpb-signature-list #lstSign [class]="'w-100'" [serviceName]="'transfer-service'"></app-lpb-signature-list>
+        </div>
+      </div>
+    </div>
+    <!--#endregion -->
+
+    <hr/>
+    <ng-content select=".fixed-detail"></ng-content>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+.sms-query-main {
+  background-color: white;
+  border-top: 1px solid #bdbdbd;
+  padding: 0px 10px;
+  display: flex;
+  flex-direction: column;
+  .content-title {
+    color: #17589f;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 8px 0px;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .search {
+    padding: 32px 30%;
+    border-bottom: 1px solid #bdbdbd;
+    &-input {
+      display: flex;
+      align-items: baseline;
+      span {
+        width: 120px;
+        font-weight: 500;
+        color: #17589f;
+      }
+      .btn-search {
+        background-color: #007bff !important;
+      }
+    }
+  }
+}

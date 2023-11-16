@@ -1,0 +1,55 @@
+<div class="warning-data" *ngIf="objErrorCore">
+  <!--  Block MIS-->
+  <div class="warning-data-block mb-2 d-flex flex-column" *ngIf="objErrorCore.MIS && objErrorCore.MIS.length > 0">
+    <div class="warning-data-block-header p-1 d-flex justify-content-between align-items-baseline">
+      <div class="header-name">
+        <i class="fa fa-list-alt" aria-hidden="true"></i>
+        <span class="ml-2">KHỐI THÔNG TIN MIS</span>
+      </div>
+      <i class="fa pointer-class" [ngClass]="isExpandMis ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true" (click)="isExpandMis = !isExpandMis"></i>
+    </div>
+    <div class="warning-data-block-content flex-wrap justify-content-between pl-3" [ngClass]="isExpandMis ? 'd-flex' : 'd-none'">
+      <div class="warning-data-block-content-item w-50 mb-1 mt-1" *ngFor="let errMis of objErrorCore.MIS">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        <span class="ml-2 field-error">{{errMis.target}} - {{errMis.detail}}</span>
+      </div>
+    </div>
+  </div>
+  <!--  Block UDF-->
+  <div class="warning-data-block mb-2 d-flex flex-column" *ngIf="objErrorCore.UDF && objErrorCore.UDF.length > 0">
+    <div class="warning-data-block-header d-flex p-1 justify-content-between align-items-baseline">
+      <div class="header-name">
+        <i class="fa fa-list-alt" aria-hidden="true"></i>
+        <span class="ml-2">KHỐI THÔNG TIN UDF</span>
+      </div>
+      <i class="fa pointer-class" aria-hidden="true" [ngClass]="isExpandUdf ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true" (click)="isExpandUdf = !isExpandUdf"></i>
+    </div>
+    <div class="warning-data-block-content flex-wrap justify-content-between pl-3" [ngClass]="isExpandUdf ? 'd-flex' : 'd-none'">
+      <div class="warning-data-block-content-item w-50 mb-1 mt-1" *ngFor="let errUDF of objErrorCore.UDF">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        <span class="ml-2 field-error">{{errUDF.target}} - {{errUDF.detail}}</span>
+      </div>
+    </div>
+  </div>
+  <!--  Block Guardian-->
+  <div class="warning-data-block mb-2 d-flex flex-column" *ngIf="lstGuardianErr.length > 0">
+    <div class="warning-data-block-header d-flex p-1 justify-content-between align-items-baseline">
+      <div class="header-name">
+        <i class="fa fa-list-alt" aria-hidden="true"></i>
+        <span class="ml-2">KHỐI THÔNG TIN ĐẠI DIỆN PHÁP LUẬT</span>
+      </div>
+      <i class="fa pointer-class" aria-hidden="true" [ngClass]="isExpandGuardian ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true" (click)="isExpandGuardian = !isExpandGuardian"></i>
+    </div>
+    <div class="warning-data-block-content flex-wrap justify-content-between pl-3" [ngClass]="isExpandGuardian ? 'd-flex' : 'd-none'">
+      <div class="warning-data-block-content-item w-100 mb-1 mt-1" *ngFor="let errGuardian of lstGuardianErr">
+        <p class="ml-2 field-error">{{errGuardian.guardianName}}</p>
+        <div class="d-flex flex-wrap">
+          <div class="w-50" *ngFor="let code of errGuardian.codes">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            <span class="ml-2 field-error">{{code.target}} - {{code.detail}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

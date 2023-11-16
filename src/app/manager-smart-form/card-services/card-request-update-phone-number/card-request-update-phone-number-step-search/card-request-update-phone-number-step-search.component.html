@@ -1,0 +1,74 @@
+<div class="card-request-update-phone-search d-flex flex-column">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title">
+    TRA CỨU THÔNG TIN KHÁCH HÀNG
+  </div>
+
+  <div class="form-search d-flex flex-column" [formGroup]="formSearch">
+    <div class="row-fields mt-3 mb-2">
+      <div class="field">
+        <span class="txtLabel">Nhập thông tin tìm kiếm <span class="field-require">(*)</span>:</span>
+        <div class="input-group">
+          <div class="input-group-append">
+            <select name="valueSearch" class="form-control" formControlName="type">
+              <option *ngFor="let typeSearch of lstInputTypeSearch"
+                      [value]="typeSearch.code">{{typeSearch.name}}</option>
+            </select>
+          </div>
+          <input type="text" placeholder="Nhập giá trị tìm kiếm" formControlName="txtSearch" class="form-control">
+        </div>
+        <div class="err-text mt-1" *ngIf="hasErrorInput('txtSearch', 'required')">Thông tin tìm kiếm không được bỏ
+          trống
+        </div>
+      </div>
+      <div class="btn-action w-100">
+        <button class="btn btn-primary" type="button" (click)="searchCustomer()">Tìm kiếm
+          <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-title">
+    DANH SÁCH KHÁCH HÀNG
+  </div>
+
+  <div class="tbl-result">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th style="width: 5%">STT</th>
+        <th style="width: 15%">Số CIF</th>
+        <th style="width: 15%">Tên KH</th>
+        <th style="width: 10%">Ngày sinh</th>
+        <th style="width: 10%">Giới tính</th>
+        <th style="width: 10%">Số điện thoại</th>
+        <th style="width: 10%">Số GTXM</th>
+        <th style="width: 15%">Nơi cấp</th>
+        <th style="width: 10%">Thao tác</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of lstSearchResults , index as i">
+        <th style="width: 5%">{{i + 1}}</th>
+        <th style="width: 15%">{{item.CUSTOMER_NO}}</th>
+        <th style="width: 15%">{{item.FULL_NAME}}</th>
+        <th style="width: 10%">{{item.DATEOFBIRTH}}</th>
+        <th style="width: 10%">{{item.GENDER === 'F' ? 'Nữ' : 'Nam'}}</th>
+        <th style="width: 10%">{{item.TEL_NO}}</th>
+        <th style="width: 10%">{{item.UID_VALUE}}</th>
+        <th style="width: 15%">{{item.NOI_CAP}}</th>
+        <th style="width: 10%">
+          <button type="button" class="btn btn-primary" data-toggle="tooltip" (click)="sendRequest(item)"
+                  data-placement="left" title="Cập nhật số điện thoại">
+            <i class="fa fa-paper-plane ic-in-primary" aria-hidden="true"></i>
+          </button>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+    <div class="empty-data" *ngIf="lstSearchResults.length === 0">Chưa có bản ghi tồn tại</div>
+  </div>
+</div>

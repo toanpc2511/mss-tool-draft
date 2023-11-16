@@ -1,0 +1,74 @@
+<app-progress-spinner [color]="'accent'" [mode]="'indeterminate'" [value]="value"
+                      *ngIf="isShowLoading" class="sq-global-backdrop center-aligned">
+</app-progress-spinner>
+<div class="step-send-form d-flex flex-column">
+  <div class="content-title">
+    {{ title | uppercase }}
+  </div>
+  <div class="form-detail d-flex flex-column" [formGroup]="formGroup">
+    <div class="row-fields mt-3 mb-2">
+      <div class="field">
+        <span class="txtLabel">CIF:</span>
+        <input type="text" formControlName="customerCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">CardID:</span>
+        <input type="text" formControlName="cardCoreId" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Số GTXM:</span>
+        <input type="text" formControlName="uidValue" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Thẻ chính / phụ:</span>
+        <input type="text" formControlName="cardCategoryName" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Tên khách hàng:</span>
+        <input type="text" formControlName="fullName" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Mã sản phẩm thẻ:</span>
+        <input type="text" formControlName="cardProductCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Ngày phát hành:</span>
+        <input type="text" formControlName="releaseDate" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Số thẻ:</span>
+        <input type="text" formControlName="cardNumber" class="form-control">
+      </div>
+      <div class="field" *ngIf="!showPinCount">
+        <span class="txtLabel">Ngày hết hạn <span class="text-danger">(*)</span> :</span>
+        <input type="text" formControlName="expireDate" class="form-control">
+      </div>
+      <div class="field" *ngIf="showPinCount">
+        <span class="txtLabel">Số lần nhập sai PIN:</span>
+        <input type="text" formControlName="pinCount" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Tên dập nổi:</span>
+        <input type="text" formControlName="cardEmbossedName" class="form-control">
+      </div>
+      <ng-content select=".field"></ng-content>
+    </div>
+    <ng-content select=".row-fields"></ng-content>
+
+    <div *ngIf="allowEditAction"><ng-content select=".button-group"></ng-content></div>
+
+    <div class="btn-action w-100 d-flex justify-content-center" *ngIf="!allowEditAction">
+      <button class="btn btn-primary mr-4 btn-action-back" (click)="backToSearch($event)" type="button">
+        Quay lại
+      </button>
+      <button class="btn btn-primary btn-action-reject mr-4" *ngIf="formType === 'APPROVE' && enabledSend && !isDetail"
+              (click)="openModal(MODAL_TYPES.REJECT)" type="button">
+        Từ chối
+      </button>
+      <button class="btn btn-primary btn-action-send mr-4" *ngIf="enabledSend && !isDetail"
+              (click)="openModal(MODAL_TYPES.APPROVE)" type="button">
+        {{submitButtonText}}
+      </button>
+    </div>
+  </div>
+</div>

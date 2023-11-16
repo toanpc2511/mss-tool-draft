@@ -1,0 +1,33 @@
+.content {
+  margin-bottom: 60px;
+  .card {
+    background-color: #fff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    padding: 20px 0px;
+
+    .card-title {
+      color: #0C258A;
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    label {
+      color: #0C258A;
+      font-weight: 500;
+    }
+  }
+
+  .required:after {
+    content: ' *';
+    color: red;
+  }
+
+  .bg-btn__blue {
+    color: #fff;
+    background-color: #0c258a;
+  }
+
+  .gap-4 {
+    gap: 1rem
+  }
+}

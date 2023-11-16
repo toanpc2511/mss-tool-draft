@@ -1,0 +1,73 @@
+<table class="table table-hover money-statement" aria-describedby="BANG KE">
+  <thead>
+    <tr>
+      <th style="width: 10%">STT</th>
+      <th style="width: 30%">Mệnh giá</th>
+      <th style="width: 30%">Số tờ</th>
+      <th style="width: 30%">Thành tiền</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let moneyForm of moneyListForm.controls; let i = index;">
+      <tr [formGroup]="moneyForm">
+        <td>{{i + 1}}</td>
+        <td>
+          <ng-container [ngSwitch]="curCode">
+            <ng-container *ngSwitchCase="CURRENCIES.USD">
+              ${{moneyForm.value['denomination'] | prettyMoney}}
+            </ng-container>
+
+            <ng-container *ngSwitchCase="CURRENCIES.VND">
+              {{moneyForm.value['denomination'] | prettyMoney }}
+            </ng-container>
+
+            <ng-container *ngSwitchDefault>
+              <div class="w-100 d-flex justify-content-center">
+                <div class="w-75">
+                  <app-lpb-money-input [class]="'form-control'" [blockComma]="true"
+                    [control]="moneyForm.controls['denomination']" [maxlength]="6">
+                  </app-lpb-money-input>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </td>
+        <td>
+          <div class="w-100 d-flex justify-content-center">
+            <app-lpb-money-input [class]="'form-control'" [blockComma]="true" [control]="moneyForm.controls['quantity']"
+              [maxlength]="12" [controlNameVi]="'Số tờ'">
+            </app-lpb-money-input>
+          </div>
+        </td>
+        <td>
+          <div class="w-100 d-flex justify-content-center">
+            <div class="w-75">
+              <app-lpb-money-input [class]="'form-control text-right'" [maxlength]="18"
+                [control]="moneyForm.controls['total']">
+              </app-lpb-money-input>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    <tr>
+      <td></td>
+      <td class="font-weight-bold">Tổng tiền</td>
+      <td></td>
+      <td>
+        <div class="w-100 d-flex justify-content-center">
+          <div class="w-75 font-weight-bold">
+            {{(moneyListSum | prettyMoney) || 0}}
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="enableAddRow && !moneyListForm.disabled && moneyListForm.controls.length < 12"
+  class="w-100 d-flex align-content-center justify-content-end">
+  <button (click)="addMoneyRow()" mat-button class="w-auto" color="primary">
+    <mat-icon>add_circle</mat-icon>
+    <span class="font-weight-semibold h5"> Thêm mới mệnh giá</span>
+  </button>
+</div>

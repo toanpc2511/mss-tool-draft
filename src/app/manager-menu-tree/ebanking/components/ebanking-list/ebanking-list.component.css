@@ -1,0 +1,71 @@
+.ebanking-list {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #BDBDBD
+}
+
+.ebanking-list-header {
+    padding: 9px;
+    border-bottom: 1px solid #BDBDBD
+}
+
+.ebanking-list-header span {
+    vertical-align: sub;
+    color: #23388F;
+    font-weight: 500;
+    font-size: 18px;
+    margin-left: 5px
+}
+
+.ebanking-list-header img {
+    width: 30px;
+    height: 30px
+}
+
+.ebanking-list-content .tbl-ebanking {
+    padding: 9px
+}
+
+.ebanking-list-content .tbl-ebanking .col-no {
+    width: 5%
+}
+
+.ebanking-list-content .tbl-ebanking .none-data {
+    text-align: center;
+}
+
+.ebanking-list-content .tbl-ebanking .col-id,
+.ebanking-list-content .tbl-ebanking .col-phone,
+.ebanking-list-content .tbl-ebanking .col-status,
+.ebanking-list-content .tbl-ebanking .col-action,
+.ebanking-list-content .tbl-ebanking .col-name {
+    width: 15%;
+    word-break: break-all
+}
+
+.ebanking-list-content .tbl-ebanking .col-email {
+    width: 20%;
+    word-break: break-all
+}
+
+.ebanking-list-content .tbl-ebanking .col-action-sms {
+    font-weight: 400;
+    color: #2F80ED;
+    cursor: pointer
+}
+
+.ebanking-list-content .tbl-ebanking .col-action-select {
+    font-weight: 400;
+    color: #F2994A;
+    cursor: pointer
+}
+
+.ebanking-list-content .tbl-ebanking .col-action .btn-delete {
+    color: #CA0707;
+    cursor: pointer
+}
+
+.ebanking-list-content .tbl-ebanking .txt-link {
+    cursor: pointer;
+    color: #2F80ED
+}

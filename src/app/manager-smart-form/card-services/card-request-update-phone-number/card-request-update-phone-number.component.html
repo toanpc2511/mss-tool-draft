@@ -1,0 +1,7 @@
+<div class="card-request-update-phone-main">
+  <app-card-request-update-phone-number-step-search *ngIf="step === STEP.HOME"
+                                                    (evtClickSendRequest)="showStepDetail($event)"></app-card-request-update-phone-number-step-search>
+  <app-card-request-update-phone-number-step-send *ngIf="step === STEP.DETAIL" (eventBackStep)="backToSearch($event)"
+                                                  [selectedCustomer]="selectedCustomer"></app-card-request-update-phone-number-step-send>
+</div>
+

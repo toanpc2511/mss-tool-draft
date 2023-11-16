@@ -1,0 +1,42 @@
+@import "/src/app/shared/styles/lpb-button.scss";
+@import "/src/app/shared/styles/lpb-table.scss";
+.lpb-data-table{
+  padding-bottom: 10px;
+  .layout{
+    padding-top: 7px;
+    background-color: #FFFFFF;
+    .content-title{
+      color: #17589f;
+      border-bottom: 2px solid #F47326;
+      padding: 6px 0;
+      align-self: center;
+      font-size: 16px;
+      font-weight: 500;
+      place-self: flex-start;
+      margin-bottom: 24px;
+    }
+    .content-field{
+      padding: 0 15%;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      .field{
+        margin-top: 10px;
+      }
+      .textLabel{
+        font-size: 14px !important;
+        color: #17589f !important;
+      }
+    }
+    .compulsory-field {
+      color: red;
+    }
+  }
+
+}
+::ng-deep.ng-select-container {
+  outline: none !important;
+  box-shadow: unset !important;
+}
+.form-control:focus {
+  box-shadow: unset !important;
+}

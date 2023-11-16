@@ -1,0 +1,20 @@
+<div class="lpb-upload-file-single w-100">
+  <div class="position-relative">
+    <label for="file-upload" class="custom-file-upload" [ngClass]="errMessage !== '' ? 'field-err' : ''"
+      [title]="fileName">
+      <button class="btn btn-accept btn-upload" (click)="fileUpload.click()">Choose File</button>
+      <div class="file-name">
+        <span>{{fileName !== '' ? fileName : 'No file chosen'}}</span>
+      </div>
+    </label>
+    <span *ngIf="fileName !== ''" (click)="clear()" class="ng-clear-wrapper position-absolute" title="Clear all">
+      <span aria-hidden="true" class="ng-clear">×</span>
+    </span>
+  </div>
+
+  <input id="file-upload" #fileUpload type="file" (change)="handleFileInput($event)" />
+  <span class="err-msg" *ngIf="errMessage !== ''">{{errMessage}}</span>
+  <div class="note-msg" *ngIf="errMessage === ''">
+      File có định dạng {{validFileTypesTxt}}. Dung lượng dưới 2MB
+  </div>
+</div>

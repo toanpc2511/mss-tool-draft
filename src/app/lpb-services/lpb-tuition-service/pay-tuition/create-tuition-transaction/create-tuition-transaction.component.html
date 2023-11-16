@@ -1,0 +1,63 @@
+<div class="px-4 py-2 overflow-y">
+  <div class="text-high-light text-uppercase fw-bolder" style="text-align: center;">NỘP HỌC PHÍ
+  </div>
+  <div class="text-high-light text-uppercase fw-bolder"> <i class="fa fa-search"></i> TRUY VẤN THÔNG TIN HỌC PHÍ
+  </div>
+  <hr>
+  <!--  -->
+  <div class="pl-2">
+    <form [formGroup]="formSearch" (ngSubmit)="search()" class="d-flex">
+      <div class="col-4 px-4">
+        <label for="" class="text-high-light fw-bolder required label">Chọn trường</label>
+        <div>
+          <app-lpb-select2 
+          [items]='schoolSource'      
+          labelName="name" bindValue="code"
+            formControlName="univerCode" placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+          <app-validate [control]="formSearch.controls.univerCode" error="required"
+            message="Chưa chọn trường"></app-validate>
+        </div>
+      </div>
+      <div class="col-4 px-4">
+        <label for="" class="text-high-light fw-bolder required label">Mã sinh viên</label>
+        <div>
+          <input type="text" required formControlName="studentCode" (change)="infoSearchChange()" class="form-control"
+            placeholder="Nhập mã sinh viên" trimInput>
+          <app-validate [control]="formSearch.controls.studentCode" error="required"
+            message="Chưa nhập mã sinh viên"></app-validate>
+        </div>
+      </div>
+      <div class="col-4 px-4">
+        <label for=""></label>
+        <div>
+          <button class="btn lpb-btn-primary" [disabled]="isLoading"> <i class="fa fa-search"></i>
+            <span> Tìm kiếm</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!--  -->
+
+  <div *ngIf="searched">
+    <div class="mt-5 clearfix fw-bolder"><i class="fa fa-credit-card-alt text-high-light mr-2"></i> <span
+        class="text-high-light text-uppercase">Thông tin nợ học phí</span>
+      <!-- <span class="float-right color-payment-type"> Quy tắc thanh toán: {{paymentRuleName}} </span> -->
+    </div>
+    <hr>
+    <app-lpb-datatable [clearSelected]="clearSelected" (getRowSelected)="getRowSelected($event)"
+      (chkAll)="chkAll($event)" [columns]="columns" [config]="config" [dataSource]="dataSource"
+      (chkClickChange)="chkClickChange($event)"></app-lpb-datatable>
+    <div class="mt-5">
+      <div class="text-high-light text-uppercase fw-bolder"> <i
+          class="fa fa-credit-card-alt text-high-light mr-2"></i>THÔNG TIN NỘP HỌC PHÍ
+      </div>
+      <hr>
+      <app-payment-info #paymentInfo (paymentMethodChange)="paymentMethodChange($event)"></app-payment-info>
+    </div>
+  </div>
+</div>
+<div [style.height.px]="50">
+  <app-lpb-footer [actions]="searched?actions:[]" class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>
+</div>

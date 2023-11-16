@@ -1,0 +1,48 @@
+<div class="abc">
+  <h2 mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;">
+    Thêm mới chức danh
+  </h2>
+  <mat-dialog-content class="mat-typography scroll-dialog">
+    <div class="col-12" style="padding-top: 10px;">
+      <form [formGroup]="loginForm">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Mã chức danh<span style="color: red;">*</span></label>
+            <div class="input-group" >
+              <input  NumberAndTextLatin  maxlength="50" formControlName="code" type="text" class="form-control" name="code" 
+              [ngClass]="{ 'is-invalid': (submitted && f.code.errors) || validateCode }" [(ngModel)]="objTitle.code">
+              <div *ngIf="(submitted && f.code.errors) || validateCode" class="invalid-feedback">
+                <div *ngIf="validateCode || f.code.errors.required ">Mã chức danh không được để trống</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Tên chức danh<span style="color: red;">*</span></label>
+            <input maxlength="50" formControlName="name" [(ngModel)]="objTitle.name"
+             [ngClass]="{ 'is-invalid': (submitted && f.name.errors) || validateName}" type="text" class="form-control" name="name" >
+            <div *ngIf="(submitted && f.name.errors) ||  validateName" class="invalid-feedback">
+              <div *ngIf="validateName || f.name.errors.required ">Tên chức danh không được để trống</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Mô tả</label>
+            <div class="input-group">
+              <textarea maxlength="200" formControlName="description" class="form-control" cols="10" name="description" [(ngModel)]="objTitle.description" ></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="float-right" style="height: 57px;
+      margin-top: 9px;">
+      <button type="button" class="btn newfile btn-color" (click)="saveTitle(1)" cdkFocusInitial>Lưu thông
+        tin</button>
+      <button type="button" class="btn closePopup" (click)="closeDialog(0)">Đóng</button>
+    </div>
+  </mat-dialog-actions>
+</div>

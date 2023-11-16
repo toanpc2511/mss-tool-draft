@@ -1,0 +1,41 @@
+<div class="py-3">
+  <mat-horizontal-stepper [linear]=true #stepper (selectionChange)="getSelected($event)">
+    <ng-template matStepperIcon="edit">
+      <mat-icon>done</mat-icon>
+    </ng-template>
+    <mat-step label="Upload file" [editable]=true [completed]="stepOneCompleted">
+      <app-upload-file
+        (dataChange)="changeDataInStepOne($event)"
+        [event]="eventsSubjectStepOne.asObservable()"
+        [eventCompleted]="eventCompleted.asObservable()"
+      ></app-upload-file>
+    </mat-step>
+    <mat-step label="Tạo GD gạch nợ" [editable]=true [completed]="stepTwoCompleted">
+      <app-transaction-change-debt
+        [clearSelected]="eventsClearStepTwo.asObservable()"
+        [dataSource]="dataSourceStepTwo"
+        [ruleContent]="ruleContent"
+        [eventCompleted]="eventCompleted.asObservable()"
+        (dataChange)="changeDataInStepTwo($event)"
+      ></app-transaction-change-debt>
+    </mat-step>
+    <mat-step label="Tạo GD nộp tiền vào TG" [editable]=true [completed]="stepThreeCompleted">
+      <app-transaction-retail-tranfer
+        [clearData]="eventsClearStepThree.asObservable()"
+        [event]="eventsSubjectStepThree.asObservable()"
+        [eventCompleted]="eventCompleted.asObservable()"
+        [data]="dataStepTwo"
+        (dataChange)="changeDataInStepThree($event)"
+      ></app-transaction-retail-tranfer>
+    </mat-step>
+    <mat-step label="Hoàn thành chuyển KS" [editable]=true state="done">
+      <app-transaction-completed [data]="dataCompleted"></app-transaction-completed>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>
+
+
+<app-lpb-footer
+  [actions]="actions"
+  class="z-index-footer position-fixed bottom-0 w-100"
+></app-lpb-footer>

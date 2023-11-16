@@ -1,0 +1,174 @@
+<div class="finance-body" style="padding-bottom: 10px">
+  <div class="step-search d-flex flex-column">
+    <div class="content-title pt-2 ">
+      <i class="fa fa-search mr-2 txtLabel"></i>
+      TÌM KIẾM
+    </div>
+    <hr/>
+    <!-- Search Form -->
+    <div class="form-search d-flex flex-column">
+      <form [formGroup]="formSearch" class="container" (ngSubmit)="onSearch()">
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Hộ chiếu</span>
+              <span class="col-8">
+                    <input class="form-control"
+                           [ngClass]="FormHelpers.isValidClass($any(formSearch).controls['customerPassport'])"
+                           placeholder="Nhập hộ chiếu" type="text" formControlName="customerPassport">
+
+                            <app-validate [control]="$any(formSearch).controls['customerPassport']" error="required"
+                                          message="Hộ chiếu không được bỏ trống"></app-validate>
+
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row">
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Quốc gia</span>
+              <span class="col-8">
+                <app-lpb-select2 [apiUrl]="API_BASE_URL + '/common?groupType=COUNTRY&displayType=CODE_AND_NAME'"
+                                 labelName="name" bindValue="code" [config]="selectConfig"
+                                 formControlName="countryCode"
+                                 [className]="FormHelpers.isValidClass($any(formSearch).controls['countryCode'])"
+                                 placeholder="Chọn quốc gia"></app-lpb-select2>
+                <app-validate [control]="$any(formSearch).controls['countryCode']" error="required"
+                              message="Quốc gia không được bỏ trống"></app-validate>
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Loại tiền</span>
+              <span class="col-8">
+                <app-lpb-select2 [apiUrl]="API_BASE_URL + '/common?groupType=CURRENCY_CODE'"
+                                 labelName="name" bindValue="code" [config]="selectConfig"
+                                 formControlName="currencyCode"
+                                 [className]="FormHelpers.isValidClass($any(formSearch).controls['currencyCode'])"
+                                 placeholder="Nhập Mã nguyên tệ"></app-lpb-select2>
+                <app-validate [control]="$any(formSearch).controls['currencyCode']" error="required"
+                              message="Loại tiền không được bỏ trống"></app-validate>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="submit">
+              Truy vấn
+              <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+            </button>
+
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Search Form -->
+    <hr class="h-1px"/>
+    <ng-container *ngIf="displayResult">
+      <div class="form-search d-flex flex-column">
+        <form class="container">
+          <div class="row">
+            <div class="col col-6">
+              <div class="form-group row">
+                <span class="col-4 col-form-label textLabel">Tổng hạn mức</span>
+                <span class="col-8 input-group">
+                  <input class="form-control text-right" placeholder="" type="text"
+                         [value]="response?.totalLimitMed | number: '1.0-5'" disabled>
+                  <div class="input-group-append">
+                    <span class="input-group-text" >USD</span>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div class="col col-6">
+              <div class="form-group row">
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-6">
+              <div class="form-group row">
+                <span class="col-4 col-form-label textLabel">Hạn mức đã sử dụng</span>
+                <span class="col-8 input-group">
+                    <input class="form-control text-right" placeholder="" type="text"
+                           [value]="response?.totalUsed | number: '1.0-5'" disabled>
+                   <div class="input-group-append">
+                    <span class="input-group-text">USD</span>
+                  </div>
+              </span>
+              </div>
+            </div>
+            <div class="col col-6">
+              <div class="form-group row">
+
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-6">
+              <div class="form-group row">
+                <span class="col-4 col-form-label textLabel">Hạn mức còn lại</span>
+                <span class="col-8 input-group">
+                    <input class="form-control text-right" placeholder="" type="text"
+                           [value]="response?.totalRemaining | number: '1.0-5'" disabled>
+                   <div class="input-group-append">
+                    <span class="input-group-text">{{response?.currencyTypeUSD}}</span>
+                  </div>
+              </span>
+              </div>
+            </div>
+<!--            <div class="col col-6">-->
+<!--              <div class="form-group row">-->
+<!--                <span class="col-4 col-form-label textLabel">Loại tiền: </span>-->
+<!--                <span class="col-8">-->
+<!--                    <input class="form-control" placeholder="" type="text"-->
+<!--                           [value]="response?.currencyTypeUSD" disabled>-->
+<!--              </span>-->
+<!--              </div>-->
+<!--            </div>-->
+          </div>
+          <div class="row" *ngIf="response?.currencyType !== 'USD'">
+            <div class="col col-6">
+              <div class="form-group row">
+                <span class="col-4 col-form-label textLabel"></span>
+                <span class="col-8 input-group">
+                    <input class="form-control text-right" placeholder="" type="text"
+                           [value]="response?.totalRemainingByCurrency | number: '1.0-5'"
+                           disabled>
+                     <div class="input-group-append">
+                    <span class="input-group-text">{{response?.currencyType}}</span>
+                  </div>
+              </span>
+              </div>
+            </div>
+<!--            <div class="col col-6">-->
+<!--              <div class="form-group row">-->
+<!--                <span class="col-4 col-form-label textLabel">Loại tiền: </span>-->
+<!--                <span class="col-8">-->
+<!--                    <input class="form-control" placeholder="" type="text"-->
+<!--                           [value]="response?.currencyType" disabled>-->
+<!--              </span>-->
+<!--              </div>-->
+<!--            </div>-->
+          </div>
+        </form>
+      </div>
+      <app-lpb-datatable tableName="DANH SÁCH GIAO DỊCH ĐÃ THỰC HIỆN"
+                         [config]="datatableConfig" [searchConditions]="searchCondition"
+                         [columns]="columns" [isDisabledUpdate]="isDisabledUpdate"
+                         [apiServiceURL]="apiUrl"></app-lpb-datatable>
+    </ng-container>
+
+  </div>
+</div>
+

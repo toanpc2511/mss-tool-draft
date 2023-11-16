@@ -1,0 +1,31 @@
+@import "/src/app/shared/styles/lpb-button";
+@import "src/app/manager-smart-form/card-services/card-services-approve-extend/card-services-approve-extend-unlock-card/card-services-approve-extend-unlock-card.component";
+.field {
+  max-width: 50%;
+  width: calc(50% - 16px);
+  margin-bottom: 16px;
+  .txtLabel {
+    font-weight: 500;
+    color: #17589f;
+  }
+}
+.text-label{
+  color: #17589f;
+  font-weight: bold;
+  font-size: 16px;
+  border-bottom: 1px solid #f47326;
+  padding-bottom: 3px;
+}
+.mini-table{
+  padding: 0 2%;
+}
+.node {
+  font-weight: 500;
+  color: #17589f;
+}
+.err-text{
+  color: red;
+}
+td {
+  padding-bottom: 0 !important;
+}

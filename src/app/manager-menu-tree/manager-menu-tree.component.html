@@ -1,0 +1,117 @@
+<div class="container-fluid">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="displayProgressSpinnerInBlock"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoadingCallApi"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="row" style="height: auto;">
+    <div class="col-2 float-left custom-height" [ngStyle]="{'height.px': getOutHeight()}">
+      <!-- <ul class="tree tree-menu">
+                   <li class="tree-item">
+                     <a   routerLinkActive='active' [routerLinkActiveOptions]="{exact: true}">Thông tin chung</a>
+                     <span class="material-icons float-right">done</span>
+                   </li>
+                   <li class="tree-item controllers">
+                     &lt;!&ndash; <a class="trigger "><span class="material-icons border-icon" >add</span></a> &ndash;&gt;
+                     <a routerLinkActive='active' [routerLink]="['view', param ? param : {}]">Khách hàng</a>
+                     <span class="material-icons float-right">done</span>
+                   </li>
+                   <li class="tree-item">
+                     <a  routerLinkActive='active'>Gói dịch vụ</a>
+                   </li>
+                   <li class="tree-item">
+                     <div class="trigger">
+                       <a >
+                         <span class="material-icons border-icon" id="triggerAccount" *ngIf="mocl">add</span>
+                       </a>
+                       <a class="click-link" [routerLink]="['account' , param ? param : {}]" (click)="fun_reload()" routerLinkActive='active' >Tài khoản ({{accounts?.length}})</a>
+                       <span class="material-icons float-right">done</span>
+                     </div>
+
+
+                     <ul class="tree-parent open">
+                       <li class="tree-item" *ngFor="let item of accounts;index as i">
+                         <a class="view" >Tài khoản mới {{i + 1}}</a>
+                         <ul class="tree-parent child" tabindex="{{i + 1}}">
+                           <li class="tree-item">Chủ TKTT chung</li>
+                           <li class="tree-item" >
+                             <a [routerLink]="['authority' , param ? param : {}]" routerLinkActive='active' >Ủy quyền</a>
+                           </li>
+                         </ul>
+                       </li>
+                     </ul>
+                   </li>
+                   <li class="tree-item">
+                     <a  routerLinkActive='active' routerLink="ebanking">eBanking</a>
+                   </li>
+                   <li class="tree-item" routerLinkActive='active'>
+                     <a  routerLinkActive='active'>SMS Banking (1)</a>
+                     <span class="material-icons float-right">done</span>
+                   </li>
+                   <li class="tree-item">
+                         <a class="trigger ">
+                               <span class="material-icons border-icon">add</span>
+                             </a>
+                             <a  routerLinkActive='active'>Thẻ</a>
+                           </li>
+                           <li class="tree-item">
+                         &lt;!&ndash; custom-icon &ndash;&gt;
+                     <a class="trigger "><span class="material-icons border-icon">add</span></a>
+                     <a  routerLinkActive='active'>Biểu mẫu</a>
+                   </li>
+                   <li class="tree-item">
+                     <a  routerLinkActive='active'>Tài liệu đính kèm</a>
+                   </li>
+                   <li class="tree-item">
+                     <a  routerLinkActive='active'>Chữ ký</a>
+                     <span class="material-icons float-right">done</span>
+                   </li>
+                   <li class="tree-item"  style="padding-bottom: 150px;">
+                     <a *ngIf="isGDV" [routerLink]="['confirm' , param ? param: {}]" (click)="fun_reload()"  routerLinkActive='active'>{{ message ? message: 'Gửi duyệt'}}</a>
+                     <a *ngIf="isKSV" [routerLink]="['service-approval' , param ? param: {}]" routerLinkActive='active'>Thông tin duyệt dịch vụ</a>
+                   </li>
+                 </ul>
+                 <mat-checkbox [(ngModel)]="recursive">Recursive</mat-checkbox> -->
+      <mat-card class="col-2 custom-card" [ngStyle]="{'height.px': getInHeight()}">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+          <mat-nested-tree-node *matTreeNodeDef="let node">
+            <li>
+              <ng-container>
+                <div class="mat-tree-node" style="padding-left: 5px">
+                  <a class="extend-link click-link" [routerLink]="node.getRouter()" routerLinkActive='active'>
+                    <span>{{node.item}}</span>
+                  </a>
+                </div>
+              </ng-container>
+            </li>
+          </mat-nested-tree-node>
+          <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChildren">
+            <li class="example-tree-container">
+              <div class="mat-tree-node">
+                <button mat-icon-button matTreeNodeToggle [disableRipple]="true"
+                        [matTreeNodeToggleRecursive]="recursive" [attr.aria-label]="'toggle ' + node.filename">
+                  <mat-icon style="border: 1px solid grey; background: white; border-radius: 15%">
+                    {{treeControl.isExpanded(node) ? 'expand_more' : 'add'}}
+                  </mat-icon>
+                </button>
+                <a style="margin-left: -5px" class="extend-link" [routerLink]="node.getRouter()"
+                   routerLinkActive='active'>{{node.item}}</a>
+              </div>
+              <ul class="example-tree-nested-node">
+                <div *ngIf="treeControl.isExpanded(node)">
+                  <ng-container matTreeNodeOutlet></ng-container>
+                </div>
+              </ul>
+            </li>
+
+          </mat-nested-tree-node>
+        </mat-tree>
+      </mat-card>
+    </div>
+    <div class="col-10 float-left" style="padding: 0px;">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

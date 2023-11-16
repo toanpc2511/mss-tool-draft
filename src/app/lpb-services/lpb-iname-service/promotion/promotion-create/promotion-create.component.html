@@ -1,0 +1,129 @@
+<div class="d-flex flex-column mb-5">
+  <div class="form-search d-flex flex-column">
+    <div class="content-title pr-2 mt-3">
+      <i class="fa fa-search mr-2 txtLabel"></i> THÔNG TIN CHUNG
+    </div>
+    <hr/>
+    <div class="container mt-3">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel"> Mã CTKM <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.code)"
+                       placeholder="Nhập Mã CTKM" type="text" formControlName="code" appNoSpaceString>
+                <app-validate [control]="registerForm.code" error="required"
+                              message="Mã CTKM không được bỏ trống"></app-validate>
+                <app-validate [control]="registerForm.code" error="maxlength"
+                              message="Không được vượt quá 20 kí tự"></app-validate>
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Tên CTKM <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.name)"
+                       placeholder="Nhập tên CTKM" type="text" formControlName="name">
+                <app-validate [control]="registerForm.name" error="required"
+                              message="Tên CTKM không được bỏ trống"></app-validate>
+                <app-validate [control]="registerForm.name" error="maxlength"
+                              message="Không được vượt quá 100 kí tự"></app-validate>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Gói áp dụng</span>
+              <div class="col-lg-8">
+                <app-lpb-select2 apiUrl="/iname-service/packing?page=0&size=100"
+                                 labelName="name" bindValue="id" [config]="{isNewApi: true}"
+                                 formControlName="packingId"
+                                 [className]="FormHelpers.isValidClass(registerForm.packingId)"
+                                 placeholder="Chọn gói"></app-lpb-select2>
+
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Đối tượng áp dụng </span>
+              <div class="col-lg-8">
+                <app-lpb-select2 apiUrl="/iname-service/common?groupType=Customer_Type"
+                                 labelName="name" bindValue="id" [config]="{isNewApi: true}"
+                                 formControlName="customerTypeId"
+                                 [className]="FormHelpers.isValidClass(registerForm.customerTypeId)"
+                                 placeholder="Chọn đối tượng áp dụng"></app-lpb-select2>
+                <app-validate [control]="registerForm.customerTypeId" error="required"
+                              message="Đối tượng áp dụng không được bỏ trống"></app-validate>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel"> % Giảm trừ </span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.discountRate)"
+                       placeholder="Nhập % Giảm trừ" type="number" formControlName="discountRate">
+
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Số tiền giảm trừ </span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.discountAmount)"
+                       placeholder="Nhập Số tiền giảm trừ" type="text" formControlName="discountAmount" decimal-mask>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Ngày áp dụng <span class="text-danger">(*)</span></span>
+              <div class="col-8">
+                <app-lpb-datepicker-new formControlName="startDate" [minDate]="minDate" [className]="FormHelpers.isValidClass(registerForm.startDate)"></app-lpb-datepicker-new>
+                <app-validate [control]="registerForm.startDate" error="required"
+                              message="Ngày áp dụng không được bỏ trống"></app-validate>
+                <div *ngIf="form.errors?.dateRange">
+                  <span  class="text-danger mt-1 d-block small">
+                    Ngày áp dụng không được lớn hơn ngày hết hiệu lực
+                  </span>
+                </div>
+                <!--                {{registerForm.startDate.errors | json }}-->
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Ngày hết hiệu lực </span>
+              <div class="col-8">
+                <app-lpb-datepicker-new formControlName="endDate" [minDate]="minDate" [className]="FormHelpers.isValidClass(registerForm.endDate)"></app-lpb-datepicker-new>
+                <!--                <app-validate [control]="registerForm.endDate" error="required"-->
+                <!--                              message="Ngày hết hiệu không được bỏ trống"></app-validate>-->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<app-lpb-footer style="bottom: 0px" [actions]="actions"
+                class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

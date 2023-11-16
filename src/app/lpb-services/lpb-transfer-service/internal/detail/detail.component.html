@@ -1,0 +1,75 @@
+<app-transfer-form #transferForm [formGroup]="detailForm" [disabledForm]="disabledForm">
+  <div class="fixed-detail mb-5" *ngIf="initFormData" >
+    <div class="container-fluid mt-3">
+      <div class="row">
+        <div class="col-lg-6 col-md-12">
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <label class="form-group row">
+                <span class="col-lg-6 col-md-6 col-form-label textLabel">Người tạo: </span>
+                <span class="col-lg-6 col-md-6 col-form-label">{{initFormData.createdBy}}</span>
+              </label>
+            </div>
+
+            <div class="col-lg-6 col-md-6">
+              <label class="form-group row">
+                <span class="col-lg-6 col-md-6 col-form-label textLabel">Thời gian tạo: </span>
+                <span class="col-lg-6 col-md-6 col-form-label">{{initFormData.createdDate | date:'dd/MM/yyyy HH:mm:ss'}}</span>
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <label class="form-group row">
+                <span class="col-lg-6 col-md-6 col-form-label textLabel">Người duyệt: </span>
+                <span class="col-lg-6 col-md-6 col-form-label">
+                  {{initFormData.status === TRANS_STATUS_CODES.APPROVE_REVERT ? initFormData.approveRevertBy : initFormData.approveBy}}
+                </span>
+              </label>
+            </div>
+
+            <div class="col-lg-6 col-md-6">
+              <label class="form-group row">
+                <span class="col-lg-6 col-md-6 col-form-label textLabel">Thời gian duyệt: </span>
+                <span class="col-lg-6 col-md-6 col-form-label">
+                  {{(initFormData.status === TRANS_STATUS_CODES.APPROVE_REVERT ? initFormData.approveRevertDate : initFormData.approveDate) | date:'dd/MM/yyyy HH:mm:ss'}}
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <label class="form-group row">
+                <span class="col-lg-6 col-md-6 col-form-label textLabel">Mã giao dịch: </span>
+                <span class="col-lg-6 col-md-6 col-form-label">{{initFormData.transCode}}</span>
+              </label>
+            </div>
+
+            <div class="col-lg-6 col-md-6">
+              <label class="form-group row">
+                <span class="col-lg-6 col-md-6 col-form-label textLabel">Trạng thái: </span>
+                <span class="col-lg-6 col-md-6 col-form-label font-weight-bold" [style.color]="status.color">{{status.name}}</span>
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <label class="form-group row">
+                <span class="col-lg-6 col-md-6 col-form-label textLabel">Mã giao dịch Core: </span>
+                <span class="col-lg-6 col-md-6 col-form-label">{{initFormData.coreTransCode}}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-transfer-form>
+
+<app-lpb-footer [hiddenButtons]="hiddenButtons" (onUpdate)="onEdit()"  (onDelete)="onDelete()" (onSendApprove)="onSendApprove()"
+(onApprove)="onApprove()" (onReverse)="onReverse()" (onPrintDocument)="onPrintDocument()"
+(onPrintForm)="onPrintForm()" (onSave)="onSave()" (onUnReverse)="onUnReverse()" #footer
+[hiddenBackButton]="true" [actions]="actions"></app-lpb-footer>

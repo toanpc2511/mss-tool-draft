@@ -1,0 +1,350 @@
+<div [formGroup]="createForm" class="p-3">
+    <div class="text-lg-custom text-high-light fw-bolder">Tạo mới thanh toán thuế</div>
+    <div class="text-high-light fw-bolder text-uppercase mt-4"><i
+            class="fa fa-credit-card-alt text-high-light mr-2"></i>Thông tin nộp thuế</div>
+    <div class="d-flex flex-wrap mt-3">
+        <div class="col-4">
+            <label for="" class="text-high-light fw-bolder required">Số hiệu KBNN</label>
+            <div>
+                <app-lpb-select2 [apiUrl]="'/tax-service/category/all?categoryType=TCT_QUERY_DMKB'" labelName="name"
+                    [config]="configSelect" formControlName="treasury" (change)="formValueChange()"
+                    placeholder="Chọn số hiệu kho bạc nhà nước"></app-lpb-select2>
+
+                <app-validate [control]="createForm.controls['treasury']" [error]="'required'"
+                    [message]="'Bạn cần chọn số hiệu kho bạc nhà nước'"></app-validate>
+            </div>
+        </div>
+        <div class="col-4">
+            <label for="" class="text-high-light fw-bolder required">Mã CQT</label>
+            <div>
+                <app-lpb-select2 [apiUrl]="'/tax-service/category/all?categoryType=TCT_QUERY_DMCQT'" labelName="name"
+                    [config]="configSelect" formControlName="organReceiver" (change)="formValueChange()"
+                    placeholder="Chọn mã cơ quan thu"></app-lpb-select2>
+                <app-validate [control]="createForm.controls['organReceiver']" [error]="'required'"
+                    [message]="'Bạn cần chọn mã cơ quan thu'"></app-validate>
+            </div>
+        </div>
+        <div class="col-4">
+            <label for="" class="text-high-light fw-bolder required">Mã số thuế</label>
+            <div>
+                <input type="text" class="form-control" formControlName="taxCode" placeholder="Nhập mã số thuế"
+                    minlength="10" maxlength="14" trimInput (change)="formValueChange()">
+                <app-validate [control]="createForm.controls['taxCode']" [error]="'required'"
+                    [message]="'Bạn cần nhập mã số thuế'"></app-validate>
+                <app-validate [control]="createForm.controls['taxCode']" [error]="'minlength'"
+                    [message]="'Mã số thuế cần nhập ít nhất 10 ký tự'"></app-validate>
+                <app-validate [control]="createForm.controls['taxCode']" [error]="'maxlength'"
+                    [message]="'Mã số thuế chỉ cho phép nhập tối đa 14 ký tự'"></app-validate>
+            </div>
+        </div>
+        <div class="col-4 mt-3">
+            <label for="" class="text-high-light fw-bolder required">Tên người nộp thuế</label>
+            <div>
+                <input type="text" class="form-control" formControlName="taxPayerName" trimInput
+                    placeholder="Nhập tên người nộp thuế">
+                <app-validate [control]="createForm.controls['taxPayerName']" [error]="'required'"
+                    [message]="'Bạn cần nhập tên người nộp thuế'"></app-validate>
+            </div>
+        </div>
+        <div class="col-4 mt-3">
+            <label for="" class="text-high-light fw-bolder required">Số GTTT</label>
+            <div>
+                <input type="text" class="form-control" formControlName="identityNumber" trimInput
+                    placeholder="Nhập số giấy tờ tùy thân">
+                <app-validate [control]="createForm.controls['identityNumber']" [error]="'required'"
+                    [message]="'Bạn cần nhập số giấy tờ tùy thân'"></app-validate>
+            </div>
+        </div>
+        <div class="col-4 mt-3">
+            <label for="" class="text-high-light fw-bolder required">Địa chỉ</label>
+            <div>
+                <input type="text" class="form-control" formControlName="address" trimInput placeholder="Nhập địa chỉ">
+                <app-validate [control]="createForm.controls['address']" [error]="'required'"
+                    [message]="'Bạn cần nhập địa chỉ'"></app-validate>
+            </div>
+        </div>
+        <div class="col-4 mt-3">
+            <label for="" class="text-high-light fw-bolder required">Mã ĐBHC</label>
+            <div>
+                <input type="text" class="form-control" formControlName="administrativeAreaCode" trimInput
+                    placeholder="Nhập địa bàn hành chính" (change)="formValueChange()">
+                <app-validate [control]="createForm.controls['administrativeAreaCode']" [error]="'required'"
+                    [message]="'Bạn cần nhập địa bàn hành chính'"></app-validate>
+            </div>
+        </div>
+        <div class="col-4 mt-3">
+            <label for="" class="text-high-light fw-bolder ">Số khung</label>
+            <div>
+                <input type="text" class="form-control" formControlName="frameNumber" trimInput
+                    placeholder="Nhập số khung">
+            </div>
+        </div>
+        <div class="col-4 mt-3">
+            <label for="" class="text-high-light fw-bolder ">Số máy</label>
+            <div>
+                <input type="text" class="form-control" formControlName="machineNumber" trimInput
+                    placeholder="Nhập số máy">
+            </div>
+        </div>
+        <div class="col-12 mt-3">
+            <label for="" class="text-high-light fw-bolder ">Đặc điểm tài sản</label>
+            <div>
+                <input type="text" class="form-control" formControlName="propertyInfo" trimInput
+                    placeholder="Nhập đặc điểm tài sản">
+            </div>
+        </div>
+    </div>
+    <div class="div-table-flex mt-5">
+        <div class="text-high-light fw-bolder mb-3">
+            Tiểu mục
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th [style.width.px]="50">
+                        STT
+                    </th>
+                    <th *ngFor="let column of columns" [style.width.px]="column.width">
+                        {{column.headerName}}
+                    </th>
+                    <th [style.width.px]="100">
+                        Thao tác
+                    </th>
+                </tr>
+            </thead>
+            <tbody formArrayName="tableRows">
+                <tr *ngFor="let dataRow of createForm.get('tableRows')['controls']; let i=index; trackBy: trackByFn"
+                    [formGroupName]="i">
+                    <td [style.width.px]="50" class="justify-content-center">
+                        {{i+1}}
+                    </td>
+                    <td *ngFor="let column of columns" [style.width.px]="column.width">
+                        <ng-container [ngSwitch]="column.headerProperty">
+                            <app-lpb-select2 *ngSwitchCase="'chapterCode'"
+                                [apiUrl]="'/tax-service/category/all?categoryType=TCT_QUERY_DMC'" bindValue="code"
+                                labelName="code" [config]="configSelect" appendTo="body" (change)="formValueChange()"
+                                formControlName="chapterCode" class="w-100"></app-lpb-select2>
+
+                            <app-lpb-select2 *ngSwitchCase="'subsection'"
+                                [apiUrl]="'/tax-service/category/all?categoryType=TCT_QUERY_DMTM'" labelName="name"
+                                [config]="configSelect" appendTo="body" (change)="formValueChange()"
+                                formControlName="subsection" class="w-100"></app-lpb-select2>
+
+                            <input *ngSwitchCase="'amount'" type="text" [formControlName]="column.headerProperty"
+                                class="form-control" (focus)="focusInput($event.target.value)" decimal-mask
+                                maxlength="20" (change)="valueChange($event, dataRow, column.headerProperty);">
+
+                            <input *ngSwitchDefault type="text" [formControlName]="column.headerProperty"
+                                class="form-control" (focus)="focusInput($event.target.value)" trimInput
+                                (change)="valueChange($event, dataRow, column.headerProperty)">
+                        </ng-container>
+                    </td>
+
+                    <td [style.width.px]="100" class="justify-content-center">
+                        <i type="button" class="fa fa-trash text-danger fa-lg" (click)="deleteRow(i)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="invalid(createForm.controls.tableRows)" class="invalid mt-2">Bạn nhập thiếu thông tin
+        </div>
+        <div class="py-2 px-4">
+            <i type="button" class="fa fa-plus-circle text-success fa-lg" (click)="addRow()"></i>
+        </div>
+    </div>
+    <div class="mt-5">
+        <div class="text-high-light fw-bolder text-uppercase"><i
+                class="fa fa-credit-card-alt text-high-light mr-2"></i>Thông tin thanh toán</div>
+        <div class="border border-radius-panel p-2 mt-2">
+            <div class="text-high-light fw-bolder pl-3">Thông tin giao dịch</div>
+            <div class="d-flex flex-wrap mt-2">
+                <div class="col-4">
+                    <label for="">Hình thức thanh toán</label>
+                    <div>
+                        <ng-container class="d-inline-block mr-3" *ngFor="let item of paymentMethods">
+                            <input type="radio" [value]="item['value']" formControlName="paymentMethod">
+                            <label for="" class="text-high-light fw-bolder ml-1 mr-4">{{item['label']}}</label>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label for="">Phí</label>
+                    <div class="input-group">
+                        <input type="text" readonly [value]="createForm.value.fee | number"
+                            class="form-control border-right-0">
+                        <div class="input-group-append">
+                            <span class="fw-bolder text-high-light input-group-text border-left-0">
+                                VNĐ</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label for="">Số tiền thanh toán</label>
+                    <div class="input-group">
+                        <input type="text" readonly [value]="createForm.value.paymentAmount | number"
+                            class="form-control border-right-0">
+                        <div class="input-group-append">
+                            <span class="fw-bolder text-high-light input-group-text border-left-0">
+                                VNĐ</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mt-2">
+                    <label for="" class="required">Nội dung thanh toán</label>
+                    <div *ngIf="createForm.value.paymentContent.length <= maxLength && !editPaymentContent"
+                        class="text-high-light fw-bolder" (click)="editContent()">
+                        {{createForm.value.paymentContent || '--'}} </div>
+                    <div class="w-100">
+                        <textarea *ngIf="createForm.value.paymentContent.length > maxLength || editPaymentContent"
+                            rows="2" formControlName="paymentContent" class="form-control"
+                            (blur)="blurEdit()"></textarea>
+                    </div>
+
+                </div>
+                <div class="col-12 mt-2">
+                    <label for="">Ghi chú</label>
+                    <div class="text-high-light fw-bolder">
+                        <input type="text" class="form-control" formControlName="note" placeholder="Nhập ghi chú">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="createForm.value.paymentMethod === 'CK'" class="border border-radius-panel p-2 mt-3">
+            <div class="text-high-light fw-bolder pl-3">Thông tin tài khoản ghi nợ</div>
+            <div class="d-flex flex-wrap mt-2">
+                <div class="col-4">
+                    <label for="" class="required">Mã khách hàng (CIF)</label>
+                    <div class="text-high-light fw-bolder">
+                        <input type="text" class="form-control" formControlName="cifNumber" placeholder="Nhập số CIF"
+                            (keyup.enter)="searchAccountCustomers()">
+                    </div>
+                    <app-validate [control]="createForm.controls['cifNumber']" [error]="'required'"
+                        [message]="'Bạn cần nhập số CIF'"></app-validate>
+                </div>
+                <div class="col-4">
+                    <label for=""></label>
+                    <div class="text-high-light fw-bolder">
+                        <button class="btn lpb-btn-primary" (click)="searchAccountCustomers()">Tìm kiếm</button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap mt-3">
+                <div class="col-4">
+                    <label for="" class="required">TK thanh toán</label>
+                    <div class="text-high-light fw-bolder">
+                        <app-lpb-select2 [items]="customerAccounts" labelName="accountNumber" formControlName="debitAcc"
+                            placeholder="Chọn số TKTT">
+                            <ng-template let-item="item" let-index="index">
+                                <b>{{item.accountNumber}}</b>
+                                <div class="text-high-light">{{item.availableBalance | number}} VNĐ
+                                </div>
+                            </ng-template>
+                        </app-lpb-select2>
+                    </div>
+                    <app-validate [control]="createForm.controls['debitAcc']" [error]="'required'"
+                        [message]="'Bạn cần chọn số TKTT'"></app-validate>
+                </div>
+                <div class="col-4">
+                    <label for="">Tên tài khoản</label>
+                    <div class="text-high-light fw-bolder">
+                        <span class="text-high-light fw-bolder form-control border-0 pl-0">
+                            {{createForm.value.debitAcc?.accountName || "--"}}</span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label for="">Số dư TK trước giao dịch</label>
+                    <div class="text-high-light fw-bolder">
+                        <span class="text-high-light fw-bolder form-control border-0 pl-0">
+                            {{(createForm.value.debitAcc?.availableBalance || 0) | number}} VNĐ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border border-radius-panel p-2 mt-3">
+            <div class="text-high-light fw-bolder pl-3">Thông tin tài khoản ghi có</div>
+            <div class="d-flex flex-wrap mt-2">
+                <div class="col-4">
+                    <label for="" class="required">Ngân hàng thụ hưởng </label>
+                    <div class="text-high-light fw-bolder">
+                        <app-lpb-select2 [apiUrl]="'/tax-service/tax/beneficiary-banks'" labelName="bankName"
+                            formControlName="receivedBank" placeholder="Chọn ngân hàng thụ hưởng"></app-lpb-select2>
+                        <app-validate [control]="createForm.controls['receivedBank']" [error]="'required'"
+                            [message]="'Bạn cần chọn ngân hàng thụ hưởng'"></app-validate>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <label for="">Số tài khoản </label>
+                    <div class="text-high-light fw-bolder">
+                        {{createForm.controls.receivedBank.value?.bankNumber || '--'}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border border-radius-panel p-2 mt-3">
+            <div class="text-high-light fw-bolder pl-3 d-flex justify-content-between">
+                <div>
+                    Thông tin người nộp thay
+                    <i *ngIf="!allowInputInsteader" type="button" class="fa fa-plus-circle text-success fa-lg ml-2"
+                        (click)="allowInputInsteaderChange()"></i>
+                    <i *ngIf="allowInputInsteader" type="button" class="fa fa-minus-circle text-danger fa-lg ml-2"
+                        (click)="allowInputInsteaderChange()"></i>
+                </div>
+                <div>
+                    <i *ngIf="!allowInputInsteader" type="button" class="fa fa-angle-up fa-lg"
+                        (click)="allowInputInsteaderChange()"></i>
+                    <i *ngIf="allowInputInsteader" type="button" class="fa fa-angle-down fa-lg"
+                        (click)="allowInputInsteaderChange()"></i>
+                </div>
+            </div>
+            <div *ngIf="allowInputInsteader" class="d-flex flex-wrap mt-4">
+                <div class="col-4">
+                    <label for="">Người nộp thuế thay </label>
+                    <div class="text-high-light fw-bolder">
+                        <input type="text" class="form-control" formControlName="insteaderName"
+                            placeholder="Nhập tên người nộp thuế thay">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label for="">Mã số thuế </label>
+                    <div class="text-high-light fw-bolder">
+                        <input type="text" class="form-control" formControlName="insteaderTaxCode"
+                            placeholder="Nhập mã số thuế người nộp thuế thay">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label for="">Địa chỉ </label>
+                    <div class="text-high-light fw-bolder">
+                        <input type="text" class="form-control" formControlName="insteaderAddress"
+                            placeholder="Nhập địa chỉ người nộp thuế thay">
+                    </div>
+                </div>
+                <div class="col-4 mt-2">
+                    <label for="">Tỉnh / Thành phố </label>
+                    <div class="text-high-light">
+                        <app-lpb-select2 [apiUrl]="'/lpb-common-service/api/public/redis/city'" labelName="name"
+                            formControlName="city" (change)="changeCity()"
+                            placeholder="Chọn tỉnh / thành phố"></app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 mt-2">
+                    <label for="">Quận / Huyện </label>
+                    <div class="text-high-light">
+                        <app-lpb-select2 [apiUrl]="apiDistrict" labelName="name" formControlName="district"
+                            (change)="changeDistrict()" placeholder="Chọn quận / huyện"></app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 mt-2">
+                    <label for="">Xã / Phường </label>
+                    <div class="text-high-light">
+                        <app-lpb-select2 [apiUrl]="apiWard" labelName="name" formControlName="ward"
+                            placeholder="Chọn xã / phường"></app-lpb-select2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div [style.height.px]="50">
+    <app-lpb-footer [actions]="actions" class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>
+</div>

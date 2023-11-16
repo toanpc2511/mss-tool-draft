@@ -1,0 +1,543 @@
+<div class="container-fuild">
+    <div class="row cust-row">
+        <div class="col-12 information-section">
+            <div class="row">
+                <div class="col-6">
+
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-form-label textLabel center-aligned  text-uppercase">
+                            Thông tin cá nhân khách hàng
+                        </label>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Họ và tên:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.fullName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Giới tính:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.genderName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Ngày sinh:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.dateOfBirth |
+                                date:'dd/MM/yyyy' }}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Quốc tịch 1:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.nationality1Name}}</label>
+                        </div>
+                    </div>
+                    <div class="row" [hidden]="!shownationality2Name">
+                        <label class="col-sm-5 col-form-label textLabel">Quốc tịch 2:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.nationality2Name}}</label>
+                        </div>
+                    </div>
+                    <div class="row" [hidden]="!shownationality3Name">
+                        <label class="col-sm-5 col-form-label textLabel">Quốc tịch 3:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.nationality3Name}}</label>
+                        </div>
+                    </div>
+                    <div class="row" [hidden]="!shownationality4Name">
+                        <label class="col-sm-5 col-form-label textLabel">Quốc tịch 4:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.nationality4Name}}</label>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="process.item?.customer.person.nationality1Code !== 'VN'">
+                        <label class="col-sm-5 col-form-label textLabel">Thị Thực nhập cảnh:
+                        </label>
+                        <div class="col-sm-7">
+                            <div class="form-check" style="padding-bottom: 10px;">
+                                <input class="form-check-input" name="check1" type="checkbox" disabled
+                                    [checked]="process.item?.customer.person.visaExemption">
+                                <label class="inforLabel mt-2">
+                                    Miễn thị thực nhập cảnh
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"
+                        *ngIf="process.item?.customer.person.nationality1Code !== 'VN' && !process.item?.customer.person.visaExemption">
+                        <label class="col-sm-5 col-form-label textLabel">
+                        </label>
+                        <div class="col-sm-7">
+                            <div class="form-group">
+                                <label class="col-form-label textLabel ">Từ ngày
+                                </label>
+                                <div class="input-group">
+                                    <label class="inforLabel mt-2">{{process.item?.customer.person.visaIssueDate |
+                                        date:'dd/MM/yyyy'}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"
+                        *ngIf="process.item?.customer.person.nationality1Code !== 'VN' && !process.item?.customer.person.visaExemption">
+                        <label class="col-sm-5 col-form-label textLabel">
+                        </label>
+                        <div class="col-sm-7">
+                            <div class="form-group">
+                                <label class="col-form-label textLabel ">Đến ngày
+                                </label>
+                                <div class="input-group">
+                                    <label class="inforLabel mt-2">{{process.item?.customer.person.visaExpireDate |
+                                        date:'dd/MM/yyyy'}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Mã số thuế:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.taxCode}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Người cư trú:
+                        </label>
+                        <div class="col-sm-7 mt-2">
+                            <div class="form-check form-check-inline">
+                                <input class=" form-check-input checked" disabled name="exampleRadios" type="radio"
+                                    id="exampleRadios1" [checked]="process.item?.customer.person.residentStatus">
+                                <label class="form-check-label inforLabel" for="exampleRadios1"
+                                    style="color: black">Có</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" disabled name="exampleRadios" type="radio"
+                                    id="exampleRadios2" [checked]="!process.item?.customer.person?.residentStatus">
+                                <label class="form-check-label inforLabel" for="exampleRadios2"
+                                    style="color: black">Không</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Nghề nghiệp:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.professionName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Nơi công tác:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.workPlace}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Chức vụ:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.position}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Điện thoại:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.mobileNo}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Email:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.email}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Nhu cầu sử dụng thấu chi:
+                        </label>
+                        <div class="col-sm-7 mt-2">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input checked" disabled name="creditStatus" type="radio"
+                                    [checked]="process.item?.customer.person.creditStatus">
+                                <label class="form-check-label inforLabel" for="exampleRadios1"
+                                    style="color: black">Có</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" disabled name="creditStatus" type="radio"
+                                    [checked]="!process.item?.customer.person.creditStatus">
+                                <label class="form-check-label inforLabel" for="exampleRadios2"
+                                    style="color: black">Không</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">
+                        </label>
+                        <div class="col-sm-7">
+                            <div class="form-check" style="padding-bottom: 10px;">
+                                <input class="form-check-input" name="check1" type="checkbox" disabled
+                                    [checked]="process.item?.customer.person.payStatus">
+                                <label class="inforLabel">
+                                    Nhận lương qua LienVietPostBank
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="col-12" *ngFor="let item of process.item?.customer.person.perDocNoList;let i = index">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label textLabel center-aligned  text-uppercase">
+                                Thông tin GTXM {{i + 1}}
+                            </label>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Loại GTXM:
+                            </label>
+                            <div class="col-sm-7">
+                                <label class="inforLabel mt-2">{{item.perDocTypeName}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Số GTXM:
+                            </label>
+                            <div class="col-sm-7">
+                                <label class="inforLabel mt-2">{{item.perDocNo}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Nơi Cấp:
+                            </label>
+                            <div class="col-sm-7">
+                                <label class="inforLabel mt-2">{{item.issuePlace}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-5 col-form-label textLabel">Ngày Cấp:
+                            </label>
+                            <div class="col-sm-7">
+                                <label class="inforLabel mt-2">{{item.issueDate | date:'dd/MM/yyyy'}}</label>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="item.expireDate">
+                            <label class="col-sm-5 col-form-label textLabel">Ngày hết hiệu lực:
+                            </label>
+                            <div class="col-sm-7">
+                                <label class="inforLabel mt-2">{{item.expireDate | date:'dd/MM/yyyy'}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="p-2" style="font-weight: 500;border-bottom: 1px solid #c8ced3;">
+                <span>Địa chỉ hiện tại</span>
+            </div>
+        </div>
+        <div class="col-12 information-section">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Quốc gia:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.currentCountryName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Quận/huyện:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.currentDistrictName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Số nhà, đường phố:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.currentStreetNumber}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Tỉnh/thành phố:</label>
+
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.currentCityName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Phường/xã:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.currentWardName}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="p-2" style="font-weight: 500;border-bottom: 1px solid #c8ced3;">
+                <span>Địa chỉ thường trú</span>
+            </div>
+        </div>
+        <div class="col-12 information-section">
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Quốc gia:
+                        </label>
+                        <div class="col-sm-7">
+                            <label
+                                class="inforLabel mt-2">{{process.item?.customer.person.residenceCountryName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Quận/huyện:
+                        </label>
+                        <div class="col-sm-7">
+                            <label
+                                class="inforLabel mt-2">{{process.item?.customer.person.residenceDistrictName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Số nhà, đường phố:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.residenceStreetNumber
+                                }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Tỉnh/thành phố:
+                        </label>
+
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.residenceCityName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Phường/xã:
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.residenceWardName}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border border-dark m-2 w-100" style="height: 35px !important;">
+            <span class="col-4 information-field text-uppercase mt-2" (click)="showPopup('MIS')">THÔNG TIN TRƯỜNG
+                MIS</span>
+        </div>
+        <div class="row border border-dark m-2 w-100" style="height: 35px !important;">
+            <span class="col-4 information-field text-uppercase mt-2" (click)="showPopup('UDF')">THÔNG TIN TRƯỜNG
+                UDF</span>
+        </div>
+        <div class="row border border-dark m-2 w-100" style="height: 35px !important;">
+            <span class="col-4 information-field text-uppercase mt-2">Thông tin FATCA</span>
+            <div class="col-8" style="float: left;display: block;">
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio" name="rdFatca" [checked]="showContentFATCA" disabled>
+                    <label class="form-check-label" name="rdFatca">Có</label>
+                </div>
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio" name="rdFatca" disabled [checked]="!showContentFATCA">
+                    <label class="form-check-label">Không</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-12" [hidden]="!showContentFATCA">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label class="col-sm-4 col-form-label textLabel" style="float: left;">Phân loại FATCA
+                    </label>
+                    <label class="col-sm-8 col-form-label textLabel">
+                        <span class=" " style="float: left;">
+                            {{process.item?.customer.person.fatcaName}}
+                        </span>
+                    </label>
+                </div>
+                <div class="col-4" *ngIf="process.item?.customer.person.fatcaCode === 'US PERSON'">
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label textLabel">Mã số thuế
+                        </label>
+                        <div class="col-sm-7">
+                            <label class="inforLabel mt-2">{{process.item?.customer.person.fatcaAnswer}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label class="col-sm-4 col-form-label textLabel" style="float: left;">Mẫu biểu bổ sung
+                    </label>
+                    <label class="col-sm-8 col-form-label textLabel">
+                        <span class=" " style="float: left;">
+                            {{process.item?.customer.person.fatcaFormName}}
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100" [hidden]="isCoOwner">
+            <div class="w-100">
+                <span class="col-4 information-field text-uppercase mt-2">THỜI GIAN ĐỒNG SỞ HỮU HIỆN HỮU</span>
+            </div>
+            <div class="row col-12">
+                <div class="col-6" style="clear: both;padding: 0px;display: flex;">
+                    <label class="col-sm-4 col-form-label textLabel">Từ ngày: <span class="text-danger">(*)</span>
+                    </label>
+                    <div class="col-sm-8 col-form-label textLabel">
+                        <div class="input-group">
+                            <!-- <input [matDatepicker]="dp2" type="text" class="form-control straight-right-border" placeholder="dd/mm/yyyy" maxlength="10"> -->
+                            <label for="">{{process.item?.customer.jointStartDate | date: "dd/MM/yyyy"}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6" style="clear: both;padding: 0px;display: flex;">
+                    <label class="col-sm-4 col-form-label textLabel">Đến ngày: <span class="text-danger">(*)</span>
+                    </label>
+                    <div class="col-sm-8 col-form-label textLabel">
+                        <div class="input-group">
+                            <label for="">{{process.item?.customer.jointEndDate | date: "dd/MM/yyyy"}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row border border-dark m-2 w-100" style="height: 35px !important;" *ngIf="coOwnerId === ''">
+            <span class="col-4 information-field text-uppercase mt-2" (click)="showPopup('CIF')">THÔNG TIN CIF Liên Quan
+                ({{this.process.item?.customer.cifLienQuan?.length}}
+                )</span>
+            <div class="col-8" style="float: left;display: block;">
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio"
+                        [checked]="this.process.item?.customer.cifLienQuan && process.item?.customer.cifLienQuan.length > 0"
+                        name="rdCifRefer" disabled [value]="true">
+                    <label class="form-check-label">Có</label>
+                </div>
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio"
+                        [checked]="process.item?.customer.cifLienQuan.length === 0" name="rdCifRefer" disabled
+                        [value]="false">
+                    <label class="form-check-label">Không</label>
+                </div>
+            </div>
+        </div>
+        <div class="row border border-dark m-2 w-100" style="height: 35px !important;" *ngIf="coOwnerId === ''">
+            <span class="col-4 information-field text-uppercase mt-2" (click)="showPopup('LEGAL_AGREEMENT')">
+                THÔNG TIN Thỏa thuận pháp lý ({{process.item.customer.legalList ? process.item.customer.legalList.length
+                : 0 }}
+                )
+            </span>
+            <div class="col-8" style="float: left;display: block;">
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio" name="rdLegalAgreement" disabled
+                        [checked]="process.item.customer.legalList && process.item.customer.legalList.length > 0"
+                        [value]="true">
+                    <label class="form-check-label">Có</label>
+                </div>
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio" name="rdLegalAgreement" disabled
+                        [checked]="!process.item.customer.legalList ||  process.item.customer.legalList?.length == 0"
+                        [value]="false">
+                    <label class="form-check-label">Không</label>
+                </div>
+            </div>
+        </div>
+        <div class="row border border-dark m-2 w-100" style="height: 35px !important;" *ngIf="coOwnerId === ''">
+            <span class="col-4 information-field text-uppercase mt-2" (click)="showPopup('OWNER_BENEFIT')">
+                THÔNG TIN chủ sở hữu hưởng lợi ({{process.item.customer.customerOwnerBenefit ?
+                process.item.customer.customerOwnerBenefit.length : 0 }}
+                )
+            </span>
+            <div class="col-8" style="float: left;display: block;">
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio" name="rdOwnerBenefit" disabled
+                        [checked]="process.item.customer.customerOwnerBenefit.length > 0" [value]="true">
+                    <label class="form-check-label">Có</label>
+                </div>
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio" name="rdOwnerBenefit" disabled
+                        [checked]="process.item.customer.customerOwnerBenefit.length === 0" [value]="false">
+                    <label class="form-check-label">Không</label>
+                </div>
+            </div>
+        </div>
+        <div class="row border border-dark m-2 w-100" style="height: 35px !important;" *ngIf="coOwnerId === ''">
+            <span class="col-4 information-field text-uppercase mt-2" (click)="showPopup('LEGAL_REPRESENTATIVE')">
+                THÔNG TIN người đại diện pháp luật ({{this.process.item?.customer.guardianList?.length}})
+            </span>
+            <div class="col-8" style="float: left;display: block;">
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio" name="rdLegalRepresentative" disabled
+                        [checked]="process.item.customer.guardianList != null && process.item.customer.guardianList.length > 0"
+                        [value]="true">
+                    <label class="form-check-label">Có</label>
+                </div>
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio" name="rdLegalRepresentative" disabled
+                        [checked]="process.item.customer.guardianList == null || process.item.customer.guardianList.length === 0"
+                        [value]="false">
+                    <label class="form-check-label">Không</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-12" style="display: block;font-weight: 900;font-size: 15px;">
+            <div class="p-2" style="font-weight: 500;border-bottom: 1px solid #c8ced3;">
+                <span></span>
+            </div>
+        </div>
+        <div class="container mt-4 mb-4">
+            <div class="col-12">
+                <div class="col-6 colLeft">
+                    <label class="text-uppercase "> Các dịch vụ đăng ký</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" disabled>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Mở mới tài khoản
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" checked disabled>
+                        <label class="form-check-label">
+                            Đăng ký liên việt 24h
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" checked disabled>
+                        <label class="form-check-label">
+                            Đăng ký thông tin biến động số dư
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" checked disabled>
+                        <label class="form-check-label">
+                            Phát hành thẻ
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

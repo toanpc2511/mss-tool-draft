@@ -1,0 +1,132 @@
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-3 float-left" style="padding: 0px;">
+            <app-menu-tree></app-menu-tree>
+        </div>
+        <div class="col-9 float-left" style="padding: 0px;">
+            <div class="col-12 titleSearch">
+                <i class="fa fa-plus-square" aria-hidden="true" style="color:#23388F;padding-left: 15px;"></i>
+                <span style="color: #23388F;padding-left: 10px;">THÔNG TIN HỒ SƠ</span>
+            </div>
+            <div class="col-12" style="padding: 0px;display: flex; border-bottom: 1px solid #BDBDBD;">
+                <div class="col-6 colLeft">
+                    <div class="form-group row" style="padding-top: 35px;">
+                        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Mã hồ sơ
+                        </label>
+                        <div class="col-sm-7 txt">
+                        <label>XXXXX</label>
+                        </div>
+                    </div>
+                    <div class="form-group row" >
+                        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Người tạo
+                        </label>
+                        <div class="col-sm-7 txt">
+                        <label>THAONTB</label>
+                        </div>
+                    </div>
+                    <div class="form-group row" >
+                        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Loại hồ sơ
+                        </label>
+                        <div class="col-sm-7 txt">
+                        <label>Đăng ký mới</label>
+                        </div>
+                    </div>
+                    <div class="form-group row" >
+                        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Tải hồ sơ đã ký
+                        </label>
+                        <div class="col-sm-7 txt">
+                        <label></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 colRight">
+                    <div class="form-group row" style="padding-top: 35px;">
+                        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Trạng thái
+                        </label>
+                        <div class="col-sm-7 txt">
+                        <label style="color: #23388F;">Đang xử lý</label>
+                        </div>
+                    </div>
+                    <div class="form-group row" >
+                        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Ngày tạo
+                        </label>
+                        <div class="col-sm-7 txt">
+                        <label>11:00:26 11/10/2020</label>
+                        </div>
+                    </div>
+                    <div class="form-group row" >
+                        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Xác nhận bằng chữ ký số
+                        </label>
+                        <div class="col-sm-7 txt">
+                        <label>Không</label>
+                        </div>
+                    </div>
+                    <div class="form-group row" >
+                        <label for="inputEmail3" class="col-sm-5 col-form-label textLabel">Chi nhánh
+                        </label>
+                        <div class="col-sm-7 txt">
+                        <label>Chi nhánh Ba Đình - Hà Nội</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 titleSearch" >
+                <i class="fa fa-folder-open" aria-hidden="true" style="color:#23388F;padding-left: 15px;"></i>
+                <span style="color: #23388F;padding-left: 10px;">LỊCH SỬ XỬ LÝ</span>
+                <table class="table" style="margin-top: 20px;">
+                    <tr>
+                        <th>Ngày thay đổi trạng thái</th>
+                        <th>Người thay đổi</th>
+                        <th>Trạng thái hồ sơ</th>
+                        <th>Ghi chú</th>
+                        <th>Trạng thái KYC khách hàng</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-12 titleSearch">
+                <i class="fa fa-folder-open" aria-hidden="true" style="color:#23388F;padding-left: 15px;"></i>
+                <span style="color: #23388F;padding-left: 10px;">DANH SÁCH DỊCH VỤ ĐĂNG KÝ</span>
+                <table class="table" style="margin-top: 20px;">
+                    <tr>
+                        <th>STT</th>
+                        <th style="text-align: left;">Tên dịch vụ</th>
+                        <th >Trạng thái</th>
+                        <th >Ghi chú</th>
+                        <th ></th>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">1</td>
+                        <td>Mở mã khách hàng</td>
+                        <td style="text-align: center;">Duyệt thành công</td>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">2</td>
+                        <td>Mở tài khoản thanh toán</td>
+                        <td style="text-align: center;">Chờ phê duyệt</td>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"><button type="button" class="btn btn-primary">Duyệt</button></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">3</td>
+                        <td>Đăng ký SMS banking</td>
+                        <td style="text-align: center;">Chờ phê duyệt</td>
+                        <td style="text-align: center;"></td>
+                        <td style="text-align: center;"><button type="button" class="btn btn-primary">Duyệt</button></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">4</td>
+                        <td>Đăng ký ebanking</td>
+                        <td style="text-align: center;">Duyệt thất bại</td>
+                        <td style="text-align: center;">Thông tin A chưa đúng</td>
+                        <td style="text-align: center;"><button type="button" class="btn btn-danger">Duyệt lại</button></td>
+                    </tr>
+                </table>
+                <div class="col-12 btft">
+                    <button type="button" class="btn btn-primary">Duyệt tất cả</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

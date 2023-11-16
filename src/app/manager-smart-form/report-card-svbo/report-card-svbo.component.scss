@@ -1,0 +1,31 @@
+.container-fluid {
+  width: 99%;
+}
+.form {
+  padding: 25px 160px;
+}
+.label-form {
+  padding: 0 30px;
+}
+.label {
+  margin: 15px 0;
+}
+//table:
+tr:focus{
+  background-color: #faebd7;
+}
+.errorCode {
+  width: 50px;
+}
+.statusSVBO {
+  width: 60px;
+}
+.progressCode {
+  width: 165px;
+}
+.line {
+  width: 150px;
+  padding-top: 10px;
+}
+
+

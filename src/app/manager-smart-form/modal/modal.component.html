@@ -1,0 +1,16 @@
+<div class="abc">
+  <h2 class="mat-dialog-title-for-modal" >{{ modalData.title }}</h2>
+
+  <mat-dialog-content class="mat-typography">
+    <p style="color: #333333;font-size: 14px;">{{ modalData.description }}</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions >
+    <div class="float-right" style="height: 57px;  margin-top: 9px;">
+      <button type="button" class="btn modal-button button-close" (click)="closeModal()">Hủy</button>
+      <button type="button" class="btn modal-button button-action" (click)="actionFunction()" cdkFocusInitial>
+        {{ modalData.actionButtonText }}
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

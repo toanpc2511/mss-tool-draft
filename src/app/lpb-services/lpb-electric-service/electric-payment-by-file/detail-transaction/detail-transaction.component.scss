@@ -1,0 +1,21 @@
+@import "../../../../shared/styles/custom-step-style";
+@import "../../shared/styles/styles.scss";
+
+.content-title {
+  color: #0C258A;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 20px;
+}
+
+:host::ng-deep .mat-stepper-horizontal {
+  .mat-step-header.mat-focus-indicator.mat-horizontal-stepper-header.ng-star-inserted[ng-reflect-active='true'] {
+    background-color: #DBE2F3 !important;
+    .mat-step-icon-content, .mat-step-icon .mat-icon {
+      color: #4DC033;
+      font-size: 22px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

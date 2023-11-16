@@ -1,0 +1,25 @@
+<div class="lpb-select">
+    <div class="lpb-select-info pointer form-control" [ngClass]="lstOptionsView.length === 0 ? 'disableDiv' : ''" (click)="isShowListItem = !isShowListItem">
+        <div class="selected-name" [class]="selectedItem ? 'txt-selected-option' : 'txt-placeholder'">
+            {{!selectedItem ? txtPlaceholder : strSeletedOption}}</div>
+        <!-- <i class="fas fa-chevron-up" *ngIf="!isShowListItem"></i> -->
+        <mat-icon *ngIf="isShowListItem" style="font-size: 20px; width: 21px; height: 21px; text-indent: 5px; color: #495057; align-self: center;">keyboard_arrow_up</mat-icon>
+        <!-- <i class="fas fa-chevron-down" *ngIf="isShowListItem"></i> -->
+        <mat-icon *ngIf="!isShowListItem" style="font-size: 20px; width: 21px; height: 21px; text-indent: 5px; color: #495057; align-self: center;">keyboard_arrow_down</mat-icon>
+    </div>
+    <div class="lpb-select-items" [class]="isShowListItem ? 'd-block' : 'd-none'">
+        <div class="inp-search"  [class]="allowSearch ? 'd-block' : 'd-none'">
+            <input #txtSearch type="text" (input)="onTxtSearchChanged()" class="form-control" placeholder="Tìm kiếm">
+        </div>
+        <div class="content">
+            <div class="item" *ngFor="let option of lstOptionsView" (click)="clickOption(option)">
+                <div class="option-name">{{option.name}}</div>
+                <mat-icon *ngIf="option && option.checked" style="font-size: 20px; width: 24px; text-indent: 5px; color: #287eda; align-self: center;">check_circle</mat-icon>
+                <!-- <i class="fas fa-check-circle" *ngIf="checkSeletedItem(option)"></i> -->
+            </div>
+            <div class="empty-option text-center" *ngIf="lstOptionsView.length === 0">
+                <mat-icon style="font-size: 20px; width: 24px; text-indent: 5px; color: #287eda; align-self: center;">hourglass_empty</mat-icon> Không có lựa phù hợp
+            </div>
+        </div>
+    </div>
+</div>

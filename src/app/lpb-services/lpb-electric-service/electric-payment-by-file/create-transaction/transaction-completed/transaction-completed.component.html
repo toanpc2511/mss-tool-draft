@@ -1,0 +1,29 @@
+<div class="content">
+  <div class="content-main">
+    <div class="py-3 text-center">
+      <img src="/assets/icons/Success.svg" alt="success">
+      <p class="text-success">Tạo giao dịch thành công !</p>
+    </div>
+    <div class="mt-2">
+      <label class="mb-2">Truy vấn hóa đơn</label>
+      <div class="row" *ngFor="let item of infoInvoiceQueries">
+        <div class="col-4">{{item.title}}</div>
+        <div class="col-8 text-right font-weight-bold">{{data?.infoInvoiceQuery[item.property]}}</div>
+      </div>
+    </div>
+
+    <div class="mt-5">
+      <label class="mb-2">Nộp tiền vào trung gian</label>
+      <div class="row" *ngFor="let item of infoPaymentToIntermediaries">
+        <div class="col-4">{{item.title}}</div>
+        <div class="col-8 text-right font-weight-bold">{{data?.infoPaymentToIntermediary[item.property]}}</div>
+      </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-start">
+      <p class="txt-success" (click)="viewDetail()">
+        <i class="fa fa-info-circle" aria-hidden="true"></i>
+        Xem chi tiết</p>
+    </div>
+  </div>
+</div>

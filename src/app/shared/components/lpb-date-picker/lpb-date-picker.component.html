@@ -1,0 +1,12 @@
+<div class="lpb-date-picker">
+    <input #txtMainInput type="text" class="form-control form-control-default txtMainInput" [disabled]="isDisable" [class.haveError]="errorMsg"
+        maxlength="10" placeholder="{{placeholder}}" (keydown)="txtMainInputKeydown($event)"
+        (keyup)="txtMainInputKeyup($event)" (change)="txtMainInputChange()" (blur)="blurMainInput()" />
+    <mat-icon class="ic-calendar" (click)="openDatePicker()">calendar_today</mat-icon>
+    <input #txtHiddenInput type="text" class="form-control txtHiddenInput" [matDatepicker]="matDatePicker" [disabled]="isDisable"
+        (dateChange)="datePickerChange($event)" [min]="minDate" [max]="maxDate" />
+    <mat-datepicker #matDatePicker></mat-datepicker>
+</div>
+<div class="mt-2 label-warning" *ngIf="errorMsg">
+    <div class="d-inline-block" innerHTML="{{ errorMsg }}"></div>
+</div>

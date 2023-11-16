@@ -1,0 +1,153 @@
+<div class="card-services-approve-step-search">
+  <app-progress-spinner color="primary" mode="indeterminate" value="50" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title">
+    TRA CỨU YÊU CẦU CHỜ PHÊ DUYỆT
+  </div>
+  <div class="form-search d-flex flex-column">
+    <div class="row-fields mt-3 mb-2 align-self-center">
+      <div class="form-search-title">
+        <span>Nhập thông tin tìm kiếm</span>
+      </div>
+    </div>
+    <div class="row-fields container" [formGroup]="formSearch">
+      <div class="field">
+        <span class="txtLabel">Thông tin KH:</span>
+        <div class="input-group">
+          <div class="input-group-append">
+            <select class="form-control" formControlName="type">
+              <option *ngFor="let typeSearch of lstInputTypeSearch" [value]="typeSearch.code">{{typeSearch.name}}</option>
+            </select>
+          </div>
+          <input type="text" formControlName="txtSearch" maxlength="15" placeholder="Nhập giá trị tìm kiếm" class="form-control">
+        </div>
+<!--        <div class="err-text mt-1" *ngIf="hasErrorInput('txtSearch', 'required')">-->
+<!--          Thông tin tìm kiếm không được bỏ trống-->
+<!--        </div>-->
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6 field">
+          <span class="txtLabel">Từ ngày<span class="field-require"> (*)</span></span>
+          <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="dateFromChanged()"
+                               (dateChanged)="getFromDate()"></app-lpb-date-picker>
+        </div>
+        <div class="col-md-6 field">
+          <span class="txtLabel">Đến ngày<span class="field-require"> (*)</span></span>
+          <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="dateToChanged()"
+                               (dateChanged)="getToDate()"></app-lpb-date-picker>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6 field">
+          <span class="txtLabel">Chi nhánh:</span>
+          <ng-select formControlName="branchCode" (clear)="defaultBranch()">
+            <ng-option value="">Tất cả Chi nhánh / PGD</ng-option>
+            <ng-option *ngFor="let item of lstBranch" [value]="item.code">{{item.branchCodeName}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6 field">
+          <span class="txtLabel">User nhập:</span>
+          <input type="text" formControlName="inputBy" placeholder="Nhập mã nhân viên" class="form-control" (change)="userInputChange($event)">
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6 field">
+          <span class="txtLabel">Loại dịch vụ:</span>
+          <ng-select formControlName="ebsActionCode" (clear)="defaultService()">
+            <ng-option *ngFor="let item of typeTransaction" [value]="item.code">{{item.name}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6 field">
+          <span class="txtLabel">Trạng Thái:</span>
+          <ng-select formControlName="displayStatus" (clear)="defaultStatus()" >
+            <ng-option *ngFor="let item of listStatus" [value]="item.code">{{item.name}}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="btn-action w-100 mt-3">
+        <button mat-raised-button color="search" (click)="searchAllList()">
+          <mat-icon>search</mat-icon> Tìm kiếm
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="content-title">
+    DANH SÁCH YÊU CẦU CHỜ PHÊ DUYỆT
+  </div>
+  <div class="tbl-result">
+    <table class="table table-hover scrollmenu">
+      <thead>
+      <tr>
+        <th>STT</th>
+        <th>Số Thẻ</th>
+        <th>Số GD</th>
+        <th>Loại GD</th>
+        <th>Card ID</th>
+        <th>Số CIF</th>
+        <th>Tên khách hàng</th>
+        <th>Thẻ Chính/Phụ</th>
+        <th>Mã SP thẻ</th>
+        <th>TK mặc định</th>
+        <th>Ngày phát hành</th>
+        <th>Trạng thái</th>
+        <th>GDV</th>
+        <th>Thời gian</th>
+        <th>Thao tác</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of allListDetail, index as i">
+        <th>{{i+1}}</th>
+        <th class="key-value" (click)="viewDetail(item, view.VIEW_DETAIL)">{{item.cardNumber}}</th>
+        <th>{{item.ebsServiceCode}}</th>
+        <th>{{item.ebsActionName}}</th>
+        <th>{{item.cardCoreId}}</th>
+        <th>{{item.customerCode}}</th>
+        <th>{{item.fullName}}</th>
+        <th>{{item.cardCategoryName}}</th>
+        <th>{{item.cardProductCode}}</th>
+        <th>{{item.defaultAccount}}</th>
+        <th>{{item.releaseDate}}</th>
+        <th>{{item.displayStatusName}}</th>
+        <th>{{item.inputBy}}</th>
+        <th>{{item.inputDate}}</th>
+        <!--------action for KSV--------->
+        <th *ngIf="userRole === 'UNIFORM.BANK.KSV'">
+          <div class="d-flex justify-content-around">
+            <span class="mr-3" matTooltip="Xem chi tiết">
+              <i role="button" class="fa fa-eye btn-view" (click)="viewDetail(item, view.VIEW_DETAIL)"></i>
+            </span>
+            <span matTooltip="Duyệt yêu cầu" *ngIf="(item.displayStatus === 'WAITING' || item.displayStatus === 'PENDING')">
+              <i role="button" class="fa fa-paper-plane-o btn-approve" (click)="viewDetail(item, view.APPROVE)"></i>
+            </span>
+            <span *ngIf="(item.displayStatus !== 'WAITING' && item.displayStatus !== 'PENDING')">
+              <i class="fa fa-paper-plane-o"></i>
+            </span>
+          </div>
+        </th>
+        <!--------action for NHS--------->
+        <th *ngIf="userRole !== 'UNIFORM.BANK.KSV'">
+          <div class="d-flex justify-content-around">
+            <span class="mr-3" matTooltip="Xem chi tiết">
+              <i role="button" class="fa fa-eye btn-view" (click)="viewDetail(item, view.VIEW_DETAIL)"></i>
+            </span>
+            <span matTooltip="Duyệt yêu cầu" *ngIf="item.displayStatus === 'MISMATCH'">
+              <i role="button" class="fa fa-paper-plane-o btn-approve" (click)="viewDetail(item, view.APPROVE)"></i>
+            </span>
+            <span *ngIf="item.displayStatus !== 'MISMATCH'">
+              <i class="fa fa-paper-plane-o"></i>
+            </span>
+          </div>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+    <div class="empty-data" *ngIf="this.allListDetail.length === 0">Chưa có bản ghi tồn tại</div>
+  </div>
+
+  <app-lpb-pagination [pagination]="pagination"
+                      (evtChangePageSize)="changePageSize($event)"
+                      (evtSetPage)="setPage($event)">
+  </app-lpb-pagination>
+</div>

@@ -1,0 +1,87 @@
+<div class="all-content">
+  <div class="container-fluid">
+    <div class="title-content"><i class="fa fa-search title-content"></i> TÌM KIẾM SỐ LƯỢNG ĐĂNG KÝ</div>
+    <hr>
+    <div class="row" [formGroup]="formSearch">
+      <div class="col-md-6 col-left">
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span>Từ ngày: <span class="text-danger">(*)</span></span>
+          </div>
+          <div class="col-md-9">
+            <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="dateFromChanged()"
+                                 (dateChanged)="getFromDate()"></app-lpb-date-picker>
+          </div>
+        </div>
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span class="txtLabel">Chi nhánh:</span>
+          </div>
+          <div class="col-md-9">
+            <app-lpb-select2 [apiUrl]="'/lpb-common-service/api/public/redis/branch'" labelName="name" bindValue="code"
+                             formControlName="branchCode"></app-lpb-select2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-right">
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span>Đến ngày: <span class="text-danger">(*)</span></span>
+          </div>
+          <div class="col-md-9">
+            <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="dateToChanged()"
+                                 (dateChanged)="getToDate()"></app-lpb-date-picker>
+          </div>
+        </div>
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span class="txtLabel">Mã sản phẩm:</span>
+          </div>
+          <div class="col-md-9">
+            <app-lpb-select2 [apiUrl]="'/credit-card-service/card-product'" labelName="name" bindValue="code"
+                             formControlName="productCode"></app-lpb-select2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <button mat-raised-button class="btn-search" (click)="search()">Tìm kiếm</button>
+    </div>
+    <div class="table-content">
+      <div class="title-content"> <i class="fa fa-book title-content"></i> DANH SÁCH SỐ LƯỢNG ĐĂNG KÝ</div>
+
+      <div class="d-flex justify-content-end">
+        <button mat-button class="btn-excel" (click)="exportSummary()"><i class="fa fa-file-excel-o"></i> Xuất dữ liệu</button>
+      </div>
+      <div class="table-scroll">
+
+        <table class="main-table table table-hover">
+          <thead>
+          <tr>
+            <th>STT</th>
+            <th>Mã ĐVKD</th>
+            <th>Mã sản phẩm</th>
+            <th>SL theo HM < 150tr</th>
+            <th>SL theo HM ≥ 150tr</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of records; index as i">
+            <td>{{i+1}}</td>
+            <td>{{item.branchCode}}</td>
+            <td>{{item.productCode}}</td>
+            <td>{{item.limitAmountUnder150}}</td>
+            <td>{{item.limitAmountOver150}}</td>
+          </tr>
+          </tbody>
+        </table>
+          <div *ngIf="records.length === 0" class="d-flex justify-content-center">Không có bản ghi phù hợp</div>
+      </div>
+    </div>
+    <app-lpb-pagination [pagination]="pagination"
+                        (evtChangePageSize)="changePageSize($event)"
+                        (evtSetPage)="setPage($event)">
+    </app-lpb-pagination>
+  </div>
+</div>

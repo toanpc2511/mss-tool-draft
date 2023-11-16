@@ -1,0 +1,195 @@
+<div class="px-4 py-2 overflow-y">
+    <div class="text-high-light text-uppercase fw-bolder"> <i class="fa fa-credit-card-alt text-high-light"></i> Thông
+        tin khách hàng
+    </div>
+    <div class="mt-2">
+        <form [formGroup]="formSearch" (ngSubmit)="search()" class="d-flex">
+            <div class="col-4 pl-0 pr-4">
+                <label for="" class="text-high-light fw-bolder required label">Nhà cung cấp</label>
+                <div>
+                    <app-lpb-select2 [apiUrl]="'/electric-service/supplier/active'" labelName="supplierName"
+                        formControlName="supplier" placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+                    <div *ngIf="invalid(formSearch.controls.supplier)" class="text-danger">Chưa chọn nhà cung cấp
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 pl-0 pr-4">
+                <label for="" class="text-high-light fw-bolder required label">Mã khách hàng</label>
+                <div>
+                    <input type="text" required formControlName="customerId" class="form-control"
+                        placeholder="Nhập mã khách hàng">
+                    <div *ngIf="invalid(formSearch.controls.customerId)" class="text-danger">Chưa nhập mã
+                        khách hàng</div>
+                </div>
+            </div>
+            <div class="col-4 pl-0 pr-4">
+                <label for=""></label>
+                <div>
+                    <button class="btn lpb-btn-primary" [disabled]="isLoading"> <i class="fa fa-search"></i>
+                        <span> Tìm kiếm</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="searched">
+        <div class="d-flex flex-wrap bg-readonly border-radius-panel p-2 mt-3">
+            <div class="col-4">
+                <label for="">Họ và tên</label>
+                <div class="text-high-light fw-bolder"> {{customerInfo?.custName}} </div>
+            </div>
+            <div class="col-4">
+                <label for="">Địa chỉ</label>
+                <div class="text-high-light fw-bolder"> {{customerInfo?.custDesc}} </div>
+            </div>
+            <div class="col-4">
+                <label for="">Điện lực</label>
+                <div class="text-high-light fw-bolder"> {{customerInfo?.custType}} </div>
+            </div>
+        </div>
+
+        <div class="mt-3 clearfix fw-bolder">
+            <span class="text-high-light">Chi tiết hóa đơn</span>
+            <span class="float-right color-payment-type"> Quy tắc thanh toán: {{paymentRuleName}} </span>
+        </div>
+        <app-lpb-datatable [dataSource]="dataSource" [columns]="columns" [config]="config" [outputHandleClick]="true"
+            (checkAllChange)="checkAllChange($event)" (checkRowChange)="checkRowChange($event)"
+            [(selection)]="selection" [disableCkRow]="isDisableCheckRow" [disableCkAll]="isDisableCheckAll"
+            (clickCheckRow)="clickCheckRow($event)"></app-lpb-datatable>
+        <div class="mt-5" [formGroup]="formPayment">
+            <div class="text-high-light text-uppercase fw-bolder"> <i
+                    class="fa fa-credit-card-alt text-high-light mr-2"></i>Thông tin thanh toán
+            </div>
+            <div class="border border-radius-panel p-2 mt-2">
+                <div class="text-high-light fw-bolder pl-3">Thông tin giao dịch</div>
+                <div class="d-flex flex-wrap mt-2">
+                    <div class="col-4">
+                        <label for="">Hình thức thanh toán</label>
+                        <div>
+                            <ng-container class="d-inline-block mr-3" *ngFor="let item of paymentMethods">
+                                <input type="radio" [value]="item['value']" formControlName="paymentMethod">
+                                <label for="" class="text-high-light fw-bolder ml-1 mr-4">{{item['label']}}</label>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="">Số tiền thanh toán</label>
+                        <div class="input-group">
+                            <input type="text" readonly [value]="formPayment.value.paymentAmount | number"
+                                class="form-control border-right-0">
+                            <div class="input-group-append">
+                                <span class="fw-bolder text-high-light input-group-text border-left-0">
+                                    VNĐ</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="">Nội dung thanh toán</label>
+                        <div class="text-high-light fw-bolder text-break"> {{formPayment.value.paymentContent}} </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="formPayment.value.paymentMethod === 'CK'" class="border border-radius-panel p-2 mt-3">
+                <div class="text-high-light fw-bolder pl-3">Tài khoản ghi nợ</div>
+                <div class="d-flex flex-wrap mt-2">
+                    <div class="col-4">
+                        <label for="">Mã khách hàng (CIF)</label>
+                        <div class="text-high-light fw-bolder">
+                            <input type="text" class="form-control" formControlName="cifNumber" maxlength="20"
+                                placeholder="Nhập số CIF" (keyup.enter)="searchAccountCustomers()">
+                        </div>
+                        <app-validate [control]="formPayment.controls['cifNumber']" [error]="'required'"
+                            [message]="'Bạn cần nhập số CIF'"></app-validate>
+                    </div>
+                    <div class="col-4">
+                        <label for=""></label>
+                        <div class="text-high-light fw-bolder">
+                            <button class="btn lpb-btn-primary" (click)="searchAccountCustomers()">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap mt-3">
+                    <div class="col-4">
+                        <label for="">TK thanh toán</label>
+                        <div class="text-high-light fw-bolder">
+                            <app-lpb-select2 [items]="customerAccounts" labelName="accountNumber"
+                                bindValue="accountNumber" formControlName="debitAccountNumber"
+                                placeholder="Chọn số TKTT">
+                                <ng-template let-item="item" let-index="index">
+                                    <b>{{item.accountNumber}}</b>
+                                    <div class="text-high-light">{{item.availableBalance | number}} VNĐ
+                                    </div>
+                                </ng-template>
+                            </app-lpb-select2>
+                        </div>
+                        <app-validate [control]="formPayment.controls['debitAccountNumber']" [error]="'required'"
+                            [message]="'Bạn cần chọn số TKTT'"></app-validate>
+                    </div>
+                    <div class="col-4">
+                        <label for="">Tên tài khoản</label>
+                        <div class="text-high-light fw-bolder">
+                            <span class="text-high-light fw-bolder form-control border-0 pl-0">
+                                {{formPayment.value.debitAccountName}}</span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="">Số dư TK trước giao dịch</label>
+                        <div class="text-high-light fw-bolder">
+                            <span class="text-high-light fw-bolder form-control border-0 pl-0">
+                                {{formPayment.value.debitAccountPreBalance | number}} VNĐ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="creditInfos.length > 0" class="border border-radius-panel p-2 mt-3">
+                <div class="text-high-light fw-bolder pl-3">Tài khoản ghi có</div>
+                <div *ngFor="let creditInfo of creditInfos; let idx = index;" class="d-flex flex-wrap mt-2">
+                    <div class="col-4">
+                        <label for="">Tài khoản thanh toán {{creditInfos.length> 1?"- "+(idx+1):""}} </label>
+                        <div class="text-high-light fw-bolder">
+                            {{creditInfo?.settleBillAcNo}}
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <label for="">Tên tài khoản {{creditInfos.length> 1?"- "+(idx+1):""}} </label>
+                        <div class="text-high-light fw-bolder">
+                            {{creditInfo?.settleBillAcDesc}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border border-radius-panel p-2 mt-3">
+                <div class="text-high-light fw-bolder pl-3">Thông tin người nộp tiền</div>
+                <div class="d-flex flex-wrap mt-2">
+                    <div class="col-4">
+                        <label for="">Họ và tên</label>
+                        <div>
+                            <input type="text" class="form-control" formControlName="payerName" maxlength="100"
+                                placeholder="Nhập họ và tên">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="">Địa chỉ</label>
+                        <div>
+                            <input type="text" class="form-control" formControlName="payerAddress" maxlength="200"
+                                placeholder="Nhập địa chỉ">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="">SĐT</label>
+                        <div class="text-high-light fw-bolder">
+                            <input type="text" class="form-control" JustNumberOnly formControlName="payerPhoneNumber" maxlength="11"
+                                placeholder="Nhập số điện thoại">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div [style.height.px]="50">
+    <app-lpb-footer [actions]="searched?actions:[]"
+        class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>
+</div>

@@ -1,0 +1,208 @@
+<app-card-services-form #cardServiceExtendForm [formGroup]="formEbsServiceInfo"
+                        [title]="(isDetail ? 'Chi tiết ': 'Phê duyệt ') + 'Thêm/Hủy TK liên kết/Đổi tài khoản mặc định'" [isShowLoading]="isShowLoading"
+                        [formType]="'APPROVE'" (eventBackStep)="backToSearch($event)"
+                        (eventOpenModal)="openModal($event)"
+                        [isDetail]="isDetail">
+  <div class="field">
+    <span class="txtLabel">Loại khách hàng:</span>
+    <input type="text" formControlName="clientType" class="form-control">
+  </div>
+  <div class="field">
+    <span class="txtLabel">Chi nhánh:</span>
+    <input type="text" formControlName="branchCode" class="form-control">
+  </div>
+  <div class="field">
+    <span class="txtLabel">Số hợp đồng:</span>
+    <input type="text" formControlName="contract" class="form-control">
+  </div>
+  <div class="field">
+    <span class="txtLabel">Loại hợp đồng:</span>
+    <input type="text" formControlName="contractType" class="form-control">
+  </div>
+  <div class="field">
+    <span class="txtLabel">Tài khoản mặc định:</span>
+    <input type="text" formControlName="defaultAccount" class="form-control">
+  </div>
+  <div class="row-fields row mb-2">
+    <div class="col-md-6">
+      <div style="padding-bottom: 20px">
+        <span class="text-label">Danh sách hiện trạng tài khoản</span>
+      </div>
+
+      <div class="mini-table">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Số tài khoản</th>
+            <th scope="col">Liên kết / Hủy Liên kết</th>
+            <th scope="col">Mặc định</th>
+          </tr>
+          </thead>
+          <tbody >
+          <tr>
+            <th scope="row" colspan="4"><p class="d-flex justify-content-start">Số tài khoản trên SVBO</p></th>
+          </tr>
+          <tr *ngFor="let info1 of this.oldAccSvbo; let i = index" tabindex="0">
+            <td>{{i+1}}</td>
+            <td>{{info1.accountNumber}}</td>
+            <td>
+              <p class="d-flex justify-content-center">
+                <mat-checkbox color="primary" [checked]="info1.linkStatus" disabled="true"></mat-checkbox>
+              </p>
+            </td>
+            <td>
+              <p class="d-flex justify-content-center">
+                <mat-radio-button color="primary" name="primaryGroup" [checked]="info1.defaultAcc === true"  disabled ></mat-radio-button>
+              </p>
+            </td>
+          </tr>
+          </tbody>
+          <tbody >
+          <tr>
+            <th scope="row" colspan="4"><p class="d-flex justify-content-start">Số tài khoản trên CBS</p></th>
+          </tr>
+          <tr *ngFor="let info2 of this.oldAccCbs; let i = index " tabindex="0">
+            <td>{{i + 1}}</td>
+            <td>{{info2.accountNumber}}</td>
+            <td>
+              <p class="d-flex justify-content-center">
+                <mat-checkbox color="primary" [checked]="info2.linkStatus" disabled="true" ></mat-checkbox>
+              </p>
+            </td>
+            <td>
+              <p class="justify-content-center d-flex">
+                <mat-radio-button color="primary" name="primaryGroup" [checked]="info2.defaultAcc === true" disabled ></mat-radio-button>
+              </p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div style="padding-bottom: 20px">
+        <span class="text-label">Danh Sách tài khoản đã thay đổi liên kết và tài khoản mặc định</span>
+      </div>
+      <div class="mini-table">
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Số tài khoản</th>
+            <th scope="col">Liên kết / Hủy Liên kết</th>
+            <th scope="col">Mặc định</th>
+          </tr>
+          </thead>
+
+          <tbody >
+          <tr>
+            <th scope="row" colspan="4"><p class="d-flex justify-content-start">Số tài khoản trên SVBO</p></th>
+          </tr>
+          <tr *ngFor="let info1 of this.newAccSvbo; let i = index" tabindex="0">
+            <td>{{i+1}}</td>
+            <td>{{info1.accountNumber}}</td>
+            <td>
+              <p class="d-flex justify-content-center">
+                <mat-checkbox color="primary" [checked]="info1.linkStatus" disabled="true"></mat-checkbox>
+              </p>
+            </td>
+            <td>
+              <p class="d-flex justify-content-center">
+                <mat-radio-button color="primary" name="primaryGroup2" [checked]="info1.defaultAcc === true"  disabled></mat-radio-button>
+              </p>
+            </td>
+          </tr>
+          </tbody>
+
+          <tbody >
+          <tr>
+            <th scope="row" colspan="4"><p class="d-flex justify-content-start">Số tài khoản trên CBS</p></th>
+          </tr>
+          <tr *ngFor="let info2 of this.newAccCbs; let i = index " tabindex="0">
+            <td>{{i + 1}}</td>
+            <td>{{info2.accountNumber}}</td>
+            <td>
+              <p class="d-flex justify-content-center">
+                <mat-checkbox color="primary" [checked]="info2.linkStatus" disabled="true" ></mat-checkbox>
+              </p>
+            </td>
+            <td>
+              <p class="d-flex justify-content-center">
+                <mat-radio-button color="primary" name="primaryGroup2" [checked]="info2.defaultAcc === true" disabled ></mat-radio-button>
+              </p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-fields mb-2" *ngIf="isDetail">
+    <span class="txtLabel">Trạng thái: </span> <span>{{cardEbsServiceSelected?.serviceStatusName}}</span>
+  </div>
+</app-card-services-form>
+
+<!-- Modal confirm -->
+<app-lpb-modal headerText="Xác nhận phê duyệt yêu cầu" [show]="isShowModal && modalType === MODAL_TYPES.APPROVE"
+               (hideModal)="isShowModal = false" [widthContent]="50" [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt">
+      Bạn có chắc chắn phê duyệt dịch vụ thẻ của khách hàng:
+    </div>
+    <div class="mb-2 confirm-txt" *ngIf="cardEbsServiceSelected?.fullName">
+      {{cardEbsServiceSelected.fullName}}
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-denied mr-2" (click)="this.isShowModal = false">
+        Hủy bỏ
+      </button>
+      <button class="btn btn-accept" (click)="approve()">
+        Đồng ý
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Xác nhận từ chối yêu cầu" [show]="isShowModal && modalType === MODAL_TYPES.REJECT"
+               (hideModal)="isShowModal = false" [widthContent]="50" [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt">
+      Bạn có chắc chắn từ chối dịch vụ thẻ của khách hàng: {{cardEbsServiceSelected.fullName}}
+    </div>
+
+    <div class="form-detail d-flex flex-column w-75" [formGroup]="rejectForm">
+      <textarea type="text" formControlName="reason" maxlength="1000" class="form-control"
+                placeholder="Nhập lý do từ chối"></textarea>
+      <div class="err-text mt-1" *ngIf="hasErrorRejectForm('reason', 'required')">Lý do từ chối bắt buộc nhập</div>
+      <div class="err-text mt-1" *ngIf="hasErrorRejectForm('reason', 'maxlength')">Lý do từ chối không được vượt quá 1000 ký tự</div>
+    </div>
+
+    <div class="mt-4">
+      <button class="btn btn-denied mr-2" (click)="this.isShowModal = false">
+        Hủy bỏ
+      </button>
+      <button class="btn btn-accept" (click)="reject()">
+        Đồng ý
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Thông báo" [show]="isShowModal && modalType === MODAL_TYPES.ERROR"
+               (hideModal)="isShowModal = false" [widthContent]="50" [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt" *ngFor="let line of errorModalContents">
+      <p>{{line}}</p>
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-accept" (click)="isShowModal = false">
+        Quay lại
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>
+<!-- Modal confirm -->

@@ -1,0 +1,117 @@
+<form class="form-array" [formGroup]="form">
+
+  <div class="form-array-header d-flex align-items-center mb-3">
+    <div>
+      <ng-content #title></ng-content>
+    </div>
+    <div class="d-flex" *ngIf="buttons?.length">
+      <!-- Custom buttons -->
+      <button *ngFor="let button of buttons" mat-raised-button [class]="button.class" class="d-flex align-items-center"
+        (click)="button.onClick && button.onClick()">
+        <mat-icon *ngIf="button.icon">{{button.icon}}</mat-icon>
+        <span class="font-weight-semibold"> {{button.label}}</span>
+      </button>
+      <!-- end Custom buttons -->
+    </div>
+  </div>
+
+  <div class="form-array-content">
+    <table [class]="config?.contentClass">
+      <thead>
+        <tr>
+          <!-- STT -->
+          <th *ngIf="config?.hasSTT" [class]="'stt-header ' + config?.headerClass">STT</th>
+          <!-- end STT -->
+          <ng-container *ngFor="let h of builders;">
+            <th [class]="h.class?.headerClass || config?.headerClass"> {{h.label}} <span *ngIf=" h.requiredNote"
+                class=" text-danger">(*)</span>
+            </th>
+          </ng-container>
+          <th class="action-column-th" [class]="config?.headerClass" *ngIf="!config?.isDetail && actions?.length">
+            <span *ngIf="config?.actionLabel">{{config?.actionLabel}}</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fc of (formArray?.controls || listItems) as list; let i = index">
+
+          <!-- #region STT (*) -->
+          <td [class]="config?.sttClass" *ngIf="config?.hasSTT" class="stt td-text">{{i + 1}}</td>
+          <!--#endregion -->
+
+          <td [class]="config?.cellClass + ' ' + builder.class?.cellClass" *ngFor="let builder of builders">
+
+            <ng-container [ngSwitch]="builder.inputType">
+
+              <ng-container *ngSwitchCase="EnumInputType.text">
+                <span class="d-block td-text" (click)="builder.onClick && builder.onClick({index:i, item:fc})">
+                  {{fc[builder.controlName]}}
+                </span>
+              </ng-container>
+              <ng-container *ngSwitchCase="EnumInputType.link">
+                <span class="d-block td-text _link" (click)="builder.onClick && builder.onClick({index:i, item:fc})">
+                  {{fc[builder.controlName]}}
+                </span>
+              </ng-container>
+              <ng-container *ngSwitchCase="EnumInputType.inputNumber">
+                <input type="text"
+                  [JustNumberOnly]="{maxlength:builder.maxlength||9999, alowDotIfNumber: builder.alowDotIfNumber}"
+                  [formControl]="fc.controls[builder.controlName]" class="form-control">
+              </ng-container>
+
+              <ng-container *ngSwitchCase="EnumInputType.currency">
+                <app-lpb-money-input [class]="'form-control'" [blockComma]="true"
+                  [control]="fc.controls[builder.controlName]" [maxlength]="builder.maxlength || 9999">
+                </app-lpb-money-input>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="EnumInputType.date">
+                <app-lpb-datepicker-new [maxDate]="builder.maxDate" [formControl]="fc.controls[builder.controlName]">
+                </app-lpb-datepicker-new>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="EnumInputType.select">
+                <ng-select [labelName]="builder.selectList.labelName" [bindValue]="builder.selectList.bindValue"
+                  [items]="builder.selectList.list" [formControl]="fc.controls[builder.controlName]"></ng-select>
+              </ng-container>
+
+              <ng-container *ngSwitchDefault>
+                <input [maxlength]=" builder.maxlength||9999" type="text"
+                  [formControl]="fc.controls[builder.controlName]" class="form-control">
+              </ng-container>
+            </ng-container>
+
+            <!-- #region handle error -->
+            <ng-container *ngIf="formArray?.controls && (fc.controls[builder.controlName]?.dirty || fc.controls[builder.controlName]?.touched) &&
+               fc.controls[builder.controlName]?.errors">
+              <div class="text-error" *ngFor="let msg of builder.validatesMsg"
+                [hidden]="!fc.controls[builder.controlName]?.errors[msg.type]">
+                {{msg.message}}
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="formArray && (formArray?.dirty || formArray.touched) &&
+            formArray?.errors && i + 1 === list?.length">
+              <ng-container *ngFor="let msg of builder.validatesMsg">
+                <div class="text-error array-errored" *ngIf="formArray?.errors[msg.type]">
+                  {{msg.message}}
+                </div>
+              </ng-container>
+            </ng-container>
+            <!-- #endregion handle error -->
+          </td>
+          <td [class]="" class="action-column" *ngIf="!config?.isDetail && actions?.length">
+            <button *ngFor="let action of actions" [class]="action.class" (click)="action.onClick({index:i, item:fc})">
+              <i class="fa" [class]="action.icon" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="!(formArray?.controls?.length || listItems?.length)" class="table-no-record">
+          <td colspan="9999" class="text py-4 text-center align-middle">
+            Không tìm thấy dữ liệu
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</form>

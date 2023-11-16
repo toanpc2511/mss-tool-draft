@@ -1,0 +1,362 @@
+<h2 class="text-uppercase" mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;padding:10px">
+    THÔNG TIN CIF Liên Quan
+    <span class="material-icons" (click)="closeDialog(0)" style="float: right;cursor: pointer;">
+        close
+    </span>
+</h2>
+<mat-dialog-content class="mat-typography scroll-dialog">
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+        <div class="col-12" style="padding: 15px 15px 0px 15px;">
+            <div class="input-group mb-3" style="margin-bottom: 5px !important;">
+                <label style="margin: 0px;padding: 9px;" class="textLabel">Khách hàng cá nhân <span
+                        style="margin-left: 5px; color: red;">(*)</span></label>
+                <input type="text" name="customerCode" class="form-control col-4" formControlName="customerCode" placeholder="Nhập giá trị tìm kiếm" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" style="z-index: unset;background: #828282;">
+                        <i class="fa fa-search" style="color: #FFFFFF;" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="error-message" *ngIf="searchSubbmit && !s.customerCode.valid">
+                    <label class="col-2" style="display: block;float: left;"></label>
+                    <div class="col-10" style="display: block;float: left;padding: 0px;">Giá trị tìm kiếm không được để trống
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12" style="padding-left: 185px;padding-bottom: 5px;">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" formControlName="customerType" id="radioCMND/HT" value="{{CUSTOMER_TYPE.CMND}}" checked>
+                <label class="form-check-label" for="radioCMND/HT">CMND</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" formControlName="customerType" id="radioMKH" value="{{CUSTOMER_TYPE.KHAI_SINH}}">
+                <label class="form-check-label" for="radioMKH">Giấy Khai Sinh</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" formControlName="customerType" id="radioSDT" value="{{CUSTOMER_TYPE.CCCD}}">
+                <label class="form-check-label" for="radioSDT">CCCD</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" formControlName="customerType" id="rdHC" value="{{CUSTOMER_TYPE.HO_CHIEU}}">
+                <label class="form-check-label" for="rdHC">Hộ Chiếu</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" formControlName="customerType" id="rdCif" value="{{CUSTOMER_TYPE.CIF}}">
+                <label class="form-check-label" for="rdCif">Mã CIF</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" formControlName="customerType" id="rdCif" value="{{CUSTOMER_TYPE.PHONE}}">
+                <label class="form-check-label" for="rdCif">Số điện thoại</label>
+            </div>
+        </div>
+    </form>
+
+    <hr />
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <div [hidden]="isHidden">
+            <input type="hidden" formControlName="id">
+            <div class="col-12" *ngIf="mode === MODE.EDIT">
+                <div class="col-6 colLeft">
+                    <div class="col-12 form-group">
+                        <label class="col-sm-4 col-form-label float-left">Trạng thái:<span class="sp">(*)</span></label>
+                        <div class="col-sm-8 float-left">
+                            <div class="mt-2 form-check form-check-inline">
+                                <input class="form-check-input" type="radio" formControlName="inEffect" [value]="true">
+                                <label class="form-check-label" style="color: black">Hiệu lực</label>
+                            </div>
+                            <div class="mt-2 form-check form-check-inline">
+                                <input class="form-check-input" type="radio" formControlName="inEffect" [value]="false">
+                                <label class="form-check-label" style="color: black">Hết Hiệu lực</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" style="padding-top: 15px;">
+                <div class="col-6 colLeft">
+                    <div class="col-12 form-group">
+                        <label class="col-sm-4 col-form-label float-left">Họ và tên:<span class="sp">(*)</span></label>
+                        <div class="col-sm-8 float-left">
+                            <input oninput="this.value = this.value.toUpperCase()" (input)="inputLatinUppercase($event)" maxlength="35" type="text" class="form-control text-uppercase" formControlName="fullName" placeholder="Nhập Họ Và Tên" [ngClass]="{ 'is-invalid': f.fullName.errors && f.fullName.touched }"
+                            />
+                            <div *ngIf="f.fullName.errors?.required && f.fullName.touched" class="error-message">
+                                {{textMessage.contentFullName}}
+                            </div>
+                            <div *ngIf="f.fullName.errors?.pattern && f.fullName.touched" class="error-message">
+                                Họ tên không đúng định dạng
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 colRight">
+                    <div class="col-12 form-group">
+                        <label class="col-sm-4 col-form-label float-left">Loại GTXM
+                            <span class="sp">(*)</span>
+                        </label>
+                        <div class="col-sm-8 float-left">
+                            <ng-select [ngClass]="{ 'is-invalid': (f.perDocTypeCode.touched && f.perDocTypeCode.errors) }" formControlName="perDocTypeCode" name="perDocTypeCode" [items]="categories.perDocTypes" placeholder="-- Chọn Loại giấy tờ tùy thân --" bindLabel="name" bindValue="code">
+                            </ng-select>
+                            <div *ngIf="submitted && f.perDocTypeCode.errors || f.perDocTypeCode.invalid && (f.perDocTypeCode.dirty || f.perDocTypeCode.touched)" class="error-message">
+                                Loại GTXM không được để trống
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="col-6 colLeft">
+                    <div class="col-12 form-group">
+                        <label class="col-sm-4 col-form-label float-left">Ngày sinh: <span class="sp">(*)</span>
+                        </label>
+                        <div class="col-sm-8 float-left">
+                            <div class="input-group mb-3" style="margin-bottom: 0px !important;">
+                                <input DateOnly formControlName="dateOfBirth" name="dateOfBirth" [ngClass]="{ 'is-invalid': (f.dateOfBirth.errors && f.dateOfBirth.touched)}" [matDatepicker]="dp" style="height: 36px" type="text" class="form-control straight-right-border" placeholder="dd/mm/yyyy"
+                                    maxlength="10">
+                                <div class="input-group-append" style="height: 36px">
+                                    <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border" matSuffix [for]="dp">
+                                    </mat-datepicker-toggle>
+                                </div>
+                                <mat-datepicker #dp></mat-datepicker>
+                                <div *ngIf="f.dateOfBirth.futureDate && f.dateOfBirth.touched" class="error-message">
+                                    {{textMessage.contentDateOfBirthGreaterThanDate}}
+                                </div>
+                                <div *ngIf="f.dateOfBirth.required && f.dateOfBirth.touched" class="error-message">
+                                    {{textMessage.contentDateOfBirthRequired}}
+                                </div>
+                                <div *ngIf="registerForm.errors?.validateDate" class="error-message">
+                                    {{textMessage.validateDate2}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 colRight">
+                    <div class="col-12 form-group" *ngIf="perDocTypeCode.value===''">
+                        <label class="col-sm-4 col-form-label float-left">Số GTXM <span class="sp">(*)</span> </label>
+                        <div class="col-sm-8 float-left">
+                            <input [ngClass]="{'is-invalid':  (f.identifyCode.touched && f.identifyCode.errors) || (f.identifyCode.touched) ||
+                            (f.identifyCode.touched && f.identifyCode.errors && f.identifyCode.errors.cannotContainSpace)}" formControlName="identifyCode" type="text" class="form-control form-control-sm" placeholder="-- Nhập số GTXM --" />
+                            <div *ngIf="(f.identifyCode.touched && f.identifyCode.errors) || (f.identifyCode.touched && f.identifyCode.errors && f.identifyCode.errors.cannotContainSpace)" class="invalid-feedback">
+                                <div>{{textMessage.contentNumberGTXM}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 form-group" *ngIf="perDocTypeCode.value==='CAN CUOC CONG DAN'">
+                        <label class="col-sm-4 col-form-label float-left">Số GTXM:<span
+                                class="text-danger">(*)</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" numbersOnly class="form-control form-control-sm" placeholder="---Nhập số GTXM---" formControlName="identifyCode" [ngClass]="{ 'is-invalid': f.identifyCode.errors?.required && f.identifyCode.touched }" maxlength="12">
+                            <div *ngIf="submitted && f.identifyCode.errors || f.identifyCode.invalid && (f.identifyCode.dirty || f.identifyCode.touched)" class="error-message">
+                                <div *ngIf="f.identifyCode.errors.required" class="error-message">Số GTXM không được bỏ trống
+                                </div>
+                                <div *ngIf="f.identifyCode.errors.minlength" class="error-message">Số căn cước công dân phải 12 số</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 form-group" *ngIf="perDocTypeCode.value==='CHUNG MINH NHAN DAN'">
+                        <label class="col-sm-4 col-form-label float-left">Số GTXM:<span
+                                class="text-danger">(*)</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" numbersOnly class="form-control form-control-sm" placeholder="---Nhập số GTXM---" formControlName="identifyCode" [ngClass]="{ 'is-invalid': f.identifyCode.errors?.required && f.identifyCode.touched }" maxlength="12">
+                            <div *ngIf="submitted && f.identifyCode.errors || f.identifyCode.invalid && (f.identifyCode.dirty || f.identifyCode.touched)" class="error-message">
+                                <div *ngIf="f.identifyCode.errors.required" class="error-message">Số GTXM không được bỏ trống
+                                </div>
+                                <div *ngIf="f.identifyCode.errors.minlength" class="error-message">Số chứng minh thư nhân dân phải là 9 đến 12 số
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 form-group" *ngIf="perDocTypeCode.value==='HO CHIEU'">
+                        <label class="col-sm-4 col-form-label float-left">Số GTXM:<span
+                                class="text-danger">(*)</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" placeholder="---Nhập số GTXM---" formControlName="identifyCode" [ngClass]="{ 'is-invalid': f.identifyCode.errors?.required && f.identifyCode.touched }">
+                            <div *ngIf="submitted && f.identifyCode.errors || f.identifyCode.invalid && (f.identifyCode.dirty || f.identifyCode.touched)" class="error-message">
+                                <div *ngIf="f.identifyCode.errors.required" class="error-message">Hộ chiếu không được bỏ trống
+                                </div>
+                            </div>
+                            <div *ngIf="submitted && f.identifyCode.errors || f.identifyCode.invalid && (f.identifyCode.dirty || f.identifyCode.touched)" class="error-message">
+                                <div *ngIf="f.identifyCode.errors.pattern" class="error-message">Hộ chiếu không được chứa ký tự đặc biệt</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 form-group" *ngIf="perDocTypeCode.value==='GIAY KHAI SINH'">
+                        <label class="col-sm-4 col-form-label float-left">Số GTXM:<span
+                                class="text-danger">(*)</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" placeholder="---Nhập số GTXM---" formControlName="identifyCode" [ngClass]="{ 'is-invalid': f.identifyCode.errors?.required && f.identifyCode.touched }">
+                            <div *ngIf="submitted && f.identifyCode.errors || f.identifyCode.invalid && (f.identifyCode.dirty ||f.identifyCode.touched)" class="error-message">
+                                <div *ngIf="f.identifyCode.errors.required" class="error-message">Giấy khai sinh không được bỏ trống</div>
+                            </div>
+                            <div *ngIf="submitted && f.identifyCode.errors || f.identifyCode.invalid && (f.identifyCode.dirty ||f.identifyCode.touched)" class="error-message">
+                                <div *ngIf="f.identifyCode.errors.pattern" class="error-message">Giấy khai sinh không được chứa ký tự đặc biệt
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <div class="col-6 colLeft">
+                    <div class="col-12 form-group">
+                        <label class="col-sm-4 col-form-label float-left">Giới tính:<span class="sp">(*)</span></label>
+                        <div class="col-sm-8 float-left ">
+                            <div class="mt-2 form-check form-check-inline" *ngFor="let gender of categories.genders; let i = index">
+                                <input class="form-check-input" type="radio" formControlName="gender" [value]="gender.code" checked>
+                                <label class="form-check-label" style="color: black">{{gender.name}}</label>
+                            </div>
+                            <div *ngIf="f.gender.errors" class="invalid-feedback">
+                                <div>{{textMessage.contentGender}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 colRight">
+                    <div class="col-12 form-group">
+                        <label class="col-sm-4 col-form-label float-left">Nơi cấp:<span class="sp">(*)</span></label>
+                        <div class="col-sm-8 float-left">
+                            <app-autocomplete formControlName="identifyAddress" [className]="{ 'is-invalid': f.identifyAddress.touched && f.identifyAddress.errors}">
+                            </app-autocomplete>
+                            <div *ngIf="f.identifyAddress.errors && f.identifyAddress.touched" class="error-message">
+                                {{textMessage.contentIssuedBy}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <div class="col-6 colLeft">
+                    <div class="col-12 form-group">
+                        <label class="col-sm-4 col-form-label float-left">Số điện thoại:<span
+                                class="sp">(*)</span></label>
+                        <div class="col-sm-8 float-left">
+                            <input numbersOnly type="text" formControlName="phoneNumber" maxlength="11" placeholder="Nhập Số Điện Thoại" [ngClass]="{ 'is-invalid': f.phoneNumber.errors && f.phoneNumber.touched }" class="form-control form-control-sm" />
+                            <div *ngIf="f.phoneNumber.hasError('required') && f.phoneNumber.touched" class="error-message">
+                                {{textMessage.contentPhone}}
+                            </div>
+                            <div *ngIf="f.phoneNumber.hasError('minlength') && f.phoneNumber.touched" class="error-message">
+                                {{textMessage.contentPhoneMax}}
+                            </div>
+                            <div *ngIf="f.phoneNumber.hasError('maxlength') && f.phoneNumber.touched" class="error-message">
+                                {{textMessage.contentPhoneMax}}
+                            </div>
+                            <div *ngIf="f.phoneNumber.errors?.checkPhonesNumber && f.phoneNumber.touched" class="error-message">
+                                Số điện thoại sai định dạng
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 colRight">
+                    <div class="col-12">
+                        <label class="col-sm-4 col-form-label float-left">Ngày cấp: <span class="sp">(*)</span> </label>
+                        <div class="col-sm-8 float-left">
+                            <div class="input-group">
+                                <input formControlName="identifyDate" matInput DateOnly [ngClass]="{ 'is-invalid': (f.identifyDate.errors && f.identifyDate.touched) || registerForm.errors?.smallerDate }" [matDatepicker]="dp1" style="height: 36px" type="text" class="form-control straight-right-border"
+                                    placeholder="dd/mm/yyyy" maxlength="10">
+                                <div class="input-group-append" style="margin-top: -1px">
+                                    <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border" id="basic-addon2" matSuffix [for]="dp1">
+                                    </mat-datepicker-toggle>
+                                </div>
+                                <mat-datepicker #dp1></mat-datepicker>
+                                <div *ngIf="f.identifyDate.hasError('futureDate') && f.identifyDate.touched" class="error-message">
+                                    {{ERROR_MESSAGE.IDENTIFY_DATE.GT_CURRENT_DATE}}
+                                </div>
+                                <div *ngIf="f.identifyDate.hasError('required') && f.identifyDate.touched" class="error-message">
+                                    {{ERROR_MESSAGE.REQUIRED('Ngày Cấp')}}
+                                </div>
+                                <div *ngIf="registerForm.errors?.smallerDate" class="error-message">
+                                    {{textMessage.validateDate1}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <div class="col-6 colLeft">
+                    <div class="col-12 form-group">
+                        <label class="col-sm-4 col-form-label float-left">Mối quan hệ:<span
+                                class="sp">(*)</span></label>
+                        <div class="col-sm-8 float-left">
+                            <select formControlName="relationshipType" [ngClass]="{ 'is-invalid': f.relationshipType.errors && f.relationshipType.touched }" class="form-control form-control-sm">
+                                <option disabled selected value="null">--- Danh sách quan hệ ---</option>
+                                <option *ngFor="let item of lstRelationShip" [value]="item.code">{{item.name}}</option>
+                            </select>
+                            <div *ngIf="f.relationshipType.errors && f.relationshipType.touched" class="invalid-feedback">
+                                <div>{{textMessage.relationship}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 colRight">
+                    <div class="col-12 form-group">
+                        <label class="col-sm-4 col-form-label float-left">Quốc tịch:<span class="sp">(*)</span></label>
+                        <div class="col-sm-8 float-left">
+                            <ng-select [ngClass]="{ 'is-invalid': f.nationality.errors && f.nationality.touched }" formControlName="nationality" name="nationality" [items]="categories.countries" placeholder="-- Chọn quốc gia --" bindLabel="name" bindValue="code">
+                                <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                    <div class="ng-option disabled">
+                                        Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                            <div *ngIf="f.nationality.errors && f.nationality.touched" class="invalid-feedback">
+                                <div>{{textMessage.contentNationality}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" col-12 ">
+                <div class="save-ut">
+                    <button *ngIf="mode === MODE.CREATE || mode === MODE.EDIT" type="submit" class="btn closePopup">Lưu</button>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </form>
+    <div>
+        <label class="labelTitle text-uppercase">Danh sách CIF Liên Quan</label>
+        <div class="col-12" style="margin-top: 10px;">
+            <table class="table table-responsive table-fixed">
+                <thead>
+                    <tr class="titleTD">
+                        <td>Họ và tên</td>
+                        <td>Số điện thoại</td>
+                        <td>Số GTXM</td>
+                        <td>Mối quan hệ</td>
+                        <td>Trạng thái</td>
+                        <td *ngIf="!data.isViewMode">Thao tác</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="items.length == 0">
+                        <td style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                    <tr *ngFor="let item of items;let i = index" [attr.data-index]="i" class="hovertr">
+                        <td class="text-center text-uppercase"><a href="javascript: void(0)" (click)="getDetail(item, MODE.VIEW)">{{item.fullName}}</a></td>
+                        <td class="text-center">{{item.phoneNumber}}</td>
+                        <td class="text-center">{{item.identifyCode}}</td>
+                        <td class="text-center">{{ getRelation(item.relationshipType)}}</td>
+                        <td class="text-center">
+                            {{item.inEffect === null ? 'Đang nhập' : item.inEffect === true ? 'Hiệu lực' : item.inEffect === false ? 'Hết hiệu lực' : ''}}
+                        </td>
+                        <td style="text-align: center;font-size: 18px;" *ngIf="!data.isViewMode">
+                            <i class="fa fa-edit " aria-hidden="true" (click)="getDetail(item, MODE.EDIT)"></i>
+                            <ng-container> | </ng-container>
+                            <i class="fa fa-trash-o " aria-hidden="true" (click)="remove(i)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-12" style="margin-top: 10px;margin-bottom: 10px;">
+        <div class="sucss">
+            <button type="button" class="btn closePopup" (click)="closeDialog(0)" cdkFocusInitial>Đóng</button>
+        </div>
+    </div>
+</mat-dialog-content>

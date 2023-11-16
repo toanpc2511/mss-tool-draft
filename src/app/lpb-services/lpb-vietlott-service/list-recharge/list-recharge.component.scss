@@ -1,0 +1,25 @@
+@import "../shared/styles/styles.scss";
+.content {
+  .title {
+    color: #0C258A;
+    padding-left: 30px;
+    padding-top: 10px;
+    font-weight: 400;
+  }
+  .required:after {
+    content: ' *';
+    color: red;
+  }
+  label {
+    color: #0C258A;
+    font-weight: 500;
+  }
+  .bg-btn_blue {
+    background-color: #0C258A;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .text-while {
+    color: #fff;
+  }
+}

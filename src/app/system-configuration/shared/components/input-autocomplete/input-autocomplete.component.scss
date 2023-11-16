@@ -1,0 +1,60 @@
+.input-content {
+  position: relative;
+  .error {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: red;
+  }
+
+  .form-control {
+    margin-bottom: 0;
+    white-space: nowrap;
+    height: 36px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    &.border-error {
+      border-bottom: 3px solid #dc3545;
+    }
+  }
+  span {
+    &.placeholder {
+      position: absolute;
+      top: 8px;
+      left: 14px;
+      color: #495057;
+      opacity: 80%;
+      font-weight: 300;
+    }
+    &.not-show {
+      display: none;
+    }
+    &.show {
+      display: block;
+    }
+  }
+  .complete-data {
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background: #fff;
+    top: 2rem;
+    left: 0;
+    border: 1px solid #bdbdbd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 2px;
+    z-index: 10;
+    span {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      &:hover {
+        background-color: #f5faff;
+        cursor: pointer;
+      }
+    }
+  }
+}

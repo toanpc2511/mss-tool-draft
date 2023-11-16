@@ -1,0 +1,127 @@
+<div class="container-fuild">
+  <div class="account-owner-update">
+    <div class="account-owner-update-title">
+      <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">add</mat-icon>
+      <span>THÔNG TIN KHÁCH HÀNG</span>
+    </div>
+    <div class="account-owner-update-info">
+      <app-account-owner-info [processId]="processId"  (processDetail)="getDetail($event)"></app-account-owner-info>
+    </div>
+    <div class="account-owner-update-title">
+      <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">add</mat-icon>
+      <span>ĐỒNG CHỦ SỞ HỮU-CẬP NHẬP</span>
+    </div>
+    <div class="account-owner-update-info-customer"  [ngStyle]="{'pointer-events': isOnlyView  ? 'none' : 'auto' }">
+      <div class="col-info-left">
+        <app-account-owner-customer #customerInfo (dateOfBirthChange)="dateOfBirthValueChange($event)"
+          (nationiltyFisrtChange)="nationiltyFisrtValueChange($event)" [isOnlyView]="isOnlyView" [objCustomerInfo]="objCustomerInfo"
+          (mobileNoChange)="mobileNoValueChange($event)">
+        </app-account-owner-customer>
+      </div>
+      <div class="col-info-right"  [ngStyle]="{'pointer-events': isOnlyView  ? 'none' : 'auto' }">
+        <app-account-owner-verify-docs #verifyDos  [perDocNoListFromServe]="perDocsList" [inpDateOfBirth]="dateOfBirth"
+          [inpNationality]="nationlityFirst.code" [isExistCore]="isOnlyView" [provinceUser]="userInfo.cityName">
+        </app-account-owner-verify-docs>
+      </div>
+    </div>
+    <div class="account-owner-update-address"  [ngStyle]="{'pointer-events': isOnlyView  ? 'none' : 'auto' }">
+      <app-lpb-address #address [objCurrentAddress]="currentAddressObject" [objResidentAddress]="residentAddressObject">
+      </app-lpb-address>
+    </div>
+    <div class="account-owner-update-child-infor"  [ngStyle]="{'pointer-events': isOnlyView  ? 'none' : 'auto' }">
+      <div class="mis d-flex" [class.error-invalid]="errMsgMis !== ''" (click)="showMis()">
+        <div class="mis-left"> THÔNG TIN TRƯỜNG MIS <span class="error-invalid">(*)</span> </div>
+      </div>
+      <span class="error-block" *ngIf="errMsgMis !== ''">
+        {{errMsgMis}}
+      </span>
+      <app-lpb-modal headerText="THÔNG TIN TRƯỜNG MIS" [show]="isMis" [unit]="'%'" [widthContent]="80"
+        [heightContent]="75" (hideModal)="isMis = false">
+        <app-account-owner-mis *ngIf="isMis" [ObjMisOwner]="misObject" (objectMis)="getObjMis($event)"
+          (closeMis)="closeMis($event)">
+        </app-account-owner-mis>
+      </app-lpb-modal>
+      <div class="udf d-flex" [class.error-invalid]="errMsgUdf !== ''" (click)="showUdf()">
+        <div class="udf-left"> THÔNG TIN TRƯỜNG UDF <span class="error-invalid">(*)</span></div>
+      </div>
+      <span class="error-block" *ngIf="errMsgUdf !== ''">
+        {{errMsgUdf}}
+      </span>
+      <app-lpb-modal headerText="THÔNG TIN TRƯỜNG UDF" [show]="isUdf" [unit]="'%'" [widthContent]="80"
+        [heightContent]="75" (hideModal)="isUdf = false">
+        <app-account-owner-udf *ngIf="isUdf" (closeUdf)="closeUdf()" [inpMobileNo]="mobileNo" [objOwnerUdf]="udfObject"
+          (objectUdf)="getObjUdf($event)">
+        </app-account-owner-udf>
+      </app-lpb-modal>
+      <app-account-owner-fatca #fatca [inpNationality]="nationlityFirst.code" [fatcaObject]="fatcaObject"></app-account-owner-fatca>
+    </div>
+    <div class="account-owner-update-child-infor pt-1">
+      <span class="label-title">THỜI GIAN ĐỒNG SỞ HỮU HIỆN HỮU</span>
+    </div>
+    <div class="account-owner-update-info-customer pt-1">
+      <div class="col-info-left">
+        <div class="row-item-info">
+          <div class="label-field"> Từ ngày<span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <app-lpb-date-picker #fromDate (keyup)="dateInputChange($event.target.value, 'TU_NGAY')"
+                (dateChanged)="validFromDate()">
+              </app-lpb-date-picker>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-info-right">
+        <div class="row-item-info">
+          <div class="label-field"> Đến ngày</div>
+          <div class="value-field">
+            <div class="control-item">
+              <app-lpb-date-picker #toDate (keyup)="dateInputChange($event.target.value, 'DEN_NGAY')"
+                (dateChanged)="validToDate()">
+              </app-lpb-date-picker>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row footer-row">
+      <div class="col-12">
+        <div class="footer" *ngIf="isSendApprove" (click)="approveProcess('SEND_APPROVE')">
+          <span class="material-icons"> check </span>
+          <label>Gửi duyệt</label>
+        </div>
+        <div class="footer" *ngIf="isSave" (click)="approveProcess('SAVE')">
+          <span class="material-icons"> save </span>
+          <label>Lưu thông tin</label>
+        </div>
+        <div class="footer mr-1">
+          <span class="material-icons" (click)="backPage()"> keyboard_backspace </span>
+          <label>Quay lại</label>
+        </div>
+      </div>
+      <app-lpb-modal headerText="Xác nhận" [show]="isShowPopupApprove" [unit]="'%'" [widthContent]="50"
+        [heightContent]="50" (hideModal)="isShowPopupApprove = false">
+        <div class="account-owner-update-content">
+          <div class="mb-2">
+            Bạn có muốn gửi duyệt dịch vụ này không?
+          </div>
+          <div class="block-note">
+            <label>Ghi chú:&nbsp;&nbsp;</label>
+            <textarea class="form-control" [(ngModel)]="note" cols="80" rows="6"></textarea>
+          </div>
+          <div class="text-right mt-2">
+            <button class="btn-cancel" (click)="confimApproveProcess('CANCEL')">
+              Hủy
+            </button>
+            <button class="btn-save ml-2" (click)="confimApproveProcess('CONFIM')">
+              Đồng ý
+            </button>
+          </div>
+        </div>
+      </app-lpb-modal>
+    </div>
+    <div class="account-owner-update-child-infor">
+    </div>
+  </div>
+</div>

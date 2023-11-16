@@ -1,0 +1,59 @@
+<div class="container-fuild">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoadingCallApi"
+    class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="row cust-row" style="margin-left: 0px; margin-right: 0px;">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+      <div class="title-head" style="font-weight: 500;">
+        <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add_circle</mat-icon>
+        <span class="text" style="padding: 5px 0;">THÔNG TIN KHÁCH HÀNG</span>
+      </div>
+    </div>
+    <div class="col-12" style="padding-top: 25px; padding-bottom: 26px;">
+      <div class="col-6 colLeft">
+        <div class="row">
+          <label class="col-sm-5 col-form-label textLabel ">Mã khách hàng:
+          </label>
+          <div class="col-sm-7 txt">
+            <label *ngIf="processItem?.customer.customerCode === null">XXXXXX</label>
+            <label>{{processItem?.customer.customerCode}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label textLabel ">Ngày sinh:
+          </label>
+          <div class="col-sm-7 txt">
+            <label>{{processItem?.customer.person.dateOfBirth }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 colRight">
+        <div class="row">
+          <label class="col-sm-5 col-form-label textLabel ">Họ và tên:
+          </label>
+          <div class="col-sm-7 txt">
+            <label>{{processItem?.customer.person.fullName}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label textLabel ">Số giấy tờ xác minh:
+          </label>
+          <div class="col-sm-7 txt">
+            <label>{{processItem?.customer.person.perDocNoList[0]?.perDocNo}}</label>
+          </div>
+        </div>
+
+        <div class="row ">
+          <label class="col-sm-5 col-form-label textLabel">Tình trạng:
+          </label>
+          <div class="col-sm-7 txt">
+            <label>{{processItem?.customer.changeStatusName}}</label>
+            <ng-container>
+              <label>{{processItem?.customer.statusCifName || 'Khởi tạo'}}</label>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

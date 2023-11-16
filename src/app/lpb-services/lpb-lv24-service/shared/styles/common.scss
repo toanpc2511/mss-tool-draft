@@ -1,0 +1,69 @@
+.content-body {
+  background-color: white;
+  border-top: 1px solid #bdbdbd;
+  padding: 0 10px;
+  min-height: 100%;
+  height: auto;
+}
+.content-title {
+  color: #0c258a;
+  align-self: center;
+  font-size: 16px;
+  font-weight: 500;
+  place-self: flex-start;
+  height: fit-content;
+  padding-left: 1.5rem;
+  margin-top: 1rem;
+  span {
+    padding: 8px 0;
+    cursor: pointer;
+    &.active {
+      cursor: auto;
+      border-bottom: 2px solid #f47326;
+    }
+  }
+}
+
+input.ng-invalid.ng-touched,
+input.ng-invalid.ng-dirty {
+  border-color: #dc3545;
+}
+:host
+  ::ng-deep
+  app-lpb-select2.ng-invalid:not(.ng-pristine)
+  .ng-touched
+  .ng-select-container {
+  border-color: #dc3545;
+}
+
+textarea.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-dirty {
+  border-color: #dc3545;
+}
+
+.btn {
+  &:active {
+    opacity: 0.8;
+  }
+  border: none !important;
+  &:focus {
+    outline: none !important;
+    border: none !important;
+  }
+  box-sizing: border-box;
+  align-items: center;
+  &-blue {
+    color: #fff;
+    background-color: #0c258a;
+    border-color: #0c258a;
+    i {
+      color: #fff;
+    }
+  }
+}
+
+:host app-lpb-select2.ng-touched.ng-invalid {
+  ::ng-deep .ng-select-container {
+    border-color: #dc3545 !important;
+  }
+}

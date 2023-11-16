@@ -1,0 +1,47 @@
+$--color-high-light: #0C258A;
+$--color-high-light-darken: darken($color: #0c258a, $amount: 20%);
+.z-index-footer {
+  z-index: 1050;
+}
+.content-title {
+  color: #0c258a;
+  align-self: center;
+  font-size: 16px;
+  font-weight: 500;
+  place-self: flex-start;
+  margin-top: 8px;
+  height: fit-content;
+  display: block;
+  span {
+    padding: 8px 0;
+    cursor: pointer;
+    display: block;
+    &.active {
+      cursor: auto;
+      border-bottom: 2px solid #f47326;
+    }
+  }
+  i {
+    color: #0c258a;
+  }
+}
+
+hr {
+  border-color: #bdbdbd;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  &.h-1px {
+    border: 1px solid #bdbdbd;
+    display: block;
+  }
+}
+.lpb-btn-primary {
+  background-color: $--color-high-light !important;
+  color: white !important;
+
+  &:hover, &:focus {
+    background-color: $--color-high-light-darken !important;
+  }
+}
+

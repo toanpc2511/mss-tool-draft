@@ -1,0 +1,43 @@
+$color-title: #0c258a;
+$border-orange: #f47326;
+$bg-gray: #bdbdbd;
+$bg-blue: #0c258a;
+$bg-red: #eb5757;
+.gap-2 {
+  gap: 0.5rem;
+}
+.transaction-main {
+  background-color: white;
+  padding: 10px 4% 50px;
+  display: flex;
+  flex-direction: column;
+
+  .content-title {
+    padding-bottom: 8px;
+    span {
+      color: $color-title;
+      font-weight: 500;
+      font-size: 18px;
+    }
+  }
+  .card {
+    background-color: #fff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    padding: 10px 20px;
+    margin: 15px 0;
+    &.card-shadow {
+      background: #F1F3F6;
+    }
+
+    .card-title {
+      color: #0C258A;
+      font-weight: 500;
+      font-size: 18px;
+      align-self: normal;
+      border-bottom: none;
+    }
+  }
+}
+
+@import "/src/app/shared/styles/lpb-table.scss";
+@import "/src/app/shared/styles/custom-styles.scss";

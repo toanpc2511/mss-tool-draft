@@ -1,0 +1,18 @@
+.table tr th {
+  background: unset !important;
+}
+.table thead th {
+  background: #2F80ED !important;
+  color: white !important;
+  vertical-align: middle !important;
+}
+
+.table tbody th {
+  font-weight: 400 !important;
+  vertical-align: middle;
+}
+
+.table tbody td {
+  font-weight: 400 !important;
+  vertical-align: baseline;
+}

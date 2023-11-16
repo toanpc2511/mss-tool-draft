@@ -1,0 +1,49 @@
+<div class="sms-query-main">
+  <div class="content-title w-100">
+    TRUY VẤN THÔNG TIN NHẬN SMS - NOTI
+  </div>
+  <div class="search">
+    <div class="search-input">
+      <span>Account: </span>
+      <div class="input-group">
+        <input type="text" [(ngModel)]="txtSearch" placeholder="Nhập account tra cứu" class="form-control">
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary btn-search" type="button" style="background: #828282;"
+                  (click)="searchResult()">
+            <i class="fa fa-search" aria-hidden="true" style="color:#FFFFFF"></i>
+          </button>
+        </div>
+        <div class="invalid-feedback">
+          <div>Vui lòng nhập giá trị tìm kiếm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-title w-100">
+    KẾT QUẢ TÌM KIẾM
+  </div>
+  <div class="tbl-result">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>STT</th>
+        <th>Account</th>
+        <th>SMS VNPAY</th>
+        <th>Noti LV24H</th>
+        <th>SMS LV24H</th>
+        <th>Final Result</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of lstResult , index as i">
+        <th>{{i + 1}}</th>
+        <th>{{item ? item.ACCOUNT_NO : ''}}</th>
+        <th>{{item ? item.SMS_VNPAY : ''}}</th>
+        <th>{{item ? item.NOTI_LV24H : ''}}</th>
+        <th>{{item ? item.SMS_LV24H : ''}}</th>
+        <th>{{item ? item.FINAL_RESULT : ''}}</th>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

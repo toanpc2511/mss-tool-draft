@@ -1,0 +1,56 @@
+@import '/src/app/shared/styles/lpb-button';
+.lpb-upload-file-single {
+  input[type="file"] {
+    display: none;
+  }
+  .custom-file-upload {
+    width: 100%;
+    border: 1px solid #bdbdbd;
+    border-radius: 0.25rem;
+    display: inline-block;
+    padding: 2px 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  .file-name{
+    flex: 1;
+    padding-right: 30px;
+    text-overflow: ellipsis;
+  }
+  .btn-upload{
+    margin-right: 10px;
+    padding: 0.12rem 0.75rem !important;
+  }
+
+  .note-msg{
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  .err-msg {
+    font-size: 12px;
+    color: #e83c19;
+    margin-top: 10px;
+  }
+  .field-err {
+    border: 1px solid #e83c19;
+  }
+}
+
+.ng-clear-wrapper {
+  margin-right:  auto;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font: 400 20px Roboto, "Helvetica Neue", sans-serif;
+  letter-spacing: normal;
+  box-sizing: border-box;
+  color: #999;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  width: 17px;
+  &:hover {
+    color: #dc3545;
+  }
+}

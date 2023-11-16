@@ -1,0 +1,28 @@
+.form-group-container {
+  max-width: 729px;
+}
+.txtLabel {
+  font-weight: 500;
+  text-align: left;
+  color: #0c258a;
+  font-size: 16px;
+}
+.btn-blue {
+  color: #fff;
+  background-color: #0c258a;
+  border-color: #0c258a;
+  &:hover {
+    background-color: darken($color: #0c258a, $amount: 20%);
+    border-color: darken($color: #0c258a, $amount: 20%);
+  }
+  &:focus {
+    background-color: lighten($color: #0c258a, $amount: 20%);
+    border-color: lighten($color: #0c258a, $amount: 20%);
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .mt-lg-21px {
+    margin-top: 21px;
+  }
+}

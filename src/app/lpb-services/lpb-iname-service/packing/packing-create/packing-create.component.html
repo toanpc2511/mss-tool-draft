@@ -1,0 +1,97 @@
+<div class="d-flex flex-column mb-5">
+  <div class="form-search d-flex flex-column">
+    <div class="content-title pr-2 mt-3">
+      <i class="fa fa-search mr-2 txtLabel"></i> THÔNG TIN CHUNG
+    </div>
+    <hr/>
+    <div class="container mt-3">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Mã gói <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.code)"
+                       placeholder="Nhập mã gói" type="text" formControlName="code" appNoSpaceString>
+                <app-validate [control]="registerForm.code" error="required"
+                              message="Mã gói không được bỏ trống"></app-validate>
+                <app-validate [control]="registerForm.code" error="maxlength"
+                              message="Không được vượt quá 20 kí tự"></app-validate>
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Tên gói <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.name)"
+                       placeholder="Nhập tên gói" type="text" formControlName="name">
+                <app-validate [control]="registerForm.name" error="required"
+                              message="Tên gói không được bỏ trống"></app-validate>
+                <app-validate [control]="registerForm.name" error="maxlength"
+                              message="Không được vượt quá 100 kí tự"></app-validate>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Đơn giá (VAT Include) <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.unitCost)"
+                       placeholder="Nhập Đơn giá" type="text" formControlName="unitCost" decimal-mask>
+                <app-validate [control]="registerForm.unitCost" error="required"
+                              message="Đơn giá không được bỏ trống"></app-validate>
+                <app-validate [control]="registerForm.unitCost" error="maxlength"
+                              message="Đơn giá không được nhập lớn hơn 12 chữ số"></app-validate>
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">VAT% <span
+                class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <input class="form-control"
+                       [ngClass]="FormHelpers.isValidClass(registerForm.vatRate)"
+                       placeholder="Nhập VAT" type="number" formControlName="vatRate" >
+                <app-validate [control]="registerForm.vatRate" error="required"
+                              message="VAT không được bỏ trống"></app-validate>
+                <app-validate [control]="registerForm.vatRate" error="min"
+                              message="VAT phải lớn hơn 0"></app-validate>
+                <app-validate [control]="registerForm.vatRate" error="max"
+                              message="VAT không được vượt quá 100"></app-validate>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Rule <span class="text-danger">(*)</span></span>
+              <div class="col-8">
+                <app-lpb-select2  apiUrl="/iname-service/common?groupType=Rule_Type"
+                                 labelName="name" bindValue="id" [config]="{isNewApi: true}"
+                                 formControlName="rules"
+                                 [className]="FormHelpers.isValidClass(registerForm.rules)"
+                                 [multiple]="true"
+                                 placeholder="Chọn Rule"></app-lpb-select2>
+                <app-validate [control]="registerForm.rules" error="required"
+                              message="Rule không được bỏ trống"></app-validate>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<app-lpb-footer style="bottom: 0px" [actions]="actions"
+                class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

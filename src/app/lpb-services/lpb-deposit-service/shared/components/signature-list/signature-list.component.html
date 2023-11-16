@@ -1,0 +1,55 @@
+<ng-template #infoRow let-info="info" let-index="index">
+  <td>{{index+1}}</td>
+  <td class="text-left">{{info.sigName}}</td>
+  <td class="text-left">{{info.sigTitle}}</td>
+  <td>{{info.effectiveDate}}</td>
+  <td>
+    <div *ngIf="info?.mimeType && info?.fileContent">
+      <div *ngIf="info.isImage; then sign_light_box else sign_dowload">
+      </div>
+    </div>
+
+    <ng-template #sign_light_box>
+      <lpb-lightbox [height]="80" [src]="info.fileUrl" [alt]="'signature'"></lpb-lightbox>
+    </ng-template>
+    <ng-template #sign_dowload>
+      <div class="download-container" (click)="downloadFile(info.fileContent, info.mimeType, info.sigName)">
+        <i class="fa fa-cloud-download fa-lg" aria-hidden="true"></i>
+        <a href="#" (click)="$event.preventDefault()">{{info.sigName}}</a>
+      </div>
+    </ng-template>
+  </td>
+</ng-template>
+
+<div class="fetch-spinner-container" *ngIf="showSpinner">
+  <mat-spinner mode="indeterminate" color="accent"></mat-spinner>
+</div>
+
+<table class="table table-hover" aria-describedby="Chu Ki">
+  <thead>
+    <tr>
+      <th style="width: 5%">STT</th>
+      <th style="width: 15%">Họ và tên</th>
+      <th style="width: 35%">Tên tài liệu</th>
+      <th style="width: 10%">Ngày hiệu lực</th>
+      <th style="width: 25%">Chữ ký</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let info of lstSign; let i = index">
+      <ng-container
+        *ngTemplateOutlet="infoRow; context: {info: info, index: i}">
+      </ng-container>
+    </tr>
+    <tr *ngFor="let info of lstCoOwenSign; let i = index">
+      <ng-container
+        *ngTemplateOutlet="infoRow; context: {info: info, index: lstSign?.length + i}">
+      </ng-container>
+    </tr>
+    <tr>
+      <td colspan="5" class="text py-4 text-center align-middle" *ngIf="lstSign?.length + lstCoOwenSign?.length <= 0">
+        Không tìm thấy dữ liệu
+      </td>
+    </tr>
+  </tbody>
+</table>

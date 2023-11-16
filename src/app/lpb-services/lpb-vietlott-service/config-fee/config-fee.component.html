@@ -1,0 +1,71 @@
+<div class="p-4">
+  <div class="px-5">
+    <form [formGroup]="formConfig" >
+      <div class="row">
+        <div class="col">
+          <div>
+            <span class="text-high-light fw-bolder" style="font-size: 30px; color: #0C258A" >Quản lý phí thu hộ Vietlott</span>
+            <span class="fw-bolder" style="font-size: 15px;color: red"> (Áp dụng cho kênh giao dịch LV24)</span>
+          </div>
+          <div class="p-4"></div>
+          <div>
+              <span class="text-high-light fw-bolder" style="font-size: 20px;color: #0C258A">Với giao dịch do hội sở quản lý tài khoản:</span>
+          </div>
+          <div class="p-2"></div>
+          <div class="form-group row">
+            <div class="col col-5">
+              <div class="form-group row">
+                <span class="col-3 col-form-label textLabel">Hội Sở:</span>
+                <span class="col-4">
+                  <input decimal-mask type="text" style="text-align: center; pointer-events: none" formControlName="hoQlFeeHo" class="form-control w-100"
+                         placeholder="" trimInput>
+                    </span>
+                <span class="col-4" style="padding-top: 16px; color: #6c757d">Đơn vị: VND/GD</span>
+              </div>
+            </div>
+            <div class="col col-5">
+              <div class="form-group row">
+                <span class="col-3 col-form-label textLabel">DVKD:</span>
+                <span class="col-4">
+                  <input type="text" style="text-align: center; pointer-events: none" formControlName="HoQlFeeDvkd" class="form-control w-100"
+                         placeholder="" trimInput>
+                    </span>
+                <span class="col-4" style="padding-top: 16px; color: #6c757d">Đơn vị: VND/GD</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-2"></div>
+          <div>
+            <span class="text-high-light fw-bolder" style="font-size: 20px;color: #0C258A">Với giao dịch do DVKD quản lý tài khoản:</span>
+          </div>
+          <div class="p-2"></div>
+          <div class="form-group row">
+            <div class="col col-5">
+              <div class="form-group row">
+                <span class="col-3 col-form-label textLabel">Hội Sở:</span>
+                <span class="col-4">
+                  <input type="text" style="text-align: center; pointer-events: none" formControlName="dvkdQlFeeHo" class="form-control w-100"
+                         placeholder="" trimInput>
+                    </span>
+                <span class="col-4" style="padding-top: 16px; color: #6c757d">Đơn vị: VND/GD</span>
+              </div>
+            </div>
+            <div class="col col-5">
+              <div class="form-group row">
+                <span class="col-3 col-form-label textLabel">DVKD:</span>
+                <span class="col-4">
+                  <input type="text" style="text-align: center; pointer-events: none" formControlName="dvkdQlFeeDvkd" class="form-control w-100"
+                         placeholder="" trimInput>
+                    </span>
+                <span class="col-4" style="padding-top: 16px; color: #6c757d">Đơn vị: VND/GD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3">
+        <button class="btn lpb-btn-primary" (click)="ConfigFee()"> <i class=""></i>Chỉnh sửa</button>
+      </div>
+    </form>
+  </div>
+</div>

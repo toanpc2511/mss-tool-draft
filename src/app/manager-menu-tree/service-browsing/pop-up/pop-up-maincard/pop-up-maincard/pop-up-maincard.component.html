@@ -1,0 +1,151 @@
+<div class="abc">
+    <div class="mat-typography scroll-dialog" *ngIf="card">
+        <div class="col-12 form-card">
+            <div class="col-6 colLeft">
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Số hợp đồng: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.contractNumber}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Loại thẻ: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.cardTypeName}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Mã thẻ: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.cardProductCode}}-{{card.cardProductName}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Hạng thẻ: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.cardRateName}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Tài khoản mặc định:</label>
+                    <div class="col-sm-7 txt">
+                        <ng-container *ngIf="card.account == null ">
+                            Không có tài khoản mặc định
+                        </ng-container>
+                        <ng-container *ngIf="card.account != null ">
+                            <label>{{card.account.accountNumber}}</label>
+                            <label *ngIf="card.account.accountNumber==null">Tài khoản mới - {{card.account.accountIndex}}</label>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Số dư tài khoản:</label>
+                    <div class="col-sm-7 txt">
+                        <ng-container *ngIf="card.account == null ">
+                            Không có tài khoản mặc định
+                        </ng-container>
+                        <ng-container *ngIf="card.account != null ">
+                            <label>{{card.account.currentBalance}}</label>
+                            <label *ngIf="card.account.currentBalance=== null">Không có giá trị</label>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Lãi suất: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.interestRate}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Tài khoản liên kết thẻ: </label>
+                    <div class="col-sm-7 txt">
+                        <div *ngFor="let c of card.accountLinkList">
+                            <ng-container *ngIf="c.account==null">
+                                Không có thông tin tài khoản liên kết
+                            </ng-container>
+                            <ng-container *ngIf="c.account!=null">
+                                <label>{{c.account.accountNumber}}</label>
+                                <label *ngIf="c.account.accountNumber=== null">Tài khoản mới - {{c.account.accountIndex}}</label>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Diễn giải: </label>
+                    <div class="col-sm-7 txt">
+                        <p> <label> {{card.explain}} </label></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 colRight">
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Tên dập nổi trên thẻ:  
+                        </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.cardHolderName}} </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Hình thức phát hành: 
+                        </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.deliveryTypeName}}</label>
+                    </div>
+                </div>
+                <div class="row" *ngIf="deliveryTypeCode=='TRAO_NGAY'">
+                    <label class="col-sm-5 col-form-label textLabel"> Số thẻ: 
+                        </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.cardNumber}}</label>
+                    </div>
+                </div>
+                <div class="row" *ngIf="deliveryTypeCode=='DEFAULT'">
+                    <label class="col-sm-5 col-form-label textLabel"> Địa chỉ nhận thẻ:
+                        </label>
+                    <div class="col-sm-7 txt" *ngIf="deliveryChanelCode=='TAI_CHI_NHANH'">
+                        <label>{{card.deliveryBranch.code}} -- {{card.deliveryBranch.address}} </label>
+                    </div>
+                    <div class="col-sm-7 txt" *ngIf="deliveryChanelCode=='GUI_NHAN'">
+                        <label>{{card.deliveryAddress}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Tổng phí + VAT: 
+                        </label>
+                    <div class="col-sm-7 txt">
+                        <label *ngIf="card.feeAmount===null">Không có giá trị</label>
+                        <label *ngIf="card.feeAmount!==null">{{card.feeAmount | number }} VNĐ</label>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Ngày phát hành: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.issueDate |date:"dd-MM-yyyy"}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Ngày hết hạn: </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.expirationDate|date:"dd-MM-yyyy"}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Mã nhân viên: 
+                        </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.employeeId}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel"> Mã người giới thiệu:
+                        </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{card.referrerCode}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

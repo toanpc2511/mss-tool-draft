@@ -1,0 +1,165 @@
+.col {
+  background: #A4A4A4;
+  padding: 0px;
+  margin-right: 5px;
+}
+
+.col-light {
+  padding: 0px;
+  border: 1px solid #c8ced3;
+  background-color: transparent;
+}
+
+.title-group {
+  padding: 7px;
+  font-weight: 500;
+  width: 100%;
+  margin-bottom: 0px;
+  border-bottom: 1px solid #DBDBDB;
+  background: #FFFFFF;
+}
+
+span.material-icons.ng-star-inserted {
+  font-size: 21px;
+}
+
+.spanCursor {
+  cursor: pointer;
+  display: block;
+}
+
+ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.row {
+  margin: 0px;
+  margin-top: 0px;
+}
+
+.td-rd {
+  border-style: none solid solid none;
+  border: 1px red;
+}
+
+.col-2 {
+  padding: 0px;
+  background: #DBDBDB;
+}
+
+ul li {
+  line-height: 35px;
+}
+
+tr {
+  color: black;
+}
+
+table {
+  margin-bottom: 0px;
+}
+
+.form-control {
+  font-size: unset;
+}
+
+i {
+  cursor: pointer;
+}
+
+.col-6 {
+  padding-right: 0px;
+  padding-left: 8px;
+}
+
+.mb-3 {
+  margin-bottom: 0px !important;
+}
+
+.c {
+  margin: 0px;
+}
+
+.table td {
+  padding: .5em;
+}
+
+table td input {
+  height: unset;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+
+.form-row {
+  width: 100%;
+  margin-left: 0px;
+}
+
+.at {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90px;
+  margin: 0px;
+  display: block;
+}
+
+.width-table {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0px;
+  display: block;
+}
+
+.title-p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 315px;
+  margin: 0px;
+  display: block;
+}
+
+li.active>a {
+  background-color: #384961 !important;
+  color: white;
+}
+
+.hoverTr:hover {
+  cursor: pointer;
+  background: #E8E8E8;
+}
+
+.hovertd:hover a {
+  text-decoration: none;
+}
+
+.title-note {
+  padding: 0.5em !important;
+}
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.focusLi {
+  border: 10px none #F47326;
+  border-left-style: solid;
+  background-color: #faebd7;
+}
+
+.colorA {
+  color: blue !important;
+}
+
+.returnColor {
+  color: black;
+}

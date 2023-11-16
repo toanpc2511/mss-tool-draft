@@ -1,0 +1,52 @@
+<div class="px-4 py-2 overflow-y">
+  <div class="text-high-light text-uppercase fw-bolder"> <i class="fa fa-search"></i> Tra cứu thông tin khách
+    hàng
+  </div>
+  <hr>
+  <div class="pl-2">
+    <form [formGroup]="formSearch" (ngSubmit)="search()" class="d-flex">
+      <div class="col-4 px-4">
+        <label class="text-high-light fw-bolder required label">Nhà cung cấp</label>
+        <div>
+          <app-lpb-select2 [apiUrl]="'/water-service/supplier/active'" labelName="supplierName"
+                           bindValue="supplierCode" formControlName="supplierCode" placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+          <div *ngIf="invalid(formSearch.controls.supplierCode)" class="text-danger">Chưa chọn nhà cung cấp
+          </div>
+        </div>
+      </div>
+      <div class="col-4 px-4">
+        <label  class="text-high-light fw-bolder required label">Mã khách hàng</label>
+        <div>
+          <input type="text" required formControlName="customerId" (change)="infoSearchChange()"
+                 class="form-control" placeholder="Nhập mã khách hàng">
+          <div *ngIf="invalid(formSearch.controls.customerId)" class="text-danger">Chưa nhập mã
+            khách hàng</div>
+        </div>
+      </div>
+      <div class="col-4 px-4">
+        <label></label>
+        <div>
+          <button class="btn lpb-btn-primary" [disabled]="isLoading"> <i class="fa fa-search"></i>
+            <span> Tìm kiếm</span>
+          </button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <div>
+    <div class="mt-5 clearfix fw-bolder"><i class="fa fa-credit-card-alt text-high-light mr-2"></i> <span
+      class="text-high-light text-uppercase">Danh sách hóa đơn</span>
+<!--      <span class="float-right color-payment-type"> Quy tắc thanh toán: {{paymentRuleName}} </span>-->
+    </div>
+    <hr>
+    <app-lpb-datatable  [dataSource]="dataSource" [columns]="columns" [config]="config"></app-lpb-datatable>
+    <div class="mt-5">
+      <div class="text-high-light text-uppercase fw-bolder"> <i
+        class="fa fa-credit-card-alt text-high-light mr-2"></i>Thông tin thanh toán
+      </div>
+      <hr>
+
+    </div>
+  </div>
+</div>

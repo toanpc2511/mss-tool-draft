@@ -1,0 +1,23 @@
+.footer-row {
+  padding: 0px;
+  background: #23388f;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  left: 0px;
+  margin: 0px;
+  z-index: 10;
+}
+
+.footer {
+  padding: 6px;
+
+  &._disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  &:hover {
+    background-color: #0e1d58;
+  }
+}

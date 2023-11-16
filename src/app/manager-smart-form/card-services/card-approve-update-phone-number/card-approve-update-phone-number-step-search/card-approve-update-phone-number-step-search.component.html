@@ -1,0 +1,99 @@
+<div class="card-approve-update-phone-search">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title">
+    TRA CỨU YÊU CẦU CHỜ DUYỆT
+  </div>
+  <div class="form-search container-fluid" [formGroup]="formSearch">
+    <div class="row">
+      <div class="col-md-6 mb-2 field-item">
+        <span>CIF:</span>
+        <input type="text" class="form-control" formControlName="customerCode">
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Số GTXM:</span>
+        <input type="text" class="form-control" formControlName="uidValue">
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Từ ngày:</span>
+        <app-lpb-date-picker [maxDate]="currentDate" #dpFromDate></app-lpb-date-picker>
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Đến ngày:</span>
+        <app-lpb-date-picker [maxDate]="currentDate" #dpToDate></app-lpb-date-picker>
+      </div>
+      <div class="col-md-6 mb-2 field-item">
+        <span>Người tạo:</span>
+        <select class="form-control form-control-sm" formControlName="inputUser" name="inputUser">
+          <option value="">Tất cả</option>
+          <option *ngFor="let user of lstInputUser" value="{{user.userName}}"> {{user.fullName}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-action">
+      <button class="btn btn-primary" type="button" (click)="searchRecord()">Tìm kiếm
+        <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+  <div class="content-title">
+    DANH SÁCH YÊU CẦU CHỜ DUYỆT
+  </div>
+  <div class="tbl-result">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th style="width: 5%">STT</th>
+        <th style="width: 15%">Số CIF</th>
+        <th style="width: 20%">Tên KH</th>
+        <th style="width: 20%">Số GTXM</th>
+        <th style="width: 20%">Số điện thoại mới</th>
+        <th style="width: 20%">Thao tác</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of lstSearchResults , index as i">
+        <th style="width: 5%">{{i + 1}}</th>
+        <th style="width: 15%">{{item.customerCode}}</th>
+        <th style="width: 20%">{{item.fullName}}</th>
+        <th style="width: 20%">{{item.uidValue}}</th>
+        <th style="width: 20%">{{item.mobilePhone}}</th>
+        <th style="width: 20%">
+          <button type="button" class="btn btn-accept mr-2" data-toggle="tooltip" (click)="evtBtnActionClick(item, ACTION.ACCEPT)"
+                  data-placement="left">
+            Duyệt
+            <i class="fa fa-check ic-in-primary ml-1" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn-denied" data-toggle="tooltip" (click)="evtBtnActionClick(item, ACTION.DENIED)"
+                  data-placement="left">
+            Từ chối
+            <i class="fa fa-times ic-in-primary ml-1" aria-hidden="true"></i>
+          </button>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+    <div class="empty-data" *ngIf="lstSearchResults.length === 0">Chưa có bản ghi tồn tại</div>
+  </div>
+  <app-lpb-pagination [pagination]="pagination"
+                      (evtChangePageSize)="changePageSize($event)"
+                      (evtSetPage)="setPage($event)">
+  </app-lpb-pagination>
+</div>
+
+<app-lpb-modal [headerText]="modalHeader" [show]="isShowModal" [widthContent]="40" [heightContent]="requestType === ACTION.DENIED ? 35: 30"
+               marginTop="200px"
+               (hideModal)="hideModal()">
+  <div class="modal-confirm">
+    <div class="modal-confirm-content">{{modalContent}}<span class="txt-name">{{selectedRecord ? selectedRecord.fullName : ''}}</span></div>
+    <div class="modal-confirm-reject-reason" *ngIf="requestType === ACTION.DENIED">
+      <textarea [(ngModel)]="txtReason" [class.err-field]="errTextReason !== ''" placeholder="Nhập lý do từ chối" class="form-control w-100" maxlength="200" rows="2"></textarea>
+      <div class="text-left err-text">{{errTextReason}}</div>
+    </div>
+    <div class="modal-confirm-action">
+      <button type="button" class="btn btn-accept mr-2" data-toggle="tooltip" data-placement="left" (click)="evtBtnConfirmClick(ACTION.CONFIRM_YES)">Đồng ý</button>
+      <button type="button" class="btn btn-denied" data-toggle="tooltip" data-placement="left" (click)="evtBtnConfirmClick(ACTION.CANCEL)">Hủy bỏ</button>
+    </div>
+  </div>
+</app-lpb-modal>

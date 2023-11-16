@@ -1,0 +1,48 @@
+<div class="content">
+  <h2 class="title">TRA CỨU THÔNG TIN</h2>
+  <div class="pl-2">
+    <form [formGroup]="forms" (ngSubmit)="search()">
+      <div class="d-flex">
+        <div class="col-4 px-4">
+          <label class="text-high-light fw-bolder required">Mã bảng kê</label>
+          <input
+            type="text"
+            formControlName="billCode"
+            placeholder="Nhập mã bảng kê"
+            class="form-control mt-1"
+          />
+          <app-validate
+            [control]="forms.get('billCode')"
+            error="required"
+            message="Chưa nhập mã bảng kê"
+          ></app-validate>
+        </div>
+        <div class="mt-4">
+          <button
+            mat-raised-button
+            class="bg-btn_blue text-while"
+          >
+            <i class="fa fa-search mr-2" style="color: #fff"></i>
+            Tìm kiếm
+          </button>
+        </div>
+      </div>
+      <div *ngIf="dataBills" class="border border-1 p-4 border-radius-panel">
+        <app-lpb-datatable
+          [config]="configs"
+          [columns]="$any(columnBills)"
+          tableName="THÔNG TIN BẢNG KÊ"
+          [dataSource]="dataBills"
+        ></app-lpb-datatable>
+      </div>
+      <div *ngIf="dataBillSearch" class="border border-1 p-4 border-radius-panel">
+        <div class="" style="color: #0C258A">
+          <i class="fa fa-credit-card-alt text-high-light mr-2"></i>
+          <span>THÔNG TIN GIAO DỊCH</span>
+        </div>
+        <app-transaction-info #transactionInfo [type]="''" [rule]="'GDV'"></app-transaction-info>
+      </div>
+    </form>
+  </div>
+</div>
+<app-lpb-footer [actions]="dataBillSearch?actions:[]" class="z-index-footer position-fixed bottom-0 w-100" ></app-lpb-footer>

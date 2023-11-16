@@ -1,0 +1,82 @@
+<div class="p-4">
+    <div class="text-lpb fw-bolder">Upload File danh sách khách hàng</div>
+    <div class="text-high-light h5 mt-4">Tải lên tập tin</div>
+    <form [formGroup]="formUpload" (ngSubmit)="upload()">
+        <div class="d-flex">
+            <div class="col-4">
+                <label for="" class="text-high-light fw-bolder required">Nhà cung cấp</label>
+                <div>
+                    <app-lpb-select2 [apiUrl]="'/water-service/supplier/offline'" labelName="supplierName"
+                        bindValue="supplierCode" formControlName="supplierCode"
+                        placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+                </div>
+                <app-validate [control]="formUpload.get('supplierCode')" error="required"
+                    message="Bạn chưa chọn nhà cung cấp  "></app-validate>
+            </div>
+            <div class="col-4">
+                <label class="text-high-light fw-bolder required">Tải lên hóa đơn</label>
+                <lpb-custom-upload-file accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    (onChange)="onFileSelect($event)" (onClearSelected)="onClearSelected($event)" [maxSize]="10"
+                    formControlName="file"></lpb-custom-upload-file>
+                <app-validate [control]="formUpload.get('file')" error="required"
+                    message="Bạn chưa chọn file upload  "></app-validate>
+            </div>
+            <div class="col-4">
+                <label for=""></label>
+                <div>Tải tập tin mẫu <a type="button" class="text-high-light fw-bolder"
+                        (click)="downloadTemplateFile()">tại đây</a> </div>
+            </div>
+        </div>
+        <div class="d-flex mt-2">
+            <div class="col-8">
+                <label for="" class="text-high-light fw-bolder required">Nội dung</label>
+                <input type="text" class="form-control" formControlName="desc" placeholder="Nhập nội dung upload" maxlength="255">
+                <app-validate [control]="formUpload.get('desc')" error="required"
+                    message="Bạn chưa nhập nội dung upload  "></app-validate>
+            </div>
+            <div class="col-4">
+                <label for=""></label>
+                <div>
+                    <button class="btn lpb-btn-primary">Upload</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="text-high-light fw-bolder mt-5">
+        Danh sách
+    </div>
+    <div class="border border-radius-panel p-2 bg-info-customer mt-2">
+        <div class="d-flex justify-content-between">
+            <div class="d-flex ">
+                <div>
+                    <span>Tổng số</span>
+                    <span class="ml-2 fw-bolder"> {{dataSource.length}} bản ghi</span>
+                </div>
+                <div class="ml-5">
+                    <i class="fa fa-circle text-success"></i>
+                    <span class="ml-2">Số bản ghi không lỗi</span>
+                    <span class="ml-2 fw-bolder"> {{rowsSuccess}} </span>
+                </div>
+                <div class="ml-5">
+                    <i class="fa fa-circle text-danger"></i>
+                    <span class="ml-2">Số bản ghi lỗi</span>
+                    <span class="ml-2 fw-bolder"> {{rowsError}} </span>
+                </div>
+            </div>
+            <div class="text-high-light fw-bolder" type="button" (click)="downloadErrorBills()">
+                Tải xuống tệp tin kiểm tra lỗi
+            </div>
+
+        </div>
+        <div *ngIf="false" class="text-danger fw-bolder mt-2">
+            Tập tin đính kèm bị lỗi. Vui lòng kiểm tra và upload lại để tiếp tục.
+        </div>
+    </div>
+    <div>
+        <app-lpb-datatable [dataSource]="dataSource" [columns]="columns" [config]="config"></app-lpb-datatable>
+    </div>
+</div>
+<div [style.height.px]="50">
+    <app-lpb-footer [actions]="actions" class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>
+</div>

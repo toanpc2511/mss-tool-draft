@@ -1,0 +1,2 @@
+<input type="text" class="form-control" [formControl]="control" [textPattern]="{allowRegex: '[0-9]'}"
+      maxlength="20" (blur)="blurChangeAcn($event)" (input)="inputChangeAcn($event)"/>

@@ -1,0 +1,46 @@
+import { Customer } from '../register.cif';
+import { GuardianList } from '../deputy';
+import { Legal } from './legal/Legal';
+import { ProcessItemCustomer } from './ProcessItemCustomer';
+import { createdByUser } from './createdByUser/createdByUser';
+import { Branch } from './Branch';
+
+export class ProcessItem {
+  id: string;
+  customer: ProcessItemCustomer = new ProcessItemCustomer();
+  guardianList: GuardianList[] = [];
+  legalList: Legal[] = [];
+  createdByUser: createdByUser;
+  branch: Branch;
+  code: string;
+  branchCode: string;
+  branchName: string;
+  lastNode: string;
+  statusCode: string;
+  statusName: string;
+  inputDate: string;
+  inputBy: string;
+  inputByUserName: string;
+  inputByFullName: string;
+  inputByUserCore: string;
+  approveDate: string;
+  approveBy: string;
+  approveByUserName: string;
+  approveByFullName: string;
+  approveByUserCore: string;
+  createdDate: string;
+  createdBy: string;
+  createdByUserName: string;
+  createdByFullName: string;
+  createdByUserCore: string;
+  modifiedDate: string;
+  modifiedBy: string;
+  modifiedByUserName: string;
+  modifiedByFullName: string;
+  modifiedByUserCore: string;
+  rowNum: string;
+  jointStartDate: string;
+  jointEndDate: string;
+  customerCode?: string;
+  statusCifName: string;
+}

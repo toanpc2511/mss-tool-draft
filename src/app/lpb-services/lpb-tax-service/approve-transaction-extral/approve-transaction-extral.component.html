@@ -1,0 +1,115 @@
+<div class="lpb-main">
+  <div class="content-title w-100 text-uppercase d-flex justify-content-between">
+    <div class="d-flex align-items-center">
+      <i class="fa fa-search mr-2"></i>
+      <span>Tra cứu thông tin thanh toán thuế</span>
+    </div>
+  </div>
+
+  <div class="search px-4 mt-4">
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+      <div class="row">
+
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <label class="required">Ngày giao dịch</label>
+          <app-lpb-datepicker-new
+            formControlName="createdDate"
+            [maxDate]="today"
+          ></app-lpb-datepicker-new>
+          <app-validate
+            [control]="searchControls.createdDate"
+            error="required"
+            message="Ngày giao dịch không được bỏ trống"
+          ></app-validate>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <label class="required">Trạng thái gửi TCT</label>
+          <app-lpb-select2
+            [items]="tctStatus"
+            labelName="label" bindValue="value"
+            placeholder="Chọn trạng thái gửi TCT"
+            formControlName="tctStatus">
+          </app-lpb-select2>
+          <app-validate
+            [control]="searchControls.tctStatus"
+            error="required"
+            message="Chưa chọn trạng thái TCT"
+          ></app-validate>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <label class="required">Trạng thái gửi KBNN</label>
+          <app-lpb-select2
+            [items]="kbnnStatus"
+            labelName="label" bindValue="value"
+            placeholder="Chọn trạng thái gửi KBNN"
+            formControlName="kbnnStatus">
+          </app-lpb-select2>
+          <app-validate
+            [control]="searchControls.kbnnStatus"
+            error="required"
+            message="Chưa chọn trạng thái KBNN"
+          ></app-validate>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <label>Mã hồ sơ/ Số quyết định/ Số giao dịch</label>
+          <input type="text" formControlName="keySearch" placeholder="Nhập số quyết định" class="form-control" trimInput/>
+        </div>
+      </div>
+      <div class="w-full d-flex justify-content-center gap-2">
+        <button mat-raised-button type="submit" class="btn_blue">
+          <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+          Tìm kiếm
+        </button>
+        <button mat-raised-button (click)="resetForm()" class=" ml-2" style="color: #0c258a">
+          <i class="fa fa-rotate-left mr-2" style="color: #0c258a"></i>
+          Nhập lại
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="mt-4">
+    <div
+      class="content-title w-100  d-flex justify-content-between"
+    >
+      <div class="d-flex align-items-center text-uppercase">
+        <span>Kết quả tìm kiếm</span>
+      </div>
+
+      <div class="">
+        <app-lpb-select2
+          [config]="{'clearable':false}"
+          [items]="receivingObjects"
+          labelName="label" bindValue="value"
+          placeholder="Chọn trạng thái gửi TCT"
+          [formControl]="receivingObjectControl"
+          class="d-inline-block mr-3 w-250-px"
+        >
+        </app-lpb-select2>
+        <button type="button" (click)="onSend()" [disabled]="isDisableSend" class="btn lpb-btn-primary mr-3">
+          <i class="fa fa-send text-white"></i>
+          Gửi
+        </button>
+        <button type="button" (click)="onSend(true)" [disabled]="isDisableSend" class="btn lpb-btn-primary mr-3">
+          <i class="fa fa-send text-white"></i>
+          Gửi tất cả
+        </button>
+      </div>
+    </div>
+    <app-lpb-datatable
+      [config]="config"
+      [apiServiceURL]="apiServiceURL"
+      (viewAction)='viewDetail($event)'
+      [columns]="columns"
+      [searchConditions]="searchConditions"
+      (getRowSelected)="getRowSelected($event)"
+      (chkAll)="getRowSelected($event)"
+      [clearSelected]="clearSelected"
+      (getRawData)="getRawData($event)"
+    ></app-lpb-datatable>
+  </div>
+</div>
+
+<app-lpb-footer class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

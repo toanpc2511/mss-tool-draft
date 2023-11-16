@@ -1,0 +1,22 @@
+@import "/src/app/shared/styles/palette.style.scss";
+
+:host .mat-button.mat-primary,
+.mat-stroked-button.mat-primary {
+  @include button-primary;
+}
+.mat-button.mat-primary:hover,
+.mat-stroked-button.mat-primary:hover {
+  color: #f0fff3;
+  background-color: $primary-light;
+}
+
+:host .mat-raised-button.mat-primary,
+.mat-flat-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+  @include button-primary;
+}
+
+:host .mat-icon-button.mat-primary {
+  color: $primary-main;
+}

@@ -1,0 +1,13 @@
+<div class="input-group mb-3">
+    <!--  <label >{{isInvalid}}</label>-->
+    <input matInput DateOnly (dateChange)="change($event)" [matDatepicker]="dp" [formControl]="date" (input)="onInputChange($event)" [ngClass]="{'is-invalid': isInvalid && this.date.touched}" type="text" class="form-control is-invalid" placeholder="dd/mm/yyyy"
+        maxlength="10">
+    <div class="input-group-append">
+        <mat-datepicker-toggle class="input-group-text" id="basic-addon2" matSuffix [for]="dp">
+        </mat-datepicker-toggle>
+    </div>
+    <div class="invalid-feedback">
+        <div>{{message}}</div>
+    </div>
+    <mat-datepicker #dp></mat-datepicker>
+</div>

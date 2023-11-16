@@ -1,0 +1,40 @@
+<div class="fetch-spinner-container" *ngIf="showSpinner">
+  <mat-spinner mode="indeterminate" color="accent"></mat-spinner>
+</div>
+
+<table class="table table-hover" aria-describedby="GTXM">
+  <thead>
+    <tr>
+      <th style="width: 5%">STT</th>
+      <th style="width: 40%">Tên tài liệu</th>
+      <th style="width: 55%">GTXM</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let profile of lstIDCerts; let i = index">
+      <td>{{i+1}}</td>
+      <td class="text-left">{{profile.docTitle}}</td>
+      <td class="text-left">
+        <div *ngIf="profile?.mimeType && profile?.fileContent">
+          <div *ngIf="profile.isImage; then gtxm_light_box else gtxm_dowload">
+          </div>
+        </div>
+        <ng-template #gtxm_light_box>
+          <lpb-lightbox [height]="80" [src]="profile.fileUrl" [alt]="'gtxm'"></lpb-lightbox>
+        </ng-template>
+        <ng-template #gtxm_dowload>
+          <div class="download-container"
+            (click)="downloadFile(profile.fileContent, profile.mimeType, profile.docName)">
+            <i class="fa fa-cloud-download fa-lg" aria-hidden="true"></i>
+            <a href="#" (click)="$event.preventDefault()">{{profile.docName}}</a>
+          </div>
+        </ng-template>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" class="text py-4 text-center align-middle" *ngIf="lstIDCerts?.length <= 0">
+        Không tìm thấy dữ liệu
+      </td>
+    </tr>
+  </tbody>
+</table>

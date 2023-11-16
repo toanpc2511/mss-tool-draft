@@ -1,0 +1,17 @@
+$--color-lpb: #f47326;
+$--text-color-lpb: white;
+$--color-test: red;
+$--color-high-light: #0c258a;
+$--color-high-light-darken: darken($color: #0c258a, $amount: 20%);
+$--min-width-dropdown: 400px;
+$--color-border: #bdbdbd;
+$--color-text-white: #ffffff;
+$--color-text-black: #000000;
+$--color-focus: #40a9ff;
+.lpb-btn-primary {
+  background-color: $--color-high-light !important;
+  color: white !important;
+  &:hover, &:focus {
+    background-color: $--color-high-light-darken !important;
+  }
+}

@@ -1,0 +1,42 @@
+<div class="abc">
+  <h2 mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;">
+    Thêm mới chức năng
+  </h2>
+  <mat-dialog-content class="mat-typography scroll-dialog">
+    <div class="col-12" style="padding-top: 10px;">
+      <form [formGroup]="functionForm">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Mã chức năng<span style="color: red;">*</span></label>
+            <div class="input-group" >
+              <input  NumberAndTextLatin  maxlength="50" formControlName="code" type="text" class="form-control" name="code"
+                      [ngClass]="{ 'is-invalid': (f.code.dirty || f.code.touched) && f.code.errors }" >
+              <div *ngIf="f.code.invalid && (f.code.dirty || f.code.touched)" class="invalid-feedback">
+                <div *ngIf="f.code.errors.required ">Mã chức năng không được để trống</div>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Tên chức năng<span style="color: red;">*</span></label>
+            <input maxlength="50" formControlName="name"
+                   [ngClass]="{ 'is-invalid': ((f.name.dirty || f.name.touched) && f.name.errors)}" type="text" class="form-control" name="name" >
+            <div *ngIf="f.name.invalid && (f.name.dirty || f.name.touched)" class="invalid-feedback">
+              <div *ngIf="f.name.errors.required ">Tên chức năng không được để trống</div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="float-right" style="height: 57px;
+      margin-top: 9px;">
+      <button type="button" class="btn newfile btn-color" (click)="onSave(1)" cdkFocusInitial>Lưu thông
+        tin</button>
+      <button type="button" class="btn closePopup" (click)="closeDialog(0)">Đóng</button>
+    </div>
+  </mat-dialog-actions>
+</div>

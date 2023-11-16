@@ -1,0 +1,92 @@
+@import "/src/app/shared/styles/palette.style.scss";
+
+.content-title {
+  color: $primary-main;
+  align-self: center;
+  font-size: 16px;
+  font-weight: 500;
+  place-self: flex-start;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  height: fit-content;
+  span {
+    padding: 8px 0;
+    cursor: pointer;
+    &.active {
+      cursor: auto;
+      border-bottom: 2px solid $secondary-main;
+    }
+  }
+}
+
+
+.h-38 {
+  display: block;
+  min-height: 38px;
+}
+
+.form-radio-inline {
+  column-gap: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  &-group {
+    column-gap: 15px;
+    width: fit-content;
+    row-gap: 10px;
+    flex-wrap: wrap;
+  }
+  .form-control {
+    height: 15px;
+    transform: translateY(-2px);
+  }
+  input {
+    cursor: pointer;
+  }
+}
+
+input.ng-invalid.ng-touched,
+input.ng-invalid.ng-dirty {
+  border-color: $error-main;
+}
+
+.input-error{
+  border-color: $error-main;
+}
+
+textarea.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-dirty{
+  border-color: $error-main;
+}
+
+:host app-lpb-select2.ng-invalid {
+  ::ng-deep .ng-touched .ng-select-container {
+    border-color: $error-main !important;
+  }
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+  text-transform: none;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  text-transform: none;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  text-transform: none;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+  text-transform: none;
+}
+::placeholder { /* Recent browsers */
+  text-transform: none;
+}
+
+:host ::ng-deep {
+  .ng-invalid.ng-touched,
+  .ng-invalid.ng-dirty,
+  ng-select.ng-invalid.ng-touched .ng-select-container,
+  app-lpb-select2.ng-touched.ng-invalid .ng-select-container,
+  app-lpb-datepicker-new.ng-touched.ng-invalid .txtMainInput,
+  app-lpb-datepicker-new.ng-invalid:not(.ng-pristine) .txtMainInput {
+    border-color: $error-main !important;
+  }
+}

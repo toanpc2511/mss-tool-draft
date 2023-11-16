@@ -1,0 +1,44 @@
+<app-card-services-form [formGroup]="formCustomerInfo" [title]="'CHẤM DỨT SỬ DỤNG THẺ'" [isShowLoading]="isShowLoading"
+                        [formType]="'SEND_APPROVE'" (eventBackStep)="backToSearch($event)" (eventOpenModal)="openModal()">
+
+  <div class="field">
+    <span class="txtLabel">Card Status:</span>
+    <input type="text" formControlName="cardStatusCode" class="form-control">
+  </div>
+  <div class="field">
+    <span class="txtLabel">File đính kèm:</span>
+    <app-card-service-extend-file-input [maxSize]="2097152" [validType]="['pdf','png','doc','docx']" #uploadFile
+                                        [isRequire]="false"
+                                        (changeFile)="changeSelectedFile($event)"></app-card-service-extend-file-input>
+  </div>
+  <div class="row-fields mb-2">
+    <span class="node">Ghi chú <span class="text-danger">(*)</span> :</span>
+    <textarea type="text" formControlName="sendNote" maxlength="1000" class="form-control"></textarea>
+    <div class="err-text mt-1 text-left p-0" *ngIf="hasErrorInput('sendNote', 'required')">Ghi chú không
+      được bỏ trống
+    </div>
+    <div class="err-text mt-1" *ngIf="hasErrorInput('reason', 'maxlength')">Ghi chú không được vượt quá 1000 ký tự</div>
+  </div>
+</app-card-services-form>
+
+<!-- Modal confirm -->
+<app-lpb-modal headerText="Xác nhận gửi duyệt Chấm dứt sử dụng thẻ" [show]="showModal" (hideModal)="showModal = false"
+               [widthContent]="50" [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt">
+      Bạn có chắc muốn gửi duyệt dịch vụ Chấm dứt sử dụng thẻ
+    </div>
+    <div class="mb-2 confirm-txt" *ngIf="cardSelected?.cardNumber">
+      Số thẻ: {{cardSelected?.cardNumber}}
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-denied mr-2" (click)="this.showModal = false">
+        Hủy bỏ
+      </button>
+      <button class="btn btn-accept" (click)="cardTermination()">
+        Đồng ý
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>
+<!-- Modal confirm -->

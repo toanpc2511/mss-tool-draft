@@ -1,0 +1,108 @@
+<div class="container-fuild">
+    <div class="row cust-row">
+        <div class="col-12 line-base">
+            <app-process-info [processId]="processId"></app-process-info>
+        </div>
+        <div class="row cust-row">
+            <div class="col-12 line-base">
+                <div class="title-head">
+                    <mat-icon>account_balance_wallet</mat-icon>
+                    <span class="text">DANH MỤC ĐĂNG KÝ</span>
+                </div>
+            </div>
+            <div>
+                {{createSmsForm.value |json}}
+            </div>
+            <div class="table-responsive mb-5">
+                <table class="table table-bordered">
+                    <tr>
+                        <th class="text-center" rowspan="3" class="account-no">Account No</th>
+                        <th colspan="2" rowspan="3" class="regis-fee">
+                            <div class="row">
+                                <div class="col-6">
+                                    Register
+                                </div>
+                                <div class="col-6">
+                                    Fee Charge
+                                </div>
+                            </div>
+                        </th>
+                        <th colspan="3" *ngFor="let col of arrayTable">
+                            <div class="row">
+                                <div class="col-10">
+                                    {{col.name}}
+                                </div>
+                                <div class="col-2">
+                                    <span class="material-icons delete-action">delete</span>
+                                </div>
+                            </div>
+                        </th>
+                        <tr>
+                            <th colspan="3" *ngFor="let input of arrayTable"><input type="text"></th>
+                        </tr>
+                        <tr>
+                            <ng-container *ngFor="let  a of arrayTable">
+                                <th><label for="">Default</label></th>
+                                <th><label for="">Service</label></th>
+                                <th><label for="">Notify</label></th>
+                            </ng-container>
+                        </tr>
+                        <tr *ngFor="let account of lstAccount;index as i ">
+                            <td class="text-center">
+                                {{account.accountNumber}}
+                                <ng-container *ngIf="account.accountNumber == null">
+                                    Tài Khoản mới {{account.accountIndex}}
+                                </ng-container>
+                            </td>
+                            <td colspan="2">
+                                <div class="row">
+                                    <div class="col-6"><input type="checkbox"></div>
+                                    <div class="col-6"><input type="checkbox"></div>
+                                </div>
+                            </td>
+                            <ng-container *ngFor="let checkboxGroup of arrayTable">
+                                <td><input type="checkbox" class="checkbox" checked></td>
+                                <td><input type="checkbox" class="checkbox"></td>
+                                <td><input type="checkbox" class="checkbox"></td>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-right">Chi nhánh đăng ký thông báo <br>Chi nhánh đăng ký dịch vụ
+                            </td>
+                            <ng-container *ngFor="let  a of arrayTable">
+                                <td colspan="3">CN Hà Nội <br> CN Bắc Ninh</td>
+                            </ng-container>
+
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" class="text-right">Sử dụng dịch vụ SMS Banking</td>
+                            <ng-container *ngFor="let  a of arrayTable">
+                                <td colspan="3"><select name="" id="" class="form-control form-control-sm" *ngFor="let sp of smsPackage">
+                                    <option [value]="sp.code">{{sp.name}}</option>
+                                </select></td>
+                            </ng-container>
+
+                        </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row footer-row">
+            <div class="col-12">
+
+                <div class="footer">
+                    <span class="material-icons"> add </span>
+                    <label class="btn-action">Lưu</label>
+                </div>
+                <div class="footer">
+                    <span class="material-icons"> add </span>
+                    <label class="btn-action">View</label>
+                </div>
+                <div class="footer" (click)="backPage()">
+                    <span class="material-icons"> keyboard_backspace </span>
+                    <label class="btn-action">Quay lại</label>
+                </div>
+            </div>
+        </div>
+
+    </div>

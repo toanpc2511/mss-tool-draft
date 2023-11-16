@@ -1,0 +1,69 @@
+$color-title: #0c258a;
+$border-orange: #f47326;
+$bg-gray: #bdbdbd;
+$bg-blue: #0c258a;
+
+:host ::ng-deep .footer-row {
+  position: fixed !important;
+}
+.supplier {
+  background-color: white;
+  padding: 8px 1%;
+  display: flex;
+  flex-direction: column;
+  .content-title {
+    margin: 12px 0 8px 0;
+    span {
+      color: $color-title;
+      font-weight: 600;
+      font-size: 18px;
+    }
+  }
+  .supplier-card {
+    padding: 12px 24px;
+    margin-bottom: 15px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+
+    .title {
+      color: $color-title;
+      font-weight: 500;
+      font-size: 16px;
+      &.title-small {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.form-radio-inline {
+  column-gap: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  &-group {
+    column-gap: 50px;
+    width: fit-content;
+  }
+  .form-control {
+    height: 15px;
+    transform: translateY(-2px);
+  }
+  input {
+    cursor: pointer;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.required {
+  position: relative;
+  &::after {
+    content: "*";
+    position: absolute;
+    top: -2px;
+    right: -8px;
+    color: red;
+  }
+}
+@import "/src/app/shared/styles/custom-styles.scss";

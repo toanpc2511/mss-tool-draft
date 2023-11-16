@@ -1,0 +1,262 @@
+<div class="supplier">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between"
+  >
+  </div>
+
+  <form [formGroup]="universityForm">
+    <div class="supplier-card">
+      <p class="title">Thông tin chung</p>
+      <div class="row">
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Mã nhà trường</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập mã trường"
+            formControlName="uniCode"
+            [maxLength]="20"
+            trimInput
+          />
+          <app-validate
+            [control]="universityForm.get('uniCode')"
+            error="required"
+            message="Nhập thiếu mã nhà trường"
+          ></app-validate>
+
+          <app-validate
+            [control]="universityForm.get('uniCode')"
+            [error]="'isExist'"
+            [message]="'Mã nhà trường đã tồn tại!'"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Tên nhà trường</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập tên nhà trường"
+            formControlName="uniName"
+            [maxLength]="100"
+            trimInput
+          />
+          <app-validate
+            [control]="universityForm.get('uniName')"
+            error="required"
+            message="Nhập thiếu tên nhà trường"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label>Service ID</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập serviceID"
+            formControlName="serviceId"
+            [maxLength]="100"
+            trimInput
+          />
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Số CIF</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nhập số CIF"
+              formControlName="numCif"
+              [maxLength]="8"
+              [textPattern]="{allowRegex: '[0-9]'}"
+              (change)="handleChangeNumberCif()"
+              (keydown.enter)="searchAccNumberSpecial()"
+              (keydown.space)="$event.preventDefault()"
+              trimInput
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                (click)="searchAccNumberSpecial()"
+                type="button"
+                style="background: #0c258a"
+              >
+                <i
+                  class="fa fa-search"
+                  aria-hidden="true"
+                  style="color: #ffffff"
+                ></i>
+              </button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="universityForm.get('numCif')"
+            error="required"
+            message="Nhập thiếu số CIF"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Số TK chuyên thu</label>
+          <app-lpb-select2
+            [items]="listAccount"
+            labelName="accountNumber"
+            formControlName="accNo"
+            placeholder="Nhập số TK chuyên thu"
+          ></app-lpb-select2>
+          <p>{{accInfo}}</p>
+          <app-validate
+            [control]="universityForm.get('accNo')"
+            error="required"
+            message="Nhập thiếu số TK chuyên thu"
+          ></app-validate>
+        </div>
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Số TK VAT</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập số TK VAT"
+            formControlName="accVat"
+            [maxLength]="100"
+            [textPattern]="{allowRegex: '[0-9]'}"
+            trimInput
+          />
+          <app-validate
+            [control]="universityForm.get('accVat')"
+            error="required"
+            message="Nhập thiếu số TK VAT"
+          ></app-validate>
+        </div>
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Số TK thu phí dịch vụ</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập số TK thu phí dịch vụ"
+            formControlName="accFee"
+            [maxLength]="100"
+            [textPattern]="{allowRegex: '[0-9]'}"
+            trimInput
+          />
+          <app-validate
+            [control]="universityForm.get('accFee')"
+            error="required"
+            message="Nhập thiếu số TK thu phí dịch vụ"
+          ></app-validate>
+        </div>
+
+        <div class="mb-2 col-12 col-md-6 col-lg-4">
+          <label class="required">Trạng thái</label>
+          <app-lpb-select2
+            [items]="statusUni"
+            labelName="name"
+            bindValue="type"
+            formControlName="status"
+            placeholder="Chọn trạng thái"
+          ></app-lpb-select2>
+          <app-validate
+            [control]="universityForm.get('status')"
+            error="required"
+            message="Chọn trạng thái"
+          ></app-validate>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form [formGroup]="universityForm">
+    <div class="supplier-card">
+      <p class="title">Quy tắc thanh toán</p>
+      <div class="row">
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Hình thức thanh toán</label>
+          <app-lpb-select2
+            [items]="listTypeConnect"
+            labelName="name"
+            bindValue="code"
+            formControlName="typeConnect"
+            placeholder="Nhập hình thức thanh toán"
+          ></app-lpb-select2>
+          <app-validate
+            [control]="universityForm.get('typeConnect')"
+            error="required"
+            message="Nhập thiếu hình thức thanh toán"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Loại kỳ thanh toán</label>
+          <app-lpb-select2
+            [items]="listTypeSemesterPay"
+            labelName="name"
+            bindValue="code"
+            formControlName="typeSemesterPay"
+            placeholder="Chọn loại kỳ thanh toán"
+          ></app-lpb-select2>
+          <app-validate
+            [control]="universityForm.get('typeSemesterPay')"
+            error="required"
+            message="Nhập thiếu loại kỳ thanh toán"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Loại hình thanh toán</label>
+          <app-lpb-select2
+            [items]="listTypePayment"
+            labelName="name"
+            bindValue="code"
+            formControlName="typePayment"
+            placeholder="Chọn loại hình thanh toán"
+          ></app-lpb-select2>
+          <app-validate
+            [control]="universityForm.get('typePayment')"
+            error="required"
+            message="Nhập thiếu loại hình thanh toán"
+          ></app-validate>
+        </div>
+      </div>
+    </div>
+    <div class="supplier-card">
+      <p class="title">Nội dung thanh toán</p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+          <label class="required">Tiền tố</label>
+          <app-input-autocomplete-custom
+            [listItem]="prefixs"
+            formControlName="prefix"
+            maxlength="200"
+            class="w-100"
+            placeholder="Nhập tiền tố"
+          ></app-input-autocomplete-custom>
+          <app-validate
+            [control]="universityForm.get('prefix')"
+            [error]="'required'"
+            [message]="'Chưa nhập tiền tố'"
+          ></app-validate>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <label class="required">Chi tiết kỳ</label>
+          <app-input-autocomplete-custom
+            formControlName="periodDetail"
+            [listItem]="periodDetails"
+            maxlength="200"
+            class="w-100"
+            placeholder="Nhập chi tiết kỳ"
+          ></app-input-autocomplete-custom>
+          <app-validate
+            [control]="universityForm.get('periodDetail')"
+            [error]="'required'"
+            [message]="'Chưa nhập chi tiết kỳ'"
+          ></app-validate>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<app-lpb-footer [actions]="actions" class="z-index-footer position-fixed bottom-0 w-100" ></app-lpb-footer>

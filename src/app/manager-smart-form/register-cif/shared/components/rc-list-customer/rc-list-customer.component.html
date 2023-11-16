@@ -1,0 +1,27 @@
+<div class="rc-guardian-cif-content">
+  <div class="table content-table">
+    <table>
+      <thead>
+        <tr>
+          <td>Tên khách hàng</td>
+          <td>Ngày cấp GTXM</td>
+          <td>Nơi cấp GTXM</td>
+          <td>Chi nhánh</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of customers;let i = index" [ngClass]="i % 2 == 0 ? 'table-info' : 'table-secondary'">
+          <td>{{item.fullName}} {{i}}</td>
+          <td>{{item.identifyDate }}</td>
+          <td>{{item.identifyAddress}}</td>
+          <td>{{item.branch}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <div class="btn-action">
+        <button class="btn-close">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="transaction-main">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between"
+  >
+    <div class="d-flex align-items-center">
+      <!--      <i class="fa fa-search mr-2"></i>-->
+      <span>Thông tin import giao dịch</span>
+    </div>
+    <span class="text-danger font-weight-bold"></span>
+  </div>
+
+  <div class="search px-4 mt-2">
+    <div class="row">
+
+      <div class="col-12 pb-3 px-5">
+        <span class="required">Tải tệp tin</span>
+        <input
+          type="file"
+          hidden
+          class="form-control"
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          (change)="onSelectedFile($event)"
+          #inputFile
+        />
+        <div class="form-drag-file" draggable="true">
+          <p class="py-1 font-weight-bold"><i class="fa fa-file-excel-o mr-2" style="color: #0C258A"
+                                              *ngIf="fileName"></i> {{ fileName }}</p>
+
+          <div class="action-drag">
+            <p class="mt-2">Kéo thả để tải lên</p>
+            <p class="mt-2">Hoặc</p>
+
+            <button
+              mat-raised-button
+              (click)="inputFile.click()"
+              class="d-inline-block bg-btn__blue text-while"
+            >
+              <i class="fa fa-file-excel-o mr-2" style="color: #fff"></i>
+              Chọn tệp tin
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-right font-weight-bold">
+          <li>Danh sách quốc gia có nhiều mã quốc gia: <span
+            class="text-danger font-weight-bold">AE-UE, CHN-TWN, KH-KHM</span>. Hãy chú ý file import
+          </li>
+        </div>
+      </div>
+
+      <!--      <div class="row text-right small">-->
+      <!--          <ul class="list-group">-->
+      <!--            <li class="list-group-item">AE-UE</li>-->
+      <!--            <li class="list-group-item">CHN-TWN</li>-->
+      <!--            <li class="list-group-item">KH-KHM</li>-->
+      <!--          </ul>-->
+      <!--      </div>-->
+    </div>
+
+  </div>
+  <div class="mt-5">
+    <ng-template #info_cross_checking>
+      <div class="px-4 pt-3 bg mt-2 temp" style="background:#F1F3F6;">
+        <div class="py-1 d-flex justify-content-between">
+          <div class="temp-content">
+            <p>Tổng số: <strong>{{dataSource.length}}</strong> bản ghi</p>
+            <p><span class="record success"></span>Số bản ghi hợp lệ: <strong>{{totalValid}}</strong></p>
+            <p><span class="record bg-warning"></span>Số bản ghi không hợp lệ: <strong>{{totalInvalid}}</strong></p>
+          </div>
+<!--          <p class="" [ngClass]="dataSource.length > 0 ? 'text-down' : 'text-down-disable'" (click)="downloadFileError()"><i class="fa fa-download mr-2" aria-hidden="true"></i>Tải xuống tệp tin kiểm tra lỗi</p>-->
+        </div>
+<!--        <p *ngIf="totalRecordError > 0" class="text-message pb-2">{{ message }}</p>-->
+      </div>
+    </ng-template>
+    <app-lpb-datatable
+      [templateOther]="info_cross_checking"
+      [config]="datatableConfig"
+      [columns]="$any(columns)"
+      [dataSource]="dataSource"
+      tableName="Danh sách giao dịch"
+    ></app-lpb-datatable>
+  </div>
+</div>
+
+
+<div [style.height.px]="50">
+  <app-lpb-footer
+    [actions]="actions"
+  ></app-lpb-footer>
+</div>
+

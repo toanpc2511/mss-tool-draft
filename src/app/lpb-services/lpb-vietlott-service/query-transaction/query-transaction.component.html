@@ -1,0 +1,115 @@
+<div class="content">
+  <h3 class="title">THÔNG TIN TÌM KIẾM</h3>
+  <div class="pl-2">
+    <form [formGroup]="forms">
+      <div class="d-flex">
+        <div class="col-4 px-4">
+          <label class="text-high-light fw-bolder required">Mã điểm bán hàng</label>
+          <div class="position-relative input-group">
+            <app-lpb-select2
+              [items]="listType"
+              labelName="label"
+              bindValue="value"
+              formControlName="agentType"
+              [config]="{'clearable':false}"
+              class="w-25">
+            </app-lpb-select2>
+            <div class="input-group-append w-75">
+              <input
+                type="text"
+                formControlName="agentCode"
+                placeholder="Nhập mã đại lý"
+                class="form-control"
+                [textPattern]="{allowRegex: '[0-9]'}"
+                trimInput
+              />
+            </div>
+          </div>
+          <app-validate
+            [control]="forms.get('agentCode')"
+            error="required"
+            message="Chưa nhập mã đại lý"
+          ></app-validate>
+        </div>
+        <div class="col-4 px-4">
+          <label class="required">Kênh giao dịch</label>
+          <app-lpb-select2
+            [items]="listChanel"
+            labelName="label"
+            bindValue="value"
+            formControlName="chanel"
+            placeholder="Kênh giao dịch"
+            [config]="{'clearable':false}">
+          </app-lpb-select2>
+          <app-validate
+            [control]="forms.get('chanel')"
+            error="required"
+            message="Chưa chọn kênh"
+          ></app-validate>
+        </div>
+        <div class="col-4 px-4">
+          <label>Mã giao dịch</label>
+          <input
+            type="text"
+            formControlName="codeTrans"
+            placeholder="Nhập mã giao dịch"
+            class="form-control"
+            trimInput
+          />
+        </div>
+      </div>
+      <br/>
+      <div class="d-flex">
+      </div>
+      <div class="mt-4 text-center">
+        <button class="btn lpb-btn-primary"
+                (click)="search()">
+          <i class="fa fa-search"></i>
+           Tìm kiếm
+        </button>
+      </div>
+      <div *ngIf="searched" class="border border-1 p-4 border-radius-panel">
+        <div class="mb-3" style="color: #0C258A">
+          <i class="fa fa-credit-card-alt text-high-light mr-2"></i>
+          <span>KẾT QUẢ TRUY VẤN</span>
+        </div>
+          <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+              <label class="pb-2">Trạng thái</label>
+              <input
+                type="text"
+                formControlName="status"
+                placeholder="Trạng thái"
+                class="form-control"
+                readonly
+              />
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+              <label class="pb-2">Số tiền</label>
+              <input
+                type="text"
+                formControlName="amount"
+                placeholder="Số tiền"
+                class="form-control"
+                readonly
+              />
+            </div>
+
+
+            <div class="col-12 col-md-6 col-lg-4">
+              <label class="pb-2">Ngày thực hiện</label>
+              <input
+                type="text"
+                formControlName="dateTrans"
+                placeholder="Ngày thực hiện"
+                class="form-control"
+                readonly
+              />
+            </div>
+          </div>
+      </div>
+    </form>
+  </div>
+</div>
+

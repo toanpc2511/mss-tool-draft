@@ -1,0 +1,71 @@
+<div class="body">
+  <app-progress-spinner color="primary" mode="indeterminate" [value]="value" *ngIf="isLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+
+  <span class="content-title">BÁO CÁO TRẠNG THÁI GIAO DỊCH THẺ</span>
+
+  <div class="container-fluid layouts-content">
+
+
+    <form [formGroup]="reportCardTransaction">
+      <div class="content-field row">
+        <div class="col-md-6 field">
+          <label class="textLabel">Từ ngày<span class="compulsory-field"> (*)</span></label>
+          <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="dateFromChanged()"
+                               (dateChanged)="getFromDate()"></app-lpb-date-picker>
+        </div>
+        <div class="col-md-6 field">
+          <label class="textLabel">Đến ngày<span class="compulsory-field"> (*)</span></label>
+          <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="dateToChanged()"
+                               (dateChanged)="getToDate()"></app-lpb-date-picker>
+        </div>
+
+        <div class="col-md-6 field">
+          <label class="textLabel">Loại giao dịch</label>
+          <ng-select formControlName="ebsActionCode" [clearable]="false" [searchable]="false">
+            <ng-option *ngFor="let item of lstTypeTransactionSearch" [value]="item.code">{{item.name}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6 field">
+          <label class="textLabel">Chi Nhánh</label>
+          <ng-select formControlName="branchCode" placeholder=" Chọn chi nhánh ">
+            <ng-option *ngFor="let branch of branchesData" [value]="branch.code">{{branch.branchCodeName}}</ng-option>
+          </ng-select>
+        </div>
+
+        <div class="col-md-6 field">
+          <label class="textLabel">CIF</label>
+          <input class="form-control" type="text" placeholder=" Mã CIF " numbersOnly formControlName="customerCode">
+        </div>
+
+        <div class="col-md-6 field">
+          <label class="textLabel">CardID</label>
+          <input class="form-control" type="text" placeholder=" CardID " numbersOnly formControlName="cardId">
+        </div>
+
+        <div class="col-md-6 field">
+          <label class="textLabel">Mã Thẻ</label>
+          <ng-select formControlName="cardProductCode" placeholder="Chọn mã sản phẩm thẻ: ">
+            <ng-option *ngFor="let item of lstCardProduct" [value]="item.code">{{item.name}}</ng-option>
+          </ng-select>
+        </div>
+
+        <div class="col-md-6 field">
+          <label class="textLabel">Định dạng</label>
+          <ng-select formControlName="formatReport" [clearable]="false" [searchable]="false">
+            <ng-option value="EXCEL">Excel</ng-option>
+            <ng-option value="PDF">Pdf</ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="col-12 text-center">
+        <button mat-raised-button type="button" class="btn mt-3 btn-ap"  (click)="downloadFile()">
+          Xuất báo cáo
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+

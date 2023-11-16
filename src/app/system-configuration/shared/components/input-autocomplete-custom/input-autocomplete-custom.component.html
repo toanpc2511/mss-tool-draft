@@ -1,0 +1,12 @@
+<div class="w-100 position-relative">
+<!--    <input #input type="text" (keyup)="onKeyup($event)" (blur)="blurInput()" [disabled]="isDisabled" [attr.maxlength]="maxlength"-->
+<!--        class="form-control">-->
+
+  <input #input type="text" (keyup)="onKeyup($event)" (blur)="blurInput()" [disabled]="isDisabled" autocomplete="off" class="form-control" [maxLength]="maxlength"
+         trimInput [placeholder]="placeholder" />
+    <div *ngIf="showList" #select class="dropdown-panel-custom border" [style.maxHeight.px]="scrollHeight">
+        <div *ngFor="let item of listItemShow" (click)="selectedItem(item)" class="item p-2">
+            <span>{{item[fieldLabel]}}</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,265 @@
+<div class="container-fuild">
+    <div class="row cust-row">
+        <div class="col-12" style="border-bottom: 1px solid #c8ced3;padding: 0px;">
+            <div class="p-2 title-head" style="font-weight: 500;">
+                <span>THÔNG TIN HỒ SƠ</span>
+            </div>
+        </div>
+        <div class="col-12 information-section">
+            <div class="col-6 colLeft">
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Mã hồ sơ</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{(processItem) ? processItem.code : ''}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Người tạo</label>
+                    <div class="col-sm-7 txt">{{(processItem && processItem.createdByUser) ? processItem.createdByUser.userName : ''}}</div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Tải hồ sơ đã ký</label>
+                    <div class="col-sm-7 txt">
+                        <label>*</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 colRight">
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Trạng thái
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label style="color: #23388F; cursor: pointer">{{processItem.statusName}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Ngày tạo
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{processItem.createdDate | date: 'dd/MM/yyyy'}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Xác nhận bằng chữ ký số
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>*</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label textLabel">Chi nhánh
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>{{(processItem && processItem.branch) ? processItem.branch.code : ''}} - {{(processItem && processItem.branch) ? processItem.branch.name : ''}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row cust-row">
+        <div class="col-12 title-head" style="border-bottom: 1px solid #c8ced3;padding: 0px;">
+            <div class="p-2" style="font-weight: 500;">
+                <span>DANH SÁCH DỊCH VỤ ĐĂNG KÝ</span>
+            </div>
+        </div>
+        <div class="  mat-elevation-z8 ">
+            <table class="table table-responsive table-fixed" style="margin: 0px;">
+                <thead>
+                    <tr class="titleTD">
+                        <th style="width: 70px;">STT</th>
+                        <th>Tên dịch vụ</th>
+                        <th>Kết quả</th>
+                        <th>Trạng thái</th>
+                        <th>Ghi chú gửi duyệt</th>
+                        <th>Ghi chú phê duyệt</th>
+                        <th style="width: 245px;">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of serviceLst; index as i">
+                        <td style="width: 70px; text-align: center">{{i + 1}}</td>
+                        <td>
+                            <a href="javascript:void(0)" *ngIf="(SERVICE_NAME.OPEN_CIF === item.typeCode || SERVICE_NAME.UPDATE_CIF === item.typeCode)" (click)="showDetailCustomer(item.processId)">{{item.title}}</a>
+                            <a href="javascript:void(0)" *ngIf="SERVICE_NAME.EBANKING === item.typeCode" (click)="showDetailEbanking(item.dwItemId)">{{item.title}}</a>
+                            <a href="javascript:void(0)" *ngIf="SERVICE_NAME.ACCOUNT === item.typeCode" (click)="showDetailAccount(item.dwItemId)">{{item.title}}</a>
+                            <a href="javascript:void(0)" *ngIf="SERVICE_NAME.SUPCARD === item.typeCode" (click)="showDetaiSubCard(item.dwItemId)">{{item.title}}</a>
+                            <a href="javascript:void(0)" *ngIf="SERVICE_NAME.CARD === item.typeCode" (click)="showDetailCustomer(item.processId)">{{item.title}}</a>
+                            <a href="javascript:void(0)" *ngIf="SERVICE_NAME.GUARDIAN === item.typeCode" (click)="showDetailCustomer(item.processId)">{{item.title}}</a>
+                            <a href="javascript:void(0)" *ngIf="SERVICE_NAME.LEGAL === item.typeCode" (click)="showDetailCustomer(item.processId)">{{item.title}}</a>
+                            <a href="javascript:void(0)" *ngIf="SERVICE_NAME.CRF === item.typeCode" (click)="showDetailCustomer(item.processId)">{{item.title}}</a>
+                            <a href="javascript:void(0)" *ngIf="SERVICE_NAME.COB === item.typeCode" (click)="showDetailCustomer(item.processId)">{{item.title}}</a>
+                            <a href="javascript:void(0)" *ngIf="SERVICE_NAME.PCO === item.typeCode" (click)="showDetailCoOwner(item.dwItemId)">{{item.title}}</a>
+                            <a href="javascript:void(0)" *ngIf="SERVICE_NAME.ACU === item.typeCode" (click)="showDetailAccount(item.dwItemId)">{{item.title}}</a>
+                        </td>
+                        <td>{{item.msgBody}}
+                            <ng-container *ngIf="item.statusCode === 'F'">{{item.msgBody}} ({{item.msgId}})
+                            </ng-container>
+                        </td>
+                        <td>
+                            <div>
+                                <!-- <span>{{item.statusName}}</span> -->
+                                <ng-container *ngIf="item.statusCode === 'S'">
+                                    <span class="success-approve"> {{item.statusName}}</span>
+                                </ng-container>
+                                <ng-container *ngIf="item.statusCode !== 'S' && item.statusCode !== 'F'">
+                                    <span> {{item.statusName}}</span>
+                                </ng-container>
+                                <ng-container *ngIf="item.statusCode === 'F'">
+                                    <span class="text-danger"> {{item.statusName}}</span>
+                                </ng-container>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngFor="let i of item.note" >
+                                <div *ngIf="i.statusCode === 'W'">
+                                {{i.userName}}: {{i.note}}
+                            </div>
+                            </ng-container>
+                            <!-- {{item.note[i].createdDate}}: {{item.note[i].note}} -->
+                        </td>
+                        <td>
+                            <ng-container *ngFor="let i of item.note" >
+                                <div *ngIf="i.statusCode === 'R' || i.statusCode === 'M'">
+                                {{i.userName}}: {{i.note}}
+                            </div>
+                            </ng-container>
+                        </td>
+                        <td style="width: 245px;">
+                            <div class="row m-0">
+                                <div class="col-6 p-0">
+                                    <a class="btn btn-action d-flex" href="javascript:void(0)" *ngIf="((isGDV === true && isKSV === true) || (isGDV !== true && isKSV === true)) && (item.statusCode === 'W' || item.statusCode === 'M' || item.statusCode === 'F')"
+                                    (click)="approvalOneDialog(item)"><span class="material-icons" style="margin-right: 5px;">check_circle_outline</span>Duyệt</a>
+                                </div>
+                                <div class="col-6 p-0">
+                                    <a class="btn btn-action d-flex" href="javascript:void(0)" *ngIf="((isGDV === true && isKSV === true) || (isGDV !== true && isKSV === true)) && (item.statusCode === 'W' || item.statusCode === 'M' || item.statusCode === 'F')"
+                                    (click)="sendRejectOneDialog(item)"><span class="material-icons" style="margin-right: 5px;">remove_circle_outline</span>Từ chối</a>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <a class="btn btn-action" href="javascript:void(0)" *ngIf="((isGDV === true && isKSV === true) || (isGDV !== true && isKSV === true)) && (item.statusCode === 'W' || item.statusCode === 'M' || item.statusCode === 'F')"
+                                (click)="sendModifyOneDialog(item)"><span class="material-icons" style="margin-right: 5px;">replay</span>Y/C bổ sung</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="popup-detail" *ngIf="isShowPopupCustomerDetail">
+        <div class="title">
+            <div class="row">
+                <div class="col-6">
+                    <span>Thông tin khách hàng</span>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="btn p-0 close-popup material-icons" (click)="isShowPopupCustomerDetail=false;">close</span>
+                </div>
+            </div>
+        </div>
+        <app-pop-up-cif [id]="isCustomerSelect"></app-pop-up-cif>
+        <button class="btn closePopup btn-close" (click)="isShowPopupCustomerDetail=false;">Đóng</button>
+    </div>
+
+    <div class="popup-detail" *ngIf="isShowPopupDetail">
+        <div class="title">
+            <div class="row">
+                <div class="col-6">
+                    <span>Chi tiết thẻ chính</span>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="btn p-0 close-popup material-icons" (click)="isShowPopupDetail=false;">close</span>
+                </div>
+            </div>
+        </div>
+        <app-pop-up-maincard [id]="idSelected"></app-pop-up-maincard>
+        <button class="btn closePopup btn-close" (click)="isShowPopupDetail=false;">Đóng</button>
+    </div>
+    <div class="popup-detail" *ngIf="isShowPopupDetailSubCard">
+        <div class="title">
+            <div class="row">
+                <div class="col-6">
+                    <span>Chi tiết thẻ phụ</span>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="btn p-0 close-popup material-icons" (click)="isShowPopupDetailSubCard=false;">close</span>
+                </div>
+            </div>
+        </div>
+        <app-pop-up-supcard [id]="idSupCardSelected"></app-pop-up-supcard>
+        <button class="btn closePopup btn-close" (click)="isShowPopupDetailSubCard=false;">Đóng</button>
+    </div>
+
+    <div class="popup-detail" *ngIf="isShowPopupDetailAccount">
+        <div class="title">
+            <div class="row">
+                <div class="col-6">
+                    <span>Chi tiết tài khoản</span>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="btn p-0 close-popup material-icons" (click)="isShowPopupDetailAccount=false;">close</span>
+                </div>
+            </div>
+        </div>
+        <app-pop-up-account [id]="isAccountSelected"></app-pop-up-account>
+        <button class="btn closePopup btn-close" (click)="isShowPopupDetailAccount=false;">Đóng</button>
+    </div>
+
+    <div class="popup-detail" *ngIf="isShowPopupEbankingDetail">
+        <div class="title">
+            <div class="row">
+                <div class="col-6">
+                    <span>Chi tiết EBanking</span>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="btn p-0 close-popup material-icons" (click)="isShowPopupEbankingDetail=false;">close</span>
+                </div>
+            </div>
+        </div>
+        <app-pop-up-ebanking [id]="isEbankingSelect"></app-pop-up-ebanking>
+        <button class="btn closePopup btn-close" (click)="isShowPopupEbankingDetail=false;">Đóng</button>
+    </div>
+
+    <div class="popup-detail" *ngIf="isShowPopupCoOwnerDetail">
+        <div class="title">
+            <div class="row">
+                <div class="col-6">
+                    <span>Chi tiết Đồng chủ sở hữu tài khoản</span>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="btn p-0 close-popup material-icons" (click)="isShowPopupCoOwnerDetail=false;">close</span>
+                </div>
+            </div>
+        </div>
+        <app-pop-up-co-owner [id]="isCoOwnerSelected"></app-pop-up-co-owner>
+        <button class="btn closePopup btn-close" (click)="isShowPopupCoOwnerDetail=false;">Đóng</button>
+    </div>
+
+</div>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+    <div class="col-12" style="text-align: right;padding: 0px;margin: 0px;">
+
+        <div class="footer" (click)="approvalAllDialog()" *ngIf="((isGDV === true && isKSV === true) || (isGDV !== true && isKSV === true)) && (processItem.statusCode !== 'R' && processItem.statusCode !== 'A' && processItem.statusCode !== 'C' && processItem.statusCode !== 'T')">
+            <span class="material-icons" style="color: #fff;margin-top: 3px"> done </span>
+            <label>Duyệt tất cả</label>
+        </div>
+        <div class="footer" (click)="sendRejectDialog()" style="margin-top: 3px" *ngIf="((isGDV === true && isKSV === true) || (isGDV !== true && isKSV === true)) && (processItem.statusCode !== 'R' && processItem.statusCode !== 'A' && processItem.statusCode !== 'C' && processItem.statusCode !== 'T')">
+            <span class="material-icons"> delete </span>
+            <label>Từ chối hồ sơ</label>
+        </div>
+        <div class="footer" (click)="sendModifyDialog()" style="margin-top: 3px" *ngIf="((isGDV === true && isKSV === true) || (isGDV !== true && isKSV === true)) && (processItem.statusCode !== 'R' && processItem.statusCode !== 'A' && processItem.statusCode !== 'C' && processItem.statusCode !== 'T')">
+            <span class="material-icons"> replay </span>
+            <label>Yêu cầu bổ sung</label>
+        </div>
+        <div class="footer" (click)="closeProcess()" *ngIf="((isGDV === true && isKSV === true) || (isGDV !== true && isKSV === true)) && (processItem.statusCode !== 'R' && processItem.statusCode !== 'A' && processItem.statusCode !== 'C' && processItem.statusCode !== 'T')"
+            style="margin-top: 3px">
+            <span class="material-icons"> delete </span>
+            <label>Đóng hồ sơ</label>
+        </div>
+        <div class="footer" (click)="backPage()">
+            <span class="material-icons" style="color: #fff;margin-top: 3px"> keyboard_backspace </span>
+            <label>Trở về trang trước</label>
+        </div>
+    </div>
+</div>

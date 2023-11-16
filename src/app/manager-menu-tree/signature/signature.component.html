@@ -1,0 +1,463 @@
+<app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoadingCallApi"
+    class="sq-global-backdrop center-aligned">
+</app-progress-spinner>
+
+<div class="account-signature-detail">
+    <!--  Thông tin Khách hàng-->
+    <div class="account-signature-detail-title">
+        <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">account_circle</mat-icon>
+        <span>THÔNG TIN KHÁCH HÀNG</span>
+    </div>
+    <div class="w-100 d-flex justify-content-between account-signature-detail-content">
+        <div class="account-signature-detail-content-left">
+
+            <div class="row-item-info">
+                <div class="label-field">Mã Khách hàng :</div>
+                <div class="value-field">
+                    <div class="control-item  d-flex align-items-center">
+                        <div>{{ (customerInfo && customerInfo.customerCode) ? customerInfo.customerCode : ''}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-item-info">
+                <div class="label-field">Số giấy tờ xác minh :</div>
+                <div class="value-field">
+                    <div class="control-item d-flex align-items-center">
+                        <div>{{ (customerInfo && customerInfo.person) ? customerInfo.person.perDocNoList[0].perDocNo :
+                            ''}}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="account-signature-detail-content-right">
+            <div class="row-item-info">
+                <div class="label-field">Họ và tên :</div>
+                <div class="value-field">
+                    <div class="control-item d-flex align-items-center">
+                        <div>{{ (customerInfo && customerInfo.person) ? customerInfo.person.fullName : ''}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-item-info">
+                <div class="label-field">Ngày sinh :</div>
+                <div class="value-field">
+                    <div class="control-item d-flex align-items-center">
+                        <div>{{ (customerInfo && customerInfo.person) ? customerInfo.person.dateOfBirth : ''}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-item-info">
+                <div class="label-field">Trạng thái :</div>
+                <div class="value-field">
+                    <div class="control-item d-flex align-items-center">
+                      <ng-container>
+                        <label>{{customerInfo?.statusCifName || 'Khởi tạo'}}</label>
+                      </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="account-signature-detail-title">
+        <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">description</mat-icon>
+        <span>DANH SÁCH CHỮ KÝ</span>
+    </div>
+    <p></p>
+
+    <button *ngIf="isDisableButtonCreate" class="btn" (click)="openModalCreate()">
+        <mat-icon class="fa fa-plus-circle"></mat-icon>Thêm mới
+    </button>
+
+    <div class="list-all-process">
+
+        <table class="table">
+            <colgroup>
+                <col width="1%" span="1">
+                <col width="12%" span="1">
+                <col width="22%" span="1">
+                <col width="8%" span="1">
+                <col width="10%" span="1">
+                <col width="10%" span="1">
+                <col width="14%" span="1">
+                <col width="15%" span="1">
+                <col width="8%" span="1">
+            </colgroup>
+            <thead class="colortable">
+                <tr class="colortable">
+                    <th scope="col">Signature_id</th>
+                    <th scope="col">Họ và tên</th>
+                    <th scope="col">Tên tài liệu</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Ngày hiệu lực</th>
+                    <th scope="col">Ngày hết hiệu lực</th>
+                    <th scope="col">Chức năng</th>
+                    <th scope="col">Tài liệu</th>
+                    <th scope="col">Gửi duyệt</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of lstSignature; index as i">
+                    <td>{{item.signatureNumber}}</td>
+                    <td>{{item.fullName}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.fileStatusName}}</td>
+                    <td>{{item.startDate}}</td>
+                    <td>{{item.endDate}}</td>
+                    <td class="btn-group">
+                        <!-- nút update------------ -->
+                        <button *ngIf="item.isShowButtonU" class="btnfunct" (click)="getDetail(item)">
+                            <mat-icon *ngIf="!item.isUpdateUpload" matTooltip="Upload" class="funct"
+                                (click)="openModalUpdate()">vertical_align_top
+                            </mat-icon>
+                            <mat-icon *ngIf="item.isUpdateUpload" matTooltip="Update" class="funct"
+                                (click)="openModalUpdate()">vertical_align_top
+                            </mat-icon>
+                        </button>
+                        <button *ngIf="!item.isShowButtonU" class="btnfunct">
+                            <mat-icon class="funct disable">vertical_align_top
+                            </mat-icon>
+                        </button>
+                        <!-- nút edit ngày hết hiệu lực------------ -->
+                        <button *ngIf="item.isShowButtonE" class="btnfunct" (click)="getDetail(item)">
+                            <mat-icon matTooltip="Edit" class="funct" (click)="openModalDetail()">date_range</mat-icon>
+                        </button>
+                        <button *ngIf="!item.isShowButtonE" class="btnfunct">
+                            <mat-icon class="funct disable">calendar_today
+                            </mat-icon>
+                        </button>
+                        <!-- nút xem lịch sử---------------- -->
+                        <button *ngIf="item.isShowButtonH" class="btnfunct" (click)="getDetailHistory(item)">
+                            <mat-icon matTooltip="History" class="funct" (click)="openModalHistory()">visibility
+                            </mat-icon>
+                        </button>
+                        <button *ngIf="!item.isShowButtonH" class="btnfunct">
+                            <mat-icon class="funct disable">
+                                visibility_off
+                            </mat-icon>
+                        </button>
+                        <!-- nút xóa bản ghi---------------- -->
+                        <button *ngIf="item.isShowButtonDSig" class="btnfunct" (click)="getDetail(item)">
+                            <mat-icon matTooltip="Delete" class="funct" (click)="openModalConFirmDelete()">delete
+                            </mat-icon>
+                        </button>
+                        <button *ngIf="!item.isShowButtonDSig" class="btnfunct">
+                            <mat-icon class="funct disable">delete
+                            </mat-icon>
+                        </button>
+                    </td>
+                    <td>
+                        <span><label class="label-fileName" matTooltip="Xem file chữ ký"
+                                (click)="openModalView(item)">{{item.fileName}}</label></span>
+                        <button class="btndelete" (click)="getDetail(item)">
+                            <mat-icon *ngIf="item.isShowButtonD" matTooltip="Delete file" class="funct"
+                                (click)="openModalConFirm()">clear
+                            </mat-icon>
+                        </button>
+                    </td>
+                    <td>
+                        <!-- nút gửi duyệt---------------- -->
+                        <button *ngIf="item.isSendAprrove" class="btnfunct" (click)="getDetail(item)">
+                            <mat-icon matTooltip="Gửi duyệt" class="funct" (click)="openModalConFirmSendAprrove()">send
+                            </mat-icon>
+                        </button>
+                        <button *ngIf="!item.isSendAprrove" class="btnfunct">
+                            <mat-icon class="funct disable">send
+                            </mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="account-signature-detail">
+    <div class="row footer-row">
+        <div class="col-12 action-button">
+            <div (click)="backPage()" class="footer">
+                <span class="material-icons"> keyboard_backspace </span>
+                <label>Quay lại</label>
+            </div>
+        </div>
+    </div>
+    <app-popup-detail-warring [show]="isShowMessage" (hideModal)="isShowMessage = false">
+        <div class="text-center">
+            Hồ sơ <span class="message">{{objProcess?.code}}</span> đang được thao tác bởi
+            <span class="message">{{objProcess?.createdByUser?.userName}}</span> chi nhánh
+            <span class="message">{{objProcess?.branchCode}} </span>
+        </div>
+    </app-popup-detail-warring>
+</div>
+
+<app-lpb-modal headerText="THÊM MỚI CHỮ KÝ" [show]="isSignature" [unit]="'%'" [widthContent]="80" [heightContent]="45"
+    (hideModal)="isSignature = false; resetFormSig()">
+
+    <form [formGroup]="createSignatureForm">
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><label class="col-form-label">Họ và tên <span class="text-danger ">(*)</span> :
+                        </label></div>
+                    <div class="col-8"><input maxlength="105" formControlName="fullName" type="text"
+                            class="form-control" [class.haveError]="fullName.touched && fullName.errors?.required ">
+                        <small *ngIf="fullName.touched && fullName.errors?.required " class="item-require">Vui lòng nhập
+                            họ và tên</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><label class="col-form-label">Tên tài liệu <span class="text-danger ">(*)</span>
+                            :</label></div>
+                    <div class="col-8"><input maxlength="95" formControlName="title" type="text" class="form-control"
+                            [class.haveError]="title.touched && title.errors?.required ">
+                        <small *ngIf="title.touched && title.errors?.required " class="item-require">Vui lòng nhập
+                            tên tài liệu</small>
+                    </div>
+                </div>
+            </div>
+        </div><br />
+
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><label class="col-form-label">Ngày hết hiệu lực :</label></div>
+                    <div class="col-8">
+                        <app-lpb-date-picker #dpexpireDate (dateChanged)="expireDateChanged()"
+                            (blurInput)="expireDateChanged()">
+                        </app-lpb-date-picker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><label class="col-form-label">Upload tài liệu <span
+                                class="text-danger ">(*)</span> :</label>
+                    </div>
+                    <div class="col-8">
+                        <input #myInput name="fileName" type="file" class="form-control" accept=".jpg, .png , .jpeg"
+                            (change)="onFileSelect($event)" [class.haveError]="checkErr !== ''">
+                        <small *ngIf="checkErr !== '' " class="item-require">{{checkErr}}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-8"><label class="col-form-label">( Định dạng jpg, png và dung lượng không vượt 100 kb
+                                )</label>
+                    </div>
+                </div>
+            </div>
+        </div><br />
+
+        <div class="btn-sig">
+            <button type="button" class="mr-2 btn-close" (click)="isSignature = false; resetFormSig()">Đóng</button>
+            <button type="button" class="mr-2 btn-save" (click)="getCreateSignature()">Tạo mới</button>
+        </div>
+    </form>
+
+</app-lpb-modal>
+
+<app-lpb-modal headerText="EDIT CHỮ KÝ - NGÀY HẾT HIỆU LỰC" [show]="isEditSignature" [unit]="'%'" [widthContent]="45"
+    [heightContent]="30" (hideModal)="isEditSignature = false">
+    <div class="row">
+
+        <div class="col-12">
+            <div class="row">
+                <div class="col-3"><label class="col-form-label">Ngày hết hiệu lực :</label></div>
+                <div class="col-9">
+                    <app-lpb-date-picker #dpexpireDateEdit (dateChanged)="expireEditDateChanged()"
+                        (blurInput)="expireEditDateChanged()">
+                    </app-lpb-date-picker>
+                </div>
+            </div>
+        </div>
+    </div><br />
+
+    <div class="btn-sig">
+        <button type="button" class="mr-2 btn-close" (click)="isEditSignature = false;">Đóng</button>
+        <button type="button" class="mr-2 btn-save" (click)="checkAllowEditSignature()">Lưu</button>
+
+    </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="UPDATE CHỮ KÝ " [show]="isUpdateSignature" [unit]="'%'" [widthContent]="80"
+    [heightContent]="55" (hideModal)="resetFormSig()">
+    <form [formGroup]="createSignatureForm">
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><label class="col-form-label">Họ và tên <span class="text-danger ">(*)</span> :
+                        </label></div>
+                    <div class="col-8"><input maxlength="105" formControlName="fullName" type="text"
+                            class="form-control" [class.haveError]="fullName.touched && fullName.errors?.required ">
+                        <small *ngIf="fullName.touched && fullName.errors?.required " class="item-require">Vui lòng nhập
+                            họ và tên</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div *ngIf="title1 === ''" class="col-4"><label class="col-form-label">Tên tài liệu <span
+                                class="text-danger ">(*)</span>
+                            :</label></div>
+                    <div *ngIf="title1 !== ''" class="col-4"><label class="col-form-label">Tên tài liệu - [UniForm]
+                            <span class="text-danger ">(*)</span>
+                            :</label></div>
+                    <div class="col-8"><input *ngIf="title1 === ''" maxlength="105" formControlName="title" type="text"
+                            class="form-control" [class.haveError]="title.touched && title.errors?.required ">
+                        <input *ngIf="title1 !== ''" maxlength="95" formControlName="title" type="text"
+                            class="form-control" [class.haveError]="title.touched && title.errors?.required ">
+                        <small *ngIf="title.touched && title.errors?.required " class="item-require">Vui lòng nhập
+                            loại tài liệu</small>
+                    </div>
+                </div>
+            </div>
+        </div><br />
+
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><label class="col-form-label">Ngày hết hiệu lực :</label></div>
+                    <div class="col-8">
+                        <app-lpb-date-picker #dpexpireDateUpdate
+                            (dateChanged)="expireDateChanged(); expireUpdateDateChanged()"
+                            (blurInput)="expireDateChanged(); expireUpdateDateChanged()">
+                        </app-lpb-date-picker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><label class="col-form-label">Update tài liệu <span
+                                class="text-danger ">(*)</span>
+                            :</label>
+                    </div>
+                    <div class="col-8"><input #myInputUpload name="fileName" type="file" class="form-control"
+                            accept=".jpg, .png, .jpeg" (change)="onFileSelectUpdate($event)"
+                            [class.haveError]="checkErr !== ''">
+                        <small *ngIf="checkErr !== '' " class="item-require">{{checkErr}}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-8"><label class="col-form-label">( Định dạng jpg, png và dung lượng không vượt 100 kb
+                                )</label>
+                    </div>
+                </div>
+            </div>
+        </div><br />
+
+        <div class="btn-sig">
+            <button type="button" class="mr-2 btn-close" (click)="resetFormSig()">Đóng</button>
+            <button type="button" class="mr-2 btn-save" (click)=" checkAllowUpdateSignature()">Lưu thông tin</button>
+        </div>
+    </form>
+
+</app-lpb-modal>
+
+<app-lpb-modal headerText="LỊCH SỬ BẢN GHI CHỮ KÝ" [show]="isHistorySignature" [unit]="'%'" [widthContent]="65"
+    [heightContent]="45" (hideModal)="isHistorySignature = false; resetFormSig()">
+
+    <div class="list-all-signature">
+
+        <table class="table">
+            <colgroup>
+                <col width="3%" span="1">
+                <col width="25%" span="1">
+                <col width="25%" span="1">
+                <col width="47%" span="1">
+            </colgroup>
+            <thead class="colortable">
+                <tr class="colortable">
+                    <th scope="col">STT</th>
+                    <th scope="col">Ngày hiệu lực</th>
+                    <th scope="col">Ngày hết hiệu lực</th>
+                    <th scope="col">File chữ ký</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of historySignature; index as i">
+                    <td>{{i + 1}}</td>
+                    <td>{{item.startDate}}</td>
+                    <td>{{item.endDate}}</td>
+                    <td>
+                        <label class="label-fileName" matTooltip="Xem file chữ ký"
+                            (click)="openModalView(item)">{{item.fileName}}</label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="error" *ngIf="!historySignature">Không có bản ghi nào tồn tại</div>
+    </div><br />
+    <div class="btn-sig">
+        <button type="button" class="mr-2 btn-close" (click)="resetFormSig()">Đóng</button>
+    </div>
+</app-lpb-modal>
+<!-- width="90%" height="90%" -->
+<app-lpb-modal headerText="CHI TIẾT FILE CHỮ KÝ" [show]="isViewSignature" [unit]="'%'" [widthContent]="60"
+    [heightContent]="80" (hideModal)="isViewSignature = false;  resetForView()">
+    <div class="anh" *ngIf="myimage">
+        <img [src]="myimage | async" class="imageFit" alt="">
+    </div>
+    <div class="div" *ngIf="linkURL">
+        <iframe [src]="linkURL" frameborder="0" height="100%" width="100%"></iframe>
+    </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Xác nhận" [show]="isConfirm" [widthContent]="40" [heightContent]="30"
+    (hideModal)="isConfirm = false">
+    <div class="account-owner-list-content">
+        <div class="text-center">
+            Bạn có chắc chắc muốn thực hiện thao tác xóa Tài liệu này ?
+        </div><br />
+        <div class="btn-sig">
+            <button class="mr-2 btn-cancel" (click)="confimRemoveData('CANCEL')">
+                Hủy
+            </button>
+            <button class="mr-2 btn-save" (click)="confimRemoveData('CONFIM')">
+                Đồng ý
+            </button>
+        </div>
+    </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Xác nhận" [show]="isConfirmDelete" [widthContent]="40" [heightContent]="30"
+    (hideModal)="isConfirmDelete = false">
+    <div class="account-owner-list-content">
+        <div class="text-center">
+            Bạn có chắc chắc muốn thực hiện thao tác xóa Tài liệu này ?
+        </div><br />
+        <div class="btn-sig">
+            <button class="mr-2 btn-cancel" (click)="confimRemoveDataDelete('CANCEL')">
+                Hủy
+            </button>
+            <button class="mr-2 btn-save" (click)="confimRemoveDataDelete('CONFIM')">
+                Đồng ý
+            </button>
+        </div>
+    </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Xác nhận gửi duyệt" [show]="isConfirmSendAprrove" [widthContent]="40" [heightContent]="43"
+    (hideModal)="isConfirmSendAprrove = false">
+    <div class="account-owner-list-content">
+        <div class="block-note">
+            <label>Ghi chú:&nbsp;&nbsp;</label>
+            <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+        </div><br />
+        <div class="btn-sig">
+            <button class="mr-2 btn-cancel" (click)="confimSendAprrove('CANCEL')">
+                Hủy
+            </button>
+            <button class="mr-2 btn-save" (click)="confimSendAprrove('CONFIM')">
+                Đồng ý
+            </button>
+        </div>
+    </div>
+</app-lpb-modal>

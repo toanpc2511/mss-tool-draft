@@ -1,0 +1,10 @@
+<div class="position-relative autocomplete-container">
+  <ng-select [multiple]="false" placeholder="Chọn GTXM" [loading]="isLoading" [clearOnBackspace]="false"
+    [items]="items$ | async" [searchFn]="customSearchFn" [minTermLength]="minTermLength"
+    (change)="onChange($event)" #ngSelect [placeholder]="placeholder" (blur)="onBlur()"
+    [bindValue]="bindValue" [bindLabel]="bindLabel" [formControl]="formCtrl" (clear)="onClear()">
+  </ng-select>
+  <div class="input-container">
+    <ng-content select="[area=input]"></ng-content>
+  </div>
+</div>

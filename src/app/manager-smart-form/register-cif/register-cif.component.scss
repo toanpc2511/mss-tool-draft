@@ -1,0 +1,192 @@
+
+@import 'shared/components/css/register-cif.scss';
+
+.register-cif {
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-top: 1px solid #bdbdbd;
+  &-content { 
+    .div-center {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+    .block-note {
+      display: flex;
+      white-space: nowrap;
+    }
+  }
+  &-content-title {
+    color: #17589f;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 8px 0px;
+    display: flex;
+
+    .mat-icon {
+      float: unset !important;
+    }
+
+    span {
+      align-self: center;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+
+  &-info-customer {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 5%;
+
+    .col-info-left,
+    .col-info-right {
+      max-width: 50%;
+      flex: 0 0 50%;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      margin: 0 -15px 0 -24px;
+    }
+  }
+
+  &-address {
+    padding: 25px 5%;
+  }
+
+  &-child-infor {
+    cursor: pointer;
+    padding: 25px 5%;
+
+    .reference {
+      border: 1px solid #828282;
+      height: 39px;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #0C258A;
+      padding: 10px;
+      margin: 30px 0;
+      display: flex;
+      .error-invalid {
+        border-color: #E83C19;
+      }
+      &-left {
+        max-width: 33.3333%;
+        flex: 0 0 33.3333%;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        color: #0C258A;
+      }
+
+      &-right {
+        max-width: 66.6666%;
+        flex: 0 0 66.6666%;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        color: #0C258A;
+      }
+    }
+    .mis,.udf {
+      border: 1px solid #828282;
+      height: 39px;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #0C258A;
+      padding: 10px;
+      margin: 30px 0 10px 0;
+      display: flex;
+      &-left {
+        max-width: 33.3333%;
+        flex: 0 0 33.3333%;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        color: #0C258A;
+        .error-invalid {
+         color: #E83C19;
+        }
+      }
+
+      &-right {
+        max-width: 66.6666%;
+        flex: 0 0 66.6666%;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        color: #0C258A;
+      }
+    }
+    .guardian {
+      border: 1px solid #828282;
+      height: 39px;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #0C258A;
+      padding: 10px;
+      margin: 30px 0;
+      display: flex;
+
+      &-left {
+        max-width: 33.3333%;
+        flex: 0 0 33.3333%;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        color: #0C258A;
+      }
+
+      &-right {
+        max-width: 66.6666%;
+        flex: 0 0 66.6666%;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        color: #0C258A;
+      }
+    }
+    .ownerBenefit {
+      border: 1px solid #828282;
+      height: 39px;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #0C258A;
+      padding: 10px;
+      margin: 30px 0;
+      display: flex;
+
+      &-left {
+        max-width: 33.3333%;
+        flex: 0 0 33.3333%;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        color: #0C258A;
+      }
+
+      &-right {
+        max-width: 66.6666%;
+        flex: 0 0 66.6666%;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        color: #0C258A;
+      }
+    }
+    .error-block {
+      color: #e83c19;
+      margin-top: 5px;
+      font-size: 12px;
+      margin-bottom: 30px;
+    }
+    .error-invalid {
+      border-color: #E83C19;
+    }
+  }
+
+}

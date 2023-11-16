@@ -1,0 +1,55 @@
+<div class="row cust-row" style="margin-top: 5px; margin-left: 5px; margin-right: 3px;">
+    <div class="col-12 line-base">
+        <div class="title-head">
+            <mat-icon style="font-size: 30px; height: 30px; width: 38px;">account_balance_wallet</mat-icon>
+            <span class="text" style="padding: 5px 0;">DANH SÁCH CÁC LOẠI THẺ</span>
+        </div>
+    </div>
+
+    <div class="col-12 col-table">
+        <table class="table table-bordered table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Loại thẻ</th>
+                    <th>Số thẻ</th>
+                    <th>Tài khoản</th>
+                    <th>Ngày phát hành</th>
+                    <th>Ngày hết hạn</th>
+                    <th>Trạng thái</th>
+                    <th>Số lượng thẻ phụ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of card ;index as i">
+                    <td class="text-center id-table">{{i + 1}}</td>
+                    <td class="cardTypeNameCol"><label class="cardTypeName">
+                            {{c.cardTypeName}}</label>
+                    </td>
+                    <td class="detail cardNumber" (click)="detailCard(c)">
+                        {{c.cardNumber}}
+                        <ng-container *ngIf="c.cardNumber==null">
+                            Thẻ chính {{c.cardIndex}}
+                        </ng-container>
+                    </td>
+                    <td>
+                        <ng-container *ngIf="c.account==null">
+                            không có Tài khoản mặc định
+                        </ng-container>
+                        <ng-container *ngIf="c.account!=null">
+                            {{c.account.accountNumber}}
+                            <ng-container *ngIf="c.account.accountNumber==null">
+                                Số tài khoản mới {{c.account.accountIndex}}
+                            </ng-container>
+                        </ng-container>
+
+                    </td>
+                    <td>{{c.issueDate |date:"dd/MM/yyyy"}}</td>
+                    <td>{{c.expirationDate |date:"dd/MM/yyyy"}}</td>
+                    <td style="text-align: center;">{{c.processIntegrated.statusName}}</td>
+                    <td>{{c.countSupCard}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

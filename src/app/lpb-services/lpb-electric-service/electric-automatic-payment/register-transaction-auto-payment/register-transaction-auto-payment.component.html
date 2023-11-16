@@ -1,0 +1,190 @@
+<div class="transaction-main">
+  <div
+    class="content-title w-100 mt-2 text-uppercase d-flex justify-content-between"
+  >
+    <div class="d-flex align-items-center">
+      <span class="font-weight-bold">Đăng ký thanh toán tự động</span>
+    </div>
+  </div>
+
+  <div class="form mt-2">
+    <form [formGroup]="searchForm" (change)="onChangeSearchForm()">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 pb-3">
+          <label class="required">Nhà cung cấp</label>
+          <app-lpb-select2
+            [apiUrl]="'/electric-service/supplier/active'"
+            labelName="supplierName" bindValue="supplierCode" [config]="{isNewApi: true}"
+            formControlName="supplierCode"
+            placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+          <app-validate
+            [control]="searchForm.controls['supplierCode']" error="required"
+            message="Chưa chọn nhà cung cấp"></app-validate>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3">
+          <label class="required">Mã khách hàng</label>
+          <input
+            type="text"
+            formControlName="customerId"
+            placeholder="Nhập mã khách hàng"
+            class="form-control"
+            trimInput
+          />
+          <app-validate
+            [control]="searchForm.controls['customerId']" error="required"
+            message="Chưa nhập mã khách hàng"></app-validate>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3">
+          <button
+            mat-raised-button
+            class=" bg-btn__blue text-while"
+            (click)="onSearchCustomer()"
+            style="margin-top: 17px"
+          >
+            Tìm kiếm
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="form mt-2">
+    <form [formGroup]="infoForm">
+      <div class="card card-shadow">
+        <span class="card-title">Thông tin khách hàng</span>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label>Họ và tên</label>
+            <p>{{infoForm.controls['custName'].value || '--'}}</p>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label>Mã khách hàng</label>
+            <p>{{infoForm.controls['custId'].value || '--'}}</p>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label>Địa chỉ</label>
+            <p>{{infoForm.controls['custDesc'].value || '--'}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-title">Thông tin tài khoản ghi nợ</span>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label class="required">Số CIF</label>
+            <div class="position-relative input-group">
+              <input type="text" [formControl]="infoForm.controls['cif']" class="form-control pr-4"
+                     (change)="changeCif()" trimInput
+                     placeholder="Nhập số CIF" maxlength="20"
+                     [textPattern]="{allowRegex: '[0-9]'}"/>
+              <div class="input-group-append">
+                <button
+                  mat-raised-button
+                  class=" bg-btn__blue text-while"
+                  (click)="onSearchCif()"
+                ><i class="fa fa-search mr-2" style="color: #fff"></i>
+                </button>
+              </div>
+            </div>
+            <app-validate
+              [control]="infoForm.controls['cif']"
+              error="required"
+              message="Chưa nhập số CIF"
+            ></app-validate>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label class="required">Tài khoản thanh toán</label>
+            <app-lpb-select2
+              [items]="accNumbers" labelName="accountNumber"
+              [formControl]="infoForm.controls['acNumber']"
+              placeholder="Chọn tài khoản thanh toán">
+              <ng-template let-item="item" let-index="index">
+                <b>{{item.accountNumber}}</b>
+                <div class="text-high-light">{{item.availableBalance | number: '1.0' : 'en-US'}} VNĐ
+                </div>
+              </ng-template>
+            </app-lpb-select2>
+            <app-validate
+              [control]="infoForm.controls['acNumber']" error="required"
+              message="Chưa chọn tài khoản thanh toán"></app-validate>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label>Tên tài khoản</label>
+            <p>{{infoForm.controls['acNumber'].value?.accountName || '--'}}</p>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label>Số dư TK trước giao dịch</label>
+            <p>{{(infoForm.controls['acNumber'].value?.availableBalance | vnCurency ) || '--'}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-title">Thông tin thanh toán</span>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label class="required">Ngày thanh toán định kỳ</label>
+            <app-lpb-select2
+              [items]="settleDates"
+              labelName="label" bindValue="value" [config]="{clearable:false}"
+              [formControl]="infoForm.controls['settleDate']"
+              placeholder="Chọn ngày thanh toán định kỳ"></app-lpb-select2>
+            <app-validate
+              [control]="infoForm.controls['settleDate']"
+              error="required"
+              message="Chưa chon ngày thanh toán định kỳ"
+            ></app-validate>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label>Nhận thông báo qua Email</label>
+            <div>
+              <mat-radio-group aria-label="Select an option" [formControl]="infoForm.controls['receiveEmail']" (change)="onChangeEmail($event)">
+                <mat-radio-button color="primary" [value]="true" class="pr-2">Có nhận</mat-radio-button>
+                <mat-radio-button color="primary" [value]="false" class="pr-2">Không nhận</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label [ngClass]="isEmailRequired ? 'required' : ''">Email</label>
+            <input
+              type="email" [formControl]="infoForm.controls['email']"
+              class="form-control"
+              placeholder="Nhập email" maxlength="100">
+            <app-validate
+              [control]="infoForm.controls['email']"
+              error="required"
+              message="Chưa nhập email"
+            ></app-validate>
+            <app-validate
+              [control]="infoForm.controls['email']"
+              error="email"
+              message="Sai định dạng email"
+            ></app-validate>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 py-1 px-4">
+            <label class="required">Số điện thoại</label>
+            <input
+              type="text" [formControl]="infoForm.controls['phone']" class="form-control pr-4"
+              placeholder="Nhập số điện thoại" maxlength="13"
+              [textPattern]="{allowRegex: '[0-9]'}"/>
+              <app-validate
+                [control]="infoForm.controls['phone']"
+                error="required"
+                message="Chưa nhập số điện thoại"
+              ></app-validate>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-lpb-footer
+  [actions]="actions"
+  class="z-index-footer position-fixed bottom-0 w-100"
+></app-lpb-footer>

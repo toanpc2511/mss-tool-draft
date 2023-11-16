@@ -1,0 +1,16 @@
+<div class="popup-detail-warring" *ngIf="show">
+    <div class="modal-content">
+        <div class="header">
+            <div class="title"></div>
+            <mat-icon class="icon-close" (click)="hide()">close</mat-icon>
+        </div>
+        <div class="info">
+            <ng-content></ng-content>
+            <br/>
+            <div class="text-right">
+                <button class="btn-close mr-2" (click)="hide()">Đóng</button>
+            </div>
+        
+        </div>
+    </div>
+</div>

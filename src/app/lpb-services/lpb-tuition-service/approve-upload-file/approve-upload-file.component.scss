@@ -1,0 +1,37 @@
+.content {
+  .title {
+    color: #0C258A;
+  }
+  .required:after {
+    content: ' *';
+    color: red;
+  }
+  label {
+    color: #0C258A;
+    font-weight: 500;
+  }
+  .bg-btn__blue {
+    background-color: #0C258A;
+  }
+  .text-while {
+    color: #fff;
+  }
+}
+.required:after {
+  content: '*';
+  color: red;
+}
+.title {
+  color: rgb(0, 0, 206);
+  font-weight: bolder;
+  text-align: center;
+  margin-top: 15px;
+}
+.button-Valid {
+  background-color: rgb(12, 37, 137);
+  color: white;
+  padding: 10px 40px;
+  border: 1px solid white;
+  border-radius: 10px;
+  margin: 15px;
+}

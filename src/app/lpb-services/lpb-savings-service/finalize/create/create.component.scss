@@ -1,0 +1,10 @@
+:host ::ng-deep {
+  app-form-array .form-array-content {
+    .payment-account-header {
+      min-width: 192px;
+    }
+    .amount-header {
+      min-width: 250px;
+    }
+  }
+}

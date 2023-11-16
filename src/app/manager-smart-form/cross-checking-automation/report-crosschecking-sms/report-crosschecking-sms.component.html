@@ -1,0 +1,55 @@
+<div class="body">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+
+  <span class="content-title">BÁO CÁO ĐỐI SOÁT SMS</span>
+
+  <div class="container-fluid layouts-content">
+
+
+    <form [formGroup]="reportSMS">
+      <div class="content-field row">
+        <div class="col-md-6 field">
+          <label class="textLabel">Từ ngày<span class="compulsory-field"> (*)</span></label>
+          <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="dateFromChanged()"
+                               (dateChanged)="getFromDate()"></app-lpb-date-picker>
+        </div>
+        <div class="col-md-6 field">
+          <label class="textLabel">Đến ngày<span class="compulsory-field"> (*)</span></label>
+          <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="dateToChanged()"
+                               (dateChanged)="getToDate()"></app-lpb-date-picker>
+        </div>
+
+        <div class="col-md-6 field">
+          <label class="textLabel">Loại báo cáo</label>
+          <ng-select [multiple]="false" formControlName="smsType" (clear)="defaultType()"
+                     placeholder="-- Trạng thái --">
+            <ng-option  value="smsesb">01- báo cáo SMS LPB</ng-option>
+            <ng-option  value="smsfpt">02- báo cáo SMS FPT</ng-option>
+            <ng-option  value="smsbranch">03- báo cáo thống kê</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6 field">
+          <label class="textLabel">Định dạng</label>
+          <ng-select [multiple]="false" bindLabel="name" bindValue="code" formControlName="formatExport"
+                     (clear)="defaultFormat()"
+                     placeholder="-- Chọn định dạng --">
+            <ng-option  value="excel">Excel</ng-option>
+            <ng-option  value="pdf">Pdf</ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="col-12 text-center">
+        <button type="button" class="btn mt-3" style="background-color: #f47326; color: white; margin: 7px 0"
+                (click)="getFile()">
+          <i class="fa fa-file-excel-o" style="color: white"></i>
+          Xuất báo cáo
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,90 @@
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+
+.mat-icon {
+    font-size: 20px;
+    display: block;
+    float: left;
+}
+
+.table-responsive {
+    display: table;
+}
+
+.col-table {
+    margin: 0;
+}
+
+table {
+    white-space: nowrap;
+}
+
+.col-12 {
+    padding: 0;
+}
+
+.accountNumber {
+    width: 180px;
+    color: #0088FF;
+}
+
+.phoneNumber {
+    width: 150px;
+}
+
+.choose {
+    color: #F2994A;
+    cursor: pointer;
+}
+
+.sendSMS {
+    color: #2F80ED;
+    cursor: pointer;
+}
+
+@media (max-width: 1365px) {
+    .title-head {
+        font-size: 15px;
+    }
+    mat-icon {
+        font-size: 25px !important;
+        margin-top: 2px !important;
+    }
+    .line-base {
+        padding: 0 !important;
+        border-bottom: 1px solid #c8ced3;
+    }
+    .label-title {
+        font-size: 12px;
+    }
+    .error-message {
+        font-size: 13px;
+    }
+    .btn-action {
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 21px;
+        display: flex;
+        align-items: center;
+        text-indent: 8px;
+        color: #FFFFFF;
+    }
+    .accountNumber {
+        width: 180px;
+    }
+    .phoneNumber {
+        width: 150px;
+    }
+    .table-responsive {
+        display: block;
+    }
+    .table th,
+    td {
+        font-size: 16px;
+    }
+}

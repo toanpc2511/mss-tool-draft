@@ -1,0 +1,62 @@
+.col-2 {
+  max-width: 10% !important;
+}
+.lvbis-home {
+  margin: 5px 5px 0px 5px;
+}
+
+.card-service-item {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.36);
+  transition: 0.3s;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  img {
+    width: 48px;
+    height: 48px;
+    fill: #FFFFFF;
+  }
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2F80ED;
+  }
+}
+
+.card-service-item:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  //background: rgba(253, 218, 176, 0.5);
+  background: rgba(244, 115, 38, 0.73);
+  span {
+    color: white;
+  }
+}
+.card-services-main {
+  background-color: white;
+  border-top: 1px solid #bdbdbd;
+  // padding: 0px 10px;
+  min-height: 100%;
+  height: auto;
+  &-items {
+    margin-top: 32px;
+    .card-services-main-item {
+      max-width: 25%;
+      width: calc(25% - 12px);
+      background-color: white;
+    }
+  }
+  &-title {
+    margin-top: 24px;
+    span {
+      color: #17589f;
+      font-size: 24px;
+      font-weight: 500;
+    }
+  }
+}
+@media only screen and (min-width: 1400px) {
+  .col-xxl-1 {
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%;
+  }
+}

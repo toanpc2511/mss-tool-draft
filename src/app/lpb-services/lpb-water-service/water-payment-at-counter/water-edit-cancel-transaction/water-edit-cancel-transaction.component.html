@@ -1,0 +1,87 @@
+<div class="px-4 py-2">
+    <div class="text-high-light text-uppercase fw-medium text-lg-custom"> <i class="fa fa-search"></i> Tra cứu thông tin khách hàng
+    </div>
+    <hr>
+    <div class="pl-2">
+        <form [formGroup]="formSearch" (ngSubmit)="search()">
+            <div class="row">
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Nhà cung cấp</label>
+                    <div>
+                        <app-lpb-select2 [apiUrl]="'/water-service/supplier/active'" labelName="supplierName"
+                            bindValue="supplierCode" formControlName="supplierCode"
+                            placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Mã khách hàng</label>
+                    <div>
+                        <input type="text" formControlName="customerId" class="form-control w-100"
+                            placeholder="Nhập mã khách hàng">
+                    </div>
+                </div>
+                <div class="col-4 px-4">
+                    <label for="" class="text-high-light fw-bolder">Trạng thái</label>
+                    <div>
+                        <app-lpb-select2 [items]="statusTransactions" [config]="{'clearable':false}" labelName="label"
+                            bindValue="value" formControlName="statusTransaction">
+                        </app-lpb-select2>
+                    </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label class="text-high-light fw-bolder">Từ ngày</label>
+                  <app-lpb-datepicker-new
+                    [formControl]="formSearch.controls['fromDate']"
+                    [maxDate]="today"
+                    [className]="formHelpers.isValidClass(formSearch.controls.fromDate)"
+                  ></app-lpb-datepicker-new>
+                  <app-validate [control]="formSearch.controls.fromDate" error="required"
+                                message="Từ ngày không được bỏ trống"></app-validate>
+                  <div *ngIf="formSearch.errors?.dateRange">
+                    <small  class="text-danger mt-1 d-block font-weight-bold">
+                      Từ ngày phải nhỏ hơn hoặc bằng Đến ngày
+                    </small>
+                  </div>
+                  <div *ngIf="formSearch.errors?.limitDate">
+                    <small  class="text-danger mt-1 d-block font-weight-bold">
+                      Phạm vi tìm kiếm tối đa trong vòng 90 ngày
+                    </small>
+                  </div>
+                </div>
+                <div class="col-4 px-4 mt-2">
+                    <label class="text-high-light fw-bolder">Đến ngày</label>
+                  <app-lpb-datepicker-new
+                    [formControl]="formSearch.controls['toDate']"
+                    [maxDate]="today"
+                    [className]="formHelpers.isValidClass(formSearch.controls.toDate)"
+                  ></app-lpb-datepicker-new>
+                  <app-validate [control]="formSearch.controls.toDate" error="required"
+                                message="Đến ngày không được bỏ trống"></app-validate>
+                  <div *ngIf="formSearch.errors?.dateRange">
+                    <small  class="text-danger mt-1 d-block font-weight-bold">
+                      Đến ngày phải lớn hơn hoặc bằng Từ ngày
+                    </small>
+                  </div>
+                  <div *ngIf="formSearch.errors?.limitDate">
+                    <small  class="text-danger mt-1 d-block font-weight-bold">
+                      Phạm vi tìm kiếm tối đa trong vòng 90 ngày
+                    </small>
+                  </div>
+                </div>
+            </div>
+            <div class="mt-4 text-center">
+                <button class="btn lpb-btn-primary" [disabled]="isLoading"> <i class="fa fa-search"></i>
+                    <span> Tìm kiếm</span>
+                </button>
+            </div>
+        </form>
+
+
+    </div>
+
+    <div class="mt-5">
+        <app-lpb-datatable [config]="config" [searchConditions]="searchConditions" (editAction)="editTransaction($event)"
+            (viewAction)="viewTransaction($event)" (deleteAction)="cancelTransaction($event)" [columns]="columns"
+            apiServiceURL="/water-service/transaction" tableName="Danh sách giao dịch"></app-lpb-datatable>
+    </div>
+</div>

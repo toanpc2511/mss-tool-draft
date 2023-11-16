@@ -1,0 +1,163 @@
+<ng-container>
+  <form [formGroup]="formPayment">
+    <div class="card">
+      <span class="card-title">Tài khoản ghi có</span>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1q">
+          <label class="">Số tài khoản</label>
+          <p>{{formPayment.value?.accountNumberCredit}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1q">
+          <label class="">Tên tài khoản</label>
+          <p>{{formPayment.value?.accountNameCredit}}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1">
+          <label class="required">Số tiền thanh toán</label>
+          <div class="input-group">
+            <input
+              type="text"
+              [value]="formPayment.value?.paymentAmount"
+              placeholder="Nhập số tiền"
+              class="form-control"
+              decimal-mask
+              formControlName="paymentAmount"
+              (change)="paymentAmountChange()"
+            />
+            <div class="input-group-append">
+              <span class="fw-bolder text-high-light input-group-text"> VNĐ</span>
+            </div>
+          </div>
+          <app-validate
+            [control]="formPayment.controls['paymentAmount']"
+            error="required"
+            message="Chưa nhập số tiền"
+          ></app-validate>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1">
+          <label class="required">Nội dung thanh toán</label>
+          <textarea
+            type="text"
+            placeholder="Nhập nội dung thanh toán"
+            class="form-control"
+            formControlName="paymentContent"
+            [maxlength]="210"
+          ></textarea>
+          <app-validate
+            [control]="formPayment.controls['paymentContent']"
+            error="required"
+            message="Chưa nhập nội dung thanh toán"
+          ></app-validate>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1">
+          <label class="required">Hình thức thanh toán</label>
+          <ng-select
+            [searchable]="false"
+            [clearable]="false"
+            [items]="paymentType"
+            bindLabel="label"
+            bindValue="value"
+            formControlName="paymentType"
+          >
+          </ng-select>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1">
+          <label class="required">Sản phẩm</label>
+          <ng-select
+            [searchable]="false"
+            [clearable]="false"
+            [items]="paymentMethods"
+            bindLabel="label"
+            bindValue="value"
+            formControlName="paymentMethod"
+          >
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">{{ note }}</p>
+
+    <div *ngIf="isTransfer" class="card">
+      <span class="card-title">Tài khoản ghi nợ</span>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1">
+          <ng-select
+            [searchable]="false"
+            [clearable]="false"
+            [items]="identityDocTypes"
+            bindLabel="label"
+            bindValue="value"
+            formControlName="identityDocType"
+          >
+          </ng-select>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1">
+          <input
+            type="text"
+            [readOnly]="transferFirst && type === 'edit'"
+            formControlName="numberDocType"
+            placeholder="Nhập giá trị tìm kiếm"
+            (change)="numberDocTypeChange()"
+            class="form-control"
+          />
+          <app-validate
+            [control]="formPayment.get('numberDocType')"
+            message="Chưa nhập giá trị tìm kiếm"
+            error="required"
+          ></app-validate>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1">
+          <button mat-raised-button class="bg-btn__blue text-while"
+                  (click)="searchAccNumberSpecial()"
+                  [disabled]="isLoading">
+            <i class="fa fa-search mr-2" style="color: #fff"></i>
+            Tìm kiếm
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1">
+          <label class="required">Số TKTT</label>
+          <app-lpb-select2
+            [items]="customerAccounts"
+            labelName="accountNumber"
+            bindValue="accountNumber"
+            formControlName="accountDebit"
+            (change)="accountDebitChange()"
+            (click)="accountDebitChange()"
+            placeholder="Chọn số TKTT"
+          >
+<!--            <ng-template let-item="item" let-index="index">-->
+<!--              <b>{{ item.accountNumber }}</b>-->
+<!--              <div class="text-high-light">-->
+<!--                {{ item.acyCurr_Balance | number : "1.0" : "en-US" }} VNĐ-->
+<!--              </div>-->
+<!--            </ng-template>-->
+          </app-lpb-select2>
+          <app-validate
+            [control]="formPayment.controls['accountDebit']"
+            error="required"
+            message="Chưa chọn TKTT"
+          ></app-validate>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1q">
+          <label class="">Chủ tài khoản</label>
+          <p>{{formPayment.value?.accountNameDebit}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 py-1 px-4 my-1q">
+          <label class="">Số dư tài khoản trước giao dịch</label>
+          <p>{{formPayment.value?.accountBalance | number: '1.0' : 'en-US'}} VNĐ</p>
+        </div>
+      </div>
+    </div>
+    <p *ngIf="isTransfer" class="warn">{{ warn }}</p>
+  </form>
+</ng-container>
+

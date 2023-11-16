@@ -1,0 +1,9 @@
+<div class="finance-body" style="padding-bottom: 10px">
+  <div class="step-search d-flex flex-column">
+    <app-lpb-datatable  [config]="datatableConfig" [searchConditions]="searchCondition"
+                       (viewAction)="view($event)" [columns]="columns"
+                       apiServiceURL="/lpb-common-service/file"></app-lpb-datatable>
+
+  </div>
+</div>
+

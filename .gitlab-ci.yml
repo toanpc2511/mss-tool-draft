@@ -1,0 +1,235 @@
+variables:
+  APP_NAME: uniform-web
+
+stages:
+  - openMr
+  - build
+  - deploy
+
+#
+#build-image:
+#  image: harbor-registry.lienvietpostbank.com.vn:5443/uniform/docker:latest
+#  services:
+#    - harbor-registry.lienvietpostbank.com.vn:5443/uniform/docker:dind
+#  stage: build
+#  before_script:
+#    - docker login -u uniform -p 123456Aa@ harbor-registry.lienvietpostbank.com.vn:5443
+#  script:
+#    - docker build --no-cache -t harbor-registry.lienvietpostbank.com.vn:5443/uniform/$APP_NAME:latest .
+#    - docker push harbor-registry.lienvietpostbank.com.vn:5443/uniform/$APP_NAME:latest
+#  only:
+#    - test
+# build image test
+build-image-test:
+  image: harbor-registry.lienvietpostbank.com.vn:5443/uniform/docker:19.03.1
+  services:
+    - name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/docker-dind:19.03.1
+      command: ["--insecure-registry=harbor-registry.lienvietpostbank.com.vn:5443"]
+  stage: build
+  before_script:
+    - docker login -u uniform -p 123456Aa@ harbor-registry.lienvietpostbank.com.vn:5443
+#    - docker pull harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform_web_deploy:latest
+#    - docker pull harbor-registry.lienvietpostbank.com.vn:5443/uniform/nginx:alpine
+  script:
+    - docker build -t harbor-registry.lienvietpostbank.com.vn:5443/uniform/$APP_NAME:test .
+    - docker push harbor-registry.lienvietpostbank.com.vn:5443/uniform/$APP_NAME:test
+  only:
+    - test
+
+# deploy môi trường test
+deploy-test:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/bitnami/kubectl:latest
+    entrypoint: [""]
+  stage: deploy
+  script:
+    - echo $KUBECONFIG64 | base64 -d > $HOME/.kube/config
+    - kubectl apply -f k8s/test.yaml -n uniform-test
+    - kubectl rollout restart deployment/$APP_NAME -n uniform-test
+  only:
+    - test
+
+# build image uat
+build-image-uat:
+  image: harbor-registry.lienvietpostbank.com.vn:5443/uniform/docker:19.03.1
+  services:
+    - name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/docker-dind:19.03.1
+      command: ["--insecure-registry=harbor-registry.lienvietpostbank.com.vn:5443"]
+  stage: build
+  before_script:
+    - docker login -u uniform -p 123456Aa@ harbor-registry.lienvietpostbank.com.vn:5443
+  script:
+    - docker build -t harbor-registry.lienvietpostbank.com.vn:5443/uniform/$APP_NAME:uat .
+    - docker push harbor-registry.lienvietpostbank.com.vn:5443/uniform/$APP_NAME:uat
+  only:
+    - uat
+
+# deploy thử tới kubernetes cluster
+deploy-uat:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/bitnami/kubectl:latest
+    entrypoint: [""]
+  stage: deploy
+  script:
+    - echo $KUBECONFIG64 | base64 -d > $HOME/.kube/config
+    - kubectl apply -f k8s/uat.yaml -n uniform-uat
+    - kubectl rollout restart deployment/$APP_NAME -n uniform-uat
+  only:
+    - uat
+
+#sonarqube-check:
+#  image: harbor-registry.lienvietpostbank.com.vn:5443/uniform/sonarsource/sonar-scanner-cli:latest
+#  stage: sonarqube-check
+#  variables:
+#    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+#    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+#  cache:
+#    key: "${CI_JOB_NAME}"
+#    paths:
+#      - .sonar/cache
+#  script:
+#    - sonar-scanner
+#  allow_failure: true
+#  only:
+#    - develop
+
+openMrToDev:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/automerge:lastest
+    entrypoint: [""]
+  before_script: []# We do not need any setup work, let's remove the global one (if any)
+  stage: openMr
+  only:
+    - /^feature\/*/   # We have a very strict naming convention
+  script:
+    - chmod 755 ./merge-request.sh
+    - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID} PRIVATE_TOKEN=${PRIVATE_TOKEN} TARGET_BRANCH=develop ./merge-request.sh # The name of the script
+
+openMrToTest:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/automerge:lastest
+    entrypoint: [""]
+  before_script: []# We do not need any setup work, let's remove the global one (if any)
+  stage: openMr
+  only:
+#    - /^develop\/*/   # We have a very strict naming convention
+    - develop   # We have a very strict naming convention
+  script:
+    - chmod 755 ./merge-request.sh
+    - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID} PRIVATE_TOKEN=${PRIVATE_TOKEN} TARGET_BRANCH=test ./merge-request.sh # The name of the script
+
+openMrToUat:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/automerge:lastest
+    entrypoint: [""]
+  before_script: []# We do not need any setup work, let's remove the global one (if any)
+  stage: openMr
+  only:
+    - test   # We have a very strict naming convention
+  script:
+    - chmod 755 ./merge-request.sh
+    - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID} PRIVATE_TOKEN=${PRIVATE_TOKEN} TARGET_BRANCH=uat ./merge-request.sh # The name of the script
+
+
+build-image-test-update:
+  image: harbor-registry.lienvietpostbank.com.vn:5443/uniform/docker:19.03.1
+  services:
+    - name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/docker-dind:19.03.1
+      command: ["--insecure-registry=harbor-registry.lienvietpostbank.com.vn:5443"]
+  stage: build
+  before_script:
+    - docker login -u uniform -p 123456Aa@ harbor-registry.lienvietpostbank.com.vn:5443
+  #    - docker pull harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform_web_deploy:latest
+  #    - docker pull harbor-registry.lienvietpostbank.com.vn:5443/uniform/nginx:alpine
+  script:
+    - docker build -t harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform-web-update:test .
+    - docker push harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform-web-update:test
+  only:
+    - test-update
+# deploy môi trường test
+deploy-test-update:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/bitnami/kubectl:latest
+    entrypoint: [""]
+  stage: deploy
+  script:
+    - echo $KUBECONFIG64 | base64 -d > $HOME/.kube/config
+    - kubectl apply -f k8s/test-update.yaml -n uniform-test
+    - kubectl rollout restart deployment/uniform-web-update -n uniform-test
+  only:
+    - test-update
+
+openMrToDevUpdate:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/automerge:lastest
+    entrypoint: [""]
+  before_script: []# We do not need any setup work, let's remove the global one (if any)
+  stage: openMr
+  only:
+    - feature-update   # We have a very strict naming convention
+  script:
+    - chmod 755 ./merge-request.sh
+    - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID} PRIVATE_TOKEN=${PRIVATE_TOKEN} TARGET_BRANCH=develop-update ./merge-request.sh # The name of the script
+openMrToTestUpdate:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/automerge:lastest
+    entrypoint: [""]
+  before_script: []# We do not need any setup work, let's remove the global one (if any)
+  stage: openMr
+  only:
+    - develop-update   # We have a very strict naming convention
+  script:
+    - chmod 755 ./merge-request.sh
+    - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID} PRIVATE_TOKEN=${PRIVATE_TOKEN} TARGET_BRANCH=test-update ./merge-request.sh # The name of the script
+
+build-image-test-huongnt:
+  image: harbor-registry.lienvietpostbank.com.vn:5443/uniform/docker:19.03.1
+  services:
+    - name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/docker-dind:19.03.1
+      command: ["--insecure-registry=harbor-registry.lienvietpostbank.com.vn:5443"]
+  stage: build
+  before_script:
+    - docker login -u uniform -p 123456Aa@ harbor-registry.lienvietpostbank.com.vn:5443
+  #    - docker pull harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform_web_deploy:latest
+  #    - docker pull harbor-registry.lienvietpostbank.com.vn:5443/uniform/nginx:alpine
+  script:
+    - docker build -t harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform-web-huongnt:test .
+    - docker push harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform-web-huongnt:test
+  only:
+    - test-HuongNT
+# deploy môi trường test
+deploy-test-huongnt:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/bitnami/kubectl:latest
+    entrypoint: [""]
+  stage: deploy
+  script:
+    - echo $KUBECONFIG64 | base64 -d > $HOME/.kube/config
+    - kubectl apply -f k8s/test-huongnt.yaml -n uniform-test
+    - kubectl rollout restart deployment/uniform-web-huongnt -n uniform-test
+  only:
+    - test-HuongNT
+
+openMrToDevHuongNT:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/automerge:lastest
+    entrypoint: [""]
+  before_script: []# We do not need any setup work, let's remove the global one (if any)
+  stage: openMr
+  only:
+    - feature-HuongNT   # We have a very strict naming convention
+  script:
+    - chmod 755 ./merge-request.sh
+    - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID} PRIVATE_TOKEN=${PRIVATE_TOKEN} TARGET_BRANCH=develop-HuongNT ./merge-request.sh # The name of the script
+
+openMrToTestHuongNT:
+  image:
+    name: harbor-registry.lienvietpostbank.com.vn:5443/uniform/automerge:lastest
+    entrypoint: [""]
+  before_script: []# We do not need any setup work, let's remove the global one (if any)
+  stage: openMr
+  only:
+    - develop-HuongNT   # We have a very strict naming convention
+  script:
+    - chmod 755 ./merge-request.sh
+    - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID} PRIVATE_TOKEN=${PRIVATE_TOKEN} TARGET_BRANCH=test-HuongNT ./merge-request.sh # The name of the script

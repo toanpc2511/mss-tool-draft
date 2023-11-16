@@ -1,0 +1,147 @@
+<div class="supplier">
+  <div class="content-title w-100 text-uppercase d-flex justify-content-between">
+  </div>
+  <form [formGroup]="supplierForm">
+    <div class="supplier-card">
+      <p class="title">Thông tin chung</p>
+      <div class="row">
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Mã nhà trường</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập mã trường"
+            formControlName="code"
+            [maxLength]="20"
+            trimInput
+          />
+          <app-validate
+            [control]="supplierForm.get('code')"
+            error="required"
+            message="Nhập thiếu mã nhà trường"
+          ></app-validate>
+
+          <app-validate
+            [control]="supplierForm.get('code')"
+            [error]="'isExist'"
+            [message]="'Mã nhà trường đã tồn tại!'"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Tên nhà trường</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Nhập tên nhà trường"
+            formControlName="name"
+            [maxLength]="100"
+            trimInput
+          />
+          <app-validate
+            [control]="supplierForm.get('name')"
+            error="required"
+            message="Nhập thiếu tên nhà trường"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Số CIF</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nhập số CIF"
+              formControlName="cif"
+              [textPattern]="{allowRegex: '[0-9]'}"
+              (change)="handleChangeNumberCif()"
+              (keydown.enter)="searchAccNumberSpecial()"
+              (keydown.space)="$event.preventDefault()"
+              [maxLength]="20"
+              trimInput
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                (click)="searchAccNumberSpecial()"
+                type="button"
+                style="background: #0c258a"
+              >
+                <i
+                  class="fa fa-search"
+                  aria-hidden="true"
+                  style="color: #ffffff"
+                ></i>
+              </button>
+            </div>
+          </div>
+
+          <app-validate
+            [control]="supplierForm.get('cif')"
+            error="required"
+            message="Nhập thiếu số CIF"
+          ></app-validate>
+        </div>
+
+        <div class="mb-3 col-12 col-md-6 col-lg-4">
+          <label class="required">Số TK chuyên thu</label>
+          <app-lpb-select2
+            [items]="listAccount"
+            labelName="accountNumber"
+            formControlName="accNo"
+            placeholder="Nhập số TK chuyên thu"
+          ></app-lpb-select2>
+          <p>{{accInfo}}</p>
+          <app-validate
+            [control]="supplierForm.get('accNo')"
+            error="required"
+            message="Nhập thiếu số TK chuyên thu"
+          ></app-validate>
+        </div>
+
+        <div class="mb-2 col-12 col-md-6 col-lg-4">
+          <label class="required">Trạng thái</label>
+          <app-lpb-select2
+            [items]="statusSupplier"
+            labelName="name"
+            bindValue="type"
+            formControlName="status"
+            placeholder="Chọn trạng thái"
+          ></app-lpb-select2>
+          <app-validate
+            [control]="supplierForm.get('status')"
+            error="required"
+            message="Chọn trạng thái"
+          ></app-validate>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form [formGroup]="supplierForm">
+    <div class="supplier-card">
+      <p class="title">Nội dung thanh toán</p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+          <label class="required">Nội dung</label>
+          <app-input-autocomplete-custom
+            [listItem]="contentKey"
+            formControlName="content"
+            maxlength="100"
+            class="w-100"
+            placeholder="Nhập nội dung"
+          ></app-input-autocomplete-custom>
+          <app-validate
+            [control]="supplierForm.get('content')"
+            [error]="'required'"
+            [message]="'Chưa nhập nội dung'"
+          ></app-validate>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div [style.height.px]="50">
+  <app-lpb-footer [actions]="actions" class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>
+</div>

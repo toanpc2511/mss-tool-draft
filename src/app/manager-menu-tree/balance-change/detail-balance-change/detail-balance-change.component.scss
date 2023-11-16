@@ -1,0 +1,87 @@
+.col-12 {
+    margin-bottom: 0;
+}
+
+.table th {
+    background: #EFF4FF;
+    border: 1px solid #BDBDBD;
+    box-sizing: border-box;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+    padding: 5px 0;
+}
+
+.table td {
+    text-align: center;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.col-2 {
+    padding-left: 0;
+}
+
+.regis-fee {
+    min-width: 155px;
+}
+
+.account-no {
+    min-width: 150px;
+}
+
+.accountNumber {
+    color: #0088FF;
+}
+
+.delete-action {
+    cursor: pointer;
+}
+
+.lock-action {
+    cursor: pointer;
+    font-size: 28px;
+}
+
+.footer-row {
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+
+@media (max-width:1400px) {
+    .label-under {
+        font-size: 12px;
+        line-height: 21px;
+        text-align: right;
+        text-indent: 8px;
+        color: #252834;
+    }
+    .line-base {
+        padding: 0 !important;
+    }
+    input[type=radio] {
+        width: 15px;
+        height: 15px;
+    }
+    input[type=checkbox] {
+        width: 15px;
+        height: 15px;
+    }
+    .lock-action {
+        cursor: pointer;
+        font-size: 24px;
+    }
+}

@@ -1,0 +1,61 @@
+<div class="min-w-400-px">
+    <div *ngIf="type === 'error'" class="bg-error p-3 d-flex flex-row">
+        <div class="col-1 d-flex justify-content-center">
+            <i class="material-icons text-red">error</i>
+        </div>
+        <div class="col-11">
+            <div class="d-flex justify-content-between">
+                <span class="fw-bolder">Lỗi</span>
+                <span role="button" class="float-right" (click)="close()"><i class="fa fa-close"></i></span>
+            </div>
+            <div class="py-2">
+                {{text}}
+            </div>
+            <div class="py-2">
+                <button class="btn btn-sm btn-red" [class]="btnError['class']" (click)="accept()"> {{btnError.text}} </button>
+            </div>
+        </div>        
+    </div>
+    
+    <div *ngIf="type === 'ok'" class="bg-message p-3 d-flex flex-row">
+        <div class="col-1 d-flex justify-content-center">
+            <i class="fa fa-check-circle text-green"></i>
+        </div>
+        <div class="col-11">
+            <div class="d-flex justify-content-between">             
+                <span class="fw-bolder">Thành công </span>
+                <span role="button" (click)="close()"><i class="fa fa-close"></i></span>            
+            </div>
+            <div class="py-2">
+                {{text}}
+            </div>
+            <div class="py-2">
+                <button *ngIf="acceptCancel" class="btn btn-sm min-w-100-px mr-2" (click)="cancel()" cdkFocusInitial
+                    [class]="btnCancel['class']"> {{btnCancel.text}} </button>
+                <button class="btn btn-sm min-w-100-px" (click)="accept()" [class]="btnOk['class']"> {{btnOk.text}} </button>
+            </div>        
+        </div>        
+    </div>
+    
+    <div *ngIf="type === 'cancel'" class="p-4">
+        <div class="fw-bolder mb-3"> {{title}} </div>
+        <div class="mb-3">{{text}}</div>
+        <div class="clearfix">
+            <div class="float-right">
+                <button *ngIf="acceptCancel" class="btn btn-sm btn-secondary min-w-100-px mr-2" (click)="cancel()" cdkFocusInitial
+                    [class]="btnCancel['class']"> {{btnCancel.text}} </button>
+                <button class="btn btn-sm btn-danger min-w-100-px" (click)="accept()" [class]="btnOk['class']"> {{btnOk.text}} </button>
+            </div>
+        </div>        
+    </div>
+    
+    <div *ngIf="type === ''" class="text-center w-400-px">
+        <div class="bg-primary p-2"> {{title}} </div>
+        <div class="w-100 text-message p-4">{{text}}</div>
+        <div class="p-2 bg-dark">
+            <button *ngIf="acceptCancel" class="btn btn-sm min-w-100-px mr-2" (click)="cancel()" cdkFocusInitial
+                [class]="btnCancel['class']"> {{btnCancel.text}} </button>
+            <button class="btn btn-sm min-w-100-px" (click)="accept()" [class]="btnOk['class']"> {{btnOk.text}} </button>
+        </div>
+    </div>
+</div>

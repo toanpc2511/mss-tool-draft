@@ -1,0 +1,152 @@
+<div class="lpb-single-address">
+  <!-- Begin - Địa chỉ hiện tại -->
+  <div class="row-item-info" *ngIf="title !== ''">
+    <div class="label-title fw-700">Địa chỉ hiện tại <span class="item-require" *ngIf="isAddressRequire">(*)</span>
+    </div>
+    <div class="label-action">
+
+    </div>
+  </div>
+  <div class="row-item-info">
+    <div class="label-field">Quốc gia <span class="item-require" *ngIf="isAddressRequire">(*)</span></div>
+    <div class="value-field">
+      <div class="control-item d-flex align-items-center">
+        <app-lpb-select #currentCountry (blurSelect)="blurSelectDropdown('CURRENT_COUTRY')" class="w-100"
+                        [selectedItem]="selectedCurrentCountry" [txtPlaceholder]="'Chọn Quốc gia'"
+                        [lstOptions]="lstCurrentCountry" (selectedChangeOption)="currentCountryChanged($event)">
+        </app-lpb-select>
+        <mat-icon *ngIf="objCifCustomerInfoCore" class="ic-info-core" #tooltip="matTooltip"
+                  [matTooltip]="'Dữ liệu Core: ' + (objCifCustomerInfoCore.currentCountryName ? objCifCustomerInfoCore.currentCountryName : 'Không xác định')"
+                  matTooltipPosition="below">error_outline
+        </mat-icon>
+      </div>
+      <div class="error-msg" *ngIf="errMsgCurrentCountry !== ''">
+        {{errMsgCurrentCountry}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row-item-info" [ngClass]="!isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+    <div class="label-field">Tỉnh / Thành phố <span class="item-require" *ngIf="isAddressRequire">(*)</span></div>
+    <div class="value-field">
+      <div class="control-item d-flex align-items-center">
+        <app-lpb-select #currentProvince (blurSelect)="blurSelectDropdown('CURRENT_PROVINCE')"
+                        [selectedItem]="selectedCurrentProvince" [txtPlaceholder]="'Chọn Tỉnh / Thành phố'"
+                        class="w-100"
+                        (selectedChangeOption)="currentProvinceChanged($event)" [lstOptions]="lstCurrentProvince">
+        </app-lpb-select>
+        <mat-icon *ngIf="objCifCustomerInfoCore" class="ic-info-core" #tooltip="matTooltip"
+                  [matTooltip]="'Dữ liệu Core: ' + (objCifCustomerInfoCore.currentCityName ? objCifCustomerInfoCore.currentCityName : 'Không xác định')"
+                  matTooltipPosition="below">error_outline
+        </mat-icon>
+      </div>
+      <div class="error-msg" *ngIf="errMsgCurrentProvice !== ''">
+        {{errMsgCurrentProvice}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row-item-info" [ngClass]="isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+    <div class="label-field">Tỉnh / Thành phố</div>
+    <div class="value-field">
+      <div class="control-item d-flex align-items-center">
+        <input #currentProvinceForeign type="text" maxlength="50" class="form-control w-100">
+        <mat-icon *ngIf="objCifCustomerInfoCore" class="ic-info-core" #tooltip="matTooltip"
+                  [matTooltip]="'Dữ liệu Core: ' + (objCifCustomerInfoCore.currentCityName ? objCifCustomerInfoCore.currentCityName : 'Không xác định')"
+                  matTooltipPosition="below">error_outline
+        </mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-item-info" [ngClass]="!isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+    <div class="label-field">Quận / Huyện <span class="item-require" *ngIf="isAddressRequire">(*)</span></div>
+    <div class="value-field">
+      <div class="control-item">
+        <div class="control-item d-flex align-items-center">
+          <app-lpb-select #currentDistrict [selectedItem]="selectedCurrentDistrict" class="w-100"
+                          (blurSelect)="blurSelectDropdown('CURRENT_DISTRICT')"
+                          (selectedChangeOption)="currentDistrictChanged($event)" [lstOptions]="lstCurrentDistrict"
+                          [txtPlaceholder]="'Chọn Quận / Huyện'"></app-lpb-select>
+          <mat-icon *ngIf="objCifCustomerInfoCore" class="ic-info-core" #tooltip="matTooltip"
+                    [matTooltip]="'Dữ liệu Core: ' + (objCifCustomerInfoCore.currentDistrictName ? objCifCustomerInfoCore.currentDistrictName : 'Không xác định')"
+                    matTooltipPosition="below">error_outline
+          </mat-icon>
+        </div>
+        <div class="error-msg" *ngIf="errMsgCurrentDistrict !== ''">
+          {{errMsgCurrentDistrict}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-item-info" [ngClass]="isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+    <div class="label-field">Quận / Huyện</div>
+    <div class="value-field">
+      <div class="control-item d-flex align-items-center">
+        <input #currentDistrictForeign type="text" maxlength="50" class="form-control w-100">
+        <mat-icon *ngIf="objCifCustomerInfoCore" class="ic-info-core" #tooltip="matTooltip"
+                  [matTooltip]="'Dữ liệu Core: ' + (objCifCustomerInfoCore.currentDistrictName ? objCifCustomerInfoCore.currentDistrictName : 'Không xác định')"
+                  matTooltipPosition="below">error_outline
+        </mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-item-info" [ngClass]="!isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+    <div class="label-field">Phường / Xã <span class="item-require" *ngIf="isAddressRequire">(*)</span></div>
+    <div class="value-field">
+      <div class="control-item">
+        <div class="control-item d-flex align-items-center">
+          <app-lpb-select #currentWard [selectedItem]="selectedCurrentWard" class="w-100"
+                          (blurSelect)="blurSelectDropdown('CURRENT_WARD')"
+                          (selectedChangeOption)="currentWardChanged($event)" [lstOptions]="lstCurrentWard"
+                          [txtPlaceholder]="'Chọn Phường / Xã'"></app-lpb-select>
+          <mat-icon *ngIf="objCifCustomerInfoCore" class="ic-info-core" #tooltip="matTooltip"
+                    [matTooltip]="'Dữ liệu Core: ' + (objCifCustomerInfoCore.currentWardName ? objCifCustomerInfoCore.currentWardName : 'Không xác định')"
+                    matTooltipPosition="below">error_outline
+          </mat-icon>
+        </div>
+        <div class="error-msg" *ngIf="errMsgCurrentWard !== ''">
+          {{errMsgCurrentWard}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-item-info" [ngClass]="isCurrentCountryForeign ? 'd-flex' : 'd-none'">
+    <div class="label-field">Phường / Xã</div>
+    <div class="value-field">
+      <div class="control-item d-flex align-items-center">
+        <input #currentWardForeign type="text" maxlength="50" class="form-control w-100">
+        <mat-icon *ngIf="objCifCustomerInfoCore" class="ic-info-core" #tooltip="matTooltip"
+                  [matTooltip]="'Dữ liệu Core: ' + (objCifCustomerInfoCore.currentWardName ? objCifCustomerInfoCore.currentWardName : 'Không xác định')"
+                  matTooltipPosition="below">error_outline
+        </mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="row-item-info">
+    <div class="label-field">Số nhà / Đường phố <span class="item-require" *ngIf="isAddressRequire">(*)</span></div>
+    <div class="value-field">
+      <div class="control-item">
+        <div class="control-item d-flex align-items-center">
+          <input #currentAddress type="text" (blur)="validateCurrentAddress()" maxlength="200"
+                 class="form-control w-100">
+          <mat-icon *ngIf="objCifCustomerInfoCore" class="ic-info-core" #tooltip="matTooltip"
+                    [matTooltip]="'Dữ liệu Core: ' + (objCifCustomerInfoCore.currentStreetNumber ? objCifCustomerInfoCore.currentStreetNumber : 'Không xác định')"
+                    matTooltipPosition="below">error_outline
+          </mat-icon>
+        </div>
+      </div>
+      <div class="error-msg" *ngIf="errMsgCurrentAddress !== ''">
+        {{errMsgCurrentAddress}}
+      </div>
+    </div>
+  </div>
+  <!-- End - Địa chỉ hiện tại -->
+
+</div>
+
+<!-- <div (click)="testClearData()">Test empty data</div> -->

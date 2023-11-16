@@ -1,0 +1,19 @@
+.form-group {
+  padding: 0px 2rem;
+
+  .main-form {
+    display: flex;
+    justify-content: center;
+
+    .form-container {
+      max-width: 900px;
+    }
+  }
+}
+.row-form {
+  padding: 10px 15px;
+}
+
+.col-form {
+  padding: 5px 15px;
+}

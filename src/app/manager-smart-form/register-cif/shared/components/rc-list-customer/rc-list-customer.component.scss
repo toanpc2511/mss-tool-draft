@@ -1,0 +1,48 @@
+
+@import '../css/register-cif.scss';
+.rc-guardian-cif {
+  &-content {
+   .content-title {
+    button {
+      float: right;
+    }
+    span {
+      font-size: 25px;
+      font-style: 25px;
+    }
+   }
+   .content-table {
+      table {
+        overflow-y: auto !important;  
+        width: 100%;
+        text-align: center;
+        font-size: 18px;
+        thead {
+          background-color: #0C258A;
+          color: #ffffff;
+        }
+        tbody {
+          background-color: #DFD9D9;
+        }
+        tr {
+          height: 45px;
+        }
+        td {
+          .btn-edit {
+            font-size: 30px;
+            color: #0088FF;
+          }
+          .btn-delete {
+            font-size: 30px;
+            color: #E83C19;
+          }
+        }
+      }
+   }
+   .btn-action {
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+   }
+  }
+}

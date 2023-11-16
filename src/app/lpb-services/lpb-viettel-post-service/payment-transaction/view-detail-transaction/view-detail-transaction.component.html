@@ -1,0 +1,47 @@
+<div class="content">
+  <h2 class="title">CHI TIẾT GIAO DỊCH</h2>
+  <br/>
+  <div class="pl-2">
+    <div class="d-flex">
+      <div class="col-4 px-4">
+        <label class="text-high-light fw-bolder">Mã bảng kê</label>
+        <p>{{transaction?.billCode}}</p>
+      </div>
+      <div class="col-4 px-4">
+        <label class="text-high-light fw-bolder">Core_ref_no</label>
+        <p>{{transaction?.coreRefNo}}</p>
+      </div>
+      <div class="col-4 px-4">
+        <label class="text-high-light fw-bolder">Trạng thái gạch nợ</label>
+        <p>{{transaction?.statusName}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="border border-1 p-4 border-radius-panel">
+    <div class="" style="color: #0C258A">
+      <i class="fa fa-credit-card-alt text-high-light mr-2"></i>
+      <span>THÔNG TIN GIAO DỊCH</span>
+    </div>
+    <app-transaction-info #transactionInfo [type]="'view'"></app-transaction-info>
+  </div>
+  <div class="mt-2">
+    <app-lpb-datatable
+      [config]="configs"
+      [columns]="$any(columnTrans)"
+      tableName="THÔNG TIN BẢNG KÊ"
+      [dataSource]="dataTrans"
+    ></app-lpb-datatable>
+  </div>
+  <div class="mt-2 pb-5">
+    <app-lpb-datatable
+      [config]="configs"
+      [columns]="$any(columnPost)"
+      tableName="THÔNG TIN HẠCH TOÁN"
+      [dataSource]="dataTransPost"
+    ></app-lpb-datatable>
+  </div>
+</div>
+<app-lpb-footer *ngIf="isInProcess"
+                [hiddenButtons]="hiddenButtons"
+                [actions]="actions"
+                class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

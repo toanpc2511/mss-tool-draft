@@ -1,0 +1,246 @@
+$--color-high-light: #0C258A;
+$--color-high-light-darken: darken($color: #0c258a, $amount: 20%);
+.finance-body {
+  background-color: white;
+  border-top: 1px solid #bdbdbd;
+  padding: 0 10px;
+  min-height: 100%;
+  height: auto;
+}
+
+.content-title {
+  color: #0c258a;
+  align-self: center;
+  font-size: 16px;
+  font-weight: 500;
+  place-self: flex-start;
+  margin-top: 8px;
+  height: fit-content;
+  display: block;
+  span {
+    padding: 8px 0;
+    cursor: pointer;
+    display: block;
+    &.active {
+      cursor: auto;
+      border-bottom: 2px solid #f47326;
+    }
+  }
+  i {
+    color: #0c258a;
+  }
+}
+.text-title {
+  color: #0c258a;
+}
+.font-weight-semibold {
+  font-weight: 500;
+}
+.tbl-result {
+  margin-top: 16px;
+}
+.empty-data {
+  text-align: center;
+  color: #17589f;
+  font-size: 13px;
+  font-weight: 400;
+}
+.ic-in-primary {
+  color: #ffffff;
+}
+
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+hr {
+  border-color: #bdbdbd;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  &.h-1px {
+    border: 1px solid #bdbdbd;
+    display: block;
+  }
+}
+
+.h-1 {
+  height: 1px;
+}
+.h-i {
+  height: inherit;
+}
+
+.form-radio-inline {
+  column-gap: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  &-group {
+    column-gap: 15px;
+    width: fit-content;
+  }
+  .form-control {
+    height: 15px;
+    transform: translateY(-2px);
+  }
+  input {
+    cursor: pointer;
+  }
+}
+
+.form-control:focus {
+  box-shadow: unset !important;
+}
+
+input.ng-invalid.ng-touched,
+input.ng-invalid.ng-dirty {
+  border-color: #dc3545;
+}
+
+.column-gap-30 {
+  column-gap: 30px;
+}
+
+.clear-button {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  cursor: pointer;
+
+  .ng-clear-wrapper {
+    cursor: pointer;
+    box-sizing: border-box;
+    text-align: left;
+    font: 400 20px Roboto, "Helvetica Neue", sans-serif;
+    font-size: 18px;
+    letter-spacing: normal;
+    color: #999;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+    display: inline-block;
+    line-height: 1;
+    &:hover {
+      color: #dc3545 !important;
+    }
+  }
+}
+.btn-save {
+  background: #0c258a;
+}
+::ng-deep .lpb-modal {
+  z-index: 999999 !important;
+}
+::ng-deep.modal-content {
+  height: fit-content !important;
+  max-height: 75%;
+}
+
+@media only screen and (max-width: 990px) {
+  .form-control-date {
+    &-item {
+      flex-direction: column;
+    }
+  }
+}
+
+.step-search {
+  .form-field {
+    margin: 0 auto;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 30px;
+    justify-content: space-between;
+    max-width: 1000px;
+    // align-items: flex-start;
+    .row-fields {
+      width: 48%;
+      align-items: flex-start;
+      .field {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  }
+
+  .btn-group {
+    gap: 30px;
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+  }
+  .btn-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.row-fields-grid {
+  display: grid;
+  grid-template-columns: max-content auto;
+  grid-column-gap: 15px;
+  grid-row-gap: 10px;
+  align-items: center;
+  label,
+  span.txtLabel {
+    font-weight: 500;
+    color: #17589f;
+  }
+}
+.content-title {
+  i {
+    color: #17589f;
+  }
+}
+.form-control-date {
+  &-item {
+    column-gap: 15px;
+  }
+  row-gap: 1rem;
+  .textLabel {
+    white-space: nowrap;
+  }
+  &-select {
+    flex: 1;
+  }
+}
+.tbl-result {
+  overflow-x: auto;
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 130%;
+    border: 1px solid #ddd;
+    overflow-x: auto;
+    min-width: 1000px;
+    th {
+      white-space: nowrap;
+    }
+
+    $lenght: 100;
+    @for $i from 1 through $lenght {
+      .col-w-#{$i} {
+        width: calc(#{$i} * 70% / 100);
+      }
+    }
+  }
+}
+.lpb-btn-primary {
+  background-color: $--color-high-light !important;
+  color: white !important;
+  &:hover, &:focus {
+    background-color: $--color-high-light-darken !important;
+  }
+}
+.footer-row {
+  bottom: 0 !important;
+  position: fixed !important;
+}
+
+:host ::ng-deep .footer-row{
+  position: fixed !important;
+}

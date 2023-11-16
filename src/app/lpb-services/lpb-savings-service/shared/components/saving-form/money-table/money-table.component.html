@@ -1,0 +1,212 @@
+<ng-template #error let-form="form" let-controlName="controlName" let-controlNameVi="controlNameVi" >
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <span class="text-danger mt-1 d-block small">
+      <ng-container [ngSwitch]="getFirstError(form, controlName)">
+        <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED">
+          {{controlNameVi}} không được bỏ trống
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.MIN_LENGTH">
+          {{controlNameVi}} tổi thiểu {{form.controls[controlName].errors[FORM_VAL_ERRORS.MIN_LENGTH].requiredLength}} kí tự
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.NO_EXIST">
+          {{controlNameVi}} không hợp lệ
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.FROZEN">
+          Tài khoản bị chặn ghi Nợ, ghi Có
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.NO_DR">
+          Tài khoản bị chặn ghi Nợ
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.NO_CR">
+          Tài khoản bị chặn ghi Có
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.MAX">
+          {{controlNameVi}} phải nhỏ {{form.controls[controlName].errors[FORM_VAL_ERRORS.MAX].max}}
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.NOT_MATCH_CURCODE">
+          {{controlNameVi}} không khớp với mã tiền tệ của tài khoản TK
+        </span>
+      </ng-container>
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #warning let-form="form" let-controlName="controlName" let-controlNameVi="controlNameVi" >
+  <div *ngIf="form.controls[controlName].valid">
+    <span class="text-warning mt-1 d-block small">
+      <ng-container [ngSwitch]="getFirstWarning(form, controlName)">
+        <span *ngSwitchCase="FORM_VAL_ERRORS.FROZEN">
+          Tài khoản bị chặn ghi Nợ, ghi Có
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.NO_CR">
+          Tài khoản bị chặn ghi Có
+        </span>
+      </ng-container>
+    </span>
+  </div>
+</ng-template>
+
+<!-- #region CHI TIẾT TIỀN GỬI -->
+<app-collapse-section [showSectionBreak]="false" [collapsed]="collapsedDepositMoney"
+  (collapsedChange)="collapsedDepositMoneyChange.emit($event)">
+  <div area="title">
+    <div class="content-title my-3">
+      <span class="active text-uppercase mr-2">CHI TIẾT TIỀN GỬI</span>
+    </div>
+  </div>
+  <div area="titleRight" *ngIf="actionStatus['receipt'].add !== 'hidden'">
+    <button mat-raised-button class="mat-button-no-bg d-flex align-items-center" (click)="addRow('deposit')"
+      [disabled]="actionStatus['deposit'].add === 'disabled'">
+      <mat-icon>add</mat-icon>
+      <span class="font-weight-semibold"> Thêm mới</span>
+    </button>
+  </div>
+
+  <div area="body" class="mb-3 ">
+    <div class="row">
+      <div class="col col-xs-6 d-flex align-items-center">
+        <span class="textLabel">Tổng tiền: {{depositAmount | prettyMoney}}</span>
+      </div>
+    </div>
+
+    <div class="row mt-2 pd-15px">
+      <div class="w-100 rounded border">
+        <table class="my-2">
+          <thead>
+            <tr>
+              <th class="textLabel">Loại tài khoản</th>
+              <th class="textLabel">Số TK</th>
+              <th class="textLabel">Mã ĐVKD</th>
+              <th class="textLabel">Số tiền</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let depositRowForm of depositFormArr['controls']; let i = index;">
+              <tr class="form-group" [formGroup]="depositRowForm">
+                <td>
+                  <app-lpb-select2 [labelName]="'name'" [bindValue]="'code'" [items]="DEPOSIT_ACCOUNT_TYPES"
+                    [formControl]="depositRowForm.controls['accType']">
+                  </app-lpb-select2>
+                  <ng-container
+                    *ngTemplateOutlet="error; context: {controlName: 'accType', controlNameVi: 'Loại tài khoản', form: depositRowForm}">
+                  </ng-container>
+                </td>
+                <td>
+                  <app-money-acn-input [control]="depositRowForm.controls['acn']" [type]="'deposit'">
+                  </app-money-acn-input>
+                  <ng-container
+                    *ngTemplateOutlet="error; context: {controlName: 'acn', controlNameVi: 'Số TK', form: depositRowForm}">
+                  </ng-container>
+                  <ng-container
+                    *ngTemplateOutlet="warning; context: {controlName: 'acn', controlNameVi: 'Số TK', form: depositRowForm}">
+                  </ng-container>
+                </td>
+                <td>
+                  <input type="text" class="form-control" [formControl]="depositRowForm.controls['branchCode']"/>
+                </td>
+                <td>
+                  <app-lpb-money-input [class]="'form-control'" [maxlength]="18" [control]="depositRowForm.controls['amount']"
+                    [showErrorText]="false" [maxlength]="curCode === 'VND' ? 13 : 10"
+                    [blockComma]="curCode === 'VND' || (curCode === 'VND' && depositRowForm.controls['accType'].value === 'CASH')">
+                  </app-lpb-money-input>
+                  <ng-container
+                    *ngTemplateOutlet="error; context: {controlName: 'amount', controlNameVi: 'Số tiền', form: depositRowForm}">
+                  </ng-container>
+                </td>
+                <td *ngIf="actionStatus['deposit'].delete !== 'hidden'">
+                  <button class="delete-btn" (click)="removeRow('deposit',  i)" [disabled]="depositFormArr.length === 1 || actionStatus['deposit'].delete === 'disabled'">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</app-collapse-section>
+<!-- #endregion CHI TIẾT TIỀN GỬI -->
+
+<!-- #region CHI TIẾT TIỀN NHẬN -->
+<app-collapse-section [collapsed]="collapsedReceiptMoney" (collapsedChange)="collapsedReceiptMoneyChange.emit($event)">
+  <div area="title">
+    <div class="content-title my-3">
+      <span class="active text-uppercase mr-2">CHI TIẾT TIỀN NHẬN</span>
+    </div>
+  </div>
+
+  <div area="titleRight" *ngIf="actionStatus['receipt'].add !== 'hidden'">
+    <button mat-raised-button class="mat-button-no-bg d-flex align-items-center" (click)="addRow('receipt')"
+      [disabled]="actionStatus['receipt'].add === 'disabled'">
+      <mat-icon>add</mat-icon>
+      <span class="font-weight-semibold"> Thêm mới</span>
+    </button>
+  </div>
+
+  <div area="body" class="mb-3" *ngIf="receiptFormArr.length">
+    <div class="row mt-2 pd-15px">
+      <div class="w-100 rounded border">
+        <table class="my-2">
+          <thead>
+            <tr>
+              <th class="textLabel">Loại tài khoản</th>
+              <th class="textLabel">TKTT nhận</th>
+              <th class="textLabel">Mã ĐVKD</th>
+              <th class="textLabel">Số tiền (%)</th>
+              <th class="textLabel">Loại tiền</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let receiptRowForm of receiptFormArr['controls']; let i = index;">
+              <tr class="form-group" [formGroup]="receiptRowForm">
+                <td>
+                  <app-lpb-select2 [labelName]="'name'" [bindValue]="'code'" [items]="RECEIPT_ACCOUNT_TYPES"
+                    [formControl]="receiptRowForm.controls['accType']">
+                  </app-lpb-select2>
+                </td>
+                <td>
+                  <app-money-acn-input [control]="receiptRowForm.controls['acn']" [type]="'receipt'">
+                  </app-money-acn-input>
+                  <ng-container
+                    *ngTemplateOutlet="error; context: {controlName: 'acn', controlNameVi: 'TKTT nhận', form: receiptRowForm}">
+                  </ng-container>
+                  <ng-container
+                    *ngTemplateOutlet="warning; context: {controlName: 'acn', controlNameVi: 'Số TK', form: receiptRowForm}">
+                  </ng-container>
+                </td>
+                <td>
+                  <input type="text" class="form-control" [formControl]="receiptRowForm.controls['branchCode']"/>
+                </td>
+                <td>
+                  <input type="number" class="form-control" [formControl]="receiptRowForm.controls['amountPercent']"
+                    step="5" max="100" min="1" [JustNumberOnly]="{maxlength:3}" />
+                  <ng-container
+                    *ngTemplateOutlet="error; context: {controlName: 'amountPercent', controlNameVi: 'Số tiền (%)', form: receiptRowForm}">
+                  </ng-container>
+                </td>
+                <td>
+                  <app-lpb-select2 [labelName]="'name'" [bindValue]="'code'" [items]="SAVINGS_MONEY_TYPES"
+                    [formControl]="receiptRowForm.controls['amountType']">
+                  </app-lpb-select2>
+                  <ng-container
+                    *ngTemplateOutlet="error; context: {controlName: 'amountType', controlNameVi: 'Loại tiền', form: receiptRowForm}">
+                  </ng-container>
+                </td>
+                <td *ngIf="actionStatus['receipt'].delete !== 'hidden'">
+                  <button class="delete-btn" (click)="removeRow('receipt',  i)"  [disabled]="receiptFormArr.length === 1 || actionStatus['receipt'].delete === 'disabled'">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</app-collapse-section>
+<!-- #endregion CHI TIẾT TIỀN NHẬN -->

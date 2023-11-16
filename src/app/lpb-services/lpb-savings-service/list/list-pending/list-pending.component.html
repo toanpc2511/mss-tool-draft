@@ -1,0 +1,14 @@
+<div class="mt-4 container-fluid">
+  <div class="d-flex justify-content-end">
+    <button mat-button color="primary" class="mat-button-primary" (click)="onPushPending()">Đẩy pending</button>
+  </div> <app-lpb-datatable #datatable [config]="{
+    defaultSort: '',
+    hasSelection: true,
+    hasAddtionButton: false,
+    hiddenActionColumn: true,
+    outputHandleClick: true,
+    hasNoIndex: true,
+    hasPaging: false
+  }" (chkAll)="chkAll($event)" (chkClickChange)="chkClickChange($event)" [columns]="columns"
+    [dataSource]="data"></app-lpb-datatable>
+</div>

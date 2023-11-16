@@ -1,0 +1,24 @@
+<div class="py-3">
+    <mat-horizontal-stepper [linear]="true" #stepper (selectionChange)="getSelected($event)">
+        <ng-template matStepperIcon="edit">
+            <mat-icon>done</mat-icon>
+        </ng-template>
+        <mat-step label="Duyệt nộp tiền vào TG" [editable]="true" [completed]="stepOneCompleted">
+            <app-approved-file-step-one [dataRoot]="dataRootStep1"></app-approved-file-step-one>
+        </mat-step>
+        <mat-step label="Gạch nợ hóa đơn" [editable]="true" [completed]="stepTwoCompleted">
+            <app-approved-file-step-two [dataRoot]="dataRootStep2"></app-approved-file-step-two>
+        </mat-step>
+        <mat-step label="Báo có điện lực" [editable]="true" [completed]="stepThreeCompleted">
+            <app-approved-file-step-three [(dataRoot)]="dataRootStep3" (dataRootChange)="dataRootChange($event)"
+                [(totalAmount)]="totalAmountChangeDebtSuccess"
+                (exportXls)="exportExcel($event)"></app-approved-file-step-three>
+        </mat-step>
+        <mat-step label="Hoàn thành" [editable]="true" state="done">
+            <app-approved-file-step-four [dataRoot]="dataRootStep4" (viewDetail)="viewDetail()"
+                (exportExcel)="exportReport($event)"></app-approved-file-step-four>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>
+
+<app-lpb-footer [actions]="actions" class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

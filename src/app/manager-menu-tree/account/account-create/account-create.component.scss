@@ -1,0 +1,85 @@
+.text {
+    font-weight: 20px;
+    display: block;
+    float: left;
+    padding: 5px 0;
+}
+
+.btn-cancel {
+    background-color: #eb5757;
+    border: 1px solid #eb5757;
+    border-radius: 8px;
+    color: #fff;
+    width: 140px;
+    height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 23px;
+    border-style: solid;
+    outline: none
+}
+
+.btn-save {
+    background: #0C258A;
+    border: 1px solid #0C258A;
+    border-radius: 8px;
+    width: 140px;
+    height: 45px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 23px;
+    color: #FFFFFF;
+    border-style: solid;
+    outline: none;
+}
+.input-form {
+    display: flex;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.account-form {
+    top: 20px;
+}
+
+.decription {
+    top: 10px;
+}
+
+.footer-row {
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+
+.footer {
+    padding: 6px;
+}
+
+.footer label {
+    margin-bottom: 0px;
+}
+
+.action-button {
+    text-align: right;
+    padding: 0px;
+    margin: 0px;
+}
+
+.error-valid {
+    color: red;
+    padding: 10px 10px 0 0;
+}
+
+button {
+    background: #23388F;
+    border: red;
+}
+
+.employee-info {
+  color: #0C258A;
+}

@@ -1,0 +1,19 @@
+<div class="wizard">
+  <div class="wizard-steps">
+    <div
+      class="wizard-step"
+      *ngFor="let step of steps, let i = index"
+      [class.active]="(stepData$ | async)?.currentStep === step.stepNumber"
+      [class.can-active]="(stepData$ | async | canActiveStep:step.stepNumber)"
+      (click)="gotoStep(step.stepNumber)"
+    >
+      <div class="wizard-label">
+        <p class="number-step">
+<!--          <span><i class="fa fa-check" aria-hidden="true"></i></span>-->
+          {{step.stepNumber}}
+        </p>
+        <p class="wizard-title">{{step.stepName}}</p>
+      </div>
+    </div>
+  </div>
+</div>

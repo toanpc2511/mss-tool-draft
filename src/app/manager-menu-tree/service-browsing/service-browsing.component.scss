@@ -1,0 +1,85 @@
+table th {
+    vertical-align: middle;
+}
+
+table td {
+    vertical-align: middle;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.btn-action{
+    color: #007bff;
+}
+
+.footer-row {
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+
+.footer {
+    padding: 6px;
+}
+
+.success-approve {
+    color: #007bff;
+}
+
+.action-group {
+    display: flex;
+}
+
+.popup-detail {
+    width: 1100px;
+    height: 535px;
+    position: fixed;
+    overflow-y: scroll;
+    left: 50%;
+    top: 50%;
+    right: 50%;
+    border: 0.5px;
+    transform: translate(-50%, -50%);
+    /* ensure in front of rest of page -- increase as needed */
+    z-index: 1000;
+    /* visual illusion of being in front -- alter to taste */
+    background-color: white;
+    box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%);
+    .title {
+        height: 50px;
+        background-color: #253C97;
+        font-size: 25px;
+        padding: 15px;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        .close-popup {
+            color: #fff;
+            margin-top: -7px;
+        }
+    }
+    .btn-close {
+        // size: 50px;
+        position: sticky;
+        left: 93%;
+        bottom: 5%;
+    }
+}
+
+@media (min-width: 1400px) {
+    .btn{
+        padding: 0 !important;
+    }
+    .popup-detail {
+        width: 1440px;
+        height: auto;
+        max-height: 760px;
+    }
+}

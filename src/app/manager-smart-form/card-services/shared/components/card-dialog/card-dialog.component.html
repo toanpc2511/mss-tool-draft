@@ -1,0 +1,26 @@
+<div class="dialog">
+  <div class="dialog-header">
+    <div class="dialog-title">
+      {{title}}
+    </div>
+    <div class="dialog-close-btn" (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </div>
+  </div>
+  <div class="dialog-content">
+    <div class="dialog-message">
+      <p *ngFor="let message of messages">
+        {{message}}
+      </p>
+    </div>
+  </div>
+
+  <div class="dialog-footer">
+    <button *ngIf="!buttons?.dismiss || buttons?.dismiss?.display" [style.color]="buttons?.dismiss?.color"
+      [style.background-color]="buttons?.dismiss?.bgColor" class="btn btn-primary dialog-cancel"
+      (click)="closeDialog()">{{buttons?.dismiss?.label || 'Hủy bỏ'}}</button>
+
+    <button *ngIf="!buttons?.confirm || buttons?.confirm?.display" [style.color]="buttons?.confirm?.color"
+      [style.background-color]="buttons?.confirm?.bgColor" class="btn btn-primary dialog-confirm"
+      (click)="confirmDialog()">{{buttons?.confirm?.label || 'Đồng ý'}}</button>
+  </div>

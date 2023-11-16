@@ -1,0 +1,209 @@
+<div class="rc-verify-docs">
+  <div class="w-100">
+    <div class="rc-verify-docs-block">
+      <div class="row-item-info">
+        <div class="label-title fw-700">Thông tin GTXM 1</div>
+      </div>
+      <div class="row-item-info">
+        <div class="label-field">Loại GTXM<span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item">
+            <select class="form-control form-control-sm" #typeVerifyDocsFirst
+              [class.error-invalid]="errMsgTypeVerifyDocsFirst !== ''" (blur)="validateTypeVerifyDocsFirst()"
+              (change)="onChangeDocsTypeFirst($event.target.value)">
+              <option value="" disabled selected>Chọn loại GTXM 1</option>
+              <option *ngFor="let item of lstVerifyDocs" [value]="item.code">{{item.name}}
+              </option>
+            </select>
+          </div>
+          <div class="error-msg" *ngIf="errMsgTypeVerifyDocsFirst !== ''">{{errMsgTypeVerifyDocsFirst}}</div>
+        </div>
+        <div class="action-control ml-2">
+          <mat-icon class="plus" (click)="addOrRemoveNation('ADD')">add_circle_outline</mat-icon>
+        </div>
+      </div>
+      <div class="row-item-info">
+        <div class="label-field">Số GTXM <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item">
+            <input type="text" [(ngModel)]="verifyNumberDocsFirst" (blur)="validateVerifyNumberDocsFirst()"
+              maxlength="20" [ngModelOptions]="{standalone: true}" class="form-control w-100"
+              [class.error-invalid]="errMsgVerifyNumberDocsFirst !== ''">
+          </div>
+          <div class="error-msg" *ngIf="errMsgVerifyNumberDocsFirst !== ''">
+            {{errMsgVerifyNumberDocsFirst}}
+          </div>
+        </div>
+      </div>
+      <div class="row-item-info">
+        <div class="label-field">Ngày cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <app-lpb-date-picker #dpDateSupplyFirst (blurInput)="supplyDateFirstBlur()"
+            (dateChanged)="supplyDateFirstChange()" (keydown)="detectTabKey($event)"></app-lpb-date-picker>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Nơi cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item">
+            <input [(ngModel)]="provideByFirst"
+              [ngModelOptions]="{standalone: true}" type="text" class="form-control w-100"
+              [class.error-invalid]="errMsgProvideByFirst !== ''" (blur)="validateProvideByFirst()">
+          </div>
+          <div class="error-msg" *ngIf="errMsgProvideByFirst !== ''">
+            {{errMsgProvideByFirst}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày hết hiệu lực
+        </div>
+        <div class="value-field">
+          <app-lpb-date-picker #dpExpDateFirst (blurInput)="validateExpDateFirst();selectValueExpDateFirst()"
+            (dateChanged)="validateExpDateFirst();selectValueExpDateFirst()"></app-lpb-date-picker>
+        </div>
+      </div>
+    </div>
+
+    <div class="rc-verify-docs-block" [ngClass]="isShowDocsSecond ? 'd-block' : 'd-none'">
+      <div class="row-item-info">
+        <div class="label-title fw-700">Thông tin GTXM 2</div>
+      </div>
+      <div class="row-item-info">
+        <div class="label-field">Loại GTXM<span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item">
+            <select class="form-control form-control-sm" #typeVerifyDocsSecond
+              [class.error-invalid]="errMsgTypeVerifyDocsSecond !== ''" (blur)="validateTypeVerifyDocsSecond()"
+              (change)="onChangeDocsTypeSecond($event.target.value)">
+              <option value="" disabled selected>Chọn loại GTXM 2</option>
+              <option [value]="item.code" *ngFor="let item of lstVerifyDocs">{{item.name}}
+              </option>
+            </select>
+          </div>
+          <div class="error-msg" *ngIf="errMsgTypeVerifyDocsSecond !== ''">{{errMsgTypeVerifyDocsSecond}}</div>
+        </div>
+        <div class="action-control ml-2">
+          <mat-icon class="minus" (click)="addOrRemoveNation('REMOVE', 'SECOND')">remove_circle_outline</mat-icon>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Số GTXM <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item">
+            <input type="text" maxlength="20" class="form-control w-100" [(ngModel)]="verifyNumberDocsSecond"
+              maxlength="20" [ngModelOptions]="{standalone: true}"
+              [class.error-invalid]="errMsgVerifyNumberDocsSecond !== ''" (blur)="validateVerifyNumberDocsSecond()">
+          </div>
+          <div class="error-msg" *ngIf="errMsgVerifyNumberDocsSecond !== ''">
+            {{errMsgVerifyNumberDocsSecond}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <app-lpb-date-picker #dpDateSupplySecond (blurInput)="supplyDateSecondBlur()"
+            (dateChanged)="supplyDateSecondChange()" (keydown)="detectTabKey($event)"></app-lpb-date-picker>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Nơi cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item">
+            <input [(ngModel)]="provideBySecond" [ngModelOptions]="{standalone: true}" type="text" class="form-control w-100"
+              [class.error-invalid]="errMsgProvideBySecond !== ''">
+          </div>
+          <div class="error-msg" *ngIf="errMsgProvideBySecond !== ''">
+            {{errMsgProvideBySecond}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày hết hiệu lực
+        </div>
+        <div class="value-field">
+          <app-lpb-date-picker #dpExpDateSecond (blurInput)="validateExpDateSecond();selectValueExpDateSecond()"
+            (dateChanged)="validateExpDateSecond();selectValueExpDateSecond()"></app-lpb-date-picker>
+        </div>
+      </div>
+    </div>
+
+    <div class="rc-verify-docs-block" [ngClass]="isShowDocsThird ? 'd-block' : 'd-none'">
+      <div class="row-item-info">
+        <div class="label-title fw-700">Thông tin GTXM 3</div>
+      </div>
+      <div class="row-item-info">
+        <div class="label-field">Loại GTXM<span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item">
+            <select class="form-control form-control-sm" #typeVerifyDocsThird
+              [class.error-invalid]="errMsgTypeVerifyDocsThird !== ''" (blur)="validateTypeVerifyDocsThird()"
+              (change)="onChangeDocsTypeThird($event.target.value)">
+              <option value="" disabled selected>Chọn loại GTXM 3</option>
+              <option [value]="item.code" *ngFor="let item of lstVerifyDocs">{{item.name}}
+              </option>
+            </select>
+          </div>
+          <div class="error-msg" *ngIf="errMsgTypeVerifyDocsThird !== ''">{{errMsgTypeVerifyDocsThird}}</div>
+        </div>
+        <div class="action-control ml-2">
+          <mat-icon class="minus" (click)="addOrRemoveNation('REMOVE', 'THIRD')">remove_circle_outline</mat-icon>
+        </div>
+      </div>
+      <div class="row-item-info">
+        <div class="label-field">Số GTXM <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item">
+            <input type="text" [(ngModel)]="verifyNumberDocsThird" (blur)="validateVerifyNumberDocsThird()"
+              maxlength="20" [ngModelOptions]="{standalone: true}" class="form-control w-100"
+              [class.error-invalid]="errMsgVerifyNumberDocsThird !== ''">
+          </div>
+          <div class="error-msg" *ngIf="errMsgVerifyNumberDocsThird !== ''">
+            {{errMsgVerifyNumberDocsThird}}
+          </div>
+        </div>
+      </div>
+      <div class="row-item-info">
+        <div class="label-field">Ngày cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <app-lpb-date-picker #dpDateSupplyThird (blurInput)="supplyDateThirdBlur()"
+            (dateChanged)="supplyDateThirdChange()" (keydown)="detectTabKey($event)"></app-lpb-date-picker>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Nơi cấp <span class="item-require">(*)</span></div>
+        <div class="value-field">
+          <div class="control-item">
+            <input [(ngModel)]="provideByThird" type="text" [ngModelOptions]="{standalone: true}" class="form-control w-100"
+              [class.error-invalid]="errMsgProvideByThird !== ''">
+          </div>
+          <div class="error-msg" *ngIf="errMsgProvideByThird !== ''">
+            {{errMsgProvideByThird}}
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày hết hiệu lực
+        </div>
+        <div class="value-field">
+          <app-lpb-date-picker #dpExpDateThird (blurInput)="validateExpDateThird();selectValueExpDateThird()"
+            (dateChanged)="validateExpDateThird();selectValueExpDateThird()"></app-lpb-date-picker>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="rc-verify-docs-common-err">
+    <p>
+      {{errMsgCommonVerifyDocs}}
+    </p>
+  </div>
+</div>

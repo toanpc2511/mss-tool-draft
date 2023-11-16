@@ -1,0 +1,32 @@
+<div class="abc">
+  <div class="col-12" style="padding: 0px;">
+    <h2 mat-dialog-title style="background: #23388F;color:#fff;border-bottom: 1px solid #828282;font-size: 16px;">
+      {{title}}
+      <span class="material-icons" (click)="closeDialog(0)" style="float: right;cursor: pointer;">close</span>
+    </h2>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <p>Bạn có muốn từ chối dịch vụ này không ?</p>
+    <div class="note row m-0">
+      <div class="col-2 p-0">
+        <h4>Ghi chú:</h4>
+      </div>
+      <!-- <textarea class="noter" rows="5" (input)="submitted = true" [ngClass]="{'is-invalid': messageValidator()}" [(ngModel)]="note"></textarea> -->
+      <div class="col-10 p-0">
+        <textarea class="form-control noter" rows="5" (input)="submitted = true"
+          [ngClass]="{'is-invalid': messageValidator()}" [(ngModel)]="note" placeholder="Nội dung ghi chú"
+          maxlength="1000"></textarea>
+        <div class="invalid-feedback error-message">
+          <div>Không được để trống ghi chú</div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="mb-0 d-block">
+    <div class="py-2 text-right">
+      <button type="button" class="btn newfile btn-color" (click)="closeDialog(1)"
+        cdkFocusInitial>{{hidden ? 'Đóng' : 'Đồng ý'}}</button>
+      <button [hidden]="hidden" type="button" class="btn closePopup" (click)="exitDialog(0)">Hủy</button>
+    </div>
+  </mat-dialog-actions>
+</div>

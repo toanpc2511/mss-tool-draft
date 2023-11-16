@@ -1,0 +1,49 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NO_EXIST" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+
+<div class="d-flex flex-column form-group" [formGroup]="form">
+  <div class="content-title">
+    THÔNG TIN YÊU CẦU
+  </div>
+  <div class="main-form">
+    <div class="container mt-4 form-container">
+      <div class="row row-form">
+        <div class="col-lg-2 col-form-label textLabel">Loại dịch vụ <span class="text-danger">(*)</span></div>
+        <div class="col-lg-10 col-md-8">
+          <app-lpb-select2 [placeholder]="!isDetail? 'Chọn loại dịch vụ':null" [items]="SERVICE_TYPE_ARR"
+            labelName="name" bindValue="key" formControlName="serviceCode" class="w-100"></app-lpb-select2>
+          <ng-container *ngTemplateOutlet="error; context: {controlName: 'serviceCode', controlNameVi: 'Loại dịch vụ'}">
+          </ng-container>
+        </div>
+      </div>
+      <div class="row row-form">
+        <div class="col-lg-2 col-form-label textLabel">Lý do </div>
+        <div class="col-lg-10">
+          <input type="text" formControlName="reason" class="form-control" maxlength="50" trimInput />
+        </div>
+      </div>
+      <div class="row row-form">
+        <div class="col-lg-2 col-form-label textLabel">Ghi chú</div>
+        <div class="col-lg-10">
+          <textarea formControlName="note" maxlength="255" [attr.placeholder]="!isDetail?'Nhập nội dung':null"
+            class="form-control" rows="4">
+          </textarea>
+          <ng-container *ngTemplateOutlet="error; context: {controlName: 'note', controlNameVi: 'Ghi chú'}">
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div></div>

@@ -1,0 +1,5 @@
+<input type="text" class="form-control" (blur)="changeTellerCode($event)" trimInput [formControl]="control"
+  placeholder="Nhập mã nhân viên" (input)="onEmployeeIdInputChange($event)" maxlength="50">
+<div class="mt-2">
+  <span>{{employeeName}}</span>
+</div>

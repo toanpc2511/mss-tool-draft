@@ -1,0 +1,74 @@
+<div class="bg-readonly border-radius-panel p-2">
+    <div class="text-high-light fw-bolder">Thông tin giao dịch</div>
+    <div class="d-flex flex-wrap mt-3">
+        <div class="col-4">
+            <label for="">Số tiền</label>
+            <div class="fw-bolder"> {{creditInfo?.totalAmount | number}} VNĐ </div>
+        </div>
+        <div class="col-4">
+            <label for="">Hình thức thanh toán</label>
+            <div class="fw-bolder"> {{dataRoot?.transferPaymentTypeName}} </div>
+        </div>
+        <div class="col-4">
+            <label for="">Trạng thái hạch toán</label>
+            <div class="fw-bolder">{{creditInfo?.statusName}}</div>
+        </div>
+        <div class="col-4 mt-3">
+            <label for="">Nội dung thanh toán</label>
+            <div class="fw-bolder">CK tài khoản trung gian</div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-readonly border-radius-panel p-2 mt-3">
+    <div class="text-high-light fw-bolder">Tài khoản ghi nợ</div>
+    <div class="d-flex flex-wrap mt-3">
+        <div class="col-4">
+            <label for="">Tài khoản thanh toán</label>
+            <div class="fw-bolder"> {{debitInfo?.acNumber}} </div>
+        </div>
+        <div class="col-4">
+            <label for="">Tên tài khoản</label>
+            <div class="fw-bolder"> {{debitInfo?.acName}} </div>
+        </div>
+        <div *ngIf="dataRoot?.transferPaymentType === 'CK'" class="col-4">
+            <label for="">Số dư tài khoản trước giao dịch</label>
+            <div class="fw-bolder"> {{preBalance?(preBalance | number):'--'}} VNĐ </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-readonly border-radius-panel p-2 mt-3">
+    <div class="text-high-light fw-bolder">Tài khoản ghi có</div>
+    <div class="d-flex flex-wrap mt-3">
+        <div class="col-4">
+            <label for="">Tài khoản thanh toán</label>
+            <div class="fw-bolder"> {{creditInfo?.acNumber}} </div>
+        </div>
+        <div class="col-4">
+            <label for="">Tên tài khoản</label>
+            <div class="fw-bolder"> {{creditInfo?.acName}} </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-readonly border-radius-panel p-2 mt-3">
+    <div class="text-high-light fw-bolder">Thông tin người nộp tiền</div>
+    <div class="d-flex flex-wrap mt-3">
+        <div class="col-4">
+            <label for="">Họ và tên</label>
+            <div class="fw-bolder"> {{payerInfo?.payerName?payerInfo?.payerName:'--'}} </div>
+        </div>
+        <div class="col-4">
+            <label for="">Địa chỉ</label>
+            <div class="fw-bolder"> {{payerInfo?.payerAddress?payerInfo?.payerAddress:'--'}} </div>
+        </div>
+        <div class="col-4">
+            <label for="">SĐT</label>
+            <div class="fw-bolder"> {{payerInfo?.payerPhoneNumber?payerInfo?.payerPhoneNumber:'--'}} </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-high-light fw-bolder text-uppercase mt-4">Thông tin hạch toán</div>
+<app-lpb-datatable [dataSource]="dataSource" [columns]="columns" [config]="config"></app-lpb-datatable>

@@ -1,0 +1,17 @@
+<div class="lpb-main">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between"
+  >
+    <div class="d-flex align-items-center">
+      <span>Tạo mới thanh toán thuế</span>
+    </div>
+  </div>
+
+  <div [style.display]="!transaction ? 'block' : 'none'">
+    <app-search-info-tax></app-search-info-tax>
+  </div>
+
+  <ng-container *ngIf="transaction">
+    <app-create-transaction [data]="transaction" ></app-create-transaction>
+  </ng-container>
+</div>

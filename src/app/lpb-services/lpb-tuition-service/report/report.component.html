@@ -1,0 +1,75 @@
+<div class="content">
+  <h3 class="title text-center text-uppercase font-weight-bold">BÁO CÁO THANH TOÁN HỌC PHÍ</h3>
+  <hr/>
+  <form [formGroup]="forms">
+    <div class="px-5">
+      <div class="row px-5 mx-auto my-2">
+        <div class="col-2 text-right">
+          <label class="required">Chọn trường</label>
+        </div>
+        <div class="col-4">
+          <app-lpb-select2 formControlName="universityCode"
+                           placeholder="Chọn trường"
+                           [items]="schools"
+                           labelName="name"
+                           bindValue="code"
+          >
+          </app-lpb-select2>
+          <app-validate [control]="forms.get('universityCode')" message="Chưa chọn trường"
+                        error="required"></app-validate>
+        </div>
+        <div class="col-2 text-right">
+          <label>Mã sinh viên</label>
+        </div>
+        <div class="col-4">
+          <input
+            type="text"
+            formControlName="studentCode"
+            placeholder="Nhập mã sinh viên"
+            class="form-control"
+            trimInput
+            [maxlength]="20"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="px-5">
+      <div class="row px-5 mx-auto my-2">
+        <div class="col-2 text-right">
+          <label class="required">Từ ngày</label>
+        </div>
+        <div class="col-4">
+          <div>
+            <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="checkValidateDate()"
+                                 (dateChanged)="getFromDate()"></app-lpb-date-picker>
+          </div>
+        </div>
+        <div class="col-2 text-right">
+          <label class="required">Đến ngày</label>
+        </div>
+        <div class="col-4">
+          <div>
+            <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="checkValidateDate()"
+                                 (dateChanged)="getToDate()"></app-lpb-date-picker>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-2">
+      <button
+        mat-raised-button
+        (click)="reportTuition()"
+        class=" bg-btn__blue text-while button-send "
+      >
+        In báo cáo thu hộ
+      </button>
+      <button
+        mat-raised-button
+        (click)="reportTransaction()"
+        class=" bg-btn__blue text-while button-send ml-2"
+      >
+        In báo cáo liệt kê
+      </button>
+    </div>
+  </form>
+</div>

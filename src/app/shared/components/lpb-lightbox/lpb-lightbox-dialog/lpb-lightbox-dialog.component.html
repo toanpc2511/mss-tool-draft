@@ -1,0 +1,8 @@
+<div class="center-aligned" #lightboxDialogContent>
+  <div class="lightbox-dialog" #lightboxDialog (mousedown)="startMoveImage($event)" [style.display]="'block'">
+    <img class="d-block lightbox-dialog-img" [src]="src" [alt]="alt">
+  </div>
+</div>
+<div #lightboxDialogClose class="lightbox-dialog-close" (click)="close()">
+  <i class="fa fa-times" aria-hidden="true"></i>
+</div>

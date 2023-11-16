@@ -1,0 +1,39 @@
+.list-detail-account {
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-bottom: 20px;
+  &-title {
+    color: #17589f;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 5px 5px;
+    display: flex;
+  }
+  .row{
+    padding-top: 5px;
+   // padding-bottom: 5px;
+  }
+  .label-field{
+    font-size: 16px;
+    padding-top: 5px;
+    color: #0c258a;
+    font-weight: 500;
+    .item-require {
+      color: #e83c19;
+      font-weight: 500;
+    }
+  }
+  .value-field{
+    width: 100%;
+    flex: 0 0 66.6666%;
+    margin-bottom: 12px;
+  }
+  .btn-color{
+    width: 100%;
+    background: #23388F;
+    color: white;
+
+  }
+  }

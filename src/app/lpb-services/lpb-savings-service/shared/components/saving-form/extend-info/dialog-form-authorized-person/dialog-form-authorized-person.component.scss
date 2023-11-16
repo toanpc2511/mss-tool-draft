@@ -1,0 +1,41 @@
+.dialog-main {
+  max-height: 100vh;
+  overflow: auto;
+}
+.dialog-content {
+  width: 1300px;
+  max-width: 100%;
+  &._full {
+    width: 100%;
+  }
+}
+.content-title span {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.scope-duration {
+  color: #000;
+  font-size: 16px;
+  line-height: 18px;
+  label {
+    font-weight: 500;
+    width: 150px;
+  }
+  label,
+  mat-radio-button {
+    margin-right: 90px;
+  }
+  .duration,
+  .scope {
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+  }
+}
+
+:host ::ng-deep app-collapse-section {
+  .collapsible {
+    overflow: hidden;
+  }
+}

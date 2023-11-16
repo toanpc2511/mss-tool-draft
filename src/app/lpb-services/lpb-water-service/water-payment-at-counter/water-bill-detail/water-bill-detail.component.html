@@ -1,0 +1,36 @@
+<div class="p-4">
+    <div class="text-high-light text-uppercase fw-bolder">Thông tin hạch toán
+        <div class="float-right">
+            <span role="button" (click)="close()" class="btn-close">✕</span>
+        </div>
+    </div>
+    <hr>
+    <div class="div-table-flex">
+        <table>
+            <thead>
+                <tr>
+                    <th class="w-50-px">STT</th>
+                    <th class="w-150-px">Số tài khoản</th>
+                    <th class="w-400-px">Tên tài khoản</th>
+                    <th class="w-50-px">Nợ/Có</th>
+                    <th class="w-100-px">Số tiền</th>
+                    <th class="w-100-px">Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of dataSource; let i = index;">
+                    <td class="w-50-px justify-content-center"> {{i+1}} </td>
+                    <td class="w-150-px"> {{row["acNumber"]}} </td>
+                    <td class="w-400-px" matTooltip='{{row["acName"]}}'> <span
+                            class="text-truncate">{{row["acName"]}}</span> </td>
+                    <td class="w-50-px"> {{row["drcrType"]}} </td>
+                    <td class="w-100-px justify-content-end"> {{row["lcyAmount"] | vnCurency}} </td>
+                    <td class="w-100-px"> {{row["accountingStatusName"]}} </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center mt-4">
+        <button class="btn lpb-btn-primary" (click)="close()">Giao dịch khác</button>
+    </div>
+</div>

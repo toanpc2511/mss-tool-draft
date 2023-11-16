@@ -1,0 +1,63 @@
+
+<div class="p-4 approved">
+    <div
+      class="content-title w-100 text-uppercase d-flex justify-content-between"
+    >
+      <div class="d-flex align-items-center">
+        <span>Danh sách giao dịch</span>
+      </div>
+
+      <p class="d-inline-block btn-close" (click)="onCloseModal()">
+        <i class="fa fa-times"></i>
+      </p>
+    </div>
+    <div class="tbl-result mt-3">
+      <div class="data-approved">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="">Số GD</th>
+              <th class="">Thông báo</th>
+              <th class="">Trạng thái</th>
+              <th class="">Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of transactions"
+              [ngClass]="item?.status !== 'APPROVE' ? 'text-red' : ''"
+            >
+              <td class="id">{{ item?.transactionId }}</td>
+              <td class="notify">
+                <span *ngIf="item?.status !== 'APPROVE'">{{
+                  item?.message
+                }}</span>
+
+              <ul *ngIf="item?.changeDebtResponses?.length > 0 && item?.status !== 'APPROVE'">
+                <li *ngFor="let err of item?.changeDebtResponses">Tháng {{err?.billId}}/{{err?.billCode}}: {{err?.description}}</li>
+              </ul>
+                <span *ngIf="item?.status === 'APPROVE'">Thành công</span>
+              </td>
+              <td class="status">
+                {{ item?.status === "APPROVE" ? "Đã duyệt" : "Lỗi" }}
+              </td>
+              <td class="action">
+                <span
+                  *ngIf="item?.status === 'APPROVE'"
+                  matTooltip="Xem chi tiết"
+                  (click)="showDetailTransModal(item.transactionId)"
+                  ><i class="fa fa-eye success"></i
+                ></span>
+                <span *ngIf="item?.status !== 'APPROVE'"
+                  ><i class="fa fa-eye-slash"></i
+                ></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #detail></ng-template>
+  

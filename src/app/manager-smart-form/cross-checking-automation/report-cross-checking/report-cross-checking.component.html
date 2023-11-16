@@ -1,0 +1,102 @@
+<div class="main">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isDownload" class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="container-fluid">
+    <div class="row cust-row">
+      <div class="col-12 ">
+        <span class="text content-title">BÁO CÁO ĐỐI SOÁT GIAO DỊCH THANH TOÁN THẺ</span>
+      </div>
+      <div class="col-12 information-section" style="padding-top: 60px; padding-bottom: 0">
+        <form [formGroup]="reportForm">
+          <div class="col-6 colLeft">
+            <div class="form-group row">
+              <label class=" col-4 col-form-label textLabel">Từ&nbsp;Ngày</label>
+              <div class="col-8">
+                <app-lpb-date-picker #dpCreatedDateFrom [maxDate]="getToday()" (blurInput)="dateFromChanged()"
+                                     (dateChanged)="getFromDate()"></app-lpb-date-picker>
+              </div>
+
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Đơn vị kinh doanh</label>
+              <div class="col-sm-8 ">
+                <app-lpb-select2 [apiUrl]="'/lpb-common-service/api/public/redis/branch'" labelName="codeAndName" bindValue="code"
+                                 formControlName="dvkd">
+
+                </app-lpb-select2>
+<!--                <ng-select [multiple]="false" bindLabel="name" bindValue="code" formControlName="dvkd"-->
+<!--                           placeholder="Đơn vị kinh doanh">-->
+<!--                  <ng-option *ngFor="let branch of branchesData"-->
+<!--                             [value]="branch.code">{{branch.code + ' - ' + branch.name}}</ng-option>-->
+<!--                </ng-select>-->
+              </div>
+              <div class="errMsg" *ngIf="isSubmitted && branchCode.errors?.required">
+                <span>Đơn vị kinh doanh không được để trống.</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Loại thẻ</label>
+              <div class="col-sm-8 ">
+                <ng-select [multiple]="false" bindLabel="name" bindValue="code" placeholder="-- Chọn loại thẻ --"
+                           formControlName="cardType" >
+                  <ng-option value="ALL">Tất cả</ng-option>
+                  <ng-option value="459900026">Thẻ Master - GL 459900026</ng-option>
+                  <ng-option value="459900029">Thẻ Prepaid - GL 459900029</ng-option>
+                  <ng-option value="459900033">Thẻ JCB - GL 459900033</ng-option>
+                  <ng-option value="459900035">Thẻ Visa - GL 459900035</ng-option>
+                </ng-select>
+              </div>
+              <div class="errMsg" *ngIf="isSubmitted && cardType.errors?.required">
+                <span style="" >Chưa chọn loại thẻ.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 colRight">
+            <div class="form-group row">
+              <label class="col-4 col-form-label textLabel">Đến&nbsp;Ngày</label>
+              <div class="col-8">
+                <app-lpb-date-picker #dpCreatedDateTo [maxDate]="getToday()" (blurInput)="dateToChanged()"
+                                     (dateChanged)="getToDate()"></app-lpb-date-picker>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Loại báo cáo</label>
+              <div class="col-sm-8 ">
+                <ng-select [multiple]="false" bindLabel="name" bindValue="code" placeholder="-- Loại báo cáo --"
+                           formControlName="reportType">
+                  <ng-option value="00">00 - Báo cáo khớp đúng</ng-option>
+                  <ng-option value="10">10 - Báo cáo lệch - CORE BANKING thừa</ng-option>
+                  <ng-option value="01">01 - Báo cáo lệch - CORE BANKING thiếu</ng-option>
+<!--                  <ng-option value="all">Báo cáo chi tiết giao dịch</ng-option>-->
+                </ng-select>
+              </div>
+              <div class="errMsg" *ngIf="isSubmitted && reportType.errors?.required">
+                <span style="" >Loại báo cáo không được để trống.</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Định dạng</label>
+              <div class="col-sm-8 ">
+                <ng-select [multiple]="false" bindLabel="name" bindValue="code" placeholder="-- Loại định dạng --"
+                           formControlName="format">
+                  <ng-option value="EXCEL">Excel</ng-option>
+                  <ng-option value="PDF">PDF</ng-option>
+                </ng-select>
+              </div>
+              <div class="errMsg" *ngIf="isSubmitted && format.errors?.required">
+                <span style="" >Chưa chọn định dạng.</span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-12 text-center">
+        <button (click)="exportFile()" type="button" class="btn mt-3"
+                style="background-color: #f47326; color: white; margin: 7px 0">
+          <i class="fa fa-print" style="color: white"></i>
+          Xuất báo cáo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

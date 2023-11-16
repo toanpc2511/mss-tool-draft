@@ -1,0 +1,368 @@
+<app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoadingCallApi"
+    class="sq-global-backdrop center-aligned">
+</app-progress-spinner>
+<div class="account-signature-detail">
+    <!--  Thông tin Khách hàng-->
+    <div class="account-signature-detail-title">
+        <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">account_circle</mat-icon>
+        <span>THÔNG TIN KHÁCH HÀNG</span>
+    </div>
+    <div class="w-100 d-flex justify-content-between account-signature-detail-content">
+        <div class="account-signature-detail-content-left">
+
+            <div class="row-item-info">
+                <div class="label-field">Mã Khách hàng :</div>
+                <div class="value-field">
+                    <div class="control-item  d-flex align-items-center">
+                        <div>{{ (customerInfo && customerInfo.customerCode) ? customerInfo.customerCode : ''}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-item-info">
+                <div class="label-field">Số giấy tờ xác minh :</div>
+                <div class="value-field">
+                    <div class="control-item d-flex align-items-center">
+                        <div>{{ (customerInfo && customerInfo.person) ? customerInfo.person.perDocNoList[0].perDocNo :
+                            ''}}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="account-signature-detail-content-right">
+            <div class="row-item-info">
+                <div class="label-field">Họ và tên :</div>
+                <div class="value-field">
+                    <div class="control-item d-flex align-items-center">
+                        <div>{{ (customerInfo && customerInfo.person) ? customerInfo.person.fullName : ''}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-item-info">
+                <div class="label-field">Ngày sinh :</div>
+                <div class="value-field">
+                    <div class="control-item d-flex align-items-center">
+                        <div>{{ (customerInfo && customerInfo.person) ? customerInfo.person.dateOfBirth : ''}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-item-info">
+                <div class="label-field">Trạng thái :</div>
+                <div class="value-field">
+                    <div class="control-item d-flex align-items-center">
+                      <ng-container>
+                        <label>{{customerInfo?.statusCifName || 'Khởi tạo'}}</label>
+                      </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="account-signature-detail-title">
+        <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">description</mat-icon>
+        <span>DANH SÁCH TÀI LIỆU ĐÍNH KÈM</span>
+    </div>
+    <p></p>
+
+    <button class="btn" *ngIf="isDisableButtonCreate" (click)="openModalCreate()">
+        <mat-icon class="fa fa-plus-circle"></mat-icon> Thêm mới
+    </button>
+
+    <div class="list-all-process">
+
+        <table class="table">
+            <colgroup>
+                <col width="3%" span="1">
+                <col width="35%" span="1">
+                <col width="10%" span="1">
+                <col width="10%" span="1">
+                <col width="10%" span="1">
+                <col width="25%" span="1">
+                <col width="7%" span="1">
+            </colgroup>
+            <thead class="colortable">
+                <tr class="colortable">
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên tài liệu</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Ngày upload</th>
+                    <th scope="col">Chức năng</th>
+                    <th scope="col">Tài liệu</th>
+                    <th scope="col">Gửi duyệt</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of listAttachment; index as i">
+                    <td>{{i + 1}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.fileStatusName}}</td>
+                    <td>{{item.startDate}}</td>
+                    <!-- ------nút update---------- -->
+                    <td class="btn-group">
+                        <button *ngIf="item.isShowButtonU" class="btnfunct" (click)="getDetail(item)">
+                            <mat-icon *ngIf="item.isUpdateUpload" matTooltip="Update" class="funct"
+                                (click)="openModalUpdate()">vertical_align_top
+                            </mat-icon>
+                            <mat-icon *ngIf="!item.isUpdateUpload" matTooltip="Upload" class="funct"
+                                (click)="openModalUpdate()">vertical_align_top
+                            </mat-icon>
+                        </button>
+                        <button *ngIf="!item.isShowButtonU" class="btnfunct">
+                            <mat-icon class="funct disable">vertical_align_top</mat-icon>
+                        </button>
+                        <!-- ------nút history---------- -->
+                        <button *ngIf="item.isShowButtonH" class="btnfunct" (click)="getDetail(item)">
+                            <mat-icon matTooltip="History" class="funct" (click)="openModalHistory()">visibility
+                            </mat-icon>
+                        </button>
+                        <button *ngIf="!item.isShowButtonH" class="btnfunct">
+                            <mat-icon class="funct disable">
+                                visibility_off
+                            </mat-icon>
+                        </button>
+                        <!-- ------nút delete---------- -->
+                        <button *ngIf="item.isShowButtonDAtt" class="btnfunct" (click)="getDetail(item)">
+                            <mat-icon matTooltip="Delete" class="funct" (click)="openModalConFirmDelete()">delete
+                            </mat-icon>
+                        </button>
+                        <button *ngIf="!item.isShowButtonDAtt" class="btnfunct">
+                            <mat-icon class="funct disable">delete
+                            </mat-icon>
+                        </button>
+                    </td>
+                    <td>
+                        <span><label class="label-fileName" matTooltip="Xem file"
+                                (click)="openModalView(item)">{{item.fileName}}</label></span>
+                        <button class="btndelete" (click)="getDetail(item)">
+                            <mat-icon *ngIf="item.isShowButtonD" matTooltip="Delete File" class="funct"
+                                (click)="openModalConFirm()">clear
+                            </mat-icon>
+                        </button>
+                    </td>
+                    <td>
+                        <!-- ------nút gửi duyệt---------- -->
+                        <button *ngIf="item.isSendAprrove" class="btnfunct" (click)="getDetail(item)">
+                            <mat-icon (click)="openModalConFirmSendAprrove()" matTooltip="Gửi duyệt" class="funct">send
+                            </mat-icon>
+                        </button>
+                        <button *ngIf="!item.isSendAprrove" class="btnfunct">
+                            <mat-icon class="funct disable">send
+                            </mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="account-signature-detail">
+    <div class="row footer-row">
+        <div class="col-12 action-button">
+            <div (click)="backPage()" class="footer">
+                <span class="material-icons"> keyboard_backspace </span>
+                <label>Quay lại</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-lpb-modal headerText="THÊM MỚI TÀI LIỆU ĐÍNH KÈM" [show]="isCreateAttachment" [unit]="'%'" [widthContent]="80"
+    [heightContent]="45" (hideModal)="isCreateAttachment = false; resetFormAttachment()">
+
+    <form [formGroup]="createAttachmentForm">
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><label class="col-form-label">Tên tài liệu <span class="text-danger ">(*)</span>
+                            :</label></div>
+                    <div class="col-8">
+                        <input formControlName="title" type="text" class="form-control"
+                            [class.haveError]="title.touched && title.errors?.required ">
+                        <small *ngIf="title.touched && title.errors?.required " class="item-require">Vui lòng nhập
+                            tên tài liệu</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><label class="col-form-label">Upload tài liệu <span
+                                class="text-danger ">(*)</span> :</label>
+                    </div>
+                    <div class="col-8"><input #myInput name="fileName" type="file" class="form-control"
+                            accept=".pdf,.doc,.docx" (change)="onFileSelect($event)" [class.haveError]="checkErr !== ''"
+                            multiple>
+                        <small *ngIf="checkErr !== '' " class="item-require">{{checkErr}}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-8"><label class="col-form-label">( Định dạng doc, pdf và dung lượng < 500 kb
+                                )</label>
+                    </div>
+                </div>
+            </div>
+        </div> <br />
+        <div class="btn-sig">
+            <button type="button" class="mr-2 btn-close"
+                (click)="isCreateAttachment = false;resetFormAttachment()">Đóng</button>
+            <button type="button" class="mr-2 btn-save" (click)="checkCreateAttachment()">Thêm
+                mới</button>
+        </div>
+    </form>
+
+</app-lpb-modal>
+
+<app-lpb-modal headerText="CHỈNH SỬA TÀI LIỆU ĐÍNH KÈM" [show]="isUpdateAttachment" [unit]="'%'" [widthContent]="80"
+    [heightContent]="45" (hideModal)="isUpdateAttachment = false; resetFormAttachment()">
+
+    <form [formGroup]="createAttachmentForm">
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4"><label class="col-form-label">Tên tài liệu <span class="text-danger ">(*)</span>
+                            :</label></div>
+                    <div class="col-8">
+                        <input formControlName="title" type="text" class="form-control"
+                            [class.haveError]="title.touched && title.errors?.required ">
+                        <small *ngIf="title.touched && title.errors?.required " class="item-require">Vui lòng nhập
+                            tên tài liệu</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-4">
+                        <label *ngIf="isLabelUpdate" class="col-form-label">Upload tài liệu <span
+                                class="text-danger ">(*)</span> :</label>
+                        <label *ngIf="!isLabelUpdate" class="col-form-label">Update tài liệu <span
+                                class="text-danger ">(*)</span> :</label>
+                    </div>
+                    <div class="col-8"><input #myInputUpload name="fileName" type="file" class="form-control"
+                            accept=".doc, .docx, .pdf" (change)="onFileSelectUpdate($event)"
+                            [class.haveError]="checkErr !== ''">
+                        <small *ngIf="checkErr !== '' " class="item-require">{{checkErr}}</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-8"><label class="col-form-label">( Định dạng doc, pdf và dung lượng < 500 kb
+                                )</label>
+                    </div>
+                </div>
+            </div>
+        </div><br />
+
+        <div class="btn-sig">
+            <button type="button" class="mr-2 btn-close"
+                (click)="isUpdateAttachment = false; resetFormAttachment()">Đóng</button>
+            <button type="button" class="mr-2 btn-save" (click)=" getUpdateAttachment()">Lưu
+                thông tin</button>
+        </div>
+    </form>
+
+</app-lpb-modal>
+
+<app-lpb-modal headerText="LỊCH SỬ UPLOAD TÀI LIỆU ĐÍNH KÈM" [show]="isHistoryAttachment" [unit]="'%'"
+    [widthContent]="65" [heightContent]="45" (hideModal)="isHistoryAttachment = false">
+
+    <div class="list-all-signature">
+
+        <table class="table">
+            <colgroup>
+                <col width="3%" span="1">
+                <col width="25%" span="1">
+                <col width="25%" span="1">
+                <col width="25%" span="1">
+            </colgroup>
+            <thead class="colortable">
+                <tr class="colortable">
+                    <th scope="col">STT</th>
+                    <th scope="col">Tên tài liệu</th>
+                    <th scope="col">Ngày Upload</th>
+                    <th scope="col">File tài liệu đính kèm</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of historyAttachment; index as i">
+                    <td>{{i + 1}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.startDate}}</td>
+                    <td class="label-fileName" matTooltip="Xem file đính kèm" (click)="openModalView(item)">
+                        {{item.fileName}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="error" *ngIf="!historyAttachment">Không có bản ghi nào tồn tại</div>
+    </div><br />
+    <div class="btn-sig">
+        <button type="button" class="mr-2 btn-close" (click)="resetFormAttachment()">Đóng</button>
+    </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Xác nhận" [show]="isConfirm" [widthContent]="40" [heightContent]="30"
+    (hideModal)="isConfirm = false">
+    <div class="account-owner-list-content">
+        <div class="text-center">
+            Bạn có chắc chắc muốn thực hiện thao tác xóa Tài liệu này ?
+        </div><br />
+        <div class="btn-sig">
+            <button class="mr-2 btn-cancel" (click)="confimRemoveData('CANCEL')">
+                Hủy
+            </button>
+            <button class="mr-2 btn-save" (click)="confimRemoveData('CONFIM')">
+                Đồng ý
+            </button>
+        </div>
+    </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Xác nhận" [show]="isConfirmDelete" [widthContent]="40" [heightContent]="30"
+    (hideModal)="isConfirmDelete = false">
+    <div class="account-owner-list-content">
+        <div class="text-center">
+            Bạn có chắc chắc muốn thực hiện thao tác xóa Tài liệu này ?
+        </div><br />
+        <div class="btn-sig">
+            <button class="mr-2 btn-cancel" (click)="confimRemoveDataAtt('CANCEL')">
+                Hủy
+            </button>
+            <button class="mr-2 btn-save" (click)="confimRemoveDataAtt('CONFIM')">
+                Đồng ý
+            </button>
+        </div>
+    </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Xác nhận gửi duyệt" [show]="isConfirmSendAprrove" [widthContent]="40" [heightContent]="43"
+    (hideModal)="isConfirmSendAprrove = false">
+    <div class="account-owner-list-content">
+        <div class="block-note">
+            <label>Ghi chú:&nbsp;&nbsp;</label>
+            <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+        </div><br />
+        <div class="btn-sig">
+            <button class="mr-2 btn-cancel" (click)="confimSendAprrove('CANCEL')">
+                Hủy
+            </button>
+            <button class="mr-2 btn-save" (click)="confimSendAprrove('CONFIM')">
+                Đồng ý
+            </button>
+        </div>
+    </div>
+</app-lpb-modal>
+
+<app-popup-detail-warring [show]="isShowMessage" (hideModal)="isShowMessage = false">
+    <div class="text-center">
+        Hồ sơ <span class="message">{{objProcess?.code}}</span> đang được thao tác bởi
+        <span class="message">{{objProcess?.createdByUser?.userName}}</span> chi nhánh
+        <span class="message">{{objProcess?.branchCode}} </span>
+    </div>
+</app-popup-detail-warring>

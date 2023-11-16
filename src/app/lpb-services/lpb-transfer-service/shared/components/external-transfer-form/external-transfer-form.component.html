@@ -1,0 +1,294 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NO_EXIST" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NOT_EXIST_ACC" class="text-danger mt-1 d-block small">
+        Không tìm thấy tài khoản của {{controlNameVi}}
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.MIN_LENGTH" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} cần ít nhất {{minLength[controlName]}} ký tự
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.MAX_LENGTH" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} vượt quá {{maxlength[controlName]}} ký tự
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.FROZEN" class="text-danger mt-1 d-block small">
+        Tài khoản bị chặn ghi Nợ, ghi Có
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NO_DR" class="text-danger mt-1 d-block small">
+        Tài khoản bị chặn ghi Nợ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NOT_MATCH_CURCODE" class="text-danger mt-1 d-block small">
+        Chọn tài khoản VND
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.PATTERN" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} chứa các ký tự đặc biệt
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.OVER_MAX" class="text-danger mt-1 d-block small">
+        {{form.controls[controlName].errors.overMax?.message}}
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.UNDER_MIN" class="text-danger mt-1 d-block small">
+        {{form.controls[controlName].errors.underMin?.message}}
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+
+<div class="d-flex flex-column mb-5 mt-3 form-group" [formGroup]="form">
+  <div class="container-fluid px-4">
+    <ng-content select="[area=productForm]"></ng-content>
+
+    <div class="row">
+      <div [class]="senderInfoStyle">
+        <div class="content-title w-100">
+          <span class="active text-uppercase">Thông tin bên chuyển</span>
+        </div>
+
+        <div class="row" [formGroup]="form">
+          <ng-template #common>
+            <!-- #region Số tiền giao dịch (*) -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Số tiền giao dịch <span
+                  class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <app-lpb-money-input [placeholder]="'Nhập số tiền giao dịch'" [class]="'form-control'"
+                  [control]="form.controls['transactionAmount']" [controlNameVi]="'Số tiền giao dịch'"
+                  (blurChangeValue)="changeTransactionAmount($event)"
+                  (changeValue)="validateTransactionAmount($event)"
+                  [name]="'transactionAmount'" [maxlength]="13" [showErrorText]="false"
+                  [blockComma]="true">
+                </app-lpb-money-input>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'transactionAmount', controlNameVi: 'Số tiền giao dịch'}">
+                </ng-container>
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Số tiền giao dịch radio (*)-->
+            <div class="form-group row">
+              <span class="col-lg-12">
+                <div class="form-radio-inline-group d-flex align-items-start">
+                  <label class="txtLabel form-radio-inline d-flex align-items-center" *ngFor="let item of feeTypeList">
+                    <input class="form-control" formControlName="feeType" name="feeType" type="radio"
+                      [value]="item.key" (change)="changeFeeType($event)">
+                    {{item.text}}
+                  </label>
+                </div>
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Tổng số tiền giao dịch -->
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Tổng số tiền giao dịch (gồm phí)</span>
+              <span class="col-lg-12">
+                <app-lpb-money-input [class]="'form-control'" [control]="form.controls['totalAmount']"
+                  [maxlength]="20">
+                </app-lpb-money-input>
+              </span>
+            </div>
+            <!--#endregion -->
+
+            <!-- #region Nội dung (*) -->
+            <label class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Nội dung chuyển tiền <span
+                  class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <textarea type="text" formControlName="note" maxlength="210" placeholder="Nhập nội dung"
+                  class="form-control text-uppercase" rows="4" textTransform="uppercase" textEncode="latin"
+                  [textPattern]="{blockRegex: '[\\n\\r]', allowVi: true}"
+                  [textAreaLimit]="{maxLine: 4}">
+                </textarea>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'note', controlNameVi: 'Nội dung'}">
+                </ng-container>
+              </span>
+            </label>
+            <!--#endregion -->
+
+            <!-- #region Nội dung hạch toán (*) -->
+            <label class="form-group row" *ngIf="showAccountingNote">
+              <span class="col-lg-12 col-form-label textLabel">Nội dung hạch toán trên các hệ thống</span>
+              <span class="col-lg-12">
+                <textarea type="text" maxlength="210" class="form-control text-uppercase" rows="4" disabled
+                     [(ngModel)]="accountingNote" [ngModelOptions]="{standalone: true}"
+                     [class.input-error]="form.controls['accountingNote'].invalid && form.controls['accountingNote'].touched">
+                </textarea>
+                <div class="py-1">
+                  <span [class.text-danger]="form.controls['accountingNote'].value?.length > 210">
+                    ({{form.controls['accountingNote'].value?.length || 0}}/210 ký tự)
+                  </span>
+                </div>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'accountingNote', controlNameVi: 'Nội dung'}">
+                </ng-container>
+              </span>
+            </label>
+            <!--#endregion -->
+          </ng-template>
+
+          <ng-template #normalAccForm>
+            <div class="col col-lg-6 col-md-12 col-12">
+              <!-- #region Số Cif  -->
+              <div class="form-group row">
+                <span class="col-lg-12 col-form-label textLabel">Số CIF <span class="text-danger">(*)</span></span>
+                <span class="col-lg-12">
+                  <div class="position-relative input-group">
+                    <input type="text" formControlName="senderCifNo" class="form-control pr-4" [textPattern]="{allowRegex: '[0-9]'}"
+                      placeholder="Nhập số CIF" (blur)="changeCif($event)" (input)="onCifInputChange($event)" maxlength="20" />
+                    <div class="input-group-append" *ngIf="form.controls['senderCifNo'].value && form.controls['senderCifNo'].enabled"
+                      (click)="loadCustomerInfo(null)">
+                      <span class="input-group-text ng-clear-wrapper ng-star-inserted" title="Clear all">
+                        <span aria-hidden="true" class="ng-clear">×</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <ng-container *ngTemplateOutlet="error; context: {controlName: 'senderCifNo', controlNameVi: 'Số CIF'}">
+                  </ng-container>
+
+                  <span *ngIf="warning['senderCifNo'] && form.controls['senderCifNo'].enabled" class="text-warning mt-1 d-block small">
+                    {{warning['senderCifNo']}}
+                  </span>
+                </span>
+              </div>
+              <!--#endregion -->
+
+              <!-- #region Số tài khoản (*) -->
+              <div class="form-group row">
+                <span class="col-lg-12 col-form-label textLabel">Số tài khoản <span class="text-danger">(*)</span></span>
+                <span class="col-lg-12" [title]="acnHoverText">
+                  <div *ngIf="crrCustomerInfo?.accounts?.length > 1 && form.controls['senderCifNo'].value; then acnSelect else acnTxt"></div>
+
+                  <ng-template #acnSelect>
+                    <ng-select [multiple]="false" formControlName="senderAcn" placeholder="Chọn số tài khoản"
+                       (change)="changeAcn($event)" (clear)="loadAccountInfo(null)">
+                      <ng-option *ngFor="let item of crrCustomerInfo.accounts" [value]="item.acn">
+                        {{ item.acn }}
+                      </ng-option>
+                    </ng-select>
+                  </ng-template>
+
+                  <ng-template #acnTxt>
+                    <div class="position-relative input-group">
+                      <input type="text" formControlName="senderAcn" class="form-control pr-4" (blur)="changeAcn($event)"
+                        placeholder="Nhập số tài khoản" (input)="onAccInputChange($event)" maxlength="20"
+                        [textPattern]="{allowRegex: '[0-9]'}" />
+                      <div class="input-group-append" *ngIf="form.controls['senderAcn'].value && form.controls['senderAcn'].enabled"
+                        (click)="loadCustomerInfo(null)">
+                        <span class="input-group-text ng-clear-wrapper ng-star-inserted" title="Clear all">
+                          <span aria-hidden="true" class="ng-clear">×</span>
+                        </span>
+                      </div>
+                    </div>
+                  </ng-template>
+
+                  <ng-container *ngTemplateOutlet="error; context: {controlName: 'senderAcn', controlNameVi: 'Số tài khoản'}">
+                  </ng-container>
+                </span>
+              </div>
+
+              <div class="form-group row h-20">
+                <div class="col-12">
+                  <span>{{form.controls['senderAccountName'].value}}</span>
+                </div>
+              </div>
+
+              <div class="form-group row h-20" *ngIf="form.controls['senderAvailableBalance'].value !== null">
+                <div class="col-12">
+                  <span>
+                    - Số dư khả dụng gồm thấu chi:
+                    {{form.controls['senderAvailableBalance'].value | prettyMoney}}
+                  </span>
+                </div>
+              </div>
+              <!--#endregion -->
+
+              <!-- #region Loại tiền -->
+              <div class="form-group row">
+                <span class="col-lg-12 col-form-label textLabel">Loại tiền</span>
+                <span class="col-lg-12">
+                  <input type="text" formControlName="senderCurCode" class="form-control">
+                </span>
+              </div>
+              <!--#endregion -->
+
+              <!-- #region Đơn vị  mở TK -->
+              <div class="form-group row">
+                <span class="col-lg-12 col-form-label textLabel">Đơn vị mở TK</span>
+                <span class="col-lg-12">
+                  <input type="text" class="form-control" [(ngModel)]="acnBranch" disabled
+                    [ngModelOptions]="{standalone: true}">
+                </span>
+              </div>
+              <!--#endregion -->
+            </div>
+
+            <div class="col col-lg-6 col-md-12 col-12">
+              <ng-container *ngTemplateOutlet="common">
+              </ng-container>
+            </div>
+          </ng-template>
+
+          <ng-template #currentAccForm>
+          </ng-template>
+
+          <div *ngIf="isCurrentAcc then currentAccForm else normalAccForm">
+          </div>
+        </div>
+      </div>
+
+      <div [class]="recipientInfoStyle">
+        <div class="content-title w-100">
+          <span class="active text-uppercase">Thông tin bên nhận</span>
+        </div>
+
+        <ng-content select="[area=recipientForm]"></ng-content>
+      </div>
+    </div>
+
+    <!-- #region Phí (*) -->
+    <hr *ngIf="form.controls.feeType.value !== FEE_TYPES.FREE" />
+    <div class="p-3" *ngIf="form.controls.feeType.value !== FEE_TYPES.FREE">
+      <div class="row">
+        <div class="content-title w-100">
+          <span class="active text-uppercase">Phí</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mt-2 w-100 px-4">
+          <app-fee-table [curCode]="'VND'"
+                         [VND_FeeCtrlName]="'fee'"
+                         [VND_FeeVATCtrlName]="'feeVAT'"
+                         [form]="form"
+                         [feeCalData]="feeCalData"
+                         [class]="'w-100'"
+                         (onUpdate)="onUpdateFeeTable($event)">
+        </app-fee-table>
+        </div>
+      </div>
+    </div>
+    <!--#endregion -->
+
+    <!-- #region Chữ kí (*) -->
+    <hr />
+    <div class="p-3">
+      <div class="row">
+        <div class="content-title w-100">
+          <span class="active text-uppercase">Chữ kí</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mt-2 w-100 px-4">
+          <app-lpb-signature-list #lstSign [class]="'w-100'" [serviceName]="'transfer-service'"></app-lpb-signature-list>
+        </div>
+      </div>
+    </div>
+    <!--#endregion -->
+  </div>
+</div>

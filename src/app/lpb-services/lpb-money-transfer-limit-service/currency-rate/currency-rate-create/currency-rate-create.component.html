@@ -1,0 +1,123 @@
+<div class="d-flex flex-column mb-5">
+  <div class="form-search d-flex flex-column">
+    <div class="content-title pr-2 mt-3">
+      <i class="fa fa-search mr-2 txtLabel"></i> THÔNG TIN CHUNG
+    </div>
+    <hr/>
+    <div class="container mt-3">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Mã nguyên tệ <span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <app-lpb-select2 [apiUrl]="API_BASE_URL + '/common?groupType=CURRENCY_CODE'"
+                                 labelName="name" bindValue="code" [config]="{isNewApi: true}"
+                                 formControlName="currencyCode"
+                                 [className]="FormHelpers.isValidClass(registerForm.currencyCode)"
+                                 placeholder="Nhập Mã nguyên tệ"></app-lpb-select2>
+<!--                <input class="form-control"-->
+<!--                       [ngClass]="FormHelpers.isValidClass(registerForm.currencyCode)"-->
+<!--                       placeholder="Nhập Mã nguyên tệ" type="text" formControlName="currencyCode" appNoSpaceString>-->
+                <app-validate [control]="$any(form).controls['currencyCode']" error="required"
+                              message="Mã nguyên tệ không được bỏ trống"></app-validate>
+                <app-validate [control]="$any(form).controls['currencyCode']" error="maxlength"
+                              message="Không được vượt quá 5 kí tự"></app-validate>
+              </div>
+            </div>
+          </div>
+          <div class="col col-lg-6">
+            <div class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Tỷ giá USD<span class="text-danger">(*)</span></span>
+              <div class="col-lg-8">
+                <div class="input-group">
+                  <input class="form-control"
+                         [ngClass]="FormHelpers.isValidClass(registerForm.exchangeRate)"
+                         placeholder="Nhập tỉ giá" type="text" formControlName="exchangeRate" appDecimalOnly>
+                  <div class="input-group-append">
+                    <span class="input-group-text">USD</span>
+                  </div>
+                </div>
+                <app-validate [control]="$any(form).controls['exchangeRate']" error="required"
+                              message="Tỷ giá không được bỏ trống"></app-validate>
+                <app-validate [control]="$any(form).controls['exchangeRate']" error="maxlength"
+                              message="Tỷ giá không được vượt quá 15 kí tự"></app-validate>
+
+              </div>
+
+            </div>
+          </div>
+<!--          <div class="col col-lg-6">-->
+<!--            <div class="form-group row">-->
+<!--              <span class="col-lg-4 col-form-label textLabel">Tên nguyên tệ <span class="text-danger">(*)</span></span>-->
+<!--              <div class="col-lg-8">-->
+<!--                <input class="form-control"-->
+<!--                       [ngClass]="FormHelpers.isValidClass(registerForm.currencyName)"-->
+<!--                       placeholder="Nhập Tên nguyên tệ" type="text" formControlName="currencyName">-->
+<!--                <app-validate [control]="$any(form).controls['currencyName']" error="required"-->
+<!--                              message="Tên nguyên tệ không được bỏ trống"></app-validate>-->
+<!--                <app-validate [control]="$any(form).controls['currencyName']" error="maxlength"-->
+<!--                              message="Không được vượt quá 100 kí tự"></app-validate>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+        </div>
+
+<!--        <div class="row">-->
+<!--          <div class="col-6">-->
+<!--            <div class="form-group row">-->
+<!--              <span class="col-4 col-form-label textLabel">Ngày áp dụng <span class="text-danger">(*)</span></span>-->
+<!--              <div class="col-8">-->
+<!--                <app-lpb-datepicker-new formControlName="startDate" [minDate]="minDate"-->
+<!--                                        [className]="FormHelpers.isValidClass(registerForm.startDate) + FormHelpers.isValidClass(form)"></app-lpb-datepicker-new>-->
+<!--                <app-validate [control]="registerForm.startDate" error="required"-->
+<!--                              message="Ngày áp dụng không được bỏ trống"></app-validate>-->
+<!--                <div *ngIf="form.errors?.dateRange">-->
+<!--                  <span  class="text-danger mt-1 d-block small">-->
+<!--                    Ngày áp dụng không được lớn hơn ngày hết hiệu lực-->
+<!--                  </span>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;                {{registerForm.startDate.errors | json }}&ndash;&gt;-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="col-6">-->
+<!--            <div class="form-group row">-->
+<!--              <span class="col-4 col-form-label textLabel">Ngày hết hiệu lực </span>-->
+<!--              <div class="col-8">-->
+<!--                <app-lpb-datepicker-new formControlName="endDate" [minDate]="minDate"-->
+<!--                                        [className]="FormHelpers.isValidClass(registerForm.endDate)"></app-lpb-datepicker-new>-->
+<!--                &lt;!&ndash;                <app-validate [control]="registerForm.endDate" error="required"&ndash;&gt;-->
+<!--                &lt;!&ndash;                              message="Ngày hết hiệu không được bỏ trống"></app-validate>&ndash;&gt;-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+        <div class="row">
+
+        </div>
+      </form>
+    </div>
+  </div>
+  <ng-container *ngIf="mode === ViewMode.VIEW">
+    <hr/>
+    <div class="col d-flex justify-content-center border-0 w-75">
+      <div class="card col-12 border-0">
+        <div class="card-header">
+          <h1><i class="fa fa-history mr-2 txtLabel text-uppercase"></i> Lịch sử chỉnh sửa</h1>
+        </div>
+        <div class="card-body">
+          <app-lpb-datatable [dataSource]="dataSource" [columns]="columns" [config]="datatableConfig">
+
+          </app-lpb-datatable>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>
+
+
+</div>
+
+<app-lpb-footer style="bottom: 0px" [actions]="actions"
+                class="z-index-footer position-fixed bottom-0 w-100"></app-lpb-footer>

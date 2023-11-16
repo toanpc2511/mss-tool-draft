@@ -1,0 +1,28 @@
+:host ::ng-deep {
+  app-form-array {
+    .form-array-content {
+      width: 100%;
+      padding: 0 15px;
+      box-sizing: border-box;
+    }
+    table td {
+      vertical-align: top;
+    }
+    &.app-form-array .form-array-content {
+      overflow: auto;
+      @media only screen and (min-width: 800px) {
+        overflow: visible;
+      }
+
+      .payment-account-header {
+        min-width: 192px;
+      }
+      .amount-header {
+        min-width: 250px;
+      }
+    }
+  }
+}
+.settlement-deposits-error {
+  padding-right: 300px;
+}

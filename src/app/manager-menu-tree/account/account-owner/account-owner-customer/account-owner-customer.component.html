@@ -1,0 +1,314 @@
+<div class="rc-customer-info">
+    <div class="w-100">
+        <div class="row-item-info">
+            <div class="label-title fw-700">Thông tin cá nhân</div>
+            <!-- <div class="label-action"></div> -->
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Họ và tên <span class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input oninput="this.value = this.value.toUpperCase()" #fullName type="text" maxlength="35"
+                        (change)="fullNameInputChange($event)" (blur)="validateFullName()" class="form-control w-100"
+                        [class.error-invalid]="errMsgFullName !== ''" placeholder="VD: NGUYEN VAN A">
+                </div>
+                <div class="error-msg" *ngIf="errMsgFullName !== ''">
+                    {{errMsgFullName}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Giới tính <span class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="grRadio w-100">
+                        <div class="rd-item">
+                            <input type="radio" [(ngModel)]="gender" class="mr-1" name="gender" id="gender-male"
+                                value="M">
+                            <label for="gender-male">
+                                Nam
+                            </label>
+                        </div>
+                        <div class="rd-item">
+                            <input type="radio" [(ngModel)]="gender" class="mr-1" name="gender" id="gender-female"
+                                value="F">
+                            <label for="gender-female">
+                                Nữ
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Ngày sinh <span class="item-require">(*)</span></div>
+            <div class="value-field">
+                <app-lpb-date-picker #dpDateOfBirth (blurInput)="blurDateOfBirth($event)"
+                    (dateChanged)="dateOfBirthChanged()"></app-lpb-date-picker>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Quốc tịch 1 <span class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <app-lpb-select [selectedItem]="selectedNationality1" [txtPlaceholder]="'Chọn Quốc tịch'"
+                        [lstOptions]="lstCountry" (selectedChangeOption)="nationalityFirstChange($event)">
+                    </app-lpb-select>
+                </div>
+            </div>
+            <div class="action-control ml-2">
+                <mat-icon class="plus" (click)="addOrRemoveNation('ADD')">add_circle_outline</mat-icon>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="lstSubNationality[0].isShow ? 'd-flex' : 'd-none'">
+            <div class="label-field">Quốc tịch 2 <span class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <app-lpb-select [selectedItem]="selectedNationality2" [txtPlaceholder]="'Chọn Quốc tịch'"
+                        [lstOptions]="lstCountry" (selectedChangeOption)="nationalitySecondChange($event)">
+                    </app-lpb-select>
+                </div>
+            </div>
+            <div class="action-control ml-2">
+                <mat-icon class="minus" (click)="addOrRemoveNation('REMOVE', lstSubNationality[0].nationalCode)">
+                    remove_circle_outline</mat-icon>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="lstSubNationality[1].isShow ? 'd-flex' : 'd-none'">
+            <div class="label-field">Quốc tịch 3 <span class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <app-lpb-select [selectedItem]="selectedNationality3" [txtPlaceholder]="'Chọn Quốc tịch'"
+                        [lstOptions]="lstCountry" (selectedChangeOption)="nationalityThirdChange($event)">
+                    </app-lpb-select>
+                </div>
+            </div>
+            <div class="action-control ml-2">
+                <mat-icon class="minus" (click)="addOrRemoveNation('REMOVE', lstSubNationality[1].nationalCode)">
+                    remove_circle_outline</mat-icon>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="lstSubNationality[2].isShow ? 'd-flex' : 'd-none'">
+            <div class="label-field">Quốc tịch 4 <span class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <app-lpb-select [selectedItem]="selectedNationality4" [txtPlaceholder]="'Chọn Quốc tịch'"
+                        [lstOptions]="lstCountry" (selectedChangeOption)="nationalityFourthChange($event)">
+                    </app-lpb-select>
+                </div>
+            </div>
+            <div class="action-control ml-2">
+                <mat-icon class="minus" (click)="addOrRemoveNation('REMOVE', lstSubNationality[2].nationalCode)">
+                    remove_circle_outline</mat-icon>
+            </div>
+        </div>
+
+        <div class="row-item-info" *ngIf="errMsgNationality !== ''">
+            <div class="label-field"></div>
+            <div class="value-field">
+                <div class="error-msg">{{errMsgNationality}}</div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="isShowOptionVisaFree ? 'd-flex' : 'd-none'">
+            <div class="label-field">Thị thực nhập cảnh</div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="cbVisaFree" [(ngModel)]="isVisaFree"
+                            [ngModelOptions]="{standalone: true}" (change)="selectedChangeVisaFree($event)">
+                        <label class="form-check-label" for="cbVisaFree">Miễn thị thực nhập cảnh</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="(isShowOptionVisaFree && !isVisaFree) ? 'd-flex' : 'd-none'">
+            <div class="label-field">Từ ngày</div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="input-group w-100">
+                        <app-lpb-date-picker #dpFromDateVisaFree class="w-100"
+                            (dateChanged)="validateFromDateVisaFree()">
+                        </app-lpb-date-picker>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="(isShowOptionVisaFree && !isVisaFree) ? 'd-flex' : 'd-none'">
+            <div class="label-field">Đến ngày</div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="input-group w-100">
+                        <app-lpb-date-picker #dpToDateVisaFree class="w-100" (dateChanged)="validateToDateVisaFree()">
+                        </app-lpb-date-picker>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Mã số thuế</div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input numbersOnly [(ngModel)]="taxCode" type="text" maxlength="10" class="form-control w-100">
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field"></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <a class="link-web"
+                        href="https://thuedientu.gdt.gov.vn/etaxnnt/Request?&dse_sessionId=wSMMrERAw2FUNGCXW174L1_&dse_applicationId=-1&dse_pageId=3&dse_operationName=corpIndexProc&dse_errorPage=error_page.jsp&dse_processorState=initial&dse_nextEventName=start"
+                        target="_blank" rel="noopener noreferrer">thuedientu.gdt.gov.vn</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Người cư trú <span class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="grRadio w-100">
+                        <div class="rd-item">
+                            <input type="radio" [(ngModel)]="residentStatus" class="mr-1" name="residentYes"
+                                id="residentYes" value="Y">
+                            <label for="residentYes">
+                                Có
+                            </label>
+                        </div>
+                        <div class="rd-item">
+                            <input type="radio" [(ngModel)]="residentStatus" class="mr-1" name="residentNo"
+                                id="residentNo" value="N">
+                            <label for="residentNo">
+                                Không
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Nghề nghiệp <span *ngIf="!isOnlyView" class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <app-lpb-select [selectedItem]="selectedProfession" (blurSelect)="validateProfession()"
+                        [txtPlaceholder]="'Chọn nghề nghiệp'" [lstOptions]="lstProfession"
+                        (selectedChangeOption)="professionChanged($event)"></app-lpb-select>
+                </div>
+                <div class="error-msg" *ngIf="errMsgProfession !== ''">{{errMsgProfession}}</div>
+            </div>
+        </div>
+        <div class="row-item-info" *ngIf="isOther">
+            <div class="label-field"></div>
+            <div class="value-field">
+                <div class="control-item d-flex align-items-center">
+                    <input type="text" [(ngModel)]="txtOther" class="form-control w-100">
+                    <mat-icon *ngIf="objCifCustomerInfoCore" class="ic-info-core" #tooltip="matTooltip"
+                        [matTooltip]="'Dữ liệu Core: ' + (objCifCustomerInfoCore.profession ? objCifCustomerInfoCore.profession : 'Không xác định')"
+                        matTooltipPosition="below">error_outline
+                    </mat-icon>
+                </div>
+            </div>
+        </div>
+        <div class="row-item-info">
+            <div class="label-field">Nơi công tác <span *ngIf="!isOnlyView" class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input #workPlace (blur)="validateWorkPlace()" [class.error-invalid]="errMsgWorkPlace !== ''"
+                        type="text" maxlength="200" class="form-control w-100">
+                </div>
+                <div class="error-msg" *ngIf="errMsgWorkPlace !== ''">
+                    {{errMsgWorkPlace}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Chức vụ <span *ngIf="!isOnlyView" class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input #position type="text" [class.error-invalid]="errMsgJobPosition !== ''"
+                        (blur)="validatePosition()" maxlength="200" class="form-control w-100">
+                </div>
+                <div class="error-msg" *ngIf="errMsgJobPosition !== ''">
+                    {{errMsgJobPosition}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Điện thoại di động <span *ngIf="!isOnlyView" class="item-require">(*)</span></div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input #mobileNo maxlength="10" type="text" class="form-control w-100"
+                        [class.error-invalid]="errMsgMobileNo !== ''" (blur)="validatePhoneNumber()"
+                        (input)="phoneNumberInputChanged($event)">
+                </div>
+                <div class="error-msg" *ngIf="errMsgMobileNo !== ''">{{errMsgMobileNo}}</div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Email </div>
+            <div class="value-field">
+                <div class="control-item">
+                    <input #email type="text" maxlength="200" class="form-control w-100"
+                        (input)="emailInputChange($event)" (blur)="validateEmail()"
+                        [class.error-invalid]="errMsgEmail !== ''">
+                </div>
+                <div class="error-msg" *ngIf="errMsgEmail !== ''">{{errMsgEmail}}</div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field">Nhu cầu sử dụng thấu chi </div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="grRadio w-100">
+                        <div class="rd-item">
+                            <input type="radio" [(ngModel)]="creditStatus" class="mr-1" name="creditYes" id="creditYes"
+                                value="Y">
+                            <label for="creditYes">
+                                Có
+                            </label>
+                        </div>
+                        <div class="rd-item">
+                            <input type="radio" [(ngModel)]="creditStatus" class="mr-1" name="creditNo" id="creditNo"
+                                value="N">
+                            <label for="creditNo">
+                                Không
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-item-info">
+            <div class="label-field"> </div>
+            <div class="value-field">
+                <div class="control-item">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="cbPayStatus" [(ngModel)]="payStatus"
+                            [ngModelOptions]="{standalone: true}" (change)="selectedChangePayStatus($event)">
+                        <label class="form-check-label" for="cbPayStatus">Nhận lương qua LienVietPostBank</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div (click)="getDataCifCustomerForm()">test validate data customer</div> -->
+</div>

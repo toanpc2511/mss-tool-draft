@@ -1,0 +1,188 @@
+<div class="transaction-main">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between"
+  >
+    <div class="d-flex align-items-center">
+      <i class="fa fa-search mr-2"></i>
+      <span>Tra cứu thông tin khách hàng</span>
+    </div>
+  </div>
+
+  <div class="search px-4 mt-2">
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-4">
+          <span>Nhà cung cấp</span>
+          <app-lpb-select2
+            [apiUrl]="'/electric-service/supplier/active'"
+            [config]="{isNewApi: true}"
+            [formControl]="searchForm.controls['supplierCode']"
+            labelName="supplierName" bindValue="supplierCode"
+            placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-4">
+          <span>Mã khách hàng</span>
+          <input
+            type="text"
+            formControlName="custId"
+            placeholder="Nhập mã khách hàng"
+            class="form-control"
+            trimInput
+            (keydown.space)="$event.preventDefault()"
+          />
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-4">
+          <span>Số CIF</span>
+          <input
+            type="text"
+            formControlName="cif"
+            placeholder="Nhập số CIF"
+            class="form-control"
+            trimInput
+            (keydown.space)="$event.preventDefault()"
+            [textPattern]="{allowRegex: '[0-9]'}"/>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-4">
+          <span>Số tài khoản</span>
+          <input
+            type="text"
+            formControlName="acNumber"
+            placeholder="Nhập số tài khoản"
+            class="form-control"
+            trimInput
+            (keydown.space)="$event.preventDefault()"
+            [textPattern]="{allowRegex: '[0-9]'}"/>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-4">
+          <span>Ngày thanh toán định kỳ</span>
+          <div class="row">
+            <div class="col-5">
+              <app-lpb-select2
+                placeholder="Chọn"
+                labelName="label" bindValue="value"
+                [items]="settleDates" class="w-100"
+                [config]="{clearable:false}"
+                [formControl]="searchForm.controls['settleDateFrom']"
+              ></app-lpb-select2>
+            </div>
+            <div class="col-2 text-center text-append">Đến</div>
+            <div class="col-5">
+              <app-lpb-select2
+                placeholder="Chọn"
+                labelName="label" bindValue="value"
+                [items]="settleDates" class="w-100"
+                [config]="{clearable:false}"
+                [formControl]="searchForm.controls['settleDateTo']"
+              ></app-lpb-select2>
+            </div>
+          </div>
+          <app-validate
+            [control]="searchForm.controls['settleDateTo']"
+            error="invalidSettleDate"
+            message="Ngày thanh toán định kỳ Từ ngày phải nhỏ hoặc bằng Đến ngày"
+          ></app-validate>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-4">
+          <span>Số điện thoại</span>
+          <input
+            type="text" maxlength="13"
+            placeholder="Nhập số điện thoại"
+            class="form-control pr-4"
+            [formControl]="searchForm.controls['phone']"
+            [textPattern]="{allowRegex: '[0-9]'}"/>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-4">
+          <span>Email</span>
+          <input
+            type="text"
+            formControlName="email"
+            placeholder="Nhập email"
+            class="form-control"
+            trimInput
+            (keydown.space)="$event.preventDefault()"
+          />
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-4">
+          <span>Ngày tạo</span>
+          <div class="row">
+            <div class="col-5">
+              <app-lpb-datepicker-new
+                [formControl]="searchForm.controls['fromDate']"
+                [maxDate]="today"
+                [className]="formHelpers.isValidClass(searchControls.fromDate)"
+              ></app-lpb-datepicker-new>
+            </div>
+            <div class="col-2 text-center text-append">Đến</div>
+            <div class="col-5">
+              <app-lpb-datepicker-new
+                [formControl]="searchForm.controls['toDate']"
+                [maxDate]="today"
+                [className]="formHelpers.isValidClass(searchControls.toDate)"
+              ></app-lpb-datepicker-new>
+            </div>
+          </div>
+          <app-validate
+            [control]="searchForm.controls['fromDate']"
+            error="invalidDate"
+            message="Ngày tạo Từ ngày phải nhỏ hoặc bằng Đến ngày"
+          ></app-validate>
+
+          <app-validate [control]="searchForm.controls.fromDate" error="required"
+                        message="Từ ngày không được bỏ trống"></app-validate>
+          <app-validate [control]="searchForm.controls.toDate" error="required"
+                        message="Đến ngày không được bỏ trống"></app-validate>
+          <div *ngIf="searchForm.errors?.dateRange">
+            <small  class="text-danger mt-1 d-block font-weight-bold">
+              Từ ngày phải nhỏ hơn hoặc bằng Đến ngày
+            </small>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-4">
+          <span>Trạng thái</span>
+          <app-lpb-select2
+            labelName="label" bindValue="value"
+            [items]="statusCustomer"
+            [config]="{'clearable':false}"
+            [formControl]="searchForm.controls['status']"
+          >
+          </app-lpb-select2>
+        </div>
+      </div>
+      <div class="w-full d-flex justify-content-center gap-2">
+        <button
+          mat-raised-button
+          type="submit"
+          class=" bg-btn__blue text-while"
+        >
+          <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+          Tìm kiếm
+        </button>
+        <button
+          mat-raised-button
+          (click)="resetForm()"
+          class=" ml-2"
+          style="color: #0c258a"
+        >
+          <i class="fa fa-rotate-left mr-2" style="color: #0c258a"></i>
+          Nhập lại
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="mt-4">
+    <app-lpb-datatable
+      tableName="Danh sách khách hàng"
+      apiServiceURL="/electric-service/settle/register"
+      [config]="config"
+      [columns]="columns"
+      [searchConditions]="searchConditions"
+      (viewAction)='viewDetail($event)'
+      (cancelAction)="cancelRegister($event)"
+      (editAction)="updateRegister($event)"
+      [isDisabledCancel]="isDisabledCancel"
+      [isDisabledUpdate]="isDisabledUpdate"
+    ></app-lpb-datatable>
+  </div>
+</div>
+
+<app-lpb-footer [actions]="actions"></app-lpb-footer>

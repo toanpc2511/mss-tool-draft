@@ -1,0 +1,15 @@
+.item:hover {
+    background-color: lightblue;
+}
+
+.dropdown-panel-custom {
+    position: absolute;
+    overflow: auto;
+    min-width: max-content;    
+    background-color: #fff;
+    z-index: 1060;
+}
+
+.w-inherit {
+    width: inherit;
+}

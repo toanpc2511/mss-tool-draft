@@ -1,0 +1,86 @@
+<div class="content">
+  <h2 class="title">THÔNG TIN GIAO DỊCH NỘP TIỀN</h2>
+  <div class="pl-2">
+    <form [formGroup]="forms" (ngSubmit)="search()">
+      <div class="d-flex">
+        <div class="col-4 px-4">
+          <label class="text-high-light fw-bolder required">Mã đại lý</label>
+          <div class="position-relative input-group mt-1">
+            <app-lpb-select2
+              [items]="listType"
+              labelName="label"
+              bindValue="value"
+              formControlName="agentType"
+              [config]="{'clearable':false}"
+              class="w-25">
+            </app-lpb-select2>
+            <div class="input-group-append w-75">
+              <input
+                type="text"
+                formControlName="agentCode"
+                placeholder="Nhập mã đại lý"
+                class="form-control"
+                [textPattern]="{allowRegex: '[0-9]'}"
+                trimInput
+              />
+            </div>
+          </div>
+          <app-validate
+            [control]="forms.get('agentCode')"
+            error="required"
+            message="Chưa nhập mã đại lý"
+          ></app-validate>
+        </div>
+        <div class="mt-4">
+          <button
+            mat-raised-button
+            class="bg-btn_blue text-while"
+          >
+            <i class="fa fa-search mr-2" style="color: #fff"></i>
+            Tìm kiếm
+          </button>
+        </div>
+      </div>
+      <br/>
+      <div *ngIf="agent" class="border border-1 p-4 border-radius-panel">
+        <div class="" style="color: #0C258A">
+          <i class="fa fa-credit-card-alt text-high-light mr-2"></i>
+          <span>THÔNG TIN ĐIỂM GIAO DỊCH TẠI VIETLOTT</span>
+        </div>
+        <div class="mt-4 d-flex">
+          <div class="col-1">
+            <label>Tên tài khoản: </label>
+          </div>
+          <div>
+            <label> {{agent?.accName}}</label>
+          </div>
+        </div>
+        <div class="mt-3 d-flex">
+          <div class="col-1">
+            <label>Địa chỉ: </label>
+          </div>
+          <div>
+            <label> {{agent?.accAddress}}</label>
+          </div>
+        </div>
+        <div class="mt-3 d-flex">
+          <div class="col-1">
+            <label>Số điện thoại: </label>
+          </div>
+          <div>
+            <label> {{agent?.accPhoneNumber}}</label>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="agent" class="border border-1 p-4 border-radius-panel">
+        <div class="" style="color: #0C258A">
+          <i class="fa fa-credit-card-alt text-high-light mr-2"></i>
+          <span>THÔNG TIN THANH TOÁN</span>
+        </div>
+        <app-transaction-info #transactionInfo [type]="''"></app-transaction-info>
+      </div>
+    </form>
+  </div>
+</div>
+<app-lpb-footer [actions]="agent?actions:[]" class="z-index-footer position-fixed bottom-0 w-100" ></app-lpb-footer>
+

@@ -1,0 +1,17 @@
+export class ConstantUtils {
+  ALL = 'ALL';
+  DEPOSIT = 'DEPOSIT';
+  DEPOSIT_AND_WITHDRAW = 'DEPOSIT_AND_WITHDRAW';
+  OTHER = 'OTHER';
+  ONE = 'ONE';
+  VALID_TIME_RANGE = 'VALID_TIME_RANGE';
+  WAIT_UPDATE = 'WAIT_UPDATE';
+  CCCD = 'CCCD';
+  CMTND = 'CMTND';
+  HC = 'HC';
+  KHAI_SINH = 'KHAI.SINH';
+  VND = 'VND';
+  USD = 'USD';
+  EUR = 'EUR';
+  IS_AMERICAN = 'US PERSON';
+}

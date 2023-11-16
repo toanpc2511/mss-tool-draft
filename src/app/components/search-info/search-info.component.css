@@ -1,0 +1,11 @@
+.input-group-append .btn,
+.input-group-prepend .btn {
+    z-index: auto;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}

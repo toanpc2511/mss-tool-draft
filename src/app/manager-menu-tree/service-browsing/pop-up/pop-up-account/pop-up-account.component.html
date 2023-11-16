@@ -1,0 +1,113 @@
+<!-- danh sach account -->
+<div class="container-fuild">
+    <app-process-info [processId]="processId"></app-process-info>
+    <!-- chi tiet -->
+    <div class="row cust-row" *ngIf="detailAccount">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+            <div class="title-head" style="font-weight: 500;">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">account_balance_wallet</mat-icon>
+                <span class="text" style="padding: 5px 0;">THÔNG TIN CHI TIẾT TÀI KHOẢN</span>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="col-6 colLeft">
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Tên tài khoản:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.accountName}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Loại tài khoản:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.accountProductName}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Mã tài khoản:</label>
+                    <div class="col-sm-7 txt">
+                        <label>  {{detailAccount.accountClassCode || 'Không có giá trị'}} - {{detailAccount.accountClassName}} </label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Gói tài khoản:</label>
+                    <div class="col-sm-7 txt">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Loại tiền tệ:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.currencyCode}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số dư duy trì tối thiểu:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.minBalance | number:'1.0': 'vi'}} {{detailAccount.currencyCode}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Chi nhánh:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.branch.code}} - {{detailAccount.branch.name}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Diễn giải tài khoản:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.accountDescription}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 colRight">
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số tài khoản:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.accountNumber ? detailAccount.accountNumber : 'Số tài khoản mới'}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số dư hiện tại:</label>
+                    <div class="col-sm-7 txt txt-italic">
+                        <label>Không có giá trị</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số dư khả dụng:</label>
+                    <div class="col-sm-7 txt txt-italic">
+                        <label>Không có giá trị</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Hạn mức chi tiêu:</label>
+                    <div class="col-sm-7 txt txt-italic">
+                        <label>Không có giá trị</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số dư đầu ngày:</label>
+                    <div class="col-sm-7 txt txt-italic">
+                        <label>Không có giá trị</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Số dự bị khóa:</label>
+                    <div class="col-sm-7 txt txt-italic">
+                        <label>Không có giá trị</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Mã nhân viên:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.employeeId}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label textLabel">Trạng thái:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{detailAccount.displayStatusName}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,148 @@
+<!-- <mat-card>
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" >
+      <mat-nested-tree-node *matTreeNodeDef="let node">
+        
+        <li>
+            <div class="mat-tree-node"> <label class="titleTree"> {{node.name}}</label>
+              
+            </div>
+        </li>
+      </mat-nested-tree-node>
+      <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+        <li class="example-tree-container">
+              <div class="mat-tree-node">
+                <span mat-icon-button matTreeNodeToggle
+                        [matTreeNodeToggleRecursive]="recursive"
+                      [attr.aria-label]="'toggle ' + node.filename">
+                  <mat-icon>
+                    {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                  </mat-icon>
+                </span>
+                {{node.name}}
+            </div>
+            <ul class="example-tree-nested-node">
+              <div  *ngIf="treeControl.isExpanded(node)">
+              <ng-container matTreeNodeOutlet></ng-container>
+              </div>
+            </ul>
+        </li>
+      </mat-nested-tree-node>
+    </mat-tree>
+</mat-card> -->
+<!-- <ul class="b-list b-list_type_tree b-list_viewtype_centered"
+style="height: 100%;border-right: 1px solid #828282;">
+  <li class="b-list__item b-list__item_type_parent" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <a class="b-label active" for="ch1"  routerLink="../lstAccount"
+    style="display: inline-block;color: #4F4F4F;">
+      <i class="ion-folder"></i>
+      Thông tin chung
+    </a>
+  </li>
+  <li class="b-list__item b-list__item_type_parent">
+    <label class="b-label" >
+      <i class="ion-folder"></i>
+      Khách hàng
+    </label>
+  </li>
+  <li class="b-list__item b-list__item_type_parent">
+    <label class="b-label" >
+      <i class="ion-folder"></i>
+      Gói dịch vụ
+    </label>
+  </li>
+  <li class="b-list__item b-list__item_type_parent">
+    <label class="b-label" r>
+      <i class="ion-folder"></i>
+      Tài khoản
+    </label>
+  </li>
+  <li class="b-list__item b-list__item_type_parent">
+    <label class="b-label" >
+      <i class="ion-folder"></i>
+      eBanking
+    </label>
+  </li>
+  <li class="b-list__item b-list__item_type_parent">
+    <label class="b-label" >
+      <i class="ion-folder"></i>
+      SMS Banking
+    </label>
+  </li>
+  <li class="b-list__item b-list__item_type_parent">
+    <label class="b-label" >
+      <i class="ion-folder"></i>
+      Thẻ
+    </label>
+  </li>
+  <li class="b-list__item b-list__item_type_parent">
+    <label class="b-label" for="ch8">
+      <i class="ion-folder"></i>
+      Biểu mẫu
+    </label>
+  </li>
+  <li class="b-list__item b-list__item_type_parent">
+    <label class="b-label" >
+      <i class="ion-folder"></i>
+      Tài liệu đính kèm
+    </label>
+  </li>
+  <li class="b-list__item b-list__item_type_parent">
+    <label class="b-label" >
+      <i class="ion-folder"></i>
+      Chữ ký
+    </label>
+  </li>
+  <li class="b-list__item b-list__item_type_parent">
+    <label class="b-label" for="ch1">
+      <i class="ion-folder"></i>
+      Gửi duyệt
+    </label>
+  </li>
+</ul> -->
+
+<!-- 
+<ul class="tree tree-menu">
+  <li class="tree-item">
+    <a  class="trigger">Thông tin chung</a>
+  </li>
+  <li class="tree-item controllers">
+    <a  class="trigger">Khách hàng</a>
+  </li>
+  <li class="tree-item">
+    <a class="trigger">Gói dịch vụ</a>
+  </li>
+  <li class="tree-item">
+    <a class="trigger"> <i class="fa fa-angle-right " aria-hidden="true" id="trigger" *ngIf="mocl"></i></a>
+    <a class="click-link" [routerLink]="['../lstAccount']" routerLinkActive="selected" >Tài khoản</a>
+    <ul class="tree-parent open">
+      <li class="tree-item "><a class="view">Tài khoản mới</a>
+        <ul class="tree-parent child">
+          <li class="tree-item">Chủ TKTT chung</li>
+          <li class="tree-item">Ủy quyền</li>
+        </ul>
+      </li>
+      <li class="tree-item view"><a>Tài khoản cũ</a></li>
+    </ul>
+  </li>
+  <li class="tree-item">
+    <a class="trigger">eBanking</a>
+  </li>
+  <li class="tree-item">
+    <a class="trigger">SMS Banking</a>
+  </li>
+  <li class="tree-item">
+    <a class="trigger">Thẻ</a>
+  </li>
+  <li class="tree-item">
+    <a class="trigger">Biểu mẫu</a>
+  </li>
+  <li class="tree-item">
+    <a class="trigger">Tài liệu đính kèm</a>
+  </li>
+  <li class="tree-item">
+    <a class="trigger">Chữ ký</a>
+  </li>
+  <li class="tree-item">
+    <a class="trigger">Gửi duyệt</a>
+  </li>
+</ul> -->

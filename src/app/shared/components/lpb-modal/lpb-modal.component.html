@@ -1,0 +1,11 @@
+<div class="lpb-modal" *ngIf="show" [ngStyle]="{'z-index':(modalType === 'SEARCH') ? 100 : 10 }">
+    <div class="modal-content" [style.width]='widthContent + unit'  [style.height]='heightContent + unit' [style.margin-top]="marginTop">
+        <div class="header">
+            <div class="title">{{headerText}}</div>
+            <mat-icon class="icon-close" (click)="hide()">close</mat-icon>
+        </div>
+        <div class="info">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>

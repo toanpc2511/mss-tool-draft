@@ -1,0 +1,32 @@
+.main {
+  background-color: #FFFFFF;
+  height: 100%;
+  padding-top: 7px;
+}
+.content-title {
+  color: #17589f;
+  border-bottom: 2px solid #F47326;
+  padding: 8px 0;
+  align-self: center;
+  font-size: 16px;
+  font-weight: 500;
+  place-self: flex-start;
+  width: fit-content;
+}
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+.information-section {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+.errMsg {
+  padding-left: 36%;
+  color: #e83c19;
+  font-size: 12px;
+}
+::ng-deep.ng-select-container {
+  outline: none !important;
+  box-shadow: unset !important;
+}

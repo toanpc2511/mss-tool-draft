@@ -1,0 +1,41 @@
+.is-hidden {
+  display: none !important;
+}
+
+.w-fit-cont {
+  width: fit-content;
+}
+
+.h-20{
+  height: 20px;
+}
+:host app-lpb-select2.ng-touched.ng-invalid {
+  ::ng-deep .ng-select-container {
+    border-color: #dc3545 !important;
+  }
+}
+
+.check-rep-info{
+  display: flex;
+  gap: 15px;
+
+  .input-wrapper{
+    flex: 1;
+  }
+
+  .tooltip-wrapper{
+    display: flex;
+    justify-content: center;
+    mat-icon{
+      margin-top: 5px;
+      color: #007bff;
+      cursor: pointer;
+    }
+  }
+}
+
+::ng-deep .tooltip-info {
+  white-space: pre-line;
+}
+
+

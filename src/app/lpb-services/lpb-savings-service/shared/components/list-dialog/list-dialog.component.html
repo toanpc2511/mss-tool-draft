@@ -1,0 +1,29 @@
+<div class="dialog-main">
+  <div class="dialog-header">
+    <div class="title">{{title}}</div>
+    <div class="toolbar">
+      <button class="close-x">
+        <mat-icon (click)="closeDialog()">close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="dialog-content" style="max-height: 500px; overflow: auto;">
+    <app-form-array class="app-form-array" [builder]="builder" [data]="data.data" [buttons]="buttons"
+      [actions]="actions" [config]="{
+        hasSTT:true,
+        actionLabel: 'Thao tác',
+        headerClass: 'bg-blue text-white font-weight-normal',
+        cellClass:'',
+        isDetail: isDetail
+      }"></app-form-array>
+    <span *ngIf="data?.description" class="textLabel">{{data.description}}</span>
+  </div>
+  <div class="dialog-footer" *ngIf="formArray && !isDetail">
+    <button mat-button color="warning" class="mat-button-secondary button-close" (click)="closeDialog()">
+      Quay lại
+    </button>
+    <button mat-button color="primary" class="mat-button-primary button-save" (click)="onSubmit()" type="submit">
+      Lưu
+    </button>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+<app-card-services-form #cardServiceExtendForm [formGroup]="formEbsServiceInfo"
+  [title]="(isDetail ? 'Chi tiết ': 'Phê duyệt ') + 'Mở Khóa Thẻ'" [isShowLoading]="isShowLoading"
+  [formType]="'APPROVE'" (eventBackStep)="backToSearch($event)" (eventOpenModal)="openModal($event)"
+  [isDetail]="isDetail" [showPinCount]="true">
+  <div class="field">
+    <span class="txtLabel">Ngày hết hạn <span class="text-danger">(*)</span> :</span>
+    <input type="text" formControlName="expireDate" class="form-control">
+  </div>
+  <div class="field">
+    <span class="txtLabel">Tài liệu đính kèm:</span>
+    <div class="form-control file-upload-info" (click)="download()">
+      <i class="fa fa-cloud-download mr-2" aria-hidden="true"></i>
+      <div class="file-name">
+        <span>{{formEbsServiceInfo.getRawValue().fileName || ''}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row-fields mb-2">
+    <span class="txtLabel">Ghi chú:</span>
+    <textarea rows="5" type="text" formControlName="sendNote" class="form-control"></textarea>
+  </div>
+  <div class="row-fields mb-2" *ngIf="isDetail">
+    <span class="txtLabel">Trạng thái: </span> <span
+      class="send-node-detail">{{cardEbsServiceSelected?.serviceStatusName}}</span>
+    <textarea rows="1" [autoResize]="{height: 36, minHeight:36, maxHeight: 100}" formControlName="approveNote"
+      *ngIf="cardEbsServiceSelected?.serviceStatusCode === 'R'" class="send-node-r form-control">
+ </textarea>
+  </div>
+</app-card-services-form>
+
+
+
+<!-- Modal confirm -->
+<app-lpb-modal headerText="Xác nhận phê duyệt yêu cầu" [show]="isShowModal && modalType === MODAL_TYPES.APPROVE"
+  (hideModal)="isShowModal = false" [widthContent]="50" [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt">
+      Bạn có chắc muốn duyệt giao dịch hỗ trợ thẻ của khách hàng:
+    </div>
+    <div class="mb-2 confirm-txt" *ngIf="cardEbsServiceSelected?.fullName">
+      {{cardEbsServiceSelected.fullName}}
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-denied mr-2" (click)="this.isShowModal = false">
+        Hủy bỏ
+      </button>
+      <button class="btn btn-accept" (click)="approve()">
+        Đồng ý
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Xác nhận từ chối yêu cầu" [show]="isShowModal && modalType === MODAL_TYPES.REJECT"
+  (hideModal)="isShowModal = false" [widthContent]="50" [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt">
+      Bạn có chắc muốn từ chối giao dịch hỗ trợ thẻ của khách hàng: {{cardEbsServiceSelected.fullName}}
+    </div>
+
+    <div class="form-detail d-flex flex-column w-75" [formGroup]="rejectForm">
+      <textarea type="text" formControlName="reason" maxlength="1000" class="form-control"
+        placeholder="Nhập lý do từ chối"></textarea>
+      <div class="err-text mt-1" *ngIf="hasErrorRejectForm('reason', 'required')">Lý do từ chối bắt buộc nhập</div>
+      <div class="err-text mt-1" *ngIf="hasErrorRejectForm('reason', 'maxlength')">Lý do từ chối không được vượt quá
+        1000 ký tự</div>
+    </div>
+
+    <div class="mt-4">
+      <button class="btn btn-denied mr-2" (click)="this.isShowModal = false">
+        Hủy bỏ
+      </button>
+      <button class="btn btn-accept" (click)="reject()">
+        Đồng ý
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Thông báo" [show]="isShowModal && modalType === MODAL_TYPES.ERROR"
+  (hideModal)="isShowModal = false" [widthContent]="50" [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt" *ngFor="let line of errorModalContents">
+      <p>{{line}}</p>
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-accept" (click)="isShowModal = false">
+        Đóng
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>
+<!-- Modal confirm -->

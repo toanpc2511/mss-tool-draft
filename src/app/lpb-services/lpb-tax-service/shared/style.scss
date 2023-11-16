@@ -1,0 +1,148 @@
+@import "/src/app/shared/styles/custom-styles.scss";
+
+$color-blue: #0c258a;
+$color-orange: #f47326;
+$color-gray: #bdbdbd;
+$color-red: #eb5757;
+.gap-2 {
+  gap: 10px;
+}
+
+.lpb-main {
+  background-color: white;
+  padding: 15px 2% 55px;
+  display: flex;
+  flex-direction: column;
+
+  .content-title {
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(189, 189, 189, 0.35);
+
+    span, i {
+      color: $color-blue;
+      font-weight: 500;
+      font-size: 18px;
+    }
+  }
+
+  .search {
+    label {
+      color: $color-blue;
+      border-bottom: none;
+      font-weight: 500;
+    }
+
+    &-input {
+      display: flex;
+      align-items: baseline;
+
+      span {
+        width: 120px;
+        font-weight: 500;
+        color: $color-blue;
+      }
+
+      .btn-search {
+        background-color: #007bff !important;
+      }
+    }
+  }
+
+  .btn_blue {
+    background: $color-blue;
+    color: #fff;
+  }
+
+  .btn_orange {
+    background: $color-orange;
+    color: #fff;
+  }
+
+}
+
+.card {
+  background-color: #fff;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  padding: 20px;
+
+  .card-title,
+  .card-title .fa {
+    color: #0C258A;
+    font-weight: 500;
+    font-size: 18px;
+  }
+
+  label {
+    color: #0C258A;
+    font-weight: 500;
+  }
+
+  &.card-dark {
+    background-color: rgba(221, 221, 221, 0.44);
+  }
+}
+
+label {
+  color: #0C258A;
+  font-weight: 500;
+}
+
+:host ::ng-deep .footer-row {
+  position: fixed !important;
+}
+
+.icon-back {
+  color: #0c258a;
+  cursor: pointer;
+
+  &:hover {
+    color: #4674EB;
+  }
+}
+
+.card-title {
+  color: #0C258A;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.card-payer {
+  i.fa {
+    font-size: 24px;
+
+    &.fa-plus-circle {
+      color: #00b894;
+
+      &:hover {
+        color: #55efc4;
+      }
+    }
+
+    &.fa-minus-circle {
+      color: #d63031;
+
+      &:hover {
+        color: #ff7675;
+      }
+    }
+  }
+}
+
+.table tr th {
+  text-align: center;
+  background: #0c258a;
+  color: white;
+
+  label {
+    color: #fff;
+  }
+}
+
+:host ::ng-deep .mat-expansion-panel {
+  .mat-content {
+    color: #0C258A;
+    font-weight: 500;
+    font-size: 18px;
+  }
+}
+

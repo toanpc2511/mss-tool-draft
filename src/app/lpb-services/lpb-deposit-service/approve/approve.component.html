@@ -1,0 +1,65 @@
+<div class="d-flex flex-column deposit-body">
+  <app-deposit-form #depositForm [disabledForm]="disabledForm" [formGroup]="approveForm">
+    <div class="fixed-detail" *ngIf="initFormData">
+      <hr />
+      <div class="container mt-3">
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Mã giao dịch: </span>
+              <span class="col-lg-8 col-form-label">{{initFormData.transCode}}</span>
+            </label>
+          </div>
+
+          <div class="col-lg-6">
+            <label class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Trạng thái: </span>
+              <span class="col-lg-8 col-form-label font-weight-bold" [style.color]="status.color">{{status.name}}</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Người tạo: </span>
+              <span class="col-lg-8 col-form-label">{{initFormData.createdBy}}</span>
+            </label>
+          </div>
+
+          <div class="col-lg-6">
+            <label class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Thời gian tạo: </span>
+              <span class="col-lg-8 col-form-label">{{initFormData.createdDate | date:'dd/MM/yyyy HH:mm:ss'}}</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <label class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Người phê duyệt: </span>
+              <span class="col-lg-6 col-md-6 col-form-label">
+                {{initFormData.status === TRANS_STATUS_CODES.APPROVE_REVERT ? initFormData.approveRevertBy : initFormData.approveBy}}
+              </span>
+            </label>
+          </div>
+
+          <div class="col-lg-6">
+            <label class="form-group row">
+              <span class="col-lg-4 col-form-label textLabel">Thời gian phê duyệt: </span>
+              <span class="col-lg-6 col-md-6 col-form-label">
+                {{(initFormData.status === TRANS_STATUS_CODES.APPROVE_REVERT ? initFormData.approveRevertDate : initFormData.approveDate) | date:'dd/MM/yyyy HH:mm:ss'}}
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-deposit-form>
+</div>
+<app-lpb-footer *ngIf="initFormData" (onUpdate)="onEdit()" (onDelete)="onDelete()" (onSendApprove)="onSendApprove()"
+    (onApprove)="onApprove()" (onReverse)="onReverse()" (onPrintDocument)="onPrintDocument()"
+    (onPrintForm)="onPrintForm()" (onSave)="onSave()" (onUnReverse)="onUnReverse()" [hiddenButtons]="hiddenButtons"
+    [hiddenBackButton]="true" [actions]="actions">
+</app-lpb-footer>

@@ -1,0 +1,21 @@
+<div class="row footer-row">
+  <div class="col-12">
+    <ng-container *ngFor="let button of buttonActions">
+      <div *ngIf="!button.hiddenType || button.hiddenType !== 'none'" class="footer"
+        [class._disabled]="button.hiddenType === 'disable'"
+        (click)="button.hiddenType !== 'disable' && callAction(button.actionCode)">
+        <span class="material-icons"> {{button.icon}} </span> <label>{{button.actionName}}</label>
+      </div>
+    </ng-container>
+    <div *ngFor="let button of actions" class="footer"
+         [class._disabled]="button.hiddenType === 'disable'"
+         (click)="button.hiddenType !== 'disable' && callBack(button)"
+    >
+      <span class="material-icons"> {{button.actionIcon}} </span> <label>{{button.actionName}}</label>
+    </div>
+    <div class="footer" [hidden]="hiddenBackButton" (click)="back()">
+      <span class="material-icons"> keyboard_backspace </span> <label>Quay lại</label>
+    </div>
+
+  </div>
+</div>

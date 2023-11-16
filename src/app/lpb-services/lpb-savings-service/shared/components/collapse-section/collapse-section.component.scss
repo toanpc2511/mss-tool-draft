@@ -1,0 +1,29 @@
+.section-title {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  background-color: #fff;
+  cursor: pointer;
+}
+:host ::ng-deep {
+  .content-title span.active {
+    cursor: pointer !important;
+  }
+}
+
+.section-body {
+  padding: 0px 15px;
+  background-color: #fff;
+  position: relative;
+}
+
+.section-break {
+  position: relative;
+  width: 100%;
+  background-color: #fff;
+  height: 1rem;
+}
+.bg-white {
+  background-color: #fff;
+}

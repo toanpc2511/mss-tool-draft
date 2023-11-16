@@ -1,0 +1,89 @@
+<div class="abc">
+    <h2 mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;">
+      Thông tin chi tiết
+    </h2>
+    <mat-dialog-content class="mat-typography scroll-dialog">
+      <div class="col-12" style="padding-top: 10px;">
+        <form >
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="control-label">UserAD</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="ad" [(ngModel)]="objUser.userName" disabled>
+              </div>
+            </div>
+            <div class="form-group col-md-6 ">
+              <label class="control-label">Mã nhân viên</label>
+              <input type="text"  class="form-control" name="employeeId" [(ngModel)]="objUser.employeeId" disabled>
+     
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="control-label">Họ và tên</label>
+              <input type="text" class="form-control" name="fullName" [(ngModel)]="objUser.fullName" disabled>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="control-label">Phòng ban</label>
+              <input  type="text" class="form-control" name="department" [(ngModel)]="objUser.department" disabled>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-6 ">
+              <label class="control-label">Số điện thoại</label>
+              <input type="text" class="form-control" name="phone" [(ngModel)]="objUser.phone" disabled>
+
+            </div>
+            <div class="form-group col-md-6">
+              <label class="control-label">Email</label>
+              <input type="text" class="form-control" name="email" [(ngModel)]="objUser.email" disabled>
+ 
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Ngày hiệu lực</label>
+              <input type="text" class="form-control pading-date" [(ngModel)]="validFrom"  name="validFrom" disabled/>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Ngày hết hạn</label>
+              <input type="text" class="form-control pading-date" [(ngModel)]="validTo"  name="validTo" disabled/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label class="control-label">UserCore</label>
+              <input type="text" class="form-control pading-date" name="userCore" [(ngModel)]="objUser.userCore" disabled/>
+
+            </div>
+            <div class="form-group col-md-6 ">
+              <label class="control-label">Chi nhánh</label>
+              <input type="text" class="form-control" name="branches" [(ngModel)]="objUser.branches" disabled />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6 ">
+              <label class="control-label">Chức danh</label>
+              <textarea type="text" class="form-control" name="titleIds" [(ngModel)]="titles" disabled></textarea>
+              <!-- <input type="text" class="form-control" name="titleIds" [(ngModel)]="titles" disabled /> -->
+            </div>
+            <div class="form-group col-md-6 ">
+              <label class="control-label">Role</label>
+              <textarea type="text" class="form-control" name="rolesName" [(ngModel)]="rolesName" disabled></textarea>
+              <!-- <input type="text" class="form-control" name="titleIds" [(ngModel)]="titles" disabled /> -->
+            </div>
+          </div>
+        </form>
+      </div>
+  
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <div style="height: 57px; margin-top: 9px;">
+          <div class="float-right">
+            <button type="button" class="btn closePopup" (click)="closeDialog(0)">Đóng</button>
+          </div>
+        </div>
+      </mat-dialog-actions>
+  </div>
+  

@@ -1,0 +1,59 @@
+@import '/src/app/shared/styles/lpb-table';
+.main {
+  background-color: #FFFFFF;
+  height: 100%;
+  padding-top: 6px;
+}
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+.content-title {
+  color: #17589f;
+  border-bottom: 2px solid #F47326;
+  padding: 8px 0;
+  align-self: center;
+  font-size: 16px;
+  font-weight: 500;
+  place-self: flex-start;
+  width: fit-content;
+}
+.cs-form{
+  width: 100%;
+}
+.errMsg {
+  padding-left: 36%;
+  color: #e83c19;
+  font-size: 12px;
+}
+.wrap{
+  word-break: break-all !important;
+}
+.sBtn { font-size: 12px}
+.btn-orange {
+  color: #fff;
+  background-color: #f47326;
+  border-color: #f47326 ;
+}
+
+.btn-orange:focus, .btn-orange.focus {
+  color: #fff;
+  background-color: #e78658;
+  border-color: #e78658;
+  box-shadow: 0 0 0 0.2rem rgba(246, 148, 54, 0.5);
+}
+.btn-blue {
+  color: #fff;
+  background-color: #23388F;
+  border-color: #23388F;
+}
+.btn-blue:focus, .btn-blue.focus {
+  color: #fff;
+  background-color: #4a7dcd;
+  border-color: #4a7dcd;
+  box-shadow: 0 0 0 0.2rem rgba(55, 145, 201, 0.5);
+}
+::ng-deep.ng-select-container {
+  outline: none !important;
+  box-shadow: unset !important;
+}

@@ -1,0 +1,15 @@
+<input type="text" class="form-control form-control-sm inputText"
+       placeholder="Nhập CA tỉnh / thành phố"
+       maxlength="200"
+       [class] = "className"
+       [formControl]="myControl"
+       (click)="filter()"
+       (blur)="onChange(myControl.value)"
+       (input)="onChange($event.target.value)"
+       [matAutocomplete]="auto2">
+<mat-autocomplete #auto2="matAutocomplete">
+
+  <mat-option (click)="setValue(option.name)" *ngFor="let option of filteredOptions | async" [value]="option.name">
+    {{option.name}}
+  </mat-option>
+</mat-autocomplete>

@@ -1,0 +1,233 @@
+.form-radio-inline {
+  column-gap: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  &-group {
+    column-gap: 15px;
+    width: fit-content;
+  }
+  .form-control {
+    height: 15px;
+    transform: translateY(-2px);
+  }
+  input {
+    cursor: pointer;
+  }
+}
+
+.form-control:focus {
+  box-shadow: unset !important;
+}
+
+input.ng-invalid.ng-touched,
+input.ng-invalid.ng-dirty {
+  border-color: #dc3545;
+}
+
+.clear-button {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  cursor: pointer;
+
+  .ng-clear-wrapper {
+    cursor: pointer;
+    box-sizing: border-box;
+    text-align: left;
+    font: 400 20px Roboto, "Helvetica Neue", sans-serif;
+    font-size: 18px;
+    letter-spacing: normal;
+    color: #999;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+    display: inline-block;
+    line-height: 1;
+    &:hover {
+      color: #dc3545 !important;
+    }
+  }
+}
+
+.content-title {
+  color: #0c258a;
+  align-self: center;
+  font-size: 16px;
+  font-weight: 500;
+  place-self: flex-start;
+  margin-top: 8px;
+  height: fit-content;
+  span {
+    padding: 8px 0;
+    cursor: pointer;
+    &.active {
+      cursor: auto;
+      border-bottom: 2px solid #f47326;
+    }
+  }
+}
+.text-title {
+  color: #0c258a;
+}
+.font-weight-semibold {
+  font-weight: 500;
+}
+
+.empty-data {
+  text-align: center;
+  color: #17589f;
+  font-size: 13px;
+  font-weight: 400;
+}
+.ic-in-primary {
+  color: #ffffff;
+}
+
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+hr {
+  border-color: #bdbdbd;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.identity-images-group {
+  img {
+    width: 100%;
+  }
+}
+
+.form-group {
+  .form-radio-inline-group {
+    min-height: 36px;
+  }
+}
+label.h6.form-radio-inline {
+  .form-control {
+    vertical-align: middle;
+    height: 16px;
+    width: 16px;
+  }
+}
+
+.clear-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+
+  .ng-clear-wrapper {
+    cursor: pointer;
+    box-sizing: border-box;
+    text-align: left;
+    font: 400 20px Roboto, "Helvetica Neue", sans-serif;
+    font-size: 18px;
+    letter-spacing: normal;
+    color: #999;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+    display: inline-block;
+    line-height: 1;
+    &:hover {
+      color: #dc3545 !important;
+    }
+  }
+}
+
+.clear-button:hover {
+  .icon {
+    color: #dc3545;
+  }
+}
+
+table th,
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
+:host table.money-statement td {
+  padding: 4px 0;
+  ::ng-deep {
+    .form-control,
+    span {
+      font-size: 0.95rem;
+      padding: 2px 9px;
+      height: auto;
+    }
+  }
+}
+
+.h-36 {
+  display: block;
+  min-height: 36px;
+}
+
+textarea.ng-invalid.ng-touched,
+input.ng-invalid.ng-touched {
+  border-color: #e83c19;
+  box-shadow: none;
+}
+
+.fetch-spinner-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.288);
+  opacity: 1;
+}
+
+.download-container {
+  display: inline-flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+:host ::ng-deep .mat-tab-header {
+  border-bottom: none;
+}
+
+textarea {
+  resize: none;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  text-transform: none;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  text-transform: none;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  text-transform: none;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  text-transform: none;
+}
+::placeholder {
+  /* Recent browsers */
+  text-transform: none;
+}
+
+input:disabled::placeholder {
+  color: transparent !important;
+}
+
+input[type="radio"]{
+  min-width: 13px;
+}

@@ -1,0 +1,90 @@
+<div class="container-fuild">
+  <div class="row cust-row">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+      <app-process-info [processId]="processId"></app-process-info>
+    </div>
+
+  </div>
+  <div class="row cust-row">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+      <div class="title-head" style="font-weight: 500;">
+        <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">account_balance_wallet</mat-icon>
+        <span class="text" style="padding: 5px 0;">DANH SÁCH THẺ PHỤ</span>
+      </div>
+    </div>
+    <div class=" mat-elevation-z8 ">
+      <table class="table table-responsive table-fixed table-hover" style="margin: 0px;">
+        <thead>
+        <tr class="titleTD">
+          <th class="id-table">STT</th>
+          <th class="cardTypeNameCol">Loại thẻ</th>
+          <th>Số thẻ</th>
+          <th class="account">Tài khoản</th>
+          <th>Ngày phát hành</th>
+          <th>Ngày hết hạn</th>
+          <th>Tình trạng</th>
+          <th class="action" *ngIf="(isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)">Hành
+            động
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let scd of subCard;index as i " tabindex="0">
+          <td class="id-table">{{i + 1}}</td>
+          <td class="cardTypeNameCol text-center">
+            <a class="cardTypeName" style="cursor: pointer;"> {{scd.cardTypeName}} </a>
+          </td>
+          <td class="detail cardNumber"
+              [routerLink]="['/smart-form/manager/infor-sup-card',scd.id,cardId,processId]">{{scd.cardNumber}}
+            <ng-container *ngIf="scd.cardNumber==null">
+              [Thẻ phụ - {{scd.cardIndex}}]
+            </ng-container>
+          </td>
+          <td class="account text-center">
+            {{scd.account.accountNumber}}
+            <ng-container *ngIf="scd.account.accountNumber==null">
+              Tài khoản phụ {{scd.account.accountIndex}}
+            </ng-container>
+          </td>
+          <td class="text-center">{{scd.issueDate}}</td>
+          <td class="text-center">{{scd.expirationDate}}</td>
+          <td style="text-align: center;">{{scd.supCardStatusName}}</td>
+          <td class="text-center action" style="cursor: pointer;"
+              *ngIf="(isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)">
+            <i class="fa fa-trash-o" style="color: red" *ngIf="(scd.processIntegrated?.statusCode== SERVICE_STATUS.DANG_NHAP || scd.processIntegrated?.statusCode==SERVICE_STATUS.CHO_DUYET) && !isView && scd.currentStatusCode == 'NEW'" (click)="deleteCard(scd.id)"> Xóa</i>
+          </td>
+        </tr>
+        <tr id="tab" class="card-content-1" *ngIf="subCard==null">
+          <td colspan="9" style="text-align: center;">
+            Không có dữ liệu
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <app-popup-detail-warring [show]="isShowMessage" (hideModal)="isShowMessage = false">
+    <div class="text-center">
+      Hồ sơ <span class="message">{{process?.item?.code}}</span> đang được thao tác bởi
+      <span class="message">{{ process?.item?.createdByUser?.userName}}</span> chi nhánh
+      <span class="message">{{process?.item?.branchCode}} </span>
+    </div>
+  </app-popup-detail-warring>
+  <div style="height: 50px;display: block;clear: both;"></div>
+  <div class="row footer-row" style="margin:0px;position: fixed;width: 100%; background: #23388F;">
+    <div class="col-12" style="text-align: right; margin-right: 15px;">
+      <div class="footer" style="padding-right: 20px;" (click)="addSubCard()"
+           *ngIf="authenticationService.isPermission(PermissionConst.THE_PHU.CREATE)
+           && (process.item.statusCode !== PROCESS_STATUS.DONG_HO_SO)
+           && (process.item.customer.statusCif !== 'Y' && process.item.customer.statusCif !== 'C')
+           && !isView">
+        <span class="material-icons"> add </span>
+        <label>Thêm mới</label>
+      </div>
+      <div class="footer" (click)="backPage()">
+        <span class="material-icons"> keyboard_backspace </span>
+        <label>Quay lại</label>
+      </div>
+    </div>
+  </div>
+</div>

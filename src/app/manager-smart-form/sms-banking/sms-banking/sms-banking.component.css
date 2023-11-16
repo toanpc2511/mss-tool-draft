@@ -1,0 +1,45 @@
+.col-12 {
+    margin-bottom: 0;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+    padding: 5px 0;
+}
+
+.table th {
+    background: #EFF4FF;
+    border: 1px solid #BDBDBD;
+    box-sizing: border-box;
+}
+
+.accountNumber {
+    color: #0088FF;
+}
+
+.footer-row {
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+
+@media (max-width:1400px) {
+    .label-under {
+        font-size: 12px;
+        line-height: 21px;
+        text-align: right;
+        text-indent: 8px;
+        color: #252834;
+    }
+    input[type=radio] {
+        width: 15px;
+        height: 15px;
+    }
+}

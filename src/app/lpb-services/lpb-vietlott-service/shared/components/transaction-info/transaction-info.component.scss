@@ -1,0 +1,52 @@
+@import "../../styles/styles.scss";
+p-blue {
+  color: blue;
+  font-weight: 100;
+  font-size: 14px;
+}
+
+p-red {
+  color: red;
+  font-weight: 100;
+  font-size: 14px;
+}
+
+.card {
+  background-color: #fff;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  padding: 10px 20px;
+  margin: 15px 0;
+  &.card-shadow {
+    background: #F1F3F6;
+  }
+
+  .card-title {
+    color: #0C258A;
+    font-weight: 500;
+    font-size: 16px;
+    align-self: normal;
+    border-bottom: none;
+  }
+
+  p {
+    font-weight: bold;
+    color: #0C258A;
+  }
+}
+p {
+  font-weight: bold;
+  font-size: 13px;
+  &.note {
+    color: #0C258A;
+    margin: 20px 0;
+  }
+  &.warn {
+    color: #dc3545;
+    margin: 20px 0;
+  }
+}
+
+.bg-btn__blue {
+  background: #0c258a;
+  color: #fff;
+}

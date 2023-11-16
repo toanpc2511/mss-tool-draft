@@ -1,0 +1,63 @@
+<div class="px-4 py-2">
+  <div class="text-high-light text-uppercase fw-bolder"><i class="fa fa-search"></i> Lịch sử giao dịch
+  </div>
+  <hr>
+  <div class="form-search d-flex flex-column mt-2">
+    <div [formGroup]="formSearch" class="container">
+      <div class="row">
+        <div class="col col-left">
+          <!-- Mã chi nhánh -->
+          <label class="form-group row">
+          <span class="col-lg-4 col-form-label textLabel">Mã chi nhánh
+            <span *ngIf="isHoiSo" class="text-danger"> (*)</span>
+          </span>
+            <span class="col-lg-8">
+<!--            <app-lpb-select2 [optionAdditional]="{branchCodeName: 'Tất cả Chi nhánh', code: ''}"-->
+<!--                             (clear)="branchCodeClear()" [apiUrl]="'/process/userView/branchListAll'"-->
+<!--                             labelName="branchCodeName"-->
+<!--                             bindValue="code" [config]="{isNewApi: false}" formControlName="branchCode"-->
+<!--                             placeholder="Chọn Chi nhánh / PGD">-->
+<!--            </app-lpb-select2>-->
+            <app-lpb-select2 [optionAdditional]="[{branchCodeName: 'Tất cả chi nhánh', code: ''}]"
+                             (clear)="branchCodeClear()" [apiUrl]="'/process/userView/branchListAll'"
+                             labelName="branchCodeName"
+                             bindValue="code" [config]="{isNewApi: false}" formControlName="branchCode"
+                             placeholder="Chọn Chi nhánh / PGD">
+
+            </app-lpb-select2>
+              <!--                          <ng-container-->
+              <!--                            *ngTemplateOutlet="error; context: {controlName: 'branchCode', controlNameVi: 'Mã chi nhánh'}">-->
+              <!--                          </ng-container>-->
+          </span>
+          </label>
+
+          <!-- Người tạo  -->
+          <label class="form-group row">
+            <span class="col-lg-4 col-form-label textLabel">Người tạo </span>
+            <span class="col-lg-8">
+            <app-lpb-select2 [apiUrl]="apiUrlUserListAll" [config]="{isNewApi: false}"
+                             labelName="userName" bindValue="userCore" formControlName="createdBy"
+                             placeholder="Chọn người tạo"
+            ></app-lpb-select2>
+          </span>
+          </label>
+
+        </div>
+
+        <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+          <button class="btn btn-primary btn-blue mr-4 nowrap" type="button" (click)="searchTransaction()">
+            Tìm kiếm
+            <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-5">
+    <div class="text-high-light text-uppercase fw-bolder"><i class="fa fa-money-bill"></i> Danh sách giao dịch
+    </div>
+    <hr>
+    <app-lpb-datatable [config]="config" (viewAction)="viewTransaction($event)" [columns]="columns"
+                       apiServiceURL="/log-service/history"></app-lpb-datatable>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="container-fuild">
+    <div>
+        <div class="row cust-row">
+            <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+                <app-process-info [processId]="processId" (processDetail)="getDetail($event)"></app-process-info>
+            </div>
+        </div>
+        <div class="row cust-row">
+            <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+                <div class="title-head">
+                    <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px ;color: #1F69BC;">list
+                    </mat-icon>
+                    <span class="text" style="padding: 5px 0;">DANH SÁCH ĐƯỢC ỦY QUYỀN</span>
+                </div>
+            </div>
+            <div class="  mat-elevation-z8 ">
+                <table class="table table-responsive table-fixed" style="margin: 0px;display: unset;">
+                    <thead>
+                        <tr class="titleTD">
+                            <th>Họ và tên</th>
+                            <th>Số GTXM</th>
+                            <th>Từ ngày</th>
+                            <th>Đến ngày</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstAccount" class="hoverTr">
+                            <td class="col-detail" (click)="detailAccount(item)">{{item?.fullName}}</td>
+                            <td class="col-right">{{item?.perDocNo}}</td>
+                            <td class="col-center">{{item?.validFrom }}</td>
+                            <td class="col-center">{{item?.validTo}}</td>
+                            <td class="col-center">{{item?.authorStatusName}}</td>
+                            <td class="col-center">
+                                <span class="material-icons" (click)="showDialog(item.id)"
+                                    *ngIf="item.isActive">delete</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td *ngIf="lstAccount == null" style="text-align: center;">Không có dữ liệu</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<app-dialog #appDialog></app-dialog>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+    <div class="col-12" style="text-align: right;padding: 0px;margin: 0px;">
+        <div class="footer" (click)="createAuthority()" *ngIf="isCreate" style="padding-right: 20px;">
+            <span class="material-icons">
+                add
+            </span>
+            <label>Tạo mới</label>
+        </div>
+        <div class="footer" (click)="backPage()">
+            <span class="material-icons">
+                keyboard_backspace
+            </span>
+            <label>Quay lại</label>
+        </div>
+    </div>
+</div>
+<app-popup-detail-warring [show]="isShowMessage" (hideModal)="isShowMessage = false">
+    <div class="text-center">
+        Hồ sơ <span class="message">{{objStatusProfile.code}}</span> đang được thao tác bởi
+        <span class="message">{{objStatusProfile?.createdByUser?.userName}}</span> chi nhánh
+        <span class="message">{{objStatusProfile.branchCode}} </span>
+    </div>
+</app-popup-detail-warring>

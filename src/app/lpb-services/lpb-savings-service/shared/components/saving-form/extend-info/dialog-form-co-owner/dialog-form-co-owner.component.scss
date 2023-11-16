@@ -1,0 +1,11 @@
+.content-title span {
+  font-weight: 700;
+  font-size: 18px;
+}
+.dialog-content {
+  width: 1300px;
+  max-width: 100%;
+  &._full {
+    width: 100%;
+  }
+}

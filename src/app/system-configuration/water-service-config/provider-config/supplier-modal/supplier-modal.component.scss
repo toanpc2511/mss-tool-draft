@@ -1,0 +1,70 @@
+$color-title: #0c258a;
+$border-orange: #f47326;
+$bg-gray: #bdbdbd;
+$bg-blue: #0c258a;
+$--color-focus: #40a9ff;
+
+.title {
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: $color-title;
+}
+.supplier-form {
+  padding: 3px 24px;
+  width: 100%;
+}
+
+.supplier-detail {
+  padding: 3px 24px;
+  width: 100%;
+  span {
+    font-weight: 500;
+  }
+}
+.required {
+  position: relative;
+  &::after {
+    content: "*";
+    position: absolute;
+    top: -2px;
+    right: -8px;
+    color: red;
+  }
+}
+
+.modal-footer {
+  .button {
+    min-width: 120px;
+  }
+  .bg-btn__blue {
+    background: $bg-blue;
+  }
+}
+
+label {
+  color: $color-title;
+  border-bottom: none;
+  font-weight: 500;
+}
+
+.text-while {
+  color: white;
+}
+
+.err-text {
+  font-size: 12px;
+  color: red;
+}
+.lpb-input,
+.lpb-select {
+  border: solid 1px lightgrey;
+  border-radius: unset;
+  height: 30px;
+}
+
+.lpb-input:focus {
+  border: 0;
+  outline: solid 1px;
+  outline-color: $--color-focus;
+}

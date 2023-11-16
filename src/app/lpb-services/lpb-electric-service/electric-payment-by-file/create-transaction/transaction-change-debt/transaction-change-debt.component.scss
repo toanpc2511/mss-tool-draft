@@ -1,0 +1,47 @@
+
+.template-other {
+  background-color: #F1F3F6;
+  color: #162A5E;
+  font-weight: 500;
+  .temp-content{
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    .record {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 4px;
+      &.success {
+        background: #8ADC76;
+      }
+      &.error {
+        background: #F64F45;
+      }
+    }
+  }
+  .text-down {
+    color: #162A5E;
+    cursor: pointer;
+    &:hover {
+      color: #4674EB;
+    }
+  }
+
+  .text-down-disable {
+    color: #C4C4C4;
+    cursor: default;
+  }
+
+  .text-message {
+    color: #F64F45;
+  }
+}
+.rule-content {
+  font-size: 14px;
+  span {
+    color: #F07527;
+    font-size: 12px;
+  }
+}

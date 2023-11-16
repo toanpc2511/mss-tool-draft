@@ -1,0 +1,23 @@
+<div class="card-issuance-main">
+  <app-step-search *ngIf="step === STEP.HOME"
+                   (evtClickSendRequest)="showStepDetail($event)"
+                   (evtClickCreateRequest)="showStepCreate()">
+  </app-step-search>
+
+  <app-step-create-request *ngIf="step === STEP.CREATE"
+                           [cardSelected]="cardSelectedSearch"
+                           [cardEbsInfoSelected]="cardEbsInfoSelected"
+                           (evtClickSendRequest)="showStepDetail2($event)"
+                           (eventBackStep)="backToSearch()">
+  </app-step-create-request>
+
+  <app-step-view-detail *ngIf="step === STEP.DETAIL"
+                        [cardEbsInfoSelected]="cardEbsInfoSelected"
+                        [cardSelected]="cardSelectedSearch"
+                        [acctionView]="acctionView"
+                        [detailedList]="cardInfoDetail"
+                        [acctionCode]="acctionCode"
+                        (eventBackStep)="backToSearch()">
+  </app-step-view-detail>
+</div>
+

@@ -1,0 +1,43 @@
+<!-- danh sach account -->
+<div class="container-fuild">
+    <div class="row cust-row" [hidden]="!hiddenAccount">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+            <div class="title-head" style="font-weight: 500;">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">view_list</mat-icon>
+                <span class="text" style="padding: 5px 0;">DANH MỤC TÀI KHOẢN NHẬN BIẾN ĐỘNG SỐ DƯ</span>
+            </div>
+        </div>
+        <div class="  mat-elevation-z8">
+            <table class="table table-responsive table-fixed" style="margin: 0px;display: unset;">
+                <thead>
+                    <tr class="titleTD">
+                        <th>STT</th>
+                        <th>Ngày tạo</th>
+                        <th>Số điện thoại</th>
+                        <th>Số tài khoản</th>
+                        <th>Chi nhánh</th>
+                        <th>Trạng thái dịch vụ</th>
+                        <th>Trạng thái Mobile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listA; index as i">
+                        <td class="cardNumber">{{i+1}}</td>
+                        <!--                            <td style="cursor: pointer;text-align: center;">{{item.accountNumber}}</td>-->
+                        <td style="text-align: center;" (click)="clickViewDetail(item)">{{item.accountName}}</td>
+                        <td style="text-align: center;">{{item.accountProductName}}</td>
+                        <td style="text-align: center;">{{item.currencyCode}}</td>
+                        <td style="text-align: center;">{{item.actionName}}</td>
+                        <td style="text-align: center;">{{item.actionName}}</td>
+                        <td class="text-center action" style="cursor: pointer;"><span class="material-icons" (click)="deleteAccount(item.id)">delete</span></td>
+                    </tr>
+                    <tr>
+                        <td *ngIf="lstAccount == null" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,150 @@
+<div class="container-fuild">
+  <div class="register-cif">
+    <div class="register-cif-content-title">
+      <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">add</mat-icon>
+      <span>THÔNG TIN KHÁCH HÀNG</span>
+    </div>
+    <div class="register-cif-info-customer">
+      <div class="col-info-left">
+        <!-- <div (click)="emitInfoCustomer()">
+          test Thông tin cá nhân
+        </div> -->
+        <app-rc-customer-info #customerInfo (dateOfBirthChange)="dateOfBirthValueChange($event)"
+          (nationiltyFisrtChange)="nationiltyFisrtValueChange($event)" (mobileNoChange)="mobileNoValueChange($event)">
+        </app-rc-customer-info>
+      </div>
+      <div class="col-info-right">
+        <!-- <div (click)="emitPerDocList()">
+          test GTXM
+        </div> -->
+        <app-rc-verify-docs #verifyDos [inpDateOfBirth]="dateOfBirth" [inpNationality]="nationlityFirst.code"
+          [provinceUser]="userInfo.cityName">
+        </app-rc-verify-docs>
+      </div>
+    </div>
+    <div class="register-cif-address">
+      <app-lpb-address #address [objCurrentAddress]="currentAddressObject" [objResidentAddress]="residentAddressObject">
+      </app-lpb-address>
+    </div>
+    <div class="register-cif-child-infor">
+      <div class="mis d-flex" [class.error-invalid]="errMsgMis !== ''" (click)="showMis()">
+        <div class="mis-left"> THÔNG TIN TRƯỜNG MIS <span class="error-invalid">(*)</span> </div>
+      </div>
+      <span class="error-block" *ngIf="errMsgMis !== ''">
+        {{errMsgMis}}
+      </span>
+      <app-lpb-modal headerText="THÔNG TIN TRƯỜNG MIS" [show]="isMis" [unit]="'%'" [widthContent]="80"
+        [heightContent]="75" (hideModal)="isMis = false">
+        <app-rc-mis *ngIf="isMis" [ObjMisCif]="misObject" (objectMis)="getObjMis($event)" (closeMis)="closeMis($event)">
+        </app-rc-mis>
+      </app-lpb-modal>
+      <div class="udf d-flex" [class.error-invalid]="errMsgUdf !== ''" (click)="showUdf()">
+        <div class="udf-left"> THÔNG TIN TRƯỜNG UDF <span class="error-invalid">(*)</span></div>
+      </div>
+      <span class="error-block" *ngIf="errMsgUdf !== ''">
+        {{errMsgUdf}}
+      </span>
+      <app-lpb-modal headerText="THÔNG TIN TRƯỜNG UDF" [show]="isUdf" [unit]="'%'" [widthContent]="80"
+        [heightContent]="75" (hideModal)="isUdf = false">
+        <app-rc-udf *ngIf="isUdf" [inpMobileNo]="mobileNo" [objCifUdf]="udfObject" (closeUdf)="closeUdf()" (objectUdf)="getObjUdf($event)">
+        </app-rc-udf>
+      </app-lpb-modal>
+      <app-rc-fatca #fatca [inpNationality]="nationlityFirst.code"></app-rc-fatca>
+      <div class="reference d-flex">
+        <div (click)="showReferenceCif()" class="reference-left">
+          THÔNG TIN CIF LIÊN QUAN ({{countBlockReferenceCif}})
+        </div>
+      </div>
+      <app-lpb-modal headerText="THÔNG TIN CIF LIÊN QUAN" [show]="isReference" [unit]="'%'" [widthContent]="80"
+        [heightContent]="75" (hideModal)="closeReferenceCif($event)">
+        <app-rc-reference-cif *ngIf="isReference" [inputData]="referenceCifs"
+          (complateReferenceCif)="closeReferenceCif($event)" (sendData)="getReferenceCif($event)">
+        </app-rc-reference-cif>
+      </app-lpb-modal>
+      <div class="d-flex ownerBenefit">
+        <div (click)="showOwnerBenefit()" class="ownerBenefit-left"> THÔNG TIN CHỦ SỞ HỮU HƯỞNG LỢI
+          <span>({{countBlockOwnerOfBenefit}})</span>
+        </div>
+      </div>
+
+      <app-lpb-modal headerText="THÔNG TIN CHỦ SỞ HỮU HƯỞNG LỢI" [show]="isOwnerBenefit" [unit]="'%'"
+        [widthContent]="80" [heightContent]="75" (hideModal)="isOwnerBenefit = false">
+        <app-rc-owner-benefit *ngIf="isOwnerBenefit" [inpObjCurrentAddress]="currentAddressObject"
+          [inpObjResidentAddress]="residentAddressObject" (arrayCoOwner)="emitCoOwner($event)"
+          (emitCoOwnerNoId)="emitCoOwnerNoId($event)" (closeCoOwner)="closeOwnerBenefit($event)"
+          [inpListOwner]="coOwnerList"></app-rc-owner-benefit>
+      </app-lpb-modal>
+
+      <div class="d-flex ownerBenefit">
+        <div (click)="showLegalCif()" class="ownerBenefit-left"> THÔNG TIN THỎA THUẬN PHÁP LÝ
+          <span>({{countBlockLegal}})</span>
+        </div>
+      </div>
+
+      <app-lpb-modal headerText="THÔNG TIN THỎA THUẬN PHÁP LÝ" [show]="isLegal" [unit]="'%'" [widthContent]="80"
+        [heightContent]="75" (hideModal)="isLegal = false">
+        <app-rc-legal *ngIf="isLegal" [objCurrentAddress]="currentAddressObject" (ListLegal)="emitLegal($event)"
+          [lstLegal]="legalList" (closeLegal)="closeModalLegal($event)"></app-rc-legal>
+      </app-lpb-modal>
+      <div class="d-flex guardian" [ngStyle]="{'margin': errMsgGuardian !== '' ? 'auto' : '30px 0' }"
+        [class.error-invalid]="errMsgGuardian !== ''">
+        <div (click)="showGuardianCif()" class="guardian-left">THÔNG TIN NGƯỜI ĐẠI DIỆN PHÁP LUẬT
+          ({{countBlockGuardian}})
+        </div>
+      </div>
+      <span class="error-block" *ngIf="errMsgGuardian !== ''">
+        <p></p>
+        {{errMsgGuardian}}
+        <p></p>
+      </span>
+
+      <app-lpb-modal headerText="THÔNG TIN NGƯỜI ĐẠI DIỆN PHÁP LUẬT" [show]="isGuardian" [unit]="'%'"
+        [widthContent]="80" [heightContent]="75" (hideModal)="closeGuardianCif($event)">
+        <app-rc-guardian #guardian *ngIf="isGuardian" [inputData]="guardianList"
+          (complateGuardian)="closeGuardianCif($event)" (sendData)="getGuardian($event)">
+        </app-rc-guardian>
+      </app-lpb-modal>
+    </div>
+    <!-- <div class="register-cif-child-infor">
+    </div> -->
+  </div>
+  <div class="row footer-row">
+    <div class="col-12">
+      <div class="footer" *ngIf="isApproveButton" [ngClass]="isDisableBtnWhenClick ? 'div-disable' : ''" (click)="approveProcess('SEND_APPROVE')">
+        <span class="material-icons"> check </span>
+        <label>Gửi duyệt</label>
+      </div>
+      <div class="footer" *ngIf="isSaveButton" [ngClass]="isDisableBtnWhenClick ? 'div-disable' : ''" (click)="approveProcess('SAVE')">
+        <span class="material-icons"> save </span>
+        <label>Lưu thông tin</label>
+      </div>
+      <div class="footer mr-1" (click)="backPage()">
+        <span class="material-icons"> keyboard_backspace </span>
+        <label>Quay lại</label>
+      </div>
+    </div>
+    <app-lpb-modal headerText="Xác nhận" [show]="isShowPopupApprove" [unit]="'%'" [widthContent]="50"
+      [heightContent]="50" (hideModal)="isShowPopupApprove = false">
+      <div class="register-cif-content">
+        <div class="mb-2">
+          Bạn có muốn gửi duyệt dịch vụ này không?
+        </div>
+        <div class="block-note">
+          <label>Ghi chú:&nbsp;&nbsp;</label>
+          <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+        </div>
+        <div class="div-center">
+          <button class="btn-cancel" [ngClass]="isDisableBtnWhenClick ? 'div-disable' : ''" (click)="confimApproveProcess('CANCEL')">
+            Hủy
+          </button>
+          <button class="btn-save ml-2" [ngClass]="isDisableBtnWhenClick ? 'div-disable' : ''" (click)="confimApproveProcess('CONFIM')">
+            Đồng ý
+          </button>
+        </div>
+      </div>
+    </app-lpb-modal>
+  </div>
+</div>
+<app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoadingCallApi"
+  class="sq-global-backdrop center-aligned">
+</app-progress-spinner>

@@ -1,0 +1,108 @@
+<div class="rp-cifToSvbo">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="container-fluid layout">
+
+    <span class="content-title">BÁO CÁO CẬP NHẬT CIF SANG SVBO</span>
+
+    <form [formGroup]="reportCardForm">
+      <div class="content-field row">
+        <div class="col-md-6 field">
+          <label class="textLabel">Từ ngày<span class="compulsory-field"> (*)</span></label>
+          <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="dateFromChanged()"
+                               (dateChanged)="getFromDate()"></app-lpb-date-picker>
+        </div>
+        <div class="col-md-6 field">
+          <label class="textLabel">Đến ngày<span class="compulsory-field"> (*)</span></label>
+          <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="dateToChanged()"
+                               (dateChanged)="getToDate()"></app-lpb-date-picker>
+        </div>
+
+        <div class="col-md-6 field">
+          <label class="textLabel">Trạng thái</label>
+          <ng-select [multiple]="false" formControlName="serviceResultStatusCode"
+                     placeholder="-- Trạng thái --">
+            <ng-option value="">Tất cả</ng-option>
+            <ng-option value="SUCCESS">Thành công</ng-option>
+            <ng-option value="FAIL">Thất bại</ng-option>
+            <ng-option value="TIMEOUT">Time out</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6 field">
+          <label class="textLabel">Chi Nhánh</label>
+          <ng-select [multiple]="false" bindLabel="name" bindValue="code" formControlName="branchCode"
+                     placeholder="-- Chọn chi nhánh --">
+            <ng-option *ngFor="let branch of branchesData" [value]="branch.code">{{branch.branchCodeName}}</ng-option>
+          </ng-select>
+        </div>
+
+        <div class="col-md-6 field">
+          <label class="textLabel">CIF</label>
+          <input class="form-control" type="text" placeholder="-- Mã CIF --" numbersOnly formControlName="customerCode">
+
+        </div>
+      </div>
+      <div class="col-12 text-center">
+        <button  type="submit" class="btn btn-color" style="width: 150px;color: white;" (click)="findList()">
+          <i class="fa fa-search" style="color: white"></i>
+          Tìm kiếm
+        </button>
+      </div>
+    </form>
+    <button type="button" class="btn mt-3" style="background-color: #f47326; color: white; margin: 7px 0" (click)="downloadFile()">
+      <i class="fa fa-file-excel-o" style="color: white" ></i>
+      Xuất dữ liệu
+    </button>
+
+    <div class="mat-elevation-z8">
+      <table class="table table-responsive table-fixed table-hover">
+        <thead>
+        <tr class="titleTD">
+          <th style="width: 3%">STT</th>
+          <th style="width: 9%">CN/PGD Thực hiện</th>
+          <th style="width: 6%">CIF</th>
+          <th style="width: 10%">Tên Khách Hàng</th>
+          <th>GTXM</th>
+          <th>SĐT Cập Nhật</th>
+          <th>Ngày Nhập</th>
+          <th>Ngày Duyệt</th>
+          <th style="width: 8%">Người Nhập</th>
+          <th style="width: 8%">Người Duyệt</th>
+          <th style="width: 6%">Trạng Thái SVBO</th>
+          <th style="width: 4%">Mã Lỗi</th>
+          <th style="width: 13%">Mô Tả Lỗi</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let info of listUpdated ; let i = index" tabindex="0">
+          <td style="width: 3%">{{i + 1}}</td>
+          <td style="width: 9%">{{info.branchName}}</td>
+          <td style="width: 6%">{{info.customerCode}}</td>
+          <td style="width: 10%">{{info.fullName}}</td>
+          <td>{{info.uidValue}}</td>
+          <td>{{info.mobilePhone}}</td>
+          <td>{{info.inputDate}}</td>
+          <td>{{info.approvedDate}}</td>
+          <td style="width: 8%">{{info.inputBy}}</td>
+          <td style="width: 8%">{{info.approvedBy}}</td>
+          <td style="width: 6%">{{info.serviceResultStatusName}}</td>
+          <td style="width: 4%">{{info.refCode}}</td>
+          <td style="width: 13%">{{info.refDesc}}</td>
+        </tr>
+        <tr aria-colspan="9" style="text-align: center; margin-top: 15px"
+            *ngIf="(listUpdated == null || listUpdated.length === 0) && isClick === true
+            && dpDateFrom.errorMsg === '' && dpDateTo.errorMsg ==='' ">
+          Không tìm thấy dữ liệu
+        </tr>
+        </tbody>
+      </table>
+
+      <app-lpb-pagination [pagination]="pagination"
+                          (evtChangePageSize)="changePageSize($event)"
+                          (evtSetPage)="setPage($event)">
+      </app-lpb-pagination>
+    </div>
+  </div>
+</div>
+

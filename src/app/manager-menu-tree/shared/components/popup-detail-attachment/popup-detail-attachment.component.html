@@ -1,0 +1,25 @@
+<table class="table">
+    <colgroup>
+        <col width="22%" span="1">
+        <col width="10%" span="1">
+        <col width="12%" span="1">
+    </colgroup>
+    <thead class="colortable">
+        <tr class="colortable">
+            <th scope="col">Tên tài liệu</th>
+            <th scope="col">Ngày upload</th>
+            <th scope="col">Tài liệu</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{detailAttachment?.title ? detailAttachment?.title : ''}}</td>
+            <td>{{detailAttachment?.startDate ? detailAttachment?.startDate : ''}}</td>
+            <td>
+                <label class="label-fileName" (click)="downloadFile()" matTooltip="Xem file tài liệu">
+                    {{detailAttachment?.fileName ? detailAttachment?.fileName : ''}}
+                </label>
+            </td>
+        </tr>
+    </tbody>
+</table>

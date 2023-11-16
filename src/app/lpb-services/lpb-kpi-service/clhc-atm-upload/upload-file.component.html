@@ -1,0 +1,144 @@
+<div class="finance-body">
+  <div class="step-search d-flex flex-column">
+    <hr/>
+
+    <div class="form-search d-flex flex-column">
+
+      <div [formGroup]="uploadForm" class="container">
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <!--<span class="col-4 col-form-label textLabel">Kiểu Upload</span>-->
+              <span class="col-4 col-form-label textLabel">Loại lương</span>
+              <span class="col-8">
+                 <app-lpb-select2 [items]="typesUpload"
+                                  labelName="name" bindValue="key" [config]="selectConfig"
+                                  formControlName="typeUpload"
+                                  placeholder="Chọn kiểu upload"></app-lpb-select2>
+
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row" >
+              <!--<span class="col-4 col-form-label textLabel">Ngày upload</span>-->
+              <span class="col-3 col-form-label textLabel" style="padding-right: 5px;">Lương tháng</span>
+              <span class="col-8">
+                <app-lpb-datepicker-new #dateT startView="multi-year">
+                                   <mat-form-field class="col-12" style="padding: 0;">
+                    <input style="padding: 3px !important; border: 1px; border-radius: 4px !important;"
+                           placeholder="MM/YYYY"
+                           matInput [matDatepicker]="dp" [formControl]="date">
+                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+
+                  </mat-form-field>
+                </app-lpb-datepicker-new>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="height: 55px!important;">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Tải lên danh sách</span>
+              <span class="col-8">
+                <lpb-custom-upload-file
+                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                  (onChange)="onFileSelect($event)"
+                  (onClearSelected)="onClearSelected($event)"
+                  formControlName="file"></lpb-custom-upload-file>
+                <app-validate [control]="uploadForm.get('typeUpload')" error="required"
+                              message=" Bạn chưa chọn loại file cần tải "></app-validate>
+                <app-validate [control]="uploadForm.get('file')" error="required"
+                              message="Bạn chưa chọn file upload  "></app-validate>
+                <a class="mt-1" ><span (click)="downloadTemplate()" class="temp">Tải tệp tin mẫu</span></a>
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-12">
+                <div class="form-group row">
+                   <span class="col-3">
+                   <button
+                     mat-raised-button
+                     class="bg-btn__blue"
+                     (click)="uploadFile()"
+                     [disabled]="isDisabled">
+                    Upload
+                  </button>
+                   </span>
+                  <span class="col-3">
+                   <button
+                     mat-raised-button
+                     class="btn form-search-title"  (click)="search()">
+                      Tìm kiếm
+                    </button>
+                   </span>
+                  <span class="col-3" *ngIf="totalRecordError < 1">
+                     <button style="padding-left: 10px"
+                             mat-raised-button
+                             class="d-inline-block bg-btn__blue text-while button-send mx-auto"
+                             (click)="exportExcel()" >
+                       Tải dữ liệu
+                      </button>
+                   </span>
+                  <span class="col-3" *ngIf="totalRecordError < 1">
+                   <button style="padding-left: 10px"
+                           mat-raised-button
+                           class="d-inline-block bg-btn__blue text-while button-send mx-auto"
+                           (click)="saveFile()"
+                           [disabled]="!isValidFile">
+                      Lưu
+                    </button>
+                   </span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="step-search d-flex flex-column">
+    <div class="row">
+      <div class="col-12">
+        <ng-template #temp_check_file>
+          <div class="px-4 pt-3 bg mt-2 template-other">
+            <div class="py-1 d-flex justify-content-between">
+              <div class="temp-content">
+                <p>Tổng số: <strong>{{dataSource?.length}}</strong> bản ghi</p>
+                <p><span class=""></span>Số bản ghi không lỗi: <strong>{{totalRecordSuccess}}</strong></p>
+                <p><span class=""></span>Số bản ghi lỗi: <strong>{{totalRecordError}}</strong></p>
+              </div>
+              <p class="" *ngIf="totalRecordError > 0"
+                 (click)="downloadFileError()"><i
+                class="fa fa-download mr-2" aria-hidden="true"></i>Tải xuống tệp tin kiểm tra lỗi</p>
+            </div>
+            <p *ngIf="!isValidFile" class="text-message pb-2">{{ message }}</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <app-lpb-datatable
+          [templateOther]="temp_check_file"
+          [config]="configs"
+          [columns]="$any(columns)"
+          [dataSource]="dataSource"
+          tableName="Danh sách"
+        ></app-lpb-datatable>
+        <div style="display: none;" [style.height.px]="50">
+          <div class="float-right">
+                <span role="button" class="fw-bolder" (click)="exportExcel()">
+                    <i class="fa fa-download text-high-light"></i> Xuất Dữ Liệu
+                </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

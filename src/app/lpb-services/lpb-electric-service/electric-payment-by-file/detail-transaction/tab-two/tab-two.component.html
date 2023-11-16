@@ -1,0 +1,74 @@
+<div class="content">
+  <div class="content-main">
+    <p class="title text-uppercase"><i class="fa fa-credit-card" aria-hidden="true"></i> Thông tin Batch</p>
+
+    <div class="card">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Batch No</label>
+          <p class="font-weight-bold">{{data?.batchNo}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Tên file</label>
+          <p class="font-weight-bold">{{data?.fileName}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Trạng thái batch</label>
+          <p class="font-weight-bold">{{data?.batchStatus}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Số GD</label>
+          <p class="font-weight-bold">{{data?.transNo}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Tài khoản chuyên thu</label>
+          <p class="font-weight-bold">{{data?.acNumber}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Account CCY</label>
+          <p class="font-weight-bold">{{data?.ccy}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Chi nhánh</label>
+          <p class="font-weight-bold">{{data?.tranBrn}}</p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 mt-2">
+          <label>Người tạo</label>
+          <p class="font-weight-bold">{{data?.createdBy}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-main">
+    <ng-template #temp_order>
+      <div class="px-4 pt-3 bg mt-2 template-other">
+        <div class="py-1 d-flex justify-content-between">
+          <div class="temp-content">
+            <p>Tổng số: <strong>{{data?.bills.length}}</strong> bản ghi</p>
+            <p>Tổng tiền giao dịch: <strong>{{data?.totalAmountTranfer | vnCurency}}</strong></p>
+          </div>
+          <p class="" [ngClass]="data?.bills.length > 0 ? 'text-down' : 'text-down-disable'"
+             (click)="downloadFile()"><i
+            class="fa fa-download mr-2" aria-hidden="true"></i>Tải xuống tệp tin</p>
+        </div>
+      </div>
+    </ng-template>
+    <app-lpb-datatable
+      [config]="infoOrderConfig"
+      [columns]="infoOrderColumns"
+      [dataSource]="data?.bills"
+      [templateOther]="temp_order"
+      tableName="Thông tin hóa đơn"
+    ></app-lpb-datatable>
+  </div>
+
+  <div class="content-main">
+    <app-lpb-datatable
+      [config]="accountingConfig"
+      [columns]="accountingColumns"
+      [dataSource]="data?.accountingInfos"
+      tableName="Thông tin hạch toán"
+    ></app-lpb-datatable>
+  </div>
+</div>

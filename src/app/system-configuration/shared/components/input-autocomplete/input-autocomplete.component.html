@@ -1,0 +1,21 @@
+<div class="input-content">
+  <span
+    class="form-control"
+    contenteditable="true"
+    [id]="control"
+    (keyup)="getKey($event)"
+    (click)="getKey($event, 'click')"
+    (keyup.enter)="onEnter($event)"
+    (blur)="onBlur($event)"
+    (keydown)="onKeyDown($event)"
+  ></span>
+
+  <div class="error" *ngIf="message">
+    <span>{{ message }}</span>
+  </div>
+  <div class="complete-data" *ngIf="isCheck">
+    <ng-container *ngFor="let item of keysClone">
+      <span (click)="onSelected($event)">{{ item }}</span></ng-container
+    >
+  </div>
+</div>

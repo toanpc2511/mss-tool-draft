@@ -1,0 +1,95 @@
+<div class="card-issuance-request-step-search d-flex flex-column">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title">
+    BÁO MẤT HỎNG THẺ
+  </div>
+  <div class="form-search d-flex flex-column">
+    <div class="row-fields mt-3 mb-2">
+      <div class="form-search-title">
+        <span>Tìm kiếm thẻ cần báo mất, hỏng</span>
+      </div>
+    </div>
+    <div class="row-fields" [formGroup]="formSearch">
+      <div class="field">
+        <span class="txtLabel">Thông tin KH <span class="field-require">(*)</span>:</span>
+        <div class="input-group">
+          <div class="input-group-append">
+            <select class="form-control" formControlName="type">
+              <option *ngFor="let typeSearch of lstInputTypeSearch" [value]="typeSearch.code">{{typeSearch.name}}</option>
+            </select>
+          </div>
+          <input type="text" formControlName="txtSearch" placeholder="Nhập giá trị tìm kiếm" class="form-control">
+        </div>
+        <div class="err-text mt-1" *ngIf="hasErrorInput('txtSearch', 'required')">Thông tin tìm kiếm không được bỏ
+          trống
+        </div>
+      </div>
+      <div class="field">
+        <span class="txtLabel">Mã thẻ:</span>
+        <ng-select  [multiple]="false" formControlName="cardProductCode" (clear)="clearCardProductCode()"
+                    placeholder="Chọn mã thẻ">
+          <ng-option value="">Tất cả mã thẻ</ng-option>
+          <ng-option *ngFor="let item of lstCardProductCode" [value]="item.code">{{item.name}}</ng-option>
+        </ng-select>
+      </div>
+      <div class="field" *ngIf="isShowSelectBranch">
+        <span class="txtLabel">Chi nhánh:</span>
+        <ng-select  [multiple]="false" formControlName="branchCode" (clear)="clearBranchCode()"
+                    placeholder="Chọn Chi nhánh / PGD">
+          <ng-option value="">Tất cả Chi nhánh / PGD</ng-option>
+          <ng-option *ngFor="let item of lstBranch" [value]="item.code">{{item.branchCodeName}}</ng-option>
+        </ng-select>
+      </div>
+
+      <div class="btn-action w-100">
+        <button class="btn btn-primary" type="button" (click)="searchCardInsuance()">Tìm kiếm
+          <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="content-title">
+    DANH SÁCH THẺ
+  </div>
+  <div class="tbl-result">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th style="width: 5%">STT</th>
+        <th style="width: 10%">Số CIF</th>
+        <th style="width: 15%">Tên KH</th>
+        <th style="width: 10%">Thẻ Chính / Phụ</th>
+        <th style="width: 10%">Mã sản phẩm thẻ</th>
+        <th style="width: 15%">Số thẻ</th>
+        <th style="width: 15%">TK Mặc định</th>
+        <th style="width: 10%">Ngày phát hành</th>
+        <th style="width: 10%">Thao tác</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of lstCardIssuanceSearch , index as i">
+        <th>{{i + 1}}</th>
+        <th>{{item.customerCode ? item.customerCode : ''}}</th>
+        <th>{{item.cardEmbossedName ? item.cardEmbossedName : ''}}</th>
+        <th>{{item.cardCategory ? item.cardCategory : ''}}</th>
+        <th>{{item.cardProductCode ? item.cardProductCode : ''}}</th>
+        <th>{{item.cardNumber ? item.cardNumber : ''}}</th>
+        <th>{{item.defaultAccount ? item.defaultAccount : ''}}</th>
+        <th>{{item.releaseDate ? item.releaseDate : ''}}</th>
+        <th>
+          <button type="button" class="btn btn-primary btn-block" style="font-size: 12px" (click)="reportLostBroken(item)">
+            Báo Mất / Hỏng
+          </button>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+    <div class="empty-data" *ngIf="lstCardIssuanceSearch.length === 0">Chưa có bản ghi tồn tại</div>
+  </div>
+  <app-lpb-pagination [pagination]="pagination"
+                      (evtChangePageSize)="changePageSize($event)"
+                      (evtSetPage)="setPage($event)">
+  </app-lpb-pagination>
+</div>

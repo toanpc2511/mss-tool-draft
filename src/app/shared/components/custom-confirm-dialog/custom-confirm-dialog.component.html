@@ -1,0 +1,40 @@
+<div class="dialog-content">
+  <div class="dialog-header">
+    <h2 class="textLabel text-center">{{ data?.title }}</h2>
+    <button type="button" class="close" (click)="onDismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <p class="message my-2">{{ data?.message }}</p>
+
+  <div class="mb-2" *ngIf="data?.isReject">
+    <span class="label required">Nhập lý do</span>
+    <textarea
+      type="text"
+      [formControl]="reasonControl"
+      placeholder="Nhập lý do"
+      class="form-control mt-1"
+      trimInput
+      maxlength="500"
+    ></textarea>
+    <app-validate
+      [control]="reasonControl"
+      message="Lý do không được để trống!"
+      error="required"
+    ></app-validate>
+  </div>
+
+  <div class="action mt-4">
+    <button mat-stroked-button value="Cancel" [mat-dialog-close]="false">
+      Hủy
+    </button>
+    <button
+      mat-stroked-button
+      (click)="onConfirm()"
+      [ngClass]="data.type === 'warning' ? 'btn-orig' : data.type === 'error' ? 'btn-orig' : 'btn-blue'"
+    >
+      Xác nhận
+    </button>
+  </div>
+</div>

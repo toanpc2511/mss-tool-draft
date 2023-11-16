@@ -1,0 +1,110 @@
+.rc-customer-info {
+    .row-item-info {
+      display: flex;
+      margin-bottom: 12px;
+      width: 100%;
+  
+      .label-title {
+        max-width: 66.6666%;
+        flex: 0 0 66.6666%;
+        font-weight: 500;
+        text-align: left;
+        margin-right: 10px;
+        padding-top: 10px;
+        font-size: 18px;
+        color: #0C258A;
+      }
+  
+      .label-field {
+        max-width: 33.3333%;
+        flex: 0 0 33.3333%;
+        font-weight: 500;
+        text-align: left;
+        margin-right: 10px;
+        padding-top: 10px;
+        font-size: 14px;
+        color: #0C258A;
+  
+        .item-require {
+          color: #E83C19;
+          font-weight: 500;
+        }
+      }
+  
+      .fw-700 {
+        font-weight: 700;
+      }
+  
+      .value-field {
+        max-width: 66.6666%;
+        flex: 0 0 66.6666%;
+        padding-top: 5px;
+  
+        .control-item {
+          .grRadio {
+            height: 35px;
+            display: flex;
+  
+            .rd-item {
+              align-self: center;
+              margin-right: 30px;
+  
+              label,
+              input {
+                cursor: pointer;
+              }
+            }
+          }
+  
+          .form-check {
+            height: 35px;
+            display: flex;
+            align-items: center;
+  
+            label,
+            input {
+              cursor: pointer;
+              color: #007bff;
+              font-weight: 400;
+              font-style: italic;
+            }
+          }
+  
+          .link-web {
+            cursor: pointer;
+            font-style: italic;
+          }
+        }
+  
+        .error-msg {
+          color: #E83C19;
+          margin-top: 5px;
+          font-size: 12px;
+        }
+      }
+  
+      .action-control {
+        padding-top: 6px;
+  
+        .plus {
+          color: #17589f;
+          cursor: pointer;
+        }
+  
+        .minus {
+          color: #E83C19;
+          cursor: pointer;
+        }
+      }
+  
+      .error-invalid {
+        border-color: #E83C19;
+      }
+    }
+  }
+  
+  .form-control:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  

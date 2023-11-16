@@ -1,0 +1,81 @@
+<div #searchFormRef class="container form-group-container mt-4" [formGroup]="form">
+  <!-- Thông tin KH: -->
+  <app-input-with-type label="Thông tin KH:" [firstControl]="form.controls['docType']"
+    [secondControl]="form.controls['docNum']" [list]="CUSTOMER_SELECT_TYPE_ARR">
+  </app-input-with-type>
+  <!-- end Thông tin KH: -->
+
+  <!-- Thông tin yêu cầu: -->
+  <app-input-with-type label="Thông tin yêu cầu:" [firstControl]="form.controls['requestType']"
+    [secondControl]="form.controls['requestValue']" [list]="REQUEST_TYPE_ARR" [secondList]="REQUEST_STATUS_TYPE_ARR">
+  </app-input-with-type>
+  <!-- end Thông tin yêu cầu: -->
+
+  <!-- Thông tin yêu cầu: -->
+  <div class="row form-group align-items-end">
+    <div class="col-lg-3 pr-lg-0 col-form-label">
+      <span class="txtLabel">Chi nhánh:</span>
+    </div>
+
+    <div class="col-lg-9 pl-lg-0">
+      <ng-container *ngIf="isHoiSo; else elseBranchCode">
+        <app-lpb-select2 (clear)="onBranchCodeClear()"
+          [optionAdditional]="[{branchCodeName: 'Tất cả chi nhánh', code: ''}]" [apiUrl]="'/admin/api/public/branch'"
+          labelName="branchCodeName" bindValue="code" [config]="{isNewApi: false}" formControlName="branchCode"
+          placeholder="Chọn chi nhánh"></app-lpb-select2>
+      </ng-container>
+      <ng-template #elseBranchCode>
+        <app-lpb-select2 labelName="branchCodeName" bindValue="code" formControlName="branchCode"
+          [items]="branchList"></app-lpb-select2>
+      </ng-template>
+    </div>
+  </div>
+  <!-- end Thông tin yêu cầu: -->
+
+  <!-- Thông tin yêu cầu: -->
+  <div class="row form-group align-items-end">
+    <div class="col-lg-3 pr-lg-0 col-form-label">
+      <span class="txtLabel">Loại dịch vụ:</span>
+    </div>
+    <div class="col-lg-9 pl-lg-0">
+      <app-lpb-select2 placeholder="Chọn loại dịch vụ" [items]="SERVICE_TYPE_ARR" labelName="name" bindValue="key"
+        formControlName="serviceCode" class="w-100"></app-lpb-select2>
+    </div>
+  </div>
+  <!-- end Thông tin yêu cầu: -->
+
+  <!-- Thông tin yêu cầu: -->
+  <div class="row form-group align-items-start">
+    <div class="col-lg-3 pr-lg-0 col-form-label mt-lg-21px">
+      <span class="txtLabel">Ngày gửi duyệt</span>
+    </div>
+    <div class="col-lg-9 pl-lg-0">
+      <div class="row">
+        <label class="col-lg-6 d-block">
+          <span class="txtLabel">Từ ngày</span>
+          <span class="form-control-date-select">
+            <app-lpb-date-picker placeholder="Chọn ngày" [maxDate]="maxDate" #createdDate
+              (dateChanged)="createdDateChange()">
+            </app-lpb-date-picker>
+          </span>
+        </label>
+
+        <label class="col-lg-6 d-block">
+          <span class="txtLabel">Đến ngày</span>
+          <span class="form-control-date-select">
+            <app-lpb-date-picker placeholder="Chọn ngày" [maxDate]="maxDate" #toCreatedDate
+              (dateChanged)="toCreatedDateChange()">
+            </app-lpb-date-picker>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <!-- end Thông tin yêu cầu: -->
+  <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+    <button class="btn btn-primary btn-blue nowrap" type="button" (click)="searchTransactionAction()">
+      Tìm kiếm
+      <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>

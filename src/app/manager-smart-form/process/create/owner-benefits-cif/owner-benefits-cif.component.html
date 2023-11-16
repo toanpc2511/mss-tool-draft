@@ -1,0 +1,772 @@
+<h2 mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;padding:10px">
+  THÔNG TIN CHỦ SỞ HỮU HƯỞNG LỢI
+  <span class="material-icons" (click)="closeDialog(1)" style="float: right;cursor: pointer;">
+    close
+  </span>
+</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="ownerBenefitsCifForm" (ngSubmit)="onSubmit()">
+    <div [hidden]="!showInfomation">
+      <label class="labelTitle">Thông tin</label>
+      <div class="col-12" *ngIf="mode === MODE.EDIT">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Trạng thái <span class="sp">(*)</span> </label>
+            <div class="col-sm-8 float-left">
+              <div class="mt-2 form-check form-check-inline">
+                <input class="form-check-input" type="radio" formControlName="inEffect" id="inEffect" [value]="true">
+                <label class="form-check-label" for="inEffect" style="color: black">Hiệu lực</label>
+              </div>
+              <div class="mt-2 form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="inEffect1" formControlName="inEffect" [value]="false">
+                <label class="form-check-label" for="inEffect1" style="color: black">Hết Hiệu lực</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Họ và tên <span class="sp">(*)</span> </label>
+            <div class="col-sm-8 float-left">
+              <input oninput="this.value = this.value.toUpperCase()" (input)="inputLatinUppercase($event)"
+                [ngClass]="{'is-invalid':  f.fullName.touched && f.fullName.errors}" type="text"
+                class="form-control text-uppercase" maxlength="200" formControlName="fullName"
+                placeholder="VD: NGUYEN THU THAO" />
+              <div *ngIf="f.fullName.touched && f.fullName.errors" class="error-message">
+                <div>{{textMessage.contentFullName}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Số GTXM <span class="sp">(*)</span> </label>
+            <div class="col-sm-8 float-left">
+              <input [ngClass]="{'is-invalid':(f.numberGTXM.touched && f.numberGTXM.errors)}"
+                placeholder="-- Nhập số GTXM --" formControlName="numberGTXM" name="numberGTXM" type="text"
+                class="form-control" />
+              <div *ngIf="(f.numberGTXM.touched && f.numberGTXM.errors)" class="error-message">
+                <div>{{textMessage.contentNumberGTXM}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Ngày sinh <span class="sp">(*)</span> </label>
+            <div class="col-sm-8 float-left">
+              <div class="input-group mb-3" style="margin-bottom: 0px !important;">
+                <input matInput DateOnly [matDatepicker]="dp" style="height: 36px" id=""
+                  [ngClass]="{'is-invalid':  (f.dateOfBirth.touched && f.dateOfBirth.errors)}"
+                  formControlName="dateOfBirth" name="dateOfBirth" type="text"
+                  class="form-control straight-right-border border-input-date" placeholder="dd/mm/yyyy" maxlength="10">
+                <div class="input-group-append" style=" margin-top: -1px">
+                  <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border" matSuffix
+                    [for]="dp">
+                  </mat-datepicker-toggle>
+                </div>
+                <mat-datepicker #dp></mat-datepicker>
+                <div *ngIf="f.dateOfBirth.touched && f.dateOfBirth.errors?.required" class="error-message">
+                  <div>{{textMessage.contentDateOfBirthRequired}}</div>
+                </div>
+                <div *ngIf="f.dateOfBirth.touched && f.dateOfBirth.errors?.futureDate" class="error-message">
+                  <div>{{textMessage.contentDateOfBirthGreaterThanDate}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Nơi cấp<span class="sp">(*)</span></label>
+            <div class="col-sm-8 float-left">
+              <app-autocomplete formControlName="issuedBy"
+                [ngClass]="{ 'is-invalid': (f.issuedBy.touched && (ownerBenefitsCifForm.errors || f.issuedBy.errors))}">
+              </app-autocomplete>
+              <div *ngIf="f.issuedBy.touched && f.issuedBy.errors" class="error-message">
+                <div>Nơi cấp không được để trống</div>
+              </div>
+              <!--                            <input placeholder="&#45;&#45; Nhập nơi cấp &#45;&#45;" class="form-control " formControlName="issuedBy" name="issuedBy" />-->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Quốc tịch <span class="sp">(*)</span> </label>
+            <div class="col-sm-8 float-left">
+              <div style="float: left;width: 100%;">
+                <ng-select (change)="changeNationality()" style="width: 100%;" (change)="checkNationalDuplicate(1)"
+                  [ngClass]="{ 'is-invalid': (f.nationality.t && f.nationality.errors) || nationalDuplicationBoolean}"
+                  formControlName="nationality" name="nationality" [items]="categories.countries"
+                  placeholder="-- Chọn quốc gia --" bindLabel="name" bindValue="code" (change)="onChangeNational()">
+                  <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                    <div class="ng-option disabled">
+                      Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                    </div>
+                  </ng-template>
+                </ng-select>
+                <div *ngIf="(submitted && f.nationality.errors) || f.nationality.errors" class="error-message">
+                  <div>{{textMessage.contentNationality}}</div>
+                </div>
+                <div *ngIf="(!f.nationality.errors && nationalDuplicationBoolean)" class="error-message">
+                  <div>{{textMessage.contentNationalityDuplicate}}</div>
+                </div>
+              </div>
+              <!--                            <button  mat-icon-button [disabled] = "disabledBoolean" (click) = "addNational()" class="add_national">-->
+              <!--                                <mat-icon class="mat-icon-add" [disabled] = "disabledBoolean">add_circle_outline</mat-icon>-->
+              <!--                            </button>-->
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Ngày cấp<span class="sp">(*)</span></label>
+            <div class="col-sm-8 float-left">
+              <div class="input-group mb-3" style="margin-bottom: 0px !important;">
+                <input matInput DateOnly [matDatepicker]="dp1" style="height: 36px" formControlName="dateOfAgreement"
+                  name="dateOfAgreement" type="text" class="form-control straight-right-border border-input-date"
+                  placeholder="dd/mm/yyyy" maxlength="10"
+                  [ngClass]="{ 'is-invalid': (f.dateOfAgreement.touched && (ownerBenefitsCifForm.errors || f.dateOfAgreement.errors))}">
+                <div class="input-group-append" style=" margin-top: -1px">
+                  <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border"
+                    id="basic-addon2" matSuffix [for]="dp1">
+                  </mat-datepicker-toggle>
+                </div>
+                <mat-datepicker #dp1></mat-datepicker>
+                <div *ngIf="(f.dateOfAgreement.touched && ownerBenefitsCifForm.errors?.smallerDate)"
+                  class="error-message">
+                  <div>Ngày cấp phải lớn hơn ngày sinh</div>
+                </div>
+                <div *ngIf="f.dateOfAgreement.touched && f.dateOfAgreement.errors?.futureDate" class="error-message">
+                  <div>{{textMessage.contentDateOfBirthGreaterThanDate}}</div>
+                </div>
+                <div *ngIf="f.dateOfAgreement.touched && f.dateOfAgreement.errors" class="error-message">
+                  <div>Ngày cấp không được để trống</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12" [hidden]="!hiddenNational2">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left"> </label>
+            <div class="col-sm-8 float-left">
+              <div>
+                <div style="float: left;width: 85%;">
+                  <ng-select style="width: 100%;" (change)="checkNationalDuplicate(2)"
+                    [ngClass]="{ 'is-invalid': (submitted && nationalBoolean2) || nationalDuplicationBoolean2}"
+                    formControlName="nationality2" name="nationality2" [items]="tmpCountries"
+                    placeholder="-- Chọn quốc gia --" bindLabel="name" bindValue="code">
+                    <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                      <div class="ng-option disabled">
+                        Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                      </div>
+                    </ng-template>
+                  </ng-select>
+                  <div *ngIf="submitted && nationalBoolean2" class="error-message">
+                    <div>{{textMessage.contentNationality}}</div>
+                  </div>
+                  <div *ngIf="!nationalBoolean2 && nationalDuplicationBoolean2" class="error-message">
+                    <div>{{textMessage.contentNationalityDuplicate}}</div>
+                  </div>
+                </div>
+                <button mat-icon-button [disabled]="disabledBoolean" (click)="removeNational('2')" class="add_national">
+                  <mat-icon>remove</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12" [hidden]="!hiddenNational3">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left"> </label>
+            <div class="col-sm-8 float-left">
+              <div>
+                <div style="float: left;width: 85%;">
+                  <ng-select style="width: 100%;"
+                    [ngClass]="{ 'is-invalid': (submitted && nationalBoolean3) || nationalDuplicationBoolean3}"
+                    formControlName="nationality3" name="nationality3" [items]="tmpCountries"
+                    (change)="checkNationalDuplicate(3)" placeholder="-- Chọn quốc gia --" bindLabel="name"
+                    bindValue="code">
+                    <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                      <div class="ng-option disabled">
+                        Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                      </div>
+                    </ng-template>
+                  </ng-select>
+                  <div *ngIf="submitted && nationalBoolean3" class="error-message">
+                    <div>{{textMessage.contentNationality}}</div>
+                  </div>
+                  <div *ngIf="!nationalBoolean3 && nationalDuplicationBoolean3" class="error-message">
+                    <div>{{textMessage.contentNationalityDuplicate}}</div>
+                  </div>
+                </div>
+                <button mat-icon-button [disabled]="disabledBoolean" (click)="removeNational('3')" class="add_national">
+                  <mat-icon>remove</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12" [hidden]="!hiddenNational4">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left"> </label>
+            <div class="col-sm-8 float-left">
+              <div>
+                <div style="float: left;width: 85%;">
+                  <ng-select style="width: 100%;"
+                    [ngClass]="{ 'is-invalid': (submitted && nationalBoolean4) || nationalDuplicationBoolean4}"
+                    formControlName="nationality4" name="nationality4" [items]="tmpCountries"
+                    (change)="checkNationalDuplicate(4)" placeholder="-- Chọn quốc gia --" bindLabel="name"
+                    bindValue="code">
+                    <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                      <div class="ng-option disabled">
+                        Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                      </div>
+                    </ng-template>
+                  </ng-select>
+                  <div *ngIf="submitted && nationalBoolean4" class="error-message">
+                    <div>{{textMessage.contentNationality}}</div>
+                  </div>
+                  <div *ngIf="!nationalBoolean4 && nationalDuplicationBoolean4" class="error-message">
+                    <div>{{textMessage.contentNationalityDuplicate}}</div>
+                  </div>
+                </div>
+                <button mat-icon-button [disabled]="disabledBoolean" (click)="removeNational('4')" class="add_national">
+                  <mat-icon>remove</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12"
+        [hidden]="!ownerBenefitsCifForm.get('nationality').value || ownerBenefitsCifForm.get('nationality').value === 'VN'">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Thị thực nhập cảnh </label>
+            <div class="col-sm-8 float-left">
+              <div class="form-check">
+                <input class="form-check-input" style="height: unset;" type="radio" (change)="onVisaExemptionChange()"
+                  formControlName="visaExemption" name="visaExemption" [value]="true" [checked]="valueVisaExemption">
+                <label class="form-check-label" for="exampleRadios1"> Miễn thị thực nhập cảnh </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" style="height: unset;" type="radio" formControlName="visaExemption"
+                  name="visaExemption" [value]="false" (change)="onVisaExemptionChange()"
+                  [checked]="!valueVisaExemption">
+                <label class="form-check-label" for="exampleRadios2"> Từ ngày <span class="sp">(*)</span> </label>
+              </div>
+              <div class="form-check" style="padding-left: 0px;">
+                <div class="input-group mb-3" style="margin-bottom: 0px !important;">
+                  <input [ngClass]="{ 'is-invalid': f.visaIssueDate.touched && f.visaIssueDate.errors}" matInput
+                    DateOnly id="border-input-date" formControlName="visaIssueDate" [matDatepicker]="dp2"
+                    style="height: 36px" type="text" class="form-control straight-right-border" placeholder="dd/mm/yyyy"
+                    maxlength="10">
+                  <div class="input-group-append" style=" margin-top: -1px">
+                    <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border" matSuffix
+                      [for]="dp2">
+                    </mat-datepicker-toggle>
+                  </div>
+                  <mat-datepicker #dp2></mat-datepicker>
+                  <div *ngIf="f.visaIssueDate.touched && f.visaIssueDate.errors?.required" class="error-message">
+                    <div>{{textMessage.contentVisaIssueDate}}</div>
+                  </div>
+                  <div
+                    *ngIf="ownerBenefitsCifForm.get('visaIssueDate').errors?.futureDate && ownerBenefitsCifForm.get('visaIssueDate').touched"
+                    class="error-message">
+                    Từ ngày không được lớn hơn ngày hiện tại
+                  </div>
+                </div>
+              </div>
+              <div class="form-check" style="padding-left: 0px;">
+                <label class="form-check-label" for="exampleRadios2"> Đến ngày <span class="sp">(*)</span> </label>
+              </div>
+              <div class="form-check" style="padding-left: 0px;">
+                <div class="input-group mb-3" style="margin-bottom: 0px !important;">
+                  <input [ngClass]="{ 'is-invalid': (f.visaExpireDate.touched && f.visaExpireDate.errors)}" matInput
+                    DateOnly formControlName="visaExpireDate" [matDatepicker]="dp3" style="height: 36px" type="text"
+                    class="form-control straight-right-border" placeholder="dd/mm/yyyy" maxlength="10">
+                  <div class="input-group-append" style=" margin-top: -1px">
+                    <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border" matSuffix
+                      [for]="dp3">
+                    </mat-datepicker-toggle>
+                  </div>
+                  <mat-datepicker #dp3></mat-datepicker>
+                  <div *ngIf="f.visaExpireDate.touched && f.visaExpireDate.errors?.required" class="error-message">
+                    <div>{{textMessage.contentVisaExpireDate}}</div>
+                  </div>
+                  <!--                  <div *ngIf="submitted && !f.visaExpireDate.errors && booleanVisaExpireDate" class="error-message">-->
+                  <!--                    <div>{{textMessage.contentVisaExpireDateSmallerThanVisaIssueDate}}</div>-->
+                  <!--                  </div>-->
+                  <div
+                    *ngIf="ownerBenefitsCifForm.get('visaExpireDate').touched && ownerBenefitsCifForm.get('visaExpireDate').errors?.pastDate"
+                    class="error-message">
+                    Đến ngày không được nhỏ hơn ngày hiện tại
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight"></div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Người cư trú
+              <span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="resident" [value]="true" formControlName="resident">
+                <label class="form-check-label" for="radio1">Có</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="resident" [value]="false" formControlName="resident">
+                <label class="form-check-label" for="radio2">Không</label>
+              </div>
+              <div *ngIf="f.resident.touched && f.resident.errors" style="display: unset;margin-top: 0px;"
+                class="error-message">
+                <div>{{textMessage.contentResident}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Điện thoại cố định
+            </label>
+            <div class="col-sm-8 float-left">
+              <input placeholder="-- Nhập điện thoại cố định --" class="form-control " formControlName="phone"
+                name="phone" />
+                <div *ngIf="f.phone.touched && f.phone.errors?.maxlength" class="error-message">
+                  <div>Điện thoại cố định tối đa 11 ký tự</div>
+                </div>
+                <div *ngIf="f.phone.touched && f.phone.errors?.minlength" class="error-message">
+                  <div>Điện thoại cố định tối thiểu 11 ký tự</div>
+                </div>
+                <div *ngIf="f.phone.errors?.checkPhonesNumber && f.phone.touched" class="error-message">
+                  Số điện thoại sai định dạng
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Nghề nghiệp<span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <ng-select [items]="categories.industries" formControlName="job" name="job"
+                placeholder="-- Chọn nghề nghiệp--" bindLabel="name" bindValue="code">
+                <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                  <div class="ng-option disabled">
+                    Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                  </div>
+                </ng-template>
+              </ng-select>
+              <div *ngIf="f.job.touched && f.job.errors?.required" class="error-message">
+                <div>Nghề nghiệp không được để trống</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Điện thoại di động <span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <input placeholder="-- Nhập điện thoại di động --" class="form-control " formControlName="smartPhone"
+                name="smartPhone" />
+              <div *ngIf="f.smartPhone.touched && f.smartPhone.errors?.required" class="error-message">
+                <div>Điện thoại di động không được bỏ trống</div>
+              </div>
+              <div *ngIf="f.smartPhone.touched && f.smartPhone.errors?.maxlength" class="error-message">
+                <div>Điện thoại di động tối đa 10 ký tự</div>
+              </div>
+              <div *ngIf="f.smartPhone.touched && f.smartPhone.errors?.minlength" class="error-message">
+                <div>Điện thoại di động tối thiểu 10 ký tự</div>
+              </div>
+              <div *ngIf="f.smartPhone.errors?.checkPhonesNumber && f.smartPhone.touched" class="error-message">
+                Số điện thoại sai định dạng
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Chức vụ<span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <input placeholder="-- Nhập chức vụ --" class="form-control " formControlName="regency" name="regency" />
+              <div *ngIf="f.regency.touched && f.regency.errors?.required" class="error-message">
+                <div>Chức vụ không được bỏ trống</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Email
+            </label>
+            <div class="col-sm-8 float-left">
+              <input placeholder="-- Nhập email --" class="form-control " formControlName="email" name="email" />
+              <div *ngIf="f.email.touched && f.email.errors?.email" class="error-message">
+                <div>Email không đúng định dạng</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Giới tính<span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <div class=" form-check form-check-inline" *ngFor="let gender of categories.genders; let i = index">
+                <input class="form-check-input" type="radio" formControlName="genderCode" [value]="gender.code"
+                  checked>
+                <label class="form-check-label" style="color: black">{{gender.name}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Nơi sinh
+            </label>
+            <div class="col-sm-8 float-left">
+              <input placeholder="-- Nhập nơi sinh --" class="form-control " formControlName="placeOfBirth"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12" style="padding: 0px;">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left labelTitle" style="text-align: left;">Địa chỉ thường trú
+            </label>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left labelTitle">Địa chỉ hiện tại </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Quốc gia<span class="sp">(*)</span></label>
+            <div class="col-sm-8 float-left">
+              <ng-select [ngClass]="{ 'is-invalid': f.nationalityResident.touched && f.nationalityResident.errors}" formControlName="nationalityResident"
+               name="nationalityResident" [items]="categories.countries" placeholder="-- Chọn quốc gia --" bindLabel="name" bindValue="code">
+                <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                  <div class="ng-option disabled">
+                    Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                  </div>
+                </ng-template>
+              </ng-select>
+              <div *ngIf="f.nationalityResident.touched && f.nationalityResident.errors" class="error-message">
+                <div>{{textMessage.contentnationality2}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Quốc gia
+              <span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <ng-select [ngClass]="{ 'is-invalid': f.nationalityPresent.touched && f.nationalityPresent.errors}" formControlName="nationalityPresent"
+              name="nationalityPresent" [items]="categories.countries" placeholder="-- Chọn quốc gia --" bindLabel="name" bindValue="code">
+                <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                  <div class="ng-option disabled">
+                    Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                  </div>
+                </ng-template>
+              </ng-select>
+              <div *ngIf="f.nationalityPresent.touched && f.nationalityPresent.errors" class="error-message">
+                <div>{{textMessage.contentnationality2}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Tỉnh/Thành phố<span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <ng-select [addTag]="addOption" [items]="categories.permanentCites" [ngClass]="{ 'is-invalid': f.currentProvinceResident.touched && f.currentProvinceResident.errors}"
+                formControlName="currentProvinceResident" placeholder="-- Chọn Tỉnh/Thành phố --" bindLabel="name"
+                bindValue="name" (change)="onAddressChange('currentProvinceResident')">
+                <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                  <div class="ng-option disabled">
+                    Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                  </div>
+                </ng-template>
+                <ng-template ng-tag-tmp let-search="searchTerm">
+                  <b>Thêm</b>: {{search}}
+                </ng-template>
+              </ng-select>
+              <div *ngIf="f.currentProvinceResident.touched && f.currentProvinceResident.errors" class="error-message">
+                <div>{{textMessage.contentCurrentProvince}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Tỉnh/Thành phố
+              <span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <ng-select [addTag]="addOption"
+                [ngClass]="{ 'is-invalid': f.currentProvincePresent.touched && f.currentProvincePresent.errors}"
+                [items]="categories.cites" formControlName="currentProvincePresent"
+                placeholder="-- Chọn Tỉnh/Thành phố --" bindLabel="name" bindValue="name"
+                (change)="onAddressChange('currentProvincePresent')">
+                <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                  <div class="ng-option disabled">
+                    Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                  </div>
+                </ng-template>
+                <ng-template ng-tag-tmp let-search="searchTerm">
+                  <b>Thêm</b>: {{search}}
+                </ng-template>
+              </ng-select>
+              <div *ngIf="f.currentProvincePresent.touched && f.currentProvincePresent.errors" class="error-message">
+                <div>{{textMessage.contentCurrentProvince}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Quận/huyện<span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <ng-select [addTag]="addOption" [items]="categories.permanentDistricts"  [ngClass]="{ 'is-invalid': f.currentDistrictResident.touched && f.currentDistrictResident.errors}"
+                formControlName="currentDistrictResident" placeholder="-- Chọn Quận/huyện --" bindLabel="name" bindValue="name" (change)="onAddressChange('currentDistrictResident')">
+                <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                  <div class="ng-option disabled">
+                    Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                  </div>
+                </ng-template>
+                <ng-template ng-tag-tmp let-search="searchTerm">
+                  <b>Thêm</b>: {{search}}
+                </ng-template>
+              </ng-select>
+              <div *ngIf="f.currentDistrictResident.touched && f.currentDistrictResident.errors" class="error-message">
+                <div>{{textMessage.contentCurrentDistrict}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Quận/huyện
+              <span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <ng-select [addTag]="addOption"
+                [ngClass]="{ 'is-invalid': f.currentDistrictPresent.touched && f.currentDistrictPresent.errors}"
+                [items]="categories.currentDistricts" formControlName="currentDistrictPresent"
+                placeholder="-- Chọn Quận/huyện --" bindLabel="name" bindValue="name"
+                (change)="onAddressChange('currentDistrictPresent')">
+                <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                  <div class="ng-option disabled">
+                    Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                  </div>
+                </ng-template>
+                <ng-template ng-tag-tmp let-search="searchTerm">
+                  <b>Thêm</b>: {{search}}
+                </ng-template>
+              </ng-select>
+              <div *ngIf="f.currentDistrictPresent.touched && f.currentDistrictPresent.errors" class="error-message">
+                <div>{{textMessage.contentCurrentDistrict}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Phường/Xã<span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <ng-select [addTag]="addOption" [items]="categories.permanentWards" formControlName="currentWardsResident" [ngClass]="{ 'is-invalid': f.currentWardsResident.touched && f.currentWardsResident.errors}"
+                placeholder="-- Chọn Phường/Xã --" bindLabel="name" bindValue="name">
+                <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                  <div class="ng-option disabled">
+                    Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                  </div>
+                </ng-template>
+                <ng-template ng-tag-tmp let-search="searchTerm">
+                  <b>Thêm</b>: {{search}}
+                </ng-template>
+              </ng-select>
+              <div *ngIf="f.currentWardsResident.touched && f.currentWardsResident.errors" class="error-message">
+                <div>{{textMessage.contentCurrentWards}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Phường/ Xã
+              <span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <ng-select [addTag]="addOption"
+                [ngClass]="{ 'is-invalid': f.currentWardsPresent.touched && f.currentWardsPresent.errors}"
+                [items]="categories.currentWards" formControlName="currentWardsPresent"
+                placeholder="-- Chọn phường/xã --" bindLabel="name" bindValue="name">
+                <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                  <div class="ng-option disabled">
+                    Không tìm thấy dữ liệu cho "{{searchTerm}}"
+                  </div>
+                </ng-template>
+                <ng-template ng-tag-tmp let-search="searchTerm">
+                  <b>Thêm</b>: {{search}}
+                </ng-template>
+              </ng-select>
+              <div *ngIf="f.currentWardsPresent.touched && f.currentWardsPresent.errors" class="error-message">
+                <div>{{textMessage.contentCurrentWards}}</div>
+              </div>
+
+              <!--              <select [ngClass]="{ 'is-invalid': submitted && f.currentWardsPresent.errors}"-->
+              <!--                      formControlName="currentWardsPresent" name="currentWardsPresent" class="form-control ">-->
+              <!--                <option disabled selected value="null">-&#45;&#45; Chọn phường/xã -&#45;&#45;</option>-->
+              <!--                <option *ngFor="let item of categories.currentWards" [value]="item.code">-->
+              <!--                  {{item.name}}</option>-->
+              <!--              </select>-->
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-6 colLeft">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Số nhà, đường phố<span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <input maxlength="200" type="text" class="form-control " formControlName="numberHomeResident" [ngClass]="{ 'is-invalid': f.numberHomeResident.touched && f.numberHomeResident.errors}"
+                name="numberHomeResident" placeholder="Nhập địa chỉ số nhà, đường phố" />
+                <div *ngIf="f.numberHomeResident.touched && f.numberHomeResident.errors" class="error-message">
+                  <div>{{textMessage.contentNumberHome}}</div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 colRight">
+          <div class="col-12 pd0">
+            <label class="col-sm-4 col-form-label float-left">Số nhà, đường phố
+              <span class="sp">(*)</span>
+            </label>
+            <div class="col-sm-8 float-left">
+              <input maxlength="200" [ngClass]="{ 'is-invalid': f.numberHomePresent.touched && f.numberHomePresent.errors}" type="text"
+                class="form-control " placeholder="Nhập địa chỉ số nhà, đường phố" formControlName="numberHomePresent"
+                name="numberHomePresent" />
+              <div *ngIf="f.numberHomePresent.touched && f.numberHomePresent.errors" class="error-message">
+                <div>{{textMessage.contentNumberHome}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=" col-12 ">
+        <div class="save-ut">
+          <!-- button nay luu khi thêm mới -->
+          <button type="submit" *ngIf="mode === MODE.CREATE || mode === MODE.EDIT" class="btn closePopup">Lưu</button>
+          <!-- button này kích hoạt khi cần chỉnh sửa -->
+          <!--          <button type="button" class="btn closePopup" (click)="editForm()" [hidden]="!hiddenEdit">Chỉnh-->
+          <!--            sửa-->
+          <!--          </button>-->
+          <!-- button nay lưu khi chỉnh sửa -->
+          <!--          <button type="button" class="btn closePopup" (click)="buttonUpdateData()" [hidden]="!hiddenButtonUPdate">Lưu-->
+          <!--          </button>-->
+
+          <!-- <button type="button" class="btn closePopup" (click)="save()" [hidden]="hiddenEdit">Lưu</button>
+          <button type="button" class="btn closePopup" (click)="editForm()" [hidden]="!hiddenEdit">Chỉnh
+              sửa</button> -->
+        </div>
+      </div>
+      <hr />
+    </div>
+    <div>
+      <label class="labelTitle">Danh sách chủ sở hữu hưởng lợi</label>
+      <div class=" col-12 " [hidden]="this.data.isViewMode">
+        <div class="create-save">
+          <button type="button" class="btn btn-primary btn-sm" (click)="createNew()">Tạo
+            mới
+          </button>
+        </div>
+      </div>
+      <div class="col-12" style="margin-top: 10px;">
+        <table class="table table-responsive table-fixed">
+          <thead>
+            <tr class="titleTD">
+              <th>Mã người hưởng lợi</th>
+              <th>Họ và tên</th>
+              <th>Điện thoại</th>
+              <th>Số GTXM</th>
+              <th>Quốc tịch</th>
+              <th>Trạng thái</th>
+              <th [hidden]="this.data.isViewMode">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="lstOwnerBenefitsCif.length == 0">
+              <td style="text-align: center;">Không có dữ liệu</td>
+            </tr>
+            <tr *ngFor="let item of lstOwnerBenefitsCif;let i = index" class="hovertr">
+              <td class="file-name" style="text-align: center;">{{item.ownerBenefitCode}}</td>
+              <td class="file-name text-uppercase text-center" style="text-align: left;color: #0088FF;"
+                (click)="detailOwnerBenefitsCif(item)">{{item.fullName}}</td>
+              <td class="file-name" style="text-align: center;">{{item.phone}}</td>
+              <td class="file-name" style="text-align: center;">{{item.numberGTXM}}</td>
+              <td class="file-name" style="text-align: center;">{{getName(item.nationality)}}</td>
+              <td class="file-name" style="text-align: center;">
+                {{item.inEffect === null ? 'Đang nhập' : item.inEffect === true ? 'Hiệu Lực' : item.inEffect === false ? 'Hết hiệu lực' : ''}}
+              </td>
+              <td style="text-align: center;font-size: 18px;" [hidden]="this.data.isViewMode">
+                <i class="fa fa-edit " aria-hidden="true" (click)="editForm(item)"></i> |
+                <i class="fa fa-trash-o " aria-hidden="true" (click)="deleteOwnerBenefitsCif(i)"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
+  <div class="col-12" style="margin-top: 10px;margin-bottom: 10px;">
+    <div class="sucss">
+      <button type="button" class="btn closePopup" (click)="closeDialog(1)" cdkFocusInitial>Đóng</button>
+    </div>
+  </div>
+</mat-dialog-content>

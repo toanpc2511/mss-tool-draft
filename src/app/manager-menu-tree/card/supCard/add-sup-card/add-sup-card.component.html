@@ -1,0 +1,641 @@
+<div class="container-fuild" *ngIf="card">
+  <div class="row cust-row">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+      <div class="title-head" style="font-weight: 500;">
+        <mat-icon style=" font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add_circle</mat-icon>
+        <span class="text" style="padding: 5px 0;">THÔNG TIN THẺ CHÍNH</span>
+      </div>
+    </div>
+    <div class="col-12 information-section">
+      <div class="col-6 colLeft">
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Họ và tên:</label>
+          <div class="col-7 textLabel">
+            <label>{{process.item?.customer.person.fullName}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label">Số thẻ chính:</label>
+          <div class="col-7 textLabel">
+            <label>{{card.cardNumber}}</label>
+            <label *ngIf="card?.cardNumber==null">Thẻ chính - {{card.cardIndex}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Loại thẻ:</label>
+          <div class="col-7 textLabel">
+            <label>{{card.cardTypeName}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Mã thẻ:</label>
+          <div class="col-7 textLabel">
+            <label>{{card.cardProductCode}} - {{card.cardProductName}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Tài khoản mặc định:</label>
+          <div class="col-7 textLabel">
+            <label>{{card?.account?.accountNumber}}</label>
+            <label *ngIf="card?.account?.accountNumber==null">Tài khoản mới - {{card?.account?.accountIndex}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label "> Tài khoản liên kết thẻ: </label>
+          <div class="col-7 textLabel">
+            <div *ngFor="let c of card.accountLinkList; let i = index">
+              <ng-container *ngIf="c.account != null">
+                <label>{{c?.account?.accountNumber}}</label>
+                <label *ngIf="c?.account?.accountNumber=== null">Tài khoản mới - {{c?.account?.accountIndex}}</label>
+              </ng-container>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 colRight">
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Mã khách hàng: </label>
+          <div class="col-7 textLabel">
+            <label *ngIf="process.item?.customer.customerCode === null">XXXXXX</label>
+            <label>{{process.item?.customer.customerCode}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Ngày sinh:
+          </label>
+          <div class="col-7 textLabel">
+            <label>{{process.item?.customer.person.dateOfBirth }}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Số giấy tờ xác minh:
+          </label>
+          <div class="col-7 textLabel">
+            <label>{{process.item?.customer.person?.perDocNoList.length > 0 ?
+              process.item?.customer.person?.perDocNoList[0].perDocNo : ''}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Ngày phát hành:
+          </label>
+          <div class="col-7 textLabel">
+            <label> {{card.issueDate}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-5 col-form-label ">Ngày hết hạn:
+          </label>
+          <div class="col-7 textLabel">
+            <label>{{card.expirationDate}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row cust-row">
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+      <div class="title-head" style="font-weight: 500;">
+        <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add</mat-icon>
+        <span class="text" style="padding: 5px 0;">ĐĂNG KÝ MỞ THẺ PHỤ</span>
+      </div>
+    </div>
+    <div class="col-12">
+      <!-- {{CreateCardForm.value |json}} -->
+      <form [formGroup]="CreateCardForm" >
+        <div style="margin-top: 10px; margin-bottom: 5px; padding: 20px 0;">
+
+          <div class="row ml-2">
+            <h2>Thông tin chủ thẻ phụ </h2>
+          </div>
+          <ng-container formGroupName="person">
+            <!-- <div>{{CreateCardForm | json}}</div> -->
+            <div class="row">
+
+              <div class="col-6 pb-3">
+                <div class="row ml-5">
+                  <label class="col-4 pl-3 col-form-label textLabel">Họ và tên <span
+                    class="text-danger">*</span></label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" placeholder="--Mời nhập họ và tên--"
+                           formControlName="fullName"
+                           [ngClass]="{ 'is-invalid': fullName.errors?.required && (fullName.touched || submitted) }"
+                           oninput="this.value = this.value.toUpperCase()" (input)="inputLatinUppercase($event)"
+                           maxlength="35">
+                    <div *ngIf="submitted && fullName.errors || fullName.invalid && (fullName.dirty ||fullName.touched)"
+                         class="error-message">
+                      <div *ngIf="fullName.errors.required" class="error-message">Họ và tên không được bỏ trống.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 pb-3">
+                <div class="row">
+                  <label class="col-4 col-form-label textLabel">Loại GTXM <span
+                    class="text-danger">*</span></label>
+                  <div class="col-7">
+                    <select class="form-control "
+                            [ngClass]="{ 'is-invalid': perDocTypeCode.errors && (perDocTypeCode.touched || submitted) }"
+                            formControlName="perDocTypeCode">
+                      <option value="" selected disabled hidden>-- Chọn Loại giấy tờ tùy thân --</option>
+                      <option *ngFor="let item of per" [disabled]="item.disable"
+                              [value]="item.code"> {{item.name}}</option>
+                    </select>
+                    <div
+                      *ngIf="perDocTypeCode.errors?.required && (perDocTypeCode.dirty ||perDocTypeCode.touched || submitted)"
+                      class="error-message">
+                      Loại GTXM không được để trống
+                    </div>
+                    <div
+                      *ngIf="perDocTypeCode.errors?.invalidAge && (perDocTypeCode.dirty || perDocTypeCode.touched || submitted)"
+                      class="error-message">
+                      GTXM phải là Hộ chiếu hoặc Giấy khai sinh
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 pb-3">
+                <div class="row ml-5">
+                  <label class="col-4 pl-3 col-form-label textLabel ">Ngày sinh <span
+                    class="text-danger">*</span></label>
+                  <div class="col-7">
+                    <app-lpb-date-picker #dpDateOfBirth (blurInput)="blurDateOfBirth($event)"
+                                         (dateChanged)="dateOfBirthChanged()"></app-lpb-date-picker>
+                    <!--                    <input type="date" formControlName="dateOfBirth" max={{this.currentDate}}-->
+                    <!--                           [ngClass]="{ 'is-invalid': dateOfBirth.errors?.required && dateOfBirth.touched }"-->
+                    <!--                           class="form-control ">-->
+                    <!--                    <div>{{dateOfBirth.value}}</div>-->
+                    <!--                    <div>{{dateOfBirth.errors | json}}</div>-->
+                    <!--                    <div>{{dateOfBirth.errors.futureDate | json}}</div>-->
+                    <div *ngIf="dateOfBirth.errors?.futureDate" class="error-message">
+                      Ngày sinh không được chọn ngày tương lai
+                    </div>
+                    <div *ngIf="dateOfBirth.errors?.invalidFormatDate" class="error-message">
+                      Ngày sinh không đúng định dạng
+                    </div>
+                    <div *ngIf="dateOfBirth.errors?.required && (dateOfBirth.touched|| submitted)" class="error-message">
+                      Ngày sinh không được để trống
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 ">
+                <div class="row pb-3" *ngIf="perDocTypeCode.value===''">
+                  <label class="col-4 col-form-label textLabel">Số GTXM <span class="text-danger">*</span></label>
+                  <div class="col-7">
+                    <input type="text" class="form-control" placeholder="--Mời nhập số GTXM--"
+                           formControlName="perDocNo"
+                           [ngClass]="{ 'is-invalid': perDocNo.errors?.required && (perDocNo.touched || submitted) }">
+                    <div *ngIf="submitted && perDocNo.errors || perDocNo.invalid && (perDocNo.dirty ||perDocNo.touched)"
+                         class="error-message">
+                      <div *ngIf="perDocNo.errors.required" class="error-message">Số GTXM không được bỏ trống</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row pb-3" *ngIf="perDocTypeCode.value==='CAN CUOC CONG DAN'">
+                  <label class="col-4 col-form-label textLabel ">Số GTXM <span class="text-danger">*</span></label>
+                  <div class="col-7">
+                    <input type="text" numbersOnly class="form-control "
+                           placeholder="---Nhập số GTXM---" formControlName="perDocNo"
+                           [ngClass]="{ 'is-invalid': perDocNo.errors?.required && (perDocNo.touched || submitted) }" maxlength="12">
+                    <div *ngIf="submitted && perDocNo.errors || perDocNo.invalid && (perDocNo.dirty ||perDocNo.touched)"
+                         class="error-message">
+                      <div *ngIf="perDocNo.errors.required" class="error-message">Số GTXM không được bỏ trống</div>
+                      <div *ngIf="perDocNo.errors.minlength" class="error-message">Số căn cước công dân phải 12 số</div>
+                      <div *ngIf="perDocNo.errors.pattern" class="error-message">Số căn cước công dân chỉ được nhập số</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row pb-3" *ngIf="perDocTypeCode.value==='CHUNG MINH NHAN DAN'">
+                  <label class="col-4 col-form-label textLabel ">Số GTXM <span class="text-danger">*</span></label>
+                  <div class="col-7">
+                    <input type="text" numbersOnly class="form-control "
+                           placeholder="---Nhập số GTXM---" formControlName="perDocNo"
+                           [ngClass]="{ 'is-invalid': perDocNo.errors?.required && (perDocNo.touched || submitted) }" maxlength="12">
+                    <div *ngIf="submitted && perDocNo.errors || perDocNo.invalid && (perDocNo.dirty ||perDocNo.touched)"
+                         class="error-message">
+                      <div *ngIf="perDocNo.errors.required" class="error-message">Số GTXM không được bỏ trống</div>
+                      <div *ngIf="perDocNo.errors.invalidLength" class="error-message">Chứng minh nhân dân phải là 9 hoặc 12 ký tự số
+                      </div>
+                      <div *ngIf="perDocNo.errors.pattern" class="error-message">Số căn cước công dân chỉ được nhập số</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row pb-3" *ngIf="perDocTypeCode.value==='HO CHIEU'">
+                  <label class="col-4 col-form-label textLabel ">Số GTXM <span class="text-danger">*</span></label>
+                  <div class="col-7">
+                    <input type="text" class="form-control " placeholder="---Nhập số GTXM---"
+                           formControlName="perDocNo"
+                           [ngClass]="{ 'is-invalid': perDocNo.errors?.required && (perDocNo.touched || submitted) }">
+                    <div *ngIf="submitted && perDocNo.errors || perDocNo.invalid && (perDocNo.dirty ||perDocNo.touched)"
+                         class="error-message">
+                      <div *ngIf="perDocNo.errors.required" class="error-message">Hộ chiếu không được bỏ trống</div>
+                    </div>
+                    <div *ngIf="submitted && perDocNo.errors || perDocNo.invalid && (perDocNo.dirty ||perDocNo.touched)"
+                         class="error-message">
+                      <div *ngIf="perDocNo.errors.pattern" class="error-message">Hộ chiếu không được chứa ký tự đặc
+                        biệt
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row pb-3" *ngIf="perDocTypeCode.value==='GIAY KHAI SINH'">
+                  <label class="col-4 col-form-label textLabel ">Số GTXM <span class="text-danger">*</span></label>
+                  <div class="col-7">
+                    <input type="text" class="form-control " placeholder="---Nhập số GTXM---"
+                           formControlName="perDocNo"
+                           [ngClass]="{ 'is-invalid': perDocNo.errors?.required && (perDocNo.touched || submitted) }">
+                    <div *ngIf="submitted && perDocNo.errors || perDocNo.invalid && (perDocNo.dirty ||perDocNo.touched)"
+                         class="error-message">
+                      <div *ngIf="perDocNo.errors?.required" class="error-message">Giấy khai sinh không được bỏ trống
+                      </div>
+                    </div>
+                    <div *ngIf="submitted && perDocNo.errors || perDocNo.invalid && (perDocNo.dirty ||perDocNo.touched)"
+                         class="error-message">
+                      <div *ngIf="perDocNo.errors?.pattern" class="error-message">Giấy khai sinh không được chứa ký tự
+                        đặc biệt
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 pb-3">
+                <div class="row ml-5">
+                  <label class="col-4 pl-3 col-form-label textLabel ">Giới tính <span
+                    class="text-danger">*</span></label>
+                  <div class="col-7">
+                    <div class="form-check form-check-inline" *ngFor="let g of g">
+                      <input class="form-check-input" type="radio" [value]="g.code" name="genderCode"
+                             formControlName="genderCode">
+                      <label class="form-check-label" for="radio1">{{g.name}}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 pb-3">
+                <div class="row">
+                  <label class="col-4 col-form-label textLabel ">Ngày cấp <span
+                    class="text-danger">*</span></label>
+                  <div class="col-7 txt">
+                    <app-lpb-date-picker #dpIssueDate (blurInput)="blurIssueDate($event)"
+                                         (dateChanged)="issueDateChanged()"></app-lpb-date-picker>
+                    <!--                    <input type="date" formControlName="issueDate" max={{this.currentDate}} name="issueDate"-->
+                    <!--                           [ngClass]="{ 'is-invalid': issueDate.errors?.required && issueDate.touched }"-->
+                    <!--                           class="form-control ">-->
+                    <div *ngIf="issueDate.errors?.required  && (issueDate.dirty || issueDate.touched || submitted)"
+                         class="error-message">
+                      Ngày cấp không được để trống
+                    </div>
+                    <div *ngIf="person.errors?.validateDate" class="error-message">
+                      Ngày cấp phải lớn hơn ngày sinh
+                    </div>
+                    <div *ngIf="issueDate.errors?.futureDate" class="error-message">
+                      Ngày cấp không được chọn ngày tương lai
+                    </div>
+                    <div *ngIf="issueDate.errors?.issueDateInValid" class="error-message">
+                      Ngày cấp phải lớn hơn ngày 1/1/2016
+                    </div>
+                    <div *ngIf="issueDate.errors?.invalidYear" class="error-message">
+                      Ngày cấp không được xa hơn 01/01/1920
+                    </div>
+                    <div *ngIf="issueDate.errors?.invalidFormatDate" class="error-message">
+                      Ngày cấp không đúng định dạng
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6 pb-3">
+                <div class="row ml-5">
+                  <label class="col-4 pl-3 col-form-label textLabel ">Số điện thoại <span
+                    class="text-danger">*</span></label>
+                  <div class="col-7">
+                    <input type="text" class="form-control " placeholder="--Mời nhập số điện thoại--"
+                           formControlName="mobileNo" numbersOnly maxlength="10"
+                           [ngClass]="{ 'is-invalid': mobileNo.errors?.required && (mobileNo.touched || submitted) }">
+                    <div *ngIf="submitted && mobileNo.errors || mobileNo.invalid && (mobileNo.dirty ||mobileNo.touched)"
+                         class="error-message">
+                      <div *ngIf="mobileNo.errors.required" class="error-message">Số điện thoại không được bỏ trống.
+                      </div>
+                      <!-- <div *ngIf="mobileNo.errors.maxlength" class="error-message">Số điện thoại không được quá 10 ký tự.</div> -->
+                      <div *ngIf="mobileNo.errors.minlength" class="error-message">Số điện thoại phải đạt 10 số.</div>
+                      <div *ngIf="mobileNo.errors.inValidPrefix" class="error-message">Đầu số điện thoại không đúng
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <label class="col-4 col-form-label textLabel ">Nơi cấp <span class="text-danger">*</span></label>
+                  <div class="col-7 txt">
+                    <input type="text" class="form-control  inputText" formControlName="issuePlace"
+                           [ngClass]="{ 'is-invalid': issuePlace.errors?.required && (issuePlace.touched || submitted) }"
+                           placeholder="--Mời nhập CA tỉnh / thành phố--"
+                           maxlength="200" >
+
+                    <div
+                      *ngIf="submitted && issuePlace.errors || issuePlace.invalid && (issuePlace.dirty ||issuePlace.touched)"
+                      class="error-message">
+                      Nơi cấp không được để trống
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 pb-3">
+                <div class="row ml-5">
+                  <label class="col-4 pl-3 col-form-label textLabel ">Địa chỉ </label>
+                  <div class="col-7">
+                    <input type="text" class="form-control " formControlName="address">
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 pb-3">
+                <div class="row">
+                  <label class="col-4 col-form-label textLabel ">Ngày hết hiệu lực <span
+                    class="text-danger">*</span></label>
+                  <div class="col-7 txt">
+                    <app-lpb-date-picker #dpExpireDate (blurInput)="blurExpireDate($event)"
+                                         (dateChanged)="expireDateChanged()"></app-lpb-date-picker>
+                    <!--                    <input type="date" formControlName="issueDate" max={{this.currentDate}} name="issueDate"-->
+                    <!--                           [ngClass]="{ 'is-invalid': issueDate.errors?.required && issueDate.touched }"-->
+                    <!--                           class="form-control ">-->
+                    <div *ngIf="expireDate.errors?.required  && (expireDate.dirty || expireDate.touched)"
+                         class="error-message">
+                      Ngày hết hiệu lực không được để trống
+                    </div>
+
+                    <div *ngIf="expireDate.errors?.invalidFormatDate" class="error-message">
+                      Ngày hết hiệu lực không đúng định dạng
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <hr style="border: 1px solid">
+          <div class="row ml-2">
+            <h2>Thông tin thẻ phụ </h2>
+          </div>
+          <div class="row">
+            <div class="col-6 pb-3">
+              <div class="row ml-5">
+                <label class="col-4 pl-3     col-form-label textLabel ">Số hợp đồng </label>
+                <div class="col-7 txt">
+                  <label>{{card.contractNumber}}</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="row">
+                <label class="col-4 col-form-label textLabel ">Loại thẻ </label>
+                <div class="col-7 txt">
+                  <label>{{card.cardTypeName}}</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 pb-3">
+              <div class="row ml-5">
+                <label class="col-4 pl-3 col-form-label textLabel ">Tài khoản mặc định </label>
+                <div class="col-7 txt">
+                  <label>{{card?.account?.accountNumber}}</label>
+                  <label *ngIf="card?.account?.accountNumber==null">Tài khoản mới -
+                    {{card?.account?.accountIndex}}</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="row">
+                <label class="col-4 col-form-label textLabel ">Tên dập nổi trên thẻ <span
+                  class="text-danger">*</span></label>
+                <div class="col-7">
+                  <input class="form-control " maxlength="25" type="text"
+                         oninput="this.value = this.value.toUpperCase()" (input)="inputLatinUppercaseCardHolder($event)"
+                         formControlName="cardHolderName"
+                         [ngClass]="{ 'is-invalid': cardHolderName.errors?.required && (cardHolderName.touched || submitted) }"
+                         name="minimumMaintenanceBalance" placeholder="--Tên dập nổi trên thẻ--"/>
+                  <div
+                    *ngIf="submitted && cardHolderName.errors || cardHolderName.invalid && (cardHolderName.dirty ||cardHolderName.touched)"
+                    class="error-message">
+                    <div *ngIf="cardHolderName.errors.required" class="error-message">Tên dập nổi trên thẻ không được bỏ
+                      trống.
+                    </div>
+                    <div *ngIf="cardHolderName.errors.maxlength" class="error-message">Tên dập nổi trên thẻ không được
+                      quá 25 ký tự.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 pb-3">
+              <div class="row ml-5">
+                <label class="col-4 col-form-label textLabel ">Tài khoản liên kết thẻ
+                </label>
+                <div class="col-7">
+                  <div style="display: flex" class="mb-2"
+                       *ngFor="let accountLink of accountLinkList.controls;let i = index">
+                    <ng-container [formGroup]="accountLink">
+                      <select class="form-control"
+                              [ngClass]="{ 'is-invalid': (accountLinkList.errors || CreateCardForm.errors) && (accountLinkList.touched || submitted) }"
+                              style="width: 100%" formControlName="accountId">
+                        <option value="" selected>--Mời chọn tài khoản liên kết--</option>
+                        <option *ngFor="let acc of bidingAcount; let i = index" [value]="acc.id">
+                          {{acc?.accountNumber}}
+                          <ng-container *ngIf="acc?.accountNumber==null">Tài khoản mới - {{acc?.accountIndex}}
+                          </ng-container>
+                        </option>
+                      </select>
+                    </ng-container>
+                    <mat-icon *ngIf="i === 0" class="mat-icon-add" (click)="addAccountLink()">add_circle_outline
+                    </mat-icon>
+                    <mat-icon *ngIf="i > 0" class="mat-icon-add" style="color: #E83C19;" (click)="removeAccountLink(i)">
+                      remove_circle_outline
+                    </mat-icon>
+                  </div>
+                  <!--                  <ng-select [multiple]="true" [formControl]="accountLinkList"-->
+                  <!--                             placeholder="&#45;&#45;Mời chọn tài khoản liên kết thẻ&#45;&#45;"-->
+                  <!--                             [ngClass]="{ 'is-invalid': accountLinkList.errors?.required && accountLinkList.touched }"-->
+                  <!--                             maxlength="3" [closeOnSelect]="false">-->
+                  <!--                    <ng-option *ngFor="let acc of accountCLone" [value]="acc">{{acc.accountNumber}}-->
+                  <!--                      <ng-container *ngIf="acc.accountNumber==null">Tài khoản mới - {{acc.accountIndex}}-->
+                  <!--                      </ng-container>-->
+                  <!--                    </ng-option>-->
+                  <!--                  </ng-select>-->
+                  <div
+                    *ngIf="submitted && accountLinkList.errors || accountLinkList.invalid && (accountLinkList.dirty ||accountLinkList.touched)"
+                    class="error-message">
+                    <div *ngIf="accountLinkList.errors.maxlength" class="error-message">Tài khoản liên kết không được
+                      quá 3 tài khoản
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="CreateCardForm.errors?.isDuplicateAccount"
+                    class="error-message">
+                    Tài khoản liên kết không được giống tài khoản mặc định
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="row">
+                <label class="col-4 col-form-label textLabel ">Hình thức phát hành <span
+                  class="text-danger">*</span></label>
+                <div class="col-7">
+                  <select name="" id="" formControlName="deliveryTypeCode"
+                          [ngClass]="{ 'is-invalid': deliveryTypeCode.errors?.required && (deliveryTypeCode.touched || submitted) }"
+                          class="form-control ">
+                    <option value="" disabled hidden>--Mời chọn hình thức phát hành--</option>
+                    <option *ngFor="let per of deliveryType " [value]="per.code">{{per.name}}</option>
+                  </select>
+                  <div
+                    *ngIf="submitted && deliveryTypeCode.errors || deliveryTypeCode.invalid && (deliveryTypeCode.dirty ||deliveryTypeCode.touched)"
+                    class="error-message">
+                    <div *ngIf="deliveryTypeCode.errors.required" class="error-message">Hình thức phát hành không được
+                      bỏ trống.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 pb-3">
+              <div class="row ml-5">
+                <label class="col-4 col-form-label textLabel ">Mã nhân viên <span class="text-danger">*</span>
+                </label>
+                <div class="col-7">
+                  <!-- <label>042 - LKPT SALARY EMV (thẻ trả lương LKPT)</label> -->
+                  <input type="text" placeholder="--Mời nhập mã nhân viên--" formControlName="employeeId"
+                         [ngClass]="{ 'is-invalid': employeeId.errors?.required && (employeeId.touched || submitted) }"
+                         class="form-control ">
+                  <div
+                    *ngIf="submitted && employeeId.errors || employeeId.invalid && (employeeId.dirty ||employeeId.touched)"
+                    class="error-message">
+                    <div *ngIf="employeeId.errors.required" class="error-message">Mã nhân viên không được bỏ trống.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 pb-3">
+              <div class="row" *ngIf="deliveryTypeCode.value==='DEFAULT'">
+                <label class="col-4 pl-3 col-form-label textLabel " style="padding: 2px 14px 5px 5px;">
+                  Địa chỉ nhận thẻ:<span style="color: red;margin-left: 6px;">*</span>
+                </label>
+                <div class="col-7">
+                  <div style="margin-left: 10px;">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" value="TAI_CHI_NHANH"
+                             formControlName="deliveryChanelCode"
+                             [ngClass]="{ 'is-invalid': deliveryChanelCode.errors?.required && deliveryChanelCode.touched }">
+
+                      <label class="form-check-label" for="radio1">Chi nhánh</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" value="GUI_NHAN" formControlName="deliveryChanelCode"
+                             [ngClass]="{ 'is-invalid': deliveryChanelCode.errors?.required && deliveryChanelCode.touched }">
+                      <label class="form-check-label" for="radio1">Gửi nhận</label>
+                    </div>
+                  </div>
+                  <div *ngIf="deliveryChanelCode.value ==='TAI_CHI_NHANH'">
+                    <select class="form-control " formControlName="deliveryBranchCode"
+                            [ngClass]="{ 'is-invalid': deliveryBranchCode.errors?.required && deliveryBranchCode.touched }">
+                      <option value="" disabled selected>--Mời chọn chi nhánh--</option>
+                      <option *ngFor="let b of branch" [value]="b.code">{{b.name}}</option>
+                    </select>
+                    <div
+                      *ngIf="submitted && deliveryBranchCode.errors || deliveryBranchCode.invalid && (deliveryBranchCode.dirty ||deliveryBranchCode.touched)"
+                      class="error-message">
+                      <div *ngIf="deliveryBranchCode.errors.required" class="error-message">Chi nhánh không được bỏ
+                        trống.
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="deliveryChanelCode.value ==='GUI_NHAN'">
+                    <input type="text" class="form-control " formControlName="deliveryAddress"
+                           placeholder="Mời nhập địa chỉ"
+                           [ngClass]="{ 'is-invalid': deliveryAddress.errors && deliveryAddress.touched }">
+                    <div *ngIf="deliveryAddress.errors?.required && (deliveryAddress.dirty || deliveryAddress.touched)"
+                         class="error-message">Địa chỉ nhận thẻ không được bỏ trống
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="row" *ngIf="deliveryTypeCode.value==='TRAO_NGAY'">
+                <label class="col-4 col-form-label textLabel ">Số thẻ:<span class="text-danger">*</span></label>
+                <div class="col-7">
+                  <input type="text" class="form-control " placeholder="--Số thẻ--"
+                         formControlName="cardNumber" numbersOnly maxlength="16">
+                  <div
+                    *ngIf="submitted && cardNumber.errors || cardNumber.invalid && (cardNumber.dirty ||cardNumber.touched)"
+                    class="error-message">
+                    <div *ngIf="cardNumber.errors.minlength" class="error-message">Số thẻ phải đủ 16 số</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-6 pb-3">
+              <div class="row ml-5">
+                <label class="col-4 pl-3 col-form-label textLabel ">Mã người giới thiệu <span
+                  class="text-danger">*</span></label>
+                <div class="col-7">
+                  <input type="text" class="form-control " placeholder="--Mời nhập mã người giới thiệu--"
+                         formControlName="referrerCode"
+                         [ngClass]="{ 'is-invalid': referrerCode.errors?.required && (referrerCode.touched || submitted) }">
+                  <div
+                    *ngIf="submitted && referrerCode.errors || referrerCode.invalid && (referrerCode.dirty ||referrerCode.touched)"
+                    class="error-message">
+                    <div *ngIf="referrerCode.errors.required" class="error-message">Mã người giới thiệu không được bỏ
+                      trống.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="row">
+                <label class="col-4 col-form-label textLabel ">Tổng phí + VAT <span
+                  class="text-danger">*</span></label>
+                <div class="col-7 txt">
+                  <input type="number" class="form-control " placeholder="--Tổng phí + VAT--"
+                         formControlName="feeAmount"
+                         [ngClass]="{ 'is-invalid': feeAmount.errors?.required && (feeAmount.touched || submitted) }">
+                  <div
+                    *ngIf="submitted && feeAmount.errors || feeAmount.invalid && (feeAmount.dirty ||feeAmount.touched)"
+                    class="error-message">
+                    <div *ngIf="feeAmount.errors.required" class="error-message">Tổng phí + VAT không được bỏ
+                      trống.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+  <div class="col-12" style="text-align: right; margin-right: 15px;">
+    <button class="footer btn" style="padding-right: 20px;" [disabled]="loading" (click)="save(true); loading = true"
+            *ngIf="((isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)) && (process.item.statusCode !== PROCESS_STATUS.DONG_HO_SO) && !isView">
+      <span class="material-icons"> check </span>
+      <label>Gửi duyệt</label>
+    </button>
+    <button class="footer btn" style="padding-right: 20px;" [disabled]="loading" (click)="save(false); loading = true"
+            *ngIf="((isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)) && (process.item.statusCode !== PROCESS_STATUS.DONG_HO_SO) && !isView">
+      <span class="material-icons"> save </span>
+      <label>Lưu thông tin</label>
+    </button>
+    <button class="footer btn" (click)="backPage()">
+      <span class="material-icons"> keyboard_backspace </span>
+      <label>Quay lại</label>
+    </button>
+  </div>
+</div>

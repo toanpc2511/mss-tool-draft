@@ -1,0 +1,53 @@
+@import '/src/app/shared/styles/lpb-button';
+.card-request-update-phone-send {
+  .content-title {
+    color: #17589f;
+    border-bottom: 2px solid #F47326;
+    padding: 8px 0px;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+    place-self: flex-start;
+    margin-bottom: 24px;
+  }
+  .customer-info, .change-phone-number {
+    .field-item {
+      span {
+          font-weight: 500;
+          font-size: 14px;
+          color: #17589f;
+      }
+      label i {
+        font-weight: 400;
+        font-size: 13px;
+        color: #17589f;
+        vertical-align: text-bottom;
+        cursor: pointer;
+      }
+      .field-require {
+        color: red;
+      }
+      .border-field-require {
+        border: 1px solid red;
+      }
+      .err-text {
+        font-size: 12px;
+        font-weight: 400;
+        color: red;
+      }
+    }
+  }
+  .btn-action {
+    &-send {
+      background-color: #F47326;
+      border:1px solid #F47326;
+    }
+    &-back {
+      background-color: #6c757d;
+      border:1px solid #6c757d;
+    }
+  }
+}
+.form-control:focus {
+  box-shadow: unset !important;
+}

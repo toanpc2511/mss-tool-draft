@@ -1,0 +1,33 @@
+.form-group-container {
+  max-width: 1400px;
+}
+.txtLabel {
+  font-weight: 500;
+  text-align: left;
+  color: #0c258a;
+  font-size: 16px;
+}
+
+.pt-25px {
+  padding-top: 25px;
+}
+.text-over-error {
+  white-space: pre-wrap;
+}
+.btn-search {
+  min-width: 140px;
+}
+
+:host ::ng-deep {
+  app-lpb-select2 {
+    .ng-dropdown-panel .ng-dropdown-panel-items {
+      max-height: 300px;
+    }
+  }
+}
+
+@media only screen and (min-width: 1407px) {
+  .text-over-error {
+    white-space: nowrap;
+  }
+}

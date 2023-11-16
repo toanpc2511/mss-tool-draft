@@ -1,0 +1,31 @@
+export class ClhcAtmUpload {
+  stt: number;
+  branchCode: string;
+  branchName: string;
+  employeeID: string;
+  slEnjobNo1: number;
+  slEnjobNo2: number;
+  slEnjobNo1Err: string;
+  slEnjobNo2Err: string;
+  recordStat: string;
+  totalLKK: number;
+  fullname: string;
+  countUpload: number;
+  hoMaker: string;
+  hoChecker: string;
+  cnMaker: string;
+  cnChecker: string;
+  hoMakerDate: string;
+  hoCheckerDate: string;
+  cnMakerDate: string;
+  cnCheckerDate: string;
+  mmyyyy: string;
+  viviet: string;
+  user: string;
+  date: string;
+  status: number;
+  getAll: number;
+  saveFormat: string;
+  typeBC: string;
+  reason: string;
+}

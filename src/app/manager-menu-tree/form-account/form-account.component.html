@@ -1,0 +1,220 @@
+
+<div class="printout-list" [hidden]=hiddenAccount height="10%">
+    <div class="row cust-row">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+
+            <app-process-info [processId]="processId"></app-process-info>
+        </div>
+    </div>
+    <div class="row cust-row">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+            <div class="title-head" style="font-weight: 500;">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">account_balance_wallet
+                </mat-icon>
+                <span class="text" style="padding: 5px 0;">DANH SÁCH BIỂU MẪU</span>
+            </div>
+        </div>
+        <table class="table table-responsive table-fixed table-hover" style="margin: 0px;">
+            <thead>
+                <tr class="titleTD">
+                    <th class="text-center id-table">STT</th>
+                    <th>Biểu mẫu</th>
+                    <th></th>
+                    <th class="text-center id-table"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container>
+                    <tr tabindex="0" *ngFor="let item of lstAccountUni; index as i">
+                        <td class="text-center id-table">#</td>
+                        <td class="text-left">
+                            <a class="color-text" (click)="openAccount(item.id)">Đề nghị kiêm thỏa thuận mở tài khoản
+                                {{item.accountDescription}}</a>
+                        </td>
+                        <td class="text-left">
+                        </td>
+                        <td class="text-center id-table">
+                            <a class="fa fa-download" (click)="openAccountDoc(item.id)"></a>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="!hideProcessUpdate && !hideOpenAccount">
+                    <tr tabindex="0">
+                        <td class="text-center id-table">#</td>
+                        <td class="text-left">
+                            <a class="color-text" (click)="openProcess()">Đăng ký thông tin Khách hàng gửi tiết kiệm</a>
+                        </td>
+                        <td class="text-left">
+                        </td>
+                        <td class="text-center id-table">
+                            <a class="fa fa-download" (click)="openProcessDoc()"></a>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="hideProcessUpdate && hideOpenAccount ">
+                    <tr tabindex="9" *ngFor="let item of lstAccountCore">
+                        <td class="text-center id-table">#</td>
+                        <td class="text-left"><a class="color-text" (click)="openUpdate(item.id, null, item.id)">Yêu cầu
+                                trợ giúp KHCN {{item.accountNumber}}</a></td>
+                        <td class="text-left">
+                        </td>
+                        <td class="text-center id-table">
+                            <a class="fa fa-download" (click)="openUpdateDocTK(item.id, null, item.id)"></a>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="hideProcessUpdate && !hideOpenAccount  && !hideUpdateToCard">
+                    <tr tabindex="9">
+                        <td class="text-center id-table">#</td>
+                        <td class="text-left"><a class="color-text" (click)="openUpdate(null, null, null)">Yêu cầu trợ
+                                giúp KHCN</a></td>
+                        <td class="text-left">
+                        </td>
+                        <td class="text-center id-table">
+                            <a class="fa fa-download" (click)="openUpdateDoc(null, null, null)"></a>
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container>
+                    <tr tabindex="0" *ngFor="let item of subCardAll; index as i">
+                        <td class="text-center id-table">#</td>
+                        <td class="text-left">
+                            <a class="color-text" (click)="openUpdateThe(null,item.id, item.accountId)">Yêu cầu trợ giúp
+                                KHCN - {{item.cardHolderName}} </a>
+                        </td>
+                        <td class="text-left">
+                        </td>
+                        <td class="text-center id-table">
+                            <a class="fa fa-download" (click)="openUpdateDocThe(null,item.id, item.accountId)"></a>
+                        </td>
+                    </tr>
+                </ng-container>
+                <tr tabindex="0" *ngFor="let item of coOwnerNew">
+                    <td class="text-center id-table">#</td>
+                    <td class="text-left">
+                        <a class="color-text" (click)="openCoOwner(item.id, item.person.profession)">Đăng ký thông tin
+                            Khách hàng gửi tiết kiệm cho đồng sở hữu {{item.person.fullName}} </a>
+                    </td>
+                    <td class="text-left">
+                    </td>
+                    <td class="text-center id-table">
+                        <a class="fa fa-download" (click)="openCoOwnerDoc(item.id, item.person.profession)"></a>
+                    </td>
+                </tr>
+                <tr tabindex="1">
+                    <td class="text-center id-table"></td>
+                    <td class="text-left"></td>
+                    <td class="text-left"><a class="color-text" (click)="openPaymentAccount()">Thỏa thuận về mở, sử dụng
+                            và quản lý thông
+                            tin tài khoản thanh toán</a></td>
+                    <td class="text-center id-table">
+                    </td>      
+                </tr>
+                <tr tabindex="2">
+                    <td class="text-center id-table"></td>
+                    <td class="text-left"><a></a></td>
+                    <td class="text-left"><a class="color-text" (click)="openDebitAccount()">Thỏa thuận về mở, sử dụng
+                            và thanh toán thẻ
+                            ghi nợ</a></td>
+                            <td class="text-center id-table">
+                            </td> 
+                </tr>
+                <tr tabindex="3" [hidden]=!listDDPL>
+                    <td class="text-center id-table">#</td>
+                    <td class="text-left"><a class="color-text" (click)="openAccountGuardian()">Đăng ký người đại diện
+                            pháp luật</a></td>
+                    <td class="text-left">
+                    </td>
+                    <td class="text-center id-table">
+                        <a class="fa fa-download" (click)="openAccountGuardianDoc()"></a>
+                    </td>
+                </tr>
+                <tr tabindex="4" [hidden]=!listSHHL>
+                    <td class="text-center id-table">#</td>
+                    <td class="text-left"><a class="color-text" (click)="openAccountCSH()">Phụ lục thông tin chủ sở hữu
+                            hưởng lợi</a></td>
+                    <td class="text-left">
+                    </td>
+                    <td class="text-center id-table">
+                        <a class="fa fa-download" (click)="openAccountCSHDoc()"></a>
+                    </td>
+                </tr>
+                <tr tabindex="0" *ngFor="let item of legalFinal; index as i" [hidden]=!listTTPL>
+                    <td class="text-center id-table">#</td>
+                    <td class="text-left">
+                        <a class="color-text" (click)="openAccountTTPL(item.id)">Phụ lục thông tin thỏa thuận pháp lý
+                            {{item.legalCode}}</a>
+                    </td>
+                    <td class="text-left">
+                    </td>
+                    <td class="text-center id-table">
+                        <a class="fa fa-download" (click)="openAccountTTPLDoc(item.id)"></a>
+                    </td>
+                </tr>
+                <tr tabindex="0" *ngFor="let item of lstAccountAuthorFinal">
+                    <td class="text-center id-table">#</td>
+                    <td class="text-left">
+                        <a class="color-text" (click)="openAccountAuthor(item.id)">Giấy ủy quyền tài khoản
+                            {{item.accountIndex}} -
+                            {{item.fullName}} </a>
+                    </td>
+                    <td class="text-left">
+                    </td>
+                    <td class="text-center id-table">
+                        <a class="fa fa-download" (click)="openAccountAuthorDoc(item.id)"></a>
+                    </td>
+                </tr>
+                <tr tabindex="0" *ngFor="let item of coOwnerListFinal">
+                    <td class="text-center id-table">#</td>
+                    <td class="text-left">
+                        <a class="color-text" (click)="openAccountDSH(item.id)">Thỏa thuận quản lý và sử dụng tài khoản
+                            Đồng sở hữu tài khoản {{item.accountDescription}} </a>
+                    </td>
+                    <td class="text-left">
+                    </td>
+                    <td class="text-center id-table">
+                        <a class="fa fa-download" (click)="openAccountDSHDoc(item.id)"></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div *ngIf="hideLoad" class="col-12" style="
+    width: 10%;
+    padding-left: 50%;
+    padding-right: 50%;
+    height: 10px;
+    margin-top: 40px;">
+        <mat-spinner mode="indeterminate"></mat-spinner>
+    </div>
+<ng-container *ngIf="hideProcess">
+    
+    <div class="col-12" style="
+    width: 100%;
+    padding-left: 50%;
+    padding-right: 50%;
+    height: 500p;
+    margin-top: 400px;
+    height: 280px !important">
+        <mat-spinner mode="indeterminate"></mat-spinner>
+    </div>
+</ng-container>
+<ng-container *ngIf="hiddenAccount">
+    <iframe [src]="linkURL" frameborder="0" height="100%" width="100%"></iframe>
+</ng-container>
+
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+    <div class="col-12" style="text-align: right; margin-right: 15px;">
+        <div class="footer" onClick="document.location.reload(true)" [hidden]=!hiddenAccount>
+            <span class="material-icons"> keyboard_backspace </span>
+            <label>Quay lại</label>
+        </div>
+        <div class="footer" (click)="backPage()" [hidden]=hiddenAccount>
+            <span class="material-icons"> keyboard_backspace </span>
+            <label>Quay lại</label>
+        </div>
+
+    </div>
+</div>

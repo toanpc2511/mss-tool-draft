@@ -1,0 +1,28 @@
+.dialog-main {
+  max-height: 100vh;
+  overflow: auto;
+}
+.dialog-content {
+  width: 1380px;
+  max-width: 100%;
+}
+:host ::ng-deep {
+  app-lpb-select2[title] {
+    .ng-option {
+      padding: 0;
+      & > div {
+        padding: 8px 10px;
+      }
+    }
+  }
+  app-lpb-employee-input div{
+    color: #212529;
+    font-size: 14px;
+  }
+}
+
+:host ::ng-deep {
+  .form-group{
+    flex-wrap: wrap !important;
+  }
+}

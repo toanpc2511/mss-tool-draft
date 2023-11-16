@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-1 toast-icon">
+    <i
+      class="fa fa-check-circle"
+      style="color: #28a138"
+      *ngIf="typeToast === 'toast-success'"
+    ></i>
+
+    <i
+      class="fa fa-exclamation-circle"
+      style="color: #d21c1c"
+      *ngIf="typeToast === 'toast-error'"
+    ></i>
+    <i
+      class="fa fa-exclamation-circle"
+      style="color: #df7b00"
+      *ngIf="typeToast === 'toast-warning'"
+    ></i>
+  </div>
+  <div class="col-9">
+    <div
+      *ngIf="title"
+      [class]="options.titleClass"
+      [attr.aria-label]="title"
+      class="custom-title"
+    >
+      {{ title }}
+    </div>
+    <div
+      *ngIf="message && options.enableHtml"
+      role="alert"
+      aria-live="polite"
+      class="custom-message"
+      [class]="options.messageClass"
+      [innerHTML]="message"
+    ></div>
+    <div
+      *ngIf="message && !options.enableHtml"
+      role="alert"
+      aria-live="polite"
+      class="custom-message"
+      [class]="options.messageClass"
+      [attr.aria-label]="message"
+    >
+      {{ message }}
+    </div>
+    <div class="toastr-action">
+      <ng-container *ngIf="actions?.length > 0">
+        <button
+          mat-raised-button
+          class="d-inline-block"
+          *ngFor="let item of actions"
+          (click)="item.action()"
+        >
+          {{ item.title }}
+        </button>
+      </ng-container>
+      <ng-container *ngIf="typeToast === 'toast-error' && actions?.length <= 0">
+        <button
+          mat-raised-button
+          class="d-inline-block error"
+          (click)="remove()"
+        >
+          Thử lại
+        </button>
+      </ng-container>
+    </div>
+  </div>
+  <div class="col-1 text-right">
+    <a
+      *ngIf="options.closeButton"
+      (click)="remove()"
+      class="btn btn-sm toast-close-button"
+    >
+      &times;
+    </a>
+  </div>
+</div>

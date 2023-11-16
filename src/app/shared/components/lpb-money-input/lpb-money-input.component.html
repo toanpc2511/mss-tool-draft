@@ -1,0 +1,26 @@
+<input class="hidden-input-money" [style.display]="'none'" type="number" [formControl]="control">
+
+<input [class]="class" type="text" [attr.placeholder]="placeholder"
+  [disabled]="control.disabled" (paste)="onPaste($event)"
+  (keypress)="numberOnly($event)" (input)="onInputChange($event)" #moneyInput
+  [name]="name"
+  [class.input-error]="control.invalid && control.errors && (control.dirty || control.touched)"
+  [class.ng-invalid]="control.invalid"
+  (blur)="onBlur($event)" [attr.maxlength]="maxStrLength"
+  autocomplete="off">
+<div *ngIf="control.invalid && (control.dirty || control.touched) && showErrorText">
+  <ng-container [ngSwitch]="getFirstError()">
+    <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+      {{controlNameVi}} không được bỏ trống
+    </span>
+    <span *ngSwitchCase="FORM_VAL_ERRORS.OVER_MAX" class="text-danger mt-1 d-block small">
+      {{control.errors.overMax?.message}}
+    </span>
+    <span *ngSwitchCase="FORM_VAL_ERRORS.UNDER_MIN" class="text-danger mt-1 d-block small">
+      {{control.errors.underMin?.message}}
+    </span>
+    <span *ngSwitchCase="FORM_VAL_ERRORS.TOO_BIG" class="text-danger mt-1 d-block small">
+      {{controlNameVi}} vượt quá {{maxlength}} chữ số
+    </span>
+  </ng-container>
+</div>

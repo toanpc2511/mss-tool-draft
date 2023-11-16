@@ -1,0 +1,39 @@
+:host app-lpb-select2.ng-invalid {
+  ::ng-deep .ng-touched .ng-select-container {
+    border-color: #dc3545 !important;
+  }
+}
+
+.autocomplete-container {
+  position: relative;
+  ng-select{
+    z-index: 9 !important;
+  }
+  .input-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: calc(100% - 50px);
+    height: 100%;
+    z-index: 10;
+  }
+}
+:host .autocomplete-container .input-container ::ng-deep input {
+  border-right: none;
+  border-color: transparent;
+  border-top-right-radius: 0%;
+  border-bottom-right-radius: 0%;
+
+  &:focus {
+    border-color: transparent;
+    border-right: none;
+    box-shadow: none;
+  }
+}
+
+input.ng-invalid.ng-touched,
+input.ng-invalid.ng-dirty {
+  border-color: #dc3545;
+}
+

@@ -1,0 +1,200 @@
+<div class="lpb-main">
+  <div class="content-title mt-2 text-uppercase d-flex justify-content-between">
+    <div class="d-flex align-items-center">
+      <span class="font-weight-bold">Chi tiết thanh toán thuế</span>
+    </div>
+  </div>
+
+  <div class="card card-dark mt-4">
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Số hiệu KBNN</label>
+        <p class="font-weight-bold">
+          {{ transaction?.infoData.treasuryNumber || "--" }}
+        </p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Cơ quan thu</label>
+        <p class="font-weight-bold">
+          {{ transaction?.infoData.organReceiveCode || "--" }}
+        </p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Trạng thái</label>
+        <p class="font-weight-bold">{{ transaction?.statusName || "--" }}</p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Mã số thuế</label>
+        <p class="font-weight-bold">{{ transaction?.taxCode || "--" }}</p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Số GTTT</label>
+        <p class="font-weight-bold">{{ transaction?.number || "--" }}</p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Loại thuế</label>
+        <p class="font-weight-bold">{{ transaction?.taxTypeName || "--" }}</p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Tên người nộp thuế</label>
+        <p class="font-weight-bold">
+          {{ transaction?.infoData.payerNameChange || "--" }}
+        </p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Địa chỉ</label>
+        <p class="font-weight-bold">
+          {{ transaction?.infoData.payerAddressChange || "--" }}
+        </p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Mã ĐBHC</label>
+        <p class="font-weight-bold">
+          {{ transaction?.infoData.administrationCodeChange || "--" }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-4">
+    <p class="card-title">
+      <i class="fa fa-credit-card-alt mr-2"></i>
+      Tiểu mục
+    </p>
+
+    <app-lpb-datatable
+      [config]="config"
+      [columns]="subsectionColumns"
+      [dataSource]="transaction?.tranDetailResponses"
+    ></app-lpb-datatable>
+  </div>
+
+  <div class="card mt-4" *ngIf="idTransaction !== '3'">
+    <p class="card-title">
+      <i class="fa fa-credit-card-alt mr-2"></i>
+      {{ taxType }}
+    </p>
+
+    <app-lpb-datatable
+      [config]="config"
+      [columns]="columns"
+      [dataSource]="transaction?.taxMetadata"
+    ></app-lpb-datatable>
+  </div>
+
+  <div class="card card-dark mt-4">
+    <p class="card-title">Thông tin giao dịch</p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Hình thức</label>
+        <p class="font-weight-bold">{{ transaction?.paymentTypeName }}</p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Phí</label>
+        <p class="font-weight-bold">{{ 0 }}</p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Số tiền thanh toán</label>
+        <p class="font-weight-bold">
+          {{ transaction?.billAmount | vnCurency }}
+        </p>
+      </div>
+      <div class="col-12 mt-2">
+        <label>Nội dung thanh toán</label>
+        <p class="font-weight-bold">{{ transaction?.description }}</p>
+      </div>
+      <div class="col-12 mt-2">
+        <label>Ghi chú</label>
+        <p class="font-weight-bold">{{ transaction?.note }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-dark mt-4">
+    <p class="card-title">
+      <i class="fa fa-credit-card-alt mr-2"></i>
+      Thông tin tài khoản ghi nợ
+    </p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Số tài khoản</label>
+        <p class="font-weight-bold">
+          {{ transaction?.tranPostResponses[1]?.acName || "--" }}
+        </p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Tên tài khoản</label>
+        <p class="font-weight-bold">
+          {{ transaction?.tranPostResponses[1]?.acNumber || "--" }}
+        </p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Số dư tài khoản</label>
+        <p class="font-weight-bold">
+          {{ transaction?.preBalance || 0 | vnCurency }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-dark mt-4">
+    <p class="card-title">
+      <i class="fa fa-credit-card-alt mr-2"></i>
+      Thông tin tài khoản ghi có
+    </p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Ngân hàng thụ hưởng</label>
+        <p class="font-weight-bold">
+          {{ transaction?.tranPostResponses[0]?.acName || "--" }}
+        </p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Số tài khoản</label>
+        <p class="font-weight-bold">
+          {{ transaction?.tranPostResponses[1]?.acNumber || "--" }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-dark mt-4">
+    <p class="card-title">
+      <i class="fa fa-credit-card-alt mr-2"></i>
+      Thông tin người nộp thay
+    </p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Tên người nộp thay</label>
+        <p class="font-weight-bold">{{ transaction?.infoData.replacerName || "--" }}</p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Mã số thuế</label>
+        <p class="font-weight-bold">
+          {{ transaction?.infoData.replacerTaxCode || "--" }}
+        </p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4 mt-2">
+        <label>Địa chỉ</label>
+        <p class="font-weight-bold">
+          {{ transaction?.infoData.replacerAddress || "--" }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-4">
+    <p class="card-title">
+      <i class="fa fa-credit-card-alt mr-2"></i>
+      Thông tin bút toán
+    </p>
+
+    <app-lpb-datatable
+      [config]="config"
+      [columns]="btColumns"
+      [dataSource]="transaction?.tranPostResponses"
+    ></app-lpb-datatable>
+  </div>
+</div>
+
+<app-lpb-footer [actions]="actions"></app-lpb-footer>

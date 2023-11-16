@@ -1,0 +1,18 @@
+export const CustomerInfoFormFields = [
+  { field: 'customerCode', name: 'Mã khách hàng' },
+  { field: 'fullName', name: 'Họ tên' },
+  { field: 'customerType', name: 'Loại khách hàng' },
+  { field: 'identityCode', name: 'Số định danh' },
+  { field: 'identityType', name: 'Loại định danh' },
+  { field: 'phone', name: 'Số điện thoại' },
+  { field: 'address', name: 'Địa chỉ' },
+  { field: 'identityMethod', name: 'Phương thức định danh' },
+  { field: 'email', name: 'Email' },
+  { field: 'createdBy', name: 'Người tạo' },
+  { field: 'createdAt', name: 'Thời gian tạo' },
+  { field: 'username', name: 'Username' },
+  { field: 'pinCount', name: 'Số lần nhập sai mật khẩu' },
+  { field: 'userStatus', name: 'Trạng thái user' },
+  { field: 'accountStatus', name: 'Trạng thái tài khoản' },
+  { field: 'customerStatus', name: 'Trạng thái khách hàng' },
+];

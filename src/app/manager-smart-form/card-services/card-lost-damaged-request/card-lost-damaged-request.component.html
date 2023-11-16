@@ -1,0 +1,4 @@
+<div class="cardBody">
+  <app-card-lost-damaged-search *ngIf="step === STEP.HOME" (evtClickSendRequest)="showStepDetail($event)" ></app-card-lost-damaged-search>
+  <app-card-lost-damaged-confirm *ngIf="step === STEP.DETAIL" [cardEbsInfoSelected]="cardEbsInfoSelected" [cardSelected]="cardSelectedSearch" (eventBackStep)="backToSearch()"></app-card-lost-damaged-confirm>
+</div>

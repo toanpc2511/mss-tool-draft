@@ -1,0 +1,48 @@
+.content {
+  margin-bottom: 30px;
+  .content-main {
+    margin: 30px 25px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    .title {
+      color: #0c258a;
+      font-size: 18px;
+      font-weight: 500;
+
+      .fa-credit-card {
+        color: #0c258a;
+      }
+    }
+
+    .card {
+      background-color: #f1f3f6;
+      padding: 15px 25px;
+      border: none;
+
+      .card-title {
+        color: #0c258a;
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      p {
+        color: #384961;
+        font-weight: bold;
+      }
+      &:last-child {
+        margin-bottom: 60px;
+      }
+    }
+  }
+}
+
+.text-while {
+  color: #fff;
+}
+
+.bg-btn__blue {
+  background: #0c258a;
+}
+@import "/src/app/shared/styles/custom-styles.scss";

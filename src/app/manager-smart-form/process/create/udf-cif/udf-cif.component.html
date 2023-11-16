@@ -1,0 +1,604 @@
+<h2 class="border-header-popup" mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;padding:15px">
+    THÔNG TIN UDF
+    <span class="material-icons" (click)="closeDialog(0)" style="float: right;cursor: pointer;">
+    close
+  </span>
+</h2>
+<mat-dialog-content class="mat-typography clear-css">
+    <form [formGroup]="udfForm">
+        <div class="col-12 p-0">
+            <div class="row d-flex justify-content-around m-0">
+                <div class="col-6">
+                    <div class="margin-10 back-gray py-3 my-3">
+                        <div class="col-12 text-center title-label mb-3">N1. Thông tin chung</div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">CIF_DINHDANH
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifDinhdanh" bindLabel="name" bindValue="code" placeholder="-- Chọn CIF_DINHDANH --" formControlName="cifDinhdanhCode" name="cifDinhdanhCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">MA CBNV LPB
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifMaCbnvLpb" bindLabel="name" bindValue="code" placeholder="-- Chọn MA CBNV LPB --" formControlName="maCbnvLpbCode" name="maCbnvLpbCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">CAN_BO_GIOI_THIEU
+                </label>
+                                <div class="col-sm-8 ">
+                                    <input class="form-control" placeholder="-- Nhập CAN BO GIOI THIEU --" formControlName="canBoGioiThieu" maxlength="10" />
+                                    <div *ngIf="f.canBoGioiThieu.hasError('minlength') && f.canBoGioiThieu.touched" class="error-message">
+                                        {{ERROR_MESSAGE.MIN('canBoGioiThieu', 10)}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">KHUT
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifKhut" bindLabel="name" bindValue="code" placeholder="-- Chọn KHUT --" formControlName="khutCode" name="khutCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">CIF_PNKH
+                  <span style="margin-left: 5px; color: red;">(*)</span>
+                </label>
+                                <div class="col-sm-8 ">
+                                    <ng-select placeholder="-- Chọn CIF_PNKH --" bindLabel="name" [ngClass]="{'is-invalid' : submitted && f.cifPnkhCode.errors}" bindValue="code" [items]="lstUdfCif.lstAllUdfCifPnkh" formControlName="cifPnkhCode" name="cifPnkhCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                    <div *ngIf="submitted && f.cifPnkhCode.errors" class="invalid-feedback">
+                                        <div>CIF_PNKH chưa chọn</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">KHACH HANG
+                </label>
+                                <div class="col-sm-8 ">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifKhachHang" bindLabel="name" bindValue="code" placeholder="-- Chọn KHACH HANG --" formControlName="khachHangCode" name="khachHangCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">PNKH_KHDK
+                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" formControlName="pnkhKhdk" name="pnkhKhdk" placeholder="-- Nhập PNKH_KHDK --" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">SO BAO HIEM XA HOI
+                </label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="-- Nhập SO BAO HIEM XA HOI --" formControlName="soSoBaoHiemXaHoi" name="soSoBaoHiemXaHoi" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">THUONG TAT
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifThuongTat" bindLabel="name" bindValue="code" placeholder="-- Chọn THUONG TAT --" formControlName="thuongTatCode" name="thuongTatCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">KHOI DON VI GIOI THIEU
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifKhoiDonViGioiThieu" bindLabel="name" bindValue="code" placeholder="-- Chọn KHOI DON VI GIOI THIEU --" formControlName="khoiDonViGioiThieuCode" name="khoiDonViGioiThieuCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="margin-10 back-gray py-3 my-3">
+                        <div class="col-12 text-center title-label mb-3">N3. Chương trình khuyến mãi</div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">LOAI CHUONG TRINH
+                </label>
+                                <div class="col-sm-8 ">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifLoaiChuongTrinh" bindLabel="name" bindValue="code" placeholder="-- Chọn LOAI CHUONG TRINH --" formControlName="loaiChuongTrinhCode" name="loaiChuongTrinhCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">TU NGAY
+                </label>
+                                <div class="col-sm-8 ">
+                                    <div class="input-group mb-3" style="margin-bottom: 0px !important;">
+                                        <input matInput DateOnly [ngClass]="{'is-invalid' : udfForm.get('tuNgay').touched && udfForm.get('tuNgay').errors}" [matDatepicker]="dp2" style="height: 36px" formControlName="tuNgay" name="tuNgay" type="text" class="form-control straight-right-border border-input-date"
+                                            placeholder="dd/mm/yyyy" maxlength="10">
+                                        <div class="input-group-append" style=" margin-top: -1px">
+                                            <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border" matSuffix [for]="dp2">
+                                            </mat-datepicker-toggle>
+                                        </div>
+                                        <mat-datepicker #dp2></mat-datepicker>
+                                        <div *ngIf="udfForm.get('tuNgay').errors?.futureDate && udfForm.get('tuNgay').touched" class="error-message">
+                                            Từ ngày không được lớn hơn ngày hiện tại
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">DEN NGAY
+                </label>
+                                <div class="col-sm-8 ">
+                                    <div class="input-group mb-3" style="margin-bottom: 0px !important;">
+                                        <input matInput DateOnly [matDatepicker]="dp1" style="height: 36px" formControlName="denNgay" name="denNgay" type="text" class="form-control straight-right-border border-input-date" placeholder="dd/mm/yyyy" maxlength="10">
+                                        <div class="input-group-append" style=" margin-top: -1px">
+                                            <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border" id="basic-addon2" matSuffix [for]="dp1">
+                                            </mat-datepicker-toggle>
+                                        </div>
+                                        <mat-datepicker #dp1></mat-datepicker>
+                                        <div *ngIf="udfForm.get('denNgay').errors?.pastDate && udfForm.get('denNgay').touched" class="error-message">
+                                            Đến ngày không được nhỏ hơn ngày hiện tại
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">COMBO SAN PHAM 2018
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [items]="lstUdfCif.lsAllUdfCifComboSanPham2018" bindLabel="name" bindValue="code" placeholder="-- Chọn COMBO SAN PHAM 2018 --" formControlName="comboSanPham2018Code" name="comboSanPham2018Code">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">EXPIRED DATE
+                </label>
+                                <div class="col-sm-8">
+                                    <div class="input-group mb-3" style="margin-bottom: 0px !important;">
+                                        <input matInput DateOnly [matDatepicker]="dp" style="height: 36px" formControlName="expiredDate" name="expiredDate" type="text" class="form-control straight-right-border border-input-date" placeholder="dd/mm/yyyy" maxlength="10">
+                                        <div class="input-group-append" style=" margin-top: -1px">
+                                            <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border" matSuffix [for]="dp">
+                                            </mat-datepicker-toggle>
+                                        </div>
+                                        <mat-datepicker #dp></mat-datepicker>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-6">
+
+                    <div class="margin-10 back-gray py-3 my-3">
+                        <div class="col-12 text-center title-label mb-3">N2. Thông tin dịch vụ</div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel">TRA CUU TT STK WEBSITE VI VIET
+                  <span style="margin-left: 5px; color: red;">(*)</span>
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [ngClass]="{ 'is-invalid': submitted && f.tracuuTtstkwebVivietCode.errors}" [items]="lstUdfCif.lstAllUdfCifTracuuTtstkwebViviet" bindLabel="name" bindValue="code" placeholder="-- Chọn TRA CUU TT STK WEBSITE VI VIET --" formControlName="tracuuTtstkwebVivietCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                    <div *ngIf="submitted && f.tracuuTtstkwebVivietCode.errors" class="invalid-feedback">
+                                        <div>{{textMessage.contentTRA_CUU_TT_STK}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel">SDT NHAN SMS GD TIET KIEM<span
+                    style="margin-left: 5px; color: red;">(*)</span>
+                </label>
+                                <div class="col-sm-8">
+                                    <input placeholder="-- Nhập SDT NHAN SMS GD TIET KIEM --" maxlength="11" [ngClass]="{ 'is-invalid': f.sdtNhanSmsGdtetkiem.touched && f.sdtNhanSmsGdtetkiem.errors}" type="text" class="form-control" formControlName="sdtNhanSmsGdtetkiem" />
+                                    <div *ngIf="f.sdtNhanSmsGdtetkiem.touched && f.sdtNhanSmsGdtetkiem.errors?.required" class="error-message">
+                                        {{textMessage.contentSDT_NHAN_SMS}}
+                                    </div>
+                                    <div *ngIf="f.sdtNhanSmsGdtetkiem.touched && f.sdtNhanSmsGdtetkiem.errors?.minlength" class="error-message">
+                                        {{textMessage.contentPhoneMax}}
+                                    </div>
+                                    <div *ngIf="f.sdtNhanSmsGdtetkiem.errors?.checkPhonesNumber && f.sdtNhanSmsGdtetkiem.touched" class="error-message">
+                                        Số điện thoại sai định dạng
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="margin-10 back-gray py-3 my-3">
+                        <div class="col-12 text-center title-label mb-3">N4. Thông tin vay</div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">NO PHAI THU
+                </label>
+                                <div class="col-sm-8 ">
+                                    <input type="text" placeholder="-- Nhập NO PHAI THU --" class="form-control" formControlName="noPhaiThu" name="noPhaiThu" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">NO PHAI TRA
+                </label>
+                                <div class="col-sm-8 ">
+                                    <input type="text" placeholder="-- Nhập NO PHAI TRA --" class="form-control" formControlName="noPhaiTra" name="noPhaiTra" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">DB_KH VAY
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifDbKhVay" bindLabel="name" bindValue="code" placeholder="-- Chọn DB_KH VAY --" formControlName="dbKhVayCode" name="dbKhVayCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">MA HUYEN THI XA
+                </label>
+                                <div class="col-sm-8 ">
+                                    <ng-select bindLabel="name" bindValue="code" [items]="lstUdfCif.lstAllUdfCifMaHuyenThiXa" placeholder="-- Chọn MA HUYEN THI XA --" formControlName="maHuyenThiXaCode" name="maHuyenThiXaCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">DIA BAN NONG THON
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifDiaBanNongThon" bindLabel="name" bindValue="code" placeholder="-- Chọn DIA BAN NONG THON --" formControlName="diaBanNongThonCode" name="diaBanNongThonCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">VI TRI TO_LKET VAY VON
+                </label>
+                                <div class="col-sm-8 ">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifViTriToLketVayvon" bindLabel="name" bindValue="code" placeholder="-- Chọn VI TRI TO_LKET VAY VON --" formControlName="viTriToLketVayvonCode" name="viTriToLketVayvonCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">LV UD CN CAO CIF
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCifLvUdCnCaoCif" bindLabel="name" bindValue="code" placeholder="-- Chọn DC_GH --" formControlName="lvUdCnCaoCifCode" name="lvUdCnCaoCifCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">CN UTPT 1483 CIF
+                </label>
+                                <div class="col-sm-8">
+                                    <ng-select [items]="lstUdfCif.lstAllUdfCnUtpt1483Cif" bindLabel="name" bindValue="code" placeholder="-- Chọn CN UTPT 1483 CIF --" formControlName="cnUtpt1483CifCode" name="cnUtpt1483CifCode">
+                                        <ng-template ng-notfound-tmp let-searchTerm="searchTerm">
+                                            <div class="ng-option disabled">
+                                                Không tìm thấy dữ liệu
+                                            </div>
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <span>{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                            <span title="{{item.code + ' - ' + item.name}}">{{ item.code + ' - ' + item.name }}</span>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">KY DANH GIA TNV
+                </label>
+                                <div class="col-sm-8 ">
+                                    <div class="input-group mb-3" style="margin-bottom: 0px !important;">
+                                        <input matInput DateOnly [matDatepicker]="dpKyDanhGia" style="height: 36px" formControlName="kyDanhGiaTvn" type="text" class="form-control straight-right-border border-input-date" placeholder="dd/mm/yyyy" maxlength="10">
+                                        <div class="input-group-append" style=" margin-top: -1px">
+                                            <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border" matSuffix [for]="dpKyDanhGia">
+                                            </mat-datepicker-toggle>
+                                        </div>
+                                        <mat-datepicker #dpKyDanhGia></mat-datepicker>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">HO TEN VO CHONG
+                </label>
+                                <div class="col-sm-8 ">
+                                    <input type="text" class="form-control" placeholder="-- Nhập HO TEN VO CHONG --" formControlName="hoTenVoChong" name="hoTenVoChong" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">SO CMND HC
+                </label>
+                                <div class="col-sm-8 ">
+                                    <input NumberAndTextOnly type="text" placeholder="-- Nhập SO CMND HC --" class="form-control" formControlName="coCmndHc" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">NGAY CAP CMND HC
+                </label>
+                                <div class="col-sm-8">
+                                    <div class="input-group mb-3" style="margin-bottom: 0px !important;">
+                                        <input matInput DateOnly [matDatepicker]="dp4" style="height: 36px" formControlName="ngayCapCmndHc" name="tuNgay" type="text" class="form-control straight-right-border border-input-date" placeholder="dd/mm/yyyy" maxlength="10">
+                                        <div class="input-group-append" style=" margin-top: -1px">
+                                            <mat-datepicker-toggle style="height: 36px" class="input-group-text radius-right-border" matSuffix [for]="dp4">
+                                            </mat-datepicker-toggle>
+                                        </div>
+                                        <mat-datepicker #dp4></mat-datepicker>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label textLabel ">NOI CAP CMND HC
+                </label>
+                                <div class="col-sm-8 ">
+                                    <input type="text" placeholder="-- Nhập NOI CAP CMND HC --" class="form-control" formControlName="noiCapCmndHc" name="noiCapCmndHc" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions class="clear-css-actions">
+    <div class="float-right col-12" style="height: 57px;
+        margin-top: 9px;display: block;text-align: right;">
+        <button type="button" class="btn newfile btn-color" [hidden]="this.data.isViewMode" cdkFocusInitial (click)="save(1)">Lưu
+    </button>
+        <button type="button" class="btn closePopup" (click)="closeDialog(0)">Đóng</button>
+    </div>
+</mat-dialog-actions>

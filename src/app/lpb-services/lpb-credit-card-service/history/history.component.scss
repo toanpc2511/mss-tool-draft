@@ -1,0 +1,98 @@
+.all-content{
+  background-color: #FFFFFF;
+  .title-content {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    text-indent: 8px;
+    color: #0C258A;
+    margin-top: 10px;
+  }
+  .col-left {padding-left: 15%;}
+  .col-right {padding-right: 15%}
+  .form-field{
+    margin: 15px 0;
+    span{
+      font-size: 14px;
+      font-weight: bold;
+      color: #0C258A;
+    }
+  }
+  .table-content {
+    th {
+      background-color: #0C258A;
+      color: #FFFFFF;
+    }
+  }
+}
+
+.table-scroll{
+  position: relative;
+  width:100%;
+  z-index: 1;
+  //margin: auto;
+  margin-bottom: 40px;
+  overflow: auto;
+  max-height: 650px;
+  table{
+    width: 100%;
+    min-width: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    th,td{
+      vertical-align: top;
+    }
+    thead th {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      z-index: 6;
+    }
+    thead tr th:first-child {
+      width: 50px !important;
+      min-width: 50px !important;
+    }
+    tbody tr td:first-child {
+      width: 50px !important;
+      min-width: 50px !important;
+    }
+    thead tr th {min-width: 140px}
+    tbody tr td {min-width: 140px}
+    thead tr th:nth-child(2) {min-width: 100px !important}
+    tbody tr td:nth-child(2) {min-width: 100px !important}
+    thead tr th:nth-child(4) {min-width: 200px !important}
+    tbody tr td:nth-child(4) {min-width: 200px !important}
+    thead tr th:nth-child(27) {min-width: 200px !important}
+    tbody tr td:nth-child(27) {min-width: 200px !important}
+    thead tr th:nth-child(32) {min-width: 250px !important}
+    tbody tr td:nth-child(32) {min-width: 250px !important}
+    thead tr th:nth-child(33) {min-width: 250px !important}
+    tbody tr td:nth-child(33) {min-width: 250px !important}
+  }
+}
+.btn-search{
+  background-color: #0C258A;
+  color: #FFFFFF;
+}
+.btn-send{
+  background-color: #F47326;
+  color: #FFFFFF;
+}
+.btn-excel{
+  i{color: #28A745;}
+  color: #28A745;
+}
+input {
+  box-shadow: none !important;
+}
+::ng-deep.ng-select-container {
+  outline: none !important;
+  box-shadow: unset !important;
+}
+.tb-sideBar{
+  width: 480px;
+}
+.drawer{
+  min-height: 824px !important;
+  background-color: #FFFFFF;
+}

@@ -1,0 +1,19 @@
+<div class="row form-group align-items-end flex-md-nowrap flex-wrap">
+  <div class="col-md-3 pr-md-0 mb-md-0 mb-1 left">
+    <span class="txtLabel">{{label}}</span>
+    <div class="input-group-select2">
+      <app-lpb-select2 [config]="{clearable: false}" [items]="list" labelName="name" bindValue="key"
+        [formControl]="firstControl" [placeholder]="selectPlaceHolder" class="w-100"></app-lpb-select2>
+    </div>
+  </div>
+  <div class="col-md-9 pl-md-0">
+    <ng-container *ngIf="secondList?.length; else elseIsSelect">
+      <app-lpb-select2 [items]="secondList" labelName="name" bindValue="key" [formControl]="secondControl"
+        [placeholder]="selectPlaceHolder" class="w-100"></app-lpb-select2>
+    </ng-container>
+    <ng-template #elseIsSelect>
+      <input [formControl]="secondControl" maxlength="500" [placeholder]="textPlaceHolder" type="text"
+        class="form-control text-control">
+    </ng-template>
+  </div>
+</div>

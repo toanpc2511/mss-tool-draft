@@ -1,0 +1,74 @@
+<div class="lpb-main">
+  <div class="search px-4 mt-4">
+    <form [formGroup]="searchForm">
+      <div class="row">
+        <div class="col-12 col-md-4 pb-3 px-4">
+          <label class="required">Loại thuế</label>
+          <app-lpb-select2
+            [items]="taxTypes" labelName="name" bindValue="code"
+            formControlName="taxType"
+            placeholder="Chọn loại thuế"
+            (change)="handleChangeTaxType()"
+          >
+          </app-lpb-select2>
+          <app-validate [control]="searchForm.controls.taxType" error="required"
+                        message="Chưa chọn loại thuế"></app-validate>
+        </div>
+        <div class="col-12 col-md-4 pb-3 px-4">
+          <label class="required">Mã hồ sơ/ Số quyết định/ Số thông báo</label>
+          <input
+            type="text"
+            formControlName="keySearch"
+            placeholder="Nhập mã hồ sơ/ Số quyết định/ Số thông báo"
+            class="form-control"
+            trimInput
+          />
+          <app-validate [control]="searchForm.controls.keySearch" error="required"
+                        message="Chưa nhập mã hồ sơ/ Số quyết định/ Số thông báo"></app-validate>
+        </div>
+        <ng-container *ngIf="isLandTax">
+          <div class="col-12 col-md-4 pb-3 px-4">
+            <label class="required">Số giấy tờ tùy thân</label>
+            <input
+              type="text"
+              formControlName="identifyNumber"
+              placeholder="Nhập số giấy tờ tùy thân"
+              class="form-control"
+              trimInput
+            />
+            <app-validate [control]="searchForm.controls.identifyNumber" error="required"
+                          message="Chưa nhập giấy tờ tùy thân"></app-validate>
+          </div>
+        </ng-container>
+        <div class="col-12 col-md-4 pb-3 px-4">
+          <button
+            mat-raised-button
+            class="btn_blue mt-3"
+            (click)="onSearchTax()"
+          >
+            <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+            Tìm kiếm
+          </button>
+          <button
+            mat-raised-button
+            class="btn_orange mt-3 ml-2"
+            (click)="onCreateSelfCollectionTax()"
+            *ngIf="isSelfCollectionTax"
+          >
+            Thuế tự thu
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="mt-4">
+    <app-lpb-datatable
+      [config]="config"
+      [columns]="columns"
+      [dataSource]="dataSource"
+      tableName="Kết quả tìm kiếm"
+    ></app-lpb-datatable>
+  </div>
+</div>
+
+<app-lpb-footer></app-lpb-footer>

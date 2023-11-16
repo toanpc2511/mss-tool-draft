@@ -1,0 +1,33 @@
+
+.form-group{
+  margin-bottom: 7px;
+}
+ul{
+  margin: 0px;
+  list-style: none;
+  font-style: italic;
+  font-size: 12px;
+  color: #828282;
+}
+.footer-row{
+  padding: 0px;
+  background: #23388F;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  left: 0px;
+  margin: 0px;
+}
+.footer{
+  padding: 6px;
+}
+.footer label{
+  margin-bottom: 0px;
+}
+.labelTitle{
+  display: block;
+  color: #252834;
+  font-weight: 900;
+  padding: 0em 0.5em 0.5em 0.5em;
+  margin: 0px;
+}

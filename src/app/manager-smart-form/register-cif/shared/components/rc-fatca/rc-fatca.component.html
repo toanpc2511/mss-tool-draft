@@ -1,0 +1,63 @@
+<div class="rc-fatca d-flex" [class.error-invalid]="errMsgFatcaBlock !== ''">
+  <span class="rc-fatca-left">THÔNG TIN FATCA <span [hidden]="!isRequiredFatca" class="error-invalid">(*)</span></span>
+  <div class="rc-fatca-right">
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="checkedTrue" [(ngModel)]="checkedFatca" name="Fatca"
+        [value]="true" [checked]="checkedFatca" (change)="checkFormFatca()">
+      <label class="form-check-label" for="checkedTrue">Có</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="checkedFalse" [(ngModel)]="checkedFatca" name="Fatca"
+        [value]="false" [checked]="!checkedFatca" (change)="checkFormFatca()">
+      <label class="form-check-label" for="checkedFalse">Không</label>
+    </div>
+  </div>
+</div>
+<span class="error-block-fatca" *ngIf="errMsgFatcaBlock !== ''">{{errMsgFatcaBlock}}</span>
+<div class="w-100 rc-fatca-form" [ngClass]="checkedFatca ? 'd-flex' : 'd-none'">
+  <div class="rc-fatca-form-left">
+    <div class="row-item-info">
+      <div class="label-field">Phân loại FATCA <span class="item-require">(*)</span></div>
+      <div class="value-field">
+        <div class="control-item">
+          <select class="form-control form-control-sm" #fatcaType [class.error-invalid]="errMsgFatcaType !== ''"
+            (blur)="validateTypeFatca()" (change)="changeFatcaCode()">
+            <option value="" disabled selected>Chọn loại FATCA</option>
+            <option *ngFor="let item of lstTypeFatca" [value]="item.code">{{item.name}}
+            </option>
+          </select>
+        </div>
+        <div class="error-msg" *ngIf="errMsgFatcaType !== ''">{{errMsgFatcaType}}</div>
+      </div>
+    </div>
+    <div class="row-item-info" [ngClass]="hiddenFatcaAnswer === 'US PERSON' ? 'd-flex' : 'd-none'">
+      <div class="label-field">Mã số thuế <span class="item-require">(*)</span></div>
+      <div class="value-field">
+        <div class="control-item">
+          <input type="text" numbersOnly maxlength="9" [(ngModel)]="fatcaCode" [class.error-invalid]="errMsgFatcaCode !== ''"
+            placeholder="Nhập mã số thuế" class="input-field form-control form-control-sm" (input)="validateFatcaCode()"
+            (blur)="validateFatcaCode()">
+        </div>
+        <div class="error-msg" *ngIf="errMsgFatcaCode !== ''">
+          {{errMsgFatcaCode}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="rc-fatca-form-right">
+    <div class="row-item-info">
+      <div class="label-field">Mẫu biểu bổ sung <span class="item-require">(*)</span></div>
+      <div class="value-field">
+        <div class="control-item">
+          <select class="form-control form-control-sm" #fatcaForm [class.error-invalid]="errMsgFatcaForm !== ''"
+            (blur)="validateFormFatca()" (change)="validateFormFatca()">
+            <option value="" disabled selected>Chọn loại mẫu biểu bổ sung</option>
+            <option *ngFor="let item of lstFatcaForm" [value]="item.code">{{item.name}}
+            </option>
+          </select>
+        </div>
+        <div class="error-msg" *ngIf="errMsgFatcaForm !== ''">{{errMsgFatcaForm}}</div>
+      </div>
+    </div>
+  </div>
+</div>

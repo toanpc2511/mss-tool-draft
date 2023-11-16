@@ -1,0 +1,70 @@
+.mat-dialog-container {
+    padding: 0px !important;
+}
+
+h2 {
+    margin: 0px;
+    padding: 15px
+}
+
+.scroll-dialog {
+    display: block;
+    max-height: 70vh;
+    overflow: auto;
+}
+
+.form-group.required .control-label:after {
+    content: "*";
+    color: red;
+}
+
+.form-control {
+    font-size: unset;
+}
+
+.table td {
+    padding: 0px;
+    vertical-align: inherit;
+}
+
+.pading-date {
+    padding: .375rem .25rem;
+}
+
+label {
+    margin-bottom: 0.2em;
+}
+
+.form-row {
+    margin-top: 5px;
+}
+
+table {
+    margin-bottom: 0px;
+}
+
+.titleTD td {
+    padding: 0.3em;
+}
+
+.input-search {
+    width: 30px;
+}
+
+.input-group {
+    margin-bottom: 5px;
+}
+
+tbody tr td {
+    padding: 0.5em !important;
+}
+
+.hoverTr:hover {
+    cursor: pointer;
+    background: #E8E8E8;
+}
+
+.popup-css {
+    background-color: #23388F;
+    color: #FFFFFF;
+}

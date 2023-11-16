@@ -1,0 +1,124 @@
+.body-content {
+  background-color: #FFFFFF;
+  height: 100%;
+}
+.title{
+  color: #0C258A;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  text-indent: 8px;
+}
+.information-content{
+  padding: 0 18%;
+}
+.btn-orange {
+  color: #fff;
+  background-color: #f47326;
+  font-size: 12px;
+}
+
+.btn-blue {
+  color: #fff;
+  background-color: #23388F;
+  font-size: 12px;
+}
+.btn-connect {
+  top: 96px;
+  z-index: 10 ;
+}
+.tb{
+  margin-top: 60px;
+}
+.mat-tab-label.mat-tab-label-active {
+  background-color: #fff;
+  color: #0C258A;
+  font-weight: bold;
+  font-size: 16px ;
+}
+//----------
+
+.btn-toggle {
+  margin: 0 4rem;
+  padding: 0;
+  position: relative;
+  border: none;
+  height: 1.5rem;
+  width: 3rem;
+  border-radius: 1.5rem;
+  color: #6b7381;
+  background: #bdc1c8;
+}
+.btn-toggle:focus,
+.btn-toggle.focus,
+.btn-toggle:focus.active,
+.btn-toggle.focus.active {
+  outline: none;
+}
+.btn-toggle:before,
+.btn-toggle:after {
+  line-height: 1.5rem;
+  width: 4rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: absolute;
+  bottom: 0;
+  transition: opacity 0.25s;
+}
+.btn-toggle:before {
+  content: 'Off';
+  left: -4rem;
+}
+.btn-toggle:after {
+  content: 'On';
+  right: -4rem;
+  opacity: 0.5;
+}
+.btn-toggle > .handle {
+  position: absolute;
+  top: 0.1875rem;
+  left: 0.1875rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 1.125rem;
+  background: #fff;
+  transition: left 0.25s;
+}
+.btn-toggle.active {
+  transition: background-color 0.25s;
+}
+.btn-toggle.active > .handle {
+  left: 1.6875rem;
+  transition: left 0.25s;
+}
+.btn-toggle.active:before {
+  opacity: 0.5;
+}
+.btn-toggle.active:after {
+  opacity: 1;
+}
+.btn-toggle.btn-xs:before,
+.btn-toggle.btn-xs:after {
+  display: none;
+}
+.btn-toggle:before,
+.btn-toggle:after {
+  color: #6b7381;
+}
+.btn-toggle.active {
+  background-color: #29b5a8;
+}
+.btn-toggle.btn-secondary {
+  color: #6b7381;
+  background: #bdc1c8;
+}
+.btn-toggle.btn-secondary:before,
+.btn-toggle.btn-secondary:after {
+  color: #0C258A;
+}
+.btn-toggle.btn-secondary.active {
+  background-color: #ff8300 !important;
+}

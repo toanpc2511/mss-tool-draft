@@ -1,0 +1,202 @@
+<div class="card-inssuance-request-step-send d-flex flex-column">
+  <app-progress-spinner color="primary" mode="indeterminate" value="50" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item [disabled]="getFile !== 'CARD_BACK'" (click)="fileBBBGT()">BBBG thẻ</button>
+    <button mat-menu-item [disabled]="getFile === 'CARD_BACK'" (click)="fileBBTGT()">BB thu giữ thẻ</button>
+    <button mat-menu-item [disabled]="getFile === 'CARD_BACK'" (click)="fileYCTGKHCN()">Yêu cầu trợ giúp KHCN</button>
+  </mat-menu>
+  <div class="content-title" *ngIf="detailedList">
+    THÔNG TIN CHI TIẾT {{detailedList.ebsActionName | uppercase}}
+  </div>
+  <div class="content-title" *ngIf="!detailedList">
+    THÔNG TIN CHI TIẾT
+  </div>
+  <div class="form-detail d-flex flex-column" [formGroup]="formCustomerInfo">
+    <div class="row-fields mt-3 mb-2">
+      <div class="field">
+        <span class="txtLabel">CIF:</span>
+        <input type="text" formControlName="customerCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Thẻ chính / phụ:</span>
+        <input type="text" formControlName="cardCategory" class="form-control" [hidden]="true">
+        <input type="text" formControlName="cardCategoryName" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Số GTXM:</span>
+        <input type="text" formControlName="uidValue" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Mã sản phẩm thẻ:</span>
+        <input type="text" formControlName="cardProductCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Tên khách hàng:</span>
+        <input type="text" formControlName="fullName" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Số thẻ:</span>
+        <input type="text" formControlName="cardNumber" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Chi nhánh:</span>
+        <input type="text" formControlName="branchCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Tài khoản mặc định:</span>
+        <input type="text" formControlName="defaultAccount" class="form-control">
+      </div>
+
+      <div class="field">
+        <span class="txtLabel">Serial number:</span>
+        <input type="text" formControlName="cardEbsSerialNumber" class="form-control">
+      </div>
+      <div class="field b-green">
+        <span class="txtLabel">CardID:</span>
+        <input type="text" formControlName="cardCoreId" class="form-control">
+      </div>
+      <div class="field b-green">
+        <span class="txtLabel">Trạng thái thẻ:</span>
+        <input type="text" formControlName="cardStatusCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Ngày phát hành:</span>
+        <input type="text" formControlName="releaseDate" class="form-control">
+      </div>
+      <div class="field b-green" *ngIf="acctionView !== 'REQ_APPROVE'">
+        <span class="txtLabel">Trạng thái kho thẻ:</span>
+        <input type="text" formControlName="cardEbsStatusCode" class="form-control">
+      </div>
+      <div class="field b-green" *ngIf="acctionView === 'REQ_APPROVE'">
+        <span class="txtLabel">Trạng thái kho thẻ:</span>
+        <input type="text" formControlName="cardStatusEbs" class="form-control">
+      </div>
+      <div class="field b-green" *ngIf="detailedList">
+        <span class="txtLabel">Mã CBNV {{detailedList.ebsActionName}}:</span>
+        <input type="text" formControlName="employeeId" class="form-control">
+      </div>
+      <div class="field b-green" *ngIf="acctionCode && !detailedList">
+        <span class="txtLabel">Mã CBNV {{acctionCode === 'CARD_BACK' ? 'trả thẻ' : 'báo hỏng'}}:</span>
+        <input type="text" formControlName="employeeId" class="form-control">
+      </div>
+    </div>
+
+    <!---------VIEW DELETE--------->
+    <div *ngIf="acctionView === 'DELETE'">
+      <div class="row-fields row b-red" *ngIf="this.detailedList.brokenDesc !== null ">
+        <div class="col-md-6">
+          <div class="d-block mt-2" >
+            <span class="txtLabel">lý do:</span>
+            <input type="text" formControlName="brokenDesc" class="form-control" disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row-fields mt-3 b-red">
+        <span class="txtLabel">Ghi chú:</span>
+        <textarea type="text" formControlName="sendNote" maxlength="500" class="form-control" disabled></textarea>
+      </div>
+      <div class="row-fields row mt-3 b-red">
+        <div class="col-md-6">
+          <p>
+            <span class="txtLabel">Trạng thái bản ghi: {{this.detailedList.ebsServiceStatusName}}</span>
+          </p>
+          <p>
+            <span class="txtLabel">Người tạo: {{this.detailedList.inputBy}}</span>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p>
+            <span class="txtLabel">Thời gian tạo: {{this.detailedList.inputDate}}</span>
+          </p>
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div class="row footer-row">
+        <div class="col-12 d-flex justify-content-end">
+          <button mat-button class=" btn-action" (click)="backToSearch($event)"><mat-icon>arrow_back</mat-icon>Quay lại</button>
+          <button mat-button class=" btn-action" [matMenuTriggerFor]="menu"><mat-icon>get_app</mat-icon>Biểu mẫu</button>
+          <button mat-button class=" btn-action" (click)="deleteRequest()"><mat-icon>delete_forever</mat-icon>Xóa</button>
+        </div>
+      </div>
+    </div>
+    <!---------VIEW DETAIL--------->
+    <div *ngIf="acctionView === 'VIEW_DETAIL'" >
+      <div class="row-fields row" *ngIf="this.detailedList.brokenDesc !== null">
+        <div class="col-md-6">
+          <div class="d-block b-green" >
+            <span class="txtLabel">lý do:</span>
+            <input type="text" formControlName="brokenDesc" class="form-control" disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row-fields mt-2 b-red">
+        <span class="txtLabel">Ghi chú:</span>
+        <textarea type="text" formControlName="sendNote" maxlength="500" class="form-control" disabled></textarea>
+      </div>
+      <div class="row-fields row mt-2 b-red">
+        <div class="col-md-6">
+          <p>
+            <span class="txtLabel">Trạng thái bản ghi: {{this.detailedList.ebsServiceStatusName}}</span>
+          </p>
+          <p>
+            <span class="txtLabel">Người tạo: {{this.detailedList.inputBy}}</span>
+          </p>
+          <p>
+            <span class="txtLabel">Người duyệt: {{this.detailedList.approveBy ? this.detailedList.approveBy : '------'}}</span>
+          </p>
+          <p *ngIf="detailedList.ebsActionCode === 'CARD_BACK'">
+            <span class="txtLabel">User NHS: {{this.detailedList.mismatchBy}} </span>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p>
+            <span class="txtLabel">Thời gian tạo: {{this.detailedList.inputDate}}</span>
+          </p>
+          <p>
+            <span class="txtLabel">Thời gian duyệt: {{this.detailedList.approveDate ? this.detailedList.approveDate :'--/--/----'}}</span>
+          </p>
+          <p *ngIf="detailedList.ebsActionCode === 'CARD_BACK' && detailedList.approveNote !== null">
+            <span class="txtLabel">lý do từ chối: {{detailedList.approveNote}}</span>
+          </p>
+
+        </div>
+      </div>
+      <div class="clear"></div>
+      <div class="row footer-row">
+        <div class="col-12 d-flex justify-content-end">
+          <button mat-button class=" btn-action" (click)="backToSearch($event)"><mat-icon>arrow_back</mat-icon>Quay lại</button>
+          <button mat-button class=" btn-action" [matMenuTriggerFor]="menu"><mat-icon>get_app</mat-icon>Biểu mẫu</button>
+        </div>
+      </div>
+    </div>
+    <!----------VIEW SEND---------->
+    <div *ngIf="acctionView === 'REQ_APPROVE'">
+      <div class="row-fields row" *ngIf="acctionCode === 'CARD_BROKEN_AFTER'">
+        <div class="col-md-6">
+          <div class="d-block mt-2" >
+            <span class="txtLabel">Lý do:</span>
+            <ng-select [multiple]="false" formControlName="brokenDesc" [clearable]="false" [searchable]="false">
+              <ng-option value="Thẻ hỏng trong quá trình sử dụng">Thẻ hỏng trong quá trình sử dụng</ng-option>
+              <ng-option value="Thẻ hỏng khi sử dụng lần đầu" >Thẻ hỏng khi sử dụng lần đầu</ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-fields mt-4">
+        <span class="txtLabel">Ghi chú:</span>
+        <textarea type="text" formControlName="sendNote" maxlength="500" class="form-control"></textarea>
+      </div>
+      <div class="clear"></div>
+      <div class="row footer-row">
+        <div class="col-12 d-flex justify-content-end">
+          <button mat-button class="btn-action" (click)="backToSearch($event)"><mat-icon>arrow_back</mat-icon>Quay lại</button>
+          <button mat-button class="btn-action" [matMenuTriggerFor]="menu"><mat-icon>get_app</mat-icon>Biểu mẫu</button>
+          <button mat-button class="btn-action" (click)="sendApprove()"><mat-icon>send</mat-icon>Gửi duyệt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

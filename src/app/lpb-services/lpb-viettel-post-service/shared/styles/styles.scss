@@ -1,0 +1,423 @@
+/* You can add global styles to this file, and also import other style files */
+
+$--color-lpb: #f47326;
+$--text-color-lpb: white;
+$--color-test: red;
+$--color-high-light: #0c258a;
+$--min-width-dropdown: 400px;
+$--color-border: #bdbdbd;
+$--color-text-white: #ffffff;
+$--color-text-black: #000000;
+$--color-focus: #40a9ff;
+
+.bg-lpb {
+    background-color: $--color-lpb !important;
+}
+
+.bg-gray {
+    background-color: gray !important;
+}
+
+.bg-grey {
+    background-color: grey !important;
+}
+
+.bg-lightgray {
+    background-color: lightgray;
+}
+
+.bg-lightgrey {
+    background-color: lightgrey;
+}
+
+.bg-none {
+    background-color: unset !important;
+}
+
+//
+.w {
+    &-50-px {
+        width: 50px;
+    }
+
+    &-100-px {
+        width: 100px;
+    }
+
+    &-150-px {
+        width: 150px;
+    }
+
+    &-200-px {
+        width: 200px;
+    }
+
+    &-250-px {
+        width: 250px !important;
+    }
+
+    &-300-px {
+        width: 300px;
+    }
+
+    &-400-px {
+        width: 400px;
+    }
+
+    &-500-px {
+        width: 500px;
+    }
+}
+
+.min-w {
+    &-0 {
+        min-width: 0;
+    }
+
+    &-100-px {
+        min-width: 100px;
+    }
+
+    &-200-px {
+        min-width: 200px;
+    }
+
+    &-300-px {
+        min-width: 300px;
+    }
+
+    &-400-px {
+        min-width: 400px;
+    }
+
+    &-500-px {
+        min-width: 500px;
+    }
+}
+
+.w-max-content {
+    width: max-content;
+}
+
+.min-w-dropdown {
+    min-width: ($--min-width-dropdown) !important;
+}
+
+.h {
+    &-100-px {
+        height: 100px;
+    }
+
+    &-200-px {
+        height: 200px;
+    }
+
+    &-300-px {
+        height: 300px;
+    }
+
+    &-400-px {
+        height: 400px;
+    }
+
+    &-500-px {
+        height: 500px;
+    }
+}
+
+//
+.w-div-table {
+    //width: max-content;
+    // width: 300px;
+    //max-width: 100%;
+    width: 100%;
+}
+
+.div-table-flex {
+    overflow-x: auto;
+
+    table {
+        border-collapse: collapse;
+        border: 0;
+        // border: solid 1px;
+        width: 100%;
+    }
+
+    tr {
+        display: flex;
+        width: 100%;
+        min-height: 45px;
+
+        &:hover {
+            background-color: lightyellow;
+        }
+    }
+
+    th,
+    td {
+        border: solid 1px grey;
+        flex-grow: 1; //
+        padding: 0 10px;
+    }
+
+    th {
+        text-align: center;
+        background-color: $--color-high-light;
+        color: white;
+        padding: 3px;
+        //
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    td {
+        border-top: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    th:not(:first-child) {
+        border-left: 0;
+    }
+
+    td:not(:first-child) {
+        border-left: 0;
+    }
+
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    .sticky {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .sticky-left {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+    }
+
+    .sticky-right {
+        position: sticky;
+        right: 0;
+        z-index: 1;
+    }
+
+    .sticky-header {
+        position: sticky;
+        left: 0;
+        z-index: 3;
+    }
+
+    .resize {
+        top: 0px;
+        right: 0px;
+        width: 3px;
+        bottom: 0px;
+        position: absolute;
+        cursor: col-resize;
+    }
+
+    .resize:hover {
+        border-right: 2px solid rgb(84, 159, 224);
+    }
+}
+
+//
+//
+.text-high-light {
+    color: $--color-high-light !important;
+}
+
+.bg-high-light {
+    background-color: $--color-high-light !important;
+}
+
+.bg-red {
+    background-color: red !important;
+}
+
+.lpb-btn-primary,
+.lpb-header-primary {
+    background-color: $--color-high-light !important;
+    color: white !important;
+}
+
+.lpb-input,
+.lpb-select {
+    border: solid 1px lightgrey;
+    border-radius: unset;
+    height: 30px;
+}
+
+.lpb-input:focus {
+    border: 0;
+    outline: solid 1px;
+    outline-color: $--color-focus;
+}
+
+.lpb-select:focus {
+    border: 0;
+    outline: solid 1px;
+    outline-color: $--color-focus;
+}
+
+// Height 30px là phù hợp
+.ng-select.custom .ng-select-container {
+    height: 30px;
+    min-height: 25px;
+    border-radius: unset;
+    min-width: 0 !important;
+}
+
+.ng-select.custom .ng-value-container {
+    align-items: center;
+}
+
+//
+label {
+    width: max-content;
+}
+
+button:focus {
+    border: 0 !important;
+    outline: 0 !important;
+}
+
+.required::after {
+    content: " *";
+    color: red;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// Phan Trang
+.page {
+    .page-actived {
+        background-color: $--color-high-light;
+        color: white;
+    }
+
+    .lpb-select {
+        height: 35px;
+    }
+
+    button {
+        border: solid 1px lightgrey;
+        background-color: white;
+        color: black;
+        height: 35px;
+        width: 35px;
+
+        &:focus {
+            outline: 0;
+        }
+    }
+
+    button:not(:first-of-type) {
+        border-left: 0;
+    }
+
+    button:hover:not(.page-actived) {
+        background-color: lightgrey;
+        // color: white;
+    }
+}
+
+// Form Message
+.message-error {
+    background-color: grey;
+    border-left: solid 3px red;
+}
+
+//
+.bottom-0 {
+    bottom: 0;
+}
+
+.z-3 {
+    z-index: 3 !important;
+}
+
+.btn:focus {
+    border: 0 !important;
+    outline: 0 !important;
+}
+
+.fw-bolder {
+    font-weight: bolder;
+}
+.fw-medium {
+  font-weight: 500 ;
+}
+.text-lg-custom {
+  font-size: 18px ;
+}
+
+//
+// .ng-invalid[required] {
+//     border-bottom: 3px solid red;
+// }
+
+.invalid-required {
+    border-bottom: 3px solid red;
+}
+
+.btn-close {
+    color: gray;
+}
+
+button:disabled {
+    background-color: gray !important;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: white;
+    color: black;
+    border: solid 1px gray;
+}
+
+.border-radius-panel {
+    border-radius: 4px;
+}
+
+.border-right-radius-0 {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.border-left-radius-0 {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+::ng-deep .ng-select.lpb-custom.ng-invalid.ng-touched .ng-select-container {
+    border-color: lightgrey;
+    box-shadow: 0 0 0 0;
+}
+
+.position-top-right {
+    position: fixed !important;
+    top: 5px !important;
+    right: 5px !important;
+}
+
+.z-index-footer {
+    z-index: 1050;
+}
+//

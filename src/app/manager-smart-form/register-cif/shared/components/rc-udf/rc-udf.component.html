@@ -1,0 +1,257 @@
+<div class="udf-cif">
+  <div class="w-100 d-flex">
+    <div class="udf-cif-left">
+      <div class="envelope">
+        <div class="row-item">
+          <div class="label-center">
+            N1. THÔNG TIN CHUNG
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">CIF_DINHDANH</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedCifDinhDanh" [txtPlaceholder]="'Chọn CIF_DINHDANH'"
+              [lstOptions]="lstCIFDINHDANH" (selectedChangeOption)="onChangeCifDinhDanh($event)">
+            </app-lpb-select>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">MA CBNV LPB:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedMaCBNVLPB" [txtPlaceholder]="'Chọn MA CBNV LPB'"
+              [lstOptions]="lstMACBNVLPB" (selectedChangeOption)="onChangeMaCbnvLpbCode($event)">
+            </app-lpb-select>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">CAN_BO_GIOI_THIEU:</div>
+          <div class="label-action">
+            <input type="text" maxlength="10" [(ngModel)]="canBoGioiThieu" class="input-field form-control"
+              placeholder="Nhập CAN_BO_GIOI_THIEU" (input)="validateCanBoGioiThieu()" (blur)="validateCanBoGioiThieu()">
+            <div class="error-msg" *ngIf="errCanBoGioiThieu !== ''">{{errCanBoGioiThieu}}</div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">KHUT:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedKHUT" [txtPlaceholder]="'Chọn KHUT'" [lstOptions]="lstKHUT"
+              (selectedChangeOption)="onChangeKhut($event)">
+            </app-lpb-select>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">CIF_PNKH: <span class="item-require">(*)</span></div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedCifPNKH" [txtPlaceholder]="'Chọn CIF_PNKH'"
+              [lstOptions]="lstCIFPNKH" (selectedChangeOption)="onChangeCifPNKH($event)"></app-lpb-select>
+          </div>
+          <div class="err">
+            {{errMsgCIFPHKH}}
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">KHACH HANG:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedKhachHang" [txtPlaceholder]="'Chọn KHACH HANG'"
+              [lstOptions]="lstKHACHHANG" (selectedChangeOption)="onChangeKhachHangCode($event)">
+            </app-lpb-select>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">PNKH_KHDK:</div>
+          <div class="label-action">
+            <input type="text" class="input-field form-control" placeholder="Nhập PNKH_KHDK" [(ngModel)]="pnkhKhdk">
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">SO SO BAO HIEM XA HOI:</div>
+          <div class="label-action">
+            <input type="text" class="input-field form-control" placeholder="Nhập SO SO BAO HIEM XA HOI"
+              [(ngModel)]="soSoBaoHiemXaHoi">
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">THUONG TAT:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedThuongTat" [txtPlaceholder]="'Chọn THUONG TAT'"
+              [lstOptions]="lstTHUONGTAT" (selectedChangeOption)="onChangeThuongTat($event)">
+            </app-lpb-select>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">KHOI DON VI GIOI THIEU:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedKhoiDonViGioiThieu"
+              (selectedChangeOption)="onChangeKhoiDonViGioiThieu($event)"
+              [txtPlaceholder]="'Chọn KHOI DON VI GIOI THIEU'" [lstOptions]="lstKHOIDONVIGIOITHIEU">
+            </app-lpb-select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="udf-cif-right">
+      <div class="envelope">
+        <div class="row-item">
+          <div class="label-center">
+            N2. THÔNG TIN DỊCH VỤ
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">TRA CUU TT STK WEBSITE-VI VIET: <span class="item-require">(*)</span></div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedTraCuuTTSTKWebViViet"
+              (selectedChangeOption)="onChangeTraCuuTT($event)" [txtPlaceholder]="'Chọn TRA CUU TT STK WEBSITE-VI VIET'"
+              [lstOptions]="lstTRACUUTTSTK">
+            </app-lpb-select>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">SDT NHAN SMS GD TIET KIEM:
+          </div>
+          <div class="label-action">
+            <input type="text" maxlength="10" numbersOnly [(ngModel)]="sdtNhanSmsGdtetkiem"
+              class="input-field form-control" placeholder="Nhập SDT NHAN SMS GD TIET KIEM"
+              (blur)="validatePhoneNumber()" (input)="validatePhoneNumber()">
+            <div class="error-msg" *ngIf="errMsgMobileNo !== ''">{{errMsgMobileNo}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="envelope">
+        <div class="row-item">
+          <div class="label-center">
+            N3. THÔNG TIN VAY
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">NO PHAI THU:</div>
+          <div class="label-action">
+            <input type="text" class="input-field form-control" placeholder="Nhập NO PHAI THU" [(ngModel)]="noPhaiThu">
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">NO PHAI TRA:</div>
+          <div class="label-action">
+            <input type="text" class="input-field form-control" placeholder="Nhập NO PHAI TRA" [(ngModel)]="noPhaiTra">
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">DB_KH VAY:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedDBKHVay" [txtPlaceholder]="'Chọn DB_KH VAY'"
+              [lstOptions]="lstDBKHVAY" (selectedChangeOption)="onChangeDbKH($event)">
+            </app-lpb-select>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">MA HUYEN THI XA:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedMaHuyenThiXa" [txtPlaceholder]="'Chọn MA HUYEN THI XA'"
+              [lstOptions]="lstMAHUYENTHIXA" (selectedChangeOption)="onChangeMaHuyenThiXa($event)">
+            </app-lpb-select>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">DIA BAN NONG THON:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedDiaBanNongThon" [txtPlaceholder]="'Chọn DIA BAN NONG THON'"
+              [lstOptions]="lstDIABANNONGTHON" (selectedChangeOption)="onChangeDiaBanNongThon($event)">
+            </app-lpb-select>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">VI TRI TO_LKET VAY VON:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedViTriToLKetVayVon" (selectedChangeOption)="onChangeViTriLK($event)"
+              [txtPlaceholder]="'Chọn VI TRI TO_LKET VAY VON'" [lstOptions]="lstVITRITOLKETVAYVON">
+            </app-lpb-select>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">LV UD CN CAO CIF:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedLVUDCNCao" [txtPlaceholder]="'Chọn LV UD CN CAO CIF'"
+              [lstOptions]="lstLVUDCNCAOCIF" (selectedChangeOption)="onChangeLvUdCnCaoCap($event)">
+            </app-lpb-select>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">CN UTPT 1483 CIF:</div>
+          <div class="label-action">
+            <app-lpb-select [selectedItem]="selectedCNUTPT1483Cif" [txtPlaceholder]="'Chọn CN UTPT 1483 CIF'"
+              [lstOptions]="lstCNUTPT1483CIF" (selectedChangeOption)="onChangeCnUtpt1483($event)">
+            </app-lpb-select>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">KY DANH GIA TNV:</div>
+          <div class="value-field">
+            <div class="control-item">
+              <!-- <app-lpb-date-picker #kyDanhGiaTvn (blurInput)="blurKDDGChange()" (dateChanged)="validateKiDanh()">
+            </app-lpb-date-picker> -->
+              <div class="grRadio w-100 pt-1">
+                <div class="rd-item">
+                  <input type="radio" [(ngModel)]="kyDanhGiaTnv" class="mr-1" name="kyDanhGiaTnv" id="kydanhgia-y"
+                    value="Y" (ngModelChange)="typeChange($event)">
+                  <label for="kydanhgia-y">
+                    Có
+                  </label>
+                </div>
+                <div class="rd-item">
+                  <input type="radio" [(ngModel)]="kyDanhGiaTnv" class="mr-1" name="kyDanhGiaTnv" id="kydanhgia-n"
+                    value="N" (ngModelChange)="typeChange($event)">
+                  <label for="kydanhgia-n">
+                    Không
+                  </label>
+                </div>
+              </div>
+              {{kyDanhGiaTnv ==='Y' ? dateKydanhgiaTnv : null}}
+            </div>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">HO TEN VO CHONG:</div>
+          <div class="label-action">
+            <input type="text" class="input-field form-control" placeholder="Nhập HO TEN VO CHONG"
+              [(ngModel)]="hoTenVoChong">
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">SO CMND HC:</div>
+          <div class="label-action">
+            <input type="text" class="input-field" placeholder="Nhập SO CMND HC" numbersOnly [(ngModel)]="coCmndHc">
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">NGAY CAP CMND HC:</div>
+          <div class="label-action">
+            <app-lpb-date-picker #ngayCapCmndHc (blurInput)="blurCMNDHCChange()" (dateChanged)="validateCMNDHC()">
+            </app-lpb-date-picker>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">NOI CAP CMND HC:</div>
+          <div class="label-action">
+            <input type="text" class="input-field form-control" placeholder="Nhập NOI CAP CMND HC"
+              [(ngModel)]="noiCapCmndHc">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="udf-cif-button mt-36 w-100">
+    <button class="btn-save mr-2" (click)="getUDF()">Lưu</button>
+    <button class="btn-close" (click)="close()">Đóng</button>
+  </div>
+</div>

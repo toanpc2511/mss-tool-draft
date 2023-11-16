@@ -1,0 +1,254 @@
+<div class="main">
+  <div class="container-fluid">
+    <div class="row cust-row">
+      <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+        <div class="title-head" style="font-weight: 500;">
+          <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">search</mat-icon>
+          <span class="text" style="padding: 5px 0;">TÌM KIẾM</span>
+        </div>
+      </div>
+      <div class="col-12 information-section">
+        <div style="width:100%">
+          <div class="col-6 colLeft">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Mã CIF </label>
+              <div class="col-sm-8 ">
+                <input type="text" class="form-control form-control-sm inputText"
+                       [(ngModel)]="condition.customerCode"
+                       placeholder="Vui lòng nhập mã khách hàng">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label textLabel">Số giấy tờ xác minh </label>
+              <div class="col-sm-8 ">
+                <input type="text" class="form-control form-control-sm inputText"
+                       [(ngModel)]="condition.perDocNo" placeholder="Vui lòng nhập số tờ xác minh">
+              </div>
+            </div>
+            <div class="form-group row" style="padding-bottom: .2rem">
+              <label class="col-sm-4 col-form-label textLabel">Tình trạng Cif</label>
+              <div class="col-sm-8">
+                <select class="form-control form-control-sm" style="height: 36px; padding-bottom: .2rem"
+                        [(ngModel)]="condition.statusCif">
+                  <option [ngValue]="null" selected>Tất cả</option>
+                  <option *ngFor="let status of cifStatus" [value]="status.code">
+                    {{status.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row" style="padding-bottom: .2rem">
+              <label class="col-sm-4 col-form-label textLabel">Trạng thái hồ sơ</label>
+              <div class="col-sm-8">
+                <select class="form-control form-control-sm" style="height: 36px; padding-bottom: .2rem"
+                        [(ngModel)]="condition.statusCode">
+
+                  <option [ngValue]="null" selected>Tất cả trạng thái</option>
+                  <option *ngFor="let status of processStatusList" [value]="status.code">
+                    {{status.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row" style="padding-bottom: .2rem">
+              <label class="col-sm-4 col-form-label textLabel">Loại dịch vụ</label>
+              <div class="col-sm-8">
+                <select class="form-control form-control-sm" style="height: 36px; padding-bottom: .2rem"
+                        [(ngModel)]="condition.typeService">
+                  <option [ngValue]="null" selected>Tất cả dịch vụ</option>
+                  <option *ngFor="let status of integratedType" [value]="status.code">
+                    {{status.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row" style="padding-bottom: .2rem">
+              <label class="col-sm-4 col-form-label textLabel">Trạng thái dịch vụ</label>
+              <div class="col-sm-8">
+                <select class="form-control form-control-sm" style="height: 36px; padding-bottom: .2rem"
+                        [(ngModel)]="condition.statusService">
+                  <option [ngValue]="null" selected>Tất cả trạng thái</option>
+                  <option *ngFor="let status of integratedStatus" [value]="status.code">
+                    {{status.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 colRight">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label textLabel">Ngày tạo</label>
+              <div class="col-sm-9 is-invalid">
+                <div [ngClass]="{'is-invalid': condition.dateCreatedValidator().valid}">
+                  <div class="row">
+                    <div class="col-5 pl-0">
+                      <input class="form-control form-control-sm inputText"
+                             max="{{condition.getToday()}}" min="1900-12-31"
+                             [(ngModel)]="condition.inputDateMin" (input)="dateValidator()"
+                             placeholder="Ngày bắt đầu" type="date">
+                    </div>
+                    <div class="col- p-0 text-center"><label class="col-form-label textLabel">Đến
+                      ngày</label></div>
+                    <div class="col-4 pr-0">
+
+                      <input class="form-control form-control-sm inputText"
+                             max="{{condition.getToday()}}" min="1900-12-31"
+                             [(ngModel)]="condition.inputDateMax" (input)="dateValidator()"
+                             placeholder="Ngày kết thúc" type="date">
+                    </div>
+                  </div>
+                </div>
+                <div class="invalid-feedback" style="display: flex">
+                  <div>{{condition.dateCreatedValidator().message}}</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="userInfo && userInfo.branchCode === '001'">
+              <label class="col-sm-3 col-form-label textLabel">Chi nhánh / PGD
+              </label>
+              <div class="col-sm-8">
+                <ng-select [items]="branches" [addTag]="true" [(ngModel)]="condition.branchCode"
+                           placeholder="Tất cả chi nhánh / PGD" bindLabel="branchCodeName" bindValue="code">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label textLabel">Người tạo
+              </label>
+              <div class="col-sm-8">
+                <ng-select [items]="userList" [addTag]="true" [(ngModel)]="condition.inputBy"
+                           placeholder="Tất cả người tạo" bindLabel="userName" bindValue="id">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label textLabel">Người duyệt
+              </label>
+              <div class="col-sm-8">
+                <ng-select [items]="userKsvList" [addTag]="true" [(ngModel)]="condition.modifiedBy"
+                           placeholder="Tất cả người duyệt" bindLabel="userName" bindValue="id">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-group row" style="padding-top: .2rem">
+              <label class="col-sm-3 col-form-label textLabel">Tên khách hàng
+              </label>
+              <div class="col-sm-8 ">
+                <input type="text" class="form-control form-control-sm inputText"
+                       [(ngModel)]="condition.fullName" placeholder="Vui lòng nhập tên khách hàng">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label textLabel">Mã hồ sơ
+              </label>
+              <div class="col-sm-8 ">
+                <input type="text" class="form-control form-control-sm inputText"
+                       [(ngModel)]="condition.code" placeholder="Vui lòng nhập mã hồ sơ">
+              </div>
+            </div>
+<!--            <div class="form-group row">-->
+<!--              <label class="col-sm-3 col-form-label textLabel">Loại khách hàng-->
+<!--              </label>-->
+<!--              <div class="col-sm-8">-->
+<!--                <select class="form-control form-control-sm" style="height: 36px;">-->
+<!--                  <option value="" selected>Tất cả loại khách hàng</option>-->
+<!--                  <option *ngFor="let type of customerType" [value]="type.id">{{type.name}}</option>-->
+<!--                </select>-->
+<!--              </div>-->
+<!--            </div>-->
+
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <div class="float-right" style="text-align: right;width: 100%;margin-right: 15px;">
+              <button (click)="search()" type="button" class="btn btn-color"
+                      style="width: 150px;color: white;">
+                <i class="fa fa-search" style="color: white"></i>
+                Tìm kiếm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row cust-row">
+      <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+        <div class="title-head" style="font-weight: 500;">
+          <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">list</mat-icon>
+          <span class="text" style="padding: 5px 0;">DANH SÁCH HỒ SƠ</span>
+        </div>
+      </div>
+      <div class=" mat-elevation-z8">
+        <table class="table table-responsive table-fixed">
+          <thead>
+          <tr class="titleTD">
+            <th style="width: 50px; text-align: center; padding: 0">STT</th>
+            <th>Mã hồ sơ</th>
+            <th>Tên khách hàng</th>
+            <th>Ngày tạo</th>
+            <th>Người tạo</th>
+            <th>Trạng thái</th>
+            <th>Chi nhánh</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let process of processList; index as i" tabindex="0">
+            <td style="width: 50px; padding-left: 0; padding-right: 0">{{pagination.pager.startIndex + i
+            + 1}}</td>
+            <td class="file-name col-xs-6" style="text-align: center">
+              <a [routerLink]="['/smart-form/manager/fileProcessed',process.id]">{{process.code}}</a>
+            </td>
+            <td class="file-name col-xs-6" style="text-align: left;">{{process.fullName ?
+              process.fullName : ''}}</td>
+            <td class="file-name col-xs-6" style="text-align: center">{{process.inputDate ?
+              (process.inputDate | date: "dd/MM/yyyy") : '' }}</td>
+            <td class="file-name col-xs-6" style="text-align: center">{{process.inputByName ?
+              process.inputByName : ''}}
+            </td>
+            <td class="file-name col-xs-6">{{process.statusName ? process.statusName : ''}}</td>
+            <td class="file-name col-xs-6" style="text-align: center">{{process.branchCode ?
+              process.branchCode : ''}} - {{process.addressBracnh ? process.addressBracnh : ''}}
+            </td>
+          </tr>
+          <tr aria-colspan="9" style="text-align: center; margin-top: 15px"
+              *ngIf="processList == null || processList.length == 0">Không tìm thấy dữ liệu
+          </tr>
+          </tbody>
+        </table>
+        <nav aria-label="Page navigation for action list"
+             style="padding-bottom: 10px;margin-left: 10px;margin-right: 5px;padding-top: 10px;"
+             *ngIf="pagination.pager && pagination.pager.pages && pagination.pager.pages.length">
+          <div style="float: left; padding-top: 10px;">
+            <span>{{pagination.pager.getStatus()}}</span>
+          </div>
+          <ul class="pagination justify-content-end">
+            <div class="amout-show">
+              <span>Số lượng bản ghi/trang</span> &nbsp;
+              <select class="form-control numberPage" (change)="changePageSize($event.target.value)">
+                <option selected value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select> &nbsp;&nbsp;
+            </div>
+
+            <li class="page-item" (click)="setPage(pagination.pager.currentPage - 1)">
+              <a class="page-link" href="javascript: void(0)" tabindex="-1">&lt;</a>
+            </li>
+            <li class="page-item" *ngFor="let page of pagination.pager.pages"
+                [ngClass]="{active:pagination.pager.currentPage === page}" (click)="setPage(page)">
+              <a class="page-link" href="javascript: void(0)">{{page}}</a>
+            </li>
+            <li class="page-item" (click)="setPage(pagination.pager.currentPage + 1)">
+
+              <a class="page-link" href="javascript: void(0)">&gt;</a>
+            </li>
+
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+<div class="transaction-main">
+  <div
+    class="content-title w-100 text-uppercase d-flex justify-content-between"
+  >
+    <div class="d-flex align-items-center">
+      <i class="fa fa-search mr-2"></i>
+      <span>Tra cứu giao dịch</span>
+    </div>
+  </div>
+
+  <div class="search px-4 mt-2">
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Loại giao dịch</span>
+          <app-lpb-select2
+            [items]="transactionTypes" labelName="label"
+            [config]="{'clearable':false}"
+            bindValue="value" formControlName="transactionType">
+          </app-lpb-select2>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Nhà cung cấp</span>
+          <app-lpb-select2
+            [apiUrl]="'/electric-service/supplier/active'"
+            labelName="supplierName" bindValue="supplierCode" [config]="{isNewApi: true}"
+            formControlName="supplierCode"
+            placeholder="Chọn nhà cung cấp"></app-lpb-select2>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Mã khách hàng</span>
+          <input
+            type="text"
+            formControlName="custId"
+            placeholder="Nhập mã khách hàng"
+            class="form-control"
+            trimInput
+          />
+        </div>
+        <div class="col-6 col-md-3 col-lg-4 pb-3 px-5 pr-md-1 pr-lg-5">
+          <span>Từ ngày:</span>
+          <app-lpb-datepicker-new
+            formControlName="fromDate"
+            [maxDate]="today"
+            [className]="formHelpers.isValidClass(searchControl.fromDate)"
+          ></app-lpb-datepicker-new>
+        </div>
+        <div class="col-6 col-md-3 col-lg-4 pb-3 px-5 pl-md-1 pl-lg-5">
+          <span>Đến ngày:</span>
+          <app-lpb-datepicker-new
+            formControlName="toDate"
+            [maxDate]="today"
+            [className]="formHelpers.isValidClass(searchControl.toDate)"
+          ></app-lpb-datepicker-new>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 pb-3 px-5">
+          <span>Trạng thái giao dịch</span>
+          <app-lpb-select2
+            [items]="statusTransactions" labelName="label"
+            [config]="{'clearable':false}"
+            bindValue="value" formControlName="auditStatus">
+          </app-lpb-select2>
+        </div>
+      </div>
+      <div class="w-full d-flex justify-content-center gap-2">
+        <button
+          mat-raised-button
+          type="submit"
+          class=" bg-btn__blue text-while"
+        >
+          <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+          Tìm kiếm
+        </button>
+        <button
+          mat-raised-button
+          (click)="resetForm()"
+          class=" ml-2"
+          style="color: #0c258a"
+        >
+          <i class="fa fa-rotate-left mr-2" style="color: #0c258a"></i>
+          Nhập lại
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="mt-4">
+    <app-lpb-datatable
+      tableName="Danh sách giao dịch"
+      apiServiceURL="/electric-service/settle"
+      [config]="config"
+      [columns]="columns"
+      [searchConditions]="searchConditions"
+      (viewAction)='viewDetail($event)'
+      (deleteAction)="deleteTransaction($event)"
+      [isDisabledDelete]="isDisabledDelete"
+    ></app-lpb-datatable>
+  </div>
+</div>
+
+<app-lpb-footer ></app-lpb-footer>

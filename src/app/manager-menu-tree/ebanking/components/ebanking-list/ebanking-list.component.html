@@ -1,0 +1,52 @@
+<div class="ebanking-list">
+    <div class="col-12 line-base">
+        <div class="title-head">
+            <mat-icon class="icon-title-head">account_balance_wallet</mat-icon>
+            <span class="text">DANH SÁCH E - BANKING</span>
+        </div>
+    </div>
+    <div class="ebanking-list-content">
+        <div class="table-responsive tbl-ebanking">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="col-no text-center">STT</th>
+                        <th class="col-id text-center">ID Người dùng</th>
+                        <th class="col-name text-center">Tên khách hàng</th>
+                        <th class="col-email text-center">Email</th>
+                        <th class="col-phone text-center">Số điện thoại</th>
+                        <th class="col-status text-center">Trạng thái</th>
+                        <th class="col-action text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr>Khong co du lieu</tr> -->
+                    <tr *ngFor="let e of ebankLst,index as i">
+                        <td class="col-no text-center">{{i+1}}</td>
+                        <td class="col-id text-center txt-link" (click)="clickViewDetail(e)">{{e.userId}}</td>
+                        <td class="col-name text-left">{{customerName}}</td>
+                        <td class="col-email">{{e.email}}</td>
+                        <td class="col-phone text-center"> {{e.mobileNo1}} </td>
+                        <td class="col-status text-center"> {{e.currentStatusName}} </td>
+                        <td class="col-action text-center ">
+                            <ng-container *ngIf="e.currentStatusCode === 'NEW'">
+                                <span class="material-icons btn-edit" (click)="edit(e)">edit</span>
+                                <span class="material-icons btn-delete" (click)="delete(e.id)">delete</span>
+                            </ng-container>
+                            <ng-container *ngIf="e.currentStatusCode === 'ACTIVE'">
+                                <span class="material-icons btn-close" (click)="cancel(e)">close</span>
+                            </ng-container>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td *ngIf="ebankLst.length === 0" colspan="7" class="none-data text-center">
+                            Không có dữ liệu
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <div class="col-12 none-data text-center" *ngIf="ebankLst.length === 0">Không có dữ liệu </div> -->
+        </div>
+    </div>
+</div>

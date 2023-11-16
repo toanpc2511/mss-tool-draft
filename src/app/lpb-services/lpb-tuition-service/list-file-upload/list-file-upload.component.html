@@ -1,0 +1,65 @@
+
+<div class="content">
+  <h3 class="title">DANH SÁCH FILE UPLOAD DANH SÁCH SINH VIÊN</h3>
+  <hr/>
+
+  <form [formGroup]="formsSearch" (ngSubmit)="search()">
+    <div class="px-5">
+      <div class="row px-5 mx-auto my-2">
+        <div class="col-3"></div>
+        <div class="col-1">
+          <label >Chọn trường</label>
+        </div>
+        <div class="col-5">
+          <ng-select formControlName="schoolName" [clearable]="false">
+            <ng-option value="">Tất cả</ng-option>
+            <ng-option
+              *ngFor="let item of schools"
+              [value]="item.code"
+            >{{ item.name }}</ng-option
+            >
+          </ng-select>
+        </div>
+      </div>
+      <div class="row px-5 mx-auto my-2">
+        <div class="col-3"></div>
+        <div class="col-1">
+          <label >Trạng thái</label>
+        </div>
+        <div class="col-5">
+          <app-lpb-select2 [items]="crossStatus"
+                           labelName="label"
+                           bindValue="value"
+                           formControlName="status"
+                           placeholder="Trạng thái"></app-lpb-select2>
+
+        </div>
+
+
+      </div>
+    </div>
+    <div class="w-full d-flex justify-content-center g-2">
+      <button
+        mat-raised-button
+        type="submit"
+        class="d-inline-block bg-btn__blue text-while"
+      >
+        <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+        Tìm kiếm
+      </button>
+    </div>
+
+  </form>
+  <div class=" mt-2 px-2">
+    <app-lpb-datatable
+      [config]="configs"
+      [columns]="$any(columns)"
+      [searchConditions]="searchFiles"
+      (viewAction)="downloadFile($event)"
+      (deleteAction)="cancelFile($event)"
+      tableName="Danh sách file upload"
+      [apiServiceURL]="urlSearch"
+    ></app-lpb-datatable>
+  </div>
+
+</div>

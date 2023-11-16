@@ -1,0 +1,22 @@
+<iframe [src]= "linkURL" frameborder="0" height="100%" width="100%"></iframe>
+<div class="row" [hidden]="hideProcess">
+    <div class="col-12" style="
+    width: 100%;
+    padding-left: 50%;
+    padding-right: 50%;
+    height: 500p;
+    margin-top: -500px;
+    height: 280px !important">
+        <mat-spinner  mode="indeterminate"></mat-spinner>
+    </div>
+</div>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+    <div class="col-12" style="text-align: right; margin-right: 15px;">
+        <div class="footer" (click)="backPage()">
+            <span class="material-icons"> keyboard_backspace </span>
+            <label>Quay lại</label>
+        </div>
+
+    </div>
+</div>

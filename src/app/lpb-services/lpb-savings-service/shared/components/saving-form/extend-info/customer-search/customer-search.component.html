@@ -1,0 +1,68 @@
+<div class="mb-3 d-block">
+  <div class="py-3">
+    <div class="content-title mb-2">
+      <span class="active text-uppercase">Tìm kiếm khách hàng</span>
+    </div>
+    <div class="row form-search" [formGroup]="searchForm">
+      <div class="form-wrapper">
+        <div class="select-wrapper">
+          <ng-select [multiple]="false" [clearable]="false" formControlName="inputType">
+            <ng-option [value]="'cif'">Số Cif</ng-option>
+            <ng-option [value]="'gtxm'">Số GTXM</ng-option>l
+          </ng-select>
+        </div>
+        <div class="input-wrapper">
+          <input class="form-control" type="text" formControlName="textSearch" trimInput>
+          <div *ngIf="searchForm.controls['textSearch'].invalid &&
+                 (searchForm.controls['textSearch'].dirty || searchForm.controls['textSearch'].touched)">
+            <span class="text-danger mt-1 d-block small">
+              {{ searchForm.controls['inputType'].value === 'cif' ? 'Số Cif' : 'Số GTXM'}} không được bỏ trống
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="button-wrapper">
+        <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+          <button mat-button color="primary" class="nowrap" type="button" (click)="searchCustomer()">
+            Tìm kiếm
+            <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="customer-list mt-2 container-fluid">
+      <table>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Chọn</th>
+            <th>Mã CIF</th>
+            <th>Họ và tên</th>
+            <th>GTXM</th>
+            <th>Ngày cấp</th>
+            <th>Nơi cấp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of lstCifs; let i = index">
+            <td>{{i+1}}</td>
+            <td>
+              <mat-radio-button (change)="checkRow(item, i)" [checked]="checkIndex === i"></mat-radio-button>
+            </td>
+            <td>{{item.cifNo}}</td>
+            <td>{{item.fullName}}</td>
+            <td>{{item.docNum}}</td>
+            <td>{{item.docIssueDate}}</td>
+            <td>{{item.docIssuePlace}}</td>
+          </tr>
+          <tr>
+            <td colspan="7" class="text py-4 text-center align-middle" *ngIf="lstCifs?.length <= 0">
+              Không tìm thấy dữ liệu
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

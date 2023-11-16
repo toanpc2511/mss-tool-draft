@@ -1,0 +1,24 @@
+<div class="finance-body">
+  <div class="step-search d-flex flex-column">
+    <div class="content-title pt-2 ">
+      <i class="fa fa-search mr-2 txtLabel"></i>
+      TÌM KIẾM GIAO DỊCH
+    </div>
+    <hr />
+    <!-- Search Form -->
+    <search-transactions-form (create)="create()" [formSearch]="formSearch" [serviceName]="'deposit-service'"
+      [TRANSACTION_STATUSES]="TRANSACTION_STATUSES" [lstProduct]="DEPOSIT_PRODUCTS"
+      (submitSearchTransaction)="submitSearchTransaction()"></search-transactions-form>
+    <!-- End Search Form -->
+    <hr class="h-1px" />
+    <app-lpb-datatable tableName="DANH SÁCH GIAO DỊCH" [isDisabledUpdate]="isDisabledUpdate"
+      [isDisabledDelete]="isDisabledDelete" [config]="{hasNoIndex:true,
+        hasPaging:true,
+        filterDefault: filterDefault,
+        defaultSort: '',
+        hasAddtionButton: true }" [searchConditions]="searchCondition" (deleteAction)="delete($event)"
+      (editAction)="edit($event)" (viewAction)="detail($event)" [columns]="columns"
+      (getRawData)="handleRawData($event)" #datatable
+      [apiServiceURL]="'/deposit-service/transaction?searchType=' + searchType"></app-lpb-datatable>
+  </div>
+</div>

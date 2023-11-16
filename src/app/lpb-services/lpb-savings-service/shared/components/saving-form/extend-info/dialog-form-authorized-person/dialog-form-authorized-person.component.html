@@ -1,0 +1,210 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi" let-controlNameVi2="controlNameVi2">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.DATE_RANGE_ERROR" class="text-danger mt-1 d-block small">
+        {{controlNameVi2}} không được lớn hơn {{controlNameVi}}
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.DATE_FORMAT_ERROR" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.MAX_DATE" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+<div class="dialog-main">
+  <div class="dialog-header">
+    <div class="title">
+      <span *ngIf="!data?.authorizedPerson">Thêm mới</span>
+      <span *ngIf="data?.authorizedPerson">Chi tiết</span>
+      Thêm mới Người ủy quyền
+    </div>
+    <div class="toolbar">
+      <button class="resize" (click)="resizeDialog()">
+
+        <ng-container *ngIf="isFullScreen; else elseIsFullScreen">
+          <i class="fa fa-compress" aria-hidden="true"></i>
+        </ng-container>
+        <ng-template #elseIsFullScreen>
+          <i class="fa fa-expand" aria-hidden="true"></i>
+        </ng-template>
+
+      </button>
+      <button class="close-x">
+        <mat-icon (click)="closeDialog()">close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="dialog-content form-group" [class._full]="isFullScreen" [formGroup]="form">
+    <!-- #region lấy thông tin khách hàng -->
+    <div class="dialog-content-region" *ngIf="!data?.authorizedPerson">
+      <div class=" dialog-content-region-content">
+        <app-customer-search (changeCustomerInfo)="searchCustomerInfo($event)"></app-customer-search>
+      </div>
+    </div>
+    <!-- #endregion lấy thông tin khách hàng -->
+
+    <div #addAuthorizedPersonRef>
+      <!-- #region Thông tin cơ bản -->
+      <div class="dialog-content-region">
+        <app-collapse-section [showSectionBreak]="false" [(collapsed)]="collapsed.basicInfo">
+          <div area="title">
+            <div class="content-title">
+              <span class="active mr-2">Thông tin cơ bản</span>
+            </div>
+          </div>
+
+          <div area="body" class="mt-3">
+            <div class="row">
+              <!-- #region Họ và tên -->
+              <label class="form-group d-block col-lg-6">
+                <span class="textLabel required">Họ và tên</span>
+                <input class="form-control" formControlName="fullName" maxlength="50" />
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'fullName', controlNameVi: 'Họ và tên'}">
+                </ng-container>
+              </label>
+              <!-- #endregion Họ và tên -->
+
+              <!-- #region Số điện thoại -->
+              <label class="form-group d-block col-lg-6">
+                <span class="textLabel required">Số điện thoại</span>
+                <input class="form-control" formControlName="phoneNumber" [JustNumberOnly]="{maxlength:10}" />
+                <ng-container
+                  *ngTemplateOutlet="error; context: {controlName: 'phoneNumber', controlNameVi: 'Số điện thoại'}">
+                </ng-container>
+              </label>
+              <!-- #endregion Số điện thoại -->
+
+              <!-- #region GTXM -->
+              <div class="form-group d-block col-lg-4">
+                <label class="d-block w-100">
+                  <span class="textLabel required">GTXM</span>
+                  <input class="form-control w-100" formControlName="docNum" />
+                </label>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'docNum', controlNameVi: 'GTXM'}">
+                </ng-container>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'docType', controlNameVi: 'Loại GTXM'}">
+                </ng-container>
+                <div class="form-radio-inline-group d-flex align-items-start mt-2">
+                  <label class="txtLabel form-radio-inline d-flex align-items-center mr-3"
+                    *ngFor="let item of DOC_TYPES">
+                    <input class="mr-2" formControlName="docType" name="docType" type="radio" [value]="item.key">
+                    {{item.value}}
+                  </label>
+                </div>
+              </div>
+              <!-- #endregion GTXM -->
+
+              <!-- #region Ngày cấp -->
+              <label class="form-group d-block col-lg-4">
+                <span class="textLabel required">Ngày cấp</span>
+                <app-lpb-datepicker-new formControlName="docIssueDate"></app-lpb-datepicker-new>
+                <ng-container
+                  *ngTemplateOutlet="error; context: {controlName: 'docIssueDate', controlNameVi: 'Ngày cấp'}">
+                </ng-container>
+              </label>
+              <!-- #endregion Ngày cấp -->
+
+              <!-- #region Nơi cấp -->
+              <label class="form-group d-block col-lg-4">
+                <span class="textLabel required">Nơi cấp</span>
+                <input class="form-control" formControlName="docIssuePlace" />
+                <ng-container
+                  *ngTemplateOutlet="error; context: {controlName: 'docIssuePlace', controlNameVi: 'Nơi cấp'}">
+                </ng-container>
+              </label>
+              <!-- #endregion Nơi cấp -->
+
+              <!-- #region Địa chỉ -->
+              <label class="form-group d-block col-lg-12">
+                <span class="textLabel required">Địa chỉ</span>
+                <input class="form-control" formControlName="address" maxlength="100" />
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'address', controlNameVi: 'Địa chỉ'}">
+                </ng-container>
+              </label>
+              <!-- #endregion Địa chỉ -->
+            </div>
+          </div>
+        </app-collapse-section>
+      </div>
+      <!-- #endRegion Thông tin cơ bản -->
+
+      <!-- #region Nội dung ủy quyền -->
+      <div class="dialog-content-region">
+        <app-collapse-section [showSectionBreak]="false" [(collapsed)]="collapsed.content">
+          <div area="title">
+            <div class="content-title">
+              <span class="active mr-2">Nội dung ủy quyền</span>
+            </div>
+          </div>
+
+          <div area="body" class="mt-3">
+            <div class="dialog-content-region-content scope-duration">
+              <div class="scope mb-2">
+                <label>Phạm vi ủy quyền</label>
+                <mat-radio-group formControlName="authorizationScope">
+                  <mat-radio-button *ngFor="let scope of AUTHORIZATION_SCOPES" [value]="scope.code" color="primary">
+                    <span class="font-weight-normal">{{ scope.label }}</span>
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="duration">
+                <label>Thời hạn ủy quyền</label>
+                <mat-radio-group formControlName="authorizationDuration">
+                  <mat-radio-button *ngFor="let duration of AUTHORIZATION_DURATIONS" [value]="duration.code"
+                    color="primary">
+                    <span class="font-weight-normal">{{ duration.label }}</span>
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <!-- Từ ngày ủy quyền -->
+              <div class="col-lg-6">
+                <label class="form-group d-block">
+                  <span class="textLabel required">Từ ngày</span>
+                  <app-lpb-datepicker-new [maxDate]="maxDate" formControlName="authorizationStartDate">
+                  </app-lpb-datepicker-new>
+                  <ng-container
+                    *ngTemplateOutlet="error; context: {controlName: 'authorizationStartDate', controlNameVi: 'Từ ngày'}">
+                  </ng-container>
+                </label>
+              </div>
+              <!-- end Từ ngày ủy quyền -->
+              <!-- Đến ngày ủy quyền -->
+              <div class="col-lg-6">
+                <label class="form-group d-block">
+                  <span class="textLabel" [class.required]="isRequiredEndDate">Đến ngày</span>
+                  <app-lpb-datepicker-new formControlName="authorizationEndDate">
+                  </app-lpb-datepicker-new>
+                  <ng-container
+                    *ngTemplateOutlet="error; context: {controlName: 'authorizationEndDate', controlNameVi: 'Đến ngày', controlNameVi2: 'Từ ngày'}">
+                  </ng-container>
+                </label>
+              </div>
+              <!-- end Đến ngày ủy quyền -->
+            </div>
+          </div>
+        </app-collapse-section>
+      </div>
+      <!-- #endRegion Nội dung ủy quyền -->
+
+    </div>
+  </div>
+
+  <div class="dialog-footer">
+    <button mat-button color="warning" class="mat-button-secondary button-close" (click)="closeDialog()">
+      Quay lại
+    </button>
+    <button *ngIf="!data?.isView" mat-button color="primary" class="mat-button-primary button-save" (click)="onSubmit()"
+      type="submit">
+      Lưu
+    </button>
+  </div>
+</div>

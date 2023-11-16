@@ -1,0 +1,61 @@
+<div class="card-services-approve-main">
+  <ng-container [ngSwitch]="step">
+    <!-- the same view can be shown in more than one case -->
+    <app-card-services-approve-extend-search *ngSwitchCase="APPROVE_STEP.HOME"
+      (evtClickSendRequest)="changeStep($event)" (eventBackStep)="backToSearch()"
+      [formSearch]="approveSearchForm"></app-card-services-approve-extend-search>
+
+    <!-- <app-card-services-approve-extend-unlock-pin *ngSwitchCase="APPROVE_STEP.CARD_BACK" (evtClickSendRequest)="changeStep($event)"
+      (eventBackStep)="backToSearch()" [cardEbsServiceSelected] ="cardEbsServiceSelected"></app-card-services-approve-extend-unlock-pin> -->
+
+    <app-card-services-approve-extend-unlock-card *ngSwitchCase="APPROVE_STEP.UNLOCK"
+      (evtClickSendRequest)="changeStep($event)" (eventBackStep)="backToSearch()"
+      [cardEbsServiceSelected]="cardEbsServiceSelected"></app-card-services-approve-extend-unlock-card>
+
+    <app-card-services-approve-extend-lock *ngSwitchCase="APPROVE_STEP.LOCK" (evtClickSendRequest)="changeStep($event)"
+      (eventBackStep)="backToSearch()"
+      [cardEbsServiceSelected]="cardEbsServiceSelected"></app-card-services-approve-extend-lock>
+
+    <app-card-services-approve-extend-unlock-pin *ngSwitchCase="APPROVE_STEP.UNLOCK_PIN"
+      (evtClickSendRequest)="changeStep($event)" (eventBackStep)="backToSearch()"
+      [cardEbsServiceSelected]="cardEbsServiceSelected"></app-card-services-approve-extend-unlock-pin>
+
+    <app-approve-card-termination-service *ngSwitchCase="APPROVE_STEP.CARD_END"
+                                          (evtClickSendRequest)="changeStep($event)" (eventBackStep)="backToSearch()"
+                                          [cardEbsServiceSelected]="cardEbsServiceSelected">
+    </app-approve-card-termination-service>
+    <app-approve-account-editing-service *ngSwitchCase="APPROVE_STEP.ACCOUNT_LINK"
+                                          (evtClickSendRequest)="changeStep($event)" (eventBackStep)="backToSearch()"
+                                          [cardEbsServiceSelected]="cardEbsServiceSelected">
+    </app-approve-account-editing-service>
+
+    <app-card-services-approve-extend-history *ngSwitchCase="APPROVE_STEP.HISTORY"
+      (evtClickSendRequest)="changeStep($event)" [formSearch]="cardHistorySearchForm" (eventBackStep)="backToSearch()">
+    </app-card-services-approve-extend-history>
+
+    <!-- detail  -->
+    <app-card-services-approve-extend-unlock-card [isDetail]="true" *ngSwitchCase="APPROVE_STEP.DETAIL_UNLOCK"
+      (evtClickSendRequest)="changeStep($event)" (eventBackStep)="backHistory()"
+      [cardEbsServiceSelected]="cardEbsServiceSelected"></app-card-services-approve-extend-unlock-card>
+
+    <app-card-services-approve-extend-unlock-pin [isDetail]="true" *ngSwitchCase="APPROVE_STEP.DETAIL_UNLOCK_PIN"
+      (evtClickSendRequest)="changeStep($event)" (eventBackStep)="backHistory()"
+      [cardEbsServiceSelected]="cardEbsServiceSelected"></app-card-services-approve-extend-unlock-pin>
+
+    <app-card-services-approve-extend-lock [isDetail]="true" *ngSwitchCase="APPROVE_STEP.DETAIL_LOCK"
+      (evtClickSendRequest)="changeStep($event)" (eventBackStep)="backHistory()"
+      [cardEbsServiceSelected]="cardEbsServiceSelected"></app-card-services-approve-extend-lock>
+    <app-approve-card-termination-service [isDetail]="true" *ngSwitchCase="APPROVE_STEP.DETAIL_CARD_END"
+                                           (evtClickSendRequest)="changeStep($event)" (eventBackStep)="backHistory()"
+                                           [cardEbsServiceSelected]="cardEbsServiceSelected"></app-approve-card-termination-service>
+    <app-approve-account-editing-service [isDetail]="true" *ngSwitchCase="APPROVE_STEP.DETAIL_ACCOUNT_LINK"
+                                          (evtClickSendRequest)="changeStep($event)" (eventBackStep)="backHistory()"
+                                          [cardEbsServiceSelected]="cardEbsServiceSelected"></app-approve-account-editing-service>
+    <!--end detail  -->
+
+
+    <!--default case when there are no matches -->
+    <app-card-services-extend-step-detail *ngSwitchDefault (eventBackStep)="backToSearch()"
+      [cardEbsServiceSelected]="cardEbsServiceSelected"></app-card-services-extend-step-detail>
+  </ng-container>
+</div>

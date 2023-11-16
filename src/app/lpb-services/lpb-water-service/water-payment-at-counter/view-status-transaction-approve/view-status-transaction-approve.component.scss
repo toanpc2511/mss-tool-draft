@@ -1,0 +1,91 @@
+$color-title: #0c258a;
+$border-orange: #f47326;
+$bg-gray: #bdbdbd;
+$bg-blue: #0c258a;
+$bg-red: #eb5757;
+
+.transaction-main {
+  background-color: #F5F5F5;
+  padding: 8px 1%;
+  display: flex;
+  flex-direction: column;
+  height: 84vh;
+  overflow-y: hidden;
+  .result {
+    background-color: #fff;
+  }
+
+  .content-title {
+    padding-bottom: 8px;
+    border-bottom: 1px solid $bg-gray;
+    span {
+      color: $color-title;
+      font-weight: 500;
+      font-size: 18px;
+    }
+  }
+
+  label {
+    color: $color-title;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 8px 0px;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  table.table th {
+    background: $bg-blue !important;
+  }
+
+  .trans-detail {
+    overflow-y: scroll;
+    height: 69vh;
+  }
+  
+  .data-approved {
+    max-height: 50vh;
+    overflow-x: scroll;
+    table {
+      min-width: 598px;
+      .font-bold {
+        font-weight: bold;
+      }
+      thead {
+        position: sticky;
+        color: #fff;
+        top: 0;
+        z-index: 10;
+      }
+      tr td {
+        text-align: center;
+        cursor: pointer;
+        &.id {
+          min-width: 100px;
+          max-width: 150px;
+          word-break: break-all
+        }
+        &.notify {
+          min-width: 250px;
+          max-width: 280px;
+          text-align: left;
+        }
+        &.status {
+          min-width: 100px;
+          max-width: 120px;
+        }
+      }
+
+      span i {
+        font-size: 18px;
+        &.success {
+          color: #0c258a;
+          cursor: pointer;
+        }
+      }
+    }
+    .text-red {
+      color: #c10611;
+    }
+  }
+}

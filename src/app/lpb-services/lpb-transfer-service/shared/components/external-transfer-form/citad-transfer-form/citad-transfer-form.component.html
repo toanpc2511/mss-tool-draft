@@ -1,0 +1,236 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NO_EXIST" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không {{controlName === 'employeeId' ? 'tồn tại' : 'hợp lệ'}}
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.INVALID_DATE" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.MAX_DATE" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+
+<app-external-transfer-form [formGroup]="form" [disabledForm]="disabledForm" [lstProduct]="lstProduct" #externalTransferForm
+  (changeCustomerInfo)="changeCustomerInfo($event)" [warning]="warning">
+  <div area="productForm">
+    <!-- #region Product Form -->
+    <div class="row">
+      <div class="col col-lg-3 col-md-3 col-sm-6">
+        <!-- #region Mã sản phẩm (*) -->
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Mã sản phẩm <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <ng-select [multiple]="false" formControlName="productCode" placeholder="Chọn mã sản phẩm" (change)="changeProduct($event)">
+              <ng-option *ngFor="let product of lstProduct;" [value]="product.code">
+                {{product.code}} - {{product.name}}
+              </ng-option>
+            </ng-select>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'productCode', controlNameVi: 'Mã sản phẩm'}">
+            </ng-container>
+          </span>
+        </div>
+        <!--#endregion -->
+      </div>
+
+      <div class="col col-lg-3 col-md-3 col-sm-6">
+        <!-- #region Route Code (*) -->
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Route Code <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <ng-select [multiple]="false" formControlName="routeCode" placeholder="Chọn Route" (change)="changeRouteCode($event)">
+              <ng-option *ngFor="let route of lstRoute;" [value]="route.code">
+                {{route.code}}: {{route.name}}
+              </ng-option>
+            </ng-select>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'routeCode', controlNameVi: 'Route Code'}">
+            </ng-container>
+          </span>
+        </div>
+        <!--#endregion -->
+      </div>
+
+      <div class="col col-lg-2 col-md-3 col-sm-6">
+        <!-- #region Số tài khoản Nostro (*) -->
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Số tài khoản Nostro</span>
+          <span class="col-lg-12">
+            <input type="text" formControlName="nostroAcn" class="form-control">
+          </span>
+        </div>
+        <!--#endregion -->
+      </div>
+
+      <div class="col col-lg-2 col-md-3 col-sm-6">
+        <!--#region Tên Nostro (*) -->
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Tên Nostro</span>
+          <span class="col-lg-12">
+            <input type="text" formControlName="nostroName" class="form-control">
+          </span>
+        </div>
+        <!--#endregion -->
+      </div>
+
+      <div class="col col-lg-2 col-md-3 col-sm-6">
+        <!--#region Mã nhân viên (*) -->
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Mã nhân viên <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <app-lpb-employee-input [control]="form.controls['employeeId']" [serviceName]="'transfer-service'"></app-lpb-employee-input>
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'employeeId', controlNameVi: 'Mã nhân viên'}">
+            </ng-container>
+          </span>
+        </div>
+        <!--#endregion -->
+      </div>
+    </div>
+    <!--#endregion -->
+  </div>
+
+  <div area="recipientForm">
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <div class="form-group row">
+          <div class="col-lg-12 col-form-label textLabel">
+            <div class="form-radio-inline-group d-flex align-items-start">
+              <label class="txtLabel form-radio-inline d-flex align-items-center">
+                <input class="form-control" formControlName="recipientTxtType" type="radio" [value]="'ACN'">
+                Số tài khoản
+              </label>
+              <label class="txtLabel form-radio-inline d-flex align-items-center">
+                <input class="form-control" formControlName="recipientTxtType" type="radio" [value]="'GTXM'">
+                GTXM
+              </label>
+            </div>
+          </div>
+          <span class="col-lg-12">
+            <ng-template #gtxmInput>
+              <input type="text" formControlName="recipientDocNum" class="form-control text-uppercase" maxlength="50" trimInput
+                [textPattern]="{allowRegex: '[A-Za-z0-9\/\\s-]'}" textTransform="uppercase">
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'recipientDocNum', controlNameVi: 'Số GTXM'}">
+              </ng-container>
+            </ng-template>
+
+            <ng-template #acnInput>
+              <input type="text" formControlName="recipientAcn" class="form-control" maxlength="20"
+                [textPattern]="{allowRegex: '[0-9]'}" trimInput>
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'recipientAcn', controlNameVi: 'Số tài khoản'}">
+              </ng-container>
+            </ng-template>
+
+            <div *ngIf="form.controls['recipientTxtType'].value === 'ACN' then acnInput; else gtxmInput"></div>
+          </span>
+        </div>
+
+        <div class="form-group row">
+          <span class="col-lg-12">
+            <div class="form-radio-inline-group d-flex align-items-start">
+              <label class="txtLabel form-radio-inline d-flex align-items-center" *ngFor="let item of DOC_TYPES">
+                <input class="form-control" formControlName="recipientDocType" name="recipientDocType" type="radio"
+                  [value]="item.key" (change)="changeRecipientDocType($event)">
+                {{item.value}}
+              </label>
+            </div>
+          </span>
+        </div>
+
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Ngày cấp <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <app-lpb-datepicker-new formControlName="recipientDocIssueDate" [maxDate]="maxDate">
+            </app-lpb-datepicker-new>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'recipientDocIssueDate', controlNameVi: 'Ngày cấp'}">
+            </ng-container>
+          </span>
+        </div>
+
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Nơi Cấp <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <input type="text" formControlName="recipientDocIssuePlace" class="form-control text-uppercase"
+              placeholder="Nhập Nơi Cấp"
+              [textPattern]="{allowRegex: '[A-Za-z0-9-,./\\s]', allowVi: true}"
+              textTransform="uppercase" textEncode="latin" maxlength="50" trimInput>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'recipientDocIssuePlace', controlNameVi: 'Nơi Cấp'}">
+            </ng-container>
+          </span>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Tên khách hàng <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <input type="text" formControlName="recipientFullName" class="form-control text-uppercase"
+              placeholder="Nhập Tên" textTransform="uppercase" textEncode="latin" maxlength="70" trimInput
+              [textPattern]="{allowRegex: '[A-Za-z0-9-,./\\s]', allowVi: true}">
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'recipientFullName', controlNameVi: 'Tên khách hàng'}">
+            </ng-container>
+          </span>
+        </div>
+
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Ngân hàng <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <app-lpb-select-tooltip
+               [bindValue]="'code'" [placeholder]="'Chọn Ngân hàng'" [items]="lstBank"
+               [optPatternFields]="['code', 'displayName']" [optPatternSplitter]="'-'"
+               [control]="form.controls['recipientBankId']" (change)="changeBank($event)"
+            ></app-lpb-select-tooltip>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'recipientBankId', controlNameVi: 'Ngân hàng'}">
+            </ng-container>
+          </span>
+        </div>
+
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Địa chỉ NH thụ hưởng <span
+              class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <input type="text" formControlName="recipientBankAddress" class="form-control text-uppercase"
+              placeholder="Nhập Địa chỉ" textTransform="uppercase" textEncode="latin" maxlength="50" trimInput
+              [textPattern]="{allowRegex: '[A-Za-z0-9-,./\\s]', allowVi: true}">
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'recipientBankAddress', controlNameVi: 'Địa chỉ NH thụ hưởng'}">
+            </ng-container>
+          </span>
+        </div>
+
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Mã gián tiếp <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <app-lpb-select-tooltip
+               [bindValue]="'id'" [placeholder]="'Chọn mã'" [items]="lstIndirectInfo"
+               [optPatternFields]="['indirectCode', 'indirectName']" [optPatternSplitter]="'-'"
+               [control]="form.controls['recipientIndirectCodeId']" (change)="changeIndirectCodeId($event)"
+            ></app-lpb-select-tooltip>
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'recipientIndirectCode', controlNameVi: 'Mã gián tiếp'}">
+            </ng-container>
+          </span>
+        </div>
+
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Mã trực tiếp</span>
+          <span class="col-lg-12" [title]="directInfo">
+            <input type="text" class="form-control" disabled
+              [value]="directInfo">
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-external-transfer-form>
+
+<hr/>
+<ng-content select=".fixed-detail"></ng-content>

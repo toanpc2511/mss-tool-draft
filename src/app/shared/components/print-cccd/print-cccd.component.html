@@ -1,0 +1,181 @@
+<button
+  printTitle="Print GTXM"
+  type="button"
+  [useExistingCss]="true"
+  printSectionId="printr{{cccd.id}}"
+  ngxPrint
+  class="btn p-0"
+  data-cy="entityEditButton"
+>
+  <i class="fa fa-print" style="color: #0c258a;"></i>
+  <!--                    <span class="d-none d-md-inline">In GTXM</span>-->
+</button>
+<div *ngIf="cccd" id="printr{{cccd?.id}}" style="display: none;">
+  <div
+    class="row"
+    style="background-image: url('assets/img/Logo_LPB.png'); background-position: center; background-repeat: no-repeat; border: none;"
+  >
+    <div class="col-12">
+      <img style="width: 100%" src="assets/img/logo-print.PNG"/>
+    </div>
+    <div class="col-12">
+      <h5 style="font-family: 'Times New Roman'; font-size: 21px">I. THÔNG TIN KHÁCH HÀNG</h5>
+      <!--<span style="text-transform: uppercase; font-weight: bold">{{showcccd ? showcccd.fullName : ''}}</span>-->
+      <p style="font-family: 'Times New Roman'; font-size: 21px">
+        Tên Khách hàng (viết in hoa): <span class="text-content-uppercase">{{ cccd ? cccd.fullName : '' }}</span>
+      </p>
+      <p style="font-family: 'Times New Roman'; font-size: 21px" class="title-cif">Mã số Khách hàng (số CIF):</p>
+      <table class="cif-number">
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+      <br/><br/>
+      <p style="font-family: 'Times New Roman'; font-size: 21px">
+        Loại GTXM hiện tại:
+        .........................................................................................................................................................................
+      </p>
+      <p style="font-family: 'Times New Roman'; font-size: 21px">
+        Số GTXM hiện tại:
+        ............................................................................................................................................................................
+      </p>
+      <h5 style="font-family: 'Times New Roman'; font-size: 21px">II. THÔNG TIN GIẤY TỜ XÁC MINH MỚI</h5>
+      <div class="backspace-xacthuc">
+        <table class="info-very-1">
+          <tr>
+            <td>
+              <p style="font-family: 'Times New Roman'; font-size: 21px">
+                Loại Giấy tờ xác minh: <span class="text-content">Căn cước công dân</span>
+              </p>
+              <p style="font-family: 'Times New Roman'; font-size: 21px">
+                Số Giấy tờ xác minh: <span
+                class="text-content">&nbsp;&nbsp;&nbsp;{{ cccd ? cccd.cccdNo : '' }}</span>
+              </p>
+              <p style="font-family: 'Times New Roman'; font-size: 21px">
+                Ngày cấp: <span class="text-content" style="margin-left: 20%"></span
+              ><b>{{ cccd?.dayProvide?.substring(0, 2) }}</b
+              >/<b>{{ cccd?.dayProvide?.substring(2, 4) }}</b
+              >/<b>{{ cccd?.dayProvide?.substring(4, 8) }}</b> &nbsp;&nbsp;&nbsp;&nbsp;Nơi cấp: Cục cảnh sát QLHC về
+                TTXH
+              </p>
+              <p style="font-family: 'Times New Roman'; font-size: 21px">
+                Địa chỉ thường trú:
+                <span class="text-content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cccd ? cccd.address : '' }}</span>
+              </p>
+            </td>
+          </tr>
+        </table>
+        <table style="width: 100%; text-align: center">
+          <tr>
+            <td style="width: 50%"></td>
+            <td style="width: 50%; font-family: 'Times New Roman'; font-size: 21px">
+              <p style="font-family: 'Times New Roman'; font-size: 21px">
+                <b>Khách hàng</b><br/><i>(Ký và ghi rõ họ tên)</i>
+              </p>
+            </td>
+          </tr>
+        </table>
+        <br/><br/><br/><br/>
+        <h5 style="font-family: 'Times New Roman'; font-size: 21px">III. PHẦN DÀNH CHO NGÂN HÀNG</h5>
+        <h6 style="font-family: 'Times New Roman'; font-size: 21px; font-weight: bold">
+          1. Thông tin thay đổi đã được xác minh trên hệ thống nội bộ của Ngân hàng.
+        </h6>
+        <table class="info-very">
+          <tr>
+            <td style="width: 50%">
+              <p style="font-family: 'Times New Roman'; font-size: 21px; font-weight: lighter">
+                <b
+                >Thời gian xác minh:<span
+                  class="text-content">{{ cccd.scanTime}}</span></b
+                ><br/><b>Thời gian in:</b
+              ><span class="text-content"
+              >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
+                current | date: 'dd/MM/yyyy HH:mm:ss'
+                }}</span
+              >
+              </p>
+            </td>
+            <td style="width: 50%">
+              <p style="font-family: 'Times New Roman'; font-size: 21px; font-weight: lighter">
+                <b>User xác minh:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b
+                ><span class="text-content">{{ userInfo?.userName }}</span
+              ><br/><b>Thuộc Chi nhánh/PGD:</b><span class="text-content">{{ userInfo?.branchCode }}</span>
+              </p>
+            </td>
+          </tr>
+        </table>
+        <h6 style="float: left; font-family: 'Times New Roman'; font-size: 21px; font-weight: bold">2. Đơn vị tiếp
+          nhận</h6>
+        <i style="font-family: 'Times New Roman'; font-size: 21px"
+        >(chỉ khai báo trong trường hợp ĐVKD tiếp nhận không phải là ĐVKD trực tiếp xử lý)</i
+        ><br/><br/>
+        <p style="position: relative; top: -20px; font-family: 'Times New Roman'; font-size: 21px">
+          Vào ....... giờ ....... phút, ngày ......./......./............., CN/PGD …(lấy theo chi nhánh/PGD quản lý
+          user xác
+          minh) đã tiếp nhận yêu cầu thay đổi thông tin GTXM của Khách hàng với thông tin như trên (Theo bản sao
+          CCCD mới đính
+          kèm). Kính chuyển CN/PGD ………………………… để tiếp tục thực hiện giải quyết theo yêu cầu của Khách hàng và quy
+          định của
+          Ngân hàng.
+        </p>
+        <!--                      <div style="position: absolute;z-index: -1"><img src="content/Logo_LPB.png" /></div>-->
+        <div style="position: relative; top: -20px">
+          <table style="width: 100%; text-align: center">
+            <tr>
+              <td style="width: 50%">
+                <p style="font-family: 'Times New Roman'; font-size: 21px">
+                  <b>Giao dịch viên</b><br/><i>(Ký và ghi rõ họ tên)</i>
+                </p>
+              </td>
+              <td style="width: 50%; font-family: 'Times New Roman'; font-size: 21px">
+                <p>…………………, ngày ……/……/…………..</p>
+                <p style="font-family: 'Times New Roman'; font-size: 21px">
+                  <b>Kiểm soát viên</b><br/><i>(Ký và ghi rõ họ tên)</i>
+                </p>
+              </td>
+            </tr>
+          </table>
+          <br/><br/><br/><br/>
+          <h6 style="font-family: 'Times New Roman'; font-size: 21px; font-weight: bold">3. Đơn vị xử lý trên hệ
+            thống</h6>
+          <div class="checkbox-vuong"></div>
+          <p style="float: left; padding-left: 5px; font-family: 'Times New Roman'; font-size: 21px">
+            Đã xử lý theo yêu cầu của Khách hàng vào ....... giờ ....... phút, ngày: ......./......./............
+          </p>
+          <br/><br/>
+          <div class="checkbox-vuong"></div>
+          <p style="float: left; padding-left: 5px; font-family: 'Times New Roman'; font-size: 21px">Không đồng
+            ý</p>
+          <br/><br/>
+          <p style="font-family: 'Times New Roman'; font-size: 21px">
+            Lý do:
+            ……………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………
+          </p>
+          <p>
+            …………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………</p>
+
+          <table style="width: 100%; text-align: center">
+            <tr>
+              <td style="width: 32%; font-family: 'Times New Roman'; font-size: 21px">
+                <p><b>Giao dịch viên</b><br/><i>(Ký và ghi rõ họ tên)</i></p>
+              </td>
+              <td style="width: 32%; font-family: 'Times New Roman'; font-size: 21px">
+                <p><b>Kiểm soát viên</b><br/><i>(Kiểm soát viên)</i></p>
+              </td>
+              <td style="width: 32%; font-family: 'Times New Roman'; font-size: 21px">
+                <p><b>Trưởng ĐVKD</b><br/><i>(Ký, ghi rõ họ tên và đóng dấu)</i></p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

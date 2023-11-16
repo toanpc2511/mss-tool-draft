@@ -1,0 +1,147 @@
+<div class="all-content">
+  <div class="container-fluid">
+    <div class="title-content"><i class="fa fa-search title-content"></i> BÁO CÁO ĐĂNG KÝ PHÁT HÀNH THẺ TÍN DỤNG</div>
+    <hr>
+    <div class="row">
+      <div class="col-md-6 col-left">
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span>Từ ngày: <span class="text-danger">(*)</span> </span>
+          </div>
+          <div class="col-md-9">
+            <app-lpb-date-picker #dpDateFrom [maxDate]="getToday()" (blurInput)="dateFromChanged()"
+                                 (dateChanged)="getFromDate()"></app-lpb-date-picker>
+          </div>
+        </div>
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span class="txtLabel">Chi nhánh:</span>
+          </div>
+          <div class="col-md-9">
+            <app-lpb-select2 [apiUrl]="'/lpb-common-service/api/public/redis/branch'" labelName="name" bindValue="code"
+                             formControlName="branchCode"></app-lpb-select2>
+          </div>
+        </div>
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span>CIF:</span>
+          </div>
+          <div class="col-md-9">
+            <input class="form-control">
+          </div>
+        </div>
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span>Hạn mức:</span>
+          </div>
+          <div class="col-md-9">
+            <ng-select>
+              <ng-option>Tất cả</ng-option>
+              <ng-option>Dưới 150 triệu</ng-option>
+              <ng-option>Từ 150 triệu</ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-right">
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span>Đến ngày: <span class="text-danger">(*)</span> </span>
+          </div>
+          <div class="col-md-9">
+            <app-lpb-date-picker #dpDateTo [maxDate]="getToday()" (blurInput)="dateToChanged()"
+                                 (dateChanged)="getToDate()"></app-lpb-date-picker>
+          </div>
+        </div>
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span class="txtLabel">Mã sản phẩm:</span>
+          </div>
+          <div class="col-md-9">
+            <ng-select>
+              <ng-option>Tất cả</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span>GTXM:</span>
+          </div>
+          <div class="col-md-9">
+            <input class="form-control">
+          </div>
+        </div>
+        <div class="form-field row d-flex align-items-center">
+          <div class="col-md-3">
+            <span>Trạng thái:</span>
+          </div>
+          <div class="col-md-9">
+            <ng-select>
+              <ng-option>Tất cả</ng-option>
+              <ng-option>Sai định dạng</ng-option>
+              <ng-option>Không hợp lệ</ng-option>
+              <ng-option>Chờ KSV duyệt</ng-option>
+              <ng-option>Từ chối</ng-option>
+              <ng-option>Yêu cầu bổ sung</ng-option>
+              <ng-option>Chờ NHS duyệt</ng-option>
+              <ng-option>Thành công</ng-option>
+              <ng-option>Thất bại</ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <button mat-raised-button class="btn-search">Tìm kiếm</button>
+    </div>
+    <div class="table-content">
+      <div class="title-content"> <i class="fa fa-book title-content"></i> DANH SÁCH ĐĂNG KÝ PHÁT HÀNH THẺ TÍN DỤNG</div>
+
+      <div class="d-flex justify-content-end">
+        <button mat-button class="btn-excel"><i class="fa fa-file-excel-o"></i> Xuất dữ liệu</button>
+      </div>
+      <div class="table-scroll">
+
+        <table class="main-table table">
+          <thead>
+          <tr>
+            <th>STT</th>
+            <th>ID</th>
+            <th>Mã CN</th>
+            <th>Mã khách hàng</th>
+            <th>Tên trên thẻ</th>
+            <th>Loại thẻ</th>
+            <th>Hạn mức</th>
+            <th>Trạng thái</th>
+            <th>User Nhập</th>
+            <th>User Duyệt</th>
+            <th>User NHS</th>
+            <th>Ngày xử lý</th>
+            <th>Tên file</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr>
+            <td>STT</td>
+            <td>ID</td>
+            <td>Mã CN</td>
+            <td>Mã khách hàng</td>
+            <td>Tên trên thẻ</td>
+            <td>Loại thẻ</td>
+            <td>Hạn mức</td>
+            <td>Trạng thái</td>
+            <td>User Nhập</td>
+            <td>User Duyệt</td>
+            <td>User NHS</td>
+            <td>Ngày xử lý</td>
+            <td>Tên file</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

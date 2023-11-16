@@ -1,0 +1,28 @@
+<div>
+  <ng-select #ngSelect [ngClass]="className" [loading]="isLoading" [closeOnSelect]="config?.closeOnSelect === undefined || config?.closeOnSelect === true"
+             [clearable]="this.config?.clearable === undefined || this.config?.clearable === true" (clear)="onClear()" (change)="onChange($event)"
+             [items]="this.config?.paging ? listOptionsBuffer : listOptions" bindLabel="{{labelName}}" [formControl]="value" [multiple]="multiple" [virtualScroll]="shouldEnableVirtualScroll()"
+             [typeahead]="input$"     (scrollToEnd)="fetchMore(ngSelect.searchTerm)" [appendTo]="appendTo"
+             [placeholder]="placeholder" [bindValue]="bindValue"  >
+    <ng-container *ngIf="this.config?.paging">
+          <ng-template ng-header-tmp >
+            <small class="form-text text-muted">Loaded {{listOptionsBuffer.length}} of {{listOptions.length}} record</small>
+          </ng-template>
+    </ng-container>
+
+    <ng-template #defaultTemplate ng-label-tmp let-item="item" let-clear="clear" let-search="searchTerm">{{item[labelName]}}
+      <span class="ng-value-icon right" (click)="clear(item)">×</span>
+    </ng-template>
+    <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+      {{item[labelName]}}
+    </ng-template>
+    <ng-template ng-option-tmp ng-label-tmp let-item="item" let-index="index" let-search="searchTerm">
+      <ng-template [ngTemplateOutlet]="templateRef || defaultTemplate"
+                   [ngTemplateOutletContext]="{ item: item, index: index}">
+      </ng-template>
+    </ng-template>
+
+  </ng-select>
+</div>
+
+<!--<div *ngIf="invalid(formSearch.controls.supplier)" class="text-danger">Chưa chọn nhà cung cấp</div>-->

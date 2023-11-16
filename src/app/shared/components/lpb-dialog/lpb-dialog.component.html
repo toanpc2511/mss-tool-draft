@@ -1,0 +1,115 @@
+<div class="dialog" [class]="className">
+  <div class="dialog-header">
+    <div class="dialog-title">
+      {{title}}
+    </div>
+    <div class="dialog-close-btn" (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </div>
+  </div>
+  <div class="dialog-content">
+
+    <div class="dialog-message">
+      <p *ngFor="let message of messages">
+        {{message}}
+      </p>
+    </div>
+    <table class="dialog-form w-100" *ngIf="!!data?.form?.length" [formGroup]="form">
+
+      <tr *ngFor="let f of data?.form">
+
+        <!-- text number textarea-->
+        <ng-container
+          *ngIf="f.type === CONTROL_TYPES.text || f.type === CONTROL_TYPES.number  || f.type === CONTROL_TYPES.textarea">
+          <td *ngIf="!!f.label" class="col-form-label textLabel td-label">{{f.label}}</td>
+          <td [colSpan]="f.label? '1': '9999'">
+            <div class="w-100">
+              <input *ngIf=" f.type===CONTROL_TYPES.number" [placeholder]="f.placeholder || ''" type="text"
+                [formControl]="form.controls[f.name]" class="form-control" JustNumberOnly>
+
+              <input *ngIf="f.type === CONTROL_TYPES.text" type="text" [placeholder]="f.placeholder || ''"
+                [formControl]="form.controls[f.name]" class="form-control" [maxLength]="f.maxlength">
+
+              <textarea *ngIf="f.type === CONTROL_TYPES.textarea" rows="5" [placeholder]="f.placeholder || ''"
+                [formControl]="form.controls[f.name]" class="form-control" [maxLength]="f.maxlength"></textarea>
+
+              <ng-container *ngTemplateOutlet="error; context: {f: f}">
+              </ng-container>
+            </div>
+          </td>
+
+        </ng-container>
+        <!-- end text number textarea-->
+
+        <!-- checkbox -->
+        <ng-container *ngIf="!!f.group?.length && (f.type === CONTROL_TYPES.checkbox)">
+          <td *ngIf="!!f.label" class="col-form-label textLabel td-label">{{f.label}}</td>
+          <td [colSpan]="f.label? '1': '9999'">
+            <div>
+              <mat-checkbox *ngFor="let g of f.group" color="primary" class="txtLabel d-flex align-items-center"
+                [class]="(!!f.isHorizontal ? '' : 'd-block')"
+                [checked]="[form?.controls[f.name]?.value,g.value] | compare : 'include'" [value]="g.value"
+                (change)="inputCheckBoxChange($event, {controlName:f.name, value: g.value})">{{g.label}}</mat-checkbox>
+            </div>
+            <ng-container *ngTemplateOutlet="error; context: {f: f}">
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <!-- end checkbox -->
+
+        <!-- radio -->
+        <ng-container *ngIf=" !!f.group?.length && ( f.type===CONTROL_TYPES.radio)">
+          <td *ngIf="!!f.label" class="col-form-label textLabel td-label">{{f.label}}</td>
+          <td [colSpan]="f.label? '1': '9999'">
+            <div class="w-100">
+              <mat-radio-group>
+                <mat-radio-button *ngFor="let g of f.group" color="primary" class="txtLabel"
+                  [class]="(!!f.isHorizontal ? 'mr-2' : 'd-block mb-2')"
+                  [checked]="g.value === form?.controls[f.name]?.value" [value]="g.value"
+                  (change)="inputRadioChange(f.name,g.value)">{{g.label}}</mat-radio-button>
+              </mat-radio-group>
+              <ng-container *ngTemplateOutlet="error; context: {f: f}">
+              </ng-container>
+            </div>
+          </td>
+        </ng-container>
+        <!--end radio -->
+      </tr>
+    </table>
+  </div>
+
+  <div class="dialog-footer">
+
+    <button *ngIf="!buttons?.dismiss || buttons?.dismiss?.display" [style.color]="buttons?.dismiss?.color"
+      [style.background-color]="buttons?.dismiss?.bgColor" class="btn btn-primary dialog-cancel"
+      (click)="closeDialog()">{{buttons?.dismiss?.label || 'Hủy bỏ'}}</button>
+
+    <button *ngIf="!buttons?.confirm || buttons?.confirm?.display" [style.color]="buttons?.confirm?.color"
+      [style.background-color]="buttons?.confirm?.bgColor" class="btn btn-primary dialog-confirm"
+      (click)="confirmDialog()">{{buttons?.confirm?.label || 'Đồng ý'}}</button>
+
+    <ng-container *ngFor="let custom of buttons?.customs">
+      <button *ngIf="!custom?.display" [style.color]="custom?.color" [style.background-color]="custom?.bgColor"
+        class="btn btn-primary dialog-custom" (click)="customDialog(custom?.type, custom?.useValidate)">{{custom?.label
+        || ''}}</button>
+    </ng-container>
+
+  </div>
+
+
+  <!-- show error validates -->
+  <ng-template #error let-f="f">
+    <div *ngIf="f.validates?.length" colspan="9999">
+      <ng-container *ngFor="let v of f.validates">
+        <ng-container *ngIf="form?.controls[f.name]?.errors">
+          <span *ngIf="form?.controls[f.name]?.errors[v.message.type] &&
+                 (form?.controls[f.name].dirty || form?.controls[f.name].touched)"
+            class="text-danger mt-1 d-block small text-error">
+            {{v.message?.content}}
+          </span>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-template>
+  <!-- end show error validates -->

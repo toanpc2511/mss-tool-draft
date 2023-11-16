@@ -1,0 +1,152 @@
+<div class="abc">
+  <h2 mat-dialog-title style="background: #FFFFFF;color:#384961;border-bottom: 1px solid #828282;">
+    Thêm mới chức năng
+  </h2>
+  <mat-dialog-content class="mat-typography scroll-dialog">
+    <div class="col-12" style="padding-top: 10px;">
+      <form [formGroup]="actionForm">
+        <div class="form-row">
+          <div class="form-group col-md-6" style="padding-top: 5px;">
+            <label class="col col-form-label" >Chức năng<span style="color: red;">*</span></label>
+            <div class="col-12 ">
+              <ng-select  [multiple]="false" bindLabel="name" bindValue="id" formControlName="functionId"
+                          placeholder="-- Chọn function --">
+                <ng-option *ngFor="let item of lstAllFunction"  [value]="item.id">{{item.code + ' - ' + item.name}}</ng-option>
+              </ng-select>
+              <div *ngIf="f.functionId.invalid && (f.functionId.dirty || f.functionId.touched)" class="invalid-feedback">
+                <div *ngIf="f.functionId.errors.required ">Tên chức năng không được để trống</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6" style="padding-top: 5px;">
+            <label class="col col-form-label" >Parent Action </label>
+            <div class="col-12 ">
+              <ng-select  [multiple]="false" bindLabel="name" bindValue="id" formControlName="parentId"
+                          placeholder="-- Chọn chức năng cha --">
+                <ng-option *ngFor="let item of listAction" [value]="item.id">
+                  <div title="{{findParentName(item.parentId) ? '[' + findParentName(item.parentId) + '] ' + item.name : item.name}}">{{findParentName(item.parentId) ? '[' + findParentName(item.parentId) + '] ' + item.name : item.name}}</div>
+                </ng-option>
+              </ng-select>
+
+            </div>
+
+
+          </div>
+<!--          <div class="form-group col-md-6">-->
+<!--            <label>Mã chức năng<span style="color: red;">*</span></label>-->
+<!--            <div class="col-8" >-->
+<!--              <ng-select class="form-control"  [multiple]="false" bindLabel="name" bindValue="id" formControlName="functionId"-->
+<!--                          placeholder="&#45;&#45; Chọn chức năng &#45;&#45;">-->
+<!--                <ng-option *ngFor="let item of lstAllFunction" [value]="item.id">{{item.code + ' - ' + item.name}}</ng-option>-->
+<!--              </ng-select>-->
+
+<!--              <div *ngIf="f.code.invalid && (f.code.dirty || f.code.touched)" class="invalid-feedback">-->
+<!--                <div *ngIf="f.code.errors.required ">Mã chức năng không được để trống</div>-->
+<!--              </div>-->
+
+<!--            </div>-->
+<!--          </div>-->
+          <div class="form-group col-md-6" style="padding-top: 5px;">
+            <label class="col col-form-label" >Mã Action<span style="color: red;">*</span></label>
+            <div class="col-12 ">
+              <input maxlength="50" formControlName="code"
+                     [ngClass]="{ 'is-invalid': ((f.code.dirty || f.code.touched) && f.code.errors)}" type="text" class="form-control" name="name" >
+              <div *ngIf="f.code.invalid && (f.name.dirty || f.code.touched)" class="invalid-feedback">
+                <div *ngIf="f.code.errors.required ">Tên chức năng không được để trống</div>
+              </div>
+            </div>
+          </div>
+<!--          <div class="form-group col-md-6">-->
+<!--            <label>Mã Action<span style="color: red;">*</span></label>-->
+<!--           -->
+<!--          </div>-->
+          <div class="form-group col-md-6" style="padding-top: 5px;">
+            <label class="col col-form-label" >Tên Action<span style="color: red;">*</span></label>
+            <div class="col-12 ">
+              <input maxlength="100" formControlName="name"
+                     [ngClass]="{ 'is-invalid': ((f.name.dirty || f.name.touched) && f.name.errors)}" type="text" class="form-control" name="name" >
+              <div *ngIf="f.name.invalid && (f.name.dirty || f.name.touched)" class="invalid-feedback">
+                <div *ngIf="f.name.errors.required ">Tên chức năng không được để trống</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6" style="padding-top: 5px;">
+            <label class="col col-form-label" >Action URL<span style="color: red;">*</span></label>
+            <div class="col-12 ">
+              <input maxlength="100" formControlName="url"
+                     [ngClass]="{ 'is-invalid': ((f.url.dirty || f.url.touched) && f.url.errors)}" type="text" class="form-control" name="name" >
+              <div *ngIf="f.url.invalid && (f.name.dirty || f.url.touched)" class="invalid-feedback">
+                <div *ngIf="f.url.errors.required ">Tên chức năng không được để trống</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6" style="  padding-top: 5px;">
+            <label class="col col-form-label" >Frontend URL</label>
+            <div class="col-12 ">
+              <input maxlength="255" formControlName="feUrl" type="text" class="form-control" >
+
+            </div>
+          </div>
+          <div class="form-group col-md-6" style="padding-top: 5px;">
+            <label class="col col-form-label" >Image Path</label>
+            <div class="col-12 ">
+              <input maxlength="255" formControlName="imagePath" type="text" class="form-control"  >
+            </div>
+          </div>
+          <div class="form-group col-md-6" style="padding-top: 5px;">
+            <label class="col col-form-label" >Description</label>
+            <div class="col-12 ">
+              <input maxlength="255" formControlName="description" type="text" class="form-control"  >
+
+            </div>
+          </div>
+
+          <div class="form-group col-md-6" style="padding-top: 5px;">
+            <label class="col col-form-label" >Method</label>
+            <div class="col-12 ">
+              <input maxlength="255" formControlName="method" type="text" class="form-control"  >
+
+            </div>
+          </div>
+          <div class="form-group col-md-6" style="padding-top: 5px;">
+            <label class="col col-form-label" >Tab Order</label>
+            <div class="col-12 ">
+              <input maxlength="255" formControlName="tabOrder" type="text" class="form-control"  >
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label class="col col-form-label" ></label>
+            <!--            <mat-checkbox formControlName="isMenu">Add to homepage</mat-checkbox>-->
+            <div class="col-12 form-group form-check">
+              <input type="checkbox" formControlName="isMenu" id="isMenu" class="form-check-input" />
+              <label for="isMenu" class="form-check-label">Add to homepage</label>
+            </div>
+          </div>
+<!--          <div class="form-group col-md-6" style="padding-top: 5px;">-->
+<!--            <label class="col col-form-label" >Action URL<span style="color: red;">*</span></label>-->
+<!--            <div class="col-12 ">-->
+<!--              <input maxlength="50" formControlName="isMenu"-->
+<!--                     [ngClass]="{ 'is-invalid': ((f.url.dirty || f.url.touched) && f.url.errors)}" type="text" class="form-control" name="name" >-->
+<!--              <div *ngIf="f.url.invalid && (f.name.dirty || f.url.touched)" class="invalid-feedback">-->
+<!--                <div *ngIf="f.url.errors.required ">Tên chức năng không được để trống</div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+        </div>
+
+      </form>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="float-right" style="height: 57px;
+      margin-top: 9px;">
+      <button type="button" class="btn newfile btn-color" (click)="onSave(1)" cdkFocusInitial>Lưu thông
+        tin</button>
+      <button type="button" class="btn closePopup" (click)="closeDialog(0)">Đóng</button>
+    </div>
+  </mat-dialog-actions>
+</div>

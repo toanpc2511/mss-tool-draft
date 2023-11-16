@@ -1,0 +1,333 @@
+<!--<button mat-icon-button class="close-button" [mat-dialog-close]="true" >-->
+<!--  <mat-icon class="close-icon" >close</mat-icon>-->
+<!--</button>-->
+<div class="d-flex justify-content-center title" mat-dialog-title>Chi tiết bản ghi phát hành thẻ tín dụng</div>
+
+<mat-dialog-content>
+  <hr>
+  <div class="container-fluid detail-content">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>ID</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].cardLosCode}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Mã khách hàng</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].customerCode}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Customer Category</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].customerCategory}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Mã sản phẩm</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].productCode}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>SĐT</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].phoneNumber}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Số tiền trích nợ</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].debtAmount}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Mã giới thiệu</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].inviteCode}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Họ và tên đệm</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].surname}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Ngày sinh</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].birthDate}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Số CMND</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].issueValue}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Nơi cấp</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].issuePlace}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Số nhà</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].houseNumber}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Thành phố</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].city}}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Chi nhánh</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].branchCode}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Mã tài sản</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].assetCode}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Tên chủ thẻ</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].cardHolderName}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>TK trích nợ</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].debtAccount}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Mã NVKD</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].employeeId}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Hạn mức</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].limitAmount | prettyMoney}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Tên</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].lastName}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Giới tính</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].gender}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Ngày cấp</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].issueDate}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Email</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].email}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Đường</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].street}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Câu hỏi bí mật</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].secretQuestion}}
+          </div>
+        </div>
+
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Câu trả lời bí mật</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].secretAnswer}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" >
+      <div class="col-sm-12 pt-0">
+<!--        <div *ngIf="data[2] === 'GDV'">-->
+<!--          <div class="row d-flex justify-content-between align-items-center label-field" [formGroup]="noteForm" *ngIf="data[1]">-->
+<!--            <div class="col-md-3">-->
+<!--              <span>Ghi chú</span>-->
+<!--            </div>-->
+<!--            <div class="col-md-9 d-flex justify-content-end">-->
+<!--              <input class="form-control" formControlName="note">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="row label-field" *ngIf="!data[1]">-->
+<!--            <div class="col-md-3">-->
+<!--              <span>Ghi chú</span>-->
+<!--            </div>-->
+<!--            <div class="col-md-9 d-flex justify-content-end">-->
+<!--              {{data[0][0].note}}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div *ngIf="data[2] !== 'GDV'">-->
+<!--          <div class="row label-field">-->
+<!--            <div class="col-md-3">-->
+<!--              <span>Ghi chú</span>-->
+<!--            </div>-->
+<!--            <div class="col-md-9 d-flex justify-content-end">-->
+<!--              {{data[0][0].note}}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Lý do</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].rejectReason}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Ghi chú</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].modifyNote}}
+          </div>
+        </div>
+
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Trạng thái bản ghi</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].statusLos === '1' ? 'Hợp lệ' : 'Không hợp lệ'}}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Trạng thái kiểm duyệt</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].processStatus }}
+          </div>
+        </div>
+        <div class="row label-field">
+          <div class="col-md-3">
+            <span>Thời gian</span>
+          </div>
+          <div class="col-md-9 d-flex justify-content-end">
+            {{data[0][0].approvalDateLos}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+</mat-dialog-content>
+<mat-dialog-actions align="center" *ngIf="data[2] === 'GDV'">
+    <button mat-stroked-button (click)="back()">Quay lại</button>
+    <button mat-stroked-button (click)="sendAprove()" [hidden]="!data[1]" >Gửi duyệt</button>
+</mat-dialog-actions>
+<mat-dialog-actions align="center" *ngIf="data[2] === 'KSV'">
+  <button mat-stroked-button (click)="back()">Quay lại</button>
+  <button mat-stroked-button (click)="openModifyDialog()" [hidden]="data[1]" >Y/C bổ sung</button>
+  <button mat-stroked-button (click)="approveLv1()" [hidden]="data[1]" >Gửi duyệt HO</button>
+</mat-dialog-actions>
+<mat-dialog-actions align="center" *ngIf="data[2] === 'NHS'">
+  <button mat-stroked-button (click)="back()">Quay lại</button>
+  <button mat-stroked-button (click)="openModifyDialog()" [hidden]="!data[1]" >Y/C bổ sung</button>
+  <button mat-stroked-button (click)="approveLv2()" [hidden]="!data[1]" >Duyệt</button>
+</mat-dialog-actions>
+<mat-dialog-actions align="center" *ngIf="data[2] === 'onlyView'">
+  <button mat-stroked-button (click)="back()">Quay lại</button>
+</mat-dialog-actions>
+
+<app-lpb-modal headerText="Xác nhận" [show]="isModify" [unit]="'%'" [widthContent]="30" [heightContent]="30"
+               (hideModal)="isModify = false" [marginTop]="'200px'">
+  <div class="">
+    <div class="mb-2">
+      Nhập lý do yêu cầu bổ sung
+    </div>
+    <div class="block-note">
+      <textarea [(ngModel)]='reason' class="form-control" cols="50" rows="3"></textarea>
+    </div>
+    <div class="text-center mt-2">
+      <button mat-raised-button class="mr-3" (click)="isModify = false" >Hủy</button>
+      <button mat-raised-button class="btn-send" (click)="modify()"  [disabled]="reason.trim().length < 1">Bổ sung</button>
+    </div>
+  </div>
+</app-lpb-modal>

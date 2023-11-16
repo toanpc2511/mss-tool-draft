@@ -1,0 +1,40 @@
+.detail-content{
+  padding-right: 3%;
+  padding-left: 3%;
+  .title{
+    color: #0C258A;
+    font-size: 20px;
+    padding: 10px 0;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  .label-field{
+    padding: 0 15px;
+    margin: 15px 0;
+    span:first-child{
+      color: #0C258A;
+      font-weight: bold;
+    }
+  }
+  .label-field:hover{
+    border-radius: 4px ;
+    background-color: #fbe5d6;
+  }
+  .action{
+    margin: 20px auto;
+  }
+}
+input{
+  box-shadow: none!important;
+}
+.title{
+  color: #0C258A;
+  font-size: 20px;
+  padding: 10px 0;
+  margin-top: 15px;
+  font-weight: bold;
+}
+.btn-send{
+  background-color: #F47326;
+  color: #FFFFFF;
+}

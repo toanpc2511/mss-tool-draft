@@ -1,0 +1,69 @@
+<!-- danh sach account -->
+<div class="container-fuild">
+    <app-process-info [processId]="processId" (processDetail)="getDetail($event)"></app-process-info>
+    <div class="row cust-row" [hidden]="!hiddenAccount">
+        <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+            <div class="title-head" style="font-weight: 500;">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">view_list</mat-icon>
+                <span class="text" style="padding: 5px 0;">DANH SÁCH TÀI KHOẢN</span>
+            </div>
+        </div>
+        <div class="  mat-elevation-z8">
+            <table class="table table-responsive table-fixed" style="margin: 0px;display: unset;">
+                <thead>
+                    <tr class="titleTD">
+                        <th>Số tài khoản</th>
+                        <th>Tên tài khoản</th>
+                        <th>Loại tài khoản</th>
+                        <th>Loại tiền tệ</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of lstAccount; index as i">
+                        <td class="cardNumber" (click)="detailAccount(item)">{{item.accountNumber}}
+                            <ng-container *ngIf="item.accountNumber == null">
+                                Tài khoản mới - {{item.accountIndex}}
+                            </ng-container>
+                        </td>
+                        <td style="text-align: center;">{{item.accountName}}</td>
+                        <td style="text-align: center;">{{item.accountProductName || 'Không có giá trị'}}</td>
+                        <td style="text-align: center;">{{item.currencyCode}}</td>
+                        <td style="text-align: center;">{{item.accountStatusName}}</td>
+                        <td class="text-center action" style="cursor: pointer;"><span class="material-icons"
+                                *ngIf="item.isActive"
+                                (click)="deleteAccount(item.id)">delete</span></td>
+                    </tr>
+                    <tr>
+                        <td *ngIf="lstAccount == null" style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<app-popup-detail-warring [show]="isShowMessage" (hideModal)="isShowMessage = false">
+    <div class="text-center">
+        Hồ sơ <span class="message">{{objStatusProfile.code}}</span> đang được thao tác bởi
+        <span class="message">{{objStatusProfile?.createdByUser?.userName}}</span> chi nhánh
+        <span class="message">{{objStatusProfile.branchCode}} </span>
+    </div>
+</app-popup-detail-warring>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+    <div class="col-12">
+        <div class="footer" *ngIf="isCreate" (click)="createAccount()">
+            <span class="material-icons">
+                add
+            </span>
+            <label>Tạo mới</label>
+        </div>
+        <div class="footer" (click)="backPage()">
+            <span class="material-icons">
+                keyboard_backspace
+            </span>
+            <label>Quay lại</label>
+        </div>
+    </div>
+</div>

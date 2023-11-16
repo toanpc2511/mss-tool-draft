@@ -1,0 +1,60 @@
+<div class="finance-body">
+  <div class="step-search d-flex flex-column">
+    <div class="content-title pt-2 ">
+      <i class="fa fa-search mr-2 txtLabel"></i>
+      TÌM KIẾM
+    </div>
+    <hr/>
+    <!-- Search Form -->
+    <div class="form-search d-flex flex-column">
+      <form [formGroup]="formSearch" class="container" (ngSubmit)="onSearch()">
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">CTKM</span>
+              <span class="col-8">
+                <input maxlength="20" placeholder="Nhập CTKM" type="text" formControlName="name"
+                       class="form-control"/>
+
+              </span>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Ngày áp dụng</span>
+              <span class="col-8">
+                <app-lpb-datepicker-new formControlName="startDate"></app-lpb-datepicker-new>
+
+              </span>
+            </div>
+          </div>
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-4 col-form-label textLabel">Ngày hết hiệu lực</span>
+              <span class="col-8">
+                <app-lpb-datepicker-new formControlName="endDate"></app-lpb-datepicker-new>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="d-flex gap-1 col-12 justify-content-center align-items-center mb-2">
+            <button class="btn btn-primary lpb-btn-primary mr-4 nowrap" type="submit">
+              Tìm kiếm
+              <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Search Form -->
+    <hr class="h-1px"/>
+    <app-lpb-datatable tableName="DANH SÁCH" [config]="datatableConfig" [searchConditions]="searchCondition" (deleteAction)="delete($event)"
+                       (editAction)="edit($event)" (viewAction)="view($event)" [columns]="columns"
+                       apiServiceURL="/iname-service/promotion"></app-lpb-datatable>
+  </div>
+</div>

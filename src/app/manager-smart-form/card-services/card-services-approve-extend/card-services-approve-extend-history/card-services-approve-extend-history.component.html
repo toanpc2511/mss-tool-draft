@@ -1,0 +1,177 @@
+<div class="card-services-approve-step-search card-services-extend-step-search d-flex flex-column">
+  <app-progress-spinner [color]="'accent'" [mode]="'indeterminate'" [value]="value"
+    *ngIf="isFetch === FETCH_STATUS.LOADING" class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title">
+    <span (click)="switchPage()">TRA CỨU YÊU CẦU CHỜ PHÊ DUYỆT </span> <span class="ml-4 active">LỊCH SỬ PHÊ
+      DUYỆT</span>
+  </div>
+  <div class="form-search d-flex flex-column">
+    <div class="row-fields mt-3 mb-2 justify-content-center">
+      <div class="form-search-title">
+        <span class="text-center">THÔNG TIN TÌM KIẾM </span>
+      </div>
+    </div>
+    <form [formGroup]="formSearch" (ngSubmit)="submitSearchForm()" (keyup.enter)="submitSearchForm()">
+      <div class="form-field container">
+        <div class="row-fields">
+          <!-- Thông tin KH  -->
+          <div class="field">
+            <span class="txtLabel">Thông tin KH </span>
+            <div class="input-group">
+              <div class="input-group-append">
+                <select class="form-control" formControlName="type">
+                  <option *ngFor="let typeSearch of lstInputTypeSearch" [value]="typeSearch.code">{{typeSearch.name}}
+                  </option>
+                </select>
+              </div>
+              <input maxlength="500" type="text" formControlName="txtSearch" placeholder="Nhập giá trị tìm kiếm"
+                class="form-control">
+            </div>
+            <div class="err-text mt-1" *ngIf="hasErrorInput('txtSearch', 'required')">Thông tin tìm kiếm không được bỏ
+              trống
+            </div>
+          </div>
+          <!-- Dịch vụ hỗ trợ -->
+          <div class="field">
+            <span class="txtLabel">Dịch vụ hỗ trợ </span>
+            <ng-select [multiple]="false" formControlName="actionCode" (clear)="clearEbsActionSearch()"
+              placeholder="Chọn dịch vụ hỗ trợ">
+              <ng-option *ngFor="let item of ebsActionsSearch" [value]="item.code">{{item.name}}</ng-option>
+            </ng-select>
+            <div class="text-primary mt-1 text-left p-0" *ngIf="isShowEbsActionSearchMsg">Thao tác đã được cập nhật
+            </div>
+            <div class="err-text mt-1 text-left p-0" *ngIf="hasErrorInput('actionCode', 'required')">Dịch vụ hỗ trợ
+              không được bỏ trống
+            </div>
+          </div>
+          <!-- Mã thẻ: -->
+          <div class="field">
+            <span class="txtLabel">Ngày duyệt <span class="field-require">(*)</span>:</span>
+            <div class="form-field flex-nowrap">
+              <div class="d-flex align-items-center position-relative">
+                <span class="txtLabel text-nowrap mr-1">Từ ngày: </span>
+                <app-lpb-date-picker #fromDate (dateChanged)="fromDateChange()" [maxDate]="maxDate">
+                </app-lpb-date-picker>
+              </div>
+              <div class="d-flex align-items-center position-relative">
+                <span class="txtLabel text-nowrap mr-1">Đến ngày:</span>
+                <app-lpb-date-picker #toDate (dateChanged)="toDateChange()" [maxDate]="maxDate">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row-fields">
+          <!-- Chi nhánh: -->
+          <div class="field">
+            <span class="txtLabel">Chi nhánh:</span>
+            <ng-select [multiple]="false" formControlName="branchCodeDo" (clear)="clearBranchCode()"
+              placeholder="Chọn Chi nhánh / PGD">
+              <ng-option value="">Tất cả Chi nhánh / PGD</ng-option>
+              <ng-option *ngFor="let item of lstBranch" [value]="item.code">{{item.branchCodeName}}</ng-option>
+            </ng-select>
+            <div class="err-text mt-1 text-left p-0" *ngIf="hasErrorInput('branchCodeDo', 'required')">
+              Chi nhánh không được bỏ trống
+            </div>
+          </div>
+
+          <!-- Trạng thái dịch vụ: -->
+          <div class="field">
+            <span class="txtLabel">Trạng thái:</span>
+            <ng-select [multiple]="false" formControlName="serviceStatus" placeholder="Chọn trạng thái giao dịch">
+              <ng-option *ngFor="let item of serviceStatuses" [value]="item.code">{{item.name}}</ng-option>
+            </ng-select>
+          </div>
+
+          <div class="form-field">
+            <!-- User nhập: -->
+            <div class="row-fields">
+              <div class="field">
+                <span class="txtLabel">User nhập:</span>
+                <input maxlength="500" type="text" formControlName="inputBy" class="form-control"
+                  placeholder="Nhập Username">
+              </div>
+            </div>
+
+            <div class="row-fields">
+              <!-- User nhập: -->
+              <div class="field">
+                <span class="txtLabel">User duyệt:</span>
+                <input maxlength="500" type="text" formControlName="approveBy" class="form-control"
+                  placeholder="Nhập Username">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-action w-100 mt-2">
+          <button class="btn btn-primary" type="submit">Tìm kiếm
+            <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="table-title d-flex align-items-center justify-content-between">
+        <div class="content-title">
+          <span class="active"> DANH SÁCH GIAO DỊCH</span>
+        </div>
+
+        <button [disabled]="!preRequest" class="btn btn-export"
+          [ngClass]="isFetchExport===FETCH_STATUS.LOADING && '_loading'" type="button"
+          (click)="exportHistories()">Export
+        </button>
+
+      </div>
+    </form>
+    <div class="tbl-result">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="col-w-5">STT</th>
+            <th class="col-w-10">Ref code</th>
+            <th class="col-w-10">Số GD</th>
+            <th class="col-w-10">Loại GD</th>
+            <th class="col-w-10">Số CIF</th>
+            <th class="col-w-10">Tên KH</th>
+            <th class="col-w-5">Mã chi nhánh</th>
+            <th class="col-w-15">Tên chi nhánh</th>
+            <th class="col-w-10">Thẻ Chính / Phụ</th>
+            <th class="col-w-5">Mã SP thẻ</th>
+            <th class="col-w-15">CardID</th>
+            <th class="col-w-15">Số thẻ</th>
+            <th class="col-w-10">Ngày gửi duyệt </th>
+            <th class="col-w-10">Người gửi duyệt </th>
+            <th class="col-w-10">Ngày phê duyệt </th>
+            <th class="col-w-10">Người phê duyệt </th>
+            <th class="col-w-5">Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of lstCardServiceHistories , index as i" class="h-1">
+            <td>{{ (pageIndex - 1) * pageSize + i + 1}}</td>
+            <td class="link-access" (click)="showDetail(item)">{{ item.serviceCode }}</td>
+            <td>{{ item.coreServiceCode }}</td>
+            <td class="text-nowrap">{{ item | actionName}}</td>
+            <td>{{ item.customerCode }}</td>
+            <td class="text-nowrap">{{ item.fullName }}</td>
+            <td>{{ item.branchCodeDo }}</td>
+            <td>{{ item.branchNameDo }}</td>
+            <td>{{ item.cardCategoryName }}</td>
+            <td>{{ item.cardProductCode }}</td>
+            <td>{{ item.cardCoreId }}</td>
+            <td>{{ item.cardNumber }}</td>
+            <td class="text-nowrap">{{ (item.inputDate | prettyDate: 'FULL_DATE') }}</td>
+            <td>{{ item.inputBy }}</td>
+            <td class="text-nowrap">{{ (item.approveDate | prettyDate: 'FULL_DATE') }}</td>
+            <td>{{ item.approveBy }}</td>
+            <td [style.color]="serviceStatusesColor[item.serviceStatusCode]">{{ item.serviceStatusName}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty-data" *ngIf="lstCardServiceHistories.length === 0">Không có bản ghi phù hợp</div>
+    </div>
+    <app-lpb-pagination [selected]="pageSize" [pagination]="pagination" (evtChangePageSize)="changePageSize($event)"
+      (evtSetPage)="setPage($event)">
+    </app-lpb-pagination>
+  </div>
+</div>

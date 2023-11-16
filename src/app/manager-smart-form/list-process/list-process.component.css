@@ -1,0 +1,64 @@
+.titleSearch {
+    padding-top: 15px;
+    border-bottom: 1px solid #BDBDBD;
+    padding-bottom: 15px;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.formSearch {
+    font-weight: 500;
+    font-size: 14px;
+    color: #252834;
+}
+
+.table tr th {
+    background: #EFF4FF;
+    border: 1px solid #DFD9D9;
+    text-align: center;
+}
+
+.table tr td {
+    border: 1px solid #DFD9D9;
+    text-align: center;
+}
+
+input:checked~.checkmark {
+    background-color: #828282;
+}
+
+li.active>a {
+    background-color: #384961 !important;
+    color: white;
+}
+
+li>a {
+    color: #666666;
+}
+
+.text {
+    font-weight: 20px;
+    color: #17589f;
+    display: block;
+    float: left;
+}
+
+.main {
+    padding: 0px;
+    margin: 5px 5px 0px 5px;
+    display: block;
+}
+
+.container-fluid {
+    padding: 0px;
+}
+
+.p-2 span {
+    font-size: 16px;
+    font-weight: 500px;
+}
+
+tr:focus {
+    background-color: #faebd7;
+    outline: 0;
+}

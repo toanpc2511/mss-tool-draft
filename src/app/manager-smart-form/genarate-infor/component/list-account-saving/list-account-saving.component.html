@@ -1,0 +1,60 @@
+<div class="row cust-row" style="margin-top: 5px; margin-left: 5px; margin-right: 3px;">
+    <div class="col-12 line-base">
+        <div class="title-head">
+            <mat-icon style="font-size: 30px; height: 30px; width: 38px;">account_balance_wallet</mat-icon>
+            <span class="text" style="padding: 5px 0;">DANH SÁCH TÀI KHOẢN TIẾT KIỆM</span>
+        </div>
+    </div>
+
+    <div class="col-12 col-table">
+        <table class="table table-bordered table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã chi nhánh</th>
+                    <th>Số tài khoản</th>
+                    <th>Mã tài khoản</th>
+                    <th>Ngày mở</th>
+                    <th>Ngày đáo hạn</th>
+                    <th>Loại tiền</th>
+                    <th>Số dư hiện tại</th>
+                    <th>Số tiền phong tỏa</th>
+                    <th>Số sổ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let a of account,index as i">
+                    <td>{{i+1}}</td>
+                    <td>
+                        {{a.branch.name}}
+                    </td>
+                    <td class="accountNumber">
+                        {{a.accountNumber}}
+                        <ng-container *ngIf="a.accountNumber==null">
+                            Số tài khoản - {{a.accountIndex}}
+                        </ng-container>
+                    </td>
+                    <td>{{a.accountClassCode}}</td>
+                    <td>{{a.modifiedByUser.validFrom |date:'dd/MM/yyy HH:mm:ss'}}</td>
+                    <td>{{a.modifiedByUser.validTo |date:'dd/MM/yyy HH:mm:ss'}}</td>
+                    <td>{{a.currencyCode}}</td>
+                    <td>
+                        <ng-container>
+                            Không có giá trị
+                        </ng-container>
+                    </td>
+                    <td>
+                        <ng-container>
+                            Không có giá trị
+                        </ng-container>
+                    </td>
+                    <td>
+                        <ng-container>
+                            Không có giá trị
+                        </ng-container>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

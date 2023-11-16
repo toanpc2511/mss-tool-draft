@@ -1,0 +1,255 @@
+<div class="container-fuild genarate-top">
+    <!-- <app-profile-info (detail)=getDetail($event)></app-profile-info> -->
+    <div class="row cust-row" style="margin-left: 5px; margin-right: 3px;">
+        <div class="col-12 line-base">
+            <div class="title-head">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px;">add_circle</mat-icon>
+                <span class="text" style="padding: 5px 0;">THÔNG TIN HỒ SƠ</span>
+            </div>
+        </div>
+
+        <div class="col-12 information-section">
+            <div class="col-6 colLeft">
+                <div class="row ">
+                    <label class="col-sm-4 col-form-label textLabel">Mã khách hàng:</label>
+                    <div class="col-sm-8 txt">
+                        <label *ngIf="dataDetail?.customer.customerCode === null">XXXXXX</label>
+                        <label>{{dataDetail?.customer.customerCode}}</label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-4 col-form-label textLabel">Mã ĐVKD:</label>
+                    <div class="col-sm-8 txt">
+                        <label>{{dataDetail?.customer?.branch?.code}} - {{dataDetail?.customer?.branch?.name}}</label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-4 col-form-label textLabel">Người tạo:</label>
+                    <div class="col-sm-8 txt">
+                        <!-- <label>{{process.item?.createdByUser.fullName}}</label> -->
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-4 col-form-label textLabel">Người duyệt:
+                    </label>
+                    <div class="col-sm-8 txt">
+                        <!-- <label>{{process.item?.modifiedByUser.fullName}}</label> -->
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-4 col-form-label textLabel">Trạng thái CIF:
+                    </label>
+                    <div class="col-sm-8 txt">
+                        <label></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 colRight">
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Trạng thái GD:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label></label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Loại giao dịch:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>Tại quầy</label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Mã giao dịch gần nhất:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label></label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Ngày tạo:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label></label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Ngày cập nhật gần nhất:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label></label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Kênh tạo:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label>Tại quầy</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <app-customer-infor></app-customer-infor> -->
+    <div class="row cust-row" style="margin-top: 5px; margin-left: 5px; margin-right: 3px;">
+        <div class="col-12 line-base">
+            <div class="title-head">
+                <mat-icon style="font-size: 30px; height: 30px; width: 38px;">account_balance_wallet</mat-icon>
+                <span class="text" style="padding: 5px 0;">THÔNG TIN KHÁCH HÀNG</span>
+            </div>
+        </div>
+
+        <div class="col-12" style="padding-top: 30px; padding-bottom: 30px;">
+            <div class="col-6 colLeft">
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Họ và tên:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{dataDetail?.customer.person.fullName}}</label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Ngày sinh:</label>
+                    <div class="col-sm-7 txt">
+                        <label>{{dataDetail?.customer.person.dateOfBirth }}</label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Người cư trú:</label>
+                    <div class="col-sm-7 txt">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input checked" disabled name="exampleRadios" type="radio"
+                                id="exampleRadios1" [checked]="dataDetail?.customer.person.residentStatus">
+                            <label class="form-check-label" for="exampleRadios1" style="color: black">Có</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" disabled name="exampleRadios" type="radio"
+                                id="exampleRadios2" [checked]="!dataDetail?.customer.person?.residentStatus">
+                            <label class="form-check-label" for="exampleRadios2" style="color: black">Không</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row " *ngFor="let item of dataDetail?.customer.person.perDocNoList;let i = index">
+                    <label class="col-sm-5 col-form-label textLabel">Số giấy tờ xác minh::
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label class="">{{item.perDocNo}}</label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Địa chỉ hiện tại:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label class="">{{dataDetail?.customer.person.residenceStreetNumber }}</label> -
+                        <label class="">{{dataDetail?.customer.person.residenceWardName}}</label> -
+                        <label class="">{{dataDetail?.customer.person.residenceDistrictName}}</label> -
+                        <label class="">{{dataDetail?.customer.person.residenceCityName}}</label> -
+                        <label class="">{{dataDetail?.customer.person.residenceCountryName}}</label>
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Tổng số dư TKTT:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label></label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Tổng số dư TKTK:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 colRight">
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Giới tính:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label class="">{{dataDetail?.customer.person.genderName}}</label>
+
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Địa chỉ email:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label class="">{{dataDetail?.customer.person.email}}</label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Điện thoại di động:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label class="">{{dataDetail?.customer.person.mobileNo}}</label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Dư nợ vay:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label></label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Số tiền đã thấu chi:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label></label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Hạn mức thấu chi:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label></label>
+                    </div>
+                </div>
+                <div class="row ">
+                    <label class="col-sm-5 col-form-label textLabel">Tổng dư nợ:
+                    </label>
+                    <div class="col-sm-7 txt">
+                        <label></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <app-list-account></app-list-account>
+    <app-list-account-saving></app-list-account-saving>
+    <app-list-sms-banking></app-list-sms-banking>
+    <app-list-ebanking></app-list-ebanking>
+    <app-list-card-type></app-list-card-type> -->
+</div>
+
+<div class="row footer-row">
+    <div class="col-12">
+        <div class="footer" *ngIf="isCheckButtonClose" (click)="doDelete()">
+            <span class="material-icons"> close </span>
+            <label>Đóng hồ sơ</label>
+        </div>
+        <div class="footer mr-1" (click)="backPage()">
+            <span class="material-icons"> keyboard_backspace </span>
+            <label>Quay lại</label>
+        </div>
+    </div>
+</div>
+<app-lpb-modal headerText="Xác nhận" [show]="isShowConfirmPopupDelete" [unit]="'%'" [widthContent]="50"
+    [heightContent]="30" (hideModal)="isShowConfirmPopupDelete = false">
+
+    <div class="detail-cif-content">
+        <div class="text-center">
+            Bạn có muốn xóa hồ sơ?
+        </div>
+        <div class="div-center">
+            <button class="btn-cancel btn-space-confim mr-2" (click)="confirmDeteteProcess('NO')">
+                Hủy
+            </button>
+            <button class="btn-save" (click)="confirmDeteteProcess('YES')">
+                Đồng ý
+            </button>
+        </div>
+    </div>
+</app-lpb-modal>

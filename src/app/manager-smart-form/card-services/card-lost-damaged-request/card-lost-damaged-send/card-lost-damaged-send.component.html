@@ -1,0 +1,81 @@
+<div class="card-inssuance-request-step-send d-flex flex-column">
+  <app-progress-spinner [color]="color" [mode]="mode" [value]="value" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title">
+    BÁO MẤT HỎNG THẺ
+  </div>
+  <div class="form-detail d-flex flex-column" [formGroup]="formCustomerInfo">
+    <div class="row-fields mt-3 mb-2">
+      <div class="field">
+        <span class="txtLabel">CIF:</span>
+        <input type="text" formControlName="customerCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Thẻ chính / phụ:</span>
+        <input type="text" formControlName="cardCategory" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Số GTXM:</span>
+        <input type="text" formControlName="uidValue" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Mã sản phẩm thẻ:</span>
+        <input type="text" formControlName="cardProductCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Tên khách hàng:</span>
+        <input type="text" formControlName="fullName" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Số thẻ:</span>
+        <input type="text" formControlName="cardNumber" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Ngày phát hành:</span>
+        <input type="text" formControlName="releaseDate" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Chi nhánh:</span>
+        <input type="text" formControlName="branchCode" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Tài khoản mặc định</span>
+        <input type="text" formControlName="defaultAccount" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Trạng thái thẻ EBS:</span>
+        <input type="text" formControlName="cardStatusEbs" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Số Serial thẻ:</span>
+        <input type="text" formControlName="cardEbsSerialNumber" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">Kiểm tra kết nối EBS:</span>
+        <input type="text" formControlName="checkConnectEbs" class="form-control">
+      </div>
+      <div class="field">
+        <span class="txtLabel">File đính kèm:</span>
+        <app-lpb-upload-file-single #uploadFile [isRequire]="true" (changeFile)="changeSelectedFile($event)"></app-lpb-upload-file-single>
+      </div>
+      <div class="field">
+        <span class="txtLabel">Loại GD:</span>
+        <select class="form-control" formControlName="ebsActionCode" title="Chọn Yêu cầu">
+          <option value="CARD_BROKEN_AFTER" >Báo Hỏng</option>
+          <option value="CARD_LOST">Báo Mất</option>
+        </select>
+      </div>
+    </div>
+    <div class="row-fields">
+      <span class="txtLabel">Ghi chú:</span>
+      <textarea type="text" formControlName="sendNote" maxlength="500" class="form-control"></textarea>
+    </div>
+  </div>
+  <div class="btn-action w-100 d-flex justify-content-center">
+    <button class="btn btn-primary mr-2 btn-action-back" (click)="backToSearch($event)" type="button">Quay lại
+    </button>
+    <button class="btn btn-primary btn-action-send" (click)="sendApprove()" type="button">Gửi duyệt
+    </button>
+  </div>
+</div>

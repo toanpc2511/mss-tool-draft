@@ -1,0 +1,105 @@
+<div class="card-issuance-request-step-search d-flex flex-column">
+  <app-progress-spinner color="primary" mode="indeterminate" value="50" *ngIf="isShowLoading"
+                        class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title">
+    TẠO YÊU CẦU DỊCH VỤ
+  </div>
+  <div class="form-search d-flex flex-column container">
+    <div class="row-fields mt-3 mb-2">
+      <div class="form-search-title d-flex justify-content-center">
+        <span>Tìm kiếm danh sách thẻ dùng dịch vụ</span>
+      </div>
+    </div>
+    <div class="row-fields" [formGroup]="formSearch">
+      <div class="field">
+        <span class="txtLabel">Thông tin KH <span class="field-require">(*)</span>:</span>
+        <div class="input-group">
+          <div class="input-group-append">
+            <select class="form-control" formControlName="type">
+              <option *ngFor="let typeSearch of lstInputTypeSearch" [value]="typeSearch.code">{{typeSearch.name}}</option>
+            </select>
+          </div>
+          <input type="text" formControlName="txtSearch" placeholder="Nhập giá trị tìm kiếm" class="form-control" (keyup.enter)="searchCardInsuance()">
+        </div>
+        <div class="err-text mt-1" *ngIf="hasErrorInput('txtSearch', 'required')">
+          Thông tin tìm kiếm không được bỏ trống
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6 field">
+          <span class="txtLabel">Chi nhánh:</span>
+          <ng-select formControlName="branchCode" (clear)="clearBranchCode()"
+                      placeholder="Chọn Chi nhánh / PGD">
+            <ng-option value="">Tất cả Chi nhánh / PGD</ng-option>
+            <ng-option *ngFor="let item of lstBranch" [value]="item.code">{{item.branchCodeName}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="col-md-6 field">
+          <span class="txtLabel">Dịch vụ:</span>
+          <ng-select formControlName="actionCode" [clearable]="false" [searchable]="false" >
+            <ng-option value="CARD_BACK">Trả thẻ</ng-option>
+            <ng-option value="CARD_BROKEN_AFTER">Báo hỏng</ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="btn-action w-100 mt-3">
+        <button class="mr-3" mat-raised-button color="create" (click)="backToSearch($event)">Quay lại</button>
+        <button mat-raised-button color="search" (click)="searchCardInsuance()">Tìm kiếm</button>
+      </div>
+    </div>
+  </div>
+  <div class="content-title">
+    DANH SÁCH THẺ
+  </div>
+  <div class="tbl-result">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>STT</th>
+        <th>Số thẻ</th>
+        <th>Số CIF</th>
+        <th>Tên khách hàng</th>
+        <th>Thẻ chính/phụ</th>
+        <th>Mã SP thẻ</th>
+        <th>CardID</th>
+        <th>TK Mặc định</th>
+        <th>Ngày phát hành</th>
+        <th>Thao tác</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of lstCardIssuanceSearch , index as i">
+        <th>{{i + 1}}</th>
+        <th>{{item.cardNumber ? item.cardNumber : ''}}</th>
+        <th>{{item.customerCode ? item.customerCode : ''}}</th>
+        <th>{{item.fullName ? item.fullName : ''}}</th>
+        <th>{{item.cardCategoryName ? item.cardCategoryName : ''}}</th>
+        <th>{{item.cardProductCode ? item.cardProductCode : ''}}</th>
+        <th>{{item.cardCoreId ? item.cardCoreId : ''}}</th>
+        <th>{{item.defaultAccount ? item.defaultAccount : ''}}</th>
+        <th>{{item.releaseDate ? item.releaseDate : ''}}</th>
+        <th *ngIf="service === 'CARD_BROKEN_AFTER'">
+          <span matTooltip="Gửi yêu cầu" *ngIf="!invalidCard.includes(item.cardStatusCode)">
+            <i role="button" class="fa fa-paper-plane-o btn-approve" (click)="getCardInfoEbs(item, acctionView.REQ_APPROVE)"></i>
+          </span>
+          <span matTooltip="Thẻ không hợp lệ" *ngIf="invalidCard.includes(item.cardStatusCode)">
+            <i role="button" class="fa fa-paper-plane-o"></i>
+          </span>
+        </th>
+        <th *ngIf="service === 'CARD_BACK'">
+          <span *ngIf="validCardBack.includes(item.cardStatusCode)">
+            <i *ngIf="userInfo.branchCode === item.branchCode" role="button" class="fa fa-paper-plane-o btn-approve"
+               (click)="getCardInfoEbs(item, acctionView.REQ_APPROVE)" matTooltip="Gửi yêu cầu"></i>
+            <i *ngIf="userInfo.branchCode !== item.branchCode" role="button" class="fa fa-paper-plane-o" matTooltip="Chi nhánh không hợp lệ"></i>
+          </span>
+          <span matTooltip="Thẻ không hợp lệ" *ngIf="!validCardBack.includes(item.cardStatusCode)">
+            <i role="button" class="fa fa-paper-plane-o"></i>
+          </span>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+    <div class="empty-data" *ngIf="lstCardIssuanceSearch.length === 0">Chưa có bản ghi tồn tại</div>
+  </div>
+</div>

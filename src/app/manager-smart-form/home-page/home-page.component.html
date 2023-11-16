@@ -1,0 +1,29 @@
+<div class="card-services-main d-flex flex-column container-fluid">
+  <div class="row mt-2">
+    <div class="col-12" *ngFor="let service of services; let i = index">
+      <div class="card" *ngIf="service.serviceList.length > 0">
+        <div class="card-body">
+          <a [routerLink]="service.serviceUrl" >
+            <h1 class="card-title font-weight-bold">{{ (i+1) + '.' + service.serviceName?.split('.')[1] }}</h1>
+          </a>
+
+          <div class="card-services-main-items container-fluid">
+            <div class="row">
+              <ng-container *ngFor="let item of service.serviceList">
+                <div class="col-xxl-1 col-xl-2 col-lg-2 col-md-3 col-sm-6 mb-2" [hidden]="item.isHidden">
+                  <div class="card-service-item d-flex flex-column " [routerLink]="item.urlRouter ? item.urlRouter : '#'">
+                    <img [src]="item.pathImage" loading="lazy">
+                    <span class="mt-1">{{item.textItem}}</span>
+                  </div>
+                </div>
+              </ng-container>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

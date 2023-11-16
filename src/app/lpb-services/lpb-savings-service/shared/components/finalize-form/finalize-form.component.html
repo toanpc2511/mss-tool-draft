@@ -1,0 +1,191 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container *ngIf="getFirstError(controlName)" [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.DATE_RANGE_ERROR" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được lớn hơn Ngày mở STK
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.INVALID_DATE" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.MAX" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+<div class="content-body ">
+  <div class="content-title p-0 mt-3">
+    <span class="m-0  active">THÔNG TIN TÀI KHOẢN TIẾT KIỆM</span>
+  </div>
+
+  <div class="form mt-3 form-group container-fluid" [formGroup]="form">
+    <div class="row">
+      <div class="col-lg-4">
+        <!-- #region Số tài khoản -->
+        <label class="form-group d-block">
+          <span class="textLabel">Số tài khoản</span>
+          <input class="form-control w-100" formControlName="accountNumber" />
+        </label>
+        <!-- #endregion Số tài khoản -->
+
+        <!-- #region Serial -->
+        <label class="form-group d-block">
+          <span class="textLabel">Serial</span>
+          <input class="form-control w-100" formControlName="serial" />
+        </label>
+        <!-- #endregion Serial -->
+
+        <!-- #region Loại tiền -->
+        <label class="form-group d-block">
+          <span class="textLabel">Loại tiền</span>
+          <input class="form-control w-100" formControlName="currency" />
+        </label>
+        <!-- #endregion Loại tiền -->
+
+        <!-- #region Diễn giải -->
+        <label class="form-group d-block">
+          <span class="textLabel">Diễn giải</span>
+          <input class="form-control w-100" formControlName="description" />
+        </label>
+        <!-- #endregion Diễn giải -->
+      </div>
+
+      <div class="col-lg-4">
+        <!-- #region Loại tất toán -->
+        <label class="form-group d-block">
+          <span class="textLabel">Loại tất toán</span>
+          <app-lpb-select2 [items]="SETTLEMENT_TYPES" labelName="label" bindValue="code"
+            formControlName="settlementType" placeholder="Chọn Loại tất toán"></app-lpb-select2>
+        </label>
+        <!-- #endregion Loại tất toán -->
+
+        <!-- #region Ngày mở STK và Ngày tất toán -->
+        <div class="row">
+          <div class="col-lg-6">
+            <!-- Ngày mở STK -->
+            <label class="form-group d-block">
+              <span class="textLabel">Ngày mở STK</span>
+              <app-lpb-datepicker-new formControlName="openingDate">
+              </app-lpb-datepicker-new>
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'openingDate', controlNameVi: 'Ngày mở STK'}">
+              </ng-container>
+            </label>
+            <!-- #endregion Ngày mở STK -->
+          </div>
+
+          <div class="col-lg-6">
+            <!-- #region Ngày tất toán -->
+            <label class="form-group d-block">
+              <span class="textLabel">Ngày tất toán</span>
+              <app-lpb-datepicker-new formControlName="settlementDate">
+              </app-lpb-datepicker-new>
+              <ng-container
+                *ngTemplateOutlet="error; context: {controlName: 'settlementDate', controlNameVi: 'Ngày tất toán'}">
+              </ng-container>
+            </label>
+            <!-- #endregion Ngày tất toán -->
+          </div>
+        </div>
+        <!-- #endregion Ngày mở STK và Ngày tất toán -->
+
+        <!-- #region Lãi suất áp dụng -->
+        <label class="form-group d-block">
+          <span class="textLabel">Lãi suất áp dụng</span>
+          <input type="text" class="form-control w-100" formControlName="interestRate" />
+        </label>
+        <!-- #endregion Lãi suất áp dụng -->
+
+        <!-- #region Trạng thái sổ -->
+        <label class="form-group d-block">
+          <span class="textLabel">Trạng thái sổ</span>
+          <input type="text" class="form-control w-100" formControlName="bookStatus" />
+        </label>
+        <!-- #endregion Trạng thái sổ -->
+      </div>
+
+      <div class="col-lg-4">
+        <!-- #region Số tiền -->
+        <label class="form-group d-block">
+          <span class="textLabel">Số tiền</span>
+          <app-lpb-money-input [class]="'form-control'" [control]="form.controls['amount']" controlNameVi="Số tiền"
+            name="amount" [maxlength]="13" [blockComma]="false">
+          </app-lpb-money-input>
+          <ng-container *ngTemplateOutlet="error; context: {controlName: 'amount', controlNameVi: 'Số tiền'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Số tiền -->
+
+        <!-- #region Số tiền lãi tất toán trước hạn -->
+        <label class="form-group d-block">
+          <span class="textLabel">Số tiền lãi tất toán trước hạn</span>
+          <app-lpb-money-input [class]="'form-control'" [control]="form.controls['prematureInterest']"
+            controlNameVi="Số tiền lãi tất toán trước hạn" name="prematureInterest" [maxlength]="13"
+            [blockComma]="false"> </app-lpb-money-input>
+        </label>
+        <!-- #endregion Số tiền lãi tất toán trước hạn -->
+
+        <!-- #region Số tiền lãi dự tính khi đến hạn -->
+        <label class="form-group d-block">
+          <span class="textLabel">Số tiền lãi dự tính khi đến hạn</span>
+          <app-lpb-money-input [class]="'form-control'" [control]="form.controls['matureInterest']"
+            controlNameVi="Số tiền lãi dự tính khi đến hạn" name="matureInterest" [maxlength]="13" [blockComma]="false">
+          </app-lpb-money-input>
+        </label>
+        <!-- #endregion Số tiền lãi dự tính khi đến hạn -->
+
+        <!-- #region Tổng số tiền -->
+        <label class="form-group d-block">
+          <span class="textLabel">Tổng số tiền</span>
+          <app-lpb-money-input [class]="'form-control'" [control]="form.controls['totalAmount']"
+            controlNameVi="Tổng số tiền" name="totalAmount" [maxlength]="13" [blockComma]="false">
+          </app-lpb-money-input>
+        </label>
+        <!-- #endregion Tổng số tiền -->
+      </div>
+      <div class="col-lg-4">
+        <!-- #region Chi bổ sung CKH -->
+        <span class="textLabel">
+          <mat-checkbox color="primary" [formControl]="form.controls['additionalExpenses']">Chi bổ sung
+            CKH</mat-checkbox>
+        </span>
+        <!-- #endregion Chi bổ sung CKH -->
+      </div>
+    </div>
+  </div>
+  <hr class="h-1px" />
+  <app-form-array class="app-form-array mt-3 d-block" [builder]="builder" [data]="form.controls['settlementDeposits']"
+    [actions]="formArrayActions" [buttons]="formArrayButtons" [config]="{
+    hasSTT:true,
+    actionLabel: 'Thao tác',
+    contentClass: 'container-fluid bg-light-gray',
+    headerClass: 'bg-light-blue font-weight-500 px-1 py-3 h6',
+    cellClass:'p-1 bg-light-gray v-top',
+    isDetail: isDetail
+  }">
+    <div class="content-title p-0">
+      <span class="m-0 active"> CHI TIẾT TÀI KHOẢN NHẬN TIỀN GỬI TẤT TOÁN</span>
+    </div>
+  </app-form-array>
+
+  <div class="d-flex justify-content-end settlement-deposits-error">
+    <ng-container class="text-right"
+      *ngTemplateOutlet="error; context: {controlName: 'settlementDeposits', controlNameVi: 'Số tiền'}">
+    </ng-container>
+  </div>
+  <div #tabGroup>
+    <mat-tab-group class="mt-3 mb-5 d-block" animationDuration="0ms" (selectedTabChange)="onTabChange()">
+      <mat-tab label="CHỮ KÝ" class="position-relative mt-3">
+        <app-lpb-signature-list [class]="'w-100'"></app-lpb-signature-list>
+      </mat-tab>
+      <mat-tab label="GIẤY TỜ XÁC MINH" class="position-relative mt-3">
+        <app-lpb-identity-certification [class]="'w-100'"></app-lpb-identity-certification>
+      </mat-tab>
+      <mat-tab label="BẢNG KÊ" class="position-relative m-3">
+        <app-money-list [moneyListForm]="form.controls['moneyList']" class="position-relative mt-3"
+          [curCode]="settlementDepositsData?.currency"></app-money-list>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

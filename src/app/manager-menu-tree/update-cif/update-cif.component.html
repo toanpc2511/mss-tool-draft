@@ -1,0 +1,119 @@
+<div class="container-fuild">
+  <div class="update-cif" [ngStyle]="{'pointer-events': !isApprove && !isSave ? 'none' : 'auto' }">
+    <div class="update-cif-content-title">
+      <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">add</mat-icon>
+      <span>THÔNG TIN KHÁCH HÀNG</span>
+    </div>
+    <div class="update-cif-info-customer">
+      <div class="col-info-left">
+        <app-uc-customer-info #customerInfo (dateOfBirthChange)="dateOfBirthValueChange($event)"
+          (nationality)="nationlityValueChange($event)" [isExistCore]="isExistCore" [personId]="personId"
+          [objCifCustomerInfo]="objCifCustomerInfo" [objCifCustomerInfoCore]="objCifCustomerInfoCore">
+        </app-uc-customer-info>
+      </div>
+      <div class="col-info-right">
+        <app-uc-verify-docs #verifyDos [perDocNoListFromServe]="cachePerDocsList" [inpDateOfBirth]="dateOfBirth"
+          [inpNationality]="nationlity" [provinceUser]="userCityName" [lstPerDocsCore]="lstPerDocsCore">
+        </app-uc-verify-docs>
+      </div>
+    </div>
+    <div class="update-cif-address">
+      <app-lpb-address #address [objCurrentAddress]="currentAddressObject" [objResidentAddress]="residentAddressObject"
+        [objCifCustomerInfoCore]="objCifCustomerInfoCore">
+      </app-lpb-address>
+    </div>
+    <div class="update-cif-child-infor">
+      <div (click)="showMis()" class="mis"> THÔNG TIN MIS <span class="error-invalid">(*)</span> </div>
+      <app-lpb-modal headerText="THÔNG TIN MIS" [show]="isMis" [unit]="'%'" [widthContent]="80" [heightContent]="75"
+        (hideModal)="isMis = false">
+        <app-uc-mis *ngIf="isMis" (closeMis)="closeMis()" [objMisCif]="objMisCif"
+          [objCustomerMisCore]="objCustomerMisCore" (objectMisCif)="getMIS($event)"></app-uc-mis>
+      </app-lpb-modal>
+
+      <div (click)="showUdf(true)" class="mis"> THÔNG TIN UDF <span class="error-invalid">(*)</span></div>
+      <app-lpb-modal headerText="THÔNG TIN UDF" [show]="isUdf" [unit]="'%'" [widthContent]="80" [heightContent]="75"
+        (hideModal)="closeUdf()">
+        <app-uc-udf *ngIf="isUdf" (closeUdf)="closeUdf()" [objCustomerUdfCore]="objCustomerUdfCore"
+          [isExistCore]="isExistCore" [objCifUdf]="objCifUdf" (objectCifUdf)="getUDF($event)"></app-uc-udf>
+      </app-lpb-modal>
+
+      <app-uc-fatca #fatca [inpNationality]="nationlity" [fatcaObject]="fatcaObject"
+        [fatcaObjectCore]="fatcaObjectCore"></app-uc-fatca>
+      <div (click)="showReferenceCif()" class="mis"> THÔNG TIN CIF LIÊN QUAN ({{countBlockReferenceCif}}) </div>
+      <app-lpb-modal headerText="THÔNG TIN CIF LIÊN QUAN" [show]="isReference" [unit]="'%'" [widthContent]="80"
+        [heightContent]="75" (hideModal)="closeReferenceCif($event)">
+        <app-uc-reference-cif (complateReferenceCif)="closeReferenceCif($event)" [inputData]="referenceCifs"
+          (sendData)="getReferenceCif($event)" *ngIf="isReference"></app-uc-reference-cif>
+      </app-lpb-modal>
+      <div (click)="showCoOwnerBenefit()" class="mis"> THÔNG TIN CHỦ SỞ HỮU HƯỞNG LỢI ({{countBlockOwnerOfBenefit}})
+      </div>
+      <app-lpb-modal headerText="THÔNG TIN  CHỦ SỞ HỮU HƯỞNG LỢI" [show]="isOwnerBenefit" [unit]="'%'"
+        [widthContent]="80" [heightContent]="75" (hideModal)="closeCoOwnerBenefit($event)">
+        <app-uc-owner-benefit *ngIf="isOwnerBenefit" [objCurrentAddress]="currentAddressObject"
+          [objResidentAddress]="residentAddressObject" (arrayCoOwner)="emitCoOwner($event)"
+          (closeCoOwner)="closeOwnerBenefit($event)" [inpListOwner]="coOwnerList"></app-uc-owner-benefit>
+      </app-lpb-modal>
+      <div (click)="showLegal()" class="mis"> THÔNG TIN THỎA THUẬN PHÁP LÝ ({{listLegal.length}})</div>
+      <app-lpb-modal headerText="THÔNG TIN THỎA THUẬN PHÁP LÝ" [show]="isLegal" [unit]="'%'" [widthContent]="80"
+        [heightContent]="75" (hideModal)="closeLegal($event)">
+        <app-uc-legal *ngIf="isLegal" (emitEventCloseLegal)="closeLegal($event)"
+          (emitListLegal)="collectListLegal($event)" [lstLegal]="listLegal"></app-uc-legal>
+      </app-lpb-modal>
+
+      <div (click)="showGuardian()" [class.error-invalid]="errMsgGuardian !== ''" class="mis"> THÔNG TIN ĐẠI DIỆN PHÁP
+        LUẬT ({{countBlockGuardian}})</div>
+      <app-lpb-modal headerText="THÔNG TIN ĐẠI DIỆN PHÁP LUẬT" [show]="isGuardian" [unit]="'%'" [widthContent]="80"
+        [heightContent]="75" (hideModal)="closeGuardian($event)">
+        <app-uc-guardian (complateGuardian)="closeGuardian($event)" *ngIf="isGuardian"
+          [lstGuardianCore]="lstGuardianCore" (sendData)="getGuardian($event)" [guardianList]="guardianList">
+        </app-uc-guardian>
+      </app-lpb-modal>
+      <span class="error-block" *ngIf="errMsgGuardian !== ''">
+        {{errMsgGuardian}}
+        <p></p>
+      </span>
+    </div>
+  </div>
+  <div class="row footer-row">
+    <div class="col-12">
+      <div class="footer" *ngIf="isApprove" (click)="doSubmited('SEND_APPROVE')">
+        <span class="material-icons"> check </span>
+        <label>Gửi duyệt</label>
+      </div>
+      <div class="footer" *ngIf="isSave" (click)="doSubmited('SAVE')">
+        <span class="material-icons"> save </span>
+        <label>Lưu thông tin</label>
+      </div>
+      <div class="footer mr-1" (click)="backPage()">
+        <span class="material-icons"> keyboard_backspace </span>
+        <label>Quay lại</label>
+      </div>
+    </div>
+    <app-lpb-modal headerText="Xác nhận" [show]="isShowPopupApprove" [unit]="'%'" [widthContent]="50"
+      [heightContent]="50" (hideModal)="isShowPopupApprove = false">
+      <div class="update-cif-content">
+        <div class="mb-2">
+          Bạn có muốn gửi duyệt dịch vụ này không?
+        </div>
+        <div class="block-note">
+          <label>Ghi chú:&nbsp;&nbsp;</label>
+          <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+        </div>
+        <div class="div-center">
+          <button class="btn-cancel" (click)="confimApproveProcess('CANCEL')">
+            Hủy
+          </button>
+          <button class="btn-save ml-2" (click)="confimApproveProcess('CONFIRM')">
+            Đồng ý
+          </button>
+        </div>
+      </div>
+    </app-lpb-modal>
+
+    <app-lpb-modal headerText="CẢNH BÁO LỖI DỮ LIỆU" [show]="isShowModalWarningData" [unit]="'%'" [widthContent]="50"
+      [heightContent]="50" (hideModal)="isShowModalWarningData = false">
+      <app-warning-data-invalid *ngIf="isShowModalWarningData" [objErrorCore]="objErrorCore"
+        [lstGuardianCore]="lstGuardianCore"></app-warning-data-invalid>
+    </app-lpb-modal>
+  </div>
+</div>

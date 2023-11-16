@@ -1,0 +1,45 @@
+@import "../../styles/styles.scss";
+
+.text-message {
+    border: solid 1px grey;
+    &-height {
+        height: 100px;
+    }
+}
+
+.text-message:focus {
+    border: 0;
+    border-radius: unset;
+    outline-color: lightblue;
+}
+
+.text-red {
+    color: red;
+}
+
+.btn-red {
+    background-color: red;
+    color: white;
+}
+
+.bg-error {
+    background-color: #F5F7F9;
+    border-left: solid 3px red;
+}
+
+.bg-message {
+    background-color: #F5F7F9;
+    border-left: solid 3px green;
+}
+
+.text-green {
+    color: green;
+}
+
+.bg-green {
+    background-color: green;
+}
+
+.right-0 {
+    right: 0;
+}

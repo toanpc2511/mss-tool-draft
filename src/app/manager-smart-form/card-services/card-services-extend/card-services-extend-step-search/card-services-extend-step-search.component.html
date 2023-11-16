@@ -1,0 +1,134 @@
+<div class="card-services-extend-step-search d-flex flex-column">
+  <app-progress-spinner [color]="'accent'" [mode]="'indeterminate'" [value]="value"
+    *ngIf="isFetch === FETCH_STATUS.LOADING" class="sq-global-backdrop center-aligned">
+  </app-progress-spinner>
+  <div class="content-title">
+    <span class="active">TÌM KIẾM THẺ CẦN SỬ DỤNG DỊCH VỤ</span> <span class="ml-4 text-decoration-none"
+      (click)="switchPage(extendStep.HISTORY)">LỊCH SỬ GIAO DỊCH</span>
+  </div>
+  <div class="form-search d-flex flex-column">
+    <div class="row-fields mt-3 mb-2">
+      <div class="form-search-title">
+        <span>THÔNG TIN TÌM KIẾM </span>
+      </div>
+    </div>
+    <form class="row-fields" [formGroup]="formSearch" (ngSubmit)="searchCard()" (keyup.enter)="searchCard()">
+      <!-- Thông tin KH  -->
+      <div class="field">
+        <span class="txtLabel">Thông tin KH <span class="field-require">(*)</span>:</span>
+        <div class="input-group">
+          <div class="input-group-append">
+            <select class="form-control" formControlName="type">
+              <option *ngFor="let typeSearch of lstInputTypeSearch" [value]="typeSearch.code">{{typeSearch.name}}
+              </option>
+            </select>
+          </div>
+          <input maxlength="500" type="text" formControlName="txtSearch" placeholder="Nhập giá trị tìm kiếm"
+            class="form-control">
+        </div>
+        <div class="err-text mt-1" *ngIf="hasErrorInput('txtSearch', 'required')">Thông tin khách hàng không được bỏ
+          trống
+        </div>
+      </div>
+      <!-- Dịch vụ hỗ trợ -->
+      <div class="field">
+        <span class="txtLabel">Dịch vụ hỗ trợ <span class="text-danger">(*)</span> :</span>
+        <ng-select [multiple]="false" formControlName="ebsActionSearch" placeholder="">
+          <ng-option *ngFor="let item of ebsActionsSearch" [value]="item.code">{{item.name}}</ng-option>
+        </ng-select>
+        <div class="text-primary mt-1 text-left p-0" *ngIf="isShowEbsActionSearchMsg">Thao tác đã được cập nhật </div>
+        <div class="err-text mt-1 text-left p-0" *ngIf="hasErrorInput('ebsActionSearch', 'required')">Dịch vụ hỗ trợ
+          không được bỏ trống
+        </div>
+      </div>
+      <!-- Chi nhánh: -->
+      <div class="field">
+        <span class="txtLabel">Chi nhánh:</span>
+        <ng-select [multiple]="false" formControlName="branchCode" placeholder="">
+          <ng-option value="">Tất cả Chi nhánh / PGD</ng-option>
+          <ng-option *ngFor="let item of lstBranch" [value]="item.code">{{item.branchCodeName}}</ng-option>
+        </ng-select>
+      </div>
+
+      <div class="btn-action w-100">
+        <button class="btn btn-primary" type="submit">Tìm kiếm
+          <i class="fa fa-search ic-in-primary" aria-hidden="true"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="content-title">
+    <div class="content-title">
+      <span class="active"> DANH SÁCH THẺ</span>
+    </div>
+  </div>
+  <div class="tbl-result">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th style="width: 2%">STT</th>
+          <th style="width: 5%">Số CIF</th>
+          <th style="width: 10%">Tên KH</th>
+          <th style="width: 10%">Thẻ Chính / Phụ</th>
+          <th style="width: 10%">CardID</th>
+          <th style="width: 10%">Mã sản phẩm thẻ</th>
+          <th style="width: 10%">Số thẻ</th>
+          <th style="width: 10%">Tên Dập Nổi</th>
+          <th style="width: 10%">TK Mặc định</th>
+          <th style="width: 7%">Ngày phát hành</th>
+          <th style="width: 5%">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of lstCardIssuanceSearch , index as i" class="h-1">
+          <td>{{i + 1}}</td>
+          <td>{{item.customerCode}}</td>
+          <td>{{item.fullName}}</td>
+          <td>{{item.cardCategoryName}}</td>
+          <td>{{item.cardCoreId}}</td>
+          <td>{{item.cardProductCode}}</td>
+          <td>{{item.cardNumber}}</td>
+          <td>{{item.cardEmbossedName}}</td>
+          <td>{{item.defaultAccount}}</td>
+          <td>{{item.releaseDate}}</td>
+          <td class="p-0 h-i">
+
+            <!-- Thao tác -->
+            <ng-container *ngIf="item.viewDetailAllowance; then thenActionSearch; else elseActionSearch">
+            </ng-container>
+            <ng-template #thenActionSearch>
+              <button type="button" class="text-primary btn w-100 h-100 btn-to-action _active" (click)="nextStep(item)">
+                <span class="material-icons"> send </span>
+              </button>
+            </ng-template>
+            <ng-template #elseActionSearch>
+              <button class="text-secondary btn w-100 h-100 btn-to-action">
+                <span class="material-icons"> send </span>
+              </button>
+            </ng-template>
+
+            <!-- end Thao tác -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="empty-data" *ngIf="lstCardIssuanceSearch.length === 0">Không có bản ghi phù hợp</div>
+  </div>
+</div>
+
+
+<!-- Modal confirm -->
+<app-lpb-modal headerText="Thông báo" [show]="showModal" (hideModal)="showModal = false" [widthContent]="50"
+  [unit]="'%'" marginTop="200px">
+  <div class="confirm-content">
+    <div class="mb-2 confirm-txt" *ngFor="let line of modalContents">
+      <p>{{line}}</p>
+    </div>
+    <div class="mt-4">
+      <button class="btn btn-accept" (click)="this.showModal = false">
+        Quay lại
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>
+<!-- Modal confirm -->

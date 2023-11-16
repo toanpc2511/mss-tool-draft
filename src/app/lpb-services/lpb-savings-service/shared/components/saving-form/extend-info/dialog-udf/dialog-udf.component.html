@@ -1,0 +1,308 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <ng-container [ngSwitch]="getFirstError(controlName)">
+      <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không được bỏ trống
+      </span>
+      <span *ngSwitchCase="FORM_VAL_ERRORS.NO_EXIST" class="text-danger mt-1 d-block small">
+        {{controlNameVi}} không hợp lệ
+      </span>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #udfSelect let-controlName="controlName" let-placeholder="placeholder">
+  <app-lpb-select-tooltip [placeholder]="placeholder" [items]="udfCategoryData[controlName]"
+    [optPatternFields]="['codeDesc']" [bindValue]="'code'"
+    [control]="data?.form.controls[controlName]"></app-lpb-select-tooltip>
+</ng-template>
+
+<div class="dialog-main">
+  <div class="dialog-header">
+    <div class="title">Thông tin UDF</div>
+    <div class="toolbar">
+      <button class="close-x">
+        <mat-icon (click)="closeDialog()">close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="dialog-content">
+    <div class="container-fluid">
+      <div #formAddUdf class="row form-group" [formGroup]="form">
+        <!-- #region Mã nhân viên (*) -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Mã nhân viên <span class="text-error"> (*)</span></span>
+          <app-lpb-employee-input [control]="data?.form.controls['employeeCode']"></app-lpb-employee-input>
+          <ng-container
+            *ngTemplateOutlet="error; context: {controlName: 'employeeCode', controlNameVi: 'Mã nhân viên'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Mã nhân viên (*) -->
+
+        <!-- #region Mã PGDBĐ tư vấn SPDV (*) -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Mã PGDBĐ tư vấn SPDV</span>
+          <input class="form-control w-315px" formControlName="pgdbd" maxlength="50" trimInput
+             (blur)="changePGDBD($event)"/>
+          <ng-container
+            *ngTemplateOutlet="error; context: {controlName: 'pgdbd', controlNameVi: 'Mã PGDBĐ tư vấn SPDV'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Mã PGDBĐ tư vấn SPDV (*) -->
+
+        <!-- #region Sổ tiết kiệm -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Sổ tiết kiệm</span>
+          <input class="form-control w-315px" formControlName="savingsBook" [JustNumberOnly]="{maxlength:20}" />
+        </label>
+        <!-- #endregion Sổ tiết kiệm -->
+
+        <!-- #region Số phiếu dự thưởng -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Số phiếu dự thưởng</span>
+          <input class="form-control w-315px" formControlName="lotteryTicketNumber" maxlength="50" />
+          <div class="h-20"></div>
+        </label>
+        <!-- #endregion Số phiếu dự thưởng -->
+
+        <!-- #region Thông tin chuyển nhượng -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Thông tin chuyển nhượng</span>
+          <input class="form-control w-315px" formControlName="transferInfo" maxlength="50" />
+          <div class="h-20"></div>
+        </label>
+        <!-- #endregion Thông tin chuyển nhượng -->
+
+        <!-- #region Lãi suất thường -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Lãi suất thường</span>
+          <input class="form-control w-315px" formControlName="normalInterestRate" maxlength="50" />
+          <div class="h-20"></div>
+        </label>
+        <!-- #endregion Lãi suất thường -->
+
+        <!-- #region Chi phí HD tối đa -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Chi phí HD tối đa</span>
+          <input class="form-control w-315px" formControlName="maxCost" maxlength="50" />
+        </label>
+        <!-- #endregion Chi phí HD tối đa -->
+
+        <!-- #region Ngày đến hạn tối đa -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Ngày đến hạn tối đa</span>
+          <input class="form-control w-315px" formControlName="maxDueDate" maxlength="50" />
+        </label>
+        <!-- #endregion Ngày đến hạn tối đa -->
+
+        <!-- #region 4C_PTTT -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">4C_PTTT</span>
+          <ng-container
+            *ngTemplateOutlet="udfSelect; context: {controlName: 'fourC_PTTT', placeholder: 'Chọn 4C_PTTT'}">
+          </ng-container>
+        </label>
+        <!-- #endregion 4C_PTTT -->
+
+        <!-- #region Mã bưu cục -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Mã bưu cục</span>
+          <input class="form-control w-315px" formControlName="postOfficeCode" maxlength="50" />
+        </label>
+        <!-- #endregion Mã bưu cục -->
+
+        <!-- #region Chương trình -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Chương trình</span>
+          <ng-container
+            *ngTemplateOutlet="udfSelect; context: {controlName: 'program', placeholder: 'Chọn Chương trình'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Chương trình -->
+
+        <!-- #region TK Lương -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">TK Lương</span>
+          <ng-container
+            *ngTemplateOutlet="udfSelect; context: {controlName: 'salaryAccount', placeholder: 'Chọn TK Lương'}">
+          </ng-container>
+        </label>
+        <!-- #endregion TK Lương -->
+
+        <!-- #region TK TONG -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">TK TONG</span>
+          <input class="form-control w-315px" formControlName="totalAccount" maxlength="50" />
+        </label>
+        <!-- #endregion TK TONG -->
+
+        <!-- #region Các khoản ký quỹ -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Các khoản ký quỹ</span>
+          <ng-container
+            *ngTemplateOutlet="udfSelect; context: {controlName: 'depositAmounts', placeholder: 'Chọn Các khoản ký quỹ'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Các khoản ký quỹ -->
+
+        <!-- #region Loại kỳ hạn lẻ ngày -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Loại kỳ hạn lẻ ngày</span>
+          <ng-container
+            *ngTemplateOutlet="udfSelect; context: {controlName: 'oddTermType', placeholder: 'Chọn Loại kỳ hạn lẻ ngày'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Loại kỳ hạn lẻ ngày -->
+
+        <!-- #region TKBD -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">TKBD</span>
+          <ng-container *ngTemplateOutlet="udfSelect; context: {controlName: 'tkbd', placeholder: 'Chọn TKBD'}">
+          </ng-container>
+        </label>
+        <!-- #endregion TKBD -->
+
+        <!-- #region Tên đơn vị -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Tên đơn vị</span>
+          <input class="form-control w-315px" formControlName="unitName" maxlength="50" />
+        </label>
+        <!-- #endregion Tên đơn vị -->
+
+        <!-- #region MST đơn vị -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">MST đơn vị</span>
+          <input class="form-control w-315px" formControlName="unitTaxCode" maxlength="50" />
+        </label>
+        <!-- #endregion MST đơn vị -->
+
+        <!-- #region Địa chỉ đơn vị -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Địa chỉ đơn vị</span>
+          <input class="form-control w-315px" formControlName="unitAddress" maxlength="50" />
+        </label>
+        <!-- #endregion Địa chỉ đơn vị -->
+
+        <!-- #region Tiền gửi ký quỹ -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Tiền gửi ký quỹ</span>
+          <ng-container
+            *ngTemplateOutlet="udfSelect; context: {controlName: 'depositMoney', placeholder: 'Chọn Tiền gửi ký quỹ'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Tiền gửi ký quỹ -->
+
+        <!-- #region Cơ chế -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Cơ chế</span>
+          <ng-container *ngTemplateOutlet="udfSelect; context: {controlName: 'mechanism', placeholder: 'Chọn Cơ chế'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Cơ chế -->
+
+        <!-- #region Phân loại BHXH -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Phân loại BHXH</span>
+          <input class="form-control w-315px" formControlName="socialInsuranceType" maxlength="50" />
+        </label>
+        <!-- #endregion Phân loại BHXH -->
+
+        <!-- #region Mã tỉnh BHXH -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Mã tỉnh BHXH</span>
+          <ng-container
+            *ngTemplateOutlet="udfSelect; context: {controlName: 'socialInsuranceProvinceCode', placeholder: 'Chọn Mã tỉnh BHXH'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Mã tỉnh BHXH -->
+
+        <!-- #region Đối tượng khách hàng -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Đối tượng khách hàng</span>
+          <input class="form-control w-315px" formControlName="customerType" maxlength="50" />
+        </label>
+        <!-- #endregion Đối tượng khách hàng -->
+
+        <!-- #region Số hợp đồng tiền gửi -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Số hợp đồng tiền gửi</span>
+          <input class="form-control w-315px" formControlName="depositContractNumber" maxlength="50" />
+        </label>
+        <!-- #endregion Số hợp đồng tiền gửi -->
+
+        <!-- #region Kênh online -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Kênh online</span>
+          <input class="form-control w-315px" formControlName="onlineChannel" maxlength="50" />
+        </label>
+        <!-- #endregion Kênh online -->
+
+        <!-- #region Qùa tặng -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Qùa tặng</span>
+          <ng-container *ngTemplateOutlet="udfSelect; context: {controlName: 'gift', placeholder: 'Chọn Quà tặng'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Qùa tặng -->
+
+        <!-- #region Cán bộ giới thiệu -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Cán bộ giới thiệu</span>
+          <input class="form-control w-315px" formControlName="referralOfficer" maxlength="50" />
+        </label>
+        <!-- #endregion Cán bộ giới thiệu -->
+
+        <!-- #region Khách hàng VIP -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Khách hàng VIP</span>
+          <ng-container
+            *ngTemplateOutlet="udfSelect; context: {controlName: 'vipCustomer', placeholder: 'Chọn Khách hàng VIP'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Khách hàng VIP -->
+
+        <!-- #region CCTG -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">CCTG</span>
+          <ng-container *ngTemplateOutlet="udfSelect; context: {controlName: 'cctg', placeholder: 'Chọn CCTG'}">
+          </ng-container>
+        </label>
+        <!-- #endregion CCTG -->
+
+        <!-- #region KHOI HO -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">KHOI HO</span>
+          <ng-container *ngTemplateOutlet="udfSelect; context: {controlName: 'khoiHo', placeholder: 'Chọn KHOI HO'}">
+          </ng-container>
+        </label>
+        <!-- #endregion KHOI HO -->
+
+        <!-- #region Ưu đãi lãi xuất tài khoản -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">Ưu đãi lãi xuất tài khoản</span>
+          <ng-container
+            *ngTemplateOutlet="udfSelect; context: {controlName: 'accountInterestRateDiscount', placeholder: 'Chọn Ưu đãi lãi xuất tài khoản'}">
+          </ng-container>
+        </label>
+        <!-- #endregion Ưu đãi lãi xuất tài khoản -->
+
+        <!-- #region CBNV HDV -->
+        <label class="form-group d-block col-lg-3">
+          <span class="textLabel">CBNV HDV</span>
+          <input class="form-control w-315px" formControlName="cbnvHdv" maxlength="50" />
+        </label>
+        <!-- #endregion CBNV HDV -->
+
+      </div>
+    </div>
+  </div>
+  <div class="dialog-footer" *ngIf="!isDetail">
+    <button mat-button color="warning" class="mat-button-secondary button-close" (click)="closeDialog()">
+      Quay lại
+    </button>
+    <button mat-button color="primary" class="mat-button-primary button-save" (click)="onSubmit()" type="submit">
+      Lưu
+    </button>
+  </div>
+</div>

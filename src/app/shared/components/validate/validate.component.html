@@ -1,0 +1,6 @@
+<div
+  class="massage-container"
+  *ngIf="control.hasError(error) && (control.dirty || control.touched)"
+>
+  <div class="massage-content">{{ message }}</div>
+</div>

@@ -1,0 +1,132 @@
+$color-title: #0c258a;
+$border-orange: #f47326;
+$bg-gray: #bdbdbd;
+$bg-blue: #0c258a;
+$bg-red: #eb5757;
+
+.transaction-main {
+  background-color: white;
+  padding: 8px 1%;
+  display: flex;
+  flex-direction: column;
+
+  .content-title {
+    padding-bottom: 8px;
+    border-bottom: 1px solid $bg-gray;
+    span {
+      color: $color-title;
+      font-weight: 500;
+      font-size: 18px;
+    }
+  }
+
+  label {
+    color: $color-title;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 8px 0px;
+    align-self: center;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .search {
+    span {
+      color: $color-title;
+      border-bottom: none;
+      font-weight: 500;
+    }
+
+    &-input {
+      display: flex;
+      align-items: baseline;
+      span {
+        width: 120px;
+        font-weight: 500;
+        color: $color-title;
+      }
+      .btn-search {
+        background-color: #007bff !important;
+      }
+    }
+  }
+  table.table th {
+    background: $bg-blue !important;
+  }
+
+  .btn-approve {
+    button {
+      min-width: 100px;
+    }
+  }
+}
+.text-while {
+  color: #fff;
+}
+
+.bg-btn__blue {
+  background: $bg-blue;
+}
+.bg-btn__red {
+  background: $bg-red;
+}
+
+@import "/src/app/shared/styles/lpb-table.scss";
+@import "/src/app/shared/styles/custom-styles.scss";
+
+
+.form-drag-file {
+  width: 100%;
+  max-height: 150px;
+  padding: 15px 0;
+  background: #fff;
+  text-align: center;
+  border: 1px dashed #9DB4F0;
+  border-radius: 4px;
+  .link-download {
+    color: #4674EB;
+    cursor: pointer;
+  }
+  .action-drag {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+  }
+}
+
+.temp {
+  color: #162A5E;
+  font-weight: 500;
+  .temp-content{
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    .record {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 4px;
+      &.success {
+        background: #8ADC76;
+      }
+      &.error {
+        background: #F64F45;
+      }
+    }
+  }
+  .text-down {
+    color: #162A5E;
+    cursor: pointer;
+    &:hover {
+      color: #4674EB;
+    }
+  }
+
+  .text-down-disable {
+    color: #C4C4C4;
+    cursor: default;
+  }
+
+  .text-message {
+    color: #F64F45;
+  }
+}

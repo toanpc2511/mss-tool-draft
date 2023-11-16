@@ -1,0 +1,26 @@
+import { MisCifModel } from "./mis-cif"
+
+export class LstUdfCif extends MisCifModel{
+    lstAllUdfCifTracuuTtstkwebViviet:MisCifModel []
+    lsAllUdfCifComboSanPham2018:MisCifModel []
+    lstAllUdfCifMaCbnvLpb:MisCifModel []
+    lstAllUdfCifDiaBanNongThon:MisCifModel []
+    lstAllUdfCifKhoiDonViGioiThieu:MisCifModel []
+    lstAllUdfCifDinhdanh:MisCifModel []
+    lstAllUdfCifGroupCode:MisCifModel []
+    lstAllUdfCifCongTyNhaNuoc:MisCifModel []
+    lstAllUdfCifDbKhVay:MisCifModel []
+    lstAllUdfCnUtpt1483Cif:MisCifModel []
+    lstAllUdfCifLvUdCnCaoCif:MisCifModel []
+    lstAllUdfCifKhut:MisCifModel []
+    lstAllUdfCifThuongTat:MisCifModel []
+    lstAllUdfCifLoaiChuongTrinh:MisCifModel []
+    lstAllUdfCifKhachHang:MisCifModel []
+    lstAllUdfCifTcKTctd:MisCifModel []
+    lstAllUdfCifMaTctd:MisCifModel []
+    lstAllUdfCifViTriToLketVayvon:MisCifModel []
+    lstAllUdfCifMaHuyenThiXa:MisCifModel []
+    lstAllUdfCifPnkh:MisCifModel []
+    lstAllUdfBranch:MisCifModel []
+    lstAllUdfNhanHddtQuaMail:MisCifModel []
+}

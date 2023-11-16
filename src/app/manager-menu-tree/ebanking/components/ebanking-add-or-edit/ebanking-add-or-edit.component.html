@@ -1,0 +1,148 @@
+<div class="ebanking-create">
+    <!-- <div class="ebanking-create-header">
+        <mat-icon class="img">add_circle_outline</mat-icon>
+        <span *ngIf="actionType === 'CREATE'">THÊM MỚI</span>
+        <span *ngIf="actionType !== 'CREATE'">CHỈNH SỬA</span>
+    </div> -->
+
+
+    <div class="col-12 line-base" style="border-bottom: 1px solid #c8ced3;padding: 10px 0; ">
+        <div class="title-head" style="font-weight: 500;">
+            <mat-icon style="font-size: 30px; height: 30px; width: 38px; text-indent: 5px">add_circle_outline</mat-icon>
+            <!-- <span class="text" style="padding: 5px 0;">THÊM MỚI</span> -->
+            <span *ngIf="actionType === 'CREATE'" class="text" style="padding: 5px 0;">THÊM MỚI</span>
+            <span *ngIf="actionType !== 'CREATE'" class="text" style="padding: 5px 0;">CHỈNH SỬA</span>
+        </div>
+    </div>
+    <div class="ebanking-create-content" [formGroup]="formEbanking">
+        <div class="col-content">
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">UserID:<span class="text-danger">(*)</span>
+                </label>
+                <div class="col-sm-7">
+                    <input class="form-control form-control-sm uppercase" style="text-transform: uppercase !important;" type="text" oninput="this.value = this.value.toUpperCase()" (input)="inputLatinUppercase($event)" formControlName="userId" name="minimumMaintenanceBalance">
+                    <div *ngIf="submitted && getUserId.errors || getUserId.invalid && (getUserId.dirty ||getUserId.touched)" class="error-message">
+                        <div *ngIf="getUserId.errors.required" class="error-message">UserID không được bỏ trống</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">Email:<span class="text-danger">(*)</span>
+                </label>
+                <div class="col-sm-7">
+                    <input type="text" formControlName="email" class="w-100 form-control form-control-sm" maxlength="50">
+                    <div *ngIf="submitted && getEmail.errors || getEmail.invalid && (getEmail.dirty ||getEmail.touched)" class="error-message">
+                        <div *ngIf="getEmail.errors.required" class="error-message">Email không được bỏ trống</div>
+                        <div *ngIf="getEmail.errors.pattern" class="error-message">Email trên thẻ không hợp lệ</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">User Type:</label>
+                <div class="col-sm-7 button-check-user">
+                    <input type="checkbox" formControlName="isDomestic" id="Domestic">
+                    <label for="Domestic" class="ml-1">Domestic</label>
+                </div>
+                <!-- {{formEbanking.value |json}} -->
+            </div>
+
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">Loại User:</label>
+                <div class="col-sm-7">
+                    <div class="rb-item">
+                        <input type="radio" formControlName="userTypeCode" value="USER" id="rb-user" checked>
+                        <label for="rb-user" class="ml-1">User</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">Bang:
+                </label>
+                <div class="col-sm-7">
+                    <input type="text" formControlName="state" class="w-100 form-control form-control-sm" maxlength="50">
+                    <div *ngIf="submitted && formEbanking.errors?.allRequire || formEbanking.controls.state.invalid && (formEbanking.controls.state.dirty ||formEbanking.controls.state.touched)" class="error-message">
+                        Không được bỏ trống bang
+                    </div>
+
+                    <!-- <div *ngIf="submitted && perDocNo.errors || perDocNo.invalid && (perDocNo.dirty ||perDocNo.touched)" class="error-message">
+                        <div *ngIf="perDocNo.errors.required" class="error-message">Giấy khai sinh không được bỏ trống</div>
+                    </div> -->
+                </div>
+            </div>
+
+
+
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">Khu vực:
+                </label>
+                <div class="col-sm-7">
+                    <input type="text" formControlName="area" class="w-100 form-control form-control-sm" maxlength="50">
+                    <div *ngIf="submitted && formEbanking.errors?.allRequire || formEbanking.controls.area.invalid && (formEbanking.controls.area.dirty ||formEbanking.controls.area.touched)" class="error-message">
+                        Không được bỏ trống khu vực
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="col-content">
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">Mobile 1:<span class="text-danger">(*)</span>
+                </label>
+                <div class="col-sm-7">
+                    <input type="text" formControlName="mobileNo1" class="w-100 form-control form-control-sm" numbersOnly maxlength="11">
+                    <div *ngIf="submitted && getmobileNo1.errors || getmobileNo1.invalid && (getmobileNo1.dirty ||getmobileNo1.touched)" class="error-message">
+                        <div *ngIf="getmobileNo1.errors.required" class="error-message">Số điện thoại không được bỏ trống</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">Mobile 2:</label>
+                <div class="col-sm-7">
+                    <input type="text" formControlName="mobileNo2" class="form-control form-control-sm w-100" numbersOnly maxlength="11">
+                </div>
+                <div *ngIf="formEbanking.errors?.compareMobileNo && (formEbanking.controls.mobileNo2.touched || formEbanking.controls.mobileNo2.dirty)" class="error-message">
+                    Không được trùng số điện thoại mặc định
+                </div>
+            </div>
+
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">Phương thức xác thực:</label>
+                <div class="col-sm-7">
+                    <div class="rb-item" *ngFor="let d of ebankDeviceType">
+                        <input type="radio" formControlName="deviceTypeCode" [value]="d.code" id="rb-sms">
+                        <label for="rb-sms" class="ml-1">{{d.name}}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">Gói dịch vụ:</label>
+                <div class="col-sm-7">
+                    <select class="w-100 form-control form-control-sm" formControlName="servicePackageCode">
+                        <option  *ngFor="let p of ebankPackage" [value]="p.code">{{p.name}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">Mã NV giới thiệu:</label>
+                <div class="col-sm-7">
+                    <input type="text" formControlName="reffererCode" class="w-100 form-control form-control-sm" maxlength="50">
+                </div>
+            </div>
+
+            <div class="form-group row" style="padding: 5px 0;">
+                <label class="col-sm-4 col-form-label textLabel ">Mã nhân viên:</label>
+                <div class="col-sm-7">
+                    <input type="text" formControlName="employeeId" class="w-100 form-control form-control-sm" maxlength="50">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

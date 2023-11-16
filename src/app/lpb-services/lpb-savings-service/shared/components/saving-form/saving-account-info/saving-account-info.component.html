@@ -1,0 +1,232 @@
+<ng-template #error let-controlName="controlName" let-controlNameVi="controlNameVi">
+  <div *ngIf="form.controls[controlName].invalid &&
+                           (form.controls[controlName].dirty || form.controls[controlName].touched)">
+    <span class="text-danger mt-1 d-block small">
+      <ng-container [ngSwitch]="getFirstError(controlName)">
+        <span *ngSwitchCase="FORM_VAL_ERRORS.REQUIRED">
+          {{controlNameVi}} không được bỏ trống
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.NO_EXIST">
+          {{controlNameVi}} không hợp lệ
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.BELOW_MIN">
+          {{controlNameVi}} không hợp lệ
+        </span>
+        <span *ngSwitchCase="FORM_VAL_ERRORS.PATTERN">
+          {{controlNameVi}} chứa các ký tự đặc biệt
+        </span>
+      </ng-container>
+    </span>
+  </div>
+</ng-template>
+
+<app-collapse-section [collapsed]="collapsed" (collapsedChange)="collapsedChange.emit($event)">
+  <div area="title">
+    <div class="content-title mt-3 mb-3">
+      <span class="active text-uppercase mr-2">Thông tin MỞ tài khoản TIẾT KIỆM</span>
+    </div>
+  </div>
+
+  <div area="body" [formGroup]="form" class="form-group">
+    <div class="row">
+      <!-- #region Loại sản phẩm (*) -->
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Loại sản phẩm <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <app-lpb-select-tooltip  [items]="PRODUCTS" [optPatternFields]="['label']" [bindValue]="'code'"
+               [control]="form.controls['productCode']"></app-lpb-select-tooltip>
+          </span>
+        </div>
+      </div>
+      <!-- #endregion Loại sản phẩm (*) -->
+
+      <!-- #region Mã Account Class -->
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Mã Account Class</span>
+          <span class="col-lg-12">
+            <input type="text" class="form-control pr-4" formControlName="classCode" />
+          </span>
+        </div>
+      </div>
+      <!-- #endregion Mã Account Class -->
+
+      <!-- #region Lãi suất -->
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Lãi suất</span>
+          <span class="col-lg-12">
+            <input type="text" class="form-control pr-4" formControlName="interestRate" />
+          </span>
+        </div>
+      </div>
+      <!-- #endregion Lãi suất -->
+    </div>
+
+
+    <div class="row">
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Hình thức lĩnh lãi <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <app-lpb-select-tooltip  [items]="PRODUCTS_TYPES" [optPatternFields]="['label']" [bindValue]="'code'"
+               [control]="form.controls['productType']" (change)="changeProductType($event)">
+            </app-lpb-select-tooltip>
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'productType', controlNameVi: 'Loại sản phẩm'}">
+            </ng-container>
+          </span>
+        </div>
+      </div>
+
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Serial <span class="text-danger">(*)</span> </span>
+          <span class="col-lg-12">
+            <input type="text" class="form-control pr-4" formControlName="serialNo" />
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'serialNo', controlNameVi: 'Serial'}">
+            </ng-container>
+          </span>
+        </div>
+      </div>
+
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Tiền lãi dự tính </span>
+          <span class="col-lg-12">
+            <input type="text" class="form-control pr-4" formControlName="forecastInterest" />
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Loại tiền <span class="text-danger">(*)</span></span>
+          <span class="col-lg-12">
+            <ng-select [multiple]="false" placeholder="Chọn Loại tiền" formControlName="curCode">
+              <ng-option *ngFor="let item of lstCurrencies;" [value]="item.code">
+                {{item.label}}
+              </ng-option>
+            </ng-select>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'curCode', controlNameVi: 'Loại tiền'}">
+            </ng-container>
+          </span>
+        </div>
+      </div>
+
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Số tài khoản </span>
+          <span class="col-lg-12">
+            <input type="text" class="form-control pr-4" formControlName="acn" />
+          </span>
+        </div>
+      </div>
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Phương thức tất toán <span class="text-danger">(*)</span>
+          </span>
+          <span class="col-lg-12">
+            <ng-select [multiple]="false" placeholder="Chọn Phương thức tất toán" formControlName="finalizeMethod">
+              <ng-option *ngFor="let item of lstFinalizeMethod;" [value]="item.code">
+                {{item.name}}
+              </ng-option>
+            </ng-select>
+            <ng-container
+              *ngTemplateOutlet="error; context: {controlName: 'finalizeMethod', controlNameVi: 'Phương thức tất toán'}">
+            </ng-container>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-md-4 col-12">
+        <div class="row">
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Loại kỳ hạn <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <ng-select [multiple]="false" placeholder="Chọn Loại kỳ hạn" formControlName="termCode">
+                  <ng-option *ngFor="let item of lstTermCode;" [value]="item.code">
+                    {{item.name}}
+                  </ng-option>
+                </ng-select>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'termCode', controlNameVi: 'Loại kỳ hạn'}">
+                </ng-container>
+              </span>
+            </div>
+          </div>
+
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Kỳ hạn <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <ng-select [multiple]="false" placeholder="Chọn Kỳ hạn" formControlName="term">
+                  <ng-option *ngFor="let term of lstTerm;" [value]="term">
+                    {{term}}
+                  </ng-option>
+                </ng-select>
+                <ng-container *ngTemplateOutlet="error; context: {controlName: 'term', controlNameVi: 'Kỳ hạn'}">
+                </ng-container>
+              </span>
+            </div>
+          </div>
+
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Ngày gửi <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <app-lpb-datepicker-new formControlName="startDate"></app-lpb-datepicker-new>
+              </span>
+            </div>
+          </div>
+
+          <div class="col col-6">
+            <div class="form-group row">
+              <span class="col-lg-12 col-form-label textLabel">Ngày đáo hạn <span class="text-danger">(*)</span></span>
+              <span class="col-lg-12">
+                <app-lpb-datepicker-new formControlName="maturityDate"></app-lpb-datepicker-new>
+                <ng-container
+                  *ngTemplateOutlet="error; context: {controlName: 'maturityDate', controlNameVi: 'Ngày đáo hạn'}">
+                </ng-container>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Số tiền gửi <span class="text-danger">(*)</span> </span>
+          <span class="col-lg-12">
+            <app-lpb-money-input [placeholder]="'Nhập số tiền gửi'" [class]="'form-control'"
+              [control]="form.controls['depositAmount']" [name]="'depositAmount'" [controlNameVi]="'Số tiền gửi'"
+              [maxlength]="form.controls['curCode'].value === 'VND' ? 13 : 10" [showErrorText]="false"
+              [blockComma]="!form.controls['curCode'].value || form.controls['curCode'].value === 'VND'">
+            </app-lpb-money-input>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'depositAmount', controlNameVi: 'Số tiền'}">
+            </ng-container>
+          </span>
+        </div>
+      </div>
+
+      <div class="col col-md-4 col-12">
+        <div class="form-group row">
+          <span class="col-lg-12 col-form-label textLabel">Diễn giải <span class="text-danger">(*)</span> </span>
+          <span class="col-lg-12">
+            <textarea type="text" class="form-control pr-4" formControlName="note" maxlength="200"
+              [textPattern]="{blockRegex: '[\\n\\r]', allowVi: true}" [textAreaLimit]="{maxLine: 4}"
+              class="form-control text-uppercase" textTransform="uppercase" rows="5"></textarea>
+            <ng-container *ngTemplateOutlet="error; context: {controlName: 'note', controlNameVi: 'Diễn giải'}">
+            </ng-container>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-collapse-section>

@@ -1,0 +1,143 @@
+@import "/src/app/shared/styles/palette.style.scss";
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.dialog-main {
+  font-style: normal;
+  line-height: 21px;
+  color: $primary-main;
+  max-width: 100%;
+  width: max(1274px, 100%);
+  & > div {
+    box-sizing: border-box;
+  }
+}
+.dialog-header {
+  border-bottom: 1px solid #bdbdbd;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    color: $primary-main;
+  }
+  .toolbar {
+    button {
+      all: unset;
+    }
+    display: flex;
+    align-items: stretch;
+
+    cursor: pointer;
+    i {
+      font-size: 16px;
+      color: $primary-main;
+    }
+    & > button {
+      width: 24px;
+      margin-left: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:first-child {
+        margin-left: 0;
+      }
+      &:hover,
+      &:hover i {
+        color: $secondary-main;
+      }
+    }
+  }
+}
+
+.dialog-content {
+  padding: 15px;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+}
+
+.form-group-radio {
+  display: flex;
+  align-items: center;
+
+  input {
+    margin-right: 5px;
+  }
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  & > *:not(:last-child) {
+    margin-right: 20px;
+  }
+  .button {
+    &-close,
+    &-save {
+      min-width: 90px;
+    }
+  }
+}
+
+.mat-button {
+  &-primary {
+    @include button-primary;
+  }
+
+  &-secondary {
+    @include button-secondary;
+  }
+
+  &-no-bg {
+    @include button-no-bg;
+    font-weight: 500;
+    font-size: 18px;
+  }
+}
+
+input.ng-invalid.ng-touched,
+input.ng-invalid.ng-dirty {
+  border-color: $error-main;
+}
+
+textarea.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-dirty{
+  border-color: $error-main;
+}
+
+:host ::ng-deep {
+  app-lpb-select2.ng-touched.ng-invalid .ng-select-container,
+  app-lpb-datepicker-new.ng-touched.ng-invalid .txtMainInput,
+  app-lpb-datepicker-new.ng-invalid:not(.ng-pristine) .txtMainInput {
+    border-color: $error-main !important;
+  }
+}
+
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  text-transform: none;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  text-transform: none;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  text-transform: none;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  text-transform: none;
+}
+::placeholder {
+  /* Recent browsers */
+  text-transform: none;
+}

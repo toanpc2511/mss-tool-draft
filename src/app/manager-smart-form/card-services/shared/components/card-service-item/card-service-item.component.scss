@@ -1,0 +1,27 @@
+.card-service-item {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.36);
+  transition: 0.3s;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  img {
+    width: 48px;
+    height: 48px;
+    fill: #FFFFFF;
+  }
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2F80ED;
+    text-transform: capitalize;
+  }
+}
+
+.card-service-item:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  //background: rgba(253, 218, 176, 0.5);
+  background: rgba(244, 115, 38, 0.73);
+  span {
+    color: white;
+  }
+}

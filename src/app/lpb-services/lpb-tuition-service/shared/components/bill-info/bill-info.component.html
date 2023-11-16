@@ -1,0 +1,189 @@
+<div class="mx-2">
+  <form [formGroup]="billInfoForm">
+    <div class="d-flex bill-content" *ngIf="action !== 'view'; else view">
+      <div class="col border border-1 p-4 border-radius-panel card">
+        <span class="text-high-light fw-bolder">Tài khoản ghi có</span>
+        <div class="mt-4 row">
+          <div class="col-5">Số tài khoản:</div>
+          <div class="col-7 fw-bolder text-high-light">{{ 1 }}</div>
+        </div>
+
+        <div class="mt-3 row">
+          <div class="col-5">Tên tài khoản:</div>
+          <div class="col-7 fw-bolder text-high-light">1</div>
+        </div>
+
+        <div class="mt-3 row">
+          <div class="col-5 m-auto" [ngClass]="action === 'view' ? '' : 'required'">
+            Hình thức nộp
+          </div>
+          <div class="col-7">
+            <ng-select formControlName="paymentMethod" [clearable]="false">
+              <ng-option *ngFor="let item of paymentMethods" [value]="item.value">{{ item.label }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="mt-3 row">
+          <div class="col-5 m-auto" [ngClass]="action === 'view' ? '' : 'required'">
+            Số tiền thanh toán
+          </div>
+          <div class="col-7">
+            <div class="input-group">
+              <input type="text" class="form-control cus-input" formControlName="paymentAmount" />
+              <div class="cus-item">VND</div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <label>Nội dung thanh toán:</label>
+          <p class="fw-bolder text-high-light mt-1">
+            {{ paymentContent }}
+          </p>
+        </div>
+      </div>
+
+      <div class="col border border-1 p-4 border-radius-panel card" *ngIf="isCk">
+        <span class="text-high-light fw-bolder">Tài khoản ghi nợ</span>
+        <div class="mt-4 row">
+          <div class="col-4">
+            <ng-select formControlName="identityDocType" [clearable]="false" [autofocus]="false">
+              <ng-option *ngFor="let item of identityDocTypes" [value]="item.value">{{ item.label }}</ng-option>
+            </ng-select>
+          </div>
+          <div class="col-5">
+            <input type="text" class="form-control" formControlName="numberDocType" />
+          </div>
+          <div class="col-3">
+            <button mat-raised-button (click)="onSearch()" class="d-inline-block bg-btn__blue text-while">
+              <i class="fa fa-search mr-2" style="color: #b1afaf"></i>
+              Tìm kiếm
+            </button>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-4 m-auto" [ngClass]="action === 'view' ? '' : 'required'">
+            Số TKTT
+          </div>
+          <div class="col-5">
+            <ng-select formControlName="accountDebit" [clearable]="false">
+              <ng-option *ngFor="let item of identityDocTypes" [value]="item.value">{{ item.label }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-5">Chủ tài khoản</div>
+          <div class="col-7 text-high-light fw-bolder">1</div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #view>
+      <div class="d-flex bill-content p-4">
+        <div class="col-6 border border-1 p-4 mr-4 border-radius-panel card">
+          <span class="text-high-light fw-bolder card-title">Tài khoản ghi có</span>
+          <div class="mt-4">
+            <label> Số tài khoản</label>
+            <div>
+              <span class="fw-bolder text-high-light">
+                {{ accountNumberCredit }}
+              </span>
+            </div>
+          </div>
+          <div class="mt-3">
+            <label>Tên tài khoản</label>
+            <div>
+              <span class="fw-bolder text-high-light">
+                {{ accountNameCredit }}</span
+              >
+            </div>
+          </div>
+          <div class="mt-3">
+            <label> Hình thức nộp</label>
+            <div>
+              <input
+                type="text"
+                class="form-control"
+                disabled
+                [value]="paymentMethod"
+              />
+            </div>
+          </div>
+          <div class="mt-3">
+            <label>Số tiền thanh toán</label>
+
+            <div class="input-group">
+              <input
+                type="text"
+                disabled
+                [value]="paymentAmount | vnCurency"
+                class="form-control border-right-0"
+              />
+              <div class="input-group-append">
+                <span class="fw-bolder text-high-light input-group-text">
+                  VNĐ</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="mt-3">
+            <label>Nội dung thanh toán</label>
+            <div>
+              <span class="text-high-light fw-bolder">
+                {{ paymentContent }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="isCk"
+          class="col-6 border border-1 p-4 border-radius-panel card"
+        >
+          <span class="text-high-light fw-bolder  card-title">Tài khoản ghi nợ</span>
+          <div class="mt-4">
+            <div class="input-group">
+              <div class="input-group-append">
+                <select
+                  class="form-control border-right-0 border-right-radius-0 lpb-btn-primary"
+                  formControlName="identityDocType"
+                >
+                  <option
+                    *ngFor="let item of identityDocTypes"
+                    [value]="item['value']"
+                    class="lpb-btn-primary"
+                  >
+                    {{ item["label"] }}
+                  </option>
+                </select>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                disabled
+                [value]="numberDocType"
+              />
+            </div>
+          </div>
+          <div class="mt-3">
+            <label>Số TKTT</label>
+            <input
+              type="text"
+              class="form-control"
+              disabled
+              [value]="accountNumber"
+            />
+          </div>
+          <div class="mt-3">
+            <label>Chủ tài khoản</label>
+            <div>
+              <p class="fw-bolder text-uppercase text-high-light">
+                {{ accountNameDebit }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </form>
+</div>

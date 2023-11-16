@@ -1,0 +1,6 @@
+<ng-select [multiple]="false" [placeholder]="placeholder" [loading]="isLoading" [clearOnBackspace]="false"
+  [items]="items$ | async" [minTermLength]="minTermLength" [placeholder]="placeholder"
+  [bindValue]="bindValue" [bindLabel]="bindLabel" [formControl]="control" (clear)="onClear()"
+  (change)="onChange($event)" (search)="onSearch($event)" [inputAttrs]="inputAttrs" (blur)="onBlur($event)"
+  notFoundText="Không tìm thấy dữ liệu">
+</ng-select>

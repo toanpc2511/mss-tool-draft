@@ -1,0 +1,147 @@
+# CẤU HÌNH ỨNG DỤNG
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uniform-web-huongnt-configmap
+  namespace: uniform-test
+data:
+  GATEWAY_URL: "https://uniform-gateway-test.lpbank.com.vn"
+
+
+---
+# BẢO VỆ MẬT KHẨU
+apiVersion: v1
+kind: Secret
+metadata:
+  name: uniform-web-huongnt-secret
+  namespace: uniform-test
+type: Opaque
+data:
+  k1: "djE="
+
+
+---
+# DEPLOY CÁC INSTANCE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uniform-web-huongnt
+  namespace: uniform-test
+  labels:
+    app: uniform-web-huongnt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uniform-web-huongnt
+  template:
+    metadata:
+      labels:
+        app: uniform-web-huongnt
+    spec:
+      containers:
+        - name: uniform-web-huongnt
+          image: harbor-registry.lienvietpostbank.com.vn:5443/uniform/uniform-web-huongnt:test
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: GATEWAY_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: uniform-web-huongnt-configmap
+                  key: GATEWAY_URL
+            - name: e2
+              valueFrom:
+                secretKeyRef:
+                  name: uniform-web-huongnt-secret
+                  key: k1
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '0.5'
+            limits:
+              memory: '2048Mi'
+              cpu: '1'
+
+          livenessProbe:
+            httpGet:
+              path: "/"
+              port: 80
+              httpHeaders:
+                - name: "health-token"
+                  value: "eyJzdWIiOiJhY3R1YXRvciIsIm5hbWUiOiJoZWFsdGhjaGVjayJ9"
+            periodSeconds: 30
+            failureThreshold: 10
+            timeoutSeconds: 30
+            initialDelaySeconds: 90
+            successThreshold: 1
+
+          readinessProbe:
+            httpGet:
+              path: "/"
+              port: 80
+              httpHeaders:
+                - name: "health-token"
+                  value: "eyJzdWIiOiJhY3R1YXRvciIsIm5hbWUiOiJoZWFsdGhjaGVjayJ9"
+            periodSeconds: 30
+            failureThreshold: 3
+            timeoutSeconds: 30
+            initialDelaySeconds: 60
+            successThreshold: 1
+
+---
+# CẤU HÌNH SERVICE
+apiVersion: v1
+kind: Service
+metadata:
+  name: uniform-web-huongnt
+  namespace: uniform-test
+spec:
+  selector:
+    app: uniform-web-huongnt
+  ports:
+    - name: http
+      port: 80
+
+
+---
+# CẤU HÌNH INGRESS
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: uniform-web-huongnt-ingress
+  namespace: uniform-test
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: "uniform-test-huongnt.lienvietpostbank.com.vn"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: uniform-web-huongnt
+                port:
+                  number: 80
+---
+# AUTO SCALE
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: uniform-web-huongnt
+  namespace: uniform-test
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: uniform-web-huongnt
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 70

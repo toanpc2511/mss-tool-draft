@@ -1,0 +1,22 @@
+<div class="abc">
+    <div class="col-12" style="padding: 0px;">
+      <h2 mat-dialog-title style="background: #23388F;color:#fff;border-bottom: 1px solid #828282;font-size: 16px;">Không
+        có khách hàng
+        trong hệ thống
+        <span class="material-icons" (click)="closeDialog(0)" style="float: right;cursor: pointer;">
+          close
+        </span>
+      </h2>
+    </div>
+    <mat-dialog-content class="mat-typography" id="clear-css">
+      <p style="color: #333333;font-size: 14px;">Bạn tạo mới khách hàng</p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="float-right" style="display: block;width: 100%;text-align: right;
+    margin-top: 9px;">
+        <button type="button" class="btn closePopup" (click)="closeDialog(0)">Đóng</button>
+        <button type="button" class="btn newfile btn-color" (click)="closeDialog(1)" cdkFocusInitial>Tạo hồ sơ khách
+          hàng</button>
+      </div>
+    </mat-dialog-actions>
+  </div>

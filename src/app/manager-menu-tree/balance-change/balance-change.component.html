@@ -1,0 +1,46 @@
+<!-- danh sach account -->
+<div class="container-fuild">
+
+    <app-process-info [processId]="processId"></app-process-info>
+    <app-list-balance-change *ngIf="step==='HOME'" (viewDetaiBC)="viewBCDetail($event)"></app-list-balance-change>
+    <app-add-or-edit-balance-change #addOrEditBalanceChangeComponent *ngIf="step === 'CREATE' || step === 'EDIT'"></app-add-or-edit-balance-change>
+    <app-detail-balance-change *ngIf="step === 'DETAIL'" [obj]="obj"></app-detail-balance-change>
+    <div class="row footer-row">
+
+        <div class="col-12 group-action" *ngIf="step === 'HOME'">
+            <div class="footer ml-1" (click)="createEbanking()" *ngIf="(isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)">
+                <span class="material-icons mr-2">add</span>
+                <label>Tạo mới</label>
+            </div>
+            <div class="footer" (click)="backStep()">
+                <span class="material-icons mr-2">keyboard_backspace</span>
+                <label>Quay lại</label>
+            </div>
+        </div>
+
+        <div class="col-12 group-action" *ngIf="step === 'DETAIL'">
+            <div class="footer ml-1" (click)="delete()" *ngIf="(isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)">
+                <span class="material-icons mr-2">delete</span>
+                <label>Xóa</label>
+            </div>
+            <div class="footer ml-1" (click)="editEbanking()" *ngIf="(isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)">
+                <span class="material-icons mr-2">edit</span>
+                <label>Chỉnh sửa</label>
+            </div>
+            <div class="footer" (click)="backStep()">
+                <span class="material-icons mr-2">keyboard_backspace</span>
+                <label>Quay lại</label>
+            </div>
+        </div>
+
+        <div class="col-12 group-action" *ngIf="step === 'CREATE' || step === 'EDIT'">
+            <div class="footer ml-1" (click)="saveEbanking()" *ngIf="(isGDV === true && isKSV === true) || (isGDV === true && isKSV !== true)">
+                <span class="material-icons mr-2">save</span>
+                <label>Lưu</label>
+            </div>
+            <div class="footer" (click)="backStep()">
+                <span class="material-icons mr-2">keyboard_backspace</span>
+                <label>Quay lại</label>
+            </div>
+        </div>
+    </div>

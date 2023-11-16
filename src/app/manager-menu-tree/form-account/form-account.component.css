@@ -1,0 +1,24 @@
+.id-table {
+    width: 70px;
+}
+.footer-row {
+    padding: 0px;
+    background: #23388F;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    margin: 0px;
+}
+.printout-list {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #BDBDBD
+    
+}
+.color-text {
+    color: blue;
+}
+.field-view {
+    color: blue;
+}

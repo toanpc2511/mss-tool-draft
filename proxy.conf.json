@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": "http://uat-uniform-gateway.lienvietpostbank.com.vn",
+    "secure": false
+  }
+}

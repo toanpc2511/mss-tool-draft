@@ -1,0 +1,16 @@
+.lpb-address{display:flex;justify-content:space-between;padding-top:24px}
+.lpb-address-left,
+.lpb-address-right{width:50%;padding-right:24px;display:flex;flex-direction:column}
+.lpb-address-left .row-item-info,
+.lpb-address-right .row-item-info{display:flex;margin-bottom:12px}
+.lpb-address-left .row-item-info .label-field,
+.lpb-address-right .row-item-info .label-field{width:195px;font-weight:500;text-align:left;margin-right:10px;padding-top:6px;font-size:16px;color:#0c258a}
+.lpb-address-left .row-item-info .label-field .item-require,.lpb-address-right .row-item-info .label-field .item-require{color:#e83c19;font-weight:500}
+.lpb-address-left .row-item-info .fw-700,.lpb-address-right .row-item-info .fw-700{font-weight:700}.lpb-address-left .row-item-info .label-action,.lpb-address-right .row-item-info .label-action{width:300px;padding-top:5px;font-style:italic;color:#17589f;font-weight:500;cursor:pointer}
+.lpb-address-left .row-item-info .value-field,.lpb-address-right .row-item-info .value-field{width:300px}
+.lpb-address-left .row-item-info .value-field .control-item .grRadio-isResident,.lpb-address-right .row-item-info .value-field .control-item .grRadio-isResident{height:35px;display:flex}
+.lpb-address-left .row-item-info .value-field .control-item .grRadio-isResident .rd-item,.lpb-address-right .row-item-info .value-field .control-item .grRadio-isResident .rd-item{align-self:center;margin-right:10px}
+.lpb-address-left .row-item-info .value-field .control-item .grRadio-isResident .rd-item label,.lpb-address-left .row-item-info .value-field .control-item .grRadio-isResident .rd-item input,.lpb-address-right .row-item-info .value-field .control-item .grRadio-isResident .rd-item label,.lpb-address-right .row-item-info .value-field .control-item .grRadio-isResident .rd-item input{cursor:pointer}
+.lpb-address-left .row-item-info .value-field .control-item .form-check,.lpb-address-right .row-item-info .value-field .control-item .form-check{height:35px;display:flex;align-items:center}
+.lpb-address-left .row-item-info .value-field .error-msg,.lpb-address-right .row-item-info .value-field .error-msg{color:#e83c19;margin-top:5px;font-size:13px}
+.lpb-address-left .row-item-info .error-invalid,.lpb-address-right .row-item-info .error-invalid{border-color:#e83c19}.form-control:focus{box-shadow:none}

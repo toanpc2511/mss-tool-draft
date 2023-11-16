@@ -1,0 +1,68 @@
+.ebanking-detail {
+    .text {
+        font-weight: 20px;
+        color: #17589f;
+        display: block;
+        float: left;
+    }
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #BDBDBD;
+    &-header {
+        padding: 9px;
+        border-bottom: 1px solid #BDBDBD;
+        span {
+            vertical-align: sub;
+            color: #23388F;
+            font-weight: 500;
+            font-size: 18px;
+            margin-left: 5px;
+        }
+        img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+    &-content {
+        padding: 24px 0px;
+        display: flex;
+        justify-content: space-between;
+        .col-content {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            &-row {
+                display: flex;
+                justify-content: space-between;
+                .txt-label {
+                    width: calc(50% - 16px);
+                    max-width: 50%;
+                    font-weight: 700;
+                    font-size: 14px;
+                    color: #252834;
+                    text-align: right;
+                }
+                .txt-value {
+                    width: calc(50% - 16px);
+                    max-width: 50%;
+                    font-weight: 400;
+                    font-size: 14px;
+                    color: #212529;
+                }
+                .txt-require {
+                    color: red;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1400px) {
+    mat-icon {
+        font-size: 25px !important;
+        margin-top: 2px !important;
+    }
+    .line-base {
+        padding: 0 !important;
+    }
+}

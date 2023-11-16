@@ -1,0 +1,336 @@
+<div class="owner-benefit">
+  <div class="owner-benefit-info" [ngClass]="actionName !== '' ? 'd-block' : 'd-none'">
+    <div class="content" [class.div-readOnly]="actionName === action.VIEW" [formGroup]="inforForm">
+      <div class="content-left">
+        <div class="row-item-info">
+          <div class="label-field">Họ và tên <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <input class="input-field form-control" formControlName="name"
+              (input)="spaceInputChanged($event, getfullName)" [class.error-invalid]="hasErrorInput('name','required')"
+              type="text " name="" id="">
+            <div class="error-msg" *ngIf="hasErrorInput('name','required')">
+              Họ tên không được để trống
+            </div>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Giới tính <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="grRadio w-100">
+                <div class="rd-item" *ngFor="let item of lstGender">
+                  <input type="radio" formControlName="gender" class="mr-1" [value]="item.code">
+                  <label [for]="item.code">
+                    {{item.name}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Ngày sinh<span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <app-lpb-date-picker #dpDateOfBirth (blurInput)="blurDateOfBirth($event)"
+              (dateChanged)="dateOfBirthChanged()"></app-lpb-date-picker>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Nơi sinh</div>
+          <div class="label-action">
+            <input class="input-field form-control" formControlName="placeOfBirth" type="text " name="" id="">
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Điện thoại cố định</div>
+          <div class="label-action">
+            <input numbersOnly class="input-field form-control" formControlName="phoneNumber" type="text " name=""
+              id="">
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Điện thoại di động <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <input #mobileNo class="input-field form-control" minlength="10" maxlength="10"
+              formControlName="phoneNumber2" (input)="phoneNumberInputChanged($event)"
+              [class.error-invalid]="errMsgMobileNo !== ''" type="text " name="" id="" (blur)="validateNumber()">
+            <div class="error-msg" *ngIf="errMsgMobileNo !== ''">
+              {{errMsgMobileNo}}
+            </div>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Email</div>
+          <div class="value-field">
+            <input class="input-field form-control" formControlName="email"
+              [class.error-invalid]="hasErrorInput('email','pattern')" type="text " name="" id="">
+            <div class="error-msg" *ngIf="hasErrorInput('email','pattern')">
+              Email không đúng định dạng
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="content-right">
+        <div class="row-item-info">
+          <div class="label-field">Số GTXM <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <input class="input-field form-control" formControlName="identityNumber"
+              (input)="spaceInputChanged($event, getidentityNumber)"
+              [class.error-invalid]="hasErrorInput('identityNumber','required')" type="text" name="" id="">
+            <div class="error-msg" *ngIf="hasErrorInput('identityNumber','required')">
+              Số GTXM không được để trống
+            </div>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Nơi cấp <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <input class="input-field form-control" formControlName="identityAddress"
+              (input)="spaceInputChanged($event, getidentityAddress)"
+              [class.error-invalid]="hasErrorInput('identityAddress','required')" type="text" name="" id="">
+            <div class="error-msg" *ngIf="hasErrorInput('identityAddress','required')">
+              Nơi cấp không được để trống
+            </div>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Ngày cấp<span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <app-lpb-date-picker #dpIndentityDate (blurInput)="blurIndentityDate($event)"
+              (dateChanged)="indentityDateChanged()"></app-lpb-date-picker>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Quốc tịch 1 <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <app-lpb-select [selectedItem]="selectedNationality1" [txtPlaceholder]="'Chọn Quốc tịch'"
+                [lstOptions]="lstCountry" (selectedChangeOption)="nationalityFirstChange($event)"></app-lpb-select>
+            </div>
+          </div>
+          <div class="action-control ml-2">
+            <mat-icon class="plus" (click)="addOrRemoveNation('ADD')">add_circle_outline</mat-icon>
+          </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="lstSubNationality[0].isShow ? 'd-flex' : 'd-none'">
+          <div class="label-field">Quốc tịch 2 <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <app-lpb-select [selectedItem]="selectedNationality2" [txtPlaceholder]="'Chọn Quốc tịch'"
+                [lstOptions]="lstCountry" (selectedChangeOption)="nationalitySecondChange($event)"></app-lpb-select>
+            </div>
+          </div>
+          <div class="action-control ml-2">
+            <mat-icon class="minus" (click)="addOrRemoveNation('REMOVE', lstSubNationality[0].nationalCode)">
+              remove_circle_outline</mat-icon>
+          </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="lstSubNationality[1].isShow ? 'd-flex' : 'd-none'">
+          <div class="label-field">Quốc tịch 3 <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <app-lpb-select [selectedItem]="selectedNationality3" [txtPlaceholder]="'Chọn Quốc tịch'"
+                [lstOptions]="lstCountry" (selectedChangeOption)="nationalityThirdChange($event)"></app-lpb-select>
+            </div>
+          </div>
+          <div class="action-control ml-2">
+            <mat-icon class="minus" (click)="addOrRemoveNation('REMOVE', lstSubNationality[1].nationalCode)">
+              remove_circle_outline</mat-icon>
+          </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="lstSubNationality[2].isShow ? 'd-flex' : 'd-none'">
+          <div class="label-field">Quốc tịch 4 <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <app-lpb-select [selectedItem]="selectedNationality4" [txtPlaceholder]="'Chọn Quốc tịch'"
+                [lstOptions]="lstCountry" (selectedChangeOption)="nationalityFourthChange($event)"></app-lpb-select>
+            </div>
+          </div>
+          <div class="action-control ml-2">
+            <mat-icon class="minus" (click)="addOrRemoveNation('REMOVE', lstSubNationality[2].nationalCode)">
+              remove_circle_outline</mat-icon>
+          </div>
+        </div>
+
+        <div class="row-item-info" *ngIf="errMsgNationality !== ''">
+          <div class="label-field"></div>
+          <div class="value-field">
+            <div class="error-msg">{{errMsgNationality}}</div>
+          </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="isShowOptionVisaFree ? 'd-flex' : 'd-none'">
+          <div class="label-field">Thị thực nhập cảnh</div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" formControlName="isVisaFree" id="cbVisaFree"
+                  (change)="selectedChangeVisaFree()">
+                <label class="form-check-label" for="cbVisaFree">Miễn thị thực nhập cảnh</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="(isShowOptionVisaFree && !isVisaFree) ? 'd-flex' : 'd-none'">
+          <div class="label-field">Từ ngày</div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="input-group w-100">
+                <app-lpb-date-picker #dpFromDateVisaFree class="w-100" (dateChanged)="validateFromDateVisaFree()">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info" [ngClass]="(isShowOptionVisaFree && !isVisaFree) ? 'd-flex' : 'd-none'">
+          <div class="label-field">Đến ngày</div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="input-group w-100">
+                <app-lpb-date-picker #dpToDateVisaFree class="w-100" (dateChanged)="validateToDateVisaFree()">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Người cư trú<span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="grRadio w-100">
+                <div class="rd-item">
+                  <input type="radio" class="mr-1" formControlName="isResident" value="Y">
+                  <label for="residentYes">
+                    Có
+                  </label>
+                </div>
+                <div class="rd-item">
+                  <input type="radio" class="mr-1" formControlName="isResident" value="N">
+                  <label for="residentNo">
+                    Không
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Nghề nghiệp <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <app-lpb-select [selectedItem]="selectedProfession" (blurSelect)="validateProfession()"
+                [txtPlaceholder]="'Chọn nghề nghiệp'" [lstOptions]="lstProfession"
+                [class.error-invalid]="errMsgProfession !== ''" (selectedChangeOption)="professionChanged($event)">
+              </app-lpb-select>
+            </div>
+            <div class="error-msg" *ngIf="errMsgProfession !== ''">{{errMsgProfession}}</div>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">Chức vụ <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <input class="input-field form-control" formControlName="position"
+              (input)="spaceInputChanged($event, getposition)"
+              [class.error-invalid]="hasErrorInput('position','required')" type="text" name="" id="">
+            <div class="error-msg" *ngIf="hasErrorInput('position','required') ">
+              Chức vụ không được để trống
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div (click)="getAddressForm()">
+      test địa chỉ
+    </div> -->
+    <div class="pt-5" [class.div-readOnly]="actionName === action.VIEW">
+      <app-lpb-custom-address #address [requireCurrentDistrict]="false" [requireCurrentProvine]="false"
+        [requireCurrentWard]="false" [requireCurrentAddress]="false" [requireResidentDistrict]="false"
+        [requireResidentProvine]="false" [requireResidentWard]="false" [requireResidentAddress]="false"
+        [objCurrentAddress]="objCurrentAddress" [objResidentAddress]="objResidentAddress">
+      </app-lpb-custom-address>
+    </div>
+    <!-- <app-lpb-address></app-lpb-address> -->
+    <div class="action">
+      <button class="btn-save" (click)="saveDataToForm()" *ngIf="actionName === action.CREATE"
+        [disabled]="actionName === action.VIEW">Lưu</button>
+      <button class="btn-save" (click)="saveDataToForm()" *ngIf="actionName === action.EDIT"
+        [disabled]="actionName === action.VIEW">Cập nhật</button>
+      <button class="btn-cancel ml-2" (click)="cancelCoOwner()">Hủy</button>
+    </div>
+  </div>
+  <div class="owner-benefit-tab">
+    <div class="title">
+      <span>DANH SÁCH CHỦ SỞ HỮU HƯỞNG LỢI</span>
+      <button (click)="createCoOwner()" [ngClass]=" actionName !== '' ? 'btn-close' : 'btn-add'"
+        [disabled]="actionName !== ''">Thêm mới </button>
+    </div>
+    <div class="table">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-per-10">Mã người hưởng lợi</th>
+            <th class="col-per-10">Họ và tên</th>
+            <th class="col-per-10">Điện thoại</th>
+            <th class="col-per-10">Số GTXM</th>
+            <th class="col-per-10">Quốc tịch</th>
+            <th class="col-per-10">Tình trạng</th>
+            <th class="col-per-10">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of lstOwner , index as i">
+            <th class="col-per-10"></th>
+            <th class="col-per-10 "><i class="link-action" (click)="viewCoOwner(item)">{{item.name ?
+                item.name : ''}}</i></th>
+            <th class="col-per-10">{{item.phoneNumber2 ? item.phoneNumber2 : ''}}</th>
+            <th class="col-per-10">{{item.identityNumber ? item.identityNumber : ''}}</th>
+            <th class="col-per-10">{{item.nationalName ? item.nationalName : ''}}</th>
+            <th class="col-per-10"></th>
+            <th class="td-col-action">
+              <div class="action">
+                <mat-icon class="btn-icon-edit" (click)="editCoOwner(item)">edit</mat-icon>
+                <mat-icon class="btn-icon-delete" (click)="removeCoOwner(item)">delete</mat-icon>
+              </div>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty-data mt-2" *ngIf="lstOwner.length === 0">
+        Chưa có dữ liệu nhập vào.
+      </div>
+    </div>
+    <div class="action">
+      <button class="btn-save" (click)="close()">Hoàn thành</button>
+    </div>
+  </div>
+</div>
+<app-lpb-modal headerText="Bạn có chăc chắn thực hiện thao tác?" [show]="isShowModal" [unit]="'%'" [widthContent]="50"
+  [heightContent]="20" (hideModal)="isShowModal = false">
+  <div class="action mt-3">
+    <button class="btn-save mr-2" (click)="isTrueClose()" type="button">Có</button>
+    <button class="btn-cancel" (click)="isFalseClose()" type="button">Không</button>
+  </div>
+</app-lpb-modal>
+
+<app-lpb-modal headerText="Xác nhận" [show]="isConfirm" [widthContent]="40" [heightContent]="30"
+  (hideModal)="isConfirm = false">
+  <div class="account-owner-list-content">
+    <div class="text-center">
+      Bạn có chắc chắc muốn thực hiện thao tác xóa này ?
+    </div><br />
+    <div class="btn-sig">
+      <button class="mr-2 btn-cancel" (click)="confimRemoveData('CANCEL')">
+        Hủy
+      </button>
+      <button class="mr-2 btn-save" (click)="confimRemoveData('CONFIM')">
+        Đồng ý
+      </button>
+    </div>
+  </div>
+</app-lpb-modal>

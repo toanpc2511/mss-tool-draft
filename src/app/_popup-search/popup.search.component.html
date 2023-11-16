@@ -1,0 +1,54 @@
+<div class="abc">
+
+    <div class="col-12" style="padding: 0px;">
+        <h2 mat-dialog-title style="background: #23388F;color:#fff;border-bottom: 1px solid #828282;font-size: 16px;">
+            Danh sách khách hàng
+            <span class="material-icons" (click)="closeDialog(0)" style="float: right;cursor: pointer;">
+                close
+            </span>
+        </h2>
+    </div>
+
+    <mat-dialog-content class="mat-typography scroll-dialog">
+        <div class="col-12" style="padding-top: 10px;">
+            <table class="table table-responsive table-fixed">
+                <thead>
+                    <tr class="titleTD">
+                        <!--                        <td>Mã hồ sơ</td>-->
+                        <th>Tên khách hàng</th>
+                        <th>Ngày cấp GTXM</th>
+                        <th>Nơi cấp GTXM</th>
+                        <th>Chi nhánh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="hoverTr" *ngFor="let item of customers" (click)="getCustomer(item)">
+                        <!--                        <td>{{item.processId}}</td>-->
+                        <td style="color: #1F69BC;">{{item.fullName}}</td>
+                        <td>{{item.identifyDate | date:'dd/MM/yyyy'}}</td>
+                        <td>{{item.identifyAddress}}</td>
+                        <td>{{item.branch}}</td>
+                    </tr>
+                    <tr *ngIf="customers.length == 0 && !errorMessage">
+                        <td style="text-align: center;">Không có dữ liệu</td>
+                    </tr>
+                    <tr *ngIf="errorMessage">
+                      <td style="text-align: center;">{{errorMessage}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div style="padding-top: 10px;padding-bottom: 10px;float: right;">
+            <button type="button" class="btn closePopup" (click)="closeDialog(0)">
+                Đóng
+            </button>
+            <button type="button" class="btn closePopup popup-css" (click)="createNew(1)" cdkFocusInitial *ngIf="isGDV === true && isKSV === true">
+            Tạo mới
+          </button>
+            <button type="button" class="btn closePopup popup-css" (click)="createNew(1)" cdkFocusInitial *ngIf="isGDV === true && isKSV !== true">
+            Tạo mới
+          </button>
+        </div>
+    </mat-dialog-content>
+</div>

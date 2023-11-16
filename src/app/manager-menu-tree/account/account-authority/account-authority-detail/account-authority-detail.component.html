@@ -1,0 +1,528 @@
+<div class="account-authority-detail">
+  <!--  Thông tin Khách hàng-->
+  <div class="account-authority-detail-title">
+    <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">account_circle</mat-icon>
+    <span>THÔNG TIN KHÁCH HÀNG</span>
+  </div>
+  <div class="w-100 d-flex justify-content-between account-authority-detail-content">
+    <div class="account-authority-detail-content-left">
+
+      <div class="row-item-info">
+        <div class="label-field">Mã Khách hàng :</div>
+        <div class="value-field">
+          <div class="control-item  d-flex align-items-center">
+            <div>{{ (customerInfo && customerInfo.customerCode) ? customerInfo.customerCode : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Số giấy tờ xác minh :</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (customerInfo && customerInfo.person) ? customerInfo.person.perDocNoList[0].perDocNo : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="account-authority-detail-content-right">
+      <div class="row-item-info">
+        <div class="label-field">Họ và tên :</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (customerInfo && customerInfo.person) ? customerInfo.person.fullName : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày sinh :</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (customerInfo && customerInfo.person) ? customerInfo.person.dateOfBirth : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Trạng thái :</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (customerInfo && customerInfo.currentStatusName) ? customerInfo.currentStatusName : ''}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  Thông tin Tài khoản -->
+  <div class="account-authority-detail-title">
+    <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">account_box</mat-icon>
+    <span>THÔNG TIN TÀI KHOẢN</span>
+  </div>
+  <div class="w-100 d-flex justify-content-between account-authority-detail-content">
+    <div class="account-authority-detail-content-left">
+
+      <div class="row-item-info">
+        <div class="label-field">Tên tài khoản:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (accountDetail && accountDetail.accountName) ? accountDetail.accountName : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Số tài khoản: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (accountDetail && accountDetail.accountNumber) ? accountDetail.accountNumber : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="account-authority-detail-content-right">
+      <div class="row-item-info">
+        <div class="label-field">Loại tiền tệ:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{accountDetail ? accountDetail.currencyName + ' (' + accountDetail.currencyCode + ')' : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Trạng thái:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (accountDetail && accountDetail.currentStatusName) ? accountDetail.currentStatusName : ''}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  Thông tin Ủy quyền -->
+  <div class="account-authority-detail-title">
+    <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">supervised_user_circle</mat-icon>
+    <span>THÔNG TIN CHI TIẾT ỦY QUYỀN</span>
+  </div>
+  <div class="w-100 d-flex justify-content-between account-authority-detail-content">
+    <div class="account-authority-detail-content-left">
+
+      <!-- Detail Họ và tên -->
+      <div class="row-item-info">
+        <div class="label-field">Họ và tên:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.fullName) ? authorityDetail.fullName : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày sinh: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.birthDate) ? authorityDetail.birthDate : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Quốc tịch 1: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.nationality1Name) ? authorityDetail.nationality1Name : ''}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info" *ngIf="authorityDetail && authorityDetail.nationality2Name">
+        <div class="label-field">Quốc tịch 2: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.nationality2Name) ? authorityDetail.nationality2Name : ''}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info" *ngIf="authorityDetail && authorityDetail.nationality3Name">
+        <div class="label-field">Quốc tịch 3: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.nationality3Name) ? authorityDetail.nationality3Name : ''}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info" *ngIf="authorityDetail && authorityDetail.nationality4Name">
+        <div class="label-field">Quốc tịch 4: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.nationality4Name) ? authorityDetail.nationality4Name : ''}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------------------------- -->
+      <div class="row-item-info" *ngIf="authorityDetail?.visaExemption === true">
+        <label class="label-field pt-2">Miễn thị thực nhập cảnh </label>
+        <div class="value-field">
+          <div class="control-item d-flex pt-2">
+            <label class="content-label">Có</label>
+          </div>
+        </div>
+      </div>
+      <div class="row-item-info" *ngIf="authorityDetail?.visaExemption === false
+                                              || authorityDetail?.visaExemption === null">
+
+        <label class="label-field pt-2">Miễn thị thực nhập cảnh </label>
+
+        <div class="value-field">
+          <div class="control-item d-flex pt-2">
+            <label class="content-label">Không</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info" *ngIf="authorityDetail && authorityDetail.visaIssueDate">
+        <div class="label-field">Từ ngày: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.visaIssueDate) ? authorityDetail.visaIssueDate : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info" *ngIf="authorityDetail && authorityDetail.visaIssueDate">
+        <div class="label-field">Đến ngày: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.visaExpireDate) ? authorityDetail.visaExpireDate : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Người cư trú: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{(authorityDetail && authorityDetail.residence) ? 'Có' : 'Không'}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Điện thoại di động: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.mobilePhone) ? authorityDetail.mobilePhone : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Email: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.email) ? authorityDetail.email : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row-item-info">
+        <div class="label-field">Địa chỉ hiện tại </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Quốc gia: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.currentCountryName) ? authorityDetail.currentCountryName : ''}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Tỉnh/thành phố </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.currentCityName) ? authorityDetail.currentCityName : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Quận / Huyện: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.currentDistrictName) ? authorityDetail.currentDistrictName :
+              ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Phường xã: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.currentWardName) ? authorityDetail.currentWardName : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Số nhà/đường phố: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.currentStreetNumber) ? authorityDetail.currentStreetNumber :
+              ''}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="account-authority-detail-content-right">
+
+      <div class="row-item-info">
+        <div class="label-field">Giới tính:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.genderName) ? authorityDetail.genderName : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Loại GTXM:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.perDocTypeName) ? authorityDetail.perDocTypeName : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Số GTXM:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.perDocNo) ? authorityDetail.perDocNo : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Ngày cấp:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.issueDate) ? authorityDetail.issueDate : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Nơi cấp:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.issuePlace) ? authorityDetail.issuePlace : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Nghề nghiệp:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.industry) ? authorityDetail.industry : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Chức vụ:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.position) ? authorityDetail.position : ''}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  Thông tin Ủy quyền -->
+  <div class="account-authority-detail-title">
+    <mat-icon style="font-size: 30px; height: 30px; width: 40px; text-indent: 5px">description</mat-icon>
+    <span>NỘI DUNG ỦY QUYỀN</span>
+  </div>
+  <div class="w-100 d-flex justify-content-between account-authority-detail-content border-bottom-0 pb-0">
+    <div class="account-authority-detail-content-left">
+
+      <div class="row-item-info">
+        <div class="label-field">Loại tài khoản:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.accountProductName) ? authorityDetail.accountProductName : ''}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Phạm vi ủy quyền:</div>
+        <div class="value-field">
+          <div class="control-item d-flex flex-column" *ngIf="(authorityDetail && authorityDetail.authorTypes)">
+            <div *ngFor="let item of authorityDetail.authorTypes" class="mb-1">{{item.authorTypeName}}</div>
+          </div>
+          <div class="control-item d-flex align-items-center" *ngIf="isShowText">
+            <div>{{freeText}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Thời gian ủy quyền: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.expireAuthorName) ? authorityDetail.expireAuthorName : ''}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="account-authority-detail-content-right">
+
+      <div class="row-item-info">
+        <div class="label-field">Số tài khoản:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.accountNumber) ? authorityDetail.accountNumber : ''}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-item-info">
+        <div class="label-field">Giá trị hạn mức:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{limitAmount}}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="w-100 d-flex justify-content-between account-authority-detail-content pt-0">
+    <div class="account-authority-detail-content-left">
+      <div class="row-item-info">
+        <div class="label-field">Từ ngày: </div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.validFrom) ? authorityDetail.validFrom : ''}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="account-authority-detail-content-right"
+      *ngIf="accountDetail && authorityDetail && authorityDetail.expireAuthorCode === 'VALID_TIME_RANGE'">
+      <div class="row-item-info">
+        <div class="label-field">Đến ngày:</div>
+        <div class="value-field">
+          <div class="control-item d-flex align-items-center">
+            <div>{{ (authorityDetail && authorityDetail.validTo) ? authorityDetail.validTo : ''}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-lpb-modal headerText="Xác nhận" [show]="isShowSendPopupApprove" [unit]="'%'" [widthContent]="50"
+    [heightContent]="50" (hideModal)="isShowSendPopupApprove = false">
+    <div class="update-cif-content">
+      <div class="mb-2">
+        Bạn có muốn gửi duyệt dịch vụ này không?
+      </div>
+      <div class="block-note">
+        <label>Ghi chú:&nbsp;&nbsp;</label>
+        <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+      </div>
+      <div class="text-center mt-2">
+        <button class="btn-cancel" (click)="isShowSendPopupApprove = false">
+          Hủy
+        </button>
+        <button class="btn-save ml-2" (click)="submitApprove()">
+          Đồng ý
+        </button>
+      </div>
+    </div>
+  </app-lpb-modal>
+  <app-lpb-modal headerText="Xác nhận" [show]="isShowPopupApprove" [unit]="'%'" [widthContent]="50" [heightContent]="50"
+    (hideModal)="isShowPopupApprove = false">
+    <div class="detail-cif-content">
+      <div class="mb-2">
+        Bạn có muốn duyệt dịch vụ này không?
+      </div>
+      <div class="block-note">
+        <label>Ghi chú:&nbsp;&nbsp;</label>
+        <textarea [(ngModel)]='note' class="form-control" cols="80" rows="7"></textarea>
+      </div>
+      <div class="text-right pt-2">
+        <button class="btn-cancel" (click)="confimApproveProcess('CANCEL')">
+          Hủy
+        </button>
+        <button class="btn-save ml-2" (click)="confimApproveProcess('CONFIRM')">
+          Đồng ý
+        </button>
+      </div>
+    </div>
+  </app-lpb-modal>
+  <div style="height: 50px;display: block;clear: both;"></div>
+  <div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+    <div class="col-12" style="text-align: right;padding: 0px;margin: 0px;">
+      <div class="footer" *ngIf="isModify" (click)="showPopup('REQUEST_ADD')">
+        <span class="material-icons"> edit </span>
+        <label>Yêu cầu bổ sung</label>
+      </div>
+      <div class="footer" *ngIf="isReject" (click)="showPopup('REJECT')">
+        <span class="material-icons"> close </span>
+        <label>Từ chối</label>
+      </div>
+      <div class="footer" *ngIf="isApprove" (click)="showPopup('APPROVE')">
+        <span class="material-icons"> check </span>
+        <label>Duyệt</label>
+      </div>
+      <div class="footer" *ngIf="isUpdate" (click)="updateAuthority()">
+        <span class="material-icons"> edit </span>
+        <label>Cập nhật thông tin</label>
+      </div>
+      <div *ngIf="isDelete" (click)="deleteAuthority()" class="footer">
+        <span class="material-icons"> delete </span>
+        <label>Xóa</label>
+      </div>
+      <div class="footer" *ngIf="isSendApprove" (click)="isShowSendPopupApprove = true;note =''">
+        <span class="material-icons"> check </span>
+        <label>Gửi duyệt</label>
+      </div>
+      <div class="footer" (click)="backPage()">
+        <span class="material-icons"> keyboard_backspace </span>
+        <label>Quay lại</label>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+<div class="mis-cif">
+  <div class="w-100 d-flex">
+    <div class="mis-cif-left">
+      <div class="envelope">
+        <div class="row-item">
+          <div class="label-center">
+            THÔNG TIN CHUNG
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">CIF_KH78 <span class="item-require">(*)</span></div>
+          <div class="label-action d-flex align-items-center">
+            <app-lpb-select [selectedItem]="selectedCifKH78" class="w-100" (blur)="validateCIF_KH78()"
+              [txtPlaceholder]="'Chọn CIF_KH78'" (selectedChangeOption)="onChangeCifKh78Code($event)"
+              [lstOptions]="lstCIFKH78"></app-lpb-select>
+            <mat-icon *ngIf="objCustomerMisCore" class="ic-info-core" #tooltip="matTooltip"
+              [matTooltip]="'Dữ liệu Core: ' + (objCustomerMisCore ? (objCustomerMisCore.cifKh78Code + ' - ' + objCustomerMisCore.cifKh78Name) : 'Không xác định')"
+              matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">CIF_MANKT</div>
+          <div class="label-action d-flex align-items-center">
+            <app-lpb-select [selectedItem]="selectedCifMankt" class="w-100" [txtPlaceholder]="'Chọn CIF_MANKT'"
+              (selectedChangeOption)="onChangeCifManktCode($event)" [lstOptions]="lstCIFMANKT">
+            </app-lpb-select>
+            <mat-icon *ngIf="objCustomerMisCore" class="ic-info-core" #tooltip="matTooltip"
+              [matTooltip]="'Dữ liệu Core: ' + (objCustomerMisCore ? (objCustomerMisCore.cifManktCode + ' - ' + objCustomerMisCore.cifManktName) : 'Không xác định')"
+              matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">CIF_TPKT<span class="item-require">(*)</span></div>
+          <div class="label-action d-flex align-items-center">
+            <app-lpb-select [selectedItem]="selectedCifTPKT" class="w-100" [txtPlaceholder]="'Chọn CIF_TPKT'"
+              (blur)="validateCIF_TPKT()" (selectedChangeOption)="onChangeCifTpktCode($event)"
+              [lstOptions]="lstCIFTPKT"></app-lpb-select>
+            <mat-icon *ngIf="objCustomerMisCore" class="ic-info-core" #tooltip="matTooltip"
+              [matTooltip]="'Dữ liệu Core: ' + (objCustomerMisCore ? (objCustomerMisCore.cifTpktCode + ' - ' + objCustomerMisCore.cifTpktName) : 'Không xác định')"
+              matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">CIF_KBHTG</div>
+          <div class="label-action d-flex align-items-center">
+            <app-lpb-select [selectedItem]="selectedCifKBHTG" class="w-100" [txtPlaceholder]="'Chọn CIF_KBHTG'"
+              (selectedChangeOption)="onChangeCifKbhtgCode($event)" [lstOptions]="lstCIFKBHTG">
+            </app-lpb-select>
+            <mat-icon *ngIf="objCustomerMisCore" class="ic-info-core" #tooltip="matTooltip"
+              [matTooltip]="'Dữ liệu Core: ' + (objCustomerMisCore ? (objCustomerMisCore.cifKbhtgCode + ' - ' + objCustomerMisCore.cifKbhtgName) : 'Không xác định')"
+              matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mis-cif-right">
+      <div class="envelope">
+        <div class="row-item">
+          <div class="label-center">
+            THÔNG TIN VAY
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">CIF_LOAI</div>
+          <div class="label-action d-flex align-items-center">
+            <app-lpb-select [selectedItem]="selectedCifLoai" class="w-100" [txtPlaceholder]="'Chọn CIF_LOAI'"
+              (selectedChangeOption)="onChangeCifLoaiCode($event)" [lstOptions]="lstCIFLOAI">
+            </app-lpb-select>
+            <mat-icon *ngIf="objCustomerMisCore" class="ic-info-core" #tooltip="matTooltip"
+              [matTooltip]="'Dữ liệu Core: ' + (objCustomerMisCore ? (objCustomerMisCore.cifLoaiCode + ' - ' + objCustomerMisCore.cifLoaiName) : 'Không xác định')"
+              matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">LHNNNTVAY</div>
+          <div class="label-action d-flex align-items-center">
+            <app-lpb-select [selectedItem]="selectedLHNNNTVAY" class="w-100" [txtPlaceholder]="'Chọn LHNNNTVAY'"
+              (selectedChangeOption)="onChangeChnnntvayCode($event)" [lstOptions]="lstLHNNNTVAY">
+            </app-lpb-select>
+            <mat-icon *ngIf="objCustomerMisCore" class="ic-info-core" #tooltip="matTooltip"
+              [matTooltip]="'Dữ liệu Core: ' + (objCustomerMisCore ? (objCustomerMisCore.lhnnntvayCode + ' - ' + objCustomerMisCore.lhnnntvayName) : 'Không xác định')"
+              matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">TD_MANKT</div>
+          <div class="label-action d-flex align-items-center w-100">
+            <app-lpb-select [selectedItem]="selectedTdMANKT" class="w-100" [txtPlaceholder]="'Chọn TD_MANKT'"
+              (selectedChangeOption)="onChangeCdManktCode($event)" [lstOptions]="lstTDMANKT">
+            </app-lpb-select>
+            <mat-icon *ngIf="objCustomerMisCore" class="ic-info-core" #tooltip="matTooltip"
+              [matTooltip]="'Dữ liệu Core: ' + (objCustomerMisCore ? (objCustomerMisCore.cifManktCode + ' - ' + objCustomerMisCore.cifManktName) : 'Không xác định')"
+              matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">CIF_NGANH</div>
+          <div class="label-action d-flex align-items-center">
+            <app-lpb-select [selectedItem]="selectedCifNganh" class="w-100" [txtPlaceholder]="'Chọn CIF_NGANH'"
+              (selectedChangeOption)="onChangeCifNganhCode($event)" [lstOptions]="lstCIFNGANH">
+            </app-lpb-select>
+            <mat-icon *ngIf="objCustomerMisCore" class="ic-info-core" #tooltip="matTooltip"
+              [matTooltip]="'Dữ liệu Core: ' + (objCustomerMisCore ? (objCustomerMisCore.cifNganhCode + ' - ' + objCustomerMisCore.cifNganhName) : 'Không xác định')"
+              matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">COM_TSCT</div>
+          <div class="label-action d-flex align-items-center">
+            <app-lpb-select [selectedItem]="selectedComTSCT" class="w-100" [txtPlaceholder]="'Chọn COM_TSCT'"
+              (selectedChangeOption)="onChangeComTsctCode($event)" [lstOptions]="lstCOMTSCT">
+            </app-lpb-select>
+            <mat-icon *ngIf="objCustomerMisCore" class="ic-info-core" #tooltip="matTooltip"
+              [matTooltip]="'Dữ liệu Core: ' + (objCustomerMisCore ? (objCustomerMisCore.comTsctCode + ' - ' + objCustomerMisCore.comTsctName) : 'Không xác định')"
+              matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+        <div class="row-item-info">
+          <div class="label-field">DC_GH</div>
+          <div class="label-action d-flex align-items-center">
+            <app-lpb-select [selectedItem]="selectedDCGH" class="w-100" [txtPlaceholder]="'Chọn DC_GH'"
+              (selectedChangeOption)="onChangeCcGhCode($event)" [lstOptions]="lstDCGH"></app-lpb-select>
+            <mat-icon *ngIf="objCustomerMisCore" class="ic-info-core" #tooltip="matTooltip"
+              [matTooltip]="'Dữ liệu Core: ' + (objCustomerMisCore ? (objCustomerMisCore.dcGhCode + ' - ' + objCustomerMisCore.dcGhName) : 'Không xác định')"
+              matTooltipPosition="below">error_outline
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mis-cif-button mt-36 w-100">
+    <button class="btn-save mr-2" (click)="getDataMIS()">Lưu</button>
+    <button (click)="close()" class="btn-close">Đóng</button>
+  </div>
+</div>

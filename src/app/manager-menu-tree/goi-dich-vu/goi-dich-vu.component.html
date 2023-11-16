@@ -1,0 +1,86 @@
+<div class="container-fuild">
+    <div class="row cust-row">
+        <div class="col-12 p-2 title-head" style="border-bottom: 1px solid #c8ced3;padding: 0px;">
+            <span>TÌM KIẾM THÔNG TIN KHÁCH HÀNG</span>
+        </div>
+        <div class="col-12 information-section">
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label formSearch" style="text-align: right;">Khách hàng
+          cá nhân
+          <span style="color: red;">(*)</span>
+        </label>
+                <div class="input-group" style="width:370px">
+                    <input type="text" class="form-control" id="inputPassword3" placeholder="Nhập giá trị tìm kiếm">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" style="background: #828282;height: 36px;">
+              <i class="fa fa-search" aria-hidden="true" style="color:#FFFFFF"></i>
+            </button>
+                    </div>
+                    <div class="invalid-feedback">
+                        <div>Vui lòng nhập giá trị tìm kiếm</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="container-fuild">
+    <div class="row cust-row">
+        <div class="col-12 p-2 title-head text-uppercase" style="border-bottom: 1px solid #c8ced3;padding: 0px;">
+            <span>DANH SÁCH chương trình ưu đãi</span>
+        </div>
+        <div class="  mat-elevation-z8">
+            <table class="table table-responsive table-fixed" style="margin: 0px;display: unset;">
+                <thead>
+                    <tr style="font-weight: bold; background: #EFF4FF" class="titleTD">
+                        <th>Ngày tạo</th>
+                        <th>Chương trình ưu đãi</th>
+                        <th>Số lượng ưu đãi</th>
+                        <th>Ngày hiệu lực</th>
+                        <th>Ngày hết hiệu lực</th>
+                        <th style="width: 150px">Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--          <tr *ngFor="let item of coOwnerList">-->
+                    <!--            <td style="cursor: pointer; color: #1F69BC" (click)="getDetailCoOwner(item.id)">-->
+                    <!--              {{item.person.fullName}}-->
+                    <!--            </td>-->
+                    <!--            <td>{{item.person.perDocNoList[0].perDocNo}}</td>-->
+                    <!--            <td>{{item.currentStatusName}}</td>-->
+                    <!--            <td style="width: 150px; padding: 0; vertical-align: middle">-->
+                    <!--              <div style="width: 50%;margin: 0 auto;">-->
+                    <!--                <mat-icon style="margin-right: 10px; cursor: pointer" (click)="deleteCoOwner(item.id)">delete</mat-icon>-->
+                    <!--                &lt;!&ndash;                <mat-icon style="cursor: pointer">edit</mat-icon>&ndash;&gt;-->
+                    <!--              </div>-->
+
+                    <!--            </td>-->
+                    <!--          </tr>-->
+                    <!--          <tr *ngIf="coOwnerList && coOwnerList.length == 0">-->
+                    <!--            <td style="text-align: center;">Không có dữ liệu</td>-->
+                    <!--          </tr>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- ket thuc danh sach tai khoan -->
+</div>
+<div style="height: 50px;display: block;clear: both;"></div>
+<div class="row footer-row" style="margin:0px;position: fixed;width: 100%;bottom: 0px;background: #23388F;">
+    <div class="col-12" style="text-align: right;padding: 0px;margin: 0px;">
+        <div class="footer" style="padding-right: 20px;">
+            <span class="material-icons">
+                note_add
+            </span>
+            <label>Tạo mới</label>
+        </div>
+        <div class="footer">
+            <span class="material-icons">
+                keyboard_backspace
+            </span>
+            <label>Quay lại</label>
+        </div>
+    </div>
+</div>

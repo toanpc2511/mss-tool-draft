@@ -1,0 +1,340 @@
+<div class="uc-legal">
+  <div class="uc-legal-info w-100" [ngClass]="actionName !== '' ? 'd-flex' : 'd-none'"
+    [class.div-readOnly]="actionName === action.VIEW">
+    <form class="w-100 d-flex justify-content-between" [formGroup]="formLegal"
+      [ngClass]="actionName === action.ADD_CUS_LEGAL ? 'div-readOnly' : ''">
+      <div class="uc-legal-info-left">
+        <div class="row-item-info" [ngClass]="(selectedLegal && selectedLegal.inEffect !== null) ? 'd-flex' : 'd-none'">
+          <div class="label-field">Tình trạng <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="grRadio w-100">
+                <div class="rd-item mr-5">
+                  <input type="radio" formControlName="legalInEffect" class="mr-1" name="legalInEffect"
+                    id="effectLegalYes" [value]="true">
+                  <label for="effectLegalYes">Hiệu lực</label>
+                </div>
+                <div class="rd-item">
+                  <input type="radio" formControlName="legalInEffect" class="mr-1" name="legalInEffect"
+                    id="effectLegalNo" [value]="false">
+                  <label for="effectLegalNo">Hết hiệu lực</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Số định danh</div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <input type="text" formControlName="legalIdentifyNumber" maxlength="2000" class="form-control w-100">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Nội dung <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <textarea type="text" formControlName="legalContent"
+                  [class.error-invalid]="hasErrorInput(formLegal, 'legalContent', 'required')" maxlength="2000" rows="3"
+                  class="form-control w-100"></textarea>
+              </div>
+            </div>
+            <div class="error-msg" *ngIf="hasErrorInput(formLegal, 'legalContent', 'required')">
+              Nội dung không được để trống
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="uc-legal-info-right">
+        <div class="row-item-info" [ngClass]="(selectedLegal && selectedLegal.inEffect !== null) ? 'd-flex' : 'd-none'">
+          <div class="label-field"></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Giá trị tài sản <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <input formControlName="legalAmount" type="text"
+                  [class.error-invalid]="hasErrorInput(formLegal, 'legalAmount', 'required')" maxlength="2000"
+                  class="form-control w-100">
+              </div>
+            </div>
+            <div class="error-msg" *ngIf="hasErrorInput(formLegal, 'legalAmount', 'required')">
+              Giá trị tài sản không được để trống
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Ngày lập thỏa thuận <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <app-lpb-date-picker #legalBeginDate (dateChanged)="legalBeginDateChanged()"
+                  (blurInput)="blurBeginDate()"></app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Quốc gia <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <app-lpb-select [selectedItem]="selectedLegalNational"
+                  (selectedChangeOption)="nationalityChange($event)" [txtPlaceholder]="'Chọn Quốc tịch'"
+                  [lstOptions]="lstCountry"></app-lpb-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+  <div class="block-customer-info mb-2" [class.div-readOnly]="actionName === action.VIEW">
+    <span class="lb-title" [ngClass]="actionName !== '' ? 'd-flex' : 'd-none'">Thông tin người liên quan đến Ủy thác /
+      Ủy quyền</span>
+    <button class="btn-add" [ngClass]="(selectedLegal && selectedLegal.inEffect !== false) &&
+            (actionName === action.EDIT_LEGAL || actionName === action.ADD_CUS_LEGAL) ? 'd-block' : 'd-none'"
+      (click)="addCustomerToLegal(action.ADD_CUS_LEGAL)">Thêm mới NLQ
+    </button>
+  </div>
+
+  <div class="uc-legal-person" [ngClass]="actionName !== '' ? 'd-flex' : 'd-none'">
+    <form class="w-100 d-flex justify-content-between" [formGroup]="formCustomer">
+      <div class="uc-legal-info-left">
+        <div class="row-item-info"
+          [ngClass]="((selectedCustomer && selectedCustomer.person.inEffect !== null && actionName !== action.ADD_CUS_LEGAL)) ? 'd-flex' : 'd-none'">
+          <div class="label-field">Trạng thái <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="grRadio w-100">
+                <div class="rd-item mr-5">
+                  <input type="radio" formControlName="cusInEffect" class="mr-1" id="effectPersonYes" [value]="true">
+                  <label for="effectPersonYes">Hiệu lực</label>
+                </div>
+                <div class="rd-item">
+                  <input type="radio" formControlName="cusInEffect" class="mr-1" id="effectPersonNo" [value]="false">
+                  <label for="effectPersonNo">Hết hiệu lực</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Họ và tên <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <input type="text" formControlName="cusFullName"
+                  [class.error-invalid]="hasErrorInput(formCustomer, 'cusFullName', 'required')" maxlength="2000"
+                  class="form-control w-100">
+              </div>
+            </div>
+            <div class="error-msg" *ngIf="hasErrorInput(formCustomer, 'cusFullName', 'required')">
+              Họ và tên không được để trống
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Ngày sinh <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <app-lpb-date-picker #dpCusDateOfBirth (dateChanged)="dpDateOfBirthChanged()"
+                  (blurInput)="dpDateOfBirthBlur()"></app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Điện thoại</div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <input type="text" formControlName="cusPhoneNumber" maxlength="2000" class="form-control w-100">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Số GTXM <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <input type="text" formControlName="cusVerifyDocsNumber"
+                  [class.error-invalid]="hasErrorInput(formCustomer, 'cusVerifyDocsNumber', 'required')"
+                  maxlength="2000" class="form-control w-100">
+              </div>
+            </div>
+            <div class="error-msg" *ngIf="hasErrorInput(formCustomer, 'cusVerifyDocsNumber', 'required')">
+              Số GTXM không được để trống
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Nơi cấp</div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <input type="text" formControlName="cusVerifyDocIssuePlace" maxlength="200" class="form-control w-100">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Ngày cấp</div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <app-lpb-date-picker #dpCusVerifyDocIssueDate (dateChanged)="validateVerifyDocIssueDate()">
+                </app-lpb-date-picker>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-item-info">
+          <div class="label-field">Đối tượng <span class="item-require">(*)</span></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item">
+                <select class="form-control form-control-sm" formControlName="cusSelectedCategory"
+                  [class.error-invalid]="hasErrorInput(formCustomer, 'cusSelectedCategory', 'required')">
+                  <option [ngValue]="null" disabled>Chọn loại đối tượng
+                  </option>
+                  <option *ngFor="let item of listCusCategoryOption" [ngValue]="item.code">{{item.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="error-msg" *ngIf="hasErrorInput(formCustomer, 'cusSelectedCategory', 'required')">
+              Đối tượng không được để trống
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="uc-legal-info-right">
+        <div class="row-item-info"
+          [ngClass]="(selectedCustomer && selectedCustomer.person.inEffect !== null && actionName !== action.ADD_CUS_LEGAL) ? 'd-flex' : 'd-none'">
+          <div class="label-field"></div>
+          <div class="value-field">
+            <div class="control-item">
+              <div class="control-item"></div>
+            </div>
+          </div>
+        </div>
+        <app-lpb-custom-single-address #customAddress [isCountryRequire]="true" [isProvinceRequire]="false"
+          [isDistrictRequire]="false" [isWardRequire]="false" [isAddressRequire]="false"
+          [objCurrentAddress]="objCurrentAddress"></app-lpb-custom-single-address>
+      </div>
+    </form>
+  </div>
+
+  <div class="uc-legal-action mt-3 w-100" [ngClass]="(actionName !== '') ? 'd-flex' : 'd-none'">
+    <button *ngIf="actionName !== action.VIEW" (click)="saveAction()" class="btn-save mr-2">Lưu</button>
+    <button class="btn-cancel" (click)="cancelAction()">Hủy</button>
+  </div>
+
+  <div class="separation-line w-100" [ngClass]="actionName !== '' ? 'd-flex' : 'd-none'"></div>
+
+  <div class="list-legal">
+    <div class="title mb-3">
+      <span>Danh sách người có liên quan đến thỏa thuận pháp lý</span>
+      <button class=""
+        [ngClass]="(actionName === action.CREATE_LEGAL || actionName === action.EDIT_LEGAL) ? 'btn-close' : 'btn-add'"
+        (click)="createLegal()">Tạo mới TTPL</button>
+    </div>
+
+    <div class="tbl-data">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-per-20">Mã thỏa thuận</th>
+            <th class="col-per-10">Giá trị</th>
+            <th class="col-per-20">Họ và tên</th>
+            <th class="col-per-10">Điện thoại</th>
+            <th class="col-per-20">Số GTXM</th>
+            <th class="col-per-10">Đối tượng</th>
+            <th class="col-per-10">Tình trạng</th>
+            <th class="th-col-action">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let legal of lstLegal; let iLegal = index">
+          <tr *ngFor="let customer of legal.customerList; let iCus = index">
+            <td class="col-per-20"><span class="link-action"
+                (click)="viewDetail(legal, customer, iLegal, iCus)">{{legal.legalAgreementCode ?
+                legal.legalAgreementCode : legal.tempLegalAgreementCode}}</span></td>
+            <td class="col-per-10">{{legal.amount}} VNĐ</td>
+            <td class="col-per-20"><span class="link-action"
+                (click)="viewDetail(legal, customer, iLegal, iCus)">{{customer.person.fullName || ''}}</span>
+            </td>
+            <td class="col-per-10">{{customer.person.mobileNo || ''}}</td>
+            <td class="col-per-20">{{(customer.person && customer.person.perDocNoList &&
+              customer.person.perDocNoList.length > 0) ? customer.person.perDocNoList[0].perDocNo : ''}}</td>
+            <td class="col-per-10">{{customer.legalObjectTypeCode ?
+              getCustomerObjectByCode(customer.legalObjectTypeCode) : ''}}</td>
+            <td class="col-per-10">{{customer.person.inEffect !== null ? (customer.person.inEffect ? 'Hiệu lực' : 'Hết
+              hiệu lực') : ''}}</td>
+            <td class="td-col-action">
+              <div class="action">
+                <mat-icon class="btn-icon-edit" (click)="editCustomerAndLegal(legal, customer, iLegal, iCus)">edit
+                </mat-icon>
+                <mat-icon class="btn-icon-delete" *ngIf="customer.person.inEffect === null"
+                  (click)="deleteCustomerInLegal(legal, customer, iLegal, iCus)">delete
+                </mat-icon>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="empty-data mt-2" *ngIf="lstLegal.length === 0">
+        Chưa có dữ liệu nhập vào.
+      </div>
+    </div>
+  </div>
+
+  <div class="uc-legal-action mt-5 w-100">
+    <button class="btn-save" (click)="completed()">Hoàn thành</button>
+  </div>
+</div>
+
+<app-lpb-modal headerText="Bạn có chăc chắn thực hiện thao tác?" [show]="isShowDeleteConfirm" [unit]="'%'"
+  [widthContent]="40" [heightContent]="30" (hideModal)="isShowDeleteConfirm = false">
+  <div class="uc-legal-modal-content">
+    <div class="text-center uc-legal-modal-content-description">Bạn có muốn xóa <span
+        class="txt-value">{{selectedCustomer ? selectedCustomer.person.fullName : ''}}</span> ?</div>
+    <div class="uc-legal-modal-content-action mt-3">
+      <button class="btn-cancel mr-2" (click)="cancelDelete()">
+        Hủy
+      </button>
+      <button class="btn-save" (click)="confirmDelete()">
+        Đồng ý
+      </button>
+    </div>
+  </div>
+
+</app-lpb-modal>
